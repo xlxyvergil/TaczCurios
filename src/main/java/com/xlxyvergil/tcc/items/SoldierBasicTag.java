@@ -155,7 +155,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b不常见")
+        tooltip.add(Component.literal("§7稀有度：§b常见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

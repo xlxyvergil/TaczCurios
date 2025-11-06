@@ -151,7 +151,7 @@ public class UralWolfTag extends ItemBaseCurio implements ICurioItem {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b不常见")
+        tooltip.add(Component.literal("§7稀有度：§b稀有")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

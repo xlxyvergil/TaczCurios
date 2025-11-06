@@ -238,11 +238,6 @@ public class HeavyCaliberTag extends ItemBaseCurio {
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
             tooltip.add(Component.literal("  §7• §c枪械重量增加150%")
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
-            
-            // 添加示例说明
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.literal("§7示例：100攻击力 → 10倍枪械伤害加成")
-                .withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
         }
         
         // 添加饰品槽位信息

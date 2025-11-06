@@ -1,6 +1,8 @@
 {
   "itemGroup.tcc.tacz_curio_tab": "Tacz饰品",
   
+  "curios.identifier.tcc_slot": "Tacz饰品栏",
+  
   "item.tcc.soldier_basic_tag": "士兵基础挂牌",
   "item.tcc.soldier_basic_tag.desc": "基础作战技能的象征，佩戴者可获得更强的基础伤害",
   "item.tcc.soldier_basic_tag.effect": "提供50%所有枪械基础伤害加成",
