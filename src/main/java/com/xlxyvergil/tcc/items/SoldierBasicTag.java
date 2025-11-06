@@ -71,7 +71,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "tacz.bullet_gundamage")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
@@ -97,7 +97,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "tacz.bullet_gundamage")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         

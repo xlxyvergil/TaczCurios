@@ -101,7 +101,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         for (String gunType : DAMAGE_UUIDS.keySet()) {
             var damageAttribute = attributes.getInstance(
                 net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "tacz.bullet_gundamage_" + gunType)
+                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_" + gunType)
                 )
             );
             
@@ -130,7 +130,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         for (String gunType : DAMAGE_UUIDS.keySet()) {
             var damageAttribute = attributes.getInstance(
                 net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "tacz.bullet_gundamage_" + gunType)
+                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_" + gunType)
                 )
             );
             

@@ -85,7 +85,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         // 应用通用枪械伤害加成
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "tacz.bullet_gundamage")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
@@ -134,7 +134,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         // 移除通用枪械伤害加成
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "tacz.bullet_gundamage")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
@@ -227,11 +227,6 @@ public class HeavyCaliberTag extends ItemBaseCurio {
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
             tooltip.add(Component.literal("  §7• §c枪械重量增加150%")
                 .withStyle(net.minecraft.ChatFormatting.GRAY));
-            
-            // 添加示例说明
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.literal("§7示例：100攻击力 → 10倍枪械伤害加成")
-                .withStyle(net.minecraft.ChatFormatting.DARK_GRAY));
         } else {
             // 如果无法获取玩家信息，显示静态说明
             tooltip.add(Component.literal("  §7• §6将10%攻击力转换为枪械伤害倍率")
