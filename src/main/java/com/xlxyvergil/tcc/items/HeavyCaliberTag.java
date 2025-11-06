@@ -176,7 +176,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    String.format("§6重口径标签已装备 - 枪械伤害+%.1fx (基于%.1f攻击力), 枪械重量+150%", 
+                    String.format("§6重口径标签已装备 - 枪械伤害+%.1fx (基于%.1f攻击力), 枪械重量+150%%", 
                         damageMultiplier, attackDamage)
                 ),
                 true
