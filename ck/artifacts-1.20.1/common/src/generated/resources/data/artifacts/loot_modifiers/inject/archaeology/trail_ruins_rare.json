@@ -1,0 +1,15 @@
+{
+  "type": "artifacts:roll_loot_table",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:archaeology/trail_ruins_rare"
+    },
+    {
+      "condition": "artifacts:config_value_chance",
+      "config": "archaeology"
+    }
+  ],
+  "lootTable": "artifacts:inject/archaeology/trail_ruins_rare",
+  "replace": true
+}

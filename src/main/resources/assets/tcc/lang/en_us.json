@@ -1,0 +1,23 @@
+{
+  "itemGroup.tcc.tacz_curio_tab": "Tacz Curios",
+  
+  "item.tcc.soldier_basic_tag": "Soldier Basic Tag",
+  "item.tcc.soldier_basic_tag.desc": "A symbol of basic combat skills, providing enhanced base damage",
+  "item.tcc.soldier_basic_tag.effect": "Provides 50% bonus to all gun base damage",
+  
+  "item.tcc.soldier_specific_tag": "Soldier Specific Tag",
+  "item.tcc.soldier_specific_tag.desc": "Specialized training for specific weapon types",
+  "item.tcc.soldier_specific_tag.effect": "Provides 50% bonus to specific gun damage (Sniper)",
+  
+  "item.tcc.heavy_caliber_tag": "Heavy Caliber Tag",
+  "item.tcc.heavy_caliber_tag.desc": "Converts attack power into more powerful gun damage multiplier",
+  "item.tcc.heavy_caliber_tag.effect": "Converts 10% attack power to gun damage multiplier, but increases gun weight by 150%",
+  
+  "item.tcc.red_movement_tag": "Red Movement Tag",
+  "item.tcc.red_movement_tag.desc": "Perfect combination of rapid movement and precise shooting",
+  "item.tcc.red_movement_tag.effect": "Provides 50% movement speed bonus while holding guns",
+  
+  "item.tcc.ural_wolf_tag": "Ural Wolf Tag",
+  "item.tcc.ural_wolf_tag.desc": "Precise and deadly strikes, showcasing hunter's instinct",
+  "item.tcc.ural_wolf_tag.effect": "Provides 150% headshot multiplier bonus"
+}

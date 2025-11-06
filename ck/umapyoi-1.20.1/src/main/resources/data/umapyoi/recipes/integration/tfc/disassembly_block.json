@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:sheets/wrought_iron"
+    },
+    "J": {
+      "item": "umapyoi:blank_ticket"
+    },
+    "L": {
+      "tag": "tfc:lecterns"
+    }
+  },
+  "pattern": [
+    " J ",
+    " A ",
+    "ALA"
+  ],
+  "result": {
+    "item": "umapyoi:disassembly_block"
+  },
+  "show_notification": true
+}

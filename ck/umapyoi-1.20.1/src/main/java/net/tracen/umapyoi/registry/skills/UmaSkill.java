@@ -1,0 +1,146 @@
+package net.tracen.umapyoi.registry.skills;
+
+import net.minecraft.Util;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.tracen.umapyoi.Umapyoi;
+import net.tracen.umapyoi.registry.UmaSkillRegistry;
+
+public class UmaSkill{
+    private final SkillType type;
+    private final int requiredWisdom;
+    private final int actionPoint;
+    private final int level;
+    private final SoundEvent sound;
+    private final ResourceLocation upperSkill;
+    private final boolean inheritable;
+    private String descriptionId;
+
+    public static final ResourceKey<Registry<UmaSkill>> REGISTRY_KEY = ResourceKey
+            .createRegistryKey(new ResourceLocation(Umapyoi.MODID, "skill"));
+
+    public UmaSkill(Builder builder) {
+        this.type = builder.type;
+        this.requiredWisdom = builder.requiredWisdom;
+        this.level = builder.level;
+        this.actionPoint = builder.actionPoint;
+        this.sound = builder.sound;
+        this.upperSkill = builder.upperSkill;
+        this.inheritable = builder.inheritable;
+    }
+
+    public SkillType getType() {
+        return type;
+    }
+
+    public int getRequiredWisdom() {
+        return requiredWisdom;
+    }
+    
+    public int getSkillLevel() {
+        return level;
+    }
+
+    public int getActionPoint() {
+        return actionPoint;
+    }
+
+    public String toString() {
+        return UmaSkillRegistry.REGISTRY.get().getKey(this).toString();
+    }
+    
+    public Component getDescription() {
+        return Component.translatable(this.getDescriptionId());
+    }
+
+
+    protected String getOrCreateDescriptionId() {
+        if (this.descriptionId == null) {
+            this.descriptionId = Util.makeDescriptionId("uma_skill", UmaSkillRegistry.REGISTRY.get().getKey(this));
+        }
+        return this.descriptionId;
+    }
+
+    public String getDescriptionId() {
+        return this.getOrCreateDescriptionId();
+    }
+    
+    public Component getDescriptionDetail() {
+        return Component.translatable(this.getDetailDescriptionId());
+    }
+
+    protected String getOrCreateDescriptionDetail() {
+        return this.getDescriptionId()+".desc";
+    }
+
+    public String getDetailDescriptionId() {
+        return this.getOrCreateDescriptionDetail();
+    }
+
+    public void applySkill(Level level, LivingEntity user) {
+        Umapyoi.getLogger().error(String.format("Wait, %s is an empty skill! Call the dev!", this.toString()));
+    }
+
+    public SoundEvent getSound() {
+        return sound;
+    }
+
+    public ResourceLocation getUpperSkill() {
+        return upperSkill;
+    }
+    
+    public boolean isInheritable() {
+		return inheritable;
+	}
+
+	public static class Builder {
+        private SkillType type = SkillType.BUFF;
+        private int requiredWisdom = 0;
+        private int actionPoint = 200;
+        private int level = 1;
+        private SoundEvent sound = SoundEvents.PLAYER_ATTACK_SWEEP;
+        private ResourceLocation upperSkill;
+        private boolean inheritable = true;
+        public Builder type(SkillType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder requiredWisdom(int requiredWisdom) {
+            this.requiredWisdom = requiredWisdom;
+            return this;
+        }
+
+        public Builder sound(SoundEvent sound) {
+            this.sound = sound;
+            return this;
+        }
+
+        public Builder actionPoint(int ap) {
+            this.actionPoint = ap;
+            return this;
+        }
+        
+        public Builder level(int level) {
+            this.level = level;
+            return this;
+        }
+        
+        public Builder nonInheritable() {
+            this.inheritable = false;
+            return this;
+        }
+
+        public Builder upperSkill(ResourceLocation upperSkill) {
+            this.upperSkill = upperSkill;
+            return this;
+        }
+    }
+
+}

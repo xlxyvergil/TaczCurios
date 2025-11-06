@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "J": {
+      "item": "umapyoi:jewel"
+    },
+    "L": {
+      "tag": "tfc:bookshelves"
+    }
+  },
+  "pattern": [
+    " J",
+    " L"
+  ],
+  "result": {
+    "item": "umapyoi:skill_learning_table"
+  },
+  "show_notification": true
+}

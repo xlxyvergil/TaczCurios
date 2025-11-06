@@ -1,0 +1,16 @@
+{
+  "type": "umapyoi:shapeless_costume",
+  "category": "misc",
+  "ingredients": [
+    {
+      "type": "umapyoi:umasoul",
+      "request": {
+        "ranking": ["r"]
+      }
+    },
+    {
+      "item": "umapyoi:uma_costume"
+    }
+  ],
+  "cosmetic": "umapyoi:starting_future"
+}

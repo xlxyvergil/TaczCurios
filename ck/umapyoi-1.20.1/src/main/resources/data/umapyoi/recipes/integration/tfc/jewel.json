@@ -1,0 +1,47 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:crops/carrot"
+    },
+    [
+	  {
+		"item": "tfc:gem/amethyst"
+	  },
+	  {
+	    "item": "tfc:gem/diamond"
+	  },
+	  {
+		"item": "tfc:gem/emerald"
+	  },
+	  {
+	    "item": "tfc:gem/lapis_lazuli"
+	  },
+	  {
+	    "item": "tfc:gem/opal"
+	  },
+	  {
+		"item": "tfc:gem/pyrite"
+	  },
+	  {
+	    "item": "tfc:gem/ruby"
+	  },
+	  {
+		"item": "tfc:gem/sapphire"
+	  },
+	  {
+	    "item": "tfc:gem/topaz"
+	  }
+    ]
+  ],
+  "result": {
+    "item": "umapyoi:jewel"
+  }
+}

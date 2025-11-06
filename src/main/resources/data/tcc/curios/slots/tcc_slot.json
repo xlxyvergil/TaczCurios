@@ -1,0 +1,8 @@
+{
+  "size": 5,
+  "order": 1000,
+  "icon": "tcc:slot/tcc_slot",
+  "add_cosmetic": false,
+  "use_native_gui": true,
+  "render_toggle": true
+}

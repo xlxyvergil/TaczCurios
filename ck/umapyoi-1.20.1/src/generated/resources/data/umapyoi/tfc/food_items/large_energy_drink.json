@@ -1,0 +1,14 @@
+{
+  "dairy": 0.0,
+  "decayModifier": 0.0,
+  "fruit": 3.0,
+  "grain": 0.0,
+  "hunger": 2,
+  "ingredient": {
+    "item": "umapyoi:large_energy_drink"
+  },
+  "protein": 0.0,
+  "saturation": 0.6,
+  "vegetables": 3.0,
+  "water": 70.0
+}

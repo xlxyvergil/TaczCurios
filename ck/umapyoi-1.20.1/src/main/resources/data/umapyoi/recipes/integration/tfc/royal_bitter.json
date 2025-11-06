@@ -1,0 +1,34 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:seeds"
+    },
+    {
+      "tag": "tfc:sweetener"
+    },
+    {
+      "tag": "tfc:foods/vegetables"
+    },
+    {
+      "tag": "tfc:foods/vegetables"
+    },
+    {
+      "type": "tfc:fluid_item",
+      "fluid_ingredient": {
+        "ingredient": "minecraft:water",
+        "amount": 100
+      }
+    }
+  ],
+  "result": {
+    "item": "umapyoi:royal_bitter"
+  }
+}

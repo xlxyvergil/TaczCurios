@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "forge:double_ingots/wrought_iron"
+    },
+    "J": {
+      "item": "umapyoi:horseshoe_silver"
+    },
+    "L": {
+      "tag": "forge:ingots/wrought_iron"
+    }
+  },
+  "pattern": [
+    "  A",
+    "JA ",
+    "L  "
+  ],
+  "result": {
+    "item": "umapyoi:baseball_bat"
+  },
+  "show_notification": true
+}

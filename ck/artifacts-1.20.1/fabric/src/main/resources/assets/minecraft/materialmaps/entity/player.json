@@ -1,0 +1,44 @@
+{
+  "map": [
+    {
+      "predicate": {
+        "materialPredicate": {
+          "texture": "artifacts:textures/entity/wearable/fire_gauntlet/fire_gauntlet_wide_overlay.png"
+        }
+      },
+      "material": "canvas:emissive_transform"
+    },
+    {
+      "predicate": {
+        "materialPredicate": {
+          "texture": "artifacts:textures/entity/wearable/fire_gauntlet/fire_gauntlet_slim_overlay.png"
+        }
+      },
+      "material": "canvas:emissive_transform"
+    },
+    {
+      "predicate": {
+        "materialPredicate": {
+          "texture": "artifacts:textures/entity/wearable/night_vision_goggles_overlay.png"
+        }
+      },
+      "material": "canvas:emissive_transform"
+    },
+    {
+      "predicate": {
+        "materialPredicate": {
+          "texture": "artifacts:textures/entity/wearable/pickaxe_heater/pickaxe_heater_wide_overlay.png"
+        }
+      },
+      "material": "canvas:emissive_transform"
+    },
+    {
+      "predicate": {
+        "materialPredicate": {
+          "texture": "artifacts:textures/entity/wearable/pickaxe_heater/pickaxe_heater_slim_overlay.png"
+        }
+      },
+      "material": "canvas:emissive_transform"
+    }
+  ]
+}

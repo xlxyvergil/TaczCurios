@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "forge:rods/wooden"
+    },
+    "J": {
+      "item": "umapyoi:horseshoe_rainbow"
+    },
+    "L": {
+      "item": "minecraft:lightning_rod"
+    }
+  },
+  "pattern": [
+    "  J",
+    " L ",
+    "A  "
+  ],
+  "result": {
+    "item": "umapyoi:naginata"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,14 @@
+{
+  "dairy": 4.0,
+  "decayModifier": 1.5,
+  "fruit": 4.0,
+  "grain": 4.0,
+  "hunger": 7,
+  "ingredient": {
+    "item": "umapyoi:sweet_cupcake"
+  },
+  "protein": 0.0,
+  "saturation": 0.6,
+  "vegetables": 2.0,
+  "water": 0.0
+}

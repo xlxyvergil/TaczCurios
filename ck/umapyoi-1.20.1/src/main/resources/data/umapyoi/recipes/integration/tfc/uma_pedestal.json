@@ -1,0 +1,34 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "umapyoi:silver_uma_pedestal"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    },
+    "J": [
+      {
+        "item": "umapyoi:crystal_gold"
+      },
+      {
+        "item": "umapyoi:horseshoe_gold"
+      }
+    ]
+  },
+  "pattern": [
+    " J ",
+    "GAG"
+  ],
+  "result": {
+    "item": "umapyoi:uma_pedestal"
+  },
+  "show_notification": true
+}

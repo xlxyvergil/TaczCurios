@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tfc"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:gems/diamond"
+    },
+    "B": {
+      "tag": "forge:sheets/silver"
+    },
+    "J": {
+      "item": "umapyoi:jewel"
+    },
+    "L": {
+      "item": "minecraft:lectern"
+    }
+  },
+  "pattern": [
+    " J ",
+    "BLB",
+    "AAA"
+  ],
+  "result": {
+    "item": "umapyoi:uma_select_block"
+  },
+  "show_notification": true
+}

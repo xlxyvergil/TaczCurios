@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:stone"
+    },
+    "J": {
+      "item": "umapyoi:jewel"
+    }
+  },
+  "pattern": [
+    " J ",
+    "JAJ",
+    "AAA"
+  ],
+  "result": {
+    "item": "umapyoi:three_goddess"
+  },
+  "show_notification": true
+}

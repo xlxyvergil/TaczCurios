@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "forge:storage_blocks/iron"
+    },
+    "J": {
+      "item": "umapyoi:horseshoe_silver"
+    },
+    "L": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    "  A",
+    "JA ",
+    "L  "
+  ],
+  "result": {
+    "item": "umapyoi:baseball_bat"
+  },
+  "show_notification": true
+}

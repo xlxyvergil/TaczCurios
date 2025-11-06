@@ -1,0 +1,186 @@
+buildscript {
+    repositories {
+		maven { url "file:///${project.projectDir}/deps/" }
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven {
+            name "Sponge"
+            url "https://repo.spongepowered.org/repository/maven-public/"
+            content { includeGroup "org.spongepowered" }
+        }
+        maven {
+			name "Gradle Plugin Portal"
+			url 'https://plugins.gradle.org/m2/'
+			content { 
+				includeGroup "gradle.plugin.com.matthewprenger"
+				includeGroup "com.modrinth"
+			}
+		}
+        maven {
+			url = 'https://maven.parchmentmc.org/'
+		}
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+		classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-1.0.0-SNAPSHOT'
+		classpath 'org.parchmentmc:librarian:1.+'
+    }
+}
+
+plugins {
+    id "com.modrinth.minotaur" version "2.+"
+}
+
+println("Applying plugins...")
+
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'maven-publish'
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'com.matthewprenger.cursegradle'
+apply plugin: 'org.spongepowered.mixin'
+apply from: 'common.gradle'
+
+subprojects {
+    dep_forge     = rootProject.dep_forge
+    dep_minecraft = rootProject.dep_minecraft
+    version_mc    = rootProject.version_mc
+    version_forge = rootProject.version_forge
+    version_mcp   = rootProject.version_mcp
+}
+
+mixin {
+	println("Specifying refmaps for Mixin...")
+	
+    add sourceSets.main, "enigmaticlegacy.refmap.json"
+}
+
+minecraft {
+	println("Specifying Access Transformer configuration...")	
+	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+}
+
+dependencies {
+	println("Processing dependencies...")
+   
+	// Mixin
+    annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+    annotationProcessor 'com.google.code.gson:gson:2.8.0'
+    annotationProcessor 'com.google.guava:guava:21.0'
+    annotationProcessor 'org.ow2.asm:asm-tree:7.2'
+    annotationProcessor 'org.ow2.asm:asm-commons:7.2'
+    annotationProcessor 'org.ow2.asm:asm-util:7.2'
+	
+	// These are 1.20.1 dependencies
+	implementation fg.deobf('generic:curios:forge-5.2.0-beta.3+1.20.1')
+	implementation fg.deobf('generic:Patchouli:1.20.1-81-FORGE')
+	implementation fg.deobf('generic:caelus:forge-3.1.0+1.20')
+	implementation fg.deobf('generic:jei:1.18.2-forge-10.2.1.283-stripped')
+	
+	// These are 1.19 dependencies
+	//compileOnly fg.deobf('generic:curios:forge-1.19.4-5.1.5.3')
+	//compileOnly fg.deobf('generic:caelus:forge-1.19.4-3.0.0.10')
+	//compileOnly fg.deobf('generic:Patchouli:1.19.4-79.1-FORGE')
+	//compileOnly fg.deobf('generic:jei:1.18.2-forge-10.2.1.283-stripped')
+	//compileOnly fg.deobf('generic:WorldNameRandomizer:FORGE-1.19.2-v1.5.0')
+	
+	// These are 1.18 dependencies
+	//compileOnly fg.deobf('generic:curios:forge-1.18.2-5.0.6.3')
+	//compileOnly fg.deobf('generic:Patchouli:1.18.2-71.1')
+	//compileOnly fg.deobf('generic:WorldNameRandomizer:FORGE-1.18.1-v1.3.0')
+	//compileOnly fg.deobf('generic:caelus:forge-1.18.1-3.0.0.2')
+	//compileOnly fg.deobf('generic:jei:1.18.2-9.7.0.193')
+	//compileOnly fg.deobf('generic:Quark:3.2-346')
+	//compileOnly fg.deobf('generic:AutoRegLib:1.7-53')
+	
+	// These are 1.17 dependencies
+	//compileOnly fg.deobf('generic:curios:forge-1.17.1-5.0.2.7-spec')
+	//compileOnly fg.deobf('generic:Patchouli:1.17.1-57')
+	//compileOnly fg.deobf('generic:WorldNameRandomizer:FORGE-1.17.1-v1.2.0')
+	
+	// These are 1.16.3 - 1.16.5 dependencies
+	//implementation name: 'BuildResourceUpdater-1.0-deobf'
+	//implementation name: 'curios-forge-1.16.5-4.0.6.8-dev'
+	//implementation name: 'Patchouli-1.16.4-53.2-dev'
+	//implementation name: 'WorldNameRandomizer-FORGE-1.16.4-v1.1.1-dev'
+	//implementation name: 'decorativeblocks-1.16.1-1.5.2-deobf'
+	//implementation name: 'playerex-1.1.8-1.16.5-dev'
+	
+	//compile fg.deobf('generic:Survive:1.16.3-3.0.2')
+	//compile fg.deobf('generic:EnchantmentDescriptions:1.16.4-6.0.1')
+    //compile fg.deobf("generic:Apotheosis:1.16.3-4.4.1")
+    //compile fg.deobf("generic:Placebo:1.16.3-4.3.3")
+	
+	// These are 1.16.2 dependencies
+	//compile fg.deobf('top.theillusivec4.curios:curios-forge:1.16.2-4.0.0.1')
+    //compile fg.deobf("vazkii.patchouli:Patchouli:1.16-41")
+	
+	// These are 1.16.1 dependencies
+	//compile fg.deobf('generic:decorativeblocks:1.16.1-1.4')
+	//compile fg.deobf('top.theillusivec4.curios:curios:FORGE-1.16.1-3.0.0.2')
+    //compile fg.deobf("vazkii.patchouli:Patchouli:1.16-39")
+
+}
+
+tasks.withType(Jar) {
+    manifest {
+        attributes([
+            "MixinConnector": "${project.group}.MixinConnector"
+        ])
+    }
+}
+
+processResources {
+	doFirst {
+		println("Processing resources...")
+		println("Specifying The Acknowledgment version in book.json...")	
+	}
+	
+	filesMatching('data/enigmaticlegacy/patchouli_books/the_acknowledgment/book.json') {
+        filter {
+			// Bold of you to assume I know how to inflate with Gradle
+            it.replaceAll("~the_acknowledgment_edition", findProperty('the_acknowledgment_edition') ?: 'invalid_edition')
+        }
+    }
+	
+	exclude 'META-INF/mods.toml'
+	
+    from("${project.projectDir}/docs/META-INF") {
+		println("Inflating mods.toml...")	
+	
+		// Replace properties in mods.toml with ones derived from settings.gradle
+        include 'mods.toml'
+        expand 'mod_license': mod_license, 
+		'mod_version': project.version, 
+		'mod_id': mod_id, 
+		'mod_name': mod_name, 
+		'mod_url': mod_url, 
+		'mod_author': mod_author, 
+		'mod_description': mod_description, 
+		'mod_icon': mod_icon, 
+		'issue_tracker_url': issue_tracker_url, 
+		'mod_credits': mod_credits, 
+		'dep_forge': dep_forge, 
+		'dep_minecraft': dep_minecraft, 
+		'dep_patchouli': dep_patchouli, 
+		'dep_curios': dep_curios,
+		'dep_caelus': dep_caelus
+		rename 'mods.toml', 'META-INF/mods.toml'
+    }
+
+    from("${project.projectDir}/docs") {
+        include 'changelog.html'
+    }
+
+    from("${project.projectDir}") {
+       include 'LICENSE.md'
+    }
+}
+
+task updateResources() {
+    // NO-OP
+}
+
+tasks.updateResources.dependsOn processResources
