@@ -31,6 +31,13 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.HEAVY_CALIBER_TAG.get());
                 output.accept(TaczItems.RED_MOVEMENT_TAG.get());
                 output.accept(TaczItems.URAL_WOLF_TAG.get());
+                // 新增饰品
+                output.accept(TaczItems.ALLOY_DRILL.get());
+                output.accept(TaczItems.CAREFUL_HEART.get());
+                output.accept(TaczItems.MERGED_RIFLING.get());
+                output.accept(TaczItems.DESPICABLE_ACCELERATION.get());
+                output.accept(TaczItems.HEAVEN_FIRE_APOCALYPSE.get());
+                output.accept(TaczItems.HEAVEN_FIRE_JUDGMENT.get());
             })
             .build());
 }

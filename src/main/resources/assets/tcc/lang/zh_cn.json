@@ -21,5 +21,29 @@
   
   "item.tcc.ural_wolf_tag": "乌拉尔银狼",
   "item.tcc.ural_wolf_tag.desc": "精准致命的一击，展现猎手的本能",
-  "item.tcc.ural_wolf_tag.effect": "提供150%爆头倍率加成"
+  "item.tcc.ural_wolf_tag.effect": "提供150%爆头倍率加成",
+  
+  "item.tcc.heaven_fire_judgment": "天火圣裁",
+  "item.tcc.heaven_fire_judgment.desc": "我将发动一次牛逼的攻击",
+  "item.tcc.heaven_fire_judgment.effect": "以当前生命值的50%作为倍率提升通用伤害，造成伤害后扣除50%当前生命值",
+  
+  "item.tcc.heaven_fire_apocalypse": "天火劫灭",
+  "item.tcc.heaven_fire_apocalypse.desc": "踏上前来",
+  "item.tcc.heaven_fire_apocalypse.effect": "以当前生命值的100%作为倍率提升通用伤害、爆炸范围和爆炸伤害，造成伤害后扣除100%当前生命值",
+  
+  "item.tcc.despicable_acceleration": "卑劣加速",
+  "item.tcc.despicable_acceleration.desc": "以降低通用伤害为代价换取极致的射击速度",
+  "item.tcc.despicable_acceleration.effect": "提升90%射击速度，降低15%通用伤害和全部特定枪械伤害",
+  
+  "item.tcc.merged_rifling": "并合膛线",
+  "item.tcc.merged_rifling.desc": "融合多种膛线技术的综合性强化方案",
+  "item.tcc.merged_rifling.effect": "提升155%通用伤害和25%持枪移动速度",
+  
+  "item.tcc.alloy_drill": "合金钻头",
+  "item.tcc.alloy_drill.desc": "由特殊合金制成，拥有极强的穿透能力",
+  "item.tcc.alloy_drill.effect": "提升200%穿透能力",
+  
+  "item.tcc.careful_heart": "我小心海也绝非鳝类",
+  "item.tcc.careful_heart.desc": "我小心海绝非鳝类，发射器力量的三倍强化",
+  "item.tcc.careful_heart.effect": "提升300%发射器伤害加成，300%爆炸伤害加成，300%爆炸范围加成"
 }

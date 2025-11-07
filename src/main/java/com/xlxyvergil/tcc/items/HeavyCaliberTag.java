@@ -62,11 +62,21 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     }
     
     /**
+     * 检查是否可以装备到指定插槽
+     * HeavyCaliberTag不与其他饰品互斥，可以自由装备
+     */
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        // 检查是否装备在TCC饰品槽位
+        return slotContext.getIdentifier().equals("tcc_slot");
+    }
+    
+    /**
      * 当物品在Curios插槽中时被右键点击
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
+        return canEquip(slotContext, stack);
     }
     
     /**
@@ -202,38 +212,11 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect")
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
-        // 实时显示加成信息 - 参考Enigmatic Legacy的cursed_scroll实现
-        if (net.minecraft.client.Minecraft.getInstance().player != null) {
-            Player player = net.minecraft.client.Minecraft.getInstance().player;
-            
-            // 获取玩家当前攻击力
-            double attackDamage = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).getValue();
-            
-            // 计算实时加成
-            double damageMultiplier = attackDamage * ATTACK_POWER_TO_DAMAGE_RATIO;
-            
-            // 显示实时加成信息
-            tooltip.add(Component.literal("  §7当前攻击力: §a" + String.format("%.1f", attackDamage) + " §7→ ")
-                .append(Component.literal("枪械伤害+§a" + String.format("%.1fx", damageMultiplier))
-                    .withStyle(net.minecraft.ChatFormatting.GREEN))
-                .append(Component.literal(", §7枪械重量+§c150%")
-                    .withStyle(net.minecraft.ChatFormatting.RED)));
-            
-            // 添加换行
-            tooltip.add(Component.literal(""));
-            
-            // 显示详细效果说明
-            tooltip.add(Component.literal("  §7• §6将10%攻击力转换为枪械伤害倍率")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-            tooltip.add(Component.literal("  §7• §c枪械重量增加150%")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-        } else {
-            // 如果无法获取玩家信息，显示静态说明
-            tooltip.add(Component.literal("  §7• §6将10%攻击力转换为枪械伤害倍率")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-            tooltip.add(Component.literal("  §7• §c枪械重量增加150%")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-        }
+        // 显示效果说明
+        tooltip.add(Component.literal("  §7• §6将10%攻击力转换为枪械伤害倍率")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.literal("  §7• §c枪械重量增加150%")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

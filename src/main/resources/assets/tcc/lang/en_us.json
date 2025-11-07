@@ -21,5 +21,29 @@
   
   "item.tcc.ural_wolf_tag": "Ural Wolf Tag",
   "item.tcc.ural_wolf_tag.desc": "Precise and deadly strikes, showcasing hunter's instinct",
-  "item.tcc.ural_wolf_tag.effect": "Provides 150% headshot multiplier bonus"
+  "item.tcc.ural_wolf_tag.effect": "Provides 150% headshot multiplier bonus",
+  
+  "item.tcc.heaven_fire_judgment": "Heaven Fire Judgment",
+  "item.tcc.heaven_fire_judgment.desc": "I will launch an awesome attack",
+  "item.tcc.heaven_fire_judgment.effect": "Uses 50% of current health as multiplier to boost general damage, deducts 50% current health after dealing damage",
+  
+  "item.tcc.heaven_fire_apocalypse": "Heaven Fire Apocalypse",
+  "item.tcc.heaven_fire_apocalypse.desc": "Step forward",
+  "item.tcc.heaven_fire_apocalypse.effect": "Uses 100% of current health as multiplier to boost general damage, explosion range and explosion damage, deducts 100% current health after dealing damage",
+  
+  "item.tcc.despicable_acceleration": "Despicable Acceleration",
+  "item.tcc.despicable_acceleration.desc": "None",
+  "item.tcc.despicable_acceleration.effect": "Increases 90% firing speed, reduces 15% general damage and all specific gun damage",
+  
+  "item.tcc.merged_rifling": "Merged Rifling",
+  "item.tcc.merged_rifling.desc": "None",
+  "item.tcc.merged_rifling.effect": "Increases 155% general damage and 25% movement speed while holding guns",
+  
+  "item.tcc.alloy_drill": "Alloy Drill",
+  "item.tcc.alloy_drill.desc": "None",
+  "item.tcc.alloy_drill.effect": "Increases 200% piercing ability",
+  
+  "item.tcc.careful_heart": "I'm Careful Heart, Not a Fish",
+  "item.tcc.careful_heart.desc": "None",
+  "item.tcc.careful_heart.effect": "Increases 300% launcher damage, 300% explosion damage, and 300% explosion radius"
 }
