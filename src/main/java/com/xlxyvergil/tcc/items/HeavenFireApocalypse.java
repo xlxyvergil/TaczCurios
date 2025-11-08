@@ -25,12 +25,12 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abc");
-    private static final UUID EXPLOSION_RANGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abd");
+    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abd");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abe");
     
     // 修饰符名称
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";
-    private static final String EXPLOSION_RANGE_NAME = "tcc.heaven_fire_apocalypse.explosion_range";
+    private static final String EXPLOSION_RADIUS_NAME = "tcc.heaven_fire_apocalypse.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
     
     public HeavenFireApocalypse(Properties properties) {
@@ -96,7 +96,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         applyAttributeModifier(player, "taa", "bullet_gundamage", damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME);
         
         // 应用爆炸范围加成
-        applyAttributeModifier(player, "taa", "explosion_range", damageMultiplier, EXPLOSION_RANGE_UUID, EXPLOSION_RANGE_NAME);
+        applyAttributeModifier(player, "taa", "explosion_radius", damageMultiplier, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
         
         // 应用爆炸伤害加成
         applyAttributeModifier(player, "taa", "explosion_damage", damageMultiplier, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
@@ -133,7 +133,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
      */
     private void removeEffects(Player player) {
         removeAttributeModifier(player, "taa", "bullet_gundamage", GUN_DAMAGE_UUID);
-        removeAttributeModifier(player, "taa", "explosion_range", EXPLOSION_RANGE_UUID);
+        removeAttributeModifier(player, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
         removeAttributeModifier(player, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);
     }
     

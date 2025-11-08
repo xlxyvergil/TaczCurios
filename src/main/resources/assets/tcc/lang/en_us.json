@@ -17,7 +17,7 @@
   
   "item.tcc.red_movement_tag": "Red Movement Tag",
   "item.tcc.red_movement_tag.desc": "Perfect combination of rapid movement and precise shooting",
-  "item.tcc.red_movement_tag.effect": "Provides 50% movement speed bonus while holding guns",
+  "item.tcc.red_movement_tag.effect": "Provides 150% movement speed bonus while holding guns",
   
   "item.tcc.ural_wolf_tag": "Ural Wolf Tag",
   "item.tcc.ural_wolf_tag.desc": "Precise and deadly strikes, showcasing hunter's instinct",
@@ -45,5 +45,33 @@
   
   "item.tcc.careful_heart": "I'm Careful Heart, Not a Fish",
   "item.tcc.careful_heart.desc": "None",
-  "item.tcc.careful_heart.effect": "Increases 300% launcher damage, 300% explosion damage, and 300% explosion radius"
+  "item.tcc.careful_heart.effect": "Increases 300% launcher damage, 300% explosion damage, and 300% explosion radius",
+  
+  "item.tcc.blaze_storm": "Blaze Storm",
+  "item.tcc.blaze_storm.desc": "Master the power of explosions, turning the battlefield into a hellfire",
+  "item.tcc.blaze_storm.effect": "Increase 24% explosion range (multiplicative), increase 24% explosion damage (multiplicative)",
+  
+  "item.tcc.blaze_storm_prime": "Blaze Storm Prime",
+  "item.tcc.blaze_storm_prime.desc": "Ultimate explosion control ability, the flame king on the battlefield",
+  "item.tcc.blaze_storm_prime.effect": "Increase 66% explosion range (multiplicative), increase 66% explosion damage (multiplicative)",
+  
+  "item.tcc.ripping_prime": "Ripping Prime",
+  "item.tcc.ripping_prime.desc": "Ultimate firing speed combined with powerful penetration ability",
+  "item.tcc.ripping_prime.effect": "Increase 55% firing speed (multiplicative) and 2.2 penetration (additive)",
+  
+  "item.tcc.close_combat_prime": "Close Combat Prime",
+  "item.tcc.close_combat_prime.desc": "Ultimate enhancement for close combat",
+  "item.tcc.close_combat_prime.effect": "Increase 165% specific gun damage attribute (multiplicative)",
+  
+  "item.tcc.evil_accuracy": "Evil Accuracy",
+  "item.tcc.evil_accuracy.desc": "Ultimate control, reducing recoil while sacrificing firing speed",
+  "item.tcc.evil_accuracy.effect": "Reduce 90% recoil, reduce 36% firing speed (both additive)",
+  
+  "item.tcc.limit_speed": "Limit Speed",
+  "item.tcc.limit_speed.desc": "Let bullets fly at extreme speed",
+  "item.tcc.limit_speed.effect": "Increase 60% bullet speed (additive)",
+  
+  "item.tcc.ferocious_extension": "Ferocious Extension",
+  "item.tcc.ferocious_extension.desc": "Let bullets fly farther to strike distant enemies",
+  "item.tcc.ferocious_extension.effect": "Increase 120% bullet range (multiplicative)"
 }

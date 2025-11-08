@@ -70,7 +70,7 @@ public class RedMovementTag extends ItemBaseCurio {
                 new AttributeModifier(
                     MOVE_SPEED_MODIFIER_UUID,
                     "tcc_red_movement_speed_boost",
-                    0.50, // 50%移动速度加成
+                    1.50, // 150%移动速度加成
                     AttributeModifier.Operation.ADDITION
                 )
             );
@@ -115,7 +115,7 @@ public class RedMovementTag extends ItemBaseCurio {
                     new AttributeModifier(
                         MOVE_SPEED_MODIFIER_UUID,
                         "tcc_red_movement_speed_boost",
-                        0.50,
+                        1.50,
                         AttributeModifier.Operation.ADDITION
                     )
                 );

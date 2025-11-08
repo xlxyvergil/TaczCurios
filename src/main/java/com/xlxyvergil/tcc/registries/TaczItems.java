@@ -11,6 +11,13 @@ import com.xlxyvergil.tcc.items.RedMovementTag;
 import com.xlxyvergil.tcc.items.SoldierBasicTag;
 import com.xlxyvergil.tcc.items.SoldierSpecificTag;
 import com.xlxyvergil.tcc.items.UralWolfTag;
+import com.xlxyvergil.tcc.items.BlazeStorm;
+import com.xlxyvergil.tcc.items.BlazeStormPrime;
+import com.xlxyvergil.tcc.items.RippingPrime;
+import com.xlxyvergil.tcc.items.CloseCombatPrime;
+import com.xlxyvergil.tcc.items.EvilAccuracy;
+import com.xlxyvergil.tcc.items.LimitSpeed;
+import com.xlxyvergil.tcc.items.FerociousExtension;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,19 +43,19 @@ public class TaczItems {
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON)));
     
-    // 重口径标签 - 将10%攻击力转换为枪械伤害倍率，但增加150%枪械重量
+    // 重口径 - 将10%攻击力转换为枪械伤害倍率，但增加150%枪械重量
     public static final RegistryObject<Item> HEAVY_CALIBER_TAG = ITEMS.register("heavy_caliber_tag", 
         () -> new HeavyCaliberTag(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE)));
     
-    // 红-有-三标签 - 提供50%持枪移动速度加成
+    // 红-有-三 - 提供50%持枪移动速度加成
     public static final RegistryObject<Item> RED_MOVEMENT_TAG = ITEMS.register("red_movement_tag", 
         () -> new RedMovementTag(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON)));
     
-    // 乌拉尔银狼标签 - 提供150%爆头倍率加成
+    // 乌拉尔银狼 - 提供150%爆头倍率加成
     public static final RegistryObject<Item> URAL_WOLF_TAG = ITEMS.register("ural_wolf_tag", 
         () -> new UralWolfTag(new Item.Properties()
             .stacksTo(1)
@@ -89,4 +96,46 @@ public class TaczItems {
         () -> new CarefulHeart(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
+    
+    // 烈焰风暴 - 增加24%爆炸范围（乘算），增加24%爆炸伤害（乘算）
+    public static final RegistryObject<Item> BLAZE_STORM = ITEMS.register("blaze_storm", 
+        () -> new BlazeStorm(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 烈焰风暴Prime - 增加66%爆炸范围（乘算），增加66%爆炸伤害（乘算）
+    public static final RegistryObject<Item> BLAZE_STORM_PRIME = ITEMS.register("blaze_storm_prime", 
+        () -> new BlazeStormPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 撕裂Prime - 增加55%射速（乘算）增加2.2穿透（加算）
+    public static final RegistryObject<Item> RIPPING_PRIME = ITEMS.register("ripping_prime", 
+        () -> new RippingPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 抵近射击Prime - 增加165%特定枪械伤害属性（乘算）
+    public static final RegistryObject<Item> CLOSE_COMBAT_PRIME = ITEMS.register("close_combat_prime", 
+        () -> new CloseCombatPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 极恶精准 - 降低90%后坐力，降低36%射速（都加算）
+    public static final RegistryObject<Item> EVIL_ACCURACY = ITEMS.register("evil_accuracy", 
+        () -> new EvilAccuracy(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 极限速度 - 提高60%弹药速度（加算）
+    public static final RegistryObject<Item> LIMIT_SPEED = ITEMS.register("limit_speed", 
+        () -> new LimitSpeed(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+    
+    // 凶恶延伸 - 提高120%子弹射程（乘算）
+    public static final RegistryObject<Item> FEROCIOUS_EXTENSION = ITEMS.register("ferocious_extension", 
+        () -> new FerociousExtension(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
 }
