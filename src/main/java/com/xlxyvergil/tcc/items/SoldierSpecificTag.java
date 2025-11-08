@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -65,7 +64,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加所有7种特定枪械伤害属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyAllDamageBonuses(player);
         }
     }
@@ -78,7 +77,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的所有7种特定枪械伤害属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeAllDamageBonuses(player);
         }
     }
@@ -147,7 +146,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyAllDamageBonuses(player);
         }
     }
@@ -157,7 +156,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal("§6士兵特定挂牌已装备 - 所有7种特定枪械伤害+50%"),
                 true
@@ -195,7 +194,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b常见")
+        tooltip.add(Component.literal("§7稀有度：§9常见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

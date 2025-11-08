@@ -38,7 +38,7 @@ public class AlloyDrill extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加穿透能力属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyDrillEffects(player);
         }
     }
@@ -51,7 +51,7 @@ public class AlloyDrill extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的穿透能力属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeDrillEffects(player);
         }
     }
@@ -117,7 +117,7 @@ public class AlloyDrill extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyDrillEffects(player);
         }
     }
@@ -127,7 +127,7 @@ public class AlloyDrill extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
                     "§6合金钻头已装备 - 穿透能力+200%"
@@ -151,9 +151,18 @@ public class AlloyDrill extends ItemBaseCurio {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加效果说明
+        // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.alloy_drill.effect")
-            .withStyle(net.minecraft.ChatFormatting.BLUE));
+            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        
+        // 添加饰品槽位信息
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        
+        // 添加稀有度提示
+        tooltip.add(Component.literal("§7稀有度：§6稀有")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     
     /**

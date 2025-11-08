@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.UUID;
  * 红-有-三饰品 - 提供50%持枪移动速度加成
  * 通过TaczAttributeAdd的move_speed属性实现
  */
-public class RedMovementTag extends ItemBaseCurio implements ICurioItem {
+public class RedMovementTag extends ItemBaseCurio {
     
     // 移动速度修饰符的UUID（确保唯一性）
     private static final UUID MOVE_SPEED_MODIFIER_UUID = UUID.fromString("12345678-1234-1234-1234-123456789012");
@@ -151,7 +150,7 @@ public class RedMovementTag extends ItemBaseCurio implements ICurioItem {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b不常见")
+        tooltip.add(Component.literal("§7稀有度：§b罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

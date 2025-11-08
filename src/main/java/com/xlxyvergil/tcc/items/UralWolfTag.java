@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.UUID;
  * 乌拉尔银狼饰品 - 提供150%爆头倍率加成
  * 通过TaczAttributeAdd的headshot_multiplier属性实现
  */
-public class UralWolfTag extends ItemBaseCurio implements ICurioItem {
+public class UralWolfTag extends ItemBaseCurio {
     
     // 爆头倍率修饰符的UUID（确保唯一性）
     private static final UUID HEADSHOT_MULTIPLIER_MODIFIER_UUID = UUID.fromString("12345678-1234-1234-1234-123456789013");
@@ -151,7 +150,7 @@ public class UralWolfTag extends ItemBaseCurio implements ICurioItem {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b稀有")
+        tooltip.add(Component.literal("§7稀有度：§b罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

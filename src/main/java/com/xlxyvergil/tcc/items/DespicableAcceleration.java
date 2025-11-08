@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -77,7 +76,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加射击速度和伤害属性修改
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyAccelerationEffects(player);
         }
     }
@@ -90,7 +89,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的射击速度和伤害属性修改
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeAccelerationEffects(player);
         }
     }
@@ -224,7 +223,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyAccelerationEffects(player);
         }
     }
@@ -234,7 +233,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
                     "§6卑劣加速已装备 - 射击速度+90%，通用伤害-15%，所有特定枪械伤害-15%"
@@ -258,21 +257,9 @@ public class DespicableAcceleration extends ItemBaseCurio {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果标题
+        // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect")
-            .withStyle(net.minecraft.ChatFormatting.BLUE));
-        
-        // 添加效果详细列表
-        tooltip.add(Component.literal("  §7• §6+90% §7射击速度")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
-        tooltip.add(Component.literal("  §7• §c-15% §7通用伤害")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
-        
-        // 添加7种特定枪械伤害降低的详细列表
-        for (String gunType : DAMAGE_DISPLAY_NAMES.keySet()) {
-            tooltip.add(Component.literal("  §7• §c-15% §7" + DAMAGE_DISPLAY_NAMES.get(gunType) + "伤害")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-        }
+            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -280,7 +267,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b常见")
+        tooltip.add(Component.literal("§7稀有度：§6稀有")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     

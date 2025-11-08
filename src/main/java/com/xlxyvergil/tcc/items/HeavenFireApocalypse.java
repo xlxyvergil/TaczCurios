@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,9 +33,6 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     private static final String EXPLOSION_RANGE_NAME = "tcc.heaven_fire_apocalypse.explosion_range";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
     
-    // 伤害标记，用于跟踪由该饰品发动的攻击
-    private static final String DAMAGE_MARKER = "tcc.heaven_fire_apocalypse";
-    
     public HeavenFireApocalypse(Properties properties) {
         super(properties);
     }
@@ -49,7 +45,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyEffects(player);
         }
     }
@@ -62,26 +58,27 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeEffects(player);
         }
     }
     
     /**
      * 检查是否可以装备到指定插槽
-     * 与HeavyCaliberTag和HeavenFireJudgment互斥，只能装备一个
+     * 只与HeavenFireJudgment互斥，只能装备一个
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在指定的槽位
-        if (!slotContext.getIdentifier().equals("tcc_slot")) {
+        if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
         
-        // 检查是否已经装备了HeavyCaliberTag或HeavenFireJudgment
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosHelper().findFirstCurio(slotContext.getWearer(), 
-            itemStack -> itemStack.getItem() instanceof HeavyCaliberTag || 
-                        itemStack.getItem() instanceof HeavenFireJudgment).isPresent();
+        // 检查是否已经装备了HeavenFireJudgment
+        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+            .map(inv -> inv.findFirstCurio(
+                itemStack -> itemStack.getItem() instanceof HeavenFireJudgment))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
     
     /**
@@ -162,7 +159,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效，动态更新基于生命值的加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyEffects(player);
         }
     }
@@ -172,7 +169,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             float currentHealth = player.getHealth();
             double damageMultiplier = currentHealth * 1.0;
             
@@ -210,7 +207,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§5传说")
+        tooltip.add(Component.literal("§7稀有度：§d裂隙")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     
@@ -219,7 +216,6 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
      */
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
         
         // 检查伤害来源是否是玩家
@@ -250,7 +246,8 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
      */
     private static boolean hasHeavenFireApocalypseEquipped(Player player) {
         // 使用Curios API检查玩家是否装备了天火劫灭
-        return top.theillusivec4.curios.api.CuriosApi.getCuriosHelper().findFirstCurio(player, 
-            stack -> stack.getItem() instanceof HeavenFireApocalypse).isPresent();
+        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+            .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof HeavenFireApocalypse))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
 }

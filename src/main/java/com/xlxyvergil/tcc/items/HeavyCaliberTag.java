@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 重口径标签 - 将玩家攻击力的10%转换为通用枪械伤害倍率，但增加150%枪械重量
+ * 重口径 - 将玩家攻击力的10%转换为通用枪械伤害倍率，但增加150%枪械重量
  * 效果：每100点攻击力提供10倍通用枪械伤害加成，但枪械重量增加150%
  */
 public class HeavyCaliberTag extends ItemBaseCurio {
@@ -43,7 +42,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加枪械伤害和重量属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyGunEffects(player);
         }
     }
@@ -56,7 +55,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的枪械伤害和重量属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeGunEffects(player);
         }
     }
@@ -68,7 +67,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在TCC饰品槽位
-        return slotContext.getIdentifier().equals("tcc_slot");
+        return slotContext.identifier().equals("tcc_slot");
     }
     
     /**
@@ -170,7 +169,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效，动态更新基于攻击力的伤害加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyGunEffects(player);
         }
     }
@@ -180,13 +179,13 @@ public class HeavyCaliberTag extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             double attackDamage = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).getValue();
             double damageMultiplier = attackDamage * ATTACK_POWER_TO_DAMAGE_RATIO;
             
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    String.format("§6重口径标签已装备 - 枪械伤害+%.1fx (基于%.1f攻击力), 枪械重量+150%%", 
+                    String.format("§6重口径已装备 - 枪械伤害+%.1fx (基于%.1f攻击力), 枪械重量+150%%", 
                         damageMultiplier, attackDamage)
                 ),
                 true
@@ -208,15 +207,9 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果标题
+        // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect")
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
-        
-        // 显示效果说明
-        tooltip.add(Component.literal("  §7• §6将10%攻击力转换为枪械伤害倍率")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
-        tooltip.add(Component.literal("  §7• §c枪械重量增加150%")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -224,7 +217,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b稀有")
+        tooltip.add(Component.literal("§7稀有度：§6稀有")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

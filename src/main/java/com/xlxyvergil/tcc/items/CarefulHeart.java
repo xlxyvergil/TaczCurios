@@ -44,7 +44,7 @@ public class CarefulHeart extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加发射器伤害、爆炸伤害和爆炸范围属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyHeartEffects(player);
         }
     }
@@ -57,7 +57,7 @@ public class CarefulHeart extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的发射器伤害、爆炸伤害和爆炸范围属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeHeartEffects(player);
         }
     }
@@ -187,7 +187,7 @@ public class CarefulHeart extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyHeartEffects(player);
         }
     }
@@ -197,7 +197,7 @@ public class CarefulHeart extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
                     "§6我小心海也绝非鳝类已装备 - 发射器伤害+300%，爆炸伤害+300%，爆炸范围+300%"
@@ -221,9 +221,18 @@ public class CarefulHeart extends ItemBaseCurio {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加效果说明
+        // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.careful_heart.effect")
-            .withStyle(net.minecraft.ChatFormatting.BLUE));
+            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        
+        // 添加饰品槽位信息
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        
+        // 添加稀有度提示
+        tooltip.add(Component.literal("§7稀有度：§f传说")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     
     /**

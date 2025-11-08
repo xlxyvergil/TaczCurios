@@ -36,7 +36,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加枪械伤害属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyGunDamageBonus(player);
         }
     }
@@ -49,7 +49,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的枪械伤害属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeGunDamageBonus(player);
         }
     }
@@ -113,7 +113,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyGunDamageBonus(player);
         }
     }
@@ -123,7 +123,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal("§6士兵基础挂牌已装备 - 枪械伤害+50%"),
                 true
@@ -155,7 +155,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§b常见")
+        tooltip.add(Component.literal("§7稀有度：§9常见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

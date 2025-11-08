@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,9 +29,6 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     // 修饰符名称
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_judgment.gun_damage";
     
-    // 伤害标记，用于跟踪由该饰品发动的攻击
-    private static final String DAMAGE_MARKER = "tcc.heaven_fire_judgment";
-    
     public HeavenFireJudgment(Properties properties) {
         super(properties);
     }
@@ -45,7 +41,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         // 给玩家添加枪械伤害属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyGunDamageBonus(player);
         }
     }
@@ -58,7 +54,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
         
         // 移除玩家的枪械伤害属性加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             removeGunDamageBonus(player);
         }
     }
@@ -70,13 +66,15 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在指定的槽位
-        if (!slotContext.getIdentifier().equals("tcc_slot")) {
+        if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
         
         // 检查是否已经装备了HeavenFireApocalypse
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosHelper().findFirstCurio(slotContext.getWearer(), 
-            itemStack -> itemStack.getItem() instanceof HeavenFireApocalypse).isPresent();
+        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+            .map(inv -> inv.findFirstCurio(
+                itemStack -> itemStack.getItem() instanceof HeavenFireApocalypse))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
     
     /**
@@ -136,7 +134,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效，动态更新基于生命值的伤害加成
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             applyGunDamageBonus(player);
         }
     }
@@ -146,7 +144,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.getWearer() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player) {
             float currentHealth = player.getHealth();
             double damageMultiplier = currentHealth * 0.5;
             
@@ -184,7 +182,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§6稀有")
+        tooltip.add(Component.literal("§7稀有度：§f传说")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     
@@ -193,7 +191,6 @@ public class HeavenFireJudgment extends ItemBaseCurio {
      */
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
         
         // 检查伤害来源是否是玩家
@@ -224,7 +221,8 @@ public class HeavenFireJudgment extends ItemBaseCurio {
      */
     private static boolean hasHeavenFireJudgmentEquipped(Player player) {
         // 使用Curios API检查玩家是否装备了天火圣裁
-        return top.theillusivec4.curios.api.CuriosApi.getCuriosHelper().findFirstCurio(player, 
-            stack -> stack.getItem() instanceof HeavenFireJudgment).isPresent();
+        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+            .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof HeavenFireJudgment))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
 }
