@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 卑劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
+ * 协劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
  * 效果：射击速度+90%，通用伤害-15%，特定枪械伤害-15%
  */
 public class DespicableAcceleration extends ItemBaseCurio {
@@ -126,7 +126,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
                 FIRING_SPEED_UUID,
                 FIRING_SPEED_NAME,
                 FIRING_SPEED_BOOST,
-                AttributeModifier.Operation.MULTIPLY_TOTAL
+                AttributeModifier.Operation.ADDITION
             );
             firingSpeedAttribute.addPermanentModifier(firingSpeedModifier);
         }
@@ -147,7 +147,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
                 GENERAL_DAMAGE_UUID,
                 GENERAL_DAMAGE_NAME,
                 DAMAGE_REDUCTION,
-                AttributeModifier.Operation.MULTIPLY_TOTAL
+                AttributeModifier.Operation.ADDITION
             );
             generalDamageAttribute.addPermanentModifier(generalDamageModifier);
         }
@@ -169,7 +169,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
                     DAMAGE_UUIDS.get(gunType),
                     DAMAGE_NAMES.get(gunType),
                     DAMAGE_REDUCTION,
-                    AttributeModifier.Operation.MULTIPLY_TOTAL
+                    AttributeModifier.Operation.ADDITION
                 );
                 specificDamageAttribute.addPermanentModifier(specificDamageModifier);
             }

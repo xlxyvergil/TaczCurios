@@ -112,7 +112,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation(namespace, attributeName)
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
             )
         );
         
@@ -125,7 +125,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                 uuid,
                 modifierName,
                 multiplier,
-                AttributeModifier.Operation.MULTIPLY_TOTAL
+                AttributeModifier.Operation.ADDITION
             );
             attribute.addPermanentModifier(modifier);
         }

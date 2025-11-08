@@ -72,7 +72,7 @@ public class RedMovementTag extends ItemBaseCurio implements ICurioItem {
                     MOVE_SPEED_MODIFIER_UUID,
                     "tcc_red_movement_speed_boost",
                     0.50, // 50%移动速度加成
-                    AttributeModifier.Operation.MULTIPLY_TOTAL
+                    AttributeModifier.Operation.ADDITION
                 )
             );
         }
@@ -117,7 +117,7 @@ public class RedMovementTag extends ItemBaseCurio implements ICurioItem {
                         MOVE_SPEED_MODIFIER_UUID,
                         "tcc_red_movement_speed_boost",
                         0.50,
-                        AttributeModifier.Operation.MULTIPLY_TOTAL
+                        AttributeModifier.Operation.ADDITION
                     )
                 );
             }

@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 并合膛线 - 提升155%通用伤害，但降低25%持枪移动速度
- * 效果：通用伤害+155%，持枪移动速度-25%
+ * 并合膛线 - 提升155%通用伤害，提高25%持枪移动速度
+ * 效果：通用伤害+155%，持枪移动速度+25%
  */
 public class MergedRifling extends ItemBaseCurio {
     
@@ -27,7 +27,7 @@ public class MergedRifling extends ItemBaseCurio {
     
     // 效果参数
     private static final double DAMAGE_BOOST = 1.55;       // 155%通用伤害提升
-    private static final double SPEED_REDUCTION = -0.25;    // 25%持枪移动速度降低
+    private static final double SPEED_BOOST = 0.25;    // 25%持枪移动速度提升
     
     public MergedRifling(Properties properties) {
         super(properties);
@@ -90,12 +90,12 @@ public class MergedRifling extends ItemBaseCurio {
                 GENERAL_DAMAGE_UUID,
                 GENERAL_DAMAGE_NAME,
                 DAMAGE_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_TOTAL
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             generalDamageAttribute.addPermanentModifier(generalDamageModifier);
         }
         
-        // 应用持枪移动速度降低
+        // 应用持枪移动速度提升
         var movementSpeedAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "move_speed")
@@ -106,12 +106,12 @@ public class MergedRifling extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             movementSpeedAttribute.removeModifier(MOVEMENT_SPEED_UUID);
             
-            // 添加25%的持枪移动速度降低
+            // 添加25%的持枪移动速度提升
             var movementSpeedModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
                 MOVEMENT_SPEED_UUID,
                 MOVEMENT_SPEED_NAME,
-                -0.25,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_TOTAL
+                SPEED_BOOST,
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             movementSpeedAttribute.addPermanentModifier(movementSpeedModifier);
         }
@@ -134,7 +134,7 @@ public class MergedRifling extends ItemBaseCurio {
             generalDamageAttribute.removeModifier(GENERAL_DAMAGE_UUID);
         }
         
-        // 移除持枪移动速度降低
+        // 移除持枪移动速度提升
         var movementSpeedAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "move_speed")
@@ -165,7 +165,7 @@ public class MergedRifling extends ItemBaseCurio {
         if (slotContext.getWearer() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    "§6并合膛线已装备 - 通用伤害+155%，持枪移动速度-25%"
+                    "§6并合膛线已装备 - 通用伤害+155%，持枪移动速度+25%"
                 ),
                 true
             );

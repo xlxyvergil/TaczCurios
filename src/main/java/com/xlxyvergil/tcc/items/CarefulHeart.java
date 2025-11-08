@@ -93,7 +93,7 @@ public class CarefulHeart extends ItemBaseCurio {
                 LAUNCHER_DAMAGE_UUID,
                 LAUNCHER_DAMAGE_NAME,
                 LAUNCHER_DAMAGE_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_TOTAL
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             launcherDamageAttribute.addPermanentModifier(launcherDamageModifier);
         }
@@ -114,7 +114,7 @@ public class CarefulHeart extends ItemBaseCurio {
                 EXPLOSION_DAMAGE_UUID,
                 EXPLOSION_DAMAGE_NAME,
                 EXPLOSION_DAMAGE_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_TOTAL
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             explosionDamageAttribute.addPermanentModifier(explosionDamageModifier);
         }
@@ -135,7 +135,7 @@ public class CarefulHeart extends ItemBaseCurio {
                 EXPLOSION_RADIUS_UUID,
                 EXPLOSION_RADIUS_NAME,
                 EXPLOSION_RADIUS_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_TOTAL
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             explosionRadiusAttribute.addPermanentModifier(explosionRadiusModifier);
         }

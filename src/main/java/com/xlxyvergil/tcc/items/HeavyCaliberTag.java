@@ -108,7 +108,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
                 GUN_DAMAGE_UUID,
                 GUN_DAMAGE_NAME,
                 damageMultiplier,
-                AttributeModifier.Operation.MULTIPLY_TOTAL
+                AttributeModifier.Operation.ADDITION
             );
             gunDamageAttribute.addPermanentModifier(damageModifier);
         }
@@ -129,7 +129,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
                 GUN_WEIGHT_UUID,
                 GUN_WEIGHT_NAME,
                 WEIGHT_INCREASE_MULTIPLIER,
-                AttributeModifier.Operation.MULTIPLY_TOTAL
+                AttributeModifier.Operation.ADDITION
             );
             gunWeightAttribute.addPermanentModifier(weightModifier);
         }

@@ -87,7 +87,7 @@ public class AlloyDrill extends ItemBaseCurio {
                 PIERCE_UUID,
                 PIERCE_NAME,
                 PIERCE_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_TOTAL
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             pierceAttribute.addPermanentModifier(pierceModifier);
         }

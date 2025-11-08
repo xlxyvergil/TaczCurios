@@ -83,7 +83,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
                     GUN_DAMAGE_UUID,
                     GUN_DAMAGE_NAME,
                     0.5D,
-                    AttributeModifier.Operation.MULTIPLY_TOTAL
+                    AttributeModifier.Operation.ADDITION
                 );
                 gunDamageAttribute.addPermanentModifier(modifier);
             }

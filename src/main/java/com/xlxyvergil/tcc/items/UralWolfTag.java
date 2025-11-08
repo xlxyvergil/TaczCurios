@@ -72,7 +72,7 @@ public class UralWolfTag extends ItemBaseCurio implements ICurioItem {
                     HEADSHOT_MULTIPLIER_MODIFIER_UUID,
                     "tcc_ural_wolf_headshot_boost",
                     1.50, // 150%爆头倍率加成
-                    AttributeModifier.Operation.MULTIPLY_TOTAL
+                    AttributeModifier.Operation.ADDITION
                 )
             );
         }
@@ -117,7 +117,7 @@ public class UralWolfTag extends ItemBaseCurio implements ICurioItem {
                         HEADSHOT_MULTIPLIER_MODIFIER_UUID,
                         "tcc_ural_wolf_headshot_boost",
                         1.50,
-                        AttributeModifier.Operation.MULTIPLY_TOTAL
+                        AttributeModifier.Operation.ADDITION
                     )
                 );
             }

@@ -113,7 +113,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
                         DAMAGE_UUIDS.get(gunType),
                         DAMAGE_NAMES.get(gunType),
                         0.5D,
-                        AttributeModifier.Operation.MULTIPLY_TOTAL
+                        AttributeModifier.Operation.ADDITION
                     );
                     damageAttribute.addPermanentModifier(modifier);
                 }

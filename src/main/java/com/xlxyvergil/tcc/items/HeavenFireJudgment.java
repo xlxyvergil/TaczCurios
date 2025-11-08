@@ -94,7 +94,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("taa", "bullet_gundamage")
             )
         );
         
@@ -107,7 +107,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
                 GUN_DAMAGE_UUID,
                 GUN_DAMAGE_NAME,
                 damageMultiplier,
-                AttributeModifier.Operation.MULTIPLY_TOTAL
+                AttributeModifier.Operation.ADDITION
             );
             gunDamageAttribute.addPermanentModifier(modifier);
         }
