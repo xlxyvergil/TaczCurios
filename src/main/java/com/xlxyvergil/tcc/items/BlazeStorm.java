@@ -59,11 +59,20 @@ public class BlazeStorm extends ItemBaseCurio {
     /**
      * 检查是否可以装备到指定插槽
      * 只能装备到tcc_slot槽位
+     * 与BlazeStormPrime互斥，不能同时装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在指定的槽位
-        return "tcc_slot".equals(slotContext.identifier());
+        if (!"tcc_slot".equals(slotContext.identifier())) {
+            return false;
+        }
+        
+        // 检查是否已经装备了BlazeStormPrime
+        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+            .map(inv -> inv.findFirstCurio(
+                itemStack -> itemStack.getItem() instanceof BlazeStormPrime))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
     
     /**
