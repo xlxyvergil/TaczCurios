@@ -87,7 +87,7 @@ public class CloseCombatPrime extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
+new ResourceLocation(namespace, attributeName)
             )
         );
         

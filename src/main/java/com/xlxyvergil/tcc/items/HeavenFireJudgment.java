@@ -92,7 +92,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("taa", "bullet_gundamage")
+new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
