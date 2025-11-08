@@ -49,29 +49,29 @@
   
   "item.tcc.blaze_storm": "§6烈焰风暴",
   "item.tcc.blaze_storm.desc": "掌控爆炸的力量，将战场化为炼狱",
-  "item.tcc.blaze_storm.effect": "增加24%爆炸范围（乘算），增加24%爆炸伤害（乘算），无法与烈焰风暴Prime同时装备",
+  "item.tcc.blaze_storm.effect": "增加24%爆炸范围，增加24%爆炸伤害，无法与烈焰风暴Prime同时装备",
   
   "item.tcc.blaze_storm_prime": "§f烈焰风暴Prime",
   "item.tcc.blaze_storm_prime.desc": "极致的爆炸掌控能力，战场上的烈焰君王",
-  "item.tcc.blaze_storm_prime.effect": "增加66%爆炸范围（乘算），增加66%爆炸伤害（乘算），无法与烈焰风暴同时装备",
+  "item.tcc.blaze_storm_prime.effect": "增加66%爆炸范围，增加66%爆炸伤害，无法与烈焰风暴同时装备",
   
   "item.tcc.ripping_prime": "§f撕裂Prime",
   "item.tcc.ripping_prime.desc": "极致的射击速度配合强大的穿透能力",
-  "item.tcc.ripping_prime.effect": "增加55%射速（乘算）增加2.2穿透（加算）",
+  "item.tcc.ripping_prime.effect": "增加55%射速,增加2.2穿透",
   
   "item.tcc.close_combat_prime": "§f抵近射击Prime",
   "item.tcc.close_combat_prime.desc": "近距离战斗的极致强化",
-  "item.tcc.close_combat_prime.effect": "增加165%特定枪械伤害属性（乘算）",
+  "item.tcc.close_combat_prime.effect": "增加165%特定枪械伤害属性",
   
   "item.tcc.evil_accuracy": "§6极恶精准",
   "item.tcc.evil_accuracy.desc": "极致的控制力，降低后坐力的同时牺牲射速",
-  "item.tcc.evil_accuracy.effect": "降低90%后坐力，降低36%射速（都加算）",
+  "item.tcc.evil_accuracy.effect": "降低90%后坐力，降低36%射速",
   
   "item.tcc.limit_speed": "§b极限速度",
   "item.tcc.limit_speed.desc": "让弹药以极限速度飞行",
-  "item.tcc.limit_speed.effect": "提高60%弹药速度（加算）",
+  "item.tcc.limit_speed.effect": "提高60%弹药速度",
   
   "item.tcc.ferocious_extension": "§b凶恶延伸",
   "item.tcc.ferocious_extension.desc": "让子弹飞得更远，打击更远处的敌人",
-  "item.tcc.ferocious_extension.effect": "提高120%子弹射程（乘算）"
+  "item.tcc.ferocious_extension.effect": "提高120%子弹射程"
 }
