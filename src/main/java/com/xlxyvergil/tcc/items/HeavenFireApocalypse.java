@@ -83,7 +83,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 以玩家当前生命值的100%作为倍率提升通用伤害、爆炸范围和爆炸伤害
+     * 以玩家当前生命值的100%作为倍率提升通用伤害和爆炸伤害，固定增加10点爆炸范围
      */
     private void applyEffects(Player player) {
         // 获取玩家当前生命值
@@ -95,8 +95,8 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         // 应用通用枪械伤害加成
         applyAttributeModifier(player, "taa", "bullet_gundamage", damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME);
         
-        // 应用爆炸范围加成
-        applyAttributeModifier(player, "taa", "explosion_radius", damageMultiplier, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
+        // 固定应用10点爆炸范围加成
+        applyAttributeModifier(player, "taa", "explosion_radius", 10.0, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
         
         // 应用爆炸伤害加成
         applyAttributeModifier(player, "taa", "explosion_damage", damageMultiplier, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
@@ -175,8 +175,8 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
             
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    String.format("§6天火劫灭已装备 - 伤害倍率+%.1f (基于%.1f生命值), 爆炸范围+%.1f, 爆炸伤害+%.1f", 
-                        damageMultiplier, currentHealth, damageMultiplier, damageMultiplier)
+                    String.format("§6天火劫灭已装备 - 伤害倍率+%.1f (基于%.1f生命值), 爆炸范围+10.0, 爆炸伤害+%.1f", 
+                        damageMultiplier, currentHealth, damageMultiplier)
                 ),
                 true
             );

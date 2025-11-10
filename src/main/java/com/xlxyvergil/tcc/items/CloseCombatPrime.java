@@ -1,28 +1,57 @@
 package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.SlotContext;
+
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * 抵近射击Prime饰品
- * 效果：增加165%特定枪械伤害属性（乘算）
+ * 抵近射击Prime饰品 - 提供165%所有特定枪械伤害加成
+ * 效果：为玩家提供165%的所有7种特定枪械伤害加成
  */
 public class CloseCombatPrime extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID BULLET_GUNDAMAGE_UUID = UUID.fromString("44444444-1234-1234-1234-123456789abc");
+    // 7种特定枪械伤害属性的UUID和配置
+    private static final Map<String, UUID> DAMAGE_UUIDS = new HashMap<>();
+    private static final Map<String, String> DAMAGE_NAMES = new HashMap<>();
+    private static final Map<String, String> DAMAGE_DISPLAY_NAMES = new HashMap<>();
     
-    // 修饰符名称
-    private static final String BULLET_GUNDAMAGE_NAME = "tcc.close_combat_prime.bullet_gundamage";
+    static {
+        // 初始化7种特定枪械的UUID和名称
+        DAMAGE_UUIDS.put("pistol", UUID.fromString("44345678-1234-1234-1234-123456789abc"));
+        DAMAGE_UUIDS.put("rifle", UUID.fromString("44345678-1234-1234-1234-123456789abd"));
+        DAMAGE_UUIDS.put("shotgun", UUID.fromString("44345678-1234-1234-1234-123456789abe"));
+        DAMAGE_UUIDS.put("sniper", UUID.fromString("44345678-1234-1234-1234-123456789abf"));
+        DAMAGE_UUIDS.put("smg", UUID.fromString("44345678-1234-1234-1234-123456789aba"));
+        DAMAGE_UUIDS.put("lmg", UUID.fromString("44345678-1234-1234-1234-123456789abb"));
+        DAMAGE_UUIDS.put("launcher", UUID.fromString("44345678-1234-1234-1234-123456789ab0"));
+        
+        DAMAGE_NAMES.put("pistol", "tcc.close_combat_prime.pistol_damage");
+        DAMAGE_NAMES.put("rifle", "tcc.close_combat_prime.rifle_damage");
+        DAMAGE_NAMES.put("shotgun", "tcc.close_combat_prime.shotgun_damage");
+        DAMAGE_NAMES.put("sniper", "tcc.close_combat_prime.sniper_damage");
+        DAMAGE_NAMES.put("smg", "tcc.close_combat_prime.smg_damage");
+        DAMAGE_NAMES.put("lmg", "tcc.close_combat_prime.lmg_damage");
+        DAMAGE_NAMES.put("launcher", "tcc.close_combat_prime.launcher_damage");
+        
+        DAMAGE_DISPLAY_NAMES.put("pistol", "手枪");
+        DAMAGE_DISPLAY_NAMES.put("rifle", "步枪");
+        DAMAGE_DISPLAY_NAMES.put("shotgun", "霰弹枪");
+        DAMAGE_DISPLAY_NAMES.put("sniper", "狙击枪");
+        DAMAGE_DISPLAY_NAMES.put("smg", "冲锋枪");
+        DAMAGE_DISPLAY_NAMES.put("lmg", "轻机枪");
+        DAMAGE_DISPLAY_NAMES.put("launcher", "发射器");
+    }
     
     public CloseCombatPrime(Properties properties) {
         super(properties);
@@ -35,9 +64,9 @@ public class CloseCombatPrime extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性加成
+        // 给玩家添加所有7种特定枪械伤害属性加成
         if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
+            applyAllDamageBonuses(player);
         }
     }
     
@@ -48,9 +77,9 @@ public class CloseCombatPrime extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性加成
+        // 移除玩家的所有7种特定枪械伤害属性加成
         if (slotContext.entity() instanceof Player player) {
-            removeEffects(player);
+            removeAllDamageBonuses(player);
         }
     }
     
@@ -72,60 +101,63 @@ public class CloseCombatPrime extends ItemBaseCurio {
     }
     
     /**
-     * 应用所有效果加成
-     * 增加165%特定枪械伤害属性（乘算）
+     * 应用所有7种特定枪械伤害加成
+     * 给玩家添加165%的所有7种特定枪械伤害加成
      */
-    private void applyEffects(Player player) {
-        // 应用枪械伤害加成 (165%乘算)
-        applyAttributeModifier(player, "taa", "bullet_gundamage", 1.65, BULLET_GUNDAMAGE_UUID, BULLET_GUNDAMAGE_NAME);
-    }
-    
-    /**
-     * 通用的属性修饰符应用方法
-     */
-    private void applyAttributeModifier(Player player, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName) {
+    private void applyAllDamageBonuses(Player player) {
         var attributes = player.getAttributes();
-        var attribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-new ResourceLocation(namespace, attributeName)
-            )
-        );
         
-        if (attribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            attribute.removeModifier(uuid);
-            
-            // 添加乘算的属性修饰符
-            AttributeModifier modifier = new AttributeModifier(
-                uuid,
-                modifierName,
-                multiplier,
-                AttributeModifier.Operation.MULTIPLY_BASE
+        for (String gunType : DAMAGE_UUIDS.keySet()) {
+            var damageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new ResourceLocation("taa", "bullet_gundamage_" + gunType)
+                )
             );
-            attribute.addPermanentModifier(modifier);
+            
+            if (damageAttribute != null) {
+                // 检查是否已经存在相同的修饰符
+                if (damageAttribute.getModifier(DAMAGE_UUIDS.get(gunType)) == null) {
+                    // 添加165%的伤害加成 (1.65 = 165%)
+                    AttributeModifier modifier = new AttributeModifier(
+                        DAMAGE_UUIDS.get(gunType),
+                        DAMAGE_NAMES.get(gunType),
+                        1.65D,
+                        AttributeModifier.Operation.MULTIPLY_BASE
+                    );
+                    damageAttribute.addPermanentModifier(modifier);
+                }
+            }
         }
     }
     
     /**
-     * 移除所有效果加成
+     * 移除所有7种特定枪械伤害加成
      */
-    private void removeEffects(Player player) {
-        removeAttributeModifier(player, "taa", "bullet_gundamage", BULLET_GUNDAMAGE_UUID);
+    private void removeAllDamageBonuses(Player player) {
+        var attributes = player.getAttributes();
+        
+        for (String gunType : DAMAGE_UUIDS.keySet()) {
+            var damageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new ResourceLocation("taa", "bullet_gundamage_" + gunType)
+                )
+            );
+            
+            if (damageAttribute != null) {
+                // 移除之前添加的修饰符
+                damageAttribute.removeModifier(DAMAGE_UUIDS.get(gunType));
+            }
+        }
     }
     
     /**
-     * 通用的属性修饰符移除方法
+     * 当玩家持有时，每tick更新效果
      */
-    private void removeAttributeModifier(Player player, String namespace, String attributeName, UUID uuid) {
-        var attributes = player.getAttributes();
-        var attribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation(namespace, attributeName)
-            )
-        );
-        
-        if (attribute != null) {
-            attribute.removeModifier(uuid);
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        // 确保效果持续生效
+        if (slotContext.entity() instanceof Player player) {
+            applyAllDamageBonuses(player);
         }
     }
     
@@ -146,6 +178,12 @@ new ResourceLocation(namespace, attributeName)
         // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect")
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        
+        // 添加7种特定枪械伤害加成的详细列表
+        for (String gunType : DAMAGE_DISPLAY_NAMES.keySet()) {
+            tooltip.add(Component.literal("  §7• §6+165% §7" + DAMAGE_DISPLAY_NAMES.get(gunType) + "伤害")
+                .withStyle(net.minecraft.ChatFormatting.GRAY));
+        }
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
