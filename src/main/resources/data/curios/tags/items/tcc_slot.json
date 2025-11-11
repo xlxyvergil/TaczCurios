@@ -18,6 +18,14 @@
     "tcc:close_combat_prime",
     "tcc:evil_accuracy",
     "tcc:limit_speed",
-    "tcc:ferocious_extension"
+    "tcc:ferocious_extension",
+    "tcc:rifling",
+    "tcc:close_range_shot",
+    "tcc:heavy_firepower",
+    "tcc:wasp_stinger",
+    "tcc:prophecy_pact",
+    "tcc:malignant_spread",
+    "tcc:chamber",
+    "tcc:chamber_prime"
   ]
 }

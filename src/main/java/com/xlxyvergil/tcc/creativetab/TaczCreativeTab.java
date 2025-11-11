@@ -45,6 +45,15 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.EVIL_ACCURACY.get());
                 output.accept(TaczItems.LIMIT_SPEED.get());
                 output.accept(TaczItems.FEROCIOUS_EXTENSION.get());
+                // 新增饰品
+                output.accept(TaczItems.RIFLING.get());
+                output.accept(TaczItems.CLOSE_RANGE_SHOT.get());
+                output.accept(TaczItems.HEAVY_FIREPOWER.get());
+                output.accept(TaczItems.WASP_STINGER.get());
+                output.accept(TaczItems.PROPHECY_PACT.get());
+                output.accept(TaczItems.MALIGNANT_SPREAD.get());
+                output.accept(TaczItems.CHAMBER.get());
+                output.accept(TaczItems.CHAMBER_PRIME.get());
             })
             .build());
 }

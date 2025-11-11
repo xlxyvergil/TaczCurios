@@ -7,28 +7,39 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
+import com.tacz.guns.api.TimelessAPI;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * 重口径 - 将玩家攻击力的10%转换为通用枪械伤害倍率，但增加150%枪械重量
- * 效果：每100点攻击力提供10倍通用枪械伤害加成，但枪械重量增加150%
+ * 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度
+ * 效果：提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害（加算），增加55%不精准度（乘算）
  */
 public class HeavyCaliberTag extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID GUN_DAMAGE_UUID = UUID.fromString("32345678-1234-1234-1234-123456789abc");
-    private static final UUID GUN_WEIGHT_UUID = UUID.fromString("32345678-1234-1234-1234-123456789abd");
+    private static final UUID[] DAMAGE_UUIDS = {
+        UUID.fromString("52345678-1234-1234-1234-123456789abc"),
+        UUID.fromString("52345678-1234-1234-1234-123456789abd"),
+        UUID.fromString("52345678-1234-1234-1234-123456789abe"),
+        UUID.fromString("52345678-1234-1234-1234-123456789abf"),
+        UUID.fromString("52345678-1234-1234-1234-123456789ab0")
+    };
     
     // 修饰符名称
-    private static final String GUN_DAMAGE_NAME = "tcc.heavy_caliber_tag.gun_damage";
-    private static final String GUN_WEIGHT_NAME = "tcc.heavy_caliber_tag.gun_weight";
+    private static final String[] DAMAGE_NAMES = {
+        "tcc.heavy_caliber.rifle_damage",
+        "tcc.heavy_caliber.sniper_damage",
+        "tcc.heavy_caliber.smg_damage",
+        "tcc.heavy_caliber.lmg_damage",
+        "tcc.heavy_caliber.launcher_damage"
+    };
     
     // 效果参数
-    private static final double ATTACK_POWER_TO_DAMAGE_RATIO = 0.1; // 10%攻击力转换为伤害倍率
-    private static final double WEIGHT_INCREASE_MULTIPLIER = 1.5;   // 150%枪械重量增加
+    private static final double DAMAGE_BOOST = 1.65;       // 165%特定枪械伤害提升（加算）
+    private static final double INACCURACY_BOOST = 0.55;   // 55%不精准度提升（乘算）
     
     public HeavyCaliberTag(Properties properties) {
         super(properties);
@@ -41,9 +52,9 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加枪械伤害和重量属性加成
+        // 给玩家添加伤害属性修改
         if (slotContext.entity() instanceof Player player) {
-            applyGunEffects(player);
+            applyHeavyCaliberEffects(player);
         }
     }
     
@@ -54,15 +65,14 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的枪械伤害和重量属性加成
+        // 移除玩家的伤害属性修改
         if (slotContext.entity() instanceof Player player) {
-            removeGunEffects(player);
+            removeHeavyCaliberEffects(player);
         }
     }
     
     /**
      * 检查是否可以装备到指定插槽
-     * HeavyCaliberTag不与其他饰品互斥，可以自由装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -79,87 +89,103 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     }
     
     /**
-     * 应用枪械效果
-     * 根据玩家攻击力动态计算枪械伤害加成，并增加枪械重量
+     * 应用重口径效果
+     * 提升特定枪械伤害（加算）和不精准度（乘算）
      */
-    private void applyGunEffects(Player player) {
+    private void applyHeavyCaliberEffects(Player player) {
         var attributes = player.getAttributes();
         
-        // 获取玩家攻击力属性值
-        double attackDamage = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).getValue();
+        // 特定枪械类型
+        String[] gunTypes = {
+            "bullet_gundamage_rifle",
+            "bullet_gundamage_sniper",
+            "bullet_gundamage_smg",
+            "bullet_gundamage_lmg",
+            "bullet_gundamage_launcher"
+        };
         
-        // 计算枪械伤害加成倍率（10%攻击力转换为倍率）
-        double damageMultiplier = attackDamage * ATTACK_POWER_TO_DAMAGE_RATIO;
-        
-        // 应用通用枪械伤害加成
-        var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        if (gunDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            gunDamageAttribute.removeModifier(GUN_DAMAGE_UUID);
-            
-            // 添加动态计算的伤害加成倍率
-            AttributeModifier damageModifier = new AttributeModifier(
-                GUN_DAMAGE_UUID,
-                GUN_DAMAGE_NAME,
-                damageMultiplier,
-                AttributeModifier.Operation.ADDITION
+        // 应用特定枪械伤害提升（加算）
+        for (int i = 0; i < gunTypes.length; i++) {
+            var gunDamageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new net.minecraft.resources.ResourceLocation("taa", gunTypes[i])
+                )
             );
-            gunDamageAttribute.addPermanentModifier(damageModifier);
+            
+            if (gunDamageAttribute != null) {
+                // 检查是否已经存在相同的修饰符，如果存在则移除
+                gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
+                
+                // 添加165%的特定枪械伤害加成（加算）
+                var gunDamageModifier = new AttributeModifier(
+                    DAMAGE_UUIDS[i],
+                    DAMAGE_NAMES[i],
+                    DAMAGE_BOOST,
+                    AttributeModifier.Operation.ADDITION
+                );
+                gunDamageAttribute.addPermanentModifier(gunDamageModifier);
+            }
         }
         
-        // 应用枪械重量增加
-        var gunWeightAttribute = attributes.getInstance(
+        // 应用不精准度提升（乘算）
+        var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "weight")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_inaccuracy")
             )
         );
         
-        if (gunWeightAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            gunWeightAttribute.removeModifier(GUN_WEIGHT_UUID);
+        if (inaccuracyAttribute != null) {
+            // 移除已存在的修饰符
+            inaccuracyAttribute.removeModifier(DAMAGE_UUIDS[0]);
             
-            // 添加150%的重量加成
-            AttributeModifier weightModifier = new AttributeModifier(
-                GUN_WEIGHT_UUID,
-                GUN_WEIGHT_NAME,
-                WEIGHT_INCREASE_MULTIPLIER,
-                AttributeModifier.Operation.ADDITION
+            // 添加55%的不精准度加成（乘算）
+            var inaccuracyModifier = new AttributeModifier(
+                DAMAGE_UUIDS[0],
+                "tcc.heavy_caliber.inaccuracy",
+                INACCURACY_BOOST,
+                AttributeModifier.Operation.MULTIPLY_BASE
             );
-            gunWeightAttribute.addPermanentModifier(weightModifier);
+            inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
         }
     }
     
     /**
-     * 移除枪械效果
+     * 移除重口径效果
      */
-    private void removeGunEffects(Player player) {
+    private void removeHeavyCaliberEffects(Player player) {
         var attributes = player.getAttributes();
         
-        // 移除通用枪械伤害加成
-        var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
+        // 特定枪械类型
+        String[] gunTypes = {
+            "bullet_gundamage_rifle",
+            "bullet_gundamage_sniper",
+            "bullet_gundamage_smg",
+            "bullet_gundamage_lmg",
+            "bullet_gundamage_launcher"
+        };
         
-        if (gunDamageAttribute != null) {
-            gunDamageAttribute.removeModifier(GUN_DAMAGE_UUID);
+        // 移除特定枪械伤害加成
+        for (int i = 0; i < gunTypes.length; i++) {
+            var gunDamageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new net.minecraft.resources.ResourceLocation("taa", gunTypes[i])
+                )
+            );
+            
+            if (gunDamageAttribute != null) {
+                gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
+            }
         }
         
-        // 移除枪械重量加成
-        var gunWeightAttribute = attributes.getInstance(
+        // 移除不精准度加成
+        var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "weight")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_inaccuracy")
             )
         );
         
-        if (gunWeightAttribute != null) {
-            gunWeightAttribute.removeModifier(GUN_WEIGHT_UUID);
+        if (inaccuracyAttribute != null) {
+            inaccuracyAttribute.removeModifier(DAMAGE_UUIDS[0]);
         }
     }
     
@@ -168,9 +194,9 @@ public class HeavyCaliberTag extends ItemBaseCurio {
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效，动态更新基于攻击力的伤害加成
+        // 确保效果持续生效
         if (slotContext.entity() instanceof Player player) {
-            applyGunEffects(player);
+            applyHeavyCaliberEffects(player);
         }
     }
     
@@ -180,13 +206,9 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
-            double attackDamage = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE).getValue();
-            double damageMultiplier = attackDamage * ATTACK_POWER_TO_DAMAGE_RATIO;
-            
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    String.format("§6重口径已装备 - 枪械伤害+%.1fx (基于%.1f攻击力), 枪械重量+150%%", 
-                        damageMultiplier, attackDamage)
+                    "§6重口径已装备 - 提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害（加算），增加55%不精准度（乘算）"
                 ),
                 true
             );

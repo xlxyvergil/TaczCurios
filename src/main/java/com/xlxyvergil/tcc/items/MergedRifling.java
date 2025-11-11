@@ -1,33 +1,55 @@
 package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
 
 /**
- * 并合膛线 - 提升155%通用伤害，提高25%持枪移动速度
- * 效果：通用伤害+155%，持枪移动速度+25%
+ * 并合膛线 - 提升特定枪械155%伤害，提高25%持枪移动速度
+ * 效果：特定枪械伤害+155%（加算），持枪移动速度+25%（加算）
  */
 public class MergedRifling extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID GENERAL_DAMAGE_UUID = UUID.fromString("52345678-1234-1234-1234-123456789abc");
-    private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("52345678-1234-1234-1234-123456789abd");
+    private static final UUID[] DAMAGE_UUIDS = {
+        UUID.fromString("52345678-1234-1234-1234-123456789abc"),
+        UUID.fromString("52345678-1234-1234-1234-123456789abd"),
+        UUID.fromString("52345678-1234-1234-1234-123456789abe"),
+        UUID.fromString("52345678-1234-1234-1234-123456789abf"),
+        UUID.fromString("52345678-1234-1234-1234-123456789ab0")
+    };
+    private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("52345678-1234-1234-1234-123456789ab0");
     
     // 修饰符名称
-    private static final String GENERAL_DAMAGE_NAME = "tcc.merged_rifling.general_damage";
+    private static final String[] DAMAGE_NAMES = {
+        "tcc.merged_rifling.rifle_damage",
+        "tcc.merged_rifling.sniper_damage",
+        "tcc.merged_rifling.smg_damage",
+        "tcc.merged_rifling.lmg_damage",
+        "tcc.merged_rifling.launcher_damage"
+    };
     private static final String MOVEMENT_SPEED_NAME = "tcc.merged_rifling.movement_speed";
     
     // 效果参数
-    private static final double DAMAGE_BOOST = 1.55;       // 155%通用伤害提升
-    private static final double SPEED_BOOST = 0.25;    // 25%持枪移动速度提升
+    private static final double DAMAGE_BOOST = 1.55;       // 155%特定枪械伤害提升（加算）
+    private static final double SPEED_BOOST = 0.25;    // 25%持枪移动速度提升（加算）
+    
+    // 特定枪械类型
+    private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     public MergedRifling(Properties properties) {
         super(properties);
@@ -60,42 +82,83 @@ public class MergedRifling extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 检查是否可以装备到指定插槽
+     * MergedRifling与Rifling互斥，不能同时装备
      */
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        // 检查是否装备在TCC饰品槽位
+        if (!slotContext.identifier().equals("tcc_slot")) {
+            return false;
+        }
+        
+        // 检查玩家是否已经装备了Rifling
+        if (slotContext.entity() instanceof Player player) {
+            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
+            if (curiosHandler != null) {
+                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+                if (tccSlotHandler != null) {
+                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                        if (equippedStack.getItem() instanceof Rifling) {
+                            return false; // 如果已经装备了Rifling，则不能装备MergedRifling
+                        }
+                    }
+                }
+            }
+        }
+        
         return true;
     }
     
     /**
+     * 当物品在Curios插槽中时被右键点击
+     */
+    @Override
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        return canEquip(slotContext, stack);
+    }
+    
+    /**
      * 应用膛线效果
-     * 提升通用伤害和持枪移动速度
+     * 提升特定枪械伤害和持枪移动速度（都使用加算）
      */
     private void applyRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
-        // 应用通用伤害提升
-        var generalDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
+        // 特定枪械类型
+        String[] gunTypes = {
+            "bullet_gundamage_rifle",
+            "bullet_gundamage_sniper",
+            "bullet_gundamage_smg",
+            "bullet_gundamage_lmg",
+            "bullet_gundamage_launcher"
+        };
         
-        if (generalDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            generalDamageAttribute.removeModifier(GENERAL_DAMAGE_UUID);
-            
-            // 添加155%的通用伤害加成
-            var generalDamageModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
-                GENERAL_DAMAGE_UUID,
-                GENERAL_DAMAGE_NAME,
-                DAMAGE_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
+        // 应用特定枪械伤害提升（加算）
+        for (int i = 0; i < gunTypes.length; i++) {
+            var gunDamageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new net.minecraft.resources.ResourceLocation("taa", gunTypes[i])
+                )
             );
-            generalDamageAttribute.addPermanentModifier(generalDamageModifier);
+            
+            if (gunDamageAttribute != null) {
+                // 检查是否已经存在相同的修饰符，如果存在则移除
+                gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
+                
+                // 添加155%的特定枪械伤害加成（加算）
+                var gunDamageModifier = new AttributeModifier(
+                    DAMAGE_UUIDS[i],
+                    DAMAGE_NAMES[i],
+                    DAMAGE_BOOST,
+                    AttributeModifier.Operation.ADDITION
+                );
+                gunDamageAttribute.addPermanentModifier(gunDamageModifier);
+            }
         }
         
-        // 应用持枪移动速度提升
+        // 移除之前的移动速度效果
         var movementSpeedAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "move_speed")
@@ -103,18 +166,44 @@ public class MergedRifling extends ItemBaseCurio {
         );
         
         if (movementSpeedAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
             movementSpeedAttribute.removeModifier(MOVEMENT_SPEED_UUID);
-            
-            // 添加25%的持枪移动速度提升
-            var movementSpeedModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+        }
+        
+        // 检查玩家是否手持特定类型的枪械
+        boolean shouldApplyMovementSpeed = isHoldingValidGunType(player);
+        
+        // 只在玩家手持特定类型枪械时应用移动速度加成
+        if (shouldApplyMovementSpeed && movementSpeedAttribute != null) {
+            // 添加25%的持枪移动速度提升（加算）
+            var movementSpeedModifier = new AttributeModifier(
                 MOVEMENT_SPEED_UUID,
                 MOVEMENT_SPEED_NAME,
                 SPEED_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
+                AttributeModifier.Operation.ADDITION
             );
             movementSpeedAttribute.addPermanentModifier(movementSpeedModifier);
         }
+    }
+    
+    /**
+     * 检查玩家是否手持特定类型的枪械
+     */
+    private boolean isHoldingValidGunType(Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun != null) {
+            // 获取枪械ID
+            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            
+            // 通过TimelessAPI获取枪械索引
+            return TimelessAPI.getCommonGunIndex(gunId)
+                .map(CommonGunIndex::getType)
+                .map(VALID_GUN_TYPES::contains)
+                .orElse(false);
+        }
+        
+        return false;
     }
     
     /**
@@ -123,15 +212,26 @@ public class MergedRifling extends ItemBaseCurio {
     private void removeRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
-        // 移除通用伤害加成
-        var generalDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
+        // 特定枪械类型
+        String[] gunTypes = {
+            "bullet_gundamage_rifle",
+            "bullet_gundamage_sniper",
+            "bullet_gundamage_smg",
+            "bullet_gundamage_lmg",
+            "bullet_gundamage_launcher"
+        };
         
-        if (generalDamageAttribute != null) {
-            generalDamageAttribute.removeModifier(GENERAL_DAMAGE_UUID);
+        // 移除特定枪械伤害加成
+        for (int i = 0; i < gunTypes.length; i++) {
+            var gunDamageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new net.minecraft.resources.ResourceLocation("taa", gunTypes[i])
+                )
+            );
+            
+            if (gunDamageAttribute != null) {
+                gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
+            }
         }
         
         // 移除持枪移动速度提升
@@ -165,7 +265,7 @@ public class MergedRifling extends ItemBaseCurio {
         if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    "§6并合膛线已装备 - 通用伤害+155%，持枪移动速度+25%"
+                    "§6并合膛线已装备 - 特定枪械伤害+155%（加算），持枪移动速度+25%（加算）"
                 ),
                 true
             );

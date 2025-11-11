@@ -7,14 +7,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * 士兵基础挂牌 - 提供50%所有枪械基础伤害加成
- * 效果：为玩家提供50%的通用枪械伤害加成
+ * 士兵基础挂牌 - 提供30%所有枪械基础伤害加成
+ * 效果：为玩家提供30%的通用枪械伤害加成（乘法）
  */
 public class SoldierBasicTag extends ItemBaseCurio {
     
@@ -55,16 +57,46 @@ public class SoldierBasicTag extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 检查是否可以装备到指定插槽
+     * SoldierBasicTag与SoldierSpecificTag互斥，不能同时装备
      */
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        // 检查是否装备在TCC饰品槽位
+        if (!slotContext.identifier().equals("tcc_slot")) {
+            return false;
+        }
+        
+        // 检查玩家是否已经装备了SoldierSpecificTag
+        if (slotContext.entity() instanceof Player player) {
+            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
+            if (curiosHandler != null) {
+                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+                if (tccSlotHandler != null) {
+                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                        if (equippedStack.getItem() instanceof SoldierSpecificTag) {
+                            return false; // 如果已经装备了SoldierSpecificTag，则不能装备SoldierBasicTag
+                        }
+                    }
+                }
+            }
+        }
+        
         return true;
     }
     
     /**
+     * 当物品在Curios插槽中时被右键点击
+     */
+    @Override
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        return canEquip(slotContext, stack);
+    }
+    
+    /**
      * 应用枪械伤害加成
-     * 给玩家添加50%的通用枪械伤害加成
+     * 给玩家添加30%的通用枪械伤害加成（乘法）
      */
     private void applyGunDamageBonus(Player player) {
         // 使用TaczAttributeAdd中的通用枪械伤害属性
@@ -78,12 +110,12 @@ public class SoldierBasicTag extends ItemBaseCurio {
         if (gunDamageAttribute != null) {
             // 检查是否已经存在相同的修饰符
             if (gunDamageAttribute.getModifier(GUN_DAMAGE_UUID) == null) {
-                // 添加50%的伤害加成 (0.5 = 50%)
+                // 添加30%的伤害加成 (0.3 = 30%)，使用乘法操作
                 AttributeModifier modifier = new AttributeModifier(
                     GUN_DAMAGE_UUID,
                     GUN_DAMAGE_NAME,
-                    0.5D,
-                    AttributeModifier.Operation.ADDITION
+                    0.3D,
+                    AttributeModifier.Operation.MULTIPLY_BASE
                 );
                 gunDamageAttribute.addPermanentModifier(modifier);
             }
@@ -125,7 +157,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal("§6士兵基础挂牌已装备 - 枪械伤害+50%"),
+                net.minecraft.network.chat.Component.literal("§6士兵基础挂牌已装备 - 枪械伤害+30%（乘法）"),
                 true
             );
         }

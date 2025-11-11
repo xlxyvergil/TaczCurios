@@ -18,6 +18,14 @@ import com.xlxyvergil.tcc.items.CloseCombatPrime;
 import com.xlxyvergil.tcc.items.EvilAccuracy;
 import com.xlxyvergil.tcc.items.LimitSpeed;
 import com.xlxyvergil.tcc.items.FerociousExtension;
+import com.xlxyvergil.tcc.items.Rifling;
+import com.xlxyvergil.tcc.items.CloseRangeShot;
+import com.xlxyvergil.tcc.items.HeavyFirepower;
+import com.xlxyvergil.tcc.items.WaspStinger;
+import com.xlxyvergil.tcc.items.ProphecyPact;
+import com.xlxyvergil.tcc.items.MalignantSpread;
+import com.xlxyvergil.tcc.items.Chamber;
+import com.xlxyvergil.tcc.items.ChamberPrime;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -43,7 +51,7 @@ public class TaczItems {
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON)));
     
-    // 重口径 - 将10%攻击力转换为枪械伤害倍率，但增加150%枪械重量
+    // 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度
     public static final RegistryObject<Item> HEAVY_CALIBER_TAG = ITEMS.register("heavy_caliber_tag", 
         () -> new HeavyCaliberTag(new Item.Properties()
             .stacksTo(1)
@@ -138,4 +146,52 @@ public class TaczItems {
         () -> new FerociousExtension(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON)));
+    
+    // 膛线 - 提升165%特定枪械伤害
+    public static final RegistryObject<Item> RIFLING = ITEMS.register("rifling", 
+        () -> new Rifling(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 抵近射击 - 提升90%霰弹枪伤害
+    public static final RegistryObject<Item> CLOSE_RANGE_SHOT = ITEMS.register("close_range_shot", 
+        () -> new CloseRangeShot(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 重装火力 - 提升165%手枪伤害，提高55%不精准度
+    public static final RegistryObject<Item> HEAVY_FIREPOWER = ITEMS.register("heavy_firepower", 
+        () -> new HeavyFirepower(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 黄蜂蜇刺 - 提升220%手枪伤害
+    public static final RegistryObject<Item> WASP_STINGER = ITEMS.register("wasp_stinger", 
+        () -> new WaspStinger(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 预言契约 - 提升90%手枪伤害
+    public static final RegistryObject<Item> PROPHECY_PACT = ITEMS.register("prophecy_pact", 
+        () -> new ProphecyPact(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 恶性扩散 - 提升165%霰弹枪伤害，提高55%不精准度
+    public static final RegistryObject<Item> MALIGNANT_SPREAD = ITEMS.register("malignant_spread", 
+        () -> new MalignantSpread(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 膛室 - 当玩家手持狙击枪且弹夹满子弹时，第一发子弹提升40%伤害
+    public static final RegistryObject<Item> CHAMBER = ITEMS.register("chamber", 
+        () -> new Chamber(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 膛室Prime - 当玩家手持狙击枪且弹夹满子弹时，第一发子弹提升100%伤害
+    public static final RegistryObject<Item> CHAMBER_PRIME = ITEMS.register("chamber_prime", 
+        () -> new ChamberPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
 }

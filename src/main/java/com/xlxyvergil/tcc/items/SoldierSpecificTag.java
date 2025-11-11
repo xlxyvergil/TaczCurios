@@ -7,50 +7,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
- * 士兵特定挂牌 - 提供50%所有特定枪械伤害加成
- * 效果：为玩家提供50%的所有7种特定枪械伤害加成
+ * 士兵特定挂牌 - 提供55%通用枪械伤害加成（乘法）
+ * 效果：为玩家提供55%的通用枪械伤害加成（乘法）
  */
 public class SoldierSpecificTag extends ItemBaseCurio {
     
-    // 7种特定枪械伤害属性的UUID和配置
-    private static final Map<String, UUID> DAMAGE_UUIDS = new HashMap<>();
-    private static final Map<String, String> DAMAGE_NAMES = new HashMap<>();
-    private static final Map<String, String> DAMAGE_DISPLAY_NAMES = new HashMap<>();
+    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    private static final UUID GUN_DAMAGE_UUID = UUID.fromString("22345678-1234-1234-1234-123456789abc");
     
-    static {
-        // 初始化7种特定枪械的UUID和名称
-        DAMAGE_UUIDS.put("pistol", UUID.fromString("22345678-1234-1234-1234-123456789abc"));
-        DAMAGE_UUIDS.put("rifle", UUID.fromString("22345678-1234-1234-1234-123456789abd"));
-        DAMAGE_UUIDS.put("shotgun", UUID.fromString("22345678-1234-1234-1234-123456789abe"));
-        DAMAGE_UUIDS.put("sniper", UUID.fromString("22345678-1234-1234-1234-123456789abf"));
-        DAMAGE_UUIDS.put("smg", UUID.fromString("22345678-1234-1234-1234-123456789aba"));
-        DAMAGE_UUIDS.put("lmg", UUID.fromString("22345678-1234-1234-1234-123456789abb"));
-        DAMAGE_UUIDS.put("launcher", UUID.fromString("22345678-1234-1234-1234-123456789abc"));
-        
-        DAMAGE_NAMES.put("pistol", "tcc.soldier_specific_tag.pistol_damage");
-        DAMAGE_NAMES.put("rifle", "tcc.soldier_specific_tag.rifle_damage");
-        DAMAGE_NAMES.put("shotgun", "tcc.soldier_specific_tag.shotgun_damage");
-        DAMAGE_NAMES.put("sniper", "tcc.soldier_specific_tag.sniper_damage");
-        DAMAGE_NAMES.put("smg", "tcc.soldier_specific_tag.smg_damage");
-        DAMAGE_NAMES.put("lmg", "tcc.soldier_specific_tag.lmg_damage");
-        DAMAGE_NAMES.put("launcher", "tcc.soldier_specific_tag.launcher_damage");
-        
-        DAMAGE_DISPLAY_NAMES.put("pistol", "手枪");
-        DAMAGE_DISPLAY_NAMES.put("rifle", "步枪");
-        DAMAGE_DISPLAY_NAMES.put("shotgun", "霰弹枪");
-        DAMAGE_DISPLAY_NAMES.put("sniper", "狙击枪");
-        DAMAGE_DISPLAY_NAMES.put("smg", "冲锋枪");
-        DAMAGE_DISPLAY_NAMES.put("lmg", "轻机枪");
-        DAMAGE_DISPLAY_NAMES.put("launcher", "发射器");
-    }
+    // 修饰符名称
+    private static final String GUN_DAMAGE_NAME = "tcc.soldier_specific_tag.gun_damage";
     
     public SoldierSpecificTag(Properties properties) {
         super(properties);
@@ -63,9 +37,9 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加所有7种特定枪械伤害属性加成
+        // 给玩家添加枪械伤害属性加成
         if (slotContext.entity() instanceof Player player) {
-            applyAllDamageBonuses(player);
+            applyGunDamageBonus(player);
         }
     }
     
@@ -76,10 +50,40 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的所有7种特定枪械伤害属性加成
+        // 移除玩家的枪械伤害属性加成
         if (slotContext.entity() instanceof Player player) {
-            removeAllDamageBonuses(player);
+            removeGunDamageBonus(player);
         }
+    }
+    
+    /**
+     * 检查是否可以装备到指定插槽
+     * SoldierSpecificTag与SoldierBasicTag互斥，不能同时装备
+     */
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        // 检查是否装备在TCC饰品槽位
+        if (!slotContext.identifier().equals("tcc_slot")) {
+            return false;
+        }
+        
+        // 检查玩家是否已经装备了SoldierBasicTag
+        if (slotContext.entity() instanceof Player player) {
+            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
+            if (curiosHandler != null) {
+                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+                if (tccSlotHandler != null) {
+                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                        if (equippedStack.getItem() instanceof SoldierBasicTag) {
+                            return false; // 如果已经装备了SoldierBasicTag，则不能装备SoldierSpecificTag
+                        }
+                    }
+                }
+            }
+        }
+        
+        return true;
     }
     
     /**
@@ -87,56 +91,51 @@ public class SoldierSpecificTag extends ItemBaseCurio {
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
+        return canEquip(slotContext, stack);
     }
     
     /**
-     * 应用所有7种特定枪械伤害加成
-     * 给玩家添加50%的所有7种特定枪械伤害加成
+     * 应用枪械伤害加成
+     * 给玩家添加55%的通用枪械伤害加成（乘法）
      */
-    private void applyAllDamageBonuses(Player player) {
+    private void applyGunDamageBonus(Player player) {
+        // 使用TaczAttributeAdd中的通用枪械伤害属性
         var attributes = player.getAttributes();
+        var gunDamageAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+            )
+        );
         
-        for (String gunType : DAMAGE_UUIDS.keySet()) {
-            var damageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_" + gunType)
-                )
-            );
-            
-            if (damageAttribute != null) {
-                // 检查是否已经存在相同的修饰符
-                if (damageAttribute.getModifier(DAMAGE_UUIDS.get(gunType)) == null) {
-                    // 添加50%的伤害加成 (0.5 = 50%)
-                    AttributeModifier modifier = new AttributeModifier(
-                        DAMAGE_UUIDS.get(gunType),
-                        DAMAGE_NAMES.get(gunType),
-                        0.5D,
-                        AttributeModifier.Operation.ADDITION
-                    );
-                    damageAttribute.addPermanentModifier(modifier);
-                }
+        if (gunDamageAttribute != null) {
+            // 检查是否已经存在相同的修饰符
+            if (gunDamageAttribute.getModifier(GUN_DAMAGE_UUID) == null) {
+                // 添加55%的伤害加成 (0.55 = 55%)，使用乘法操作
+                AttributeModifier modifier = new AttributeModifier(
+                    GUN_DAMAGE_UUID,
+                    GUN_DAMAGE_NAME,
+                    0.55D,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+                );
+                gunDamageAttribute.addPermanentModifier(modifier);
             }
         }
     }
     
     /**
-     * 移除所有7种特定枪械伤害加成
+     * 移除枪械伤害加成
      */
-    private void removeAllDamageBonuses(Player player) {
+    private void removeGunDamageBonus(Player player) {
         var attributes = player.getAttributes();
+        var gunDamageAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+            )
+        );
         
-        for (String gunType : DAMAGE_UUIDS.keySet()) {
-            var damageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_" + gunType)
-                )
-            );
-            
-            if (damageAttribute != null) {
-                // 移除之前添加的修饰符
-                damageAttribute.removeModifier(DAMAGE_UUIDS.get(gunType));
-            }
+        if (gunDamageAttribute != null) {
+            // 移除之前添加的修饰符
+            gunDamageAttribute.removeModifier(GUN_DAMAGE_UUID);
         }
     }
     
@@ -147,7 +146,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
         if (slotContext.entity() instanceof Player player) {
-            applyAllDamageBonuses(player);
+            applyGunDamageBonus(player);
         }
     }
     
@@ -158,7 +157,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal("§6士兵特定挂牌已装备 - 所有7种特定枪械伤害+50%"),
+                net.minecraft.network.chat.Component.literal("§6士兵特定挂牌已装备 - 通用枪械伤害+55%（乘法）"),
                 true
             );
         }
@@ -178,15 +177,9 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果标题
+        // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.soldier_specific_tag.effect")
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
-        
-        // 添加7种特定枪械伤害加成的详细列表
-        for (String gunType : DAMAGE_DISPLAY_NAMES.keySet()) {
-            tooltip.add(Component.literal("  §7• §6+50% §7" + DAMAGE_DISPLAY_NAMES.get(gunType) + "伤害")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-        }
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -194,7 +187,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§9常见")
+        tooltip.add(Component.literal("§7稀有度：§f传说")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

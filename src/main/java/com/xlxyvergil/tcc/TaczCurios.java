@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc;
 
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
+import com.xlxyvergil.tcc.registries.ModLootModifiers;
 import com.xlxyvergil.tcc.registries.TaczItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +24,9 @@ public class TaczCurios {
         
         // 注册创造模式标签页
         TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        
+        // 注册战利品修饰符
+        ModLootModifiers.LOOT_MODIFIERS.register(modEventBus);
         
         // 注册事件处理器
         modEventBus.addListener(this::setup);

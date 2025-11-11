@@ -5,15 +5,15 @@
   
   "item.tcc.soldier_basic_tag": "Soldier Basic Tag",
   "item.tcc.soldier_basic_tag.desc": "A symbol of basic combat skills, providing enhanced base damage",
-  "item.tcc.soldier_basic_tag.effect": "Provides 50% bonus to all gun base damage",
+  "item.tcc.soldier_basic_tag.effect": "Provides 30% general gun damage bonus (multiplicative)",
   
   "item.tcc.soldier_specific_tag": "Soldier Specific Tag",
   "item.tcc.soldier_specific_tag.desc": "Specialized training for specific weapon types",
-  "item.tcc.soldier_specific_tag.effect": "Provides 50% bonus to specific gun damage (Sniper)",
+  "item.tcc.soldier_specific_tag.effect": "Provides 55% general gun damage bonus (multiplicative)",
   
   "item.tcc.heavy_caliber_tag": "Heavy Caliber Tag",
   "item.tcc.heavy_caliber_tag.desc": "Converts attack power into more powerful gun damage multiplier",
-  "item.tcc.heavy_caliber_tag.effect": "Converts 10% attack power to gun damage multiplier, but increases gun weight by 150%",
+  "item.tcc.heavy_caliber_tag.effect": "Increases 165% rifle, sniper, smg, lmg, launcher damage (additive), increases 55% inaccuracy (multiplicative)",
   
   "item.tcc.red_movement_tag": "Red Movement Tag",
   "item.tcc.red_movement_tag.desc": "Perfect combination of rapid movement and precise shooting",
@@ -33,11 +33,11 @@
   
   "item.tcc.despicable_acceleration": "Despicable Acceleration",
   "item.tcc.despicable_acceleration.desc": "None",
-  "item.tcc.despicable_acceleration.effect": "Increases 90% firing speed, reduces 15% general damage and all specific gun damage",
+  "item.tcc.despicable_acceleration.effect": "Increases 90% firing speed, reduces 15% general damage and all rifle, sniper, smg, lmg, launcher, pistol, shotgun damage",
   
   "item.tcc.merged_rifling": "Merged Rifling",
   "item.tcc.merged_rifling.desc": "None",
-  "item.tcc.merged_rifling.effect": "Increases 155% general damage and 25% movement speed while holding guns",
+  "item.tcc.merged_rifling.effect": "Increases 155% specific gun damage (additive) and 25% movement speed while holding guns, cannot be equipped with Rifling at the same time",
   
   "item.tcc.alloy_drill": "Alloy Drill",
   "item.tcc.alloy_drill.desc": "None",
@@ -49,11 +49,11 @@
   
   "item.tcc.blaze_storm": "Blaze Storm",
   "item.tcc.blaze_storm.desc": "Master the power of explosions, turning the battlefield into a hellfire",
-  "item.tcc.blaze_storm.effect": "Increase 24% explosion range (multiplicative), increase 24% explosion damage (multiplicative)",
+  "item.tcc.blaze_storm.effect": "Increase 24% explosion range (multiplicative), increase 24% explosion damage (multiplicative), cannot be equipped with Blaze Storm Prime at the same time",
   
   "item.tcc.blaze_storm_prime": "Blaze Storm Prime",
   "item.tcc.blaze_storm_prime.desc": "Ultimate explosion control ability, the flame king on the battlefield",
-  "item.tcc.blaze_storm_prime.effect": "Increase 66% explosion range (multiplicative), increase 66% explosion damage (multiplicative)",
+  "item.tcc.blaze_storm_prime.effect": "Increase 66% explosion range (multiplicative), increase 66% explosion damage (multiplicative), cannot be equipped with Blaze Storm at the same time",
   
   "item.tcc.ripping_prime": "Ripping Prime",
   "item.tcc.ripping_prime.desc": "Ultimate firing speed combined with powerful penetration ability",
@@ -61,7 +61,7 @@
   
   "item.tcc.close_combat_prime": "Close Combat Prime",
   "item.tcc.close_combat_prime.desc": "Ultimate enhancement for close combat",
-  "item.tcc.close_combat_prime.effect": "Increase 165% specific gun damage attribute (multiplicative)",
+  "item.tcc.close_combat_prime.effect": "Increase 165% shotgun damage (additive)",
   
   "item.tcc.evil_accuracy": "Evil Accuracy",
   "item.tcc.evil_accuracy.desc": "Ultimate control, reducing recoil while sacrificing firing speed",
@@ -73,5 +73,37 @@
   
   "item.tcc.ferocious_extension": "Ferocious Extension",
   "item.tcc.ferocious_extension.desc": "Let bullets fly farther to strike distant enemies",
-  "item.tcc.ferocious_extension.effect": "Increase 120% bullet range (multiplicative)"
+  "item.tcc.ferocious_extension.effect": "Increase 120% bullet range (multiplicative)",
+  
+  "item.tcc.rifling": "Rifling",
+  "item.tcc.rifling.desc": "Rifling technology that enhances specific gun damage",
+  "item.tcc.rifling.effect": "Increase 165% specific gun damage (additive), cannot be equipped with Merged Rifling at the same time",
+  
+  "item.tcc.close_range_shot": "Close Range Shot",
+  "item.tcc.close_range_shot.desc": "Ornament that enhances close combat",
+  "item.tcc.close_range_shot.effect": "Increase 90% shotgun damage",
+  
+  "item.tcc.heavy_firepower": "Heavy Firepower",
+  "item.tcc.heavy_firepower.desc": "Enhance pistol firepower, but affect accuracy",
+  "item.tcc.heavy_firepower.effect": "Increase 165% pistol damage, increase 55% inaccuracy",
+  
+  "item.tcc.wasp_stinger": "Wasp Stinger",
+  "item.tcc.wasp_stinger.desc": "Special ornament that enhances pistol damage",
+  "item.tcc.wasp_stinger.effect": "Increase 220% pistol damage",
+  
+  "item.tcc.prophecy_pact": "Prophecy Pact",
+  "item.tcc.prophecy_pact.desc": "Mysterious pact that enhances pistol damage",
+  "item.tcc.prophecy_pact.effect": "Increase 90% pistol damage",
+  
+  "item.tcc.malignant_spread": "Malignant Spread",
+  "item.tcc.malignant_spread.desc": "Enhance shotgun firepower, but affect accuracy",
+  "item.tcc.malignant_spread.effect": "Increase 165% shotgun damage, increase 55% inaccuracy",
+  
+  "item.tcc.chamber": "Chamber",
+  "item.tcc.chamber.desc": "Increase sniper rifle damage",
+  "item.tcc.chamber.effect": "When holding a sniper rifle, increases damage by 40% (multiplicative), cannot be equipped with Chamber Prime at the same time",
+  
+  "item.tcc.chamber_prime": "Chamber Prime",
+  "item.tcc.chamber_prime.desc": "Ultimate enhancement of sniper rifle damage",
+  "item.tcc.chamber_prime.effect": "When holding a sniper rifle, increases damage by 100% (multiplicative), cannot be equipped with Chamber at the same time"
 }
