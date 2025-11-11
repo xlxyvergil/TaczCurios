@@ -14,7 +14,7 @@ import java.util.UUID;
 
 /**
  * 极限速度饰品
- * 效果：提高60%弹药速度（加算）
+ * 效果：提高60%弹药速度（乘算）
  */
 public class LimitSpeed extends ItemBaseCurio {
     
@@ -73,11 +73,11 @@ public class LimitSpeed extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 提高60%弹药速度（加算）
+     * 提高60%弹药速度（乘算）
      */
     private void applyEffects(Player player) {
-        // 应用弹药速度加成 (60%加算)
-        applyAttributeModifier(player, "taa", "ammo_speed", 0.6, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.ADDITION);
+        // 应用弹药速度加成 (60%乘算)
+        applyAttributeModifier(player, "taa", "ammo_speed", 0.6, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
     /**

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 红-有-三饰品 - 提供50%持枪移动速度加成
+ * 红-有-三饰品 - 提供150%持枪移动速度加成
  * 通过TaczAttributeAdd的move_speed属性实现
  */
 public class RedMovementTag extends ItemBaseCurio {

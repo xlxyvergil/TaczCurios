@@ -18,13 +18,13 @@ import java.util.UUID;
 public class AlloyDrill extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID PIERCE_UUID = UUID.fromString("62345678-1234-1234-1234-123456789abc");
+    private static final UUID ARMOR_IGNORE_UUID = UUID.fromString("62345678-1234-1234-1234-123456789abc");
     
     // 修饰符名称
-    private static final String PIERCE_NAME = "tcc.alloy_drill.pierce";
+    private static final String ARMOR_IGNORE_NAME = "tcc.alloy_drill.armor_ignore";
     
     // 效果参数
-    private static final double PIERCE_BOOST = 2.0;       // 200%穿透能力提升
+    private static final double ARMOR_IGNORE_BOOST = 2.0;       // 200%护甲忽略能力提升
     
     public AlloyDrill(Properties properties) {
         super(properties);
@@ -37,7 +37,7 @@ public class AlloyDrill extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加穿透能力属性加成
+        // 给玩家添加护甲忽略属性加成
         if (slotContext.entity() instanceof Player player) {
             applyDrillEffects(player);
         }
@@ -50,7 +50,7 @@ public class AlloyDrill extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的穿透能力属性加成
+        // 移除玩家的护甲忽略属性加成
         if (slotContext.entity() instanceof Player player) {
             removeDrillEffects(player);
         }
@@ -66,30 +66,30 @@ public class AlloyDrill extends ItemBaseCurio {
     
     /**
      * 应用钻头效果
-     * 提升穿透能力
+     * 提升护甲忽略能力
      */
     private void applyDrillEffects(Player player) {
         var attributes = player.getAttributes();
         
-        // 应用穿透能力提升
-        var pierceAttribute = attributes.getInstance(
+        // 应用护甲忽略能力
+        var armorIgnoreAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "pierce")
+                new net.minecraft.resources.ResourceLocation("taa", "armor_ignore")
             )
         );
         
-        if (pierceAttribute != null) {
+        if (armorIgnoreAttribute != null) {
             // 检查是否已经存在相同的修饰符，如果存在则移除
-            pierceAttribute.removeModifier(PIERCE_UUID);
+            armorIgnoreAttribute.removeModifier(ARMOR_IGNORE_UUID);
             
-            // 添加200%的穿透能力加成
-            var pierceModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
-                PIERCE_UUID,
-                PIERCE_NAME,
-                PIERCE_BOOST,
-                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
+            // 添加200%的护甲忽略能力加成（乘法）
+            var armorIgnoreModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+                ARMOR_IGNORE_UUID,
+                ARMOR_IGNORE_NAME,
+                ARMOR_IGNORE_BOOST,
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_BASE
             );
-            pierceAttribute.addPermanentModifier(pierceModifier);
+            armorIgnoreAttribute.addPermanentModifier(armorIgnoreModifier);
         }
     }
     
@@ -99,15 +99,15 @@ public class AlloyDrill extends ItemBaseCurio {
     private void removeDrillEffects(Player player) {
         var attributes = player.getAttributes();
         
-        // 移除穿透能力加成
-        var pierceAttribute = attributes.getInstance(
+        // 移除护甲忽略能力加成
+        var armorIgnoreAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "pierce")
+                new net.minecraft.resources.ResourceLocation("taa", "armor_ignore")
             )
         );
         
-        if (pierceAttribute != null) {
-            pierceAttribute.removeModifier(PIERCE_UUID);
+        if (armorIgnoreAttribute != null) {
+            armorIgnoreAttribute.removeModifier(ARMOR_IGNORE_UUID);
         }
     }
     
@@ -130,7 +130,7 @@ public class AlloyDrill extends ItemBaseCurio {
         if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    "§6合金钻头已装备 - 穿透能力+200%"
+                    "§6合金钻头已装备 - 护甲忽略能力+200%"
                 ),
                 true
             );
