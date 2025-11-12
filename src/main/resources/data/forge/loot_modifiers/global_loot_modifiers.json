@@ -1,31 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "tcc:chamber_loot_modifier.json",
-    "tcc:chamber_prime_loot_modifier.json",
-    "tcc:soldier_basic_tag_loot_modifier.json",
-    "tcc:soldier_specific_tag_loot_modifier.json",
-    "tcc:heavy_caliber_tag_loot_modifier.json",
-    "tcc:red_movement_tag_loot_modifier.json",
-    "tcc:ural_wolf_tag_loot_modifier.json",
-    "tcc:heaven_fire_judgment_loot_modifier.json",
-    "tcc:heaven_fire_apocalypse_loot_modifier.json",
-    "tcc:despicable_acceleration_loot_modifier.json",
-    "tcc:merged_rifling_loot_modifier.json",
-    "tcc:alloy_drill_loot_modifier.json",
-    "tcc:careful_heart_loot_modifier.json",
-    "tcc:blaze_storm_loot_modifier.json",
-    "tcc:blaze_storm_prime_loot_modifier.json",
-    "tcc:ripping_prime_loot_modifier.json",
-    "tcc:close_combat_prime_loot_modifier.json",
-    "tcc:evil_accuracy_loot_modifier.json",
-    "tcc:limit_speed_loot_modifier.json",
-    "tcc:ferocious_extension_loot_modifier.json",
-    "tcc:rifling_loot_modifier.json",
-    "tcc:close_range_shot_loot_modifier.json",
-    "tcc:heavy_firepower_loot_modifier.json",
-    "tcc:wasp_stinger_loot_modifier.json",
-    "tcc:prophecy_pact_loot_modifier.json",
-    "tcc:malignant_spread_loot_modifier.json"
+    "tcc:tcc_curios_modifier.json"
   ]
 }

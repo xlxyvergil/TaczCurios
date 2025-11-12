@@ -5,34 +5,36 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-public class AddItemModifier extends LootModifier {
-    public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(() ->
+public class AddLootTableModifier extends LootModifier {
+    public static final Supplier<Codec<AddLootTableModifier>> CODEC = Suppliers.memoize(() ->
             RecordCodecBuilder.create(inst -> codecStart(inst)
-                    .and(ForgeRegistries.ITEMS.getCodec().fieldOf("item").forGetter(m -> m.item))
-                    .apply(inst, AddItemModifier::new)));
+                    .and(ResourceLocation.CODEC.fieldOf("lootTable").forGetter(m -> m.lootTable))
+                    .apply(inst, AddLootTableModifier::new)));
 
-    private final Item item;
+    private final ResourceLocation lootTable;
 
-    protected AddItemModifier(LootItemCondition[] conditionsIn, Item item) {
+    protected AddLootTableModifier(LootItemCondition[] conditionsIn, ResourceLocation lootTable) {
         super(conditionsIn);
-        this.item = item;
+        this.lootTable = lootTable;
     }
 
     @Nonnull
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        generatedLoot.add(new ItemStack(item));
+        LootTable table = context.getLevel().getServer().getLootData().getLootTable(lootTable);
+        ObjectArrayList<ItemStack> loot = new ObjectArrayList<>();
+        table.getRandomItemsRaw(context, loot::add);
+        generatedLoot.addAll(loot);
         return generatedLoot;
     }
 

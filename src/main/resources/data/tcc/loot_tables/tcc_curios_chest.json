@@ -1,0 +1,143 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "min": 1,
+        "max": 2
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 200,
+          "name": "tcc:soldier_basic_tag"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "tcc:soldier_specific_tag"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "tcc:heaven_fire_judgment"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "tcc:careful_heart"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "tcc:chamber_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "tcc:blaze_storm_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:chamber"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:despicable_acceleration"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:blaze_storm"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:heavy_caliber_tag"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:alloy_drill"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:evil_accuracy"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:rifling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:close_range_shot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:heavy_firepower"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:wasp_stinger"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:prophecy_pact"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:malignant_spread"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:merged_rifling"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:ripping_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 20,
+          "name": "tcc:close_combat_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 100,
+          "name": "tcc:red_movement_tag"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 100,
+          "name": "tcc:ural_wolf_tag"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 100,
+          "name": "tcc:limit_speed"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 100,
+          "name": "tcc:ferocious_extension"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:heaven_fire_apocalypse"
+        }
+      ]
+    }
+  ]
+}
