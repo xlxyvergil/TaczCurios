@@ -17,8 +17,8 @@
   "item.tcc.soldier_specific_tag.effect": "提供55%通用枪械伤害加成",
   
   "item.tcc.heavy_caliber_tag": "§6重口径",
-  "item.tcc.heavy_caliber_tag.desc": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度",
-  "item.tcc.heavy_caliber_tag.effect": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度",
+  "item.tcc.heavy_caliber_tag.desc": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，降低55%精准度",
+  "item.tcc.heavy_caliber_tag.effect": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，降低55%精准度",
   
   "item.tcc.red_movement_tag": "§b红-有-三",
   "item.tcc.red_movement_tag.desc": "快速移动与精准射击的完美结合",
@@ -90,7 +90,7 @@
   
   "item.tcc.heavy_firepower": "§6重装火力",
   "item.tcc.heavy_firepower.desc": "增强手枪火力，但影响精准度",
-  "item.tcc.heavy_firepower.effect": "提升165%手枪伤害，提高55%不精准度",
+  "item.tcc.heavy_firepower.effect": "提升165%手枪伤害，降低55%精准度",
   
   "item.tcc.wasp_stinger": "§b黄蜂蜇刺",
   "item.tcc.wasp_stinger.desc": "增强手枪伤害的特殊饰品",
@@ -102,7 +102,7 @@
   
   "item.tcc.malignant_spread": "§6恶性扩散",
   "item.tcc.malignant_spread.desc": "增强霰弹枪火力，但影响精准度",
-  "item.tcc.malignant_spread.effect": "提升165%霰弹枪伤害，提高55%不精准度",
+  "item.tcc.malignant_spread.effect": "提升165%霰弹枪伤害，降低55%精准度",
   
   "item.tcc.chamber": "§b膛室",
   "item.tcc.chamber.desc": "提升狙击枪伤害",
