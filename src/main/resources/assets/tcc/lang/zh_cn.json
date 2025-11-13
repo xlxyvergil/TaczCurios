@@ -3,6 +3,11 @@
   
   "curios.identifier.tcc_slot": "Tacz饰品栏",
   
+  "block.tcc.teshin_workbench": "泰辛工作台",
+  
+  "entity.minecraft.villager.teshin": "泰辛",
+  "entity.minecraft.villager.tcc.teshin": "泰辛",
+
   "item.tcc.soldier_basic_tag": "§9士兵基础挂牌",
   "item.tcc.soldier_basic_tag.desc": "基础作战技能的象征，佩戴者可获得更强的基础伤害",
   "item.tcc.soldier_basic_tag.effect": "提供30%通用枪械伤害加成",

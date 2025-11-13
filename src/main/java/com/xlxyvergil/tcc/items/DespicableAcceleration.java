@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 协劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
+ * 卑劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
  * 效果：射击速度+90%，通用伤害-15%，特定枪械伤害-15%
  */
 public class DespicableAcceleration extends ItemBaseCurio {

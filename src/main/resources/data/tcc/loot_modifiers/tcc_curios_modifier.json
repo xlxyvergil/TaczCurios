@@ -2,9 +2,8 @@
   "conditions": [
     {
       "condition": "minecraft:random_chance",
-      "chance": 0.15
+      "chance": 0.25
     }
   ],
-  "type": "tcc:add_loot_table_modifier",
-  "lootTable": "tcc:loot_tables/tcc_curios_chest.json"
+  "type": "tcc:tcc_curios_modifier"
 }

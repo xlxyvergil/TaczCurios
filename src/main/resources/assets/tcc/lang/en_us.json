@@ -3,6 +3,11 @@
   
   "curios.identifier.tcc_slot": "Tacz Curio Slot",
   
+  "block.tcc.teshin_workbench": "Teshin Workbench",
+  
+  "entity.minecraft.villager.teshin": "Teshin",
+  "entity.minecraft.villager.tcc.teshin": "Teshin",
+
   "item.tcc.soldier_basic_tag": "Soldier Basic Tag",
   "item.tcc.soldier_basic_tag.desc": "A symbol of basic combat skills, providing enhanced base damage",
   "item.tcc.soldier_basic_tag.effect": "Provides 30% general gun damage bonus (multiplicative)",

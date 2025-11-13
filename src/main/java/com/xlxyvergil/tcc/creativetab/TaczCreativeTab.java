@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.creativetab;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.registries.TaczItems;
+import com.xlxyvergil.tcc.registries.TaczBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -54,6 +55,8 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.MALIGNANT_SPREAD.get());
                 output.accept(TaczItems.CHAMBER.get());
                 output.accept(TaczItems.CHAMBER_PRIME.get());
+                // 添加工作方块
+                output.accept(TaczBlocks.TESHIN_WORKBENCH_ITEM.get());
             })
             .build());
 }
