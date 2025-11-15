@@ -30,11 +30,11 @@
   
   "item.tcc.heaven_fire_judgment": "§f天火圣裁",
   "item.tcc.heaven_fire_judgment.desc": "我将发动一次牛逼的攻击",
-  "item.tcc.heaven_fire_judgment.effect": "以当前生命值的50%作为倍率提升通用伤害，造成伤害后扣除50%当前生命值",
+  "item.tcc.heaven_fire_judgment.effect": "玩家血量高于30%时，提升325%通用枪械伤害，造成伤害后立即扣除30%当前生命值，然后每秒消耗5%最大生命值，持续5秒。玩家血量低于30%时，此饰品的全部效果都不生效",
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
   "item.tcc.heaven_fire_apocalypse.desc": "踏上前来",
-  "item.tcc.heaven_fire_apocalypse.effect": "以当前生命值的100%作为倍率提升通用伤害和爆炸伤害，+10爆炸范围，造成伤害后扣除100%当前生命值",
+  "item.tcc.heaven_fire_apocalypse.effect": "玩家血量为100%时，提升1000%通用枪械伤害，+10爆炸范围，提升1000%爆炸伤害。造成伤害后扣除100%当前生命值，并为周围32格内玩家提供15秒的100%通用枪械伤害加成",
   
   "item.tcc.despicable_acceleration": "§6卑劣加速",
   "item.tcc.despicable_acceleration.desc": "以降低通用伤害为代价换取极致的射击速度",

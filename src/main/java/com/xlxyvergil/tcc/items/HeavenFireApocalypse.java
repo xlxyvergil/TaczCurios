@@ -18,7 +18,8 @@ import java.util.UUID;
 
 /**
  * 天火劫灭 - 踏上前来
- * 效果：以当前玩家生命值的100%作为倍率提升通用伤害、爆炸范围和爆炸伤害，造成伤害后对玩家造成当前生命值100%的伤害
+ * 效果：玩家血量为100%，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage，
+ * 造成伤害后对玩家造成当前生命值100%的伤害，同时对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）。
  */
 @Mod.EventBusSubscriber(modid = "tcc")
 public class HeavenFireApocalypse extends ItemBaseCurio {
@@ -28,10 +29,18 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abd");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abe");
     
+    // 用于周围玩家的加成UUID
+    private static final UUID NEARBY_GUN_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abf");
+    
     // 修饰符名称
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";
     private static final String EXPLOSION_RADIUS_NAME = "tcc.heaven_fire_apocalypse.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
+    private static final String NEARBY_GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.nearby_gun_damage";
+    
+    // 用于追踪周围玩家加成效果的标记
+    private static final String NEARBY_BUFF_TAG = "HeavenFireApocalypse_NearbyBuff";
+    private static final String NEARBY_BUFF_DURATION_TAG = "HeavenFireApocalypse_NearbyBuff_Duration";
     
     public HeavenFireApocalypse(Properties properties) {
         super(properties);
@@ -83,29 +92,33 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 以玩家当前生命值的100%作为倍率提升通用伤害和爆炸伤害，固定增加10点爆炸范围
+     * 玩家血量为100%时，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage
      */
     private void applyEffects(Player player) {
-        // 获取玩家当前生命值
-        float currentHealth = player.getHealth();
+        // 检查玩家血量是否为100%（等于最大生命值）
+        float healthPercentage = player.getHealth() / player.getMaxHealth();
         
-        // 计算伤害倍率（当前生命值的100%）
-        double damageMultiplier = currentHealth * 1.0;
-        
-        // 应用通用枪械伤害加成
-        applyAttributeModifier(player, "taa", "bullet_gundamage", damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME);
-        
-        // 固定应用10点爆炸范围加成
-        applyAttributeModifier(player, "taa", "explosion_radius", 10.0, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
-        
-        // 应用爆炸伤害加成
-        applyAttributeModifier(player, "taa", "explosion_damage", damageMultiplier, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
+        if (healthPercentage >= 1.0) {
+            // 血量为100%时应用效果
+            
+            // 应用1000%通用枪械伤害加成
+            applyAttributeModifier(player, "taa", "bullet_gundamage", 10.0, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            
+            // 固定应用10点爆炸范围加成
+            applyAttributeModifier(player, "taa", "explosion_radius", 10.0, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
+            
+            // 应用1000%爆炸伤害加成
+            applyAttributeModifier(player, "taa", "explosion_damage", 10.0, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            // 血量不为100%时移除效果
+            removeEffects(player);
+        }
     }
     
     /**
      * 通用的属性修饰符应用方法
      */
-    private void applyAttributeModifier(Player player, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName) {
+    private void applyAttributeModifier(Player player, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName, AttributeModifier.Operation operation) {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
@@ -117,12 +130,12 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
             // 检查是否已经存在相同的修饰符，如果存在则移除
             attribute.removeModifier(uuid);
             
-            // 添加动态计算的伤害加成倍率
+            // 添加属性修饰符
             AttributeModifier modifier = new AttributeModifier(
                 uuid,
                 modifierName,
                 multiplier,
-                AttributeModifier.Operation.ADDITION
+                operation
             );
             attribute.addPermanentModifier(modifier);
         }
@@ -154,29 +167,14 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
-     */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效，动态更新基于生命值的加成
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
-    }
-    
-    /**
      * 当物品被装备时，显示提示信息
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
-            float currentHealth = player.getHealth();
-            double damageMultiplier = currentHealth * 1.0;
-            
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    String.format("§6天火劫灭已装备 - 伤害倍率+%.1f (基于%.1f生命值), 爆炸范围+10.0, 爆炸伤害+%.1f", 
-                        damageMultiplier, currentHealth, damageMultiplier)
+                    "§6天火劫灭已装备 - 血量为100%时生效：枪械伤害+1000%，爆炸范围+10，爆炸伤害+1000%"
                 ),
                 true
             );
@@ -222,6 +220,12 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
         if (source.getEntity() instanceof Player player) {
             // 检查玩家是否装备了天火劫灭
             if (hasHeavenFireApocalypseEquipped(player)) {
+                // 检查玩家血量是否为100%
+                float healthPercentage = player.getHealth() / player.getMaxHealth();
+                if (healthPercentage < 1.0) {
+                    return; // 血量不为100%时不生效
+                }
+                
                 // 造成伤害后对玩家造成当前生命值100%的伤害
                 float currentHealth = player.getHealth();
                 float healthToDeduct = currentHealth * 1.0f;
@@ -232,12 +236,103 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
                     // 显示扣除生命值的提示
                     player.displayClientMessage(
                         net.minecraft.network.chat.Component.literal(
-                            String.format("§4天火劫灭反噬 - 生命值-%.1f", healthToDeduct)
+                            "§4天火劫灭反噬 - 生命值-100%当前生命值"
                         ),
                         true
                     );
                 }
+                
+                // 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
+                applyBuffToNearbyPlayers(player);
             }
+        }
+    }
+    
+    /**
+     * 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
+     */
+    private static void applyBuffToNearbyPlayers(Player player) {
+        // 获取周围32格内的玩家
+        List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(32.0D));
+        
+        for (Player nearbyPlayer : nearbyPlayers) {
+            // 排除自己
+            if (nearbyPlayer == player) continue;
+            
+            // 给周围玩家添加属性修饰符
+            var attributes = nearbyPlayer.getAttributes();
+            var gunDamageAttribute = attributes.getInstance(
+                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+                )
+            );
+            
+            if (gunDamageAttribute != null) {
+                // 移除已存在的修饰符
+                gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
+                
+                // 添加100%的伤害加成（加算）
+                AttributeModifier modifier = new AttributeModifier(
+                    NEARBY_GUN_DAMAGE_UUID,
+                    NEARBY_GUN_DAMAGE_NAME,
+                    1.0,
+                    AttributeModifier.Operation.ADDITION
+                );
+                gunDamageAttribute.addPermanentModifier(modifier);
+                
+                // 设置持续时间标记（15秒 = 300 ticks）
+                net.minecraft.nbt.CompoundTag persistentData = nearbyPlayer.getPersistentData();
+                persistentData.putInt(NEARBY_BUFF_DURATION_TAG, 300);
+            }
+        }
+        
+        // 显示提示信息
+        player.displayClientMessage(
+            net.minecraft.network.chat.Component.literal(
+                "§6天火劫灭 - 为周围玩家提供15秒的100%枪械伤害加成"
+            ),
+            true
+        );
+    }
+    
+    /**
+     * 每tick检查并移除周围玩家的加成效果
+     */
+    public static void tickNearbyPlayerBuffs(Player player) {
+        net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
+        if (persistentData.contains(NEARBY_BUFF_DURATION_TAG)) {
+            int duration = persistentData.getInt(NEARBY_BUFF_DURATION_TAG);
+            
+            if (duration > 0) {
+                // 减少持续时间
+                persistentData.putInt(NEARBY_BUFF_DURATION_TAG, duration - 1);
+            } else {
+                // 移除加成效果
+                var attributes = player.getAttributes();
+                var gunDamageAttribute = attributes.getInstance(
+                    net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                        new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+                    )
+                );
+                
+                if (gunDamageAttribute != null) {
+                    gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
+                }
+                
+                // 清除标记
+                persistentData.remove(NEARBY_BUFF_DURATION_TAG);
+            }
+        }
+    }
+    
+    /**
+     * 当玩家持有时，每tick更新效果
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        // 确保效果持续生效，检查血量条件
+        if (slotContext.entity() instanceof Player player) {
+            applyEffects(player);
         }
     }
     

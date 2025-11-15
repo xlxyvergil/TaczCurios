@@ -18,7 +18,8 @@ import java.util.UUID;
 
 /**
  * 天火圣裁 - 我将发动一次牛逼的攻击
- * 效果：以当前玩家生命值的50%作为倍率提升通用伤害，造成伤害后扣除玩家当前生命值的50%
+ * 效果：玩家血量高于30%时，提升玩家325%的bullet_gundamage，造成伤害后玩家立即扣除30%血量，
+ * 然后每秒消耗最大HP的5%，持续5秒。玩家血量低于30%时，此饰品的全部效果都不生效。
  */
 @Mod.EventBusSubscriber(modid = "tcc")
 public class HeavenFireJudgment extends ItemBaseCurio {
@@ -28,6 +29,9 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     
     // 修饰符名称
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_judgment.gun_damage";
+    
+    // 添加一个用于追踪持续伤害效果的标记
+    private static final String DAMAGE_TAG = "HeavenFireJudgment_Damage";
     
     public HeavenFireJudgment(Properties properties) {
         super(properties);
@@ -79,14 +83,19 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     
     /**
      * 应用枪械伤害加成
-     * 以玩家当前生命值的50%作为倍率提升通用伤害
+     * 玩家血量高于30%时，提升玩家325%的bullet_gundamage
      */
     private void applyGunDamageBonus(Player player) {
-        // 获取玩家当前生命值
-        float currentHealth = player.getHealth();
+        // 检查玩家血量是否高于30%
+        float healthPercentage = player.getHealth() / player.getMaxHealth();
+        if (healthPercentage <= 0.3) {
+            // 血量低于30%时不生效，移除加成
+            removeGunDamageBonus(player);
+            return;
+        }
         
-        // 计算伤害倍率（当前生命值的50%）
-        double damageMultiplier = currentHealth * 0.5;
+        // 计算伤害倍率（325%）
+        double damageMultiplier = 3.25;
         
         // 使用TaczAttributeAdd中的通用枪械伤害属性
         var attributes = player.getAttributes();
@@ -100,12 +109,12 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             // 检查是否已经存在相同的修饰符，如果存在则移除
             gunDamageAttribute.removeModifier(GUN_DAMAGE_UUID);
             
-            // 添加动态计算的伤害加成倍率
+            // 添加325%的伤害加成
             AttributeModifier modifier = new AttributeModifier(
                 GUN_DAMAGE_UUID,
                 GUN_DAMAGE_NAME,
                 damageMultiplier,
-                AttributeModifier.Operation.ADDITION
+                AttributeModifier.Operation.MULTIPLY_BASE
             );
             gunDamageAttribute.addPermanentModifier(modifier);
         }
@@ -129,29 +138,14 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
-     */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效，动态更新基于生命值的伤害加成
-        if (slotContext.entity() instanceof Player player) {
-            applyGunDamageBonus(player);
-        }
-    }
-    
-    /**
      * 当物品被装备时，显示提示信息
      */
     @Override
     public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
-            float currentHealth = player.getHealth();
-            double damageMultiplier = currentHealth * 0.5;
-            
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    String.format("§6天火圣裁已装备 - 枪械伤害倍率+%.1f (基于%.1f生命值)", 
-                        damageMultiplier, currentHealth)
+                    "§6天火圣裁已装备 - 血量高于30%时枪械伤害+325%"
                 ),
                 true
             );
@@ -197,21 +191,69 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         if (source.getEntity() instanceof Player player) {
             // 检查玩家是否装备了天火圣裁
             if (hasHeavenFireJudgmentEquipped(player)) {
-                // 造成伤害后扣除玩家当前生命值的50%
-                float currentHealth = player.getHealth();
-                float healthToDeduct = currentHealth * 0.5f;
+                // 检查玩家血量是否高于30%
+                float healthPercentage = player.getHealth() / player.getMaxHealth();
+                if (healthPercentage <= 0.3) {
+                    return; // 血量低于30%时不生效
+                }
                 
+                // 立即扣除30%血量
+                float healthToDeduct = player.getHealth() * 0.3f;
                 if (healthToDeduct > 0) {
                     player.hurt(player.damageSources().magic(), healthToDeduct);
-                    
-                    // 显示扣除生命值的提示
-                    player.displayClientMessage(
-                        net.minecraft.network.chat.Component.literal(
-                            String.format("§4天火圣裁反噬 - 生命值-%.1f", healthToDeduct)
-                        ),
-                        true
-                    );
                 }
+                
+                // 设置持续伤害效果：每秒消耗最大生命值的5%，持续5秒
+                // 这里我们通过给玩家添加一个NBT标签来跟踪效果
+                net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
+                persistentData.putInt(DAMAGE_TAG, 5); // 持续5秒
+                
+                // 显示效果触发提示
+                player.displayClientMessage(
+                    net.minecraft.network.chat.Component.literal(
+                        "§4天火圣裁反噬 - 立即损失30%当前生命值，随后每秒损失5%最大生命值，持续5秒"
+                    ),
+                    true
+                );
+            }
+        }
+    }
+    
+    /**
+     * 每tick检查并应用持续伤害效果
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        if (slotContext.entity() instanceof Player player) {
+            // 检查玩家血量是否高于30%
+            float healthPercentage = player.getHealth() / player.getMaxHealth();
+            if (healthPercentage <= 0.3) {
+                // 血量低于30%时移除加成并清除持续伤害效果
+                removeGunDamageBonus(player);
+                player.getPersistentData().remove(DAMAGE_TAG);
+                return;
+            }
+            
+            net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
+            int duration = persistentData.getInt(DAMAGE_TAG);
+            
+            if (duration > 0) {
+                // 每秒触发一次伤害（20 ticks = 1秒）
+                if (player.tickCount % 20 == 0) {
+                    // 计算最大生命值的5%
+                    float maxHealth = player.getMaxHealth();
+                    float healthToDeduct = maxHealth * 0.05f;
+                    
+                    if (healthToDeduct > 0) {
+                        player.hurt(player.damageSources().magic(), healthToDeduct);
+                    }
+                    
+                    // 减少持续时间
+                    persistentData.putInt(DAMAGE_TAG, duration - 1);
+                }
+            } else {
+                // 确保属性加成持续生效
+                applyGunDamageBonus(player);
             }
         }
     }

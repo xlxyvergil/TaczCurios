@@ -30,11 +30,11 @@
   
   "item.tcc.heaven_fire_judgment": "Heaven Fire Judgment",
   "item.tcc.heaven_fire_judgment.desc": "I will launch an awesome attack",
-  "item.tcc.heaven_fire_judgment.effect": "Uses 50% of current health as multiplier to boost general damage, deducts 50% current health after dealing damage",
+  "item.tcc.heaven_fire_judgment.effect": "When player's health is above 30%, increases 325% general gun damage. After dealing damage, immediately deducts 30% current health, then consumes 5% max health per second for 5 seconds. When player's health is below 30%, all effects are disabled",
   
   "item.tcc.heaven_fire_apocalypse": "Heaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse.desc": "Step forward",
-  "item.tcc.heaven_fire_apocalypse.effect": "Uses 100% of current health as multiplier to boost general damage, explosion range and explosion damage, deducts 100% current health after dealing damage",
+  "item.tcc.heaven_fire_apocalypse.effect": "When player's health is at 100%, increases 1000% general gun damage, +10 explosion radius, increases 1000% explosion damage. After dealing damage, deducts 100% current health and provides 15 seconds of 100% general gun damage bonus (additive) to players within 32 blocks",
   
   "item.tcc.despicable_acceleration": "Despicable Acceleration",
   "item.tcc.despicable_acceleration.desc": "None",
