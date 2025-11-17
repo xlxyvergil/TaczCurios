@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+
+
 /**
  * 极恶精准饰品
  * 效果：降低90%后坐力，降低36%射速（都加算）
@@ -77,7 +79,7 @@ public class EvilAccuracy extends ItemBaseCurio {
      * 应用所有效果加成
      * 降低90%后坐力，降低36%射速（都加算）
      */
-    private void applyEffects(Player player) {
+    public void applyEffects(Player player) {
         // 应用后坐力降低 (90%加算)
         applyAttributeModifier(player, "taa", "recoil", 0.9, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);
         
@@ -114,7 +116,7 @@ new ResourceLocation(namespace, attributeName)
     /**
      * 移除所有效果加成
      */
-    private void removeEffects(Player player) {
+    public void removeEffects(Player player) {
         removeAttributeModifier(player, "taa", "recoil", RECOIL_UUID);
         removeAttributeModifier(player, "taa", "rounds_per_minute", ROUNDS_PER_MINUTE_UUID);
     }

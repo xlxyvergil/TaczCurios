@@ -8,9 +8,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -36,6 +39,9 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         "tcc.heavy_caliber.lmg_damage",
         "tcc.heavy_caliber.launcher_damage"
     };
+    
+    // 支持的枪械类型
+    private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     // 效果参数
     private static final double DAMAGE_BOOST = 1.65;       // 165%特定枪械伤害提升（加算）
@@ -92,7 +98,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
      * 应用重口径效果
      * 提升特定枪械伤害（加算）和不精准度（乘算）
      */
-    private void applyHeavyCaliberEffects(Player player) {
+    public void applyHeavyCaliberEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型
@@ -130,7 +136,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         // 应用不精准度提升（乘算）
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_inaccuracy")
+                new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
             )
         );
         
@@ -138,21 +144,25 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             // 移除已存在的修饰符
             inaccuracyAttribute.removeModifier(DAMAGE_UUIDS[0]);
             
-            // 添加55%的不精准度加成（乘算）
-            var inaccuracyModifier = new AttributeModifier(
-                DAMAGE_UUIDS[0],
-                "tcc.heavy_caliber.inaccuracy",
-                INACCURACY_BOOST,
-                AttributeModifier.Operation.MULTIPLY_BASE
-            );
-            inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
+            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用不精准度加成
+            if (isHoldingValidGunType(player)) {
+                // 添加55%的不精准度加成（乘算）
+                var inaccuracyModifier = new AttributeModifier(
+                    DAMAGE_UUIDS[0],
+                    "tcc.heavy_caliber.inaccuracy",
+                    INACCURACY_BOOST,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+                );
+                inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
+            }
         }
+        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
      * 移除重口径效果
      */
-    private void removeHeavyCaliberEffects(Player player) {
+    public void removeHeavyCaliberEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型
@@ -180,13 +190,34 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         // 移除不精准度加成
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_inaccuracy")
+                new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
             )
         );
         
         if (inaccuracyAttribute != null) {
             inaccuracyAttribute.removeModifier(DAMAGE_UUIDS[0]);
         }
+    }
+    
+    /**
+     * 检查玩家是否持有有效的枪械类型
+     */
+    private boolean isHoldingValidGunType(Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun != null) {
+            // 获取枪械ID
+            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            
+            // 通过TimelessAPI获取枪械索引
+            return TimelessAPI.getCommonGunIndex(gunId)
+                .map(CommonGunIndex::getType)
+                .map(VALID_GUN_TYPES::contains)
+                .orElse(false);
+        }
+        
+        return false;
     }
     
     /**

@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+
+
 /**
  * 预言契约 - 提升手枪90%伤害
  * 效果：手枪伤害+90%（加算）

@@ -1,14 +1,12 @@
 package com.xlxyvergil.tcc.handlers;
 
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
+import com.xlxyvergil.tcc.items.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -75,9 +73,8 @@ public class TaczEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            Player player = event.player;
             // 检查并更新天火劫灭对周围玩家的buff
-            HeavenFireApocalypse.tickNearbyPlayerBuffs(player);
+            HeavenFireApocalypse.tickNearbyPlayerBuffs(event.player);
         }
     }
 }

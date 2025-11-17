@@ -45,7 +45,7 @@ public class UralWolfTag extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 每tick检查并确保爆头倍率效果生效
-        if (slotContext.entity() instanceof Player) {
+        if (slotContext.entity() instanceof Player player) {
             ensureHeadshotMultiplierEffect(slotContext.entity());
         }
     }

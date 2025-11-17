@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.handlers.CuriosItemEventHandler;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
@@ -20,7 +22,10 @@ public class ItemBaseCurio extends Item implements ICurioItem {
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        // 可以在这里添加装备时的逻辑
+        // 如果是服务端玩家，通知事件处理器
+        if (slotContext.entity() instanceof ServerPlayer serverPlayer) {
+            CuriosItemEventHandler.onCurioEquip(serverPlayer, stack);
+        }
     }
     
     /**
@@ -28,7 +33,10 @@ public class ItemBaseCurio extends Item implements ICurioItem {
      */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        // 可以在这里添加卸下时的逻辑
+        // 如果是服务端玩家，通知事件处理器
+        if (slotContext.entity() instanceof ServerPlayer serverPlayer) {
+            CuriosItemEventHandler.onCurioUnequip(serverPlayer, stack);
+        }
     }
     
     /**

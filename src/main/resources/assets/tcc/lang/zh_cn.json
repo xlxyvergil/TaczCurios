@@ -9,11 +9,11 @@
   "entity.minecraft.villager.tcc.teshin": "泰辛",
 
   "item.tcc.soldier_basic_tag": "§9士兵基础挂牌",
-  "item.tcc.soldier_basic_tag.desc": "基础作战技能的象征，佩戴者可获得更强的基础伤害",
+  "item.tcc.soldier_basic_tag.desc": "提供30%通用枪械伤害加成",
   "item.tcc.soldier_basic_tag.effect": "提供30%通用枪械伤害加成",
   
   "item.tcc.soldier_specific_tag": "§9士兵特定挂牌",
-  "item.tcc.soldier_specific_tag.desc": "针对通用枪械应用能力的提升",
+  "item.tcc.soldier_specific_tag.desc": "提供55%通用枪械伤害加成",
   "item.tcc.soldier_specific_tag.effect": "提供55%通用枪械伤害加成",
   
   "item.tcc.heavy_caliber_tag": "§6重口径",
@@ -110,5 +110,5 @@
   
   "item.tcc.chamber_prime": "§f膛室Prime",
   "item.tcc.chamber_prime.desc": "极致提升狙击枪伤害",
-  "item.tcc.chamber_prime.effect": "对性提升100%狙击枪伤害（乘算），无法与膛室同时装备"
+  "item.tcc.chamber_prime.effect": "对性提升100%狙击枪伤害，无法与膛室同时装备"
 }

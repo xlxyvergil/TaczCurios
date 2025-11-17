@@ -16,6 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+
+
 /**
  * 天火劫灭 - 踏上前来
  * 效果：玩家血量为100%，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage，
@@ -39,7 +41,6 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     private static final String NEARBY_GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.nearby_gun_damage";
     
     // 用于追踪周围玩家加成效果的标记
-    private static final String NEARBY_BUFF_TAG = "HeavenFireApocalypse_NearbyBuff";
     private static final String NEARBY_BUFF_DURATION_TAG = "HeavenFireApocalypse_NearbyBuff_Duration";
     
     public HeavenFireApocalypse(Properties properties) {
@@ -94,7 +95,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
      * 应用所有效果加成
      * 玩家血量为100%时，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage
      */
-    private void applyEffects(Player player) {
+    public void applyEffects(Player player) {
         // 检查玩家血量是否为100%（等于最大生命值）
         float healthPercentage = player.getHealth() / player.getMaxHealth();
         
@@ -144,7 +145,7 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
     /**
      * 移除所有效果加成
      */
-    private void removeEffects(Player player) {
+    public void removeEffects(Player player) {
         removeAttributeModifier(player, "taa", "bullet_gundamage", GUN_DAMAGE_UUID);
         removeAttributeModifier(player, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
         removeAttributeModifier(player, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);

@@ -73,7 +73,23 @@ public class TaczCurios
         
         // 注册事件处理程序
         MinecraftForge.EVENT_BUS.register(TaczEventHandler.class);
+        
+        // 在客户端环境中注册客户端事件处理程序
+        registerClientEventsSafely();
+    }
 
+    private void registerClientEventsSafely() {
+        try {
+            // 尝试注册客户端事件，如果在服务器上会因为缺少客户端类而失败
+            Class<?> clientEventHandlerClass = Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
+            MinecraftForge.EVENT_BUS.register(clientEventHandlerClass);
+        } catch (ClassNotFoundException e) {
+            // 在服务器环境中忽略，因为客户端类不可用
+            LOGGER.info("ClientEventHandler not found, running on dedicated server");
+        } catch (Exception e) {
+            // 其他异常也忽略
+            LOGGER.info("Failed to register ClientEventHandler: " + e.getMessage());
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

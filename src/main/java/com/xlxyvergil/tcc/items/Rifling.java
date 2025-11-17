@@ -113,7 +113,7 @@ public class Rifling extends ItemBaseCurio {
      * 应用膛线效果
      * 提升特定枪械伤害（加算）
      */
-    private void applyRiflingEffects(Player player) {
+    public void applyRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型
@@ -147,12 +147,13 @@ public class Rifling extends ItemBaseCurio {
                 gunDamageAttribute.addPermanentModifier(gunDamageModifier);
             }
         }
+        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
      * 移除膛线效果
      */
-    private void removeRiflingEffects(Player player) {
+    public void removeRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型

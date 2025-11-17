@@ -10,6 +10,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -103,13 +105,20 @@ public class Chamber extends ItemBaseCurio {
      * 应用膛室效果
      * 提升狙击枪伤害（乘算）
      */
-    private void applyChamberEffect(Player player) {
+    public void applyChamberEffect(Player player) {
+        // 检查玩家主手是否持有狙击枪
+        if (!isHoldingSniper(player)) {
+            // 如果不持有狙击枪，则移除效果
+            removeChamberEffect(player);
+            return;
+        }
+        
         var attributes = player.getAttributes();
         
         // 获取狙击枪伤害属性
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_sniper")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
@@ -118,7 +127,7 @@ public class Chamber extends ItemBaseCurio {
             gunDamageAttribute.removeModifier(DAMAGE_UUID);
         }
         
-        // 直接应用效果，不需要检查是否手持狙击枪
+        // 应用效果
         if (gunDamageAttribute != null) {
             // 添加40%的伤害加成（乘算）
             var gunDamageModifier = new AttributeModifier(
@@ -134,19 +143,40 @@ public class Chamber extends ItemBaseCurio {
     /**
      * 移除膛室效果
      */
-    private void removeChamberEffect(Player player) {
+    public void removeChamberEffect(Player player) {
         var attributes = player.getAttributes();
         
         // 获取狙击枪伤害属性
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_sniper")
+                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
         if (gunDamageAttribute != null) {
             gunDamageAttribute.removeModifier(DAMAGE_UUID);
         }
+    }
+    
+    /**
+     * 检查玩家是否持有狙击枪
+     */
+    private boolean isHoldingSniper(Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun != null) {
+            // 获取枪械ID
+            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            
+            // 通过TimelessAPI获取枪械索引
+            return TimelessAPI.getCommonGunIndex(gunId)
+                .map(CommonGunIndex::getType)
+                .map(type -> type.equals("sniper"))
+                .orElse(false);
+        }
+        
+        return false;
     }
     
     /**
@@ -159,6 +189,8 @@ public class Chamber extends ItemBaseCurio {
             applyChamberEffect(player);
         }
     }
+    
+
     
     /**
      * 当物品被装备时，显示提示信息

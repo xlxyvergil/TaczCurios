@@ -8,6 +8,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -82,7 +84,7 @@ public class MalignantSpread extends ItemBaseCurio {
      * 应用恶性扩散效果
      * 提升霰弹枪伤害（加算）和不精准度（乘算）
      */
-    private void applyMalignantSpreadEffects(Player player) {
+    public void applyMalignantSpreadEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 获取霰弹枪伤害属性
@@ -112,7 +114,7 @@ public class MalignantSpread extends ItemBaseCurio {
         // 应用不精准度提升（乘算）
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_inaccuracy")
+                new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
             )
         );
         
@@ -120,21 +122,25 @@ public class MalignantSpread extends ItemBaseCurio {
             // 移除已存在的修饰符
             inaccuracyAttribute.removeModifier(INACCURACY_UUID);
             
-            // 添加55%的不精准度加成（乘算）
-            var inaccuracyModifier = new AttributeModifier(
-                INACCURACY_UUID,
-                INACCURACY_NAME,
-                INACCURACY_BOOST,
-                AttributeModifier.Operation.MULTIPLY_BASE
-            );
-            inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
+            // 检查玩家是否持有霰弹枪，只有持有霰弹枪时才应用不精准度加成
+            if (isHoldingShotgun(player)) {
+                // 添加55%的不精准度加成（乘算）
+                var inaccuracyModifier = new AttributeModifier(
+                    INACCURACY_UUID,
+                    INACCURACY_NAME,
+                    INACCURACY_BOOST,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+                );
+                inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
+            }
         }
+        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
      * 移除恶性扩散效果
      */
-    private void removeMalignantSpreadEffects(Player player) {
+    public void removeMalignantSpreadEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 获取霰弹枪伤害属性
@@ -151,13 +157,34 @@ public class MalignantSpread extends ItemBaseCurio {
         // 移除不精准度加成
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_inaccuracy")
+                new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
             )
         );
         
         if (inaccuracyAttribute != null) {
             inaccuracyAttribute.removeModifier(INACCURACY_UUID);
         }
+    }
+    
+    /**
+     * 检查玩家是否持有霰弹枪
+     */
+    private boolean isHoldingShotgun(Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun != null) {
+            // 获取枪械ID
+            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            
+            // 通过TimelessAPI获取枪械索引
+            return TimelessAPI.getCommonGunIndex(gunId)
+                .map(CommonGunIndex::getType)
+                .map(type -> type.equals("shotgun"))
+                .orElse(false);
+        }
+        
+        return false;
     }
     
     /**

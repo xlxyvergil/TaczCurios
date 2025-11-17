@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Set;
 
+
+
 /**
  * 并合膛线 - 提升特定枪械155%伤害，提高25%持枪移动速度
  * 效果：特定枪械伤害+155%（加算），持枪移动速度+25%（加算）
@@ -123,7 +125,7 @@ public class MergedRifling extends ItemBaseCurio {
      * 应用膛线效果
      * 提升特定枪械伤害和持枪移动速度（都使用加算）
      */
-    private void applyRiflingEffects(Player player) {
+    public void applyRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型
@@ -183,6 +185,7 @@ public class MergedRifling extends ItemBaseCurio {
             );
             movementSpeedAttribute.addPermanentModifier(movementSpeedModifier);
         }
+        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
@@ -209,7 +212,7 @@ public class MergedRifling extends ItemBaseCurio {
     /**
      * 移除膛线效果
      */
-    private void removeRiflingEffects(Player player) {
+    public void removeRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型
