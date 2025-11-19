@@ -26,6 +26,8 @@ import com.xlxyvergil.tcc.items.ProphecyPact;
 import com.xlxyvergil.tcc.items.MalignantSpread;
 import com.xlxyvergil.tcc.items.Chamber;
 import com.xlxyvergil.tcc.items.ChamberPrime;
+import com.xlxyvergil.tcc.items.CoreFusion;
+import com.xlxyvergil.tcc.items.RiftSilver;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -194,4 +196,12 @@ public class TaczItems {
         () -> new ChamberPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
+    
+    // 内融核心 - 通过熔炉燃烧饰品获得
+    public static final RegistryObject<Item> CORE_FUSION = ITEMS.register("core_fusion", 
+        () -> new CoreFusion(new Item.Properties()));
+    
+    // 裂隙碎银 - 用于随机抽取饰品
+    public static final RegistryObject<Item> RIFT_SILVER = ITEMS.register("rift_silver", 
+        () -> new RiftSilver(new Item.Properties()));
 }

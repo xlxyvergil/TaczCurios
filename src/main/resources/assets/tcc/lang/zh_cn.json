@@ -110,5 +110,13 @@
   
   "item.tcc.chamber_prime": "§f膛室Prime",
   "item.tcc.chamber_prime.desc": "极致提升狙击枪伤害",
-  "item.tcc.chamber_prime.effect": "对性提升100%狙击枪伤害，无法与膛室同时装备"
+  "item.tcc.chamber_prime.effect": "对性提升100%狙击枪伤害，无法与膛室同时装备",
+  
+  "item.tcc.core_fusion": "内融核心",
+  "item.tcc.core_fusion.desc": "通过熔炉燃烧饰品获得的核心材料",
+  "item.tcc.core_fusion.effect": "用于制作高级饰品的材料",
+  
+  "item.tcc.rift_silver": "§d裂隙碎银",
+  "item.tcc.rift_silver.desc": "蕴含裂隙能量的神秘材料",
+  "item.tcc.rift_silver.effect": "右键使用可随机获得一个饰品"
 }

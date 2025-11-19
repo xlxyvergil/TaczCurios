@@ -55,6 +55,9 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.MALIGNANT_SPREAD.get());
                 output.accept(TaczItems.CHAMBER.get());
                 output.accept(TaczItems.CHAMBER_PRIME.get());
+                // 添加材料物品
+                output.accept(TaczItems.CORE_FUSION.get());
+                output.accept(TaczItems.RIFT_SILVER.get());
                 // 添加工作方块
                 output.accept(TaczBlocks.TESHIN_WORKBENCH_ITEM.get());
             })

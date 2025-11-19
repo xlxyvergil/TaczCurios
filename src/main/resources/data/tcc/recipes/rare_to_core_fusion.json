@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "tcc:rare_curios"
+    }
+  ],
+  "result": {
+    "item": "tcc:core_fusion",
+    "count": 5
+  }
+}

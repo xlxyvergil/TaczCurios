@@ -196,9 +196,15 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                 // 检查玩家血量是否高于30%
                 float healthPercentage = player.getHealth() / player.getMaxHealth();
                 if (healthPercentage <= 0.3) {
-                    return; // 血量低于30%时不生效
+                    return; // 血量低于或等于30%时不生效
                 }
-                
+
+                // 计算扣除30%当前血量后的血量百分比
+                float healthAfterDeduction = (player.getHealth() - player.getHealth() * 0.3f) / player.getMaxHealth();
+                if (healthAfterDeduction <= 0.3) {
+                    return; // 扣除30%血量后如果低于或等于30%，则不触发效果
+                }
+
                 // 立即扣除30%血量
                 float healthToDeduct = player.getHealth() * 0.3f;
                 if (healthToDeduct > 0) {
@@ -242,16 +248,24 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             if (duration > 0) {
                 // 每秒触发一次伤害（20 ticks = 1秒）
                 if (player.tickCount % 20 == 0) {
-                    // 计算最大生命值的5%
+                    // 检查扣除5%最大生命值后是否会低于30%
                     float maxHealth = player.getMaxHealth();
+                    float currentHealth = player.getHealth();
                     float healthToDeduct = maxHealth * 0.05f;
+                    float healthAfterDeduction = (currentHealth - healthToDeduct) / maxHealth;
                     
-                    if (healthToDeduct > 0) {
-                        player.hurt(player.damageSources().magic(), healthToDeduct);
+                    if (healthAfterDeduction > 0.3) {
+                        // 只有扣除后血量仍高于30%才造成伤害
+                        if (healthToDeduct > 0) {
+                            player.hurt(player.damageSources().magic(), healthToDeduct);
+                        }
+                        
+                        // 减少持续时间
+                        persistentData.putInt(DAMAGE_TAG, duration - 1);
+                    } else {
+                        // 如果会造成血量低于30%，则清除效果
+                        persistentData.remove(DAMAGE_TAG);
                     }
-                    
-                    // 减少持续时间
-                    persistentData.putInt(DAMAGE_TAG, duration - 1);
                 }
             } else {
                 // 确保属性加成持续生效

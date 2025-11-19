@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "tcc:red_movement_tag",
+    "tcc:merged_rifling",
+    "tcc:limit_speed",
+    "tcc:ferocious_extension",
+    "tcc:rifling",
+    "tcc:close_range_shot",
+    "tcc:wasp_stinger"
+  ]
+}

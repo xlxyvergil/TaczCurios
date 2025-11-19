@@ -44,45 +44,30 @@ public class TaczVillagers {
      * 初始化村民交易
      */
     public static void registerTrades() {
-        // 第1级交易 - 8个绿宝石，1个物品，最多使用12次，获得2点经验（村民升级到2级需要10点经验）
+        // 第1级交易 - 8个绿宝石，1个物品，最多使用32次，获得15点经验
         List<VillagerTrades.ItemListing> tradesLevel1 = new ArrayList<>();
-        tradesLevel1.add(new ItemsForEmeralds(TaczItems.SOLDIER_BASIC_TAG.get(), 8, 1, 12, 2));
-        tradesLevel1.add(new ItemsForEmeralds(TaczItems.PROPHECY_PACT.get(), 8, 1, 12, 2));
+        tradesLevel1.add(new ItemsForEmeralds(TaczItems.SOLDIER_BASIC_TAG.get(), 8, 1, 32, 15));
+        tradesLevel1.add(new ItemsForEmeralds(TaczItems.PROPHECY_PACT.get(), 8, 1, 32, 15));
         
-        // 第2级交易 - 24个绿宝石，1个物品，最多使用12次，获得5点经验（村民升级到3级需要70点经验）
+        // 第2级交易 - 16个绿宝石，1个物品，最多使用32次，获得30点经验
         List<VillagerTrades.ItemListing> tradesLevel2 = new ArrayList<>();
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.RED_MOVEMENT_TAG.get(), 16, 1, 12, 5));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.URAL_WOLF_TAG.get(), 16, 1, 12, 5));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.LIMIT_SPEED.get(), 24, 1, 12, 5));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.FEROCIOUS_EXTENSION.get(), 16, 1, 12, 5));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.RIFLING.get(), 16, 1, 12, 5));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.WASP_STINGER.get(), 16, 1, 12, 5));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.CLOSE_RANGE_SHOT.get(), 16, 1, 12, 5));
+        tradesLevel2.add(new ItemsForEmeralds(TaczItems.RED_MOVEMENT_TAG.get(), 16, 1, 32, 30));
+        tradesLevel2.add(new ItemsForEmeralds(TaczItems.URAL_WOLF_TAG.get(), 16, 1, 32, 30));
         
-        // 第3级交易 - 48个绿宝石，1个物品，最多使用12次，获得10点经验（村民升级到4级需要150点经验）
+        // 第3级交易 - 16个绿宝石，1个物品，最多使用32次，获得30点经验
         List<VillagerTrades.ItemListing> tradesLevel3 = new ArrayList<>();
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.CHAMBER.get(), 32, 1, 12, 10));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.DESPICABLE_ACCELERATION.get(), 32, 1, 12, 10));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.HEAVY_CALIBER_TAG.get(), 32, 1, 12, 10));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.HEAVY_FIREPOWER.get(), 32, 1, 12, 10));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.EVIL_ACCURACY.get(), 32, 1, 12, 10));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.MALIGNANT_SPREAD.get(), 32, 1, 12, 10));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.ALLOY_DRILL.get(), 32, 1, 12, 10));
+        tradesLevel3.add(new ItemsForEmeralds(TaczItems.LIMIT_SPEED.get(), 16, 1, 32, 30));
+        tradesLevel3.add(new ItemsForEmeralds(TaczItems.FEROCIOUS_EXTENSION.get(), 16, 1, 32, 30));
         
-        // 第4级交易 - 64个绿宝石，1个物品，最多使用12次，获得15点经验（村民升级到5级需要250点经验）
+        // 第4级交易 - 16个绿宝石，1个物品，最多使用32次，获得30点经验
         List<VillagerTrades.ItemListing> tradesLevel4 = new ArrayList<>();
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.BLAZE_STORM.get(), 48, 1, 12, 15));
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.CLOSE_COMBAT_PRIME.get(), 48, 1, 12, 15));
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.RIPPING_PRIME.get(), 48, 1, 12, 15));
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.MERGED_RIFLING.get(), 48, 1, 12, 15));
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.SOLDIER_SPECIFIC_TAG.get(), 48, 1, 12, 15));
+        tradesLevel4.add(new ItemsForEmeralds(TaczItems.WASP_STINGER.get(), 16, 1, 32, 30));
+        tradesLevel4.add(new ItemsForEmeralds(TaczItems.CLOSE_RANGE_SHOT.get(), 16, 1, 32, 30));
         
-        // 第5级交易 - 12个绿宝石块(相当于108个绿宝石)，1个物品，最多使用12次，获得30点经验
+        // 第5级交易 - 裂隙碎银24个绿宝石，膛线16个绿宝石，1个物品，最多使用32次，获得30点经验
         List<VillagerTrades.ItemListing> tradesLevel5 = new ArrayList<>();
-        tradesLevel5.add(new ItemsForEmeralds(TaczItems.BLAZE_STORM_PRIME.get(), 64, 1, 12, 30));
-        tradesLevel5.add(new ItemsForEmeralds(TaczItems.CHAMBER_PRIME.get(), 64, 1, 12, 30));
-        tradesLevel5.add(new ItemsForEmeralds(TaczItems.HEAVEN_FIRE_JUDGMENT.get(), 64, 1, 12, 30));
-        tradesLevel5.add(new ItemsForEmeralds(TaczItems.CAREFUL_HEART.get(), 64, 1, 12, 30));
+        tradesLevel5.add(new ItemsForEmeralds(TaczItems.RIFLING.get(), 16, 1, 32, 30));
+        tradesLevel5.add(new ItemsForEmeralds(TaczItems.RIFT_SILVER.get(), 24, 1, 32, 30));
         
         // 注册所有交易到Teshin职业
         VillagerTrades.TRADES.put(TESHIN.get(), toIntMap(ImmutableMap.of(
@@ -93,20 +78,7 @@ public class TaczVillagers {
             5, tradesLevel5.toArray(new VillagerTrades.ItemListing[0])
         )));
     }
-    
-    /**
-     * 创建一个特殊的交易映射，使所有交易都能显示
-     */
-    private static Int2ObjectMap<VillagerTrades.ItemListing[]> createFullTradesMap(Object... levelAndTrades) {
-        ImmutableMap.Builder<Integer, VillagerTrades.ItemListing[]> builder = ImmutableMap.builder();
-        for (int i = 0; i < levelAndTrades.length; i += 2) {
-            int level = (Integer) levelAndTrades[i];
-            VillagerTrades.ItemListing[] trades = (VillagerTrades.ItemListing[]) levelAndTrades[i + 1];
-            builder.put(level, trades);
-        }
-        return toIntMap(builder.build());
-    }
-    
+
     /**
      * 自定义交易类，替代无法访问的ItemsForEmeralds
      */

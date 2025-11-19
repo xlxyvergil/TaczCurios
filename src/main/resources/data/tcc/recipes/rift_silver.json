@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "tcc:core_fusion"
+    }
+  },
+  "result": {
+    "item": "tcc:rift_silver",
+    "count": 1
+  }
+}

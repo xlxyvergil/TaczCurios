@@ -110,5 +110,13 @@
   
   "item.tcc.chamber_prime": "Chamber Prime",
   "item.tcc.chamber_prime.desc": "Ultimate enhancement of sniper rifle damage",
-  "item.tcc.chamber_prime.effect": "When holding a sniper rifle, increases damage by 100% (multiplicative), cannot be equipped with Chamber at the same time"
+  "item.tcc.chamber_prime.effect": "When holding a sniper rifle, increases damage by 100% (multiplicative), cannot be equipped with Chamber at the same time",
+  
+  "item.tcc.core_fusion": "Core Fusion",
+  "item.tcc.core_fusion.desc": "Core material obtained by smelting ornaments in a furnace",
+  "item.tcc.core_fusion.effect": "Material used to craft advanced ornaments",
+  
+  "item.tcc.rift_silver": "Rift Silver",
+  "item.tcc.rift_silver.desc": "Mysterious material containing rift energy",
+  "item.tcc.rift_silver.effect": "Right-click to randomly obtain an ornament"
 }
