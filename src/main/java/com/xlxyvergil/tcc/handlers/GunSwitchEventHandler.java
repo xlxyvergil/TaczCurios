@@ -13,7 +13,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 
 import java.util.Optional;
 
-@Mod.EventBusSubscriber(modid = TaczCurios.MODID)
+@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GunSwitchEventHandler {
     
     @SubscribeEvent

@@ -1,6 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "tcc:tcc_curios_modifier.json"
+    "tcc:loot_modifiers/tcc_curios_modifier.json"
   ]
 }
