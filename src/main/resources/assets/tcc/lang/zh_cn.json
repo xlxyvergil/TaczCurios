@@ -118,5 +118,6 @@
   
   "item.tcc.rift_silver": "§d裂隙碎银",
   "item.tcc.rift_silver.desc": "蕴含裂隙能量的神秘材料",
-  "item.tcc.rift_silver.effect": "右键使用可随机获得一个饰品"
+  "item.tcc.rift_silver.effect": "右键使用可随机获得一个饰品",
+  "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。"
 }

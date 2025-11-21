@@ -89,7 +89,7 @@ public class LimitSpeed extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation(namespace, attributeName)
+                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
             )
         );
         
@@ -122,7 +122,7 @@ public class LimitSpeed extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation(namespace, attributeName)
+                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
             )
         );
         

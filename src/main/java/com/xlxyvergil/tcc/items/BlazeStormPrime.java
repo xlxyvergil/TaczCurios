@@ -103,7 +103,7 @@ public class BlazeStormPrime extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-new ResourceLocation(namespace, attributeName)
+ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
             )
         );
         
@@ -137,7 +137,7 @@ new ResourceLocation(namespace, attributeName)
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation(namespace, attributeName)
+                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
             )
         );
         

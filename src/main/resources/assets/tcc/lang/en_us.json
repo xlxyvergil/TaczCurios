@@ -118,5 +118,6 @@
   
   "item.tcc.rift_silver": "Rift Silver",
   "item.tcc.rift_silver.desc": "Mysterious material containing rift energy",
-  "item.tcc.rift_silver.effect": "Right-click to randomly obtain an ornament"
+  "item.tcc.rift_silver.effect": "Right-click to randomly obtain an ornament",
+  "item.tcc.rift_silver.usage": "Right-click to randomly obtain an ornament"
 }

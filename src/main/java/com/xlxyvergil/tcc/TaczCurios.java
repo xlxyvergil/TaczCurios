@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc;
 
 import com.mojang.logging.LogUtils;
-import com.xlxyvergil.tcc.loot.ModLootModifiers;
+import com.xlxyvergil.tcc.handlers.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
@@ -19,7 +19,7 @@ public class TaczCurios
     // 在一个公共位置定义mod id，供所有地方引用
     public static final String MODID = "tcc";
     // 直接引用slf4j日志记录器
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public TaczCurios()
     {
@@ -35,13 +35,13 @@ public class TaczCurios
         TaczPoiTypes.POI_TYPES.register(modEventBus);
         TaczVillagers.PROFESSIONS.register(modEventBus);
         TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
-        ModLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(modEventBus);
         //TaczAttributes.ATTRIBUTES.register(modEventBus);
         //TaczSounds.SOUNDS.register(modEventBus);
 
         // 为我们感兴趣的服务器和其他游戏事件注册自己
         MinecraftForge.EVENT_BUS.register(this);
-        // 移除了对TaczEventHandler的注册，因为相关功能已注释且不再使用
+        // 注册战利品表事件处理器
+        MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
         
         // 安全地注册客户端事件处理器
         registerClientEventsSafely();

@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = mod_version
@@ -159,6 +160,9 @@ tasks.named('processResources', ProcessResources).configure {
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
+    
+    // Set duplicates strategy to include to handle duplicate resources
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
