@@ -26,6 +26,16 @@
     "tcc:prophecy_pact",
     "tcc:malignant_spread",
     "tcc:chamber",
-    "tcc:chamber_prime"
+    "tcc:chamber_prime",
+    "tcc:exhaust_reload",
+    "tcc:corrupt_magazine",
+    "tcc:split_chamber",
+    "tcc:tactical_reload",
+    "tcc:overloaded_magazine",
+    "tcc:infernal_chamber",
+    "tcc:sustained_fire",
+    "tcc:infected_magazine",
+    "tcc:deadly_surge",
+    "tcc:bullet_spread"
   ]
 }

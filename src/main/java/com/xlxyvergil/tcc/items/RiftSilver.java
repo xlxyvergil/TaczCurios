@@ -1,7 +1,15 @@
 package com.xlxyvergil.tcc.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.xlxyvergil.tcc.TaczCurios;
+
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -14,13 +22,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class RiftSilver extends Item {
     
@@ -40,6 +41,9 @@ public class RiftSilver extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        
+        // 增加使用统计
+        player.awardStat(Stats.ITEM_USED.get(this));
         
         if (!world.isClientSide && world instanceof ServerLevel serverLevel) {
             // 先检查战利品表是否可用，确保可以获取物品
@@ -78,13 +82,15 @@ public class RiftSilver extends Item {
                     TaczCurios.LOGGER.info("RiftSilver final selected item: {} with description ID: {} and count: {}", 
                         selectedStack.getItem().toString(), selectedStack.getItem().getDescriptionId(), selectedStack.getCount());
                     
+                    // 直接将物品添加到玩家背包
+                    player.getInventory().placeItemBackInInventory(selectedStack);
+                    
                     // 消耗掉使用的裂隙碎银
-                    stack.shrink(1);
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
                     
-                    // 直接将物品掉落在玩家脚下
-                    player.drop(selectedStack, false);
-                    
-                    TaczCurios.LOGGER.info("RiftSilver successfully dropped item at player feet: {}", selectedStack.getItem().getDescriptionId());
+                    TaczCurios.LOGGER.info("RiftSilver successfully added item to inventory: {}", selectedStack.getItem().getDescriptionId());
                     return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
                 } else {
                     // 没有找到合适的物品

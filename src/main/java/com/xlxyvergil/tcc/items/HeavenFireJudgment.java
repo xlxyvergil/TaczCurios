@@ -20,8 +20,8 @@ import java.util.UUID;
 
 /**
  * 天火圣裁 - 我将发动一次牛逼的攻击
- * 效果：玩家血量高于30%时，提升玩家325%的bullet_gundamage，造成伤害后玩家立即扣除30%血量，
- * 然后每秒消耗最大HP的5%，持续5秒。玩家血量低于30%时，此饰品的全部效果都不生效。
+ * 效果：玩家血量高于40%时，提升玩家325%的bullet_gundamage，造成伤害后玩家立即扣除30%血量，
+ * 然后每秒消耗最大HP的5%，持续5秒。玩家血量低于40%时，此饰品的全部效果都不生效。
  */
 @Mod.EventBusSubscriber(modid = "tcc")
 public class HeavenFireJudgment extends ItemBaseCurio {
@@ -88,10 +88,10 @@ public class HeavenFireJudgment extends ItemBaseCurio {
      * 玩家血量高于30%时，提升玩家325%的bullet_gundamage
      */
     private void applyGunDamageBonus(Player player) {
-        // 检查玩家血量是否高于30%
+        // 检查玩家血量是否高于40%
         float healthPercentage = player.getHealth() / player.getMaxHealth();
-        if (healthPercentage <= 0.3) {
-            // 血量低于30%时不生效，移除加成
+        if (healthPercentage <= 0.4) {
+            // 血量低于40%时不生效，移除加成
             removeGunDamageBonus(player);
             return;
         }
@@ -147,7 +147,7 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         if (slotContext.entity() instanceof Player player) {
             player.displayClientMessage(
                 net.minecraft.network.chat.Component.literal(
-                    "§6天火圣裁已装备 - 血量高于30%时枪械伤害+325%"
+                    "§6天火圣裁已装备 - 血量高于40%时枪械伤害+325%"
                 ),
                 true
             );
@@ -201,8 +201,8 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
 
                 // 计算扣除30%当前血量后的血量百分比
                 float healthAfterDeduction = (player.getHealth() - player.getHealth() * 0.3f) / player.getMaxHealth();
-                if (healthAfterDeduction <= 0.3) {
-                    return; // 扣除30%血量后如果低于或等于30%，则不触发效果
+                if (healthAfterDeduction <= 0.4) {
+                    return; // 扣除30%血量后如果低于或等于40%，则不触发效果
                 }
 
                 // 立即扣除30%血量
@@ -233,10 +233,10 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
-            // 检查玩家血量是否高于30%
+            // 检查玩家血量是否高于40%
             float healthPercentage = player.getHealth() / player.getMaxHealth();
-            if (healthPercentage <= 0.3) {
-                // 血量低于30%时移除加成并清除持续伤害效果
+            if (healthPercentage <= 0.4) {
+                // 血量低于40%时移除加成并清除持续伤害效果
                 removeGunDamageBonus(player);
                 player.getPersistentData().remove(DAMAGE_TAG);
                 return;
@@ -254,7 +254,7 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                     float healthToDeduct = maxHealth * 0.05f;
                     float healthAfterDeduction = (currentHealth - healthToDeduct) / maxHealth;
                     
-                    if (healthAfterDeduction > 0.3) {
+                    if (healthAfterDeduction > 0.4) {
                         // 只有扣除后血量仍高于30%才造成伤害
                         if (healthToDeduct > 0) {
                             player.hurt(player.damageSources().magic(), healthToDeduct);
@@ -263,7 +263,7 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                         // 减少持续时间
                         persistentData.putInt(DAMAGE_TAG, duration - 1);
                     } else {
-                        // 如果会造成血量低于30%，则清除效果
+                        // 如果会造成血量低于40%，则清除效果
                         persistentData.remove(DAMAGE_TAG);
                     }
                 }

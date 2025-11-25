@@ -55,6 +55,19 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.MALIGNANT_SPREAD.get());
                 output.accept(TaczItems.CHAMBER.get());
                 output.accept(TaczItems.CHAMBER_PRIME.get());
+                // 新增的三个饰品
+                output.accept(TaczItems.EXHAUST_RELOAD.get());
+                output.accept(TaczItems.CORRUPT_MAGAZINE.get());
+                output.accept(TaczItems.SPLIT_CHAMBER.get());
+                // 霰弹枪饰品
+                output.accept(TaczItems.TACTICAL_RELOAD.get());
+                output.accept(TaczItems.OVERLOADED_MAGAZINE.get());
+                output.accept(TaczItems.INFERNAL_CHAMBER.get());
+                // 手枪饰品
+                output.accept(TaczItems.SUSTAINED_FIRE.get());
+                output.accept(TaczItems.INFECTED_MAGAZINE.get());
+                output.accept(TaczItems.DEADLY_SURGE.get());
+                output.accept(TaczItems.BULLET_SPREAD.get());
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());
                 output.accept(TaczItems.RIFT_SILVER.get());

@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "tcc:soldier_basic_tag",
-    "tcc:prophecy_pact"
+    "tcc:prophecy_pact",
+    "tcc:exhaust_reload"
   ]
 }

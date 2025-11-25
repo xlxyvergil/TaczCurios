@@ -26,8 +26,20 @@ import com.xlxyvergil.tcc.items.ProphecyPact;
 import com.xlxyvergil.tcc.items.MalignantSpread;
 import com.xlxyvergil.tcc.items.Chamber;
 import com.xlxyvergil.tcc.items.ChamberPrime;
+import com.xlxyvergil.tcc.items.ExhaustReload;
+import com.xlxyvergil.tcc.items.CorruptMagazine;
+import com.xlxyvergil.tcc.items.SplitChamber;
 import com.xlxyvergil.tcc.items.CoreFusion;
 import com.xlxyvergil.tcc.items.RiftSilver;
+// 霰弹枪饰品
+import com.xlxyvergil.tcc.items.TacticalReload;
+import com.xlxyvergil.tcc.items.OverloadedMagazine;
+import com.xlxyvergil.tcc.items.InfernalChamber;
+// 手枪饰品
+import com.xlxyvergil.tcc.items.SustainedFire;
+import com.xlxyvergil.tcc.items.InfectedMagazine;
+import com.xlxyvergil.tcc.items.DeadlySurge;
+import com.xlxyvergil.tcc.items.BulletSpread;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -196,6 +208,66 @@ public class TaczItems {
         () -> new ChamberPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
+    
+    // 耗竭装填 - 提升30%装填速度
+    public static final RegistryObject<Item> EXHAUST_RELOAD = ITEMS.register("exhaust_reload", 
+        () -> new ExhaustReload(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 腐败弹匣 - 提升66%弹匣容量，降低33%装填速度
+    public static final RegistryObject<Item> CORRUPT_MAGAZINE = ITEMS.register("corrupt_magazine", 
+        () -> new CorruptMagazine(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 分裂膛室 - 提升90%弹头数量
+    public static final RegistryObject<Item> SPLIT_CHAMBER = ITEMS.register("split_chamber", 
+        () -> new SplitChamber(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 战术上膛 - 提升60%装填速度（仅限霰弹枪）
+    public static final RegistryObject<Item> TACTICAL_RELOAD = ITEMS.register("tactical_reload", 
+        () -> new TacticalReload(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+    
+    // 过载弹匣 - 提升60%弹匣容量，降低18%装填速度（仅限霰弹枪）
+    public static final RegistryObject<Item> OVERLOADED_MAGAZINE = ITEMS.register("overloaded_magazine", 
+        () -> new OverloadedMagazine(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 地狱弹膛 - 提升120%弹头数量（仅限霰弹枪）
+    public static final RegistryObject<Item> INFERNAL_CHAMBER = ITEMS.register("infernal_chamber", 
+        () -> new InfernalChamber(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 持续火力 - 提升48%装填速度（仅限手枪）
+    public static final RegistryObject<Item> SUSTAINED_FIRE = ITEMS.register("sustained_fire", 
+        () -> new SustainedFire(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 感染弹匣 - 提升60%弹匣容量，降低30%装填速度（仅限手枪）
+    public static final RegistryObject<Item> INFECTED_MAGAZINE = ITEMS.register("infected_magazine", 
+        () -> new InfectedMagazine(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 致命洪流 - 提升60%射速和60%弹头数量（仅限手枪）
+    public static final RegistryObject<Item> DEADLY_SURGE = ITEMS.register("deadly_surge", 
+        () -> new DeadlySurge(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 弹头扩散 - 提升120%弹头数量（仅限手枪）
+    public static final RegistryObject<Item> BULLET_SPREAD = ITEMS.register("bullet_spread", 
+        () -> new BulletSpread(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
     
     // 内融核心 - 通过熔炉燃烧饰品获得
     public static final RegistryObject<Item> CORE_FUSION = ITEMS.register("core_fusion", 

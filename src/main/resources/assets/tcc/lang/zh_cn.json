@@ -30,11 +30,23 @@
   
   "item.tcc.heaven_fire_judgment": "§f天火圣裁",
   "item.tcc.heaven_fire_judgment.desc": "我将发动一次牛逼的攻击",
-  "item.tcc.heaven_fire_judgment.effect": "玩家血量高于30%时，提升325%通用枪械伤害，造成伤害后立即扣除30%当前生命值，然后每秒消耗5%最大生命值，持续5秒。玩家血量低于30%时，此饰品的全部效果都不生效",
+  "item.tcc.heaven_fire_judgment.effect": "玩家血量高于40%时，提升325%通用枪械伤害，造成伤害后立即扣除30%当前生命值，然后每秒消耗5%最大生命值，持续5秒。玩家血量低于40%时，此饰品的全部效果都不生效",
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
   "item.tcc.heaven_fire_apocalypse.desc": "踏上前来",
   "item.tcc.heaven_fire_apocalypse.effect": "玩家血量为100%时，提升1000%通用枪械伤害，+10爆炸范围，提升1000%爆炸伤害。造成伤害后扣除100%当前生命值，并为周围32格内玩家提供15秒的100%通用枪械伤害加成",
+  
+  "item.tcc.exhaust_reload": "§f耗竭装填",
+  "item.tcc.exhaust_reload.desc": "快速高效的装填技术",
+  "item.tcc.exhaust_reload.effect": "提升30%步枪、狙击枪、冲锋枪、机枪、发射器装填速度",
+  
+  "item.tcc.corrupt_magazine": "§6腐败弹匣",
+  "item.tcc.corrupt_magazine.desc": "容量更大但装填更慢的弹匣",
+  "item.tcc.corrupt_magazine.effect": "提升66%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量，降低33%装填速度",
+  
+  "item.tcc.split_chamber": "§6分裂膛室",
+  "item.tcc.split_chamber.desc": "使单发子弹分裂成多发的技术",
+  "item.tcc.split_chamber.effect": "提升90%步枪、狙击枪、冲锋枪、机枪、发射器弹头数量",
   
   "item.tcc.despicable_acceleration": "§6卑劣加速",
   "item.tcc.despicable_acceleration.desc": "以降低通用伤害为代价换取极致的射击速度",
@@ -119,5 +131,33 @@
   "item.tcc.rift_silver": "§d裂隙碎银",
   "item.tcc.rift_silver.desc": "蕴含裂隙能量的神秘材料",
   "item.tcc.rift_silver.effect": "右键使用可随机获得一个饰品",
-  "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。"
+  "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。",
+
+  "item.tcc.tactical_reload": "§9战术上膛",
+  "item.tcc.tactical_reload.desc": "快速高效的装填技术",
+  "item.tcc.tactical_reload.effect": "提升60%霰弹枪装填速度",
+
+  "item.tcc.overloaded_magazine": "§6过载弹匣",
+  "item.tcc.overloaded_magazine.desc": "容量更大但装填更慢的弹匣",
+  "item.tcc.overloaded_magazine.effect": "提升60%霰弹枪弹匣容量，降低18%装填速度",
+
+  "item.tcc.infernal_chamber": "§6地狱弹膛",
+  "item.tcc.infernal_chamber.desc": "使单发子弹分裂成多发的技术",
+  "item.tcc.infernal_chamber.effect": "提升120%霰弹枪弹头数量",
+
+  "item.tcc.sustained_fire": "§f持续火力",
+  "item.tcc.sustained_fire.desc": "稳定的火力输出保障",
+  "item.tcc.sustained_fire.effect": "提升48%手枪装填速度",
+
+  "item.tcc.infected_magazine": "§6感染弹匣",
+  "item.tcc.infected_magazine.desc": "容量更大但装填更慢的弹匣",
+  "item.tcc.infected_magazine.effect": "提升60%手枪弹匣容量，降低30%装填速度",
+
+  "item.tcc.deadly_surge": "§6致命洪流",
+  "item.tcc.deadly_surge.desc": "高射速配合多弹头的致命组合",
+  "item.tcc.deadly_surge.effect": "提升60%手枪射速，提升60%弹头数量",
+
+  "item.tcc.bullet_spread": "§6弹头扩散",
+  "item.tcc.bullet_spread.desc": "使单发子弹分裂成多发的技术",
+  "item.tcc.bullet_spread.effect": "提升120%手枪弹头数量"
 }

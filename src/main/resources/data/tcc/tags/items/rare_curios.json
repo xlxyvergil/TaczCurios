@@ -9,6 +9,8 @@
     "tcc:evil_accuracy",
     "tcc:heavy_firepower",
     "tcc:malignant_spread",
-    "tcc:chamber"
+    "tcc:chamber",
+    "tcc:corrupt_magazine",
+    "tcc:split_chamber"
   ]
 }

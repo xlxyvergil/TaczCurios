@@ -1,0 +1,251 @@
+package com.xlxyvergil.tcc.items;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.SlotContext;
+import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.resource.index.CommonGunIndex;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+/**
+ * 腐败弹匣 - +66%弹匣容量，-33%装填速度
+ * 效果：提升66%弹匣容量（乘算），降低33%装填速度（乘算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ */
+public class CorruptMagazine extends ItemBaseCurio {
+    
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    private static final UUID MAGAZINE_UUID = UUID.fromString("22345678-1234-1234-1234-123456789ab1");
+    private static final UUID RELOAD_UUID = UUID.fromString("32345678-1234-1234-1234-123456789ab1");
+    
+    // 修饰符名称
+    private static final String MAGAZINE_NAME = "tcc.corrupt_magazine.ammo_capacity";
+    private static final String RELOAD_NAME = "tcc.corrupt_magazine.reload_speed";
+    
+    // 支持的枪械类型
+    private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
+    
+    // 效果参数
+    private static final double MAGAZINE_BOOST = 0.66;       // 66%弹匣容量提升（乘算）
+    private static final double RELOAD_PENALTY = -0.33;      // 33%装填速度降低（乘算）
+    
+    public CorruptMagazine(Properties properties) {
+        super(properties);
+    }
+    
+    /**
+     * 当饰品被装备时调用
+     */
+    @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        super.onEquip(slotContext, prevStack, stack);
+        
+        // 给玩家添加属性修改
+        if (slotContext.entity() instanceof Player player) {
+            applyCorruptMagazineEffects(player);
+        }
+    }
+    
+    /**
+     * 当饰品被卸下时调用
+     */
+    @Override
+    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        super.onUnequip(slotContext, newStack, stack);
+        
+        // 移除玩家的属性修改
+        if (slotContext.entity() instanceof Player player) {
+            removeCorruptMagazineEffects(player);
+        }
+    }
+    
+    /**
+     * 检查是否可以装备到指定插槽
+     */
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        // 检查是否装备在TCC饰品槽位
+        return slotContext.identifier().equals("tcc_slot");
+    }
+    
+    /**
+     * 当物品在Curios插槽中时被右键点击
+     */
+    @Override
+    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        return canEquip(slotContext, stack);
+    }
+    
+    /**
+     * 应用腐败弹匣效果
+     * 提升弹匣容量（乘算）并降低装填速度（乘算）
+     */
+    public void applyCorruptMagazineEffects(Player player) {
+        var attributes = player.getAttributes();
+        
+        // 弹匣容量属性（不带枪械类型）
+        var magazineAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
+            )
+        );
+        
+        // 装填速度属性（不带枪械类型）
+        var reloadAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
+            )
+        );
+        
+        // 应用弹匣容量提升（乘算）
+        if (magazineAttribute != null) {
+            // 检查是否已经存在相同的修饰符，如果存在则移除
+            magazineAttribute.removeModifier(MAGAZINE_UUID);
+            
+            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+            if (isHoldingValidGunType(player)) {
+                // 添加66%的弹匣容量加成（乘算）
+                var magazineModifier = new AttributeModifier(
+                    MAGAZINE_UUID,
+                    MAGAZINE_NAME,
+                    MAGAZINE_BOOST,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+                );
+                magazineAttribute.addPermanentModifier(magazineModifier);
+            }
+        }
+        
+        // 应用装填速度降低（乘算）
+        if (reloadAttribute != null) {
+            // 检查是否已经存在相同的修饰符，如果存在则移除
+            reloadAttribute.removeModifier(RELOAD_UUID);
+            
+            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+            if (isHoldingValidGunType(player)) {
+                // 添加33%的装填速度降低（乘算）
+                var reloadModifier = new AttributeModifier(
+                    RELOAD_UUID,
+                    RELOAD_NAME,
+                    RELOAD_PENALTY,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+                );
+                reloadAttribute.addPermanentModifier(reloadModifier);
+            }
+        }
+        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
+    }
+    
+    /**
+     * 移除腐败弹匣效果
+     */
+    public void removeCorruptMagazineEffects(Player player) {
+        var attributes = player.getAttributes();
+        
+        // 弹匣容量属性（不带枪械类型）
+        var magazineAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
+            )
+        );
+        
+        // 装填速度属性（不带枪械类型）
+        var reloadAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
+            )
+        );
+        
+        // 移除弹匣容量加成
+        if (magazineAttribute != null) {
+            magazineAttribute.removeModifier(MAGAZINE_UUID);
+        }
+        
+        // 移除装填速度降低
+        if (reloadAttribute != null) {
+            reloadAttribute.removeModifier(RELOAD_UUID);
+        }
+    }
+    
+    /**
+     * 检查玩家是否持有有效的枪械类型
+     */
+    private boolean isHoldingValidGunType(Player player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun != null) {
+            // 获取枪械ID
+            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            
+            // 通过TimelessAPI获取枪械索引
+            return TimelessAPI.getCommonGunIndex(gunId)
+                .map(CommonGunIndex::getType)
+                .map(VALID_GUN_TYPES::contains)
+                .orElse(false);
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 当玩家持有时，每tick更新效果
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        // 确保效果持续生效
+        if (slotContext.entity() instanceof Player player) {
+            applyCorruptMagazineEffects(player);
+        }
+    }
+    
+    /**
+     * 当物品被装备时，显示提示信息
+     */
+    @Override
+    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
+        if (slotContext.entity() instanceof Player player) {
+            player.displayClientMessage(
+                net.minecraft.network.chat.Component.literal(
+                    "§6腐败弹匣已装备 - 提升66%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量（乘算），降低33%装填速度（乘算）"
+                ),
+                true
+            );
+        }
+    }
+    
+    /**
+     * 添加物品的悬浮提示信息（鼠标悬停时显示）
+     */
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        
+        // 添加物品描述
+        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.desc")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        
+        // 添加空行分隔
+        tooltip.add(Component.literal(""));
+        
+        // 添加装备效果
+        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect")
+            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        
+        // 添加饰品槽位信息
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        
+        // 添加稀有度提示
+        tooltip.add(Component.literal("§7稀有度：§6稀有")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+}
