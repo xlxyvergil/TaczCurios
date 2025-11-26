@@ -151,20 +151,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
             applyGunDamageBonus(player);
         }
     }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal("§6士兵特定挂牌已装备 - 通用枪械伤害+55%（乘法）"),
-                true
-            );
-        }
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -191,5 +178,13 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§f传说")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyGunDamageBonus(player);
     }
 }

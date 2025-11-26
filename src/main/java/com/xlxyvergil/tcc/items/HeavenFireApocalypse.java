@@ -123,7 +123,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-new net.minecraft.resources.ResourceLocation(namespace, attributeName)
+                new net.minecraft.resources.ResourceLocation(namespace, attributeName)
             )
         );
         
@@ -164,21 +164,6 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
         
         if (attribute != null) {
             attribute.removeModifier(uuid);
-        }
-    }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6天火劫灭已装备 - 血量为100%时生效：枪械伤害+1000%，爆炸范围+10，爆炸伤害+1000%"
-                ),
-                true
-            );
         }
     }
     
@@ -235,65 +220,61 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
                     player.hurt(player.damageSources().magic(), healthToDeduct);
                     
                     // 显示扣除生命值的提示
+                    if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+                        player.displayClientMessage(
+                            net.minecraft.network.chat.Component.literal(
+                                "§4天火劫灭反噬 - 生命值-100%当前生命值"
+                            ),
+                            true
+                        );
+                    }
+                }
+                
+                // 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
+                List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(32.0D));
+
+                for (Player nearbyPlayer : nearbyPlayers) {
+                    // 排除自己
+                    if (nearbyPlayer == player) continue;
+
+                    // 给周围玩家添加属性修饰符
+                    var attributes = nearbyPlayer.getAttributes();
+                    var gunDamageAttribute = attributes.getInstance(
+                        net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                            new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+                        )
+                    );
+                    
+                    if (gunDamageAttribute != null) {
+                        // 移除已存在的修饰符
+                        gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
+                        
+                        // 添加100%的伤害加成（加算）
+                        AttributeModifier modifier = new AttributeModifier(
+                            NEARBY_GUN_DAMAGE_UUID,
+                            NEARBY_GUN_DAMAGE_NAME,
+                            1.0,
+                            AttributeModifier.Operation.ADDITION
+                        );
+                        gunDamageAttribute.addPermanentModifier(modifier);
+                        
+                        // 设置持续时间标记（15秒 = 300 ticks）
+                        net.minecraft.nbt.CompoundTag persistentData = nearbyPlayer.getPersistentData();
+                        persistentData.putInt(NEARBY_BUFF_DURATION_TAG, 300);
+                    }
+                }
+                
+                // 显示提示信息
+                if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                     player.displayClientMessage(
                         net.minecraft.network.chat.Component.literal(
-                            "§4天火劫灭反噬 - 生命值-100%当前生命值"
+                            "§6天火劫灭 - 为周围玩家提供15秒的100%枪械伤害加成"
                         ),
                         true
                     );
                 }
-                
-                // 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
-                applyBuffToNearbyPlayers(player);
             }
         }
-    }
-    
-    /**
-     * 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
-     */
-    private static void applyBuffToNearbyPlayers(Player player) {
-        // 获取周围32格内的玩家
-        List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(32.0D));
-        
-        for (Player nearbyPlayer : nearbyPlayers) {
-            // 排除自己
-            if (nearbyPlayer == player) continue;
-            
-            // 给周围玩家添加属性修饰符
-            var attributes = nearbyPlayer.getAttributes();
-            var gunDamageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-                )
-            );
-            
-            if (gunDamageAttribute != null) {
-                // 移除已存在的修饰符
-                gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
-                
-                // 添加100%的伤害加成（加算）
-                AttributeModifier modifier = new AttributeModifier(
-                    NEARBY_GUN_DAMAGE_UUID,
-                    NEARBY_GUN_DAMAGE_NAME,
-                    1.0,
-                    AttributeModifier.Operation.ADDITION
-                );
-                gunDamageAttribute.addPermanentModifier(modifier);
-                
-                // 设置持续时间标记（15秒 = 300 ticks）
-                net.minecraft.nbt.CompoundTag persistentData = nearbyPlayer.getPersistentData();
-                persistentData.putInt(NEARBY_BUFF_DURATION_TAG, 300);
-            }
-        }
-        
-        // 显示提示信息
-        player.displayClientMessage(
-            net.minecraft.network.chat.Component.literal(
-                "§6天火劫灭 - 为周围玩家提供15秒的100%枪械伤害加成"
-            ),
-            true
-        );
     }
     
     /**
@@ -345,5 +326,13 @@ new net.minecraft.resources.ResourceLocation(namespace, attributeName)
         return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof HeavenFireApocalypse))
             .orElse(java.util.Optional.empty()).isPresent();
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyEffects(player);
     }
 }

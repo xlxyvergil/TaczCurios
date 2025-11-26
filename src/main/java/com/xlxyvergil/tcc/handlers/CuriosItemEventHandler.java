@@ -18,66 +18,57 @@ import top.theillusivec4.curios.api.SlotContext;
 /**
  * Curios饰品事件处理器
  * 用于监听饰品装备/卸载事件并更新TACZ缓存
+ * 参照TACZ处理配件安装和卸载的方式实现
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CuriosItemEventHandler {
     
     /**
      * 监听饰品装备事件
+     * 参照ClientMessageRefitGun.handle()的实现方式
      */
     @SubscribeEvent
     public static void onCurioEquipped(CurioEquipEvent event) {
         LivingEntity livingEntity = event.getEntity();
-        if (!(livingEntity instanceof Player player)) {
+        if (!(livingEntity instanceof ServerPlayer player)) {
             return;
         }
         
         ItemStack stack = event.getStack();
-        SlotContext slotContext = event.getSlotContext();
-        String slot = slotContext.identifier();
         Item item = stack.getItem();
 
         // 处理饰品装备时的属性添加
-        if (item instanceof ItemBaseCurio) {
-            // ItemBaseCurio的onEquipped方法在onEquip中已经调用，这里不需要重复调用
+        if (item instanceof ItemBaseCurio curioItem) {
+            // 调用饰品的onEquip方法（如果需要）
+            // curioItem.onEquip(event.getSlotContext(), ItemStack.EMPTY, stack);
         }
 
-        // 如果是枪械相关的饰品，更新枪械属性
-        if (item instanceof IGun || IGun.mainHandHoldGun(player)) {
-            // 只在服务端更新枪械属性缓存
-            if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
-                AttachmentPropertyManager.postChangeEvent(serverPlayer, player.getMainHandItem());
-            }
-        }
+        // 更新枪械属性缓存（无论是否持有枪械都更新）
+        updateTacZCache(player);
     }
     
     /**
      * 监听饰品卸载事件
+     * 参照ClientMessageUnloadAttachment.handle()的实现方式
      */
     @SubscribeEvent
     public static void onCurioUnequipped(CurioUnequipEvent event) {
         LivingEntity livingEntity = event.getEntity();
-        if (!(livingEntity instanceof Player player)) {
+        if (!(livingEntity instanceof ServerPlayer player)) {
             return;
         }
         
         ItemStack stack = event.getStack();
-        SlotContext slotContext = event.getSlotContext();
-        String slot = slotContext.identifier();
         Item item = stack.getItem();
 
         // 处理饰品卸下时的属性移除
-        if (item instanceof ItemBaseCurio) {
-            // ItemBaseCurio的onUnequipped方法在onUnequip中已经调用，这里不需要重复调用
+        if (item instanceof ItemBaseCurio curioItem) {
+            // 调用饰品的onUnequip方法（如果需要）
+            // curioItem.onUnequip(event.getSlotContext(), ItemStack.EMPTY, stack);
         }
 
-        // 如果是枪械相关的饰品，更新枪械属性
-        if (item instanceof IGun || IGun.mainHandHoldGun(player)) {
-            // 只在服务端更新枪械属性缓存
-            if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
-                AttachmentPropertyManager.postChangeEvent(serverPlayer, player.getMainHandItem());
-            }
-        }
+        // 更新枪械属性缓存（无论是否持有枪械都更新）
+        updateTacZCache(player);
     }
     
     /**

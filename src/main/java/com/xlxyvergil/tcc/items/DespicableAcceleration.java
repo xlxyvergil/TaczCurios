@@ -17,7 +17,7 @@ import java.util.UUID;
 
 
 /**
- * 卑劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
+ * 协劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
  * 效果：射击速度+90%，通用伤害-15%，特定枪械伤害-15%
  */
 public class DespicableAcceleration extends ItemBaseCurio {
@@ -112,15 +112,15 @@ public class DespicableAcceleration extends ItemBaseCurio {
         var attributes = player.getAttributes();
         
         // 应用射击速度提升
-        var firingSpeedAttribute = attributes.getInstance(
+        var rpmAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "rounds_per_minute")
             )
         );
         
-        if (firingSpeedAttribute != null) {
+        if (rpmAttribute != null) {
             // 检查是否已经存在相同的修饰符，如果存在则移除
-            firingSpeedAttribute.removeModifier(FIRING_SPEED_UUID);
+            rpmAttribute.removeModifier(FIRING_SPEED_UUID);
             
             // 添加90%的射击速度加成
             var firingSpeedModifier = new AttributeModifier(
@@ -129,7 +129,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
                 FIRING_SPEED_BOOST,
                 AttributeModifier.Operation.ADDITION
             );
-            firingSpeedAttribute.addPermanentModifier(firingSpeedModifier);
+            rpmAttribute.addPermanentModifier(firingSpeedModifier);
         }
         
         // 应用通用伤害降低
@@ -229,22 +229,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
             applyAccelerationEffects(player);
         }
     }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6卑劣加速已装备 - 射击速度+90%，通用伤害-15%，所有特定枪械伤害-15%"
-                ),
-                true
-            );
-        }
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -278,5 +263,13 @@ public class DespicableAcceleration extends ItemBaseCurio {
      */
     public String getSlot() {
         return "tcc:tcc_slot";
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyAccelerationEffects(player);
     }
 }

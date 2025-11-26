@@ -159,21 +159,6 @@ public class CloseRangeShot extends ItemBaseCurio {
     }
     
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6抵近射击已装备 - 霰弹枪伤害+90%（加算）"
-                ),
-                true
-            );
-        }
-    }
-    
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -199,5 +184,13 @@ public class CloseRangeShot extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§9罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyEffects(player);
     }
 }

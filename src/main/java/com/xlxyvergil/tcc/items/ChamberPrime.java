@@ -102,6 +102,14 @@ public class ChamberPrime extends ItemBaseCurio {
     }
     
     /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyChamberPrimeEffect(player);
+    }
+    
+    /**
      * 应用膛室Prime效果
      * 提升狙击枪伤害（乘算）
      */
@@ -187,22 +195,6 @@ public class ChamberPrime extends ItemBaseCurio {
         // 确保效果持续生效
         if (slotContext.entity() instanceof Player player) {
             applyChamberPrimeEffect(player);
-        }
-    }
-    
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6膛室Prime已装备 - 狙击枪伤害+100%（乘算）"
-                ),
-                true
-            );
         }
     }
     

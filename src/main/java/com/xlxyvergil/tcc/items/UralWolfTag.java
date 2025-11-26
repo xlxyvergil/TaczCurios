@@ -42,21 +42,14 @@ public class UralWolfTag extends ItemBaseCurio {
         super.onUnequip(slotContext, newStack, stack);
     }
     
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 每tick检查并确保爆头倍率效果生效
-        if (slotContext.entity() instanceof Player player) {
-            ensureHeadshotMultiplierEffect(slotContext.entity());
-        }
-    }
-    
     /**
-     * 应用爆头倍率加成效果
+     * 应用爆头倍率效果
      */
     private void applyHeadshotMultiplierEffect(LivingEntity entity) {
+        // 获取实体的属性系统
         var attributes = entity.getAttributes();
         
-        // 应用爆头倍率加成
+        // 获取爆头倍率属性
         var headshotMultiplierAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "headshot_multiplier")
@@ -64,26 +57,29 @@ public class UralWolfTag extends ItemBaseCurio {
         );
         
         if (headshotMultiplierAttribute != null) {
-            // 移除可能存在的旧修饰符，然后添加新的
+            // 移除旧的修饰符（如果有）
             headshotMultiplierAttribute.removeModifier(HEADSHOT_MULTIPLIER_MODIFIER_UUID);
-            headshotMultiplierAttribute.addTransientModifier(
-                new AttributeModifier(
-                    HEADSHOT_MULTIPLIER_MODIFIER_UUID,
-                    "tcc_ural_wolf_headshot_boost",
-                    1.50, // 150%爆头倍率加成
-                    AttributeModifier.Operation.ADDITION
-                )
+            
+            // 添加150%的爆头倍率加成（1.5 = 150%）
+            AttributeModifier modifier = new AttributeModifier(
+                HEADSHOT_MULTIPLIER_MODIFIER_UUID,
+                "tcc.ural_wolf_tag.headshot_multiplier",
+                1.5,
+                AttributeModifier.Operation.ADDITION
             );
+            
+            headshotMultiplierAttribute.addPermanentModifier(modifier);
         }
     }
     
     /**
-     * 移除爆头倍率加成效果
+     * 移除爆头倍率效果
      */
     private void removeHeadshotMultiplierEffect(LivingEntity entity) {
+        // 获取实体的属性系统
         var attributes = entity.getAttributes();
         
-        // 移除爆头倍率加成
+        // 获取爆头倍率属性
         var headshotMultiplierAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "headshot_multiplier")
@@ -91,43 +87,11 @@ public class UralWolfTag extends ItemBaseCurio {
         );
         
         if (headshotMultiplierAttribute != null) {
+            // 移除修饰符
             headshotMultiplierAttribute.removeModifier(HEADSHOT_MULTIPLIER_MODIFIER_UUID);
         }
     }
-    
-    /**
-     * 确保爆头倍率效果持续生效
-     */
-    private void ensureHeadshotMultiplierEffect(LivingEntity entity) {
-        var attributes = entity.getAttributes();
-        
-        var headshotMultiplierAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "headshot_multiplier")
-            )
-        );
-        
-        if (headshotMultiplierAttribute != null) {
-            // 检查修饰符是否还存在，如果不存在则重新添加
-            var modifier = headshotMultiplierAttribute.getModifier(HEADSHOT_MULTIPLIER_MODIFIER_UUID);
-            if (modifier == null) {
-                headshotMultiplierAttribute.addTransientModifier(
-                    new AttributeModifier(
-                        HEADSHOT_MULTIPLIER_MODIFIER_UUID,
-                        "tcc_ural_wolf_headshot_boost",
-                        1.50,
-                        AttributeModifier.Operation.ADDITION
-                    )
-                );
-            }
-        }
-    }
-    
-    @Override
-    public String getDescriptionId(ItemStack stack) {
-        return "item.tcc.ural_wolf_tag";
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -152,5 +116,13 @@ public class UralWolfTag extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§b罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyHeadshotMultiplierEffect(player);
     }
 }

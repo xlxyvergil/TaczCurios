@@ -1,15 +1,22 @@
 package com.xlxyvergil.tcc.items;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.LazyOptional;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -18,7 +25,7 @@ import java.util.UUID;
 
 /**
  * 腐败弹匣 - +66%弹匣容量，-33%装填速度
- * 效果：提升66%弹匣容量（乘算），降低33%装填速度（乘算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提升66%弹匣容量（加算），降低33%装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class CorruptMagazine extends ItemBaseCurio {
     
@@ -27,18 +34,20 @@ public class CorruptMagazine extends ItemBaseCurio {
     private static final UUID RELOAD_UUID = UUID.fromString("32345678-1234-1234-1234-123456789ab1");
     
     // 修饰符名称
-    private static final String MAGAZINE_NAME = "tcc.corrupt_magazine.ammo_capacity";
+    private static final String MAGAZINE_NAME = "tcc.corrupt_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.corrupt_magazine.reload_speed";
     
     // 支持的枪械类型
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     // 效果参数
-    private static final double MAGAZINE_BOOST = 0.66;       // 66%弹匣容量提升（乘算）
-    private static final double RELOAD_PENALTY = -0.33;      // 33%装填速度降低（乘算）
+    private static final double MAGAZINE_BOOST = 0.66;       // 66%弹匣容量提升（加算）
+    private static final double RELOAD_PENALTY = -0.33;      // 33%装填速度降低（加算）
     
     public CorruptMagazine(Properties properties) {
-        super(properties);
+        super(properties
+            .stacksTo(1)
+            .rarity(Rarity.RARE));
     }
     
     /**
@@ -86,13 +95,13 @@ public class CorruptMagazine extends ItemBaseCurio {
     
     /**
      * 应用腐败弹匣效果
-     * 提升弹匣容量（乘算）并降低装填速度（乘算）
+     * 提升弹匣容量（加算）并降低装填速度（加算）
      */
     public void applyCorruptMagazineEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 弹匣容量属性（不带枪械类型）
-        var magazineAttribute = attributes.getInstance(
+        var capacityAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
             )
@@ -105,37 +114,37 @@ public class CorruptMagazine extends ItemBaseCurio {
             )
         );
         
-        // 应用弹匣容量提升（乘算）
-        if (magazineAttribute != null) {
+        // 应用弹匣容量提升（加算）
+        if (capacityAttribute != null) {
             // 检查是否已经存在相同的修饰符，如果存在则移除
-            magazineAttribute.removeModifier(MAGAZINE_UUID);
+            capacityAttribute.removeModifier(MAGAZINE_UUID);
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加66%的弹匣容量加成（乘算）
+                // 添加66%的弹匣容量加成（加算）
                 var magazineModifier = new AttributeModifier(
                     MAGAZINE_UUID,
                     MAGAZINE_NAME,
                     MAGAZINE_BOOST,
-                    AttributeModifier.Operation.MULTIPLY_BASE
+                    AttributeModifier.Operation.ADDITION
                 );
-                magazineAttribute.addPermanentModifier(magazineModifier);
+                capacityAttribute.addPermanentModifier(magazineModifier);
             }
         }
         
-        // 应用装填速度降低（乘算）
+        // 应用装填速度降低（加算）
         if (reloadAttribute != null) {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             reloadAttribute.removeModifier(RELOAD_UUID);
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加33%的装填速度降低（乘算）
+                // 添加33%的装填速度降低（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
                     RELOAD_NAME,
                     RELOAD_PENALTY,
-                    AttributeModifier.Operation.MULTIPLY_BASE
+                    AttributeModifier.Operation.ADDITION
                 );
                 reloadAttribute.addPermanentModifier(reloadModifier);
             }
@@ -152,14 +161,14 @@ public class CorruptMagazine extends ItemBaseCurio {
         // 弹匣容量属性（不带枪械类型）
         var magazineAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
+                new ResourceLocation("taa", "magazine_capacity")
             )
         );
         
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_speed")
             )
         );
         
@@ -183,7 +192,7 @@ public class CorruptMagazine extends ItemBaseCurio {
         
         if (iGun != null) {
             // 获取枪械ID
-            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            ResourceLocation gunId = iGun.getGunId(mainHandItem);
             
             // 通过TimelessAPI获取枪械索引
             return TimelessAPI.getCommonGunIndex(gunId)
@@ -207,21 +216,6 @@ public class CorruptMagazine extends ItemBaseCurio {
     }
     
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6腐败弹匣已装备 - 提升66%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量（乘算），降低33%装填速度（乘算）"
-                ),
-                true
-            );
-        }
-    }
-    
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -230,22 +224,30 @@ public class CorruptMagazine extends ItemBaseCurio {
         
         // 添加物品描述
         tooltip.add(Component.translatable("item.tcc.corrupt_magazine.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.GRAY));
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect")
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
         tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.GRAY));
         
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§6稀有")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyCorruptMagazineEffects(player);
     }
 }

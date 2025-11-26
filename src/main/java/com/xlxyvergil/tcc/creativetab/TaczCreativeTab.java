@@ -56,7 +56,7 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.CHAMBER.get());
                 output.accept(TaczItems.CHAMBER_PRIME.get());
                 // 新增的三个饰品
-                output.accept(TaczItems.EXHAUST_RELOAD.get());
+                output.accept(TaczItems.MAGAZINE_BOOST.get());
                 output.accept(TaczItems.CORRUPT_MAGAZINE.get());
                 output.accept(TaczItems.SPLIT_CHAMBER.get());
                 // 霰弹枪饰品

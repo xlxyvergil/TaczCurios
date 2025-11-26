@@ -30,7 +30,10 @@ public class RiftSilver extends Item {
             .stacksTo(64)
             .rarity(Rarity.EPIC));
     }
-    
+
+    /**
+     * 添加物品的悬浮提示信息（鼠标悬停时显示）
+     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
@@ -48,7 +51,7 @@ public class RiftSilver extends Item {
         if (!world.isClientSide && world instanceof ServerLevel serverLevel) {
             // 先检查战利品表是否可用，确保可以获取物品
             LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(
-                ResourceLocation.fromNamespaceAndPath("tcc", "rift_silver_curios")
+                new ResourceLocation("tcc", "rift_silver_curios")
             );
             
             if (lootTable != null) {

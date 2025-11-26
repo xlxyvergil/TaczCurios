@@ -1,15 +1,22 @@
 package com.xlxyvergil.tcc.items;
 
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.LazyOptional;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -17,8 +24,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 分裂膛室 - +90%的弹头数量
- * 效果：提升90%弹头数量（乘算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 分裂膛室 - +90%弹头数量
+ * 效果：提升90%弹头数量（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class SplitChamber extends ItemBaseCurio {
     
@@ -32,10 +39,12 @@ public class SplitChamber extends ItemBaseCurio {
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     // 效果参数
-    private static final double AMMO_BOOST = 0.90;       // 90%弹头数量提升（乘算）
+    private static final double AMMO_BOOST = 0.90;       // 90%弹头数量提升（加算）
     
     public SplitChamber(Properties properties) {
-        super(properties);
+        super(properties
+            .stacksTo(1)
+            .rarity(Rarity.RARE));
     }
     
     /**
@@ -45,7 +54,7 @@ public class SplitChamber extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加弹头数量属性修改
+        // 给玩家添加属性修改
         if (slotContext.entity() instanceof Player player) {
             applySplitChamberEffects(player);
         }
@@ -58,7 +67,7 @@ public class SplitChamber extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的弹头数量属性修改
+        // 移除玩家的属性修改
         if (slotContext.entity() instanceof Player player) {
             removeSplitChamberEffects(player);
         }
@@ -83,7 +92,7 @@ public class SplitChamber extends ItemBaseCurio {
     
     /**
      * 应用分裂膛室效果
-     * 提升弹头数量（乘算）
+     * 提升弹头数量（加算）
      */
     public void applySplitChamberEffects(Player player) {
         var attributes = player.getAttributes();
@@ -101,12 +110,12 @@ public class SplitChamber extends ItemBaseCurio {
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加90%的弹头数量加成（乘算）
+                // 添加90%的弹头数量加成（加算）
                 var ammoModifier = new AttributeModifier(
                     AMMO_UUID,
                     AMMO_NAME,
                     AMMO_BOOST,
-                    AttributeModifier.Operation.MULTIPLY_BASE
+                    AttributeModifier.Operation.ADDITION
                 );
                 ammoAttribute.addPermanentModifier(ammoModifier);
             }
@@ -123,7 +132,7 @@ public class SplitChamber extends ItemBaseCurio {
         // 弹头数量属性（不带枪械类型）
         var ammoAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_count")
+                new ResourceLocation("taa", "bullet_count")
             )
         );
         
@@ -141,7 +150,7 @@ public class SplitChamber extends ItemBaseCurio {
         
         if (iGun != null) {
             // 获取枪械ID
-            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            ResourceLocation gunId = iGun.getGunId(mainHandItem);
             
             // 通过TimelessAPI获取枪械索引
             return TimelessAPI.getCommonGunIndex(gunId)
@@ -165,21 +174,6 @@ public class SplitChamber extends ItemBaseCurio {
     }
     
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6分裂膛室已装备 - 提升90%步枪、狙击枪、冲锋枪、机枪、发射器弹头数量（乘算）"
-                ),
-                true
-            );
-        }
-    }
-    
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -188,22 +182,30 @@ public class SplitChamber extends ItemBaseCurio {
         
         // 添加物品描述
         tooltip.add(Component.translatable("item.tcc.split_chamber.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.GRAY));
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.split_chamber.effect")
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
         tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.GRAY));
         
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§6稀有")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applySplitChamberEffects(player);
     }
 }

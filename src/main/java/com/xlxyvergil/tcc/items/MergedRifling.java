@@ -66,7 +66,7 @@ public class MergedRifling extends ItemBaseCurio {
         
         // 给玩家添加伤害和移动速度属性修改
         if (slotContext.entity() instanceof Player player) {
-            applyRiflingEffects(player);
+            applyMergedRiflingEffects(player);
         }
     }
     
@@ -125,7 +125,7 @@ public class MergedRifling extends ItemBaseCurio {
      * 应用膛线效果
      * 提升特定枪械伤害和持枪移动速度（都使用加算）
      */
-    public void applyRiflingEffects(Player player) {
+    public void applyMergedRiflingEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 特定枪械类型
@@ -256,25 +256,10 @@ public class MergedRifling extends ItemBaseCurio {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
         if (slotContext.entity() instanceof Player player) {
-            applyRiflingEffects(player);
+            applyMergedRiflingEffects(player);
         }
     }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6并合膛线已装备 - 特定枪械伤害+155%（加算），持枪移动速度+25%（加算）"
-                ),
-                true
-            );
-        }
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -308,5 +293,13 @@ public class MergedRifling extends ItemBaseCurio {
      */
     public String getSlot() {
         return "tcc:tcc_slot";
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyMergedRiflingEffects(player);
     }
 }

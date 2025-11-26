@@ -89,7 +89,7 @@ public class LimitSpeed extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
+                new ResourceLocation(namespace, attributeName)
             )
         );
         
@@ -122,7 +122,7 @@ public class LimitSpeed extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
+                new ResourceLocation(namespace, attributeName)
             )
         );
         
@@ -131,6 +131,17 @@ public class LimitSpeed extends ItemBaseCurio {
         }
     }
     
+    /**
+     * 当玩家持有时，每tick更新效果
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        // 确保效果持续生效
+        if (slotContext.entity() instanceof Player player) {
+            applyEffects(player);
+        }
+    }
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -157,5 +168,13 @@ public class LimitSpeed extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§b罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyEffects(player);
     }
 }

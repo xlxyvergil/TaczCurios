@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
-import com.xlxyvergil.tcc.handlers.CuriosItemEventHandler;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
@@ -15,28 +14,6 @@ public class ItemBaseCurio extends Item implements ICurioItem {
     
     public ItemBaseCurio(Properties properties) {
         super(properties);
-    }
-    
-    /**
-     * 当物品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        // 如果是服务端玩家，通知事件处理器
-        if (slotContext.entity() instanceof ServerPlayer serverPlayer) {
-            CuriosItemEventHandler.onCurioEquip(serverPlayer, stack);
-        }
-    }
-    
-    /**
-     * 当物品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        // 如果是服务端玩家，通知事件处理器
-        if (slotContext.entity() instanceof ServerPlayer serverPlayer) {
-            CuriosItemEventHandler.onCurioUnequip(serverPlayer, stack);
-        }
     }
     
     /**
@@ -61,5 +38,14 @@ public class ItemBaseCurio extends Item implements ICurioItem {
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return true;
+    }
+    
+    /**
+     * 应用饰品效果
+     * 当玩家切换武器时被GunSwitchEventHandler调用
+     * 子类需要重写此方法来实现具体的效果逻辑
+     */
+    public void applyGunSwitchEffect(Player player) {
+        // 默认实现为空，子类可以重写
     }
 }

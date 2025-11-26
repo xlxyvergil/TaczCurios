@@ -140,21 +140,6 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     }
     
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6天火圣裁已装备 - 血量高于40%时枪械伤害+325%"
-                ),
-                true
-            );
-        }
-    }
-    
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -217,12 +202,14 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                 persistentData.putInt(DAMAGE_TAG, 5); // 持续5秒
                 
                 // 显示效果触发提示
-                player.displayClientMessage(
-                    net.minecraft.network.chat.Component.literal(
-                        "§4天火圣裁反噬 - 立即损失30%当前生命值，随后每秒损失5%最大生命值，持续5秒"
-                    ),
-                    true
-                );
+                if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+                    player.displayClientMessage(
+                        net.minecraft.network.chat.Component.literal(
+                            "§4天火圣裁反噬 - 立即损失30%当前生命值，随后每秒损失5%最大生命值，持续5秒"
+                        ),
+                        true
+                    );
+                }
             }
         }
     }
@@ -282,5 +269,13 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof HeavenFireJudgment))
             .orElse(java.util.Optional.empty()).isPresent();
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyGunDamageBonus(player);
     }
 }

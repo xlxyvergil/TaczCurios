@@ -23,15 +23,15 @@ import java.util.UUID;
 public class OverloadedMagazine extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID AMMO_CAPACITY_UUID = UUID.fromString("22222222-2222-2222-2222-222222222222");
+    private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("22222222-2222-2222-2222-222222222222");
     private static final UUID RELOAD_UUID = UUID.fromString("22222222-2222-2222-2223-222222222223");
 
     // 修饰符名称
-    private static final String AMMO_CAPACITY_NAME = "tcc.overloaded_magazine.ammo_capacity";
+    private static final String MAGAZINE_CAPACITY_NAME = "tcc.overloaded_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.overloaded_magazine.reload";
 
     // 效果参数
-    private static final double AMMO_CAPACITY_BOOST = 0.60;       // 60%弹匣容量提升（加算）
+    private static final double MAGAZINE_CAPACITY_BOOST = 0.60;       // 60%弹匣容量提升（加算）
     private static final double RELOAD_DEBUFF = -0.18;           // 18%装填速度降低（加算）
 
     public OverloadedMagazine(Properties properties) {
@@ -89,21 +89,21 @@ public class OverloadedMagazine extends ItemBaseCurio {
         var attributes = player.getAttributes();
 
         // 获取弹匣容量属性
-        var ammoCapacityAttribute = attributes.getInstance(
+        var capacityAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "ammo_capacity")
+                new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
             )
         );
 
         // 移除已存在的修饰符
-        if (ammoCapacityAttribute != null) {
-            ammoCapacityAttribute.removeModifier(AMMO_CAPACITY_UUID);
+        if (capacityAttribute != null) {
+            capacityAttribute.removeModifier(MAGAZINE_CAPACITY_UUID);
         }
 
         // 获取装填速度属性
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
             )
         );
 
@@ -114,15 +114,15 @@ public class OverloadedMagazine extends ItemBaseCurio {
         // 检查玩家是否持有霰弹枪，只有持有霰弹枪时才应用加成
         if (isHoldingShotgun(player)) {
             // 应用弹匣容量加成
-            if (ammoCapacityAttribute != null) {
+            if (capacityAttribute != null) {
                 // 添加60%的弹匣容量加成（加算）
-                var ammoCapacityModifier = new AttributeModifier(
-                    AMMO_CAPACITY_UUID,
-                    AMMO_CAPACITY_NAME,
-                    AMMO_CAPACITY_BOOST,
+                var magazineCapacityModifier = new AttributeModifier(
+                    MAGAZINE_CAPACITY_UUID,
+                    MAGAZINE_CAPACITY_NAME,
+                    MAGAZINE_CAPACITY_BOOST,
                     AttributeModifier.Operation.ADDITION
                 );
-                ammoCapacityAttribute.addPermanentModifier(ammoCapacityModifier);
+                capacityAttribute.addPermanentModifier(magazineCapacityModifier);
             }
 
             // 应用装填速度减益
@@ -146,14 +146,14 @@ public class OverloadedMagazine extends ItemBaseCurio {
         var attributes = player.getAttributes();
 
         // 获取弹匣容量属性
-        var ammoCapacityAttribute = attributes.getInstance(
+        var capacityAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "ammo_capacity")
             )
         );
 
-        if (ammoCapacityAttribute != null) {
-            ammoCapacityAttribute.removeModifier(AMMO_CAPACITY_UUID);
+        if (capacityAttribute != null) {
+            capacityAttribute.removeModifier(MAGAZINE_CAPACITY_UUID);
         }
 
         // 获取装填速度属性
@@ -201,21 +201,6 @@ public class OverloadedMagazine extends ItemBaseCurio {
     }
 
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                Component.literal(
-                    "§6过载弹匣已装备 - 提升60%弹匣容量（加算），降低18%装填速度（加算）"
-                ),
-                true
-            );
-        }
-    }
-
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -241,5 +226,13 @@ public class OverloadedMagazine extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§6稀有")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyOverloadedMagazineEffects(player);
     }
 }

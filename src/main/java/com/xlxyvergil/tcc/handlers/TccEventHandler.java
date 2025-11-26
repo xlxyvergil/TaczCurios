@@ -26,62 +26,62 @@ public class TccEventHandler {
     
     static {
         // 所有原版箱子战利品表
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/abandoned_mineshaft"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/ancient_city"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/ancient_city_ice_box"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_bridge"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_hoglin_stable"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_other"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/bastion_treasure"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/buried_treasure"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/desert_pyramid"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/end_city_treasure"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/igloo_chest"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/jungle_temple"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/jungle_temple_dispenser"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/nether_bridge"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/pillager_outpost"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/ruined_portal"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/shipwreck_map"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/shipwreck_supply"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/shipwreck_treasure"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/simple_dungeon"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/spawn_bonus_chest"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/stronghold_corridor"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/stronghold_crossing"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/stronghold_library"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/intersection"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/intersection_barrel"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/entrance"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/corridor"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/supply"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_common"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_rare"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_unique"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_ominous"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_ominous_common"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_ominous_rare"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/trial_chambers/chests/reward_ominous_unique"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/underwater_ruin_big"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/underwater_ruin_small"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_armorer"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_butcher"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_cartographer"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_desert_house"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_fisher"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_fletcher"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_mason"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_plains_house"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_savanna_house"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_shepherd"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_snowy_house"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_taiga_house"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_tannery"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_temple"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_toolsmith"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/village/village_weaponsmith"));
-        VANILLA_CHESTS.add(ResourceLocation.fromNamespaceAndPath("minecraft", "chests/woodland_mansion"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/abandoned_mineshaft"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/ancient_city"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/ancient_city_ice_box"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/bastion_bridge"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/bastion_hoglin_stable"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/bastion_other"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/bastion_treasure"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/buried_treasure"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/desert_pyramid"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/end_city_treasure"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/igloo_chest"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/jungle_temple"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/jungle_temple_dispenser"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/nether_bridge"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/pillager_outpost"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/ruined_portal"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/shipwreck_map"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/shipwreck_supply"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/shipwreck_treasure"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/simple_dungeon"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/spawn_bonus_chest"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/stronghold_corridor"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/stronghold_crossing"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/stronghold_library"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/intersection"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/intersection_barrel"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/entrance"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/corridor"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/supply"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_common"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_rare"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_unique"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_ominous"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_ominous_common"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_ominous_rare"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/trial_chambers/chests/reward_ominous_unique"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/underwater_ruin_big"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/underwater_ruin_small"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_armorer"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_butcher"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_cartographer"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_desert_house"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_fisher"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_fletcher"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_mason"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_plains_house"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_savanna_house"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_shepherd"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_snowy_house"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_taiga_house"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_tannery"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_temple"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_toolsmith"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/village/village_weaponsmith"));
+        VANILLA_CHESTS.add(new ResourceLocation("minecraft", "chests/woodland_mansion"));
     }
     
     @SubscribeEvent(priority = net.minecraftforge.eventbus.api.EventPriority.LOWEST)
@@ -91,7 +91,7 @@ public class TccEventHandler {
         // 只处理原版箱子战利品表
         if (VANILLA_CHESTS.contains(tableName)) {
             // 获取裂隙碎银物品
-            ItemStack riftSilverStack = new ItemStack(ForgeRegistries.ITEMS.getValue(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "rift_silver")));
+            ItemStack riftSilverStack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(TaczCurios.MODID, "rift_silver")));
             
             // 如果成功获取到裂隙碎银物品，则添加到战利品表中
             if (!riftSilverStack.isEmpty()) {

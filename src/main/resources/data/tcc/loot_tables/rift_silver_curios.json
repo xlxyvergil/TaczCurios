@@ -134,6 +134,56 @@
           "type": "minecraft:item",
           "weight": 1,
           "name": "tcc:heaven_fire_apocalypse"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:magazine_boost"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:corrupt_magazine"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:split_chamber"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:tactical_reload"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:overloaded_magazine"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:infernal_chamber"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:sustained_fire"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:infected_magazine"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:deadly_surge"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:bullet_spread"
         }
       ]
     }

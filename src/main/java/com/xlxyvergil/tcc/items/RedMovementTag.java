@@ -155,4 +155,12 @@ public class RedMovementTag extends ItemBaseCurio {
         tooltip.add(Component.literal("§7稀有度：§b罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyMovementSpeedEffect(player);
+    }
 }

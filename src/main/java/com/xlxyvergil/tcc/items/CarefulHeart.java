@@ -195,21 +195,6 @@ public class CarefulHeart extends ItemBaseCurio {
     }
     
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6我小心海也绝非鳝类已装备 - 发射器伤害+300%，爆炸伤害+300%，爆炸范围+300%"
-                ),
-                true
-            );
-        }
-    }
-    
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -242,5 +227,13 @@ public class CarefulHeart extends ItemBaseCurio {
      */
     public String getSlot() {
         return "tcc:tcc_slot";
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyHeartEffects(player);
     }
 }

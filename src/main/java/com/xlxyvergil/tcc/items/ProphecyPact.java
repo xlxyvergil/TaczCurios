@@ -42,7 +42,7 @@ public class ProphecyPact extends ItemBaseCurio {
         
         // 给玩家添加伤害属性修改
         if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
+            applyProphecyPactEffects(player);
         }
     }
     
@@ -55,7 +55,7 @@ public class ProphecyPact extends ItemBaseCurio {
         
         // 移除玩家的伤害属性修改
         if (slotContext.entity() instanceof Player player) {
-            removeEffects(player);
+            removeProphecyPactEffects(player);
         }
     }
     
@@ -80,7 +80,7 @@ public class ProphecyPact extends ItemBaseCurio {
      * 应用效果
      * 提升手枪伤害（加算）
      */
-    private void applyEffects(Player player) {
+    private void applyProphecyPactEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 手枪伤害属性
@@ -108,7 +108,7 @@ public class ProphecyPact extends ItemBaseCurio {
     /**
      * 移除效果
      */
-    private void removeEffects(Player player) {
+    private void removeProphecyPactEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 手枪伤害属性
@@ -131,25 +131,10 @@ public class ProphecyPact extends ItemBaseCurio {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
         if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
+            applyProphecyPactEffects(player);
         }
     }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6预言契约已装备 - 手枪伤害+90%（加算）"
-                ),
-                true
-            );
-        }
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -176,5 +161,13 @@ public class ProphecyPact extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§9常见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyProphecyPactEffects(player);
     }
 }

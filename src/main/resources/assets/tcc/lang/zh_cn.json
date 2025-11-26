@@ -36,9 +36,9 @@
   "item.tcc.heaven_fire_apocalypse.desc": "踏上前来",
   "item.tcc.heaven_fire_apocalypse.effect": "玩家血量为100%时，提升1000%通用枪械伤害，+10爆炸范围，提升1000%爆炸伤害。造成伤害后扣除100%当前生命值，并为周围32格内玩家提供15秒的100%通用枪械伤害加成",
   
-  "item.tcc.exhaust_reload": "§f耗竭装填",
-  "item.tcc.exhaust_reload.desc": "快速高效的装填技术",
-  "item.tcc.exhaust_reload.effect": "提升30%步枪、狙击枪、冲锋枪、机枪、发射器装填速度",
+  "item.tcc.magazine_boost": "§f弹匣增幅",
+  "item.tcc.magazine_boost.desc": "快速高效的装填技术",
+  "item.tcc.magazine_boost.effect": "提升30%步枪、狙击枪、冲锋枪、机枪、发射器装填速度",
   
   "item.tcc.corrupt_magazine": "§6腐败弹匣",
   "item.tcc.corrupt_magazine.desc": "容量更大但装填更慢的弹匣",

@@ -5,6 +5,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.gui.GunRefitScreen;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,12 +63,15 @@ public class ClientEventHandler {
     
     /**
      * 刷新改装界面
+     * 参照ServerMessageRefreshRefitScreen.updateScreen()的实现
      */
     private static void refreshRefitScreen() {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null && mc.player != null && mc.screen instanceof GunRefitScreen) {
+        if (mc.level != null && mc.player != null && mc.screen instanceof GunRefitScreen screen) {
             // 重新初始化界面以刷新属性图
-            mc.screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
+            screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
+            // 刷新配件数据，客户端的
+            AttachmentPropertyManager.postChangeEvent(mc.player, mc.player.getMainHandItem());
         }
     }
     

@@ -14,7 +14,6 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-// 基于神秘遗物的LootTableHelper实现
 public class LootTableHelper {
     public static Field isFrozenTable = null;
     public static Field isFrozenPool = null;

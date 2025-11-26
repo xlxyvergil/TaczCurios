@@ -163,22 +163,7 @@ public class ExhaustReload extends ItemBaseCurio {
             applyExhaustReloadEffects(player);
         }
     }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§f耗竭装填已装备 - 提升30%步枪、狙击枪、冲锋枪、机枪、发射器装填速度（乘算）"
-                ),
-                true
-            );
-        }
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -205,5 +190,13 @@ public class ExhaustReload extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§f常见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyExhaustReloadEffects(player);
     }
 }

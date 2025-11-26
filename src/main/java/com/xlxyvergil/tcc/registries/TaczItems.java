@@ -1,45 +1,44 @@
 package com.xlxyvergil.tcc.registries;
 
 import com.xlxyvergil.tcc.items.AlloyDrill;
+import com.xlxyvergil.tcc.items.BlazeStorm;
+import com.xlxyvergil.tcc.items.BlazeStormPrime;
+import com.xlxyvergil.tcc.items.BulletSpread;
 import com.xlxyvergil.tcc.items.CarefulHeart;
+import com.xlxyvergil.tcc.items.Chamber;
+import com.xlxyvergil.tcc.items.ChamberPrime;
+import com.xlxyvergil.tcc.items.CloseCombatPrime;
+import com.xlxyvergil.tcc.items.CloseRangeShot;
+import com.xlxyvergil.tcc.items.CoreFusion;
+import com.xlxyvergil.tcc.items.CorruptMagazine;
+import com.xlxyvergil.tcc.items.DeadlySurge;
 import com.xlxyvergil.tcc.items.DespicableAcceleration;
+import com.xlxyvergil.tcc.items.EvilAccuracy;
+import com.xlxyvergil.tcc.items.FerociousExtension;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.HeavyCaliberTag;
+import com.xlxyvergil.tcc.items.HeavyFirepower;
+import com.xlxyvergil.tcc.items.InfectedMagazine;
+import com.xlxyvergil.tcc.items.InfernalChamber;
+import com.xlxyvergil.tcc.items.LimitSpeed;
+import com.xlxyvergil.tcc.items.MagazineBoost;
+import com.xlxyvergil.tcc.items.MalignantSpread;
 import com.xlxyvergil.tcc.items.MergedRifling;
+import com.xlxyvergil.tcc.items.OverloadedMagazine;
+import com.xlxyvergil.tcc.items.ProphecyPact;
 import com.xlxyvergil.tcc.items.RedMovementTag;
+import com.xlxyvergil.tcc.items.Rifling;
+import com.xlxyvergil.tcc.items.RiftSilver;
+import com.xlxyvergil.tcc.items.RippingPrime;
 import com.xlxyvergil.tcc.items.SoldierBasicTag;
 import com.xlxyvergil.tcc.items.SoldierSpecificTag;
-import com.xlxyvergil.tcc.items.UralWolfTag;
-import com.xlxyvergil.tcc.items.BlazeStorm;
-import com.xlxyvergil.tcc.items.BlazeStormPrime;
-import com.xlxyvergil.tcc.items.RippingPrime;
-import com.xlxyvergil.tcc.items.CloseCombatPrime;
-import com.xlxyvergil.tcc.items.EvilAccuracy;
-import com.xlxyvergil.tcc.items.LimitSpeed;
-import com.xlxyvergil.tcc.items.FerociousExtension;
-import com.xlxyvergil.tcc.items.Rifling;
-import com.xlxyvergil.tcc.items.CloseRangeShot;
-import com.xlxyvergil.tcc.items.HeavyFirepower;
-import com.xlxyvergil.tcc.items.WaspStinger;
-import com.xlxyvergil.tcc.items.ProphecyPact;
-import com.xlxyvergil.tcc.items.MalignantSpread;
-import com.xlxyvergil.tcc.items.Chamber;
-import com.xlxyvergil.tcc.items.ChamberPrime;
-import com.xlxyvergil.tcc.items.ExhaustReload;
-import com.xlxyvergil.tcc.items.CorruptMagazine;
 import com.xlxyvergil.tcc.items.SplitChamber;
-import com.xlxyvergil.tcc.items.CoreFusion;
-import com.xlxyvergil.tcc.items.RiftSilver;
-// 霰弹枪饰品
-import com.xlxyvergil.tcc.items.TacticalReload;
-import com.xlxyvergil.tcc.items.OverloadedMagazine;
-import com.xlxyvergil.tcc.items.InfernalChamber;
-// 手枪饰品
 import com.xlxyvergil.tcc.items.SustainedFire;
-import com.xlxyvergil.tcc.items.InfectedMagazine;
-import com.xlxyvergil.tcc.items.DeadlySurge;
-import com.xlxyvergil.tcc.items.BulletSpread;
+import com.xlxyvergil.tcc.items.TacticalReload;
+import com.xlxyvergil.tcc.items.UralWolfTag;
+import com.xlxyvergil.tcc.items.WaspStinger;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -47,7 +46,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * 物品注册类，参考Enigmatic-Legacy的EnigmaticItems实现
  * 直接在这里注册所有物品，避免复杂的注册系统
  */
 public class TaczItems {
@@ -209,9 +207,9 @@ public class TaczItems {
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
     
-    // 耗竭装填 - 提升30%装填速度
-    public static final RegistryObject<Item> EXHAUST_RELOAD = ITEMS.register("exhaust_reload", 
-        () -> new ExhaustReload(new Item.Properties()
+    // 弹匣增幅 - 提升30%装填速度
+    public static final RegistryObject<Item> MAGAZINE_BOOST = ITEMS.register("magazine_boost", 
+        () -> new MagazineBoost(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON)));
     

@@ -88,7 +88,7 @@ public class TacticalReload extends ItemBaseCurio {
         // 获取装填速度属性
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
             )
         );
 
@@ -161,21 +161,6 @@ public class TacticalReload extends ItemBaseCurio {
     }
 
     /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                Component.literal(
-                    "§9战术上膛已装备 - 提升60%装填速度（加算）"
-                ),
-                true
-            );
-        }
-    }
-
-    /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
@@ -201,5 +186,13 @@ public class TacticalReload extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§9罕见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyTacticalReloadEffects(player);
     }
 }

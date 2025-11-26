@@ -85,6 +85,17 @@ public class BlazeStormPrime extends ItemBaseCurio {
     }
     
     /**
+     * 当玩家持有时，每tick更新效果
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        // 确保效果持续生效
+        if (slotContext.entity() instanceof Player player) {
+            applyEffects(player);
+        }
+    }
+
+    /**
      * 应用所有效果加成
      * 增加66%爆炸范围（乘算），增加66%爆炸伤害（乘算）
      */
@@ -103,7 +114,7 @@ public class BlazeStormPrime extends ItemBaseCurio {
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
+new ResourceLocation(namespace, attributeName)
             )
         );
         
@@ -137,7 +148,7 @@ ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
         var attributes = player.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
+                new ResourceLocation(namespace, attributeName)
             )
         );
         
@@ -172,5 +183,13 @@ ResourceLocation.fromNamespaceAndPath(namespace, attributeName)
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§f传说")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyEffects(player);
     }
 }

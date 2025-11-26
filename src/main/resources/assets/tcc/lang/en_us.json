@@ -10,15 +10,15 @@
 
   "item.tcc.soldier_basic_tag": "Soldier Basic Tag",
   "item.tcc.soldier_basic_tag.desc": "A symbol of basic combat skills, providing enhanced base damage",
-  "item.tcc.soldier_basic_tag.effect": "Provides 30% general gun damage bonus (multiplicative)",
+  "item.tcc.soldier_basic_tag.effect": "Provides 30% general gun damage bonus ",
   
   "item.tcc.soldier_specific_tag": "Soldier Specific Tag",
   "item.tcc.soldier_specific_tag.desc": "Specialized training for specific weapon types",
-  "item.tcc.soldier_specific_tag.effect": "Provides 55% general gun damage bonus (multiplicative)",
+  "item.tcc.soldier_specific_tag.effect": "Provides 55% general gun damage bonus ",
   
   "item.tcc.heavy_caliber_tag": "Heavy Caliber Tag",
   "item.tcc.heavy_caliber_tag.desc": "Converts attack power into more powerful gun damage multiplier",
-  "item.tcc.heavy_caliber_tag.effect": "Increases 165% rifle, sniper, smg, lmg, launcher damage (additive), increases 55% inaccuracy (multiplicative)",
+  "item.tcc.heavy_caliber_tag.effect": "Increases 165% rifle, sniper, smg, lmg, launcher damage , increases 55% inaccuracy ",
   
   "item.tcc.red_movement_tag": "Red Movement Tag",
   "item.tcc.red_movement_tag.desc": "Perfect combination of rapid movement and precise shooting",
@@ -34,19 +34,19 @@
   
   "item.tcc.heaven_fire_apocalypse": "Heaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse.desc": "Step forward",
-  "item.tcc.heaven_fire_apocalypse.effect": "When player's health is at 100%, increases 1000% general gun damage, +10 explosion radius, increases 1000% explosion damage. After dealing damage, deducts 100% current health and provides 15 seconds of 100% general gun damage bonus (additive) to players within 32 blocks",
+  "item.tcc.heaven_fire_apocalypse.effect": "When player's health is at 100%, increases 1000% general gun damage, +10 explosion radius, increases 1000% explosion damage. After dealing damage, deducts 100% current health and provides 15 seconds of 100% general gun damage bonus  to players within 32 blocks",
   
-  "item.tcc.exhaust_reload": "Exhaust Reload",
-  "item.tcc.exhaust_reload.desc": "Fast and efficient reloading technique",
-  "item.tcc.exhaust_reload.effect": "Increases 30% rifle, sniper, smg, lmg, launcher reload speed (multiplicative)",
+  "item.tcc.magazine_boost": "Magazine Boost",
+  "item.tcc.magazine_boost.desc": "Fast and efficient reloading technique",
+  "item.tcc.magazine_boost.effect": "Increases 30% rifle, sniper, smg, lmg, launcher reload speed ",
   
   "item.tcc.corrupt_magazine": "Corrupt Magazine",
   "item.tcc.corrupt_magazine.desc": "Higher capacity but slower reloading magazine",
-  "item.tcc.corrupt_magazine.effect": "Increases 66% rifle, sniper, smg, lmg, launcher magazine capacity (multiplicative), decreases 33% reload speed (multiplicative)",
+  "item.tcc.corrupt_magazine.effect": "Increases 66% rifle, sniper, smg, lmg, launcher magazine capacity , decreases 33% reload speed ",
   
   "item.tcc.split_chamber": "Split Chamber",
   "item.tcc.split_chamber.desc": "Technology that splits single bullets into multiple projectiles",
-  "item.tcc.split_chamber.effect": "Increases 90% rifle, sniper, smg, lmg, launcher bullet count (multiplicative)",
+  "item.tcc.split_chamber.effect": "Increases 90% rifle, sniper, smg, lmg, launcher bullet count ",
   
   "item.tcc.despicable_acceleration": "Despicable Acceleration",
   "item.tcc.despicable_acceleration.desc": "None",
@@ -54,7 +54,7 @@
   
   "item.tcc.merged_rifling": "Merged Rifling",
   "item.tcc.merged_rifling.desc": "None",
-  "item.tcc.merged_rifling.effect": "Increases 155% specific gun damage (additive) and 25% movement speed while holding guns, cannot be equipped with Rifling at the same time",
+  "item.tcc.merged_rifling.effect": "Increases 155% specific gun damage  and 25% movement speed while holding guns, cannot be equipped with Rifling at the same time",
   
   "item.tcc.alloy_drill": "Alloy Drill",
   "item.tcc.alloy_drill.desc": "None",
@@ -66,35 +66,35 @@
   
   "item.tcc.blaze_storm": "Blaze Storm",
   "item.tcc.blaze_storm.desc": "Master the power of explosions, turning the battlefield into a hellfire",
-  "item.tcc.blaze_storm.effect": "Increase 24% explosion range (multiplicative), increase 24% explosion damage (multiplicative), cannot be equipped with Blaze Storm Prime at the same time",
+  "item.tcc.blaze_storm.effect": "Increase 24% explosion range , increase 24% explosion damage , cannot be equipped with Blaze Storm Prime at the same time",
   
   "item.tcc.blaze_storm_prime": "Blaze Storm Prime",
   "item.tcc.blaze_storm_prime.desc": "Ultimate explosion control ability, the flame king on the battlefield",
-  "item.tcc.blaze_storm_prime.effect": "Increase 66% explosion range (multiplicative), increase 66% explosion damage (multiplicative), cannot be equipped with Blaze Storm at the same time",
+  "item.tcc.blaze_storm_prime.effect": "Increase 66% explosion range , increase 66% explosion damage , cannot be equipped with Blaze Storm at the same time",
   
   "item.tcc.ripping_prime": "Ripping Prime",
   "item.tcc.ripping_prime.desc": "Ultimate firing speed combined with powerful penetration ability",
-  "item.tcc.ripping_prime.effect": "Increase 55% firing speed (multiplicative) and 2.2 penetration (additive)",
+  "item.tcc.ripping_prime.effect": "Increase 55% firing speed  and 2.2 penetration ",
   
   "item.tcc.close_combat_prime": "Close Combat Prime",
   "item.tcc.close_combat_prime.desc": "Ultimate enhancement for close combat",
-  "item.tcc.close_combat_prime.effect": "Increase 165% shotgun damage (additive)",
+  "item.tcc.close_combat_prime.effect": "Increase 165% shotgun damage ",
   
   "item.tcc.evil_accuracy": "Evil Accuracy",
   "item.tcc.evil_accuracy.desc": "Ultimate control, reducing recoil while sacrificing firing speed",
-  "item.tcc.evil_accuracy.effect": "Reduce 90% recoil, reduce 36% firing speed (both additive)",
+  "item.tcc.evil_accuracy.effect": "Reduce 90% recoil, reduce 36% firing speed",
   
   "item.tcc.limit_speed": "Limit Speed",
   "item.tcc.limit_speed.desc": "Let bullets fly at extreme speed",
-  "item.tcc.limit_speed.effect": "Increase 60% bullet speed (additive)",
+  "item.tcc.limit_speed.effect": "Increase 60% bullet speed ",
   
   "item.tcc.ferocious_extension": "Ferocious Extension",
   "item.tcc.ferocious_extension.desc": "Let bullets fly farther to strike distant enemies",
-  "item.tcc.ferocious_extension.effect": "Increase 120% bullet range (multiplicative)",
+  "item.tcc.ferocious_extension.effect": "Increase 120% bullet range ",
   
   "item.tcc.rifling": "Rifling",
   "item.tcc.rifling.desc": "Rifling technology that enhances specific gun damage",
-  "item.tcc.rifling.effect": "Increase 165% specific gun damage (additive), cannot be equipped with Merged Rifling at the same time",
+  "item.tcc.rifling.effect": "Increase 165% specific gun damage , cannot be equipped with Merged Rifling at the same time",
   
   "item.tcc.close_range_shot": "Close Range Shot",
   "item.tcc.close_range_shot.desc": "Ornament that enhances close combat",
@@ -118,11 +118,11 @@
   
   "item.tcc.chamber": "Chamber",
   "item.tcc.chamber.desc": "Increase sniper rifle damage",
-  "item.tcc.chamber.effect": "When holding a sniper rifle, increases damage by 40% (multiplicative), cannot be equipped with Chamber Prime at the same time",
+  "item.tcc.chamber.effect": "When holding a sniper rifle, increases damage by 40% , cannot be equipped with Chamber Prime at the same time",
   
   "item.tcc.chamber_prime": "Chamber Prime",
   "item.tcc.chamber_prime.desc": "Ultimate enhancement of sniper rifle damage",
-  "item.tcc.chamber_prime.effect": "When holding a sniper rifle, increases damage by 100% (multiplicative), cannot be equipped with Chamber at the same time",
+  "item.tcc.chamber_prime.effect": "When holding a sniper rifle, increases damage by 100% , cannot be equipped with Chamber at the same time",
   
   "item.tcc.core_fusion": "Core Fusion",
   "item.tcc.core_fusion.desc": "Core material obtained by smelting ornaments in a furnace",
@@ -135,29 +135,29 @@
 
   "item.tcc.tactical_reload": "Tactical Reload",
   "item.tcc.tactical_reload.desc": "Fast and efficient reloading technique",
-  "item.tcc.tactical_reload.effect": "Increases 60% shotgun reload speed (additive)",
+  "item.tcc.tactical_reload.effect": "Increases 60% shotgun reload speed ",
 
   "item.tcc.overloaded_magazine": "Overloaded Magazine",
   "item.tcc.overloaded_magazine.desc": "Higher capacity but slower reloading magazine",
-  "item.tcc.overloaded_magazine.effect": "Increases 60% shotgun magazine capacity (additive), decreases 18% reload speed (additive)",
+  "item.tcc.overloaded_magazine.effect": "Increases 60% shotgun magazine capacity , decreases 18% reload speed ",
 
   "item.tcc.infernal_chamber": "Infernal Chamber",
   "item.tcc.infernal_chamber.desc": "Technology that splits single bullets into multiple projectiles",
-  "item.tcc.infernal_chamber.effect": "Increases 120% shotgun bullet count (additive)",
+  "item.tcc.infernal_chamber.effect": "Increases 120% shotgun bullet count ",
 
   "item.tcc.sustained_fire": "Sustained Fire",
   "item.tcc.sustained_fire.desc": "Stable fire support guarantee",
-  "item.tcc.sustained_fire.effect": "Increases 48% pistol reload speed (additive)",
+  "item.tcc.sustained_fire.effect": "Increases 48% pistol reload speed ",
 
   "item.tcc.infected_magazine": "Infected Magazine",
   "item.tcc.infected_magazine.desc": "Higher capacity but slower reloading magazine",
-  "item.tcc.infected_magazine.effect": "Increases 60% pistol magazine capacity (additive), decreases 30% reload speed (additive)",
+  "item.tcc.infected_magazine.effect": "Increases 60% pistol magazine capacity , decreases 30% reload speed ",
 
   "item.tcc.deadly_surge": "Deadly Surge",
   "item.tcc.deadly_surge.desc": "High firing rate combined with multiple projectiles for deadly effect",
-  "item.tcc.deadly_surge.effect": "Increases 60% pistol firing speed (additive), increases 60% bullet count (additive)",
+  "item.tcc.deadly_surge.effect": "Increases 60% pistol firing speed , increases 60% bullet count",
 
   "item.tcc.bullet_spread": "Bullet Spread",
   "item.tcc.bullet_spread.desc": "Technology that splits single bullets into multiple projectiles",
-  "item.tcc.bullet_spread.effect": "Increases 120% pistol bullet count (additive)"
+  "item.tcc.bullet_spread.effect": "Increases 120% pistol bullet count"
 }

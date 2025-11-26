@@ -40,7 +40,7 @@ public class AlloyDrill extends ItemBaseCurio {
         
         // 给玩家添加护甲忽略属性加成
         if (slotContext.entity() instanceof Player player) {
-            applyDrillEffects(player);
+            applyAlloyDrillEffects(player);
         }
     }
     
@@ -53,7 +53,7 @@ public class AlloyDrill extends ItemBaseCurio {
         
         // 移除玩家的护甲忽略属性加成
         if (slotContext.entity() instanceof Player player) {
-            removeDrillEffects(player);
+            removeAlloyDrillEffects(player);
         }
     }
     
@@ -69,7 +69,7 @@ public class AlloyDrill extends ItemBaseCurio {
      * 应用钻头效果
      * 提升护甲忽略能力
      */
-    private void applyDrillEffects(Player player) {
+    private void applyAlloyDrillEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 应用护甲忽略能力
@@ -97,7 +97,7 @@ public class AlloyDrill extends ItemBaseCurio {
     /**
      * 移除钻头效果
      */
-    private void removeDrillEffects(Player player) {
+    private void removeAlloyDrillEffects(Player player) {
         var attributes = player.getAttributes();
         
         // 移除护甲忽略能力加成
@@ -119,25 +119,10 @@ public class AlloyDrill extends ItemBaseCurio {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
         if (slotContext.entity() instanceof Player player) {
-            applyDrillEffects(player);
+            applyAlloyDrillEffects(player);
         }
     }
-    
-    /**
-     * 当物品被装备时，显示提示信息
-     */
-    @Override
-    public void onEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§6合金钻头已装备 - 护甲忽略能力+200%"
-                ),
-                true
-            );
-        }
-    }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -171,5 +156,13 @@ public class AlloyDrill extends ItemBaseCurio {
      */
     public String getSlot() {
         return "tcc:tcc_slot";
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyAlloyDrillEffects(player);
     }
 }

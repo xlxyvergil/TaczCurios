@@ -103,7 +103,7 @@ public class CloseCombatPrime extends ItemBaseCurio {
         
         var damageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.fromNamespaceAndPath("taa", "bullet_gundamage_shotgun")
+                new ResourceLocation("taa", "bullet_gundamage_shotgun")
             )
         );
         
@@ -130,7 +130,7 @@ public class CloseCombatPrime extends ItemBaseCurio {
         
         var damageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.fromNamespaceAndPath("taa", "bullet_gundamage_shotgun")
+                new ResourceLocation("taa", "bullet_gundamage_shotgun")
             )
         );
         
@@ -181,5 +181,13 @@ public class CloseCombatPrime extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§f传说")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+    }
+    
+    /**
+     * 当玩家切换武器时应用效果
+     */
+    @Override
+    public void applyGunSwitchEffect(Player player) {
+        applyShotgunDamageBonus(player);
     }
 }
