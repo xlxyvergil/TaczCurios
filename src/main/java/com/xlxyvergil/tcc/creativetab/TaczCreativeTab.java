@@ -68,6 +68,12 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.INFECTED_MAGAZINE.get());
                 output.accept(TaczItems.DEADLY_SURGE.get());
                 output.accept(TaczItems.BULLET_SPREAD.get());
+                // 添加新增的饰品
+                output.accept(TaczItems.OPPRESSION_POINT.get());
+                output.accept(TaczItems.OPPRESSION_POINT_PRIME.get());
+                output.accept(TaczItems.SWORD_WIND.get());
+                output.accept(TaczItems.SWORD_WIND_PRIME.get());
+                
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());
                 output.accept(TaczItems.RIFT_SILVER.get());

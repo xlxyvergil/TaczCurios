@@ -159,5 +159,21 @@
 
   "item.tcc.bullet_spread": "Bullet Spread",
   "item.tcc.bullet_spread.desc": "Technology that splits single bullets into multiple projectiles",
-  "item.tcc.bullet_spread.effect": "Increases 120% pistol bullet count"
+  "item.tcc.bullet_spread.effect": "Increases 120% pistol bullet count",
+  
+  "item.tcc.oppression_point": "Oppression Point",
+  "item.tcc.oppression_point.desc": "Mysterious ornament that enhances melee attack power",
+  "item.tcc.oppression_point.effect": "Increases 120% melee damage",
+  
+  "item.tcc.oppression_point_prime": "Oppression Point Prime",
+  "item.tcc.oppression_point_prime.desc": "Ultimate mysterious ornament that enhances melee attack power",
+  "item.tcc.oppression_point_prime.effect": "Increases 165% melee damage",
+  
+  "item.tcc.sword_wind": "Sword Wind",
+  "item.tcc.sword_wind.desc": "Mysterious ornament that expands melee attack range",
+  "item.tcc.sword_wind.effect": "Increases 1.1 melee distance",
+  
+  "item.tcc.sword_wind_prime": "Sword Wind Prime",
+  "item.tcc.sword_wind_prime.desc": "Ultimate mysterious ornament that expands melee attack range",
+  "item.tcc.sword_wind_prime.effect": "Increases 3 melee distance"
 }

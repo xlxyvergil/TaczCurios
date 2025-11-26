@@ -103,14 +103,14 @@ public class CorruptMagazine extends ItemBaseCurio {
         // 弹匣容量属性（不带枪械类型）
         var capacityAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
+                new net.minecraft.resources.ResourceLocation("taa", "magazine_capacity")
             )
         );
         
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
+                new net.minecraft.resources.ResourceLocation("taa", "reload_time")
             )
         );
         
@@ -168,7 +168,7 @@ public class CorruptMagazine extends ItemBaseCurio {
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_time")
             )
         );
         

@@ -159,5 +159,21 @@
 
   "item.tcc.bullet_spread": "§6弹头扩散",
   "item.tcc.bullet_spread.desc": "使单发子弹分裂成多发的技术",
-  "item.tcc.bullet_spread.effect": "提升120%手枪弹头数量"
+  "item.tcc.bullet_spread.effect": "提升120%手枪弹头数量",
+  
+  "item.tcc.oppression_point": "§9压迫点",
+  "item.tcc.oppression_point.desc": "增强近战攻击力的神秘饰品",
+  "item.tcc.oppression_point.effect": "提升120%近战伤害",
+  
+  "item.tcc.oppression_point_prime": "§f压迫点Prime",
+  "item.tcc.oppression_point_prime.desc": "极致增强近战攻击力的神秘饰品",
+  "item.tcc.oppression_point_prime.effect": "提升165%近战伤害",
+  
+  "item.tcc.sword_wind": "§9剑风",
+  "item.tcc.sword_wind.desc": "扩大近战攻击范围的神秘饰品",
+  "item.tcc.sword_wind.effect": "提升1.1近战距离",
+  
+  "item.tcc.sword_wind_prime": "§f剑风Prime",
+  "item.tcc.sword_wind_prime.desc": "极致扩大近战攻击范围的神秘饰品",
+  "item.tcc.sword_wind_prime.effect": "提升3近战距离"
 }

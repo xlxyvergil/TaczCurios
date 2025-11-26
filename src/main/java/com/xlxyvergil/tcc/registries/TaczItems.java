@@ -34,7 +34,11 @@ import com.xlxyvergil.tcc.items.RippingPrime;
 import com.xlxyvergil.tcc.items.SoldierBasicTag;
 import com.xlxyvergil.tcc.items.SoldierSpecificTag;
 import com.xlxyvergil.tcc.items.SplitChamber;
+import com.xlxyvergil.tcc.items.OppressionPoint;
+import com.xlxyvergil.tcc.items.OppressionPointPrime;
 import com.xlxyvergil.tcc.items.SustainedFire;
+import com.xlxyvergil.tcc.items.SwordWind;
+import com.xlxyvergil.tcc.items.SwordWindPrime;
 import com.xlxyvergil.tcc.items.TacticalReload;
 import com.xlxyvergil.tcc.items.UralWolfTag;
 import com.xlxyvergil.tcc.items.WaspStinger;
@@ -274,4 +278,28 @@ public class TaczItems {
     // 裂隙碎银 - 用于随机抽取饰品
     public static final RegistryObject<Item> RIFT_SILVER = ITEMS.register("rift_silver", 
         () -> new RiftSilver(new Item.Properties()));
+    
+    // 压迫点 - 提升120%近战伤害
+    public static final RegistryObject<Item> OPPRESSION_POINT = ITEMS.register("oppression_point", 
+        () -> new OppressionPoint(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 压迫点Prime - 提升165%近战伤害
+    public static final RegistryObject<Item> OPPRESSION_POINT_PRIME = ITEMS.register("oppression_point_prime", 
+        () -> new OppressionPointPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 剑风 - 提升1.1近战距离
+    public static final RegistryObject<Item> SWORD_WIND = ITEMS.register("sword_wind", 
+        () -> new SwordWind(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 剑风Prime - 提升3近战距离
+    public static final RegistryObject<Item> SWORD_WIND_PRIME = ITEMS.register("sword_wind_prime", 
+        () -> new SwordWindPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
 }

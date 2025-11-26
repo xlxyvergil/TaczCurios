@@ -184,6 +184,26 @@
           "type": "minecraft:item",
           "weight": 1150,
           "name": "tcc:bullet_spread"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:oppression_point"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:sword_wind"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:oppression_point_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:sword_wind_prime"
         }
       ]
     }

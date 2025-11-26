@@ -100,7 +100,7 @@ public class MagazineBoost extends ItemBaseCurio {
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_time")
             )
         );
         
@@ -132,7 +132,7 @@ public class MagazineBoost extends ItemBaseCurio {
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_time")
             )
         );
         

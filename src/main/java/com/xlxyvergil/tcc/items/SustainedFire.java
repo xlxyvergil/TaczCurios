@@ -88,7 +88,7 @@ public class SustainedFire extends ItemBaseCurio {
         // 获取装填速度属性
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_time")
             )
         );
 
@@ -119,7 +119,7 @@ public class SustainedFire extends ItemBaseCurio {
         // 获取装填速度属性
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_time")
             )
         );
 

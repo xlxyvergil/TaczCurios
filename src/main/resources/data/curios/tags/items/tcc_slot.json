@@ -36,6 +36,10 @@
     "tcc:sustained_fire",
     "tcc:infected_magazine",
     "tcc:deadly_surge",
-    "tcc:bullet_spread"
+    "tcc:bullet_spread",
+    "tcc:oppression_point",
+    "tcc:oppression_point_prime",
+    "tcc:sword_wind",
+    "tcc:sword_wind_prime"
   ]
 }

@@ -3,6 +3,8 @@
   "values": [
     "tcc:soldier_basic_tag",
     "tcc:prophecy_pact",
-    "tcc:magazine_boost"
+    "tcc:magazine_boost",
+    "tcc:oppression_point",
+    "tcc:sword_wind"
   ]
 }

@@ -85,7 +85,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     
     /**
      * 应用枪械伤害加成
-     * 玩家血量高于30%时，提升玩家325%的bullet_gundamage
+     * 玩家血量高于40%时，提升玩家325%的bullet_gundamage
      */
     private void applyGunDamageBonus(Player player) {
         // 检查玩家血量是否高于40%
@@ -178,37 +178,34 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         if (source.getEntity() instanceof Player player) {
             // 检查玩家是否装备了天火圣裁
             if (hasHeavenFireJudgmentEquipped(player)) {
-                // 检查玩家血量是否高于30%
-                float healthPercentage = player.getHealth() / player.getMaxHealth();
-                if (healthPercentage <= 0.3) {
-                    return; // 血量低于或等于30%时不生效
-                }
-
-                // 计算扣除30%当前血量后的血量百分比
-                float healthAfterDeduction = (player.getHealth() - player.getHealth() * 0.3f) / player.getMaxHealth();
-                if (healthAfterDeduction <= 0.4) {
-                    return; // 扣除30%血量后如果低于或等于40%，则不触发效果
-                }
-
-                // 立即扣除30%血量
-                float healthToDeduct = player.getHealth() * 0.3f;
-                if (healthToDeduct > 0) {
-                    player.hurt(player.damageSources().magic(), healthToDeduct);
-                }
+                // 检查玩家是否手持枪械
+                ItemStack mainHandItem = player.getMainHandItem();
+                com.tacz.guns.api.item.IGun iGun = com.tacz.guns.api.item.IGun.getIGunOrNull(mainHandItem);
                 
-                // 设置持续伤害效果：每秒消耗最大生命值的5%，持续5秒
-                // 这里我们通过给玩家添加一个NBT标签来跟踪效果
-                net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
-                persistentData.putInt(DAMAGE_TAG, 5); // 持续5秒
-                
-                // 显示效果触发提示
-                if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
-                    player.displayClientMessage(
-                        net.minecraft.network.chat.Component.literal(
-                            "§4天火圣裁反噬 - 立即损失30%当前生命值，随后每秒损失5%最大生命值，持续5秒"
-                        ),
-                        true
-                    );
+                // 只有在玩家手持枪械时才触发效果
+                if (iGun != null) {
+                    // 检查玩家血量是否高于40%
+                    float healthPercentage = player.getHealth() / player.getMaxHealth();
+                    if (healthPercentage <= 0.4) {
+                        return; // 血量低于或等于40%时不生效
+                    }
+
+                    // 计算扣除30%当前血量后的血量百分比
+                    float healthAfterDeduction = (player.getHealth() - player.getHealth() * 0.3f) / player.getMaxHealth();
+                    if (healthAfterDeduction <= 0.4) {
+                        return; // 扣除30%血量后如果低于或等于40%，则不触发效果
+                    }
+
+                    // 立即扣除30%血量
+                    float healthToDeduct = player.getHealth() * 0.3f;
+                    if (healthToDeduct > 0) {
+                        player.hurt(player.damageSources().magic(), healthToDeduct);
+                    }
+                    
+                    // 设置持续伤害效果：每秒消耗最大生命值的5%，持续5秒
+                    // 这里我们通过给玩家添加一个NBT标签来跟踪效果
+                    net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
+                    persistentData.putInt(DAMAGE_TAG, 5); // 持续5秒
                 }
             }
         }
@@ -235,14 +232,14 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             if (duration > 0) {
                 // 每秒触发一次伤害（20 ticks = 1秒）
                 if (player.tickCount % 20 == 0) {
-                    // 检查扣除5%最大生命值后是否会低于30%
+                    // 检查扣除5%最大生命值后是否会低于40%
                     float maxHealth = player.getMaxHealth();
                     float currentHealth = player.getHealth();
                     float healthToDeduct = maxHealth * 0.05f;
                     float healthAfterDeduction = (currentHealth - healthToDeduct) / maxHealth;
                     
                     if (healthAfterDeduction > 0.4) {
-                        // 只有扣除后血量仍高于30%才造成伤害
+                        // 只有扣除后血量仍高于40%才造成伤害
                         if (healthToDeduct > 0) {
                             player.hurt(player.damageSources().magic(), healthToDeduct);
                         }

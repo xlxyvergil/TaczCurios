@@ -206,72 +206,79 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         if (source.getEntity() instanceof Player player) {
             // 检查玩家是否装备了天火劫灭
             if (hasHeavenFireApocalypseEquipped(player)) {
-                // 检查玩家血量是否为100%
-                float healthPercentage = player.getHealth() / player.getMaxHealth();
-                if (healthPercentage < 1.0) {
-                    return; // 血量不为100%时不生效
-                }
+                // 检查玩家是否手持枪械
+                ItemStack mainHandItem = player.getMainHandItem();
+                com.tacz.guns.api.item.IGun iGun = com.tacz.guns.api.item.IGun.getIGunOrNull(mainHandItem);
                 
-                // 造成伤害后对玩家造成当前生命值100%的伤害
-                float currentHealth = player.getHealth();
-                float healthToDeduct = currentHealth * 1.0f;
-                
-                if (healthToDeduct > 0) {
-                    player.hurt(player.damageSources().magic(), healthToDeduct);
+                // 只有在玩家手持枪械时才触发效果
+                if (iGun != null) {
+                    // 检查玩家血量是否为100%
+                    float healthPercentage = player.getHealth() / player.getMaxHealth();
+                    if (healthPercentage < 1.0) {
+                        return; // 血量不为100%时不生效
+                    }
                     
-                    // 显示扣除生命值的提示
+                    // 造成伤害后对玩家造成当前生命值100%的伤害
+                    float currentHealth = player.getHealth();
+                    float healthToDeduct = currentHealth * 1.0f;
+                    
+                    if (healthToDeduct > 0) {
+                        player.hurt(player.damageSources().magic(), healthToDeduct);
+                        
+                        // 显示扣除生命值的提示
+                        if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+                            player.displayClientMessage(
+                                net.minecraft.network.chat.Component.literal(
+                                    "§4天火劫灭反噬 - 生命值-100%当前生命值"
+                                ),
+                                true
+                            );
+                        }
+                    }
+                    
+                    // 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
+                    List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(32.0D));
+
+                    for (Player nearbyPlayer : nearbyPlayers) {
+                        // 排除自己
+                        if (nearbyPlayer == player) continue;
+
+                        // 给周围玩家添加属性修饰符
+                        var attributes = nearbyPlayer.getAttributes();
+                        var gunDamageAttribute = attributes.getInstance(
+                            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+                            )
+                        );
+                        
+                        if (gunDamageAttribute != null) {
+                            // 移除已存在的修饰符
+                            gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
+                            
+                            // 添加100%的伤害加成（加算）
+                            AttributeModifier modifier = new AttributeModifier(
+                                NEARBY_GUN_DAMAGE_UUID,
+                                NEARBY_GUN_DAMAGE_NAME,
+                                1.0,
+                                AttributeModifier.Operation.ADDITION
+                            );
+                            gunDamageAttribute.addPermanentModifier(modifier);
+                            
+                            // 设置持续时间标记（15秒 = 300 ticks）
+                            net.minecraft.nbt.CompoundTag persistentData = nearbyPlayer.getPersistentData();
+                            persistentData.putInt(NEARBY_BUFF_DURATION_TAG, 300);
+                        }
+                    }
+                    
+                    // 显示提示信息
                     if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                         player.displayClientMessage(
                             net.minecraft.network.chat.Component.literal(
-                                "§4天火劫灭反噬 - 生命值-100%当前生命值"
+                                "§6天火劫灭 - 为周围玩家提供15秒的100%枪械伤害加成"
                             ),
                             true
                         );
                     }
-                }
-                
-                // 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
-                List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(32.0D));
-
-                for (Player nearbyPlayer : nearbyPlayers) {
-                    // 排除自己
-                    if (nearbyPlayer == player) continue;
-
-                    // 给周围玩家添加属性修饰符
-                    var attributes = nearbyPlayer.getAttributes();
-                    var gunDamageAttribute = attributes.getInstance(
-                        net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                            new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-                        )
-                    );
-                    
-                    if (gunDamageAttribute != null) {
-                        // 移除已存在的修饰符
-                        gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
-                        
-                        // 添加100%的伤害加成（加算）
-                        AttributeModifier modifier = new AttributeModifier(
-                            NEARBY_GUN_DAMAGE_UUID,
-                            NEARBY_GUN_DAMAGE_NAME,
-                            1.0,
-                            AttributeModifier.Operation.ADDITION
-                        );
-                        gunDamageAttribute.addPermanentModifier(modifier);
-                        
-                        // 设置持续时间标记（15秒 = 300 ticks）
-                        net.minecraft.nbt.CompoundTag persistentData = nearbyPlayer.getPersistentData();
-                        persistentData.putInt(NEARBY_BUFF_DURATION_TAG, 300);
-                    }
-                }
-                
-                // 显示提示信息
-                if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
-                    player.displayClientMessage(
-                        net.minecraft.network.chat.Component.literal(
-                            "§6天火劫灭 - 为周围玩家提供15秒的100%枪械伤害加成"
-                        ),
-                        true
-                    );
                 }
             }
         }

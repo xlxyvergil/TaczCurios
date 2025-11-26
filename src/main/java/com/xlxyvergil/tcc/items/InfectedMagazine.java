@@ -91,7 +91,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         // 获取弹匣容量属性
         var capacityAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "ammo_capacity")
+                new net.minecraft.resources.ResourceLocation("taa", "magazine_capacity")
             )
         );
 
@@ -103,7 +103,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         // 获取装填速度属性
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "reload_speed")
+                new net.minecraft.resources.ResourceLocation("taa", "reload_time")
             )
         );
 
