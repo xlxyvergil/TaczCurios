@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -18,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 膛室 - 当玩家手持狙击枪时，提升40%伤害（乘算）
- * 效果：狙击枪伤害+40%（乘算）
+ * 膛室 - 当玩家手持狙击枪时，提升伤害（乘算）
+ * 效果：狙击枪伤害加成（乘算）
  * 与ChamberPrime互斥
  */
 public class Chamber extends ItemBaseCurio {
@@ -29,9 +30,6 @@ public class Chamber extends ItemBaseCurio {
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.chamber.damage";
-    
-    // 效果参数
-    private static final double DAMAGE_BOOST = 0.40;       // 40%伤害提升（乘算）
     
     public Chamber(Properties properties) {
         super(properties);
@@ -129,11 +127,13 @@ public class Chamber extends ItemBaseCurio {
         
         // 应用效果
         if (gunDamageAttribute != null) {
-            // 添加40%的伤害加成（乘算）
+            // 获取配置中的伤害加成值
+            double damageBoost = TaczCuriosConfig.COMMON.chamberSniperDamageBoost.get();
+            // 添加伤害加成（乘算）
             var gunDamageModifier = new AttributeModifier(
                 DAMAGE_UUID,
                 DAMAGE_NAME,
-                DAMAGE_BOOST,
+                damageBoost,
                 AttributeModifier.Operation.MULTIPLY_BASE
             );
             gunDamageAttribute.addPermanentModifier(gunDamageModifier);
@@ -207,7 +207,8 @@ public class Chamber extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.chamber.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.chamberSniperDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.chamber.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

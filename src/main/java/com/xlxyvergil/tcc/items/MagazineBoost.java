@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -24,8 +25,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 弹匣增幅 - +30%装填速度
- * 效果：提升30%装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 弹匣增幅 - 提升装填速度
+ * 效果：提升装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class MagazineBoost extends ItemBaseCurio {
     
@@ -37,9 +38,6 @@ public class MagazineBoost extends ItemBaseCurio {
     
     // 支持的枪械类型
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
-    
-    // 效果参数
-    private static final double RELOAD_BOOST = 0.30;       // 30%装填速度提升（加算）
     
     public MagazineBoost(Properties properties) {
         super(properties
@@ -110,11 +108,13 @@ public class MagazineBoost extends ItemBaseCurio {
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加30%的装填速度加成（加算）
+                // 获取配置中的装填速度加成值
+                double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get();
+                // 添加配置的装填速度加成（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
                     RELOAD_NAME,
-                    RELOAD_BOOST,
+                    reloadBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 reloadAttribute.addPermanentModifier(reloadModifier);
@@ -188,7 +188,8 @@ public class MagazineBoost extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.magazine_boost.effect")
+        double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.magazine_boost.effect", String.format("%.0f", reloadBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
@@ -197,7 +198,7 @@ public class MagazineBoost extends ItemBaseCurio {
             .withStyle(ChatFormatting.GRAY));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§f常见")
+        tooltip.add(Component.literal("§7稀有度：§9常见")
             .withStyle(ChatFormatting.GRAY));
     }
     

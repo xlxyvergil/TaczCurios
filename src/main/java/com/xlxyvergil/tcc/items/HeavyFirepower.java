@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -30,8 +31,8 @@ public class HeavyFirepower extends ItemBaseCurio {
     private static final String INACCURACY_NAME = "tcc.heavy_firepower.inaccuracy";
     
     // 效果参数
-    private static final double DAMAGE_BOOST = 1.65;       // 165%手枪伤害提升（加算）
-    private static final double INACCURACY_BOOST = 0.55;   // 55%不精准度提升（乘算）
+    // private static final double DAMAGE_BOOST = 1.65;       // 165%手枪伤害提升（加算） - 现在从配置文件读取
+    // private static final double INACCURACY_BOOST = 0.55;   // 55%不精准度提升（乘算） - 现在从配置文件读取
     
     public HeavyFirepower(Properties properties) {
         super(properties);
@@ -99,13 +100,17 @@ public class HeavyFirepower extends ItemBaseCurio {
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
         }
         
+        // 从配置文件获取手枪伤害加成值
+        double damageBoost = TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get();
+        double inaccuracyBoost = TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get();
+        
         // 直接应用手枪伤害加成，无需检查是否手持手枪
         if (pistolDamageAttribute != null) {
-            // 添加165%的手枪伤害加成（加算）
+            // 添加配置的手枪伤害加成（加算）
             var pistolDamageModifier = new AttributeModifier(
                 DAMAGE_UUID,
                 DAMAGE_NAME,
-                DAMAGE_BOOST,
+                damageBoost,
                 AttributeModifier.Operation.ADDITION
             );
             pistolDamageAttribute.addPermanentModifier(pistolDamageModifier);
@@ -124,11 +129,11 @@ public class HeavyFirepower extends ItemBaseCurio {
             
             // 检查玩家是否持有手枪，只有持有手枪时才应用不精准度加成
             if (isHoldingPistol(player)) {
-                // 添加55%的不精准度加成（乘算）
+                // 添加配置的不精准度加成（乘算）
                 var inaccuracyModifier = new AttributeModifier(
                     INACCURACY_UUID,
                     INACCURACY_NAME,
-                    INACCURACY_BOOST,
+                    inaccuracyBoost,
                     AttributeModifier.Operation.MULTIPLY_BASE
                 );
                 inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
@@ -213,7 +218,9 @@ public class HeavyFirepower extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.heavy_firepower.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get() * 100;
+        double inaccuracyBoost = TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.heavy_firepower.effect", String.format("%.0f", damageBoost), String.format("%.0f", inaccuracyBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

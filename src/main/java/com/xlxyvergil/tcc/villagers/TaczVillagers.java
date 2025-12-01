@@ -44,30 +44,30 @@ public class TaczVillagers {
      * 初始化村民交易
      */
     public static void registerTrades() {
-        // 第1级交易 - 8个绿宝石，1个物品，最多使用32次，获得15点经验
+        // 第1级交易 - 1个物品，最多使用16次，获得2点经验
         List<VillagerTrades.ItemListing> tradesLevel1 = new ArrayList<>();
-        tradesLevel1.add(new ItemsForEmeralds(TaczItems.SOLDIER_BASIC_TAG.get(), 8, 1, 32, 15));
-        tradesLevel1.add(new ItemsForEmeralds(TaczItems.PROPHECY_PACT.get(), 8, 1, 32, 15));
+        tradesLevel1.add(new ItemsForEmeralds(TaczItems.SOLDIER_BASIC_TAG.get(), 8, 1, 16, 2));
+        tradesLevel1.add(new ItemsForEmeralds(TaczItems.PROPHECY_PACT.get(), 8, 1, 16, 2));
         
-        // 第2级交易 - 16个绿宝石，1个物品，最多使用32次，获得30点经验
+        // 第2级交易 - 1个物品，最多使用16次，获得10点经验
         List<VillagerTrades.ItemListing> tradesLevel2 = new ArrayList<>();
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.RED_MOVEMENT_TAG.get(), 16, 1, 32, 30));
-        tradesLevel2.add(new ItemsForEmeralds(TaczItems.URAL_WOLF_TAG.get(), 16, 1, 32, 30));
+        tradesLevel2.add(new ItemsForEmeralds(TaczItems.RED_MOVEMENT_TAG.get(), 16, 1, 16, 10));
+        tradesLevel2.add(new ItemsForEmeralds(TaczItems.URAL_WOLF_TAG.get(), 16, 1, 16, 10));
         
-        // 第3级交易 - 16个绿宝石，1个物品，最多使用32次，获得30点经验
+        // 第3级交易 - 1个物品，最多使用16次，获得20点经验
         List<VillagerTrades.ItemListing> tradesLevel3 = new ArrayList<>();
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.LIMIT_SPEED.get(), 16, 1, 32, 30));
-        tradesLevel3.add(new ItemsForEmeralds(TaczItems.FEROCIOUS_EXTENSION.get(), 16, 1, 32, 30));
+        tradesLevel3.add(new ItemsForEmeralds(TaczItems.LIMIT_SPEED.get(), 16, 1, 16, 20));
+        tradesLevel3.add(new ItemsForEmeralds(TaczItems.FEROCIOUS_EXTENSION.get(), 16, 1, 16, 20));
         
-        // 第4级交易 - 16个绿宝石，1个物品，最多使用32次，获得30点经验
+        // 第4级交易 - 1个物品，最多使用16次，获得35点经验
         List<VillagerTrades.ItemListing> tradesLevel4 = new ArrayList<>();
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.WASP_STINGER.get(), 16, 1, 32, 30));
-        tradesLevel4.add(new ItemsForEmeralds(TaczItems.CLOSE_RANGE_SHOT.get(), 16, 1, 32, 30));
+        tradesLevel4.add(new ItemsForEmeralds(TaczItems.WASP_STINGER.get(), 16, 1, 16, 35));
+        tradesLevel4.add(new ItemsForEmeralds(TaczItems.CLOSE_RANGE_SHOT.get(), 16, 1, 16, 35));
         
-        // 第5级交易 - 裂隙碎银24个绿宝石，膛线16个绿宝石，1个物品，最多使用32次，获得30点经验
+        // 第5级交易 - 裂隙碎银24个绿宝石，膛线16个绿宝石，1个物品，最多使用16次，获得50点经验
         List<VillagerTrades.ItemListing> tradesLevel5 = new ArrayList<>();
-        tradesLevel5.add(new ItemsForEmeralds(TaczItems.RIFLING.get(), 16, 1, 32, 30));
-        tradesLevel5.add(new ItemsForEmeralds(TaczItems.RIFT_SILVER.get(), 24, 1, 32, 30));
+        tradesLevel5.add(new ItemsForEmeralds(TaczItems.RIFLING.get(), 16, 1, 16, 50));
+        tradesLevel5.add(new ItemsForEmeralds(TaczItems.RIFT_SILVER.get(), 24, 1, 16, 50));
         
         // 注册所有交易到Teshin职业
         VillagerTrades.TRADES.put(TESHIN.get(), toIntMap(ImmutableMap.of(
@@ -88,6 +88,7 @@ public class TaczVillagers {
         private final int itemCount;       // 村民提供的物品数量
         private final int maxUses;         // 该交易的最大使用次数
         private final int villagerXp;      // 村民获得的经验值
+        private final float priceMultiplier; // 价格乘数
 
         /**
          * 创建一个新的物品交易
@@ -98,11 +99,25 @@ public class TaczVillagers {
          * @param pVillagerXp 村民完成交易后获得的经验值
          */
         public ItemsForEmeralds(net.minecraft.world.item.Item pItem, int pEmeraldCost, int pItemCount, int pMaxUses, int pVillagerXp) {
+            this(pItem, pEmeraldCost, pItemCount, pMaxUses, pVillagerXp, 0.05F);
+        }
+
+        /**
+         * 创建一个新的物品交易（带价格乘数）
+         * @param pItem 村民出售的物品
+         * @param pEmeraldCost 玩家需要支付的绿宝石数量
+         * @param pItemCount 村民提供的物品数量
+         * @param pMaxUses 该交易的最大使用次数
+         * @param pVillagerXp 村民完成交易后获得的经验值
+         * @param pPriceMultiplier 价格乘数
+         */
+        public ItemsForEmeralds(net.minecraft.world.item.Item pItem, int pEmeraldCost, int pItemCount, int pMaxUses, int pVillagerXp, float pPriceMultiplier) {
             this.item = pItem;
             this.emeraldCost = pEmeraldCost;
             this.itemCount = pItemCount;
             this.maxUses = pMaxUses;
             this.villagerXp = pVillagerXp;
+            this.priceMultiplier = pPriceMultiplier;
         }
 
         public MerchantOffer getOffer(Entity pTrader, RandomSource pRandom) {
@@ -112,7 +127,7 @@ public class TaczVillagers {
                 itemstack,
                 this.maxUses,
                 this.villagerXp,
-                0.05F
+                this.priceMultiplier
             );
         }
     }

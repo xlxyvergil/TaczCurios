@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.UUID;
 
 
 /**
- * 士兵基础挂牌 - 提供30%所有枪械基础伤害加成
- * 效果：为玩家提供30%的通用枪械伤害加成（乘法）
+ * 士兵基础挂牌 - 提供所有枪械基础伤害加成
+ * 效果：为玩家提供通用枪械伤害加成（乘法）
  */
 public class SoldierBasicTag extends ItemBaseCurio {
     
@@ -98,7 +99,7 @@ public class SoldierBasicTag extends ItemBaseCurio {
     
     /**
      * 应用枪械伤害加成
-     * 给玩家添加30%的通用枪械伤害加成（乘法）
+     * 给玩家添加配置中的通用枪械伤害加成（乘法）
      */
     private void applyGunDamageBonus(Player player) {
         // 使用TaczAttributeAdd中的通用枪械伤害属性
@@ -112,11 +113,13 @@ public class SoldierBasicTag extends ItemBaseCurio {
         if (gunDamageAttribute != null) {
             // 检查是否已经存在相同的修饰符
             if (gunDamageAttribute.getModifier(GUN_DAMAGE_UUID) == null) {
-                // 添加30%的伤害加成 (0.3 = 30%)，使用乘法操作
+                // 获取配置中的伤害加成值
+                double damageBoost = TaczCuriosConfig.COMMON.soldierBasicTagDamageBoost.get();
+                // 添加配置中的伤害加成，使用乘法操作
                 AttributeModifier modifier = new AttributeModifier(
                     GUN_DAMAGE_UUID,
                     GUN_DAMAGE_NAME,
-                    0.3D,
+                    damageBoost,
                     AttributeModifier.Operation.MULTIPLY_BASE
                 );
                 gunDamageAttribute.addPermanentModifier(modifier);
@@ -167,7 +170,8 @@ public class SoldierBasicTag extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.soldier_basic_tag.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.soldierBasicTagDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.soldier_basic_tag.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

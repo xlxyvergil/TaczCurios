@@ -10,119 +10,119 @@
 
   "item.tcc.soldier_basic_tag": "§9士兵基础挂牌",
   "item.tcc.soldier_basic_tag.desc": "提供30%通用枪械伤害加成",
-  "item.tcc.soldier_basic_tag.effect": "提供30%通用枪械伤害加成",
+  "item.tcc.soldier_basic_tag.effect": "提供%1$s%%通用枪械伤害加成",
   
-  "item.tcc.soldier_specific_tag": "§9士兵特定挂牌",
+  "item.tcc.soldier_specific_tag": "§7士兵特定挂牌",
   "item.tcc.soldier_specific_tag.desc": "提供55%通用枪械伤害加成",
-  "item.tcc.soldier_specific_tag.effect": "提供55%通用枪械伤害加成",
+  "item.tcc.soldier_specific_tag.effect": "提供%1$s%%通用枪械伤害加成",
   
   "item.tcc.heavy_caliber_tag": "§6重口径",
   "item.tcc.heavy_caliber_tag.desc": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，降低55%精准度",
-  "item.tcc.heavy_caliber_tag.effect": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，降低55%精准度",
+  "item.tcc.heavy_caliber_tag.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器伤害，降低%2$s%%精准度",
   
   "item.tcc.red_movement_tag": "§b红-有-三",
   "item.tcc.red_movement_tag.desc": "快速移动与精准射击的完美结合",
-  "item.tcc.red_movement_tag.effect": "提供150%持枪移动速度加成",
+  "item.tcc.red_movement_tag.effect": "提供%1$s%%持枪移动速度加成",
   
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
   "item.tcc.ural_wolf_tag.desc": "精准致命的一击，展现猎手的本能",
-  "item.tcc.ural_wolf_tag.effect": "提供150%爆头倍率加成",
+  "item.tcc.ural_wolf_tag.effect": "提供%1$s%%爆头倍率加成",
   
   "item.tcc.heaven_fire_judgment": "§f天火圣裁",
   "item.tcc.heaven_fire_judgment.desc": "我将发动一次牛逼的攻击",
-  "item.tcc.heaven_fire_judgment.effect": "玩家血量高于40%时，提升325%通用枪械伤害，造成伤害后立即扣除30%当前生命值，然后每秒消耗5%最大生命值，持续5秒。玩家血量低于40%时，此饰品的全部效果都不生效",
+  "item.tcc.heaven_fire_judgment.effect": "提升%1$s%%通用枪械伤害 扣除%2$s%%当前生命值 每秒消耗%3$s%%最大生命值 持续%4$s秒 血量低于40%%时无效",
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
   "item.tcc.heaven_fire_apocalypse.desc": "踏上前来",
-  "item.tcc.heaven_fire_apocalypse.effect": "玩家血量为100%时，提升1000%通用枪械伤害，+10爆炸范围，提升1000%爆炸伤害。造成伤害后扣除100%当前生命值，并为周围32格内玩家提供15秒的100%通用枪械伤害加成",
+  "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 提升%1$s%%通用枪械伤害 +%2$s爆炸范围 提升%3$s%%爆炸伤害 扣除%4$s%%当前生命值 为周围%5$s格内玩家提供%6$s%%通用枪械伤害加成 持续%7$s秒",
   
-  "item.tcc.magazine_boost": "§f弹匣增幅",
+  "item.tcc.magazine_boost": "§9弹匣增幅",
   "item.tcc.magazine_boost.desc": "快速高效的装填技术",
-  "item.tcc.magazine_boost.effect": "提升30%步枪、狙击枪、冲锋枪、机枪、发射器装填速度",
+  "item.tcc.magazine_boost.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器装填速度",
   
   "item.tcc.corrupt_magazine": "§6腐败弹匣",
   "item.tcc.corrupt_magazine.desc": "容量更大但装填更慢的弹匣",
-  "item.tcc.corrupt_magazine.effect": "提升66%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量，降低33%装填速度",
+  "item.tcc.corrupt_magazine.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量，降低%2$s%%装填速度",
   
   "item.tcc.split_chamber": "§6分裂膛室",
   "item.tcc.split_chamber.desc": "使单发子弹分裂成多发的技术",
-  "item.tcc.split_chamber.effect": "提升90%步枪、狙击枪、冲锋枪、机枪、发射器弹头数量",
+  "item.tcc.split_chamber.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器弹头数量",
   
   "item.tcc.despicable_acceleration": "§6卑劣加速",
   "item.tcc.despicable_acceleration.desc": "以降低通用伤害为代价换取极致的射击速度",
-  "item.tcc.despicable_acceleration.effect": "提升90%射击速度，降低15%通用伤害和全部步枪、狙击枪、冲锋枪、机枪、发射器、手枪、霰弹枪伤害",
+  "item.tcc.despicable_acceleration.effect": "提升%1$s%%射击速度，降低%2$s%%通用伤害和全部步枪、狙击枪、冲锋枪、机枪、发射器、手枪、霰弹枪伤害",
   
   "item.tcc.merged_rifling": "§f并合膛线",
   "item.tcc.merged_rifling.desc": "融合多种膛线技术的综合性强化方案",
-  "item.tcc.merged_rifling.effect": "提升155%步枪、狙击枪、冲锋枪、机枪、发射器伤害和25%持枪移动速度，无法与膛线同时装备",
+  "item.tcc.merged_rifling.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器伤害和%2$s%%持枪移动速度，无法与膛线同时装备",
   
   "item.tcc.alloy_drill": "§6合金钻头",
   "item.tcc.alloy_drill.desc": "由特殊合金制成，拥有极强的穿透能力",
-  "item.tcc.alloy_drill.effect": "提升200%护甲穿透",
+  "item.tcc.alloy_drill.effect": "提升%1$s%%护甲穿透",
   
   "item.tcc.careful_heart": "§f我小心海也绝非鳝类",
   "item.tcc.careful_heart.desc": "我小心海绝非鳝类，发射器力量的三倍强化",
-  "item.tcc.careful_heart.effect": "提升300%发射器伤害加成，300%爆炸伤害加成，300%爆炸范围加成",
+  "item.tcc.careful_heart.effect": "提升%1$s%%发射器伤害加成，%2$s%%爆炸伤害加成，%3$s%%爆炸范围加成",
   
   "item.tcc.blaze_storm": "§6烈焰风暴",
   "item.tcc.blaze_storm.desc": "掌控爆炸的力量，将战场化为炼狱",
-  "item.tcc.blaze_storm.effect": "增加24%爆炸范围，增加24%爆炸伤害，无法与烈焰风暴Prime同时装备",
+  "item.tcc.blaze_storm.effect": "增加%1$s%%爆炸范围，增加%2$s%%爆炸伤害，无法与烈焰风暴Prime同时装备",
   
   "item.tcc.blaze_storm_prime": "§f烈焰风暴Prime",
   "item.tcc.blaze_storm_prime.desc": "极致的爆炸掌控能力，战场上的烈焰君王",
-  "item.tcc.blaze_storm_prime.effect": "增加66%爆炸范围，增加66%爆炸伤害，无法与烈焰风暴同时装备",
+  "item.tcc.blaze_storm_prime.effect": "增加%1$s%%爆炸范围，增加%2$s%%爆炸伤害，无法与烈焰风暴同时装备",
   
   "item.tcc.ripping_prime": "§f撕裂Prime",
   "item.tcc.ripping_prime.desc": "极致的射击速度配合强大的穿透能力",
-  "item.tcc.ripping_prime.effect": "增加55%射速,增加2.2穿透",
+  "item.tcc.ripping_prime.effect": "增加%1$s%%射速,增加%2$s穿透",
   
   "item.tcc.close_combat_prime": "§f抵近射击Prime",
   "item.tcc.close_combat_prime.desc": "近距离战斗的极致强化",
-  "item.tcc.close_combat_prime.effect": "提升165%霰弹枪伤害",
+  "item.tcc.close_combat_prime.effect": "提升%1$s%%霰弹枪伤害",
   
   "item.tcc.evil_accuracy": "§6极恶精准",
   "item.tcc.evil_accuracy.desc": "极致的控制力，降低后坐力的同时牺牲射速",
-  "item.tcc.evil_accuracy.effect": "降低90%后坐力，降低36%射速",
+  "item.tcc.evil_accuracy.effect": "降低%1$s%%后坐力，降低%2$s%%射速",
   
   "item.tcc.limit_speed": "§b极限速度",
   "item.tcc.limit_speed.desc": "让弹药以极限速度飞行",
-  "item.tcc.limit_speed.effect": "提高60%弹药速度",
+  "item.tcc.limit_speed.effect": "提高%1$s%%弹药速度",
   
   "item.tcc.ferocious_extension": "§b凶恶延伸",
   "item.tcc.ferocious_extension.desc": "让子弹飞得更远，打击更远处的敌人",
-  "item.tcc.ferocious_extension.effect": "提高120%子弹射程",
+  "item.tcc.ferocious_extension.effect": "提高%1$s%%子弹射程",
   
   "item.tcc.rifling": "§b膛线",
   "item.tcc.rifling.desc": "提升特定枪械伤害的膛线技术",
-  "item.tcc.rifling.effect": "提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，无法与并合膛线同时装备",
+  "item.tcc.rifling.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器伤害，无法与并合膛线同时装备",
   
   "item.tcc.close_range_shot": "§b抵近射击",
   "item.tcc.close_range_shot.desc": "近距离战斗的强化饰品",
-  "item.tcc.close_range_shot.effect": "提升90%霰弹枪伤害",
+  "item.tcc.close_range_shot.effect": "提升%1$s%%霰弹枪伤害",
   
   "item.tcc.heavy_firepower": "§6重装火力",
   "item.tcc.heavy_firepower.desc": "增强手枪火力，但影响精准度",
-  "item.tcc.heavy_firepower.effect": "提升165%手枪伤害，降低55%精准度",
+  "item.tcc.heavy_firepower.effect": "提升%1$s%%手枪伤害，降低%2$s%%精准度",
   
   "item.tcc.wasp_stinger": "§b黄蜂蜇刺",
   "item.tcc.wasp_stinger.desc": "增强手枪伤害的特殊饰品",
-  "item.tcc.wasp_stinger.effect": "提升220%手枪伤害",
+  "item.tcc.wasp_stinger.effect": "提升%1$s%%手枪伤害",
   
   "item.tcc.prophecy_pact": "§9预言契约",
   "item.tcc.prophecy_pact.desc": "提升手枪伤害的神秘契约",
-  "item.tcc.prophecy_pact.effect": "提升90%手枪伤害",
+  "item.tcc.prophecy_pact.effect": "提升%1$s%%手枪伤害",
   
   "item.tcc.malignant_spread": "§6恶性扩散",
   "item.tcc.malignant_spread.desc": "增强霰弹枪火力，但影响精准度",
-  "item.tcc.malignant_spread.effect": "提升165%霰弹枪伤害，降低55%精准度",
+  "item.tcc.malignant_spread.effect": "提升%1$s%%霰弹枪伤害，降低%2$s%%精准度",
   
   "item.tcc.chamber": "§b膛室",
   "item.tcc.chamber.desc": "提升狙击枪伤害",
-  "item.tcc.chamber.effect": "针对性提升40%狙击枪伤害，无法与膛室Prime同时装备",
+  "item.tcc.chamber.effect": "针对性提升%1$s%%狙击枪伤害，无法与膛室Prime同时装备",
   
   "item.tcc.chamber_prime": "§f膛室Prime",
   "item.tcc.chamber_prime.desc": "极致提升狙击枪伤害",
-  "item.tcc.chamber_prime.effect": "对性提升100%狙击枪伤害，无法与膛室同时装备",
+  "item.tcc.chamber_prime.effect": "对性提升%1$s%%狙击枪伤害，无法与膛室同时装备",
   
   "item.tcc.core_fusion": "内融核心",
   "item.tcc.core_fusion.desc": "通过熔炉燃烧饰品获得的核心材料",
@@ -135,45 +135,45 @@
 
   "item.tcc.tactical_reload": "§9战术上膛",
   "item.tcc.tactical_reload.desc": "快速高效的装填技术",
-  "item.tcc.tactical_reload.effect": "提升60%霰弹枪装填速度",
+  "item.tcc.tactical_reload.effect": "提升%1$s%%霰弹枪装填速度",
 
   "item.tcc.overloaded_magazine": "§6过载弹匣",
   "item.tcc.overloaded_magazine.desc": "容量更大但装填更慢的弹匣",
-  "item.tcc.overloaded_magazine.effect": "提升60%霰弹枪弹匣容量，降低18%装填速度",
+  "item.tcc.overloaded_magazine.effect": "提升%1$s%%霰弹枪弹匣容量，降低%2$s%%装填速度",
 
   "item.tcc.infernal_chamber": "§6地狱弹膛",
   "item.tcc.infernal_chamber.desc": "使单发子弹分裂成多发的技术",
-  "item.tcc.infernal_chamber.effect": "提升120%霰弹枪弹头数量",
+  "item.tcc.infernal_chamber.effect": "提升%1$s%%霰弹枪弹头数量",
 
-  "item.tcc.sustained_fire": "§f持续火力",
+  "item.tcc.sustained_fire": "§9持续火力",
   "item.tcc.sustained_fire.desc": "稳定的火力输出保障",
-  "item.tcc.sustained_fire.effect": "提升48%手枪装填速度",
+  "item.tcc.sustained_fire.effect": "提升%1$s%%手枪装填速度",
 
   "item.tcc.infected_magazine": "§6感染弹匣",
   "item.tcc.infected_magazine.desc": "容量更大但装填更慢的弹匣",
-  "item.tcc.infected_magazine.effect": "提升60%手枪弹匣容量，降低30%装填速度",
+  "item.tcc.infected_magazine.effect": "提升%1$s%%手枪弹匣容量，降低%2$s%%装填速度",
 
   "item.tcc.deadly_surge": "§6致命洪流",
   "item.tcc.deadly_surge.desc": "高射速配合多弹头的致命组合",
-  "item.tcc.deadly_surge.effect": "提升60%手枪射速，提升60%弹头数量",
+  "item.tcc.deadly_surge.effect": "提升%1$s%%手枪射速，提升%2$s%%弹头数量",
 
   "item.tcc.bullet_spread": "§6弹头扩散",
   "item.tcc.bullet_spread.desc": "使单发子弹分裂成多发的技术",
-  "item.tcc.bullet_spread.effect": "提升120%手枪弹头数量",
+  "item.tcc.bullet_spread.effect": "提升%1$s%%手枪弹头数量",
   
   "item.tcc.oppression_point": "§9压迫点",
   "item.tcc.oppression_point.desc": "增强近战攻击力的神秘饰品",
-  "item.tcc.oppression_point.effect": "提升120%近战伤害",
+  "item.tcc.oppression_point.effect": "提升%1$s%%近战伤害",
   
   "item.tcc.oppression_point_prime": "§f压迫点Prime",
   "item.tcc.oppression_point_prime.desc": "极致增强近战攻击力的神秘饰品",
-  "item.tcc.oppression_point_prime.effect": "提升165%近战伤害",
+  "item.tcc.oppression_point_prime.effect": "提升%1$s%%近战伤害",
   
   "item.tcc.sword_wind": "§9剑风",
   "item.tcc.sword_wind.desc": "扩大近战攻击范围的神秘饰品",
-  "item.tcc.sword_wind.effect": "提升1.1近战距离",
+  "item.tcc.sword_wind.effect": "提升%1$s近战距离",
   
   "item.tcc.sword_wind_prime": "§f剑风Prime",
   "item.tcc.sword_wind_prime.desc": "极致扩大近战攻击范围的神秘饰品",
-  "item.tcc.sword_wind_prime.effect": "提升3近战距离"
+  "item.tcc.sword_wind_prime.effect": "提升%1$s近战距离"
 }

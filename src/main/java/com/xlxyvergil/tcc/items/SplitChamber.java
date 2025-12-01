@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -24,8 +25,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 分裂膛室 - +90%弹头数量
- * 效果：提升90%弹头数量（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 分裂膛室 - 提升弹头数量
+ * 效果：提升弹头数量（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class SplitChamber extends ItemBaseCurio {
     
@@ -37,9 +38,6 @@ public class SplitChamber extends ItemBaseCurio {
     
     // 支持的枪械类型
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
-    
-    // 效果参数
-    private static final double AMMO_BOOST = 0.90;       // 90%弹头数量提升（加算）
     
     public SplitChamber(Properties properties) {
         super(properties
@@ -110,11 +108,14 @@ public class SplitChamber extends ItemBaseCurio {
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加90%的弹头数量加成（加算）
+                // 获取配置中的弹头数量加成值
+                double ammoBoost = TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get();
+                
+                // 添加弹头数量加成（加算）
                 var ammoModifier = new AttributeModifier(
                     AMMO_UUID,
                     AMMO_NAME,
-                    AMMO_BOOST,
+                    ammoBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 ammoAttribute.addPermanentModifier(ammoModifier);
@@ -188,7 +189,8 @@ public class SplitChamber extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.split_chamber.effect")
+        double ammoBoost = TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.split_chamber.effect", String.format("%.0f", ammoBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

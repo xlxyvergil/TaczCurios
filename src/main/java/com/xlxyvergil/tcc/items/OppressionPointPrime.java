@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -114,7 +115,17 @@ public class OppressionPointPrime extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.oppression_point_prime.effect")
+        double meleeDamageBoost = TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.oppression_point_prime.effect", String.format("%.0f", meleeDamageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        
+        // 添加饰品槽位信息
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        
+        // 添加稀有度提示
+        tooltip.add(Component.literal("§7稀有度：§f传说")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }

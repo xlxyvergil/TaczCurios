@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -77,14 +78,18 @@ public class EvilAccuracy extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 降低90%后坐力，降低36%射速（都加算）
+     * 降低配置中的后坐力和射速（都加算）
      */
     public void applyEffects(Player player) {
-        // 应用后坐力降低 (90%加算)
-        applyAttributeModifier(player, "taa", "recoil", 0.9, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);
+        // 获取配置中的后坐力降低和射速降低值
+        double recoilReduction = TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get();
+        double fireRateReduction = -TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get();
         
-        // 应用射速降低 (-36%加算)
-        applyAttributeModifier(player, "taa", "rounds_per_minute", -0.36, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
+        // 应用后坐力降低
+        applyAttributeModifier(player, "taa", "recoil", recoilReduction, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);
+        
+        // 应用射速降低
+        applyAttributeModifier(player, "taa", "rounds_per_minute", fireRateReduction, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
     /**
@@ -163,7 +168,10 @@ new ResourceLocation(namespace, attributeName)
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.evil_accuracy.effect")
+        double recoilReduction = TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get() * 100;
+        double fireRateReduction = TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.evil_accuracy.effect", 
+                String.format("%.0f", recoilReduction), String.format("%.0f", fireRateReduction))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

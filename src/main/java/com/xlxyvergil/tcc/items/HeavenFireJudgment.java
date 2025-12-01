@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -96,8 +97,8 @@ public class HeavenFireJudgment extends ItemBaseCurio {
             return;
         }
         
-        // 计算伤害倍率（325%）
-        double damageMultiplier = 3.25;
+        // 获取配置中的伤害加成值
+        double damageMultiplier = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get();
         
         // 使用TaczAttributeAdd中的通用枪械伤害属性
         var attributes = player.getAttributes();
@@ -111,7 +112,7 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             // 检查是否已经存在相同的修饰符，如果存在则移除
             gunDamageAttribute.removeModifier(GUN_DAMAGE_UUID);
             
-            // 添加325%的伤害加成
+            // 添加配置中的伤害加成
             AttributeModifier modifier = new AttributeModifier(
                 GUN_DAMAGE_UUID,
                 GUN_DAMAGE_NAME,
@@ -154,7 +155,20 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.effect")
+        // 根据语言文件中的占位符顺序传递参数：
+        // %1$s - damageBoost (通用枪械伤害加成)
+        // %2$s - healthCost (当前生命值扣除)
+        // %3$s - healthDrain (每秒消耗最大生命值)
+        // %4$s - drainDuration (持续时间)
+        double damageBoost = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get() * 100;
+        double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get() * 100;
+        double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get() * 100;
+        int drainDuration = TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get();
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.effect", 
+                String.format("%.0f", damageBoost), 
+                String.format("%.0f", healthCost), 
+                String.format("%.0f", healthDrain), 
+                String.format("%d", drainDuration))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
@@ -190,22 +204,27 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                         return; // 血量低于或等于40%时不生效
                     }
 
-                    // 计算扣除30%当前血量后的血量百分比
-                    float healthAfterDeduction = (player.getHealth() - player.getHealth() * 0.3f) / player.getMaxHealth();
+                    // 获取配置中的生命值扣除比例和持续时间
+                    double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get();
+                    double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get();
+                    int drainDuration = TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get();
+                    
+                    // 计算扣除配置的生命值比例后的血量百分比
+                    float healthAfterDeduction = (player.getHealth() - player.getHealth() * (float)healthCost) / player.getMaxHealth();
                     if (healthAfterDeduction <= 0.4) {
-                        return; // 扣除30%血量后如果低于或等于40%，则不触发效果
+                        return; // 扣除配置的生命值比例后如果低于或等于40%，则不触发效果
                     }
 
-                    // 立即扣除30%血量
-                    float healthToDeduct = player.getHealth() * 0.3f;
+                    // 立即扣除配置的生命值比例
+                    float healthToDeduct = player.getHealth() * (float)healthCost;
                     if (healthToDeduct > 0) {
                         player.hurt(player.damageSources().magic(), healthToDeduct);
                     }
                     
-                    // 设置持续伤害效果：每秒消耗最大生命值的5%，持续5秒
+                    // 设置持续伤害效果：每秒消耗最大生命值的配置比例，持续配置的秒数
                     // 这里我们通过给玩家添加一个NBT标签来跟踪效果
                     net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
-                    persistentData.putInt(DAMAGE_TAG, 5); // 持续5秒
+                    persistentData.putInt(DAMAGE_TAG, drainDuration); // 持续配置的秒数
                 }
             }
         }
@@ -232,10 +251,13 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
             if (duration > 0) {
                 // 每秒触发一次伤害（20 ticks = 1秒）
                 if (player.tickCount % 20 == 0) {
-                    // 检查扣除5%最大生命值后是否会低于40%
+                    // 获取配置中的生命值消耗比例
+                    double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get();
+                    
+                    // 检查扣除配置的生命值消耗比例后是否会低于40%
                     float maxHealth = player.getMaxHealth();
                     float currentHealth = player.getHealth();
-                    float healthToDeduct = maxHealth * 0.05f;
+                    float healthToDeduct = (float) (maxHealth * healthDrain);
                     float healthAfterDeduction = (currentHealth - healthToDeduct) / maxHealth;
                     
                     if (healthAfterDeduction > 0.4) {

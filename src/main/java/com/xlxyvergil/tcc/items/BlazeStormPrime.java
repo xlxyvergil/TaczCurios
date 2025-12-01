@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 /**
  * 烈焰风暴Prime饰品
- * 效果：增加66%爆炸范围（乘算），增加66%爆炸伤害（乘算）
+ * 效果：增加爆炸范围（乘算），增加爆炸伤害（乘算）
  */
 public class BlazeStormPrime extends ItemBaseCurio {
     
@@ -97,14 +98,18 @@ public class BlazeStormPrime extends ItemBaseCurio {
 
     /**
      * 应用所有效果加成
-     * 增加66%爆炸范围（乘算），增加66%爆炸伤害（乘算）
+     * 增加配置中的爆炸范围和爆炸伤害加成（乘算）
      */
     private void applyEffects(Player player) {
-        // 应用爆炸范围加成 (66%乘算)
-        applyAttributeModifier(player, "taa", "explosion_radius", 0.66, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
+        // 获取配置中的爆炸范围和爆炸伤害加成值
+        double explosionRadiusBoost = TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get();
+        double explosionDamageBoost = TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get();
         
-        // 应用爆炸伤害加成 (66%乘算)
-        applyAttributeModifier(player, "taa", "explosion_damage", 0.66, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
+        // 应用爆炸范围加成
+        applyAttributeModifier(player, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
+        
+        // 应用爆炸伤害加成
+        applyAttributeModifier(player, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
     }
     
     /**
@@ -172,7 +177,10 @@ new ResourceLocation(namespace, attributeName)
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.blaze_storm_prime.effect")
+        double explosionRadiusBoost = TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get() * 100;
+        double explosionDamageBoost = TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.blaze_storm_prime.effect", 
+                String.format("%.0f", explosionRadiusBoost), String.format("%.0f", explosionDamageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

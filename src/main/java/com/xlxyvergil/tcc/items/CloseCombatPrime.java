@@ -12,6 +12,9 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
+
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -110,11 +113,14 @@ public class CloseCombatPrime extends ItemBaseCurio {
         if (damageAttribute != null) {
             // 检查是否已经存在相同的修饰符
             if (damageAttribute.getModifier(SHOTGUN_DAMAGE_UUID) == null) {
-                // 添加165%的伤害加成 (1.65 = 165%)
+                // 从配置文件获取伤害加成值
+                double damageBoost = TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get();
+                
+                // 添加配置的伤害加成
                 AttributeModifier modifier = new AttributeModifier(
                     SHOTGUN_DAMAGE_UUID,
                     SHOTGUN_DAMAGE_NAME,
-                    1.65D,
+                    damageBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 damageAttribute.addPermanentModifier(modifier);
@@ -166,11 +172,12 @@ public class CloseCombatPrime extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加霰弹枪伤害加成的详细列表
-        tooltip.add(Component.literal("  §7• §6+165% §7霰弹枪伤害")
+        tooltip.add(Component.literal("  §7• §6+" + String.format("%.0f", damageBoost) + "% §7霰弹枪伤害")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加饰品槽位信息

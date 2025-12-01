@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.UUID;
 
 
 /**
- * 士兵特定挂牌 - 提供55%通用枪械伤害加成（乘法）
- * 效果：为玩家提供55%的通用枪械伤害加成（乘法）
+ * 士兵特定挂牌 - 提供通用枪械伤害加成（乘法）
+ * 效果：为玩家提供通用枪械伤害加成（乘法）
  */
 public class SoldierSpecificTag extends ItemBaseCurio {
     
@@ -98,7 +99,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     
     /**
      * 应用枪械伤害加成
-     * 给玩家添加55%的通用枪械伤害加成（乘法）
+     * 给玩家添加配置中的通用枪械伤害加成（乘法）
      */
     private void applyGunDamageBonus(Player player) {
         // 使用TaczAttributeAdd中的通用枪械伤害属性
@@ -112,11 +113,13 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         if (gunDamageAttribute != null) {
             // 检查是否已经存在相同的修饰符
             if (gunDamageAttribute.getModifier(GUN_DAMAGE_UUID) == null) {
-                // 添加55%的伤害加成 (0.55 = 55%)，使用乘法操作
+                // 获取配置中的伤害加成值
+                double damageBoost = TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get();
+                // 添加配置中的伤害加成，使用乘法操作
                 AttributeModifier modifier = new AttributeModifier(
                     GUN_DAMAGE_UUID,
                     GUN_DAMAGE_NAME,
-                    0.55D,
+                    damageBoost,
                     AttributeModifier.Operation.MULTIPLY_BASE
                 );
                 gunDamageAttribute.addPermanentModifier(modifier);
@@ -167,7 +170,8 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.soldier_specific_tag.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.soldier_specific_tag.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

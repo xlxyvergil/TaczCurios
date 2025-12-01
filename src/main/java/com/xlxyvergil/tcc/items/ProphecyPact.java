@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -27,7 +28,7 @@ public class ProphecyPact extends ItemBaseCurio {
     private static final String DAMAGE_NAME = "tcc.prophecy_pact.pistol_damage";
     
     // 效果参数
-    private static final double DAMAGE_BOOST = 0.90;       // 90%手枪伤害提升（加算）
+    // private static final double DAMAGE_BOOST = 0.90;       // 90%手枪伤害提升（加算） - 现在从配置文件读取
     
     public ProphecyPact(Properties properties) {
         super(properties);
@@ -94,11 +95,14 @@ public class ProphecyPact extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
             
-            // 添加90%的手枪伤害加成（加算）
+            // 从配置文件获取手枪伤害加成值
+            double damageBoost = TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get();
+            
+            // 添加配置的手枪伤害加成（加算）
             var damageModifier = new AttributeModifier(
                 DAMAGE_UUID,
                 DAMAGE_NAME,
-                DAMAGE_BOOST,
+                damageBoost,
                 AttributeModifier.Operation.ADDITION
             );
             pistolDamageAttribute.addPermanentModifier(damageModifier);
@@ -150,7 +154,8 @@ public class ProphecyPact extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

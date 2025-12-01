@@ -11,6 +11,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -29,7 +30,7 @@ public class BulletSpread extends ItemBaseCurio {
     private static final String BULLET_COUNT_NAME = "tcc.bullet_spread.bullet_count";
 
     // 效果参数
-    private static final double BULLET_COUNT_BOOST = 1.20;       // 120%弹头数量提升（加算）
+    // private static final double BULLET_COUNT_BOOST = 1.20;       // 120%弹头数量提升（加算） - 现在从配置文件读取
 
     public BulletSpread(Properties properties) {
         super(properties);
@@ -98,11 +99,13 @@ public class BulletSpread extends ItemBaseCurio {
 
             // 检查玩家是否持有手枪，只有持有手枪时才应用加成
             if (isHoldingPistol(player)) {
-                // 添加120%的弹头数量加成（加算）
+                // 获取配置中的弹头数量加成值
+                double bulletCountBoost = TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get();
+                // 添加配置的弹头数量加成（加算）
                 var bulletCountModifier = new AttributeModifier(
                     BULLET_COUNT_UUID,
                     BULLET_COUNT_NAME,
-                    BULLET_COUNT_BOOST,
+                    bulletCountBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 bulletCountAttribute.addPermanentModifier(bulletCountModifier);
@@ -175,7 +178,8 @@ public class BulletSpread extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.bullet_spread.effect")
+        double bulletCountBoost = TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.bullet_spread.effect", String.format("%.0f", bulletCountBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

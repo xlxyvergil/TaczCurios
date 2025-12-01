@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -75,11 +76,14 @@ public class LimitSpeed extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 提高60%弹药速度（乘算）
+     * 提高配置中的弹药速度（乘算）
      */
     private void applyEffects(Player player) {
-        // 应用弹药速度加成 (60%乘算)
-        applyAttributeModifier(player, "taa", "ammo_speed", 0.6, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        // 获取配置中的弹药速度加成值
+        double ammoSpeedBoost = TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get();
+        
+        // 应用弹药速度加成
+        applyAttributeModifier(player, "taa", "ammo_speed", ammoSpeedBoost, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
     /**
@@ -157,7 +161,8 @@ public class LimitSpeed extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.limit_speed.effect")
+        double ammoSpeedBoost = TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.limit_speed.effect", String.format("%.0f", ammoSpeedBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

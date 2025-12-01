@@ -11,6 +11,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,8 +32,8 @@ public class DeadlySurge extends ItemBaseCurio {
     private static final String BULLET_COUNT_NAME = "tcc.deadly_surge.bullet_count";
 
     // 效果参数
-    private static final double ROUNDS_PER_MINUTE_BOOST = 0.60;   // 60%射速提升（加算）
-    private static final double BULLET_COUNT_BOOST = 0.60;        // 60%弹头数量提升（加算）
+    // private static final double ROUNDS_PER_MINUTE_BOOST = 0.60;   // 60%射速提升（加算） - 现在从配置文件读取
+    // private static final double BULLET_COUNT_BOOST = 0.60;        // 60%弹头数量提升（加算） - 现在从配置文件读取
 
     public DeadlySurge(Properties properties) {
         super(properties);
@@ -115,11 +116,13 @@ public class DeadlySurge extends ItemBaseCurio {
         if (isHoldingPistol(player)) {
             // 应用射速加成
             if (rpmAttribute != null) {
-                // 添加60%的射速加成（加算）
+                // 获取配置中的射速加成值
+                double roundsPerMinuteBoost = TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get();
+                // 添加配置的射速加成（加算）
                 var roundsPerMinuteModifier = new AttributeModifier(
                     ROUNDS_PER_MINUTE_UUID,
                     ROUNDS_PER_MINUTE_NAME,
-                    ROUNDS_PER_MINUTE_BOOST,
+                    roundsPerMinuteBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 rpmAttribute.addPermanentModifier(roundsPerMinuteModifier);
@@ -127,11 +130,13 @@ public class DeadlySurge extends ItemBaseCurio {
 
             // 应用弹头数量加成
             if (bulletCountAttribute != null) {
-                // 添加60%的弹头数量加成（加算）
+                // 获取配置中的弹头数量加成值
+                double bulletCountBoost = TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get();
+                // 添加配置的弹头数量加成（加算）
                 var bulletCountModifier = new AttributeModifier(
                     BULLET_COUNT_UUID,
                     BULLET_COUNT_NAME,
-                    BULLET_COUNT_BOOST,
+                    bulletCountBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 bulletCountAttribute.addPermanentModifier(bulletCountModifier);
@@ -215,7 +220,9 @@ public class DeadlySurge extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.deadly_surge.effect")
+        double roundsPerMinuteBoost = TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() * 100;
+        double bulletCountBoost = TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.deadly_surge.effect", String.format("%.0f", roundsPerMinuteBoost), String.format("%.0f", bulletCountBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

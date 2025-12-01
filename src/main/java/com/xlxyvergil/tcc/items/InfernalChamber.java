@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 地狱弹膛 - 提升120%弹头数量
- * 效果：提升120%弹头数量（加算）
+ * 地狱弹膛 - 提升弹头数量
+ * 效果：提升弹头数量（加算）
  */
 public class InfernalChamber extends ItemBaseCurio {
 
@@ -27,9 +28,6 @@ public class InfernalChamber extends ItemBaseCurio {
 
     // 修饰符名称
     private static final String BULLET_COUNT_NAME = "tcc.infernal_chamber.bullet_count";
-
-    // 效果参数
-    private static final double BULLET_COUNT_BOOST = 1.20;       // 120%弹头数量提升（加算）
 
     public InfernalChamber(Properties properties) {
         super(properties);
@@ -98,11 +96,13 @@ public class InfernalChamber extends ItemBaseCurio {
 
             // 检查玩家是否持有霰弹枪，只有持有霰弹枪时才应用加成
             if (isHoldingShotgun(player)) {
-                // 添加120%的弹头数量加成（加算）
+                // 获取配置中的弹头数量加成值
+                double bulletCountBoost = TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get();
+                // 添加配置中的弹头数量加成（加算）
                 var bulletCountModifier = new AttributeModifier(
                     BULLET_COUNT_UUID,
                     BULLET_COUNT_NAME,
-                    BULLET_COUNT_BOOST,
+                    bulletCountBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 bulletCountAttribute.addPermanentModifier(bulletCountModifier);
@@ -175,7 +175,8 @@ public class InfernalChamber extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.infernal_chamber.effect")
+        double bulletCountBoost = TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.infernal_chamber.effect", String.format("%.0f", bulletCountBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

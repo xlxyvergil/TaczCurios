@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 持续火力 - 提升48%装填速度
- * 效果：提升48%装填速度（加算）
+ * 持续火力 - 提升装填速度
+ * 效果：提升装填速度（加算）
  */
 public class SustainedFire extends ItemBaseCurio {
 
@@ -27,9 +28,6 @@ public class SustainedFire extends ItemBaseCurio {
 
     // 修饰符名称
     private static final String RELOAD_NAME = "tcc.sustained_fire.reload";
-
-    // 效果参数
-    private static final double RELOAD_BOOST = 0.48;       // 48%装填速度提升（加算）
 
     public SustainedFire(Properties properties) {
         super(properties);
@@ -98,11 +96,13 @@ public class SustainedFire extends ItemBaseCurio {
 
             // 检查玩家是否持有手枪，只有持有手枪时才应用加成
             if (isHoldingPistol(player)) {
-                // 添加48%的装填速度加成（加算）
+                // 获取配置中的装填速度加成值
+                double reloadBoost = TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get();
+                // 添加配置中的装填速度加成（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
                     RELOAD_NAME,
-                    RELOAD_BOOST,
+                    reloadBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 reloadAttribute.addPermanentModifier(reloadModifier);
@@ -175,7 +175,8 @@ public class SustainedFire extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.sustained_fire.effect")
+        double reloadBoost = TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.sustained_fire.effect", String.format("%.0f", reloadBoost))
             .withStyle(net.minecraft.ChatFormatting.GREEN));
 
         // 添加饰品槽位信息
@@ -184,7 +185,7 @@ public class SustainedFire extends ItemBaseCurio {
             .withStyle(net.minecraft.ChatFormatting.GRAY));
 
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§f常见")
+        tooltip.add(Component.literal("§7稀有度：§9常见")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
     

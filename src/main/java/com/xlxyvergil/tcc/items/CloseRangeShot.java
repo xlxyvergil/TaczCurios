@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +30,7 @@ public class CloseRangeShot extends ItemBaseCurio {
     private static final String DAMAGE_NAME = "tcc.close_range_shot.shotgun_damage";
     
     // 效果参数
-    private static final double DAMAGE_BOOST = 0.90;       // 90%霰弹枪伤害提升（加算）
+    // private static final double DAMAGE_BOOST = 0.90;       // 90%霰弹枪伤害提升（加算） - 现在从配置文件读取
     
     public CloseRangeShot(Properties properties) {
         super(properties);
@@ -117,11 +118,14 @@ public class CloseRangeShot extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             shotgunDamageAttribute.removeModifier(DAMAGE_UUID);
             
-            // 添加90%的霰弹枪伤害加成（加算）
+            // 从配置文件获取伤害加成值
+            double damageBoost = TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get();
+            
+            // 添加配置的霰弹枪伤害加成（加算）
             var damageModifier = new AttributeModifier(
                 DAMAGE_UUID,
                 DAMAGE_NAME,
-                DAMAGE_BOOST,
+                damageBoost,
                 AttributeModifier.Operation.ADDITION
             );
             shotgunDamageAttribute.addPermanentModifier(damageModifier);
@@ -173,7 +177,8 @@ public class CloseRangeShot extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.close_range_shot.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.close_range_shot.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

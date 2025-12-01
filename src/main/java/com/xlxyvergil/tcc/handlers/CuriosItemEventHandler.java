@@ -40,7 +40,7 @@ public class CuriosItemEventHandler {
         // 处理饰品装备时的属性添加
         if (item instanceof ItemBaseCurio curioItem) {
             // 调用饰品的onEquip方法（如果需要）
-            // curioItem.onEquip(event.getSlotContext(), ItemStack.EMPTY, stack);
+            curioItem.onEquip(event.getSlotContext(), ItemStack.EMPTY, stack);
         }
 
         // 更新枪械属性缓存（无论是否持有枪械都更新）
@@ -64,7 +64,7 @@ public class CuriosItemEventHandler {
         // 处理饰品卸下时的属性移除
         if (item instanceof ItemBaseCurio curioItem) {
             // 调用饰品的onUnequip方法（如果需要）
-            // curioItem.onUnequip(event.getSlotContext(), ItemStack.EMPTY, stack);
+            curioItem.onUnequip(event.getSlotContext(), ItemStack.EMPTY, stack);
         }
 
         // 更新枪械属性缓存（无论是否持有枪械都更新）
@@ -119,5 +119,9 @@ public class CuriosItemEventHandler {
             AttachmentPropertyManager.postChangeEvent(player, offHandItem);
             return;
         }
+        
+        // 如果玩家没有持枪，也触发一次更新以确保属性正确应用
+        // 创建一个空的ItemStack用于触发更新
+        AttachmentPropertyManager.postChangeEvent(player, ItemStack.EMPTY);
     }
 }

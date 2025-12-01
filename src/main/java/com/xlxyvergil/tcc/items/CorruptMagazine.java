@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,8 +42,8 @@ public class CorruptMagazine extends ItemBaseCurio {
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     // 效果参数
-    private static final double MAGAZINE_BOOST = 0.66;       // 66%弹匣容量提升（加算）
-    private static final double RELOAD_PENALTY = -0.33;      // 33%装填速度降低（加算）
+    // private static final double MAGAZINE_BOOST = 0.66;       // 66%弹匣容量提升（加算） - 现在从配置文件读取
+    // private static final double RELOAD_PENALTY = -0.33;      // 33%装填速度降低（加算） - 现在从配置文件读取
     
     public CorruptMagazine(Properties properties) {
         super(properties
@@ -121,11 +122,13 @@ public class CorruptMagazine extends ItemBaseCurio {
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加66%的弹匣容量加成（加算）
+                // 获取配置中的弹匣容量加成值
+                double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get();
+                // 添加配置的弹匣容量加成（加算）
                 var magazineModifier = new AttributeModifier(
                     MAGAZINE_UUID,
                     MAGAZINE_NAME,
-                    MAGAZINE_BOOST,
+                    magazineBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 capacityAttribute.addPermanentModifier(magazineModifier);
@@ -139,11 +142,13 @@ public class CorruptMagazine extends ItemBaseCurio {
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (isHoldingValidGunType(player)) {
-                // 添加33%的装填速度降低（加算）
+                // 获取配置中的装填速度降低值
+                double reloadPenalty = -TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
+                // 添加配置的装填速度降低（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
                     RELOAD_NAME,
-                    RELOAD_PENALTY,
+                    reloadPenalty,
                     AttributeModifier.Operation.ADDITION
                 );
                 reloadAttribute.addPermanentModifier(reloadModifier);
@@ -230,7 +235,9 @@ public class CorruptMagazine extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect")
+        double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get() * 100;
+        double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect", String.format("%.0f", magazineBoost), String.format("%.0f", reloadPenalty))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

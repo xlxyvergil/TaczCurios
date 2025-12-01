@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 乌拉尔银狼饰品 - 提供150%爆头倍率加成
+ * 乌拉尔银狼饰品 - 提供爆头倍率加成
  * 通过TaczAttributeAdd的headshot_multiplier属性实现
  */
 public class UralWolfTag extends ItemBaseCurio {
@@ -60,11 +61,13 @@ public class UralWolfTag extends ItemBaseCurio {
             // 移除旧的修饰符（如果有）
             headshotMultiplierAttribute.removeModifier(HEADSHOT_MULTIPLIER_MODIFIER_UUID);
             
-            // 添加150%的爆头倍率加成（1.5 = 150%）
+            // 获取配置中的爆头倍率加成值
+            double multiplierBoost = TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get();
+            // 添加配置中的爆头倍率加成
             AttributeModifier modifier = new AttributeModifier(
                 HEADSHOT_MULTIPLIER_MODIFIER_UUID,
                 "tcc.ural_wolf_tag.headshot_multiplier",
-                1.5,
+                multiplierBoost,
                 AttributeModifier.Operation.ADDITION
             );
             
@@ -105,7 +108,8 @@ public class UralWolfTag extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.ural_wolf_tag.effect")
+        double multiplierBoost = TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.ural_wolf_tag.effect", String.format("%.0f", multiplierBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

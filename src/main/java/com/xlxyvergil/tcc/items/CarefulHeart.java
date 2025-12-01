@@ -8,6 +8,9 @@ import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
+
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -30,9 +33,9 @@ public class CarefulHeart extends ItemBaseCurio {
     private static final String EXPLOSION_RADIUS_NAME = "tcc.careful_heart.explosion_radius";
     
     // 效果参数
-    private static final double LAUNCHER_DAMAGE_BOOST = 3.0;       // 300%发射器伤害提升
-    private static final double EXPLOSION_DAMAGE_BOOST = 3.0;     // 300%爆炸伤害提升
-    private static final double EXPLOSION_RADIUS_BOOST = 3.0;     // 300%爆炸范围提升
+    // private static final double LAUNCHER_DAMAGE_BOOST = 3.0;       // 300%发射器伤害提升 - 现在从配置文件读取
+    // private static final double EXPLOSION_DAMAGE_BOOST = 3.0;     // 300%爆炸伤害提升 - 现在从配置文件读取
+    // private static final double EXPLOSION_RADIUS_BOOST = 3.0;     // 300%爆炸范围提升 - 现在从配置文件读取
     
     public CarefulHeart(Properties properties) {
         super(properties);
@@ -90,11 +93,13 @@ public class CarefulHeart extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             launcherDamageAttribute.removeModifier(LAUNCHER_DAMAGE_UUID);
             
-            // 添加300%的发射器伤害加成
+            // 获取配置中的发射器伤害加成值
+            double launcherDamageBoost = TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get();
+            // 添加配置的发射器伤害加成
             var launcherDamageModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
                 LAUNCHER_DAMAGE_UUID,
                 LAUNCHER_DAMAGE_NAME,
-                LAUNCHER_DAMAGE_BOOST,
+                launcherDamageBoost,
                 net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             launcherDamageAttribute.addPermanentModifier(launcherDamageModifier);
@@ -111,11 +116,13 @@ public class CarefulHeart extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             explosionDamageAttribute.removeModifier(EXPLOSION_DAMAGE_UUID);
             
-            // 添加300%的爆炸伤害加成
+            // 获取配置中的爆炸伤害加成值
+            double explosionDamageBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get();
+            // 添加配置的爆炸伤害加成
             var explosionDamageModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
                 EXPLOSION_DAMAGE_UUID,
                 EXPLOSION_DAMAGE_NAME,
-                EXPLOSION_DAMAGE_BOOST,
+                explosionDamageBoost,
                 net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             explosionDamageAttribute.addPermanentModifier(explosionDamageModifier);
@@ -132,11 +139,13 @@ public class CarefulHeart extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             explosionRadiusAttribute.removeModifier(EXPLOSION_RADIUS_UUID);
             
-            // 添加300%的爆炸范围加成
+            // 获取配置中的爆炸范围加成值
+            double explosionRadiusBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get();
+            // 添加配置的爆炸范围加成
             var explosionRadiusModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
                 EXPLOSION_RADIUS_UUID,
                 EXPLOSION_RADIUS_NAME,
-                EXPLOSION_RADIUS_BOOST,
+                explosionRadiusBoost,
                 net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
             );
             explosionRadiusAttribute.addPermanentModifier(explosionRadiusModifier);
@@ -209,7 +218,11 @@ public class CarefulHeart extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.careful_heart.effect")
+        double launcherDamageBoost = TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get() * 100;
+        double explosionDamageBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get() * 100;
+        double explosionRadiusBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.careful_heart.effect", 
+                String.format("%.0f", launcherDamageBoost), String.format("%.0f", explosionDamageBoost), String.format("%.0f", explosionRadiusBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

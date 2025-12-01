@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,8 +14,8 @@ import java.util.UUID;
 
 
 /**
- * 合金钻头 - 提升200%穿透能力
- * 效果：穿透能力+200%
+ * 合金钻头 - 提升穿透能力
+ * 效果：穿透能力加成
  */
 public class AlloyDrill extends ItemBaseCurio {
     
@@ -23,9 +24,6 @@ public class AlloyDrill extends ItemBaseCurio {
     
     // 修饰符名称
     private static final String ARMOR_IGNORE_NAME = "tcc.alloy_drill.armor_ignore";
-    
-    // 效果参数
-    private static final double ARMOR_IGNORE_BOOST = 2.0;       // 200%护甲忽略能力提升
     
     public AlloyDrill(Properties properties) {
         super(properties);
@@ -72,6 +70,9 @@ public class AlloyDrill extends ItemBaseCurio {
     private void applyAlloyDrillEffects(Player player) {
         var attributes = player.getAttributes();
         
+        // 获取配置中的护甲穿透加成值
+        double armorIgnoreBoost = TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get();
+        
         // 应用护甲忽略能力
         var armorIgnoreAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
@@ -83,11 +84,11 @@ public class AlloyDrill extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             armorIgnoreAttribute.removeModifier(ARMOR_IGNORE_UUID);
             
-            // 添加200%的护甲忽略能力加成（乘法）
+            // 添加配置中的护甲忽略能力加成（乘法）
             var armorIgnoreModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
                 ARMOR_IGNORE_UUID,
                 ARMOR_IGNORE_NAME,
-                ARMOR_IGNORE_BOOST,
+                armorIgnoreBoost,
                 net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.MULTIPLY_BASE
             );
             armorIgnoreAttribute.addPermanentModifier(armorIgnoreModifier);
@@ -138,7 +139,8 @@ public class AlloyDrill extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.alloy_drill.effect")
+        double armorIgnoreBoost = TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.alloy_drill.effect", String.format("%.0f", armorIgnoreBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

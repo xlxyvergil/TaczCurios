@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -21,8 +22,8 @@ import java.util.Set;
 
 
 /**
- * 并合膛线 - 提升特定枪械155%伤害，提高25%持枪移动速度
- * 效果：特定枪械伤害+155%（加算），持枪移动速度+25%（加算）
+ * 并合膛线 - 提升特定枪械伤害，提高持枪移动速度
+ * 效果：特定枪械伤害加成（加算），持枪移动速度加成（加算）
  */
 public class MergedRifling extends ItemBaseCurio {
     
@@ -45,10 +46,6 @@ public class MergedRifling extends ItemBaseCurio {
         "tcc.merged_rifling.launcher_damage"
     };
     private static final String MOVEMENT_SPEED_NAME = "tcc.merged_rifling.movement_speed";
-    
-    // 效果参数
-    private static final double DAMAGE_BOOST = 1.55;       // 155%特定枪械伤害提升（加算）
-    private static final double SPEED_BOOST = 0.25;    // 25%持枪移动速度提升（加算）
     
     // 特定枪械类型
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
@@ -137,6 +134,10 @@ public class MergedRifling extends ItemBaseCurio {
             "bullet_gundamage_launcher"
         };
         
+        // 获取配置中的伤害加成值和移动速度加成值
+        double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get();
+        double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get();
+        
         // 应用特定枪械伤害提升（加算）
         for (int i = 0; i < gunTypes.length; i++) {
             var gunDamageAttribute = attributes.getInstance(
@@ -149,11 +150,11 @@ public class MergedRifling extends ItemBaseCurio {
                 // 检查是否已经存在相同的修饰符，如果存在则移除
                 gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
                 
-                // 添加155%的特定枪械伤害加成（加算）
+                // 添加配置中的特定枪械伤害加成（加算）
                 var gunDamageModifier = new AttributeModifier(
                     DAMAGE_UUIDS[i],
                     DAMAGE_NAMES[i],
-                    DAMAGE_BOOST,
+                    damageBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 gunDamageAttribute.addPermanentModifier(gunDamageModifier);
@@ -176,11 +177,11 @@ public class MergedRifling extends ItemBaseCurio {
         
         // 只在玩家手持特定类型枪械时应用移动速度加成
         if (shouldApplyMovementSpeed && movementSpeedAttribute != null) {
-            // 添加25%的持枪移动速度提升（加算）
+            // 添加配置中的持枪移动速度提升（加算）
             var movementSpeedModifier = new AttributeModifier(
                 MOVEMENT_SPEED_UUID,
                 MOVEMENT_SPEED_NAME,
-                SPEED_BOOST,
+                speedBoost,
                 AttributeModifier.Operation.ADDITION
             );
             movementSpeedAttribute.addPermanentModifier(movementSpeedModifier);
@@ -237,7 +238,7 @@ public class MergedRifling extends ItemBaseCurio {
             }
         }
         
-        // 移除持枪移动速度提升
+        // 移除移动速度加成
         var movementSpeedAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "move_speed")
@@ -275,7 +276,10 @@ public class MergedRifling extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.merged_rifling.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() * 100;
+        double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
+                String.format("%.0f", damageBoost), String.format("%.0f", speedBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
@@ -286,13 +290,6 @@ public class MergedRifling extends ItemBaseCurio {
         // 添加稀有度提示
         tooltip.add(Component.literal("§7稀有度：§f传说")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
-    }
-    
-    /**
-     * 获取装备槽位
-     */
-    public String getSlot() {
-        return "tcc:tcc_slot";
     }
     
     /**

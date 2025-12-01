@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -15,8 +16,8 @@ import java.util.UUID;
 
 
 /**
- * 黄蜂蜇刺 - 提升手枪220%伤害
- * 效果：手枪伤害+220%（加算）
+ * 黄蜂蜇刺 - 提升手枪伤害
+ * 效果：手枪伤害加成（加算）
  */
 public class WaspStinger extends ItemBaseCurio {
     
@@ -25,9 +26,6 @@ public class WaspStinger extends ItemBaseCurio {
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.wasp_stinger.pistol_damage";
-    
-    // 效果参数
-    private static final double DAMAGE_BOOST = 2.20;       // 220%手枪伤害提升（加算）
     
     public WaspStinger(Properties properties) {
         super(properties);
@@ -83,6 +81,9 @@ public class WaspStinger extends ItemBaseCurio {
     private void applyWaspStingerEffects(Player player) {
         var attributes = player.getAttributes();
         
+        // 获取配置中的手枪伤害加成值
+        double damageBoost = TaczCuriosConfig.COMMON.waspStingerDamageBoost.get();
+        
         // 手枪伤害属性
         var pistolDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
@@ -94,11 +95,11 @@ public class WaspStinger extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
             
-            // 添加220%的手枪伤害加成（加算）
+            // 添加配置中的手枪伤害加成（加算）
             var damageModifier = new AttributeModifier(
                 DAMAGE_UUID,
                 DAMAGE_NAME,
-                DAMAGE_BOOST,
+                damageBoost,
                 AttributeModifier.Operation.ADDITION
             );
             pistolDamageAttribute.addPermanentModifier(damageModifier);
@@ -150,7 +151,8 @@ public class WaspStinger extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.wasp_stinger.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.waspStingerDamageBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.wasp_stinger.effect", String.format("%.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

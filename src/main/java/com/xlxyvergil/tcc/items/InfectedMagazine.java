@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 感染弹匣 - 提升60%弹匣容量，降低30%装填速度
- * 效果：提升60%弹匣容量（加算），降低30%装填速度（加算）
+ * 感染弹匣 - 提升弹匣容量，降低装填速度
+ * 效果：提升弹匣容量（加算），降低装填速度（加算）
  */
 public class InfectedMagazine extends ItemBaseCurio {
 
@@ -29,10 +30,6 @@ public class InfectedMagazine extends ItemBaseCurio {
     // 修饰符名称
     private static final String MAGAZINE_CAPACITY_NAME = "tcc.infected_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.infected_magazine.reload";
-
-    // 效果参数
-    private static final double MAGAZINE_CAPACITY_BOOST = 0.60;       // 60%弹匣容量提升（加算）
-    private static final double RELOAD_DEBUFF = -0.30;           // 30%装填速度降低（加算）
 
     public InfectedMagazine(Properties properties) {
         super(properties);
@@ -113,13 +110,17 @@ public class InfectedMagazine extends ItemBaseCurio {
 
         // 检查玩家是否持有手枪，只有持有手枪时才应用加成
         if (isHoldingPistol(player)) {
+            // 获取配置中的弹匣容量加成值和装填速度减益值
+            double magazineCapacityBoost = TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get();
+            double reloadDebuff = -TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get();
+
             // 应用弹匣容量加成
             if (capacityAttribute != null) {
-                // 添加60%的弹匣容量加成（加算）
+                // 添加配置中的弹匣容量加成（加算）
                 var magazineCapacityModifier = new AttributeModifier(
                     MAGAZINE_CAPACITY_UUID,
                     MAGAZINE_CAPACITY_NAME,
-                    MAGAZINE_CAPACITY_BOOST,
+                    magazineCapacityBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 capacityAttribute.addPermanentModifier(magazineCapacityModifier);
@@ -127,11 +128,11 @@ public class InfectedMagazine extends ItemBaseCurio {
 
             // 应用装填速度减益
             if (reloadAttribute != null) {
-                // 添加30%的装填速度减益（加算）
+                // 添加配置中的装填速度减益（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
                     RELOAD_NAME,
-                    RELOAD_DEBUFF,
+                    reloadDebuff,
                     AttributeModifier.Operation.ADDITION
                 );
                 reloadAttribute.addPermanentModifier(reloadModifier);
@@ -148,7 +149,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         // 获取弹匣容量属性
         var capacityAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "ammo_capacity")
+                new ResourceLocation("taa", "magazine_capacity")
             )
         );
 
@@ -159,7 +160,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         // 获取装填速度属性
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_speed")
+                new ResourceLocation("taa", "reload_time")
             )
         );
 
@@ -215,7 +216,10 @@ public class InfectedMagazine extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.infected_magazine.effect")
+        double magazineCapacityBoost = TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get() * 100;
+        double reloadDebuff = TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.infected_magazine.effect", 
+                String.format("%.0f", magazineCapacityBoost), String.format("%.0f", reloadDebuff))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

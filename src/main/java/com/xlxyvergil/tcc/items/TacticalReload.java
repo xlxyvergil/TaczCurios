@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 战术上膛 - 提升60%装填速度
- * 效果：提升60%装填速度（加算）
+ * 战术上膛 - 提升装填速度
+ * 效果：提升装填速度（加算）
  */
 public class TacticalReload extends ItemBaseCurio {
 
@@ -27,9 +28,6 @@ public class TacticalReload extends ItemBaseCurio {
 
     // 修饰符名称
     private static final String RELOAD_NAME = "tcc.tactical_reload.reload";
-
-    // 效果参数
-    private static final double RELOAD_BOOST = 0.60;       // 60%装填速度提升（加算）
 
     public TacticalReload(Properties properties) {
         super(properties);
@@ -98,11 +96,13 @@ public class TacticalReload extends ItemBaseCurio {
 
             // 检查玩家是否持有霰弹枪，只有持有霰弹枪时才应用加成
             if (isHoldingShotgun(player)) {
-                // 添加60%的装填速度加成（加算）
+                // 获取配置中的装填速度加成值
+                double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get();
+                // 添加装填速度加成（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
                     RELOAD_NAME,
-                    RELOAD_BOOST,
+                    reloadBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 reloadAttribute.addPermanentModifier(reloadModifier);
@@ -175,7 +175,8 @@ public class TacticalReload extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.tactical_reload.effect")
+        double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.tactical_reload.effect", String.format("%.0f", reloadBoost))
             .withStyle(net.minecraft.ChatFormatting.BLUE));
 
         // 添加饰品槽位信息

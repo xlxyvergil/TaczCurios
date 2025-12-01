@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc;
 
 import com.mojang.logging.LogUtils;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.handlers.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
@@ -43,6 +44,9 @@ public class TaczCurios
         // 注册战利品表事件处理器
         MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
         
+        // 注册配置文件
+        TaczCuriosConfig.registerConfigs();
+        
         // 安全地注册客户端事件处理器
         registerClientEventsSafely();
     }
@@ -58,8 +62,7 @@ public class TaczCurios
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
             try {
                 // 尝试注册客户端事件，如果在服务器上会因为缺少客户端类而失败
-                Class<?> clientEventHandlerClass = Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-                MinecraftForge.EVENT_BUS.register(clientEventHandlerClass);
+                Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
             } catch (ClassNotFoundException e) {
                 // 在服务器环境中忽略，因为客户端类不可用
                 LOGGER.info("未找到ClientEventHandler，正在专用服务器上运行");

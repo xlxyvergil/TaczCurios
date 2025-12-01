@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 /**
  * 凶恶延伸饰品
- * 效果：提高120%子弹射程（乘算）
+ * 效果：提高子弹射程（乘算）
  */
 public class FerociousExtension extends ItemBaseCurio {
     
@@ -75,11 +76,14 @@ public class FerociousExtension extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 提高120%子弹射程（乘算）
+     * 提高配置中的子弹射程（乘算）
      */
     private void applyEffects(Player player) {
-        // 应用有效射程加成 (120%乘算)
-        applyAttributeModifier(player, "taa", "effective_range", 1.2, EFFECTIVE_RANGE_UUID, EFFECTIVE_RANGE_NAME);
+        // 获取配置中的子弹射程加成值
+        double rangeBoost = TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get();
+        
+        // 应用有效射程加成 (配置中的乘算值)
+        applyAttributeModifier(player, "taa", "effective_range", rangeBoost, EFFECTIVE_RANGE_UUID, EFFECTIVE_RANGE_NAME);
     }
     
     /**
@@ -157,7 +161,8 @@ new ResourceLocation(namespace, attributeName)
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.ferocious_extension.effect")
+        double rangeBoost = TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.ferocious_extension.effect", String.format("%.0f", rangeBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

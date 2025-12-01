@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -16,7 +17,7 @@ import java.util.UUID;
 
 
 /**
- * 红-有-三饰品 - 提供150%持枪移动速度加成
+ * 红-有-三饰品 - 提供持枪移动速度加成
  * 通过TaczAttributeAdd的move_speed属性实现
  */
 public class RedMovementTag extends ItemBaseCurio {
@@ -68,11 +69,13 @@ public class RedMovementTag extends ItemBaseCurio {
         if (moveSpeedAttribute != null) {
             // 移除可能存在的旧修饰符，然后添加新的
             moveSpeedAttribute.removeModifier(MOVE_SPEED_MODIFIER_UUID);
+            // 获取配置中的移动速度加成值
+            double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get();
             moveSpeedAttribute.addTransientModifier(
                 new AttributeModifier(
                     MOVE_SPEED_MODIFIER_UUID,
                     "tcc_red_movement_speed_boost",
-                    1.50, // 150%移动速度加成
+                    speedBoost, // 配置中的移动速度加成
                     AttributeModifier.Operation.ADDITION
                 )
             );
@@ -113,11 +116,13 @@ public class RedMovementTag extends ItemBaseCurio {
             // 检查修饰符是否还存在，如果不存在则重新添加
             var modifier = moveSpeedAttribute.getModifier(MOVE_SPEED_MODIFIER_UUID);
             if (modifier == null) {
+                // 获取配置中的移动速度加成值
+                double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get();
                 moveSpeedAttribute.addTransientModifier(
                     new AttributeModifier(
                         MOVE_SPEED_MODIFIER_UUID,
                         "tcc_red_movement_speed_boost",
-                        1.50,
+                        speedBoost,
                         AttributeModifier.Operation.ADDITION
                     )
                 );
@@ -143,7 +148,8 @@ public class RedMovementTag extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.red_movement_tag.effect")
+        double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.red_movement_tag.effect", String.format("%.0f", speedBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

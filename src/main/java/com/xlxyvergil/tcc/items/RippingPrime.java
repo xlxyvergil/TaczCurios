@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -77,14 +78,18 @@ public class RippingPrime extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 增加55%射速（乘算）增加2.2穿透（加算）
+     * 增加配置中的射速和穿透（射速乘算，穿透加算）
      */
     private void applyEffects(Player player) {
-        // 应用射速加成 (55%乘算)
-        applyAttributeModifier(player, "taa", "rounds_per_minute", 0.55, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        // 获取配置中的射速加成和穿透加成值
+        double fireRateBoost = TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get();
+        double penetrationBoost = TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get();
         
-        // 应用穿透加成 (2.2加算)
-        applyAttributeModifier(player, "taa", "pierce", 2.2, PIERCE_UUID, PIERCE_NAME, AttributeModifier.Operation.ADDITION);
+        // 应用射速加成
+        applyAttributeModifier(player, "taa", "rounds_per_minute", fireRateBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        
+        // 应用穿透加成
+        applyAttributeModifier(player, "taa", "pierce", penetrationBoost, PIERCE_UUID, PIERCE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
     /**
@@ -163,7 +168,10 @@ new ResourceLocation(namespace, attributeName)
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.ripping_prime.effect")
+        double fireRateBoost = TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get() * 100;
+        double penetrationBoost = TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get();
+        tooltip.add(Component.translatable("item.tcc.ripping_prime.effect", 
+                String.format("%.0f", fireRateBoost), String.format("%.1f", penetrationBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

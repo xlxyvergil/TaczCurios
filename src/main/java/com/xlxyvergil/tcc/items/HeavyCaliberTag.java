@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度
- * 效果：提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害（加算），增加55%不精准度（乘算）
+ * 重口径 - 提升特定枪械伤害，增加不精准度
+ * 效果：提升特定枪械伤害（加算），增加不精准度（乘算）
  */
 public class HeavyCaliberTag extends ItemBaseCurio {
     
@@ -42,10 +43,6 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     
     // 支持的枪械类型
     private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
-    
-    // 效果参数
-    private static final double DAMAGE_BOOST = 1.65;       // 165%特定枪械伤害提升（加算）
-    private static final double INACCURACY_BOOST = 0.55;   // 55%不精准度提升（乘算）
     
     public HeavyCaliberTag(Properties properties) {
         super(properties);
@@ -110,6 +107,10 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             "bullet_gundamage_launcher"
         };
         
+        // 获取配置中的伤害加成值和不精准度加成值
+        double damageBoost = TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get();
+        double inaccuracyBoost = TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get();
+        
         // 应用特定枪械伤害提升（加算）
         for (int i = 0; i < gunTypes.length; i++) {
             var gunDamageAttribute = attributes.getInstance(
@@ -122,11 +123,11 @@ public class HeavyCaliberTag extends ItemBaseCurio {
                 // 检查是否已经存在相同的修饰符，如果存在则移除
                 gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
                 
-                // 添加165%的特定枪械伤害加成（加算）
+                // 添加配置中的特定枪械伤害加成（加算）
                 var gunDamageModifier = new AttributeModifier(
                     DAMAGE_UUIDS[i],
                     DAMAGE_NAMES[i],
-                    DAMAGE_BOOST,
+                    damageBoost,
                     AttributeModifier.Operation.ADDITION
                 );
                 gunDamageAttribute.addPermanentModifier(gunDamageModifier);
@@ -146,11 +147,11 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用不精准度加成
             if (isHoldingValidGunType(player)) {
-                // 添加55%的不精准度加成（乘算）
+                // 添加配置中的不精准度加成（乘算）
                 var inaccuracyModifier = new AttributeModifier(
                     DAMAGE_UUIDS[0],
                     "tcc.heavy_caliber.inaccuracy",
-                    INACCURACY_BOOST,
+                    inaccuracyBoost,
                     AttributeModifier.Operation.MULTIPLY_BASE
                 );
                 inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
@@ -246,7 +247,10 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect")
+        double damageBoost = TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get() * 100;
+        double inaccuracyBoost = TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect", 
+                String.format("%.0f", damageBoost), String.format("%.0f", inaccuracyBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

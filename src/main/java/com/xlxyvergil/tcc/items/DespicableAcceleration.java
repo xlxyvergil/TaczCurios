@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +18,8 @@ import java.util.UUID;
 
 
 /**
- * 协劣加速 - 提升90%射击速度，但降低15%通用伤害和全部7种特定枪械伤害
- * 效果：射击速度+90%，通用伤害-15%，特定枪械伤害-15%
+ * 协劣加速 - 提升射击速度，但降低通用伤害和全部7种特定枪械伤害
+ * 效果：射击速度+X%，通用伤害-Y%，特定枪械伤害-Y%
  */
 public class DespicableAcceleration extends ItemBaseCurio {
     
@@ -61,10 +62,6 @@ public class DespicableAcceleration extends ItemBaseCurio {
     // 修饰符名称
     private static final String FIRING_SPEED_NAME = "tcc.despicable_acceleration.firing_speed";
     private static final String GENERAL_DAMAGE_NAME = "tcc.despicable_acceleration.general_damage";
-    
-    // 效果参数
-    private static final double FIRING_SPEED_BOOST = 0.9;       // 90%射击速度提升
-    private static final double DAMAGE_REDUCTION = -0.15;      // 15%伤害降低
     
     public DespicableAcceleration(Properties properties) {
         super(properties);
@@ -111,6 +108,10 @@ public class DespicableAcceleration extends ItemBaseCurio {
     private void applyAccelerationEffects(Player player) {
         var attributes = player.getAttributes();
         
+        // 获取配置中的射击速度加成和伤害降低值
+        double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get();
+        double damageReduction = -TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get();
+        
         // 应用射击速度提升
         var rpmAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
@@ -122,11 +123,11 @@ public class DespicableAcceleration extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             rpmAttribute.removeModifier(FIRING_SPEED_UUID);
             
-            // 添加90%的射击速度加成
+            // 添加配置中的射击速度加成
             var firingSpeedModifier = new AttributeModifier(
                 FIRING_SPEED_UUID,
                 FIRING_SPEED_NAME,
-                FIRING_SPEED_BOOST,
+                firingSpeedBoost,
                 AttributeModifier.Operation.ADDITION
             );
             rpmAttribute.addPermanentModifier(firingSpeedModifier);
@@ -143,11 +144,11 @@ public class DespicableAcceleration extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             generalDamageAttribute.removeModifier(GENERAL_DAMAGE_UUID);
             
-            // 添加15%的通用伤害降低
+            // 添加配置中的通用伤害降低
             var generalDamageModifier = new AttributeModifier(
                 GENERAL_DAMAGE_UUID,
                 GENERAL_DAMAGE_NAME,
-                DAMAGE_REDUCTION,
+                damageReduction,
                 AttributeModifier.Operation.ADDITION
             );
             generalDamageAttribute.addPermanentModifier(generalDamageModifier);
@@ -165,11 +166,11 @@ public class DespicableAcceleration extends ItemBaseCurio {
                 // 检查是否已经存在相同的修饰符，如果存在则移除
                 specificDamageAttribute.removeModifier(DAMAGE_UUIDS.get(gunType));
                 
-                // 添加15%的特定枪械伤害降低
+                // 添加配置中的特定枪械伤害降低
                 var specificDamageModifier = new AttributeModifier(
                     DAMAGE_UUIDS.get(gunType),
                     DAMAGE_NAMES.get(gunType),
-                    DAMAGE_REDUCTION,
+                    damageReduction,
                     AttributeModifier.Operation.ADDITION
                 );
                 specificDamageAttribute.addPermanentModifier(specificDamageModifier);
@@ -245,7 +246,10 @@ public class DespicableAcceleration extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect")
+        double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() * 100;
+        double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
+                String.format("%.0f", firingSpeedBoost), String.format("%.0f", damageReduction))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

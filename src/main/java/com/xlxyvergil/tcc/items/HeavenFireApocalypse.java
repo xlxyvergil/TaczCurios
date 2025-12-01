@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -102,14 +103,19 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         if (healthPercentage >= 1.0) {
             // 血量为100%时应用效果
             
-            // 应用1000%通用枪械伤害加成
-            applyAttributeModifier(player, "taa", "bullet_gundamage", 10.0, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            // 获取配置中的伤害加成、爆炸范围和爆炸伤害值
+            double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
+            double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
+            double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
             
-            // 固定应用10点爆炸范围加成
-            applyAttributeModifier(player, "taa", "explosion_radius", 10.0, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
+            // 应用配置中的通用枪械伤害加成
+            applyAttributeModifier(player, "taa", "bullet_gundamage", damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
             
-            // 应用1000%爆炸伤害加成
-            applyAttributeModifier(player, "taa", "explosion_damage", 10.0, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            // 应用配置中的爆炸范围加成
+            applyAttributeModifier(player, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
+            
+            // 应用配置中的爆炸伤害加成
+            applyAttributeModifier(player, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             // 血量不为100%时移除效果
             removeEffects(player);
@@ -182,7 +188,29 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.effect")
+        // 根据语言文件中的占位符顺序调整参数传递顺序：
+        // %1$s - damageBoost (通用枪械伤害加成)
+        // %2$s - explosionRadiusBoost (爆炸范围加成)
+        // %3$s - explosionDamageBoost (爆炸伤害加成)
+        // %4$s - healthCost (当前生命值扣除)
+        // %5$s - nearbyPlayerRadius (周围玩家范围)
+        // %6$s - nearbyPlayerDamageBoost (周围玩家伤害加成)
+        // %7$s - nearbyPlayerDuration (持续时间)
+        double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get() * 100;
+        double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
+        double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get() * 100;
+        double healthCost = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get() * 100;
+        double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
+        double nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100;
+        int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.effect", 
+                String.format("%.0f", damageBoost), 
+                String.format("%.0f", explosionRadiusBoost), 
+                String.format("%.0f", explosionDamageBoost), 
+                String.format("%.0f", healthCost),
+                String.format("%.0f", nearbyPlayerRadius), 
+                String.format("%.0f", nearbyPlayerDamageBoost),
+                String.format("%d", nearbyPlayerDuration))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
@@ -236,8 +264,11 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                         }
                     }
                     
-                    // 对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）
-                    List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(32.0D));
+                    // 获取配置中的影响范围
+                    double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
+                    
+                    // 对玩家周围的其他玩家提供配置中持续时间和伤害加成的bullet_gundamage加成（加算）
+                    List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(nearbyPlayerRadius));
 
                     for (Player nearbyPlayer : nearbyPlayers) {
                         // 排除自己
@@ -255,26 +286,34 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                             // 移除已存在的修饰符
                             gunDamageAttribute.removeModifier(NEARBY_GUN_DAMAGE_UUID);
                             
-                            // 添加100%的伤害加成（加算）
+                            // 获取配置中的附近玩家伤害加成值
+                            double nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get();
+                            int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
+                            
+                            // 添加配置中的伤害加成（加算）
                             AttributeModifier modifier = new AttributeModifier(
                                 NEARBY_GUN_DAMAGE_UUID,
                                 NEARBY_GUN_DAMAGE_NAME,
-                                1.0,
+                                nearbyPlayerDamageBoost,
                                 AttributeModifier.Operation.ADDITION
                             );
                             gunDamageAttribute.addPermanentModifier(modifier);
                             
-                            // 设置持续时间标记（15秒 = 300 ticks）
+                            // 设置持续时间标记（配置中的持续时间，转换为ticks）
                             net.minecraft.nbt.CompoundTag persistentData = nearbyPlayer.getPersistentData();
-                            persistentData.putInt(NEARBY_BUFF_DURATION_TAG, 300);
+                            persistentData.putInt(NEARBY_BUFF_DURATION_TAG, nearbyPlayerDuration * 20);
                         }
                     }
+                    
+                    // 获取配置中的附近玩家伤害加成值和持续时间
+                    double nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100;
+                    int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
                     
                     // 显示提示信息
                     if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                         player.displayClientMessage(
                             net.minecraft.network.chat.Component.literal(
-                                "§6天火劫灭 - 为周围玩家提供15秒的100%枪械伤害加成"
+                                "§6天火劫灭 - 为周围玩家提供" + nearbyPlayerDuration + "秒的" + String.format("%.0f", nearbyPlayerDamageBoost) + "%枪械伤害加成"
                             ),
                             true
                         );

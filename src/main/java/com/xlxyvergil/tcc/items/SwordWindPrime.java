@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +27,7 @@ public class SwordWindPrime extends ItemBaseCurio {
     private static final String MELEE_DISTANCE_NAME = "tcc.sword_wind_prime.melee_distance";
     
     // 效果参数
-    private static final double MELEE_DISTANCE_BOOST = 3.0; // 3.0加成
+    // private static final double MELEE_DISTANCE_BOOST = 3.0; // 3.0加成 - 现在从配置文件读取
     
     public SwordWindPrime(Properties properties) {
         super(properties);
@@ -70,11 +71,14 @@ public class SwordWindPrime extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             meleeDistanceAttribute.removeModifier(MELEE_DISTANCE_UUID);
             
-            // 添加3的近战距离加成（加算）
+            // 从配置文件获取近战距离加成值
+            double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
+            
+            // 添加配置的近战距离加成（加算）
             var meleeDistanceModifier = new AttributeModifier(
                 MELEE_DISTANCE_UUID,
                 MELEE_DISTANCE_NAME,
-                MELEE_DISTANCE_BOOST,
+                meleeDistanceBoost,
                 AttributeModifier.Operation.ADDITION
             );
             meleeDistanceAttribute.addPermanentModifier(meleeDistanceModifier);
@@ -114,7 +118,17 @@ public class SwordWindPrime extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect")
+        double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
+        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%.0f", meleeDistanceBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        
+        // 添加饰品槽位信息
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        
+        // 添加稀有度提示
+        tooltip.add(Component.literal("§7稀有度：§f传说")
+            .withStyle(net.minecraft.ChatFormatting.GRAY));
     }
 }
