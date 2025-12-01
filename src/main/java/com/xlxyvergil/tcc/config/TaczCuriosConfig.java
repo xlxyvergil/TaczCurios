@@ -163,6 +163,34 @@ public class TaczCuriosConfig {
         // 乌拉尔银狼配置
         public final ForgeConfigSpec.DoubleValue uralWolfTagHeadshotMultiplierBoost;
         
+        // 耗竭装填配置
+        public final ForgeConfigSpec.DoubleValue depletedReloadMagazineCapacityPenalty;
+        public final ForgeConfigSpec.DoubleValue depletedReloadReloadSpeedBoost;
+        
+        // 爆发装填Prime配置
+        public final ForgeConfigSpec.DoubleValue burstReloadPrimeReloadSpeedBoost;
+        
+        // 战术上膛Prime配置
+        public final ForgeConfigSpec.DoubleValue tacticalReloadPrimeReloadSpeedBoost;
+        
+        // 霰弹扩充Prime配置
+        public final ForgeConfigSpec.DoubleValue shotgunExpansionPrimeCapacityBoost;
+        
+        // 弹匣增幅Prime配置
+        public final ForgeConfigSpec.DoubleValue magazineBoostPrimeCapacityBoost;
+        
+        // 串联弹匣Prime配置
+        public final ForgeConfigSpec.DoubleValue tandemMagazinePrimeCapacityBoost;
+        
+        // 霰弹扩充配置
+        public final ForgeConfigSpec.DoubleValue shotgunExpansionCapacityBoost;
+        
+        // 弹匣增幅配置（新）
+        public final ForgeConfigSpec.DoubleValue magazineBoostCapacityBoost;
+        
+        // 串联弹匣配置
+        public final ForgeConfigSpec.DoubleValue tandemMagazineCapacityBoost;
+        
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
             
@@ -516,6 +544,72 @@ public class TaczCuriosConfig {
             uralWolfTagHeadshotMultiplierBoost = builder
                     .comment("爆头倍率加成 (默认: 1.5 = 150%)")
                     .defineInRange("headshotMultiplierBoost", 1.5, 0, 100);
+            builder.pop();
+            
+            // 耗竭装填配置
+            builder.comment("耗竭装填饰品配置").push("depleted_reload");
+            depletedReloadMagazineCapacityPenalty = builder
+                    .comment("弹匣容量减少 (默认: -0.6 = -60%)")
+                    .defineInRange("magazineCapacityPenalty", -0.6, -1, 0);
+            depletedReloadReloadSpeedBoost = builder
+                    .comment("装填速度加成 (默认: 0.48 = 48%)")
+                    .defineInRange("reloadSpeedBoost", 0.48, 0, 100);
+            builder.pop();
+            
+            // 爆发装填Prime配置
+            builder.comment("爆发装填Prime饰品配置").push("burst_reload_prime");
+            burstReloadPrimeReloadSpeedBoost = builder
+                    .comment("装填速度加成 (默认: 0.55 = 55%)")
+                    .defineInRange("reloadSpeedBoost", 0.55, 0, 100);
+            builder.pop();
+            
+            // 战术上膛Prime配置
+            builder.comment("战术上膛Prime饰品配置").push("tactical_reload_prime");
+            tacticalReloadPrimeReloadSpeedBoost = builder
+                    .comment("装填速度加成 (默认: 1.0 = 100%)")
+                    .defineInRange("reloadSpeedBoost", 1.0, 0, 100);
+            builder.pop();
+            
+            // 霰弹扩充Prime配置
+            builder.comment("霰弹扩充Prime饰品配置").push("shotgun_expansion_prime");
+            shotgunExpansionPrimeCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 1.1 = 110%)")
+                    .defineInRange("capacityBoost", 1.1, 0, 100);
+            builder.pop();
+            
+            // 弹匣增幅Prime配置
+            builder.comment("弹匣增幅Prime饰品配置").push("magazine_boost_prime");
+            magazineBoostPrimeCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 0.55 = 55%)")
+                    .defineInRange("capacityBoost", 0.55, 0, 100);
+            builder.pop();
+            
+            // 串联弹匣Prime配置
+            builder.comment("串联弹匣Prime饰品配置").push("tandem_magazine_prime");
+            tandemMagazinePrimeCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 0.55 = 55%)")
+                    .defineInRange("capacityBoost", 0.55, 0, 100);
+            builder.pop();
+            
+            // 霰弹扩充配置
+            builder.comment("霰弹扩充饰品配置").push("shotgun_expansion");
+            shotgunExpansionCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 0.6 = 60%)")
+                    .defineInRange("capacityBoost", 0.6, 0, 100);
+            builder.pop();
+            
+            // 弹匣增幅配置（新）
+            builder.comment("弹匣增幅饰品配置（新）").push("magazine_boost_new");
+            magazineBoostCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 0.3 = 30%)")
+                    .defineInRange("capacityBoost", 0.3, 0, 100);
+            builder.pop();
+            
+            // 串联弹匣配置
+            builder.comment("串联弹匣饰品配置").push("tandem_magazine");
+            tandemMagazineCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 0.3 = 30%)")
+                    .defineInRange("capacityBoost", 0.3, 0, 100);
             builder.pop();
             
             builder.pop();

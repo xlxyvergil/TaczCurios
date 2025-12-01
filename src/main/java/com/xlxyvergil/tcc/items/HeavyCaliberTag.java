@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -8,13 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -40,9 +37,6 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         "tcc.heavy_caliber.lmg_damage",
         "tcc.heavy_caliber.launcher_damage"
     };
-    
-    // 支持的枪械类型
-    private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     public HeavyCaliberTag(Properties properties) {
         super(properties);
@@ -146,7 +140,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             inaccuracyAttribute.removeModifier(DAMAGE_UUIDS[0]);
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用不精准度加成
-            if (isHoldingValidGunType(player)) {
+            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
                 // 添加配置中的不精准度加成（乘算）
                 var inaccuracyModifier = new AttributeModifier(
                     DAMAGE_UUIDS[0],
@@ -201,27 +195,6 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     }
     
     /**
-     * 检查玩家是否持有有效的枪械类型
-     */
-    private boolean isHoldingValidGunType(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-        
-        if (iGun != null) {
-            // 获取枪械ID
-            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
-            
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(VALID_GUN_TYPES::contains)
-                .orElse(false);
-        }
-        
-        return false;
-    }
-    
-    /**
      * 当玩家持有时，每tick更新效果
      */
     @Override
@@ -255,12 +228,10 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§6稀有")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

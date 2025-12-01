@@ -26,11 +26,28 @@ public class SwordWindPrime extends ItemBaseCurio {
     // 修饰符名称
     private static final String MELEE_DISTANCE_NAME = "tcc.sword_wind_prime.melee_distance";
     
-    // 效果参数
-    // private static final double MELEE_DISTANCE_BOOST = 3.0; // 3.0加成 - 现在从配置文件读取
+ 
     
     public SwordWindPrime(Properties properties) {
         super(properties);
+    }
+    
+    /**
+     * 检查是否可以装备到指定插槽
+     * SwordWindPrime与SwordWind互斥，不能同时装备
+     */
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        // 检查是否装备在TCC饰品槽位
+        if (!slotContext.identifier().equals("tcc_slot")) {
+            return false;
+        }
+        
+        // 检查是否已经装备了SwordWind
+        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+            .map(inv -> inv.findFirstCurio(
+                itemStack -> itemStack.getItem() instanceof SwordWind))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
     
     /**
@@ -124,11 +141,9 @@ public class SwordWindPrime extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§f传说")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
 }

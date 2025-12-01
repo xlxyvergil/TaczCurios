@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -8,10 +10,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.SlotContext;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,9 +29,6 @@ public class DeadlySurge extends ItemBaseCurio {
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.deadly_surge.rounds_per_minute";
     private static final String BULLET_COUNT_NAME = "tcc.deadly_surge.bullet_count";
 
-    // 效果参数
-    // private static final double ROUNDS_PER_MINUTE_BOOST = 0.60;   // 60%射速提升（加算） - 现在从配置文件读取
-    // private static final double BULLET_COUNT_BOOST = 0.60;        // 60%弹头数量提升（加算） - 现在从配置文件读取
 
     public DeadlySurge(Properties properties) {
         super(properties);
@@ -113,7 +108,7 @@ public class DeadlySurge extends ItemBaseCurio {
         }
 
         // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-        if (isHoldingPistol(player)) {
+        if (GunTypeChecker.isHoldingPistol(player)) {
             // 应用射速加成
             if (rpmAttribute != null) {
                 // 获取配置中的射速加成值
@@ -174,27 +169,6 @@ public class DeadlySurge extends ItemBaseCurio {
     }
 
     /**
-     * 检查玩家是否持有手枪
-     */
-    private boolean isHoldingPistol(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-
-        if (iGun != null) {
-            // 获取枪械ID
-            ResourceLocation gunId = iGun.getGunId(mainHandItem);
-
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(type -> type.equals("pistol"))
-                .orElse(false);
-        }
-
-        return false;
-    }
-
-    /**
      * 当玩家持有时，每tick更新效果
      */
     @Override
@@ -227,12 +201,10 @@ public class DeadlySurge extends ItemBaseCurio {
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
 
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§6稀有")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

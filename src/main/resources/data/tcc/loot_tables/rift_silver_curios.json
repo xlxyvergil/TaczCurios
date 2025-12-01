@@ -204,6 +204,51 @@
           "type": "minecraft:item",
           "weight": 79,
           "name": "tcc:sword_wind_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:shotgun_expansion"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:magazine_boost_new"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:tandem_magazine"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:depleted_reload"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:burst_reload_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:tactical_reload_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:shotgun_expansion_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:magazine_boost_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:tandem_magazine_prime"
         }
       ]
     }

@@ -11,6 +11,7 @@
     "tcc:malignant_spread",
     "tcc:chamber",
     "tcc:corrupt_magazine",
-    "tcc:split_chamber"
+    "tcc:split_chamber",
+    "tcc:depleted_reload"
   ]
 }

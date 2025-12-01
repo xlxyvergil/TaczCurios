@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -9,9 +10,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.SlotContext;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -95,7 +93,7 @@ public class SustainedFire extends ItemBaseCurio {
             reloadAttribute.removeModifier(RELOAD_UUID);
 
             // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-            if (isHoldingPistol(player)) {
+            if (GunTypeChecker.isHoldingPistol(player)) {
                 // 获取配置中的装填速度加成值
                 double reloadBoost = TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get();
                 // 添加配置中的装填速度加成（加算）
@@ -126,27 +124,6 @@ public class SustainedFire extends ItemBaseCurio {
         if (reloadAttribute != null) {
             reloadAttribute.removeModifier(RELOAD_UUID);
         }
-    }
-
-    /**
-     * 检查玩家是否持有手枪
-     */
-    private boolean isHoldingPistol(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-
-        if (iGun != null) {
-            // 获取枪械ID
-            ResourceLocation gunId = iGun.getGunId(mainHandItem);
-
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(type -> type.equals("pistol"))
-                .orElse(false);
-        }
-
-        return false;
     }
 
     /**
@@ -181,12 +158,10 @@ public class SustainedFire extends ItemBaseCurio {
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
 
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§9常见")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
     
     /**

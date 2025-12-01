@@ -1,27 +1,22 @@
 package com.xlxyvergil.tcc.items;
 
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
+
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.LazyOptional;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -35,9 +30,6 @@ public class MagazineBoost extends ItemBaseCurio {
     
     // 修饰符名称
     private static final String RELOAD_NAME = "tcc.magazine_boost.reload_speed";
-    
-    // 支持的枪械类型
-    private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     public MagazineBoost(Properties properties) {
         super(properties
@@ -107,7 +99,7 @@ public class MagazineBoost extends ItemBaseCurio {
             reloadAttribute.removeModifier(RELOAD_UUID);
             
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (isHoldingValidGunType(player)) {
+            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
                 // 获取配置中的装填速度加成值
                 double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get();
                 // 添加配置的装填速度加成（加算）
@@ -142,27 +134,6 @@ public class MagazineBoost extends ItemBaseCurio {
     }
     
     /**
-     * 检查玩家是否持有有效的枪械类型
-     */
-    private boolean isHoldingValidGunType(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-        
-        if (iGun != null) {
-            // 获取枪械ID
-            ResourceLocation gunId = iGun.getGunId(mainHandItem);
-            
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(VALID_GUN_TYPES::contains)
-                .orElse(false);
-        }
-        
-        return false;
-    }
-    
-    /**
      * 当玩家持有时，每tick更新效果
      */
     @Override
@@ -194,12 +165,10 @@ public class MagazineBoost extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§9常见")
-            .withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
     
     /**

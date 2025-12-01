@@ -32,10 +32,6 @@ public class CarefulHeart extends ItemBaseCurio {
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.careful_heart.explosion_damage";
     private static final String EXPLOSION_RADIUS_NAME = "tcc.careful_heart.explosion_radius";
     
-    // 效果参数
-    // private static final double LAUNCHER_DAMAGE_BOOST = 3.0;       // 300%发射器伤害提升 - 现在从配置文件读取
-    // private static final double EXPLOSION_DAMAGE_BOOST = 3.0;     // 300%爆炸伤害提升 - 现在从配置文件读取
-    // private static final double EXPLOSION_RADIUS_BOOST = 3.0;     // 300%爆炸范围提升 - 现在从配置文件读取
     
     public CarefulHeart(Properties properties) {
         super(properties);
@@ -227,12 +223,10 @@ public class CarefulHeart extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§f传说")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
     
     /**

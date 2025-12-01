@@ -117,12 +117,12 @@
   "item.tcc.malignant_spread.effect": "Increases %1$s%% shotgun damage, reduces accuracy by %2$s%%",
   
   "item.tcc.chamber": "§bChamber",
-  "item.tcc.chamber.desc": "Enhance sniper rifle damage",
-  "item.tcc.chamber.effect": "Specifically increases %1$s%% sniper rifle damage. Cannot be equipped with Chamber Prime simultaneously",
+  "item.tcc.chamber.desc": "Enhance sniper rifle damage only when magazine is full",
+  "item.tcc.chamber.effect": "Increases %1$s%% damage when using a full magazine sniper rifle. Cannot be equipped with Chamber Prime simultaneously",
   
   "item.tcc.chamber_prime": "§fChamber Prime",
-  "item.tcc.chamber_prime.desc": "Ultimate enhancement for sniper rifle damage",
-  "item.tcc.chamber_prime.effect": "Specifically increases %1$s%% sniper rifle damage. Cannot be equipped with Chamber simultaneously",
+  "item.tcc.chamber_prime.desc": "Ultimate enhancement for sniper rifle damage only when magazine is full",
+  "item.tcc.chamber_prime.effect": "Increases %1$s%% damage when using a full magazine sniper rifle. Cannot be equipped with Chamber simultaneously",
   
   "item.tcc.core_fusion": "Core Fusion",
   "item.tcc.core_fusion.desc": "Core material obtained by burning curios in a furnace",
@@ -175,5 +175,49 @@
   
   "item.tcc.sword_wind_prime": "§fSword Wind Prime",
   "item.tcc.sword_wind_prime.desc": "Mysterious curio that extremely expands melee attack range",
-  "item.tcc.sword_wind_prime.effect": "Increases %1$s melee distance"
+  "item.tcc.sword_wind_prime.effect": "Increases %1$s melee distance",
+  
+  "item.tcc.depleted_reload": "§6Depleted Reload",
+  "item.tcc.depleted_reload.desc": "Reduced magazine capacity, increased reload speed",
+  "item.tcc.depleted_reload.effect": "Reduces %1$s%% magazine capacity, increases %2$s%% reload speed",
+  
+  "item.tcc.burst_reload_prime": "§fBurst Reload Prime",
+  "item.tcc.burst_reload_prime.desc": "Ultimate reload speed enhancement",
+  "item.tcc.burst_reload_prime.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload speed",
+  
+  "item.tcc.tactical_reload_prime": "§fTactical Reload Prime",
+  "item.tcc.tactical_reload_prime.desc": "Ultimate reload speed enhancement",
+  "item.tcc.tactical_reload_prime.effect": "Increases %1$s%% shotgun reload speed",
+  
+  "item.tcc.shotgun_expansion_prime": "§fShotgun Expansion Prime",
+  "item.tcc.shotgun_expansion_prime.desc": "Ultimate magazine capacity enhancement",
+  "item.tcc.shotgun_expansion_prime.effect": "Increases %1$s%% shotgun magazine capacity",
+  
+  "item.tcc.magazine_boost_prime": "§fMagazine Boost Prime",
+  "item.tcc.magazine_boost_prime.desc": "Ultimate magazine capacity enhancement",
+  "item.tcc.magazine_boost_prime.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity",
+  
+  "item.tcc.tandem_magazine_prime": "§fTandem Magazine Prime",
+  "item.tcc.tandem_magazine_prime.desc": "Ultimate magazine capacity enhancement",
+  "item.tcc.tandem_magazine_prime.effect": "Increases %1$s%% pistol magazine capacity",
+  
+  "item.tcc.shotgun_expansion": "§9Shotgun Expansion",
+  "item.tcc.shotgun_expansion.desc": "Efficient solution to increase magazine capacity",
+  "item.tcc.shotgun_expansion.effect": "Increases %1$s%% shotgun magazine capacity",
+  
+  "item.tcc.magazine_boost_new": "§9Magazine Boost",
+  "item.tcc.magazine_boost_new.desc": "Efficient solution to increase magazine capacity",
+  "item.tcc.magazine_boost_new.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity",
+  
+  "item.tcc.tandem_magazine": "§9Tandem Magazine",
+  "item.tcc.tandem_magazine.desc": "Efficient solution to increase magazine capacity",
+  "item.tcc.tandem_magazine.effect": "Increases %1$s%% pistol magazine capacity",
+
+  "tcc.tooltip.slot": "§7Equipment Slot: §aTACZ Curio Slot",
+  "tcc.tooltip.rarity.common": "§7Rarity: §9Common",
+  "tcc.tooltip.rarity.uncommon": "§7Rarity: §bUncommon",
+  "tcc.tooltip.rarity.rare": "§7Rarity: §6Rare",
+  "tcc.tooltip.rarity.epic": "§7Rarity: §dEpic",
+  "tcc.tooltip.rarity.legendary": "§7Rarity: §fLegendary",
+  "tcc.tooltip.rarity.mythic": "§7Rarity: §dMythic"
 }

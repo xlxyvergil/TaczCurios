@@ -42,6 +42,15 @@ import com.xlxyvergil.tcc.items.SwordWindPrime;
 import com.xlxyvergil.tcc.items.TacticalReload;
 import com.xlxyvergil.tcc.items.UralWolfTag;
 import com.xlxyvergil.tcc.items.WaspStinger;
+import com.xlxyvergil.tcc.items.DepletedReload;
+import com.xlxyvergil.tcc.items.BurstReloadPrime;
+import com.xlxyvergil.tcc.items.TacticalReloadPrime;
+import com.xlxyvergil.tcc.items.ShotgunExpansionPrime;
+import com.xlxyvergil.tcc.items.MagazineBoostPrime;
+import com.xlxyvergil.tcc.items.TandemMagazinePrime;
+import com.xlxyvergil.tcc.items.ShotgunExpansion;
+import com.xlxyvergil.tcc.items.MagazineBoostNew;
+import com.xlxyvergil.tcc.items.TandemMagazine;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -302,4 +311,58 @@ public class TaczItems {
         () -> new SwordWindPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
+    
+    // 耗竭装填 - 降低60%弹匣容量，提升48%装填速度（仅限狙击枪）
+    public static final RegistryObject<Item> DEPLETED_RELOAD = ITEMS.register("depleted_reload", 
+        () -> new DepletedReload(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // 爆发装填Prime - 提升55%装填速度（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
+    public static final RegistryObject<Item> BURST_RELOAD_PRIME = ITEMS.register("burst_reload_prime", 
+        () -> new BurstReloadPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 战术上膛Prime - 提升100%装填速度（仅限霰弹枪）
+    public static final RegistryObject<Item> TACTICAL_RELOAD_PRIME = ITEMS.register("tactical_reload_prime", 
+        () -> new TacticalReloadPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 霰弹扩充Prime - 提升110%弹匣容量（仅限霰弹枪）
+    public static final RegistryObject<Item> SHOTGUN_EXPANSION_PRIME = ITEMS.register("shotgun_expansion_prime", 
+        () -> new ShotgunExpansionPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 弹匣增幅Prime - 提升55%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
+    public static final RegistryObject<Item> MAGAZINE_BOOST_PRIME = ITEMS.register("magazine_boost_prime", 
+        () -> new MagazineBoostPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 串联弹匣Prime - 提升55%弹匣容量（仅限手枪）
+    public static final RegistryObject<Item> TANDEM_MAGAZINE_PRIME = ITEMS.register("tandem_magazine_prime", 
+        () -> new TandemMagazinePrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 霰弹扩充 - 提升60%弹匣容量（仅限霰弹枪）
+    public static final RegistryObject<Item> SHOTGUN_EXPANSION = ITEMS.register("shotgun_expansion", 
+        () -> new ShotgunExpansion(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 弹匣增幅 - 提升30%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
+    public static final RegistryObject<Item> MAGAZINE_BOOST_NEW = ITEMS.register("magazine_boost_new", 
+        () -> new MagazineBoostNew(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 串联弹匣 - 提升30%弹匣容量（仅限手枪）
+    public static final RegistryObject<Item> TANDEM_MAGAZINE = ITEMS.register("tandem_magazine", 
+        () -> new TandemMagazine(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
 }

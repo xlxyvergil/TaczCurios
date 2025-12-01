@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -10,14 +11,11 @@ import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
-import java.util.Set;
 
 
 
@@ -46,9 +44,6 @@ public class MergedRifling extends ItemBaseCurio {
         "tcc.merged_rifling.launcher_damage"
     };
     private static final String MOVEMENT_SPEED_NAME = "tcc.merged_rifling.movement_speed";
-    
-    // 特定枪械类型
-    private static final Set<String> VALID_GUN_TYPES = Set.of("rifle", "sniper", "smg", "lmg", "launcher");
     
     public MergedRifling(Properties properties) {
         super(properties);
@@ -173,7 +168,7 @@ public class MergedRifling extends ItemBaseCurio {
         }
         
         // 检查玩家是否手持特定类型的枪械
-        boolean shouldApplyMovementSpeed = isHoldingValidGunType(player);
+        boolean shouldApplyMovementSpeed = GunTypeChecker.isHoldingDmgBoostGunType(player);
         
         // 只在玩家手持特定类型枪械时应用移动速度加成
         if (shouldApplyMovementSpeed && movementSpeedAttribute != null) {
@@ -187,27 +182,6 @@ public class MergedRifling extends ItemBaseCurio {
             movementSpeedAttribute.addPermanentModifier(movementSpeedModifier);
         }
         // 不再主动调用缓存更新，由mod自主检测属性变更后触发
-    }
-    
-    /**
-     * 检查玩家是否手持特定类型的枪械
-     */
-    private boolean isHoldingValidGunType(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-        
-        if (iGun != null) {
-            // 获取枪械ID
-            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
-            
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(VALID_GUN_TYPES::contains)
-                .orElse(false);
-        }
-        
-        return false;
     }
     
     /**
@@ -284,12 +258,10 @@ public class MergedRifling extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§f传说")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
     
     /**

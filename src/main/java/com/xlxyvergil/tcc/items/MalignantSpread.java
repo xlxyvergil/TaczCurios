@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -8,9 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -30,9 +29,6 @@ public class MalignantSpread extends ItemBaseCurio {
     private static final String DAMAGE_NAME = "tcc.malignant_spread.damage";
     private static final String INACCURACY_NAME = "tcc.malignant_spread.inaccuracy";
     
-    // 效果参数
-    // private static final double DAMAGE_BOOST = 1.65;       // 165%霰弹枪伤害提升（加算） - 现在从配置文件读取
-    // private static final double INACCURACY_BOOST = 0.55;   // 55%不精准度提升（乘算） - 现在从配置文件读取
     
     public MalignantSpread(Properties properties) {
         super(properties);
@@ -128,7 +124,7 @@ public class MalignantSpread extends ItemBaseCurio {
             inaccuracyAttribute.removeModifier(INACCURACY_UUID);
             
             // 检查玩家是否持有霰弹枪，只有持有霰弹枪时才应用不精准度加成
-            if (isHoldingShotgun(player)) {
+            if (GunTypeChecker.isHoldingShotgun(player)) {
                 // 添加配置的不精准度加成（乘算）
                 var inaccuracyModifier = new AttributeModifier(
                     INACCURACY_UUID,
@@ -172,27 +168,6 @@ public class MalignantSpread extends ItemBaseCurio {
     }
     
     /**
-     * 检查玩家是否持有霰弹枪
-     */
-    private boolean isHoldingShotgun(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-        
-        if (iGun != null) {
-            // 获取枪械ID
-            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
-            
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(type -> type.equals("shotgun"))
-                .orElse(false);
-        }
-        
-        return false;
-    }
-    
-    /**
      * 当玩家持有时，每tick更新效果
      */
     @Override
@@ -225,12 +200,10 @@ public class MalignantSpread extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§6稀有")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

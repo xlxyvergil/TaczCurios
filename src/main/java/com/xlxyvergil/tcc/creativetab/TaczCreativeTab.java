@@ -74,6 +74,19 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.SWORD_WIND.get());
                 output.accept(TaczItems.SWORD_WIND_PRIME.get());
                 
+                // 添加新饰品
+                output.accept(TaczItems.DEPLETED_RELOAD.get());
+                output.accept(TaczItems.BURST_RELOAD_PRIME.get());
+                output.accept(TaczItems.TACTICAL_RELOAD_PRIME.get());
+                output.accept(TaczItems.SHOTGUN_EXPANSION_PRIME.get());
+                output.accept(TaczItems.MAGAZINE_BOOST_PRIME.get());
+                output.accept(TaczItems.TANDEM_MAGAZINE_PRIME.get());
+                
+                // 添加新的普通饰品
+                output.accept(TaczItems.SHOTGUN_EXPANSION.get());
+                output.accept(TaczItems.MAGAZINE_BOOST_NEW.get());
+                output.accept(TaczItems.TANDEM_MAGAZINE.get());
+                
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());
                 output.accept(TaczItems.RIFT_SILVER.get());

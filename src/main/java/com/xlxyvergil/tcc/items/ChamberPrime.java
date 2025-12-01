@@ -1,7 +1,10 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.handlers.CuriosItemEventHandler;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,13 +16,14 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * 膛室Prime - 当玩家手持狙击枪时，提升伤害（乘算）
+ * 膛室Prime - 当玩家手持狙击枪且弹匣满弹药时，提升伤害（乘算）
  * 效果：狙击枪伤害加成（乘算）
  * 与Chamber互斥
  */
@@ -45,6 +49,11 @@ public class ChamberPrime extends ItemBaseCurio {
         // 给玩家添加属性修改
         if (slotContext.entity() instanceof Player player) {
             applyChamberPrimeEffect(player);
+            
+            // 如果是服务端玩家，通知更新缓存
+            if (player instanceof ServerPlayer serverPlayer) {
+                CuriosItemEventHandler.onCurioEquip(serverPlayer, stack);
+            }
         }
     }
     
@@ -58,6 +67,11 @@ public class ChamberPrime extends ItemBaseCurio {
         // 移除玩家的属性修改
         if (slotContext.entity() instanceof Player player) {
             removeChamberPrimeEffect(player);
+            
+            // 如果是服务端玩家，通知更新缓存
+            if (player instanceof ServerPlayer serverPlayer) {
+                CuriosItemEventHandler.onCurioUnequip(serverPlayer, stack);
+            }
         }
     }
     
@@ -112,12 +126,8 @@ public class ChamberPrime extends ItemBaseCurio {
      * 提升狙击枪伤害（乘算）
      */
     public void applyChamberPrimeEffect(Player player) {
-        // 检查玩家主手是否持有狙击枪
-        if (!isHoldingSniper(player)) {
-            // 如果不持有狙击枪，则移除效果
-            removeChamberPrimeEffect(player);
-            return;
-        }
+        // 检查玩家主手是否持有狙击枪且弹匣满弹药
+        boolean shouldApply = GunTypeChecker.isHoldingSniper(player) && GunTypeChecker.isHoldingGunWithFullMagazine(player);
         
         var attributes = player.getAttributes();
         
@@ -133,8 +143,8 @@ public class ChamberPrime extends ItemBaseCurio {
             gunDamageAttribute.removeModifier(DAMAGE_UUID);
         }
         
-        // 应用效果
-        if (gunDamageAttribute != null) {
+        // 根据条件决定是否应用效果
+        if (shouldApply && gunDamageAttribute != null) {
             // 获取配置中的伤害加成值
             double damageBoost = TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get();
             // 添加伤害加成（乘算）
@@ -145,6 +155,14 @@ public class ChamberPrime extends ItemBaseCurio {
                 AttributeModifier.Operation.MULTIPLY_BASE
             );
             gunDamageAttribute.addPermanentModifier(gunDamageModifier);
+        }
+        
+        // 更新TACZ缓存
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (mainHandItem.getItem() instanceof IGun) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
+            }
         }
     }
     
@@ -164,27 +182,14 @@ public class ChamberPrime extends ItemBaseCurio {
         if (gunDamageAttribute != null) {
             gunDamageAttribute.removeModifier(DAMAGE_UUID);
         }
-    }
-    
-    /**
-     * 检查玩家是否持有狙击枪
-     */
-    private boolean isHoldingSniper(Player player) {
+        
+        // 更新TACZ缓存
         ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-        
-        if (iGun != null) {
-            // 获取枪械ID
-            net.minecraft.resources.ResourceLocation gunId = iGun.getGunId(mainHandItem);
-            
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(type -> type.equals("sniper"))
-                .orElse(false);
+        if (mainHandItem.getItem() instanceof IGun) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
+            }
         }
-        
-        return false;
     }
     
     /**
@@ -219,11 +224,9 @@ public class ChamberPrime extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§f传说")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
 }

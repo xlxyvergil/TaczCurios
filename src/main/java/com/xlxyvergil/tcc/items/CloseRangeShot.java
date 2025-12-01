@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -29,8 +30,6 @@ public class CloseRangeShot extends ItemBaseCurio {
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.close_range_shot.shotgun_damage";
     
-    // 效果参数
-    // private static final double DAMAGE_BOOST = 0.90;       // 90%霰弹枪伤害提升（加算） - 现在从配置文件读取
     
     public CloseRangeShot(Properties properties) {
         super(properties);
@@ -183,12 +182,10 @@ public class CloseRangeShot extends ItemBaseCurio {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§9罕见")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
     
     /**

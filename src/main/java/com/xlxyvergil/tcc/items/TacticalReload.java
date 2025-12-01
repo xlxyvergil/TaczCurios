@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -9,9 +10,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.SlotContext;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -61,11 +59,20 @@ public class TacticalReload extends ItemBaseCurio {
 
     /**
      * 检查是否可以装备到指定插槽
+     * TacticalReload与TacticalReloadPrime互斥，不能同时装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在TCC饰品槽位
-        return slotContext.identifier().equals("tcc_slot");
+        if (!slotContext.identifier().equals("tcc_slot")) {
+            return false;
+        }
+        
+        // 检查是否已经装备了TacticalReloadPrime
+        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+            .map(inv -> inv.findFirstCurio(
+                itemStack -> itemStack.getItem() instanceof TacticalReloadPrime))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
 
     /**
@@ -95,7 +102,7 @@ public class TacticalReload extends ItemBaseCurio {
             reloadAttribute.removeModifier(RELOAD_UUID);
 
             // 检查玩家是否持有霰弹枪，只有持有霰弹枪时才应用加成
-            if (isHoldingShotgun(player)) {
+            if (GunTypeChecker.isHoldingShotgun(player)) {
                 // 获取配置中的装填速度加成值
                 double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get();
                 // 添加装填速度加成（加算）
@@ -126,27 +133,6 @@ public class TacticalReload extends ItemBaseCurio {
         if (reloadAttribute != null) {
             reloadAttribute.removeModifier(RELOAD_UUID);
         }
-    }
-
-    /**
-     * 检查玩家是否持有霰弹枪
-     */
-    private boolean isHoldingShotgun(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-
-        if (iGun != null) {
-            // 获取枪械ID
-            ResourceLocation gunId = iGun.getGunId(mainHandItem);
-
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(type -> type.equals("shotgun"))
-                .orElse(false);
-        }
-
-        return false;
     }
 
     /**
@@ -181,12 +167,10 @@ public class TacticalReload extends ItemBaseCurio {
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
 
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§9罕见")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
     
     /**

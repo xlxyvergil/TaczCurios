@@ -7,7 +7,6 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 /**
- * 简化的Curio物品基类，参考Enigmatic-Legacy的实现
  * 直接实现ICurioItem接口，避免复杂的继承层次
  */
 public class ItemBaseCurio extends Item implements ICurioItem {

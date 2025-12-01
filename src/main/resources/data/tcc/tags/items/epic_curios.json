@@ -9,6 +9,11 @@
     "tcc:close_combat_prime",
     "tcc:chamber_prime",
     "tcc:oppression_point_prime",
-    "tcc:sword_wind_prime"
+    "tcc:sword_wind_prime",
+    "tcc:burst_reload_prime",
+    "tcc:tactical_reload_prime",
+    "tcc:shotgun_expansion_prime",
+    "tcc:magazine_boost_prime",
+    "tcc:tandem_magazine_prime"
   ]
 }

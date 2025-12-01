@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -8,10 +10,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.SlotContext;
-import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -29,8 +27,6 @@ public class BulletSpread extends ItemBaseCurio {
     // 修饰符名称
     private static final String BULLET_COUNT_NAME = "tcc.bullet_spread.bullet_count";
 
-    // 效果参数
-    // private static final double BULLET_COUNT_BOOST = 1.20;       // 120%弹头数量提升（加算） - 现在从配置文件读取
 
     public BulletSpread(Properties properties) {
         super(properties);
@@ -98,7 +94,7 @@ public class BulletSpread extends ItemBaseCurio {
             bulletCountAttribute.removeModifier(BULLET_COUNT_UUID);
 
             // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-            if (isHoldingPistol(player)) {
+            if (GunTypeChecker.isHoldingPistol(player)) {
                 // 获取配置中的弹头数量加成值
                 double bulletCountBoost = TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get();
                 // 添加配置的弹头数量加成（加算）
@@ -129,27 +125,6 @@ public class BulletSpread extends ItemBaseCurio {
         if (bulletCountAttribute != null) {
             bulletCountAttribute.removeModifier(BULLET_COUNT_UUID);
         }
-    }
-
-    /**
-     * 检查玩家是否持有手枪
-     */
-    private boolean isHoldingPistol(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-
-        if (iGun != null) {
-            // 获取枪械ID
-            ResourceLocation gunId = iGun.getGunId(mainHandItem);
-
-            // 通过TimelessAPI获取枪械索引
-            return TimelessAPI.getCommonGunIndex(gunId)
-                .map(CommonGunIndex::getType)
-                .map(type -> type.equals("pistol"))
-                .orElse(false);
-        }
-
-        return false;
     }
 
     /**
@@ -184,12 +159,10 @@ public class BulletSpread extends ItemBaseCurio {
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7装备槽位：§aTCC饰品栏")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
-
+        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         // 添加稀有度提示
-        tooltip.add(Component.literal("§7稀有度：§6稀有")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**
