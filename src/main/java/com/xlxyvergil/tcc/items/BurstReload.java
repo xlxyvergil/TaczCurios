@@ -110,7 +110,7 @@ public class BurstReload extends ItemBaseCurio {
             // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
                 // 获取配置中的装填速度加成值
-                double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get();
+                double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get();
                 // 添加配置的装填速度加成（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,
@@ -168,7 +168,7 @@ public class BurstReload extends ItemBaseCurio {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get() * 100;
+        double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.burst_reload.effect", String.format("%.0f", reloadBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
         

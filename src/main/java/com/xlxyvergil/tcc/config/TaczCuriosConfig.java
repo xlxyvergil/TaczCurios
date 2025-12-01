@@ -134,6 +134,9 @@ public class TaczCuriosConfig {
         // 压迫点Prime配置
         public final ForgeConfigSpec.DoubleValue oppressionPointPrimeMeleeDamageBoost;
         
+        // 爆发装填配置
+        public final ForgeConfigSpec.DoubleValue burstReloadReloadSpeedBoost;
+        
         // 剑风配置
         public final ForgeConfigSpec.DoubleValue swordWindMeleeRangeBoost;
         
@@ -475,6 +478,13 @@ public class TaczCuriosConfig {
             oppressionPointPrimeMeleeDamageBoost = builder
                     .comment("近战伤害加成 (默认: 1.65 = 165%)")
                     .defineInRange("meleeDamageBoost", 1.65, 0, 100);
+            builder.pop();
+            
+            // 爆发装填配置
+            builder.comment("爆发装填饰品配置").push("burst_reload");
+            burstReloadReloadSpeedBoost = builder
+                    .comment("装填速度加成 (默认: 0.3 = 30%)")
+                    .defineInRange("reloadSpeedBoost", 0.3, 0, 100);
             builder.pop();
             
             // 剑风配置
