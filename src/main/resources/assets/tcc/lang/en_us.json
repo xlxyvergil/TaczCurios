@@ -36,9 +36,9 @@
   "item.tcc.heaven_fire_apocalypse.desc": "Step forward",
   "item.tcc.heaven_fire_apocalypse.effect": "When player's HP is at 100%, increases %1$s%% general gun damage, +%2$s explosion radius, increases %3$s%% explosion damage. After dealing damage, deducts %4$s%% current HP, and provides %5$s%% general gun damage bonus to players within %6$s blocks for %7$s seconds",
   
-  "item.tcc.magazine_boost": "§9Magazine Boost",
-  "item.tcc.magazine_boost.desc": "Fast and efficient loading technology",
-  "item.tcc.magazine_boost.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload speed",
+  "item.tcc.burst_reload": "§9Burst Reload",
+  "item.tcc.burst_reload.desc": "Fast and efficient loading technology",
+  "item.tcc.burst_reload.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload speed",
   
   "item.tcc.corrupt_magazine": "§6Corrupt Magazine",
   "item.tcc.corrupt_magazine.desc": "Magazine with larger capacity but slower reloading",
@@ -205,9 +205,9 @@
   "item.tcc.shotgun_expansion.desc": "Efficient solution to increase magazine capacity",
   "item.tcc.shotgun_expansion.effect": "Increases %1$s%% shotgun magazine capacity",
   
-  "item.tcc.magazine_boost_new": "§9Magazine Boost",
-  "item.tcc.magazine_boost_new.desc": "Efficient solution to increase magazine capacity",
-  "item.tcc.magazine_boost_new.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity",
+  "item.tcc.magazine_boost": "§9Magazine Boost",
+  "item.tcc.magazine_boost.desc": "Efficient solution to increase magazine capacity",
+  "item.tcc.magazine_boost.effect": "Increases %1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity",
   
   "item.tcc.tandem_magazine": "§9Tandem Magazine",
   "item.tcc.tandem_magazine.desc": "Efficient solution to increase magazine capacity",

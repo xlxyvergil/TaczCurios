@@ -22,7 +22,7 @@ import java.util.UUID;
 public class BulletSpread extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID BULLET_COUNT_UUID = UUID.fromString("77777777-7777-7777-7777-777777777777");
+    private static final UUID BULLET_COUNT_UUID = UUID.fromString("0e7e5d6a-c006-4b94-b5fa-ada36d9f71d2");
 
     // 修饰符名称
     private static final String BULLET_COUNT_NAME = "tcc.bullet_spread.bullet_count";

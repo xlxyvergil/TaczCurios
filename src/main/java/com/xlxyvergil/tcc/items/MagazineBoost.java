@@ -1,9 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
-
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,58 +18,67 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 弹匣增幅 - 提升装填速度
- * 效果：提升装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 弹匣增幅 - 提升弹匣容量
+ * 效果：提升30%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class MagazineBoost extends ItemBaseCurio {
-    
+
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID RELOAD_UUID = UUID.fromString("12345678-1234-1234-1234-123456789ab1");
-    
+    private static final UUID MAGAZINE_UUID = UUID.fromString("1b4da84f-2d2a-44e4-bed2-986811a6d6ea");
+
     // 修饰符名称
-    private static final String RELOAD_NAME = "tcc.magazine_boost.reload_speed";
-    
+    private static final String MAGAZINE_NAME = "tcc.magazine_boost.magazine_capacity";
+
     public MagazineBoost(Properties properties) {
         super(properties
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     }
-    
+
     /**
      * 当饰品被装备时调用
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
-        
+
         // 给玩家添加属性修改
         if (slotContext.entity() instanceof Player player) {
             applyMagazineBoostEffects(player);
         }
     }
-    
+
     /**
      * 当饰品被卸下时调用
      */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
-        
+
         // 移除玩家的属性修改
         if (slotContext.entity() instanceof Player player) {
             removeMagazineBoostEffects(player);
         }
     }
-    
+
     /**
      * 检查是否可以装备到指定插槽
+     * MagazineBoost与MagazineBoostPrime互斥，不能同时装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在TCC饰品槽位
-        return slotContext.identifier().equals("tcc_slot");
+        if (!slotContext.identifier().equals("tcc_slot")) {
+            return false;
+        }
+        
+        // 检查是否已经装备了MagazineBoostPrime
+        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+            .map(inv -> inv.findFirstCurio(
+                itemStack -> itemStack.getItem() instanceof MagazineBoostPrime))
+            .orElse(java.util.Optional.empty()).isPresent();
     }
-    
+
     /**
      * 当物品在Curios插槽中时被右键点击
      */
@@ -79,60 +86,61 @@ public class MagazineBoost extends ItemBaseCurio {
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return canEquip(slotContext, stack);
     }
-    
+
     /**
      * 应用弹匣增幅效果
-     * 提升装填速度（加算）
+     * 提升弹匣容量
      */
     public void applyMagazineBoostEffects(Player player) {
         var attributes = player.getAttributes();
-        
-        // 装填速度属性（不带枪械类型）
-        var reloadAttribute = attributes.getInstance(
+
+        // 弹匣容量属性
+        var magazineAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_time")
+                new ResourceLocation("taa", "magazine_capacity")
             )
         );
-        
-        if (reloadAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            reloadAttribute.removeModifier(RELOAD_UUID);
-            
-            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
-                // 获取配置中的装填速度加成值
-                double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get();
-                // 添加配置的装填速度加成（加算）
-                var reloadModifier = new AttributeModifier(
-                    RELOAD_UUID,
-                    RELOAD_NAME,
-                    reloadBoost,
+
+        // 移除已存在的修饰符
+        if (magazineAttribute != null) {
+            magazineAttribute.removeModifier(MAGAZINE_UUID);
+        }
+
+        // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+        if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
+            // 获取配置中的弹匣容量加成值
+            double magazineBoost = TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get();
+            // 添加配置的弹匣容量加成（加算）
+            if (magazineAttribute != null) {
+                var magazineModifier = new AttributeModifier(
+                    MAGAZINE_UUID,
+                    MAGAZINE_NAME,
+                    magazineBoost,
                     AttributeModifier.Operation.ADDITION
                 );
-                reloadAttribute.addPermanentModifier(reloadModifier);
+                magazineAttribute.addPermanentModifier(magazineModifier);
             }
         }
-        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
-    
+
     /**
      * 移除弹匣增幅效果
      */
     public void removeMagazineBoostEffects(Player player) {
         var attributes = player.getAttributes();
-        
-        // 装填速度属性（不带枪械类型）
-        var reloadAttribute = attributes.getInstance(
+
+        // 弹匣容量属性
+        var magazineAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_time")
+                new ResourceLocation("taa", "magazine_capacity")
             )
         );
-        
-        if (reloadAttribute != null) {
-            reloadAttribute.removeModifier(RELOAD_UUID);
+
+        if (magazineAttribute != null) {
+            magazineAttribute.removeModifier(MAGAZINE_UUID);
         }
     }
-    
+
     /**
      * 当玩家持有时，每tick更新效果
      */
@@ -150,27 +158,27 @@ public class MagazineBoost extends ItemBaseCurio {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
+
         // 添加物品描述
         tooltip.add(Component.translatable("item.tcc.magazine_boost.desc")
             .withStyle(ChatFormatting.GRAY));
-        
+
         // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
+
         // 添加装备效果
-        double reloadBoost = TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.magazine_boost.effect", String.format("%.0f", reloadBoost))
+        double magazineBoost = TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get() * 100;
+        tooltip.add(Component.translatable("item.tcc.magazine_boost.effect", String.format("%.0f", magazineBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
-        
+
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
-        
+
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
-    
+
     /**
      * 当玩家切换武器时应用效果
      */

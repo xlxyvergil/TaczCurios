@@ -27,7 +27,7 @@
     "tcc:malignant_spread",
     "tcc:chamber",
     "tcc:chamber_prime",
-    "tcc:magazine_boost",
+    "tcc:burst_reload",
     "tcc:corrupt_magazine",
     "tcc:split_chamber",
     "tcc:tactical_reload",
@@ -48,7 +48,7 @@
     "tcc:magazine_boost_prime",
     "tcc:tandem_magazine_prime",
     "tcc:shotgun_expansion",
-    "tcc:magazine_boost_new",
+    "tcc:magazine_boost",
     "tcc:tandem_magazine"
   ]
 }

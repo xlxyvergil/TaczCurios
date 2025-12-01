@@ -22,7 +22,7 @@ import java.util.UUID;
 public class LimitSpeed extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID AMMO_SPEED_UUID = UUID.fromString("66666666-1234-1234-1234-123456789abc");
+    private static final UUID AMMO_SPEED_UUID = UUID.fromString("ad27e195-8647-4497-8792-9720043e1e95");
     
     // 修饰符名称
     private static final String AMMO_SPEED_NAME = "tcc.limit_speed.ammo_speed";

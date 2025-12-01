@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/magazine_boost_new"
+    "layer0": "tcc:item/burst_reload"
   }
 }

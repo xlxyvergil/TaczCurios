@@ -20,7 +20,7 @@ import java.util.UUID;
 public class AlloyDrill extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID ARMOR_IGNORE_UUID = UUID.fromString("62345678-1234-1234-1234-123456789abc");
+    private static final UUID ARMOR_IGNORE_UUID = UUID.fromString("06d45b6d-c8d2-4372-bdfd-b427651a2366");
     
     // 修饰符名称
     private static final String ARMOR_IGNORE_NAME = "tcc.alloy_drill.armor_ignore";

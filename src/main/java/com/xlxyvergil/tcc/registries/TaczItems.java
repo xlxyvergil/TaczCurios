@@ -22,7 +22,7 @@ import com.xlxyvergil.tcc.items.HeavyFirepower;
 import com.xlxyvergil.tcc.items.InfectedMagazine;
 import com.xlxyvergil.tcc.items.InfernalChamber;
 import com.xlxyvergil.tcc.items.LimitSpeed;
-import com.xlxyvergil.tcc.items.MagazineBoost;
+import com.xlxyvergil.tcc.items.BurstReload;
 import com.xlxyvergil.tcc.items.MalignantSpread;
 import com.xlxyvergil.tcc.items.MergedRifling;
 import com.xlxyvergil.tcc.items.OverloadedMagazine;
@@ -49,7 +49,7 @@ import com.xlxyvergil.tcc.items.ShotgunExpansionPrime;
 import com.xlxyvergil.tcc.items.MagazineBoostPrime;
 import com.xlxyvergil.tcc.items.TandemMagazinePrime;
 import com.xlxyvergil.tcc.items.ShotgunExpansion;
-import com.xlxyvergil.tcc.items.MagazineBoostNew;
+import com.xlxyvergil.tcc.items.MagazineBoost;
 import com.xlxyvergil.tcc.items.TandemMagazine;
 
 import net.minecraft.world.item.Item;
@@ -220,9 +220,9 @@ public class TaczItems {
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
     
-    // 弹匣增幅 - 提升30%装填速度
-    public static final RegistryObject<Item> MAGAZINE_BOOST = ITEMS.register("magazine_boost", 
-        () -> new MagazineBoost(new Item.Properties()
+    // 爆发装填 - 提升30%装填速度
+    public static final RegistryObject<Item> BURST_RELOAD = ITEMS.register("burst_reload", 
+        () -> new BurstReload(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON)));
     
@@ -355,8 +355,8 @@ public class TaczItems {
             .rarity(Rarity.COMMON)));
     
     // 弹匣增幅 - 提升30%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
-    public static final RegistryObject<Item> MAGAZINE_BOOST_NEW = ITEMS.register("magazine_boost_new", 
-        () -> new MagazineBoostNew(new Item.Properties()
+    public static final RegistryObject<Item> MAGAZINE_BOOST = ITEMS.register("magazine_boost", 
+        () -> new MagazineBoost(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON)));
     

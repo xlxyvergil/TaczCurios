@@ -23,8 +23,8 @@ import java.util.UUID;
 public class OverloadedMagazine extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("22222222-2222-2222-2222-222222222222");
-    private static final UUID RELOAD_UUID = UUID.fromString("22222222-2222-2222-2223-222222222223");
+    private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("ac732131-54e3-4205-addf-96167a044710");
+    private static final UUID RELOAD_UUID = UUID.fromString("9cd14129-3da2-47a1-bff1-b78ab747b9e9");
 
     // 修饰符名称
     private static final String MAGAZINE_CAPACITY_NAME = "tcc.overloaded_magazine.magazine_capacity";

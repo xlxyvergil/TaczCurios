@@ -24,7 +24,7 @@ import java.util.UUID;
 public class TacticalReloadPrime extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID RELOAD_UUID = UUID.fromString("33333333-3333-3333-3333-333333333333");
+    private static final UUID RELOAD_UUID = UUID.fromString("d2f96b0d-cb4b-4cef-a71c-19930ba0ebff");
 
     // 修饰符名称
     private static final String RELOAD_NAME = "tcc.tactical_reload_prime.reload_speed";

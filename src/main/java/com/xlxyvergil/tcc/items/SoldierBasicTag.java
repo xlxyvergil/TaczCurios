@@ -24,7 +24,7 @@ import java.util.UUID;
 public class SoldierBasicTag extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
-    private static final UUID GUN_DAMAGE_UUID = UUID.fromString("12345678-1234-1234-1234-123456789abc");
+    private static final UUID GUN_DAMAGE_UUID = UUID.fromString("725a607c-13fd-4aec-874e-07afbc5acaf4");
     
     // 修饰符名称
     private static final String GUN_DAMAGE_NAME = "tcc.soldier_basic_tag.gun_damage";

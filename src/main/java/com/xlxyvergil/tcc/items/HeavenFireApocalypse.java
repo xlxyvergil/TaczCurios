@@ -28,12 +28,12 @@ import java.util.UUID;
 public class HeavenFireApocalypse extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID GUN_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abc");
-    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abd");
-    private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abe");
+    private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
+    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("79f78f03-e9ba-4567-9ba9-75f729f6c3e8");
+    private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
     
     // 用于周围玩家的加成UUID
-    private static final UUID NEARBY_GUN_DAMAGE_UUID = UUID.fromString("56789abc-1234-1234-1234-123456789abf");
+    private static final UUID NEARBY_GUN_DAMAGE_UUID = UUID.fromString("916209dd-ba04-45c9-9d6e-ccb29a7c6a0a");
     
     // 修饰符名称
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";

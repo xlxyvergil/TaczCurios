@@ -24,8 +24,8 @@ import java.util.UUID;
 public class DepletedReload extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID MAGAZINE_UUID = UUID.fromString("11111111-1111-1111-1111-111111111111");
-    private static final UUID RELOAD_UUID = UUID.fromString("11111111-1111-1111-1111-111111111112");
+    private static final UUID MAGAZINE_UUID = UUID.fromString("17c2b815-8561-4354-a395-d03c4ac4e029");
+    private static final UUID RELOAD_UUID = UUID.fromString("68cef118-0938-46f4-881f-698e812abf70");
 
     // 修饰符名称
     private static final String MAGAZINE_NAME = "tcc.depleted_reload.magazine_capacity";
@@ -65,20 +65,11 @@ public class DepletedReload extends ItemBaseCurio {
 
     /**
      * 检查是否可以装备到指定插槽
-     * DepletedReload与BurstReloadPrime互斥，不能同时装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         // 检查是否装备在TCC饰品槽位
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        
-        // 检查是否已经装备了BurstReloadPrime
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
-            .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof BurstReloadPrime))
-            .orElse(java.util.Optional.empty()).isPresent();
+        return slotContext.identifier().equals("tcc_slot");
     }
 
     /**

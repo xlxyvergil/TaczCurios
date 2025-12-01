@@ -21,7 +21,7 @@ import java.util.UUID;
 public class SwordWind extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
-    private static final UUID MELEE_DISTANCE_UUID = UUID.fromString("88888888-1234-1234-1234-123456789abe");
+    private static final UUID MELEE_DISTANCE_UUID = UUID.fromString("3f7ed736-62d3-4835-bc94-2834d4b91832");
     
     // 修饰符名称
     private static final String MELEE_DISTANCE_NAME = "tcc.sword_wind.melee_distance";

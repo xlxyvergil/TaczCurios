@@ -27,7 +27,7 @@ import java.util.UUID;
 public class CloseCombatPrime extends ItemBaseCurio {
     
     // 霰弹枪伤害属性的UUID和配置
-    private static final UUID SHOTGUN_DAMAGE_UUID = UUID.fromString("44345678-1234-1234-1234-123456789abe");
+    private static final UUID SHOTGUN_DAMAGE_UUID = UUID.fromString("fa19535c-5dcb-4c3c-833f-53ea1c9bc5b0");
     private static final String SHOTGUN_DAMAGE_NAME = "tcc.close_combat_prime.shotgun_damage";
     
     public CloseCombatPrime(Properties properties) {

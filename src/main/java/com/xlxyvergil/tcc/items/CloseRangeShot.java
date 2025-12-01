@@ -25,7 +25,7 @@ import java.util.UUID;
 public class CloseRangeShot extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
-    private static final UUID DAMAGE_UUID = UUID.fromString("72345678-1234-1234-1234-123456789abc");
+    private static final UUID DAMAGE_UUID = UUID.fromString("606453a5-947e-4020-8fc8-3f43c2c8cce9");
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.close_range_shot.shotgun_damage";

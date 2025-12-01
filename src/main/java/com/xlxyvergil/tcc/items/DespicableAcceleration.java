@@ -30,13 +30,13 @@ public class DespicableAcceleration extends ItemBaseCurio {
     
     static {
         // 初始化7种特定枪械的UUID和名称
-        DAMAGE_UUIDS.put("pistol", UUID.fromString("42345678-1234-1234-1234-123456789abe"));
-        DAMAGE_UUIDS.put("rifle", UUID.fromString("42345678-1234-1234-1234-123456789abf"));
-        DAMAGE_UUIDS.put("shotgun", UUID.fromString("42345678-1234-1234-1234-123456789ac0"));
-        DAMAGE_UUIDS.put("sniper", UUID.fromString("42345678-1234-1234-1234-123456789ac1"));
-        DAMAGE_UUIDS.put("smg", UUID.fromString("42345678-1234-1234-1234-123456789ac2"));
-        DAMAGE_UUIDS.put("lmg", UUID.fromString("42345678-1234-1234-1234-123456789ac3"));
-        DAMAGE_UUIDS.put("launcher", UUID.fromString("42345678-1234-1234-1234-123456789ac4"));
+        DAMAGE_UUIDS.put("pistol", UUID.fromString("ca7ca83d-5439-4fde-a7bf-236d257d5430"));
+        DAMAGE_UUIDS.put("rifle", UUID.fromString("7821adde-57d1-42e8-a873-91612b86c24b"));
+        DAMAGE_UUIDS.put("shotgun", UUID.fromString("bc3c2aee-ea60-4c98-8f2b-7f7d89523ccc"));
+        DAMAGE_UUIDS.put("sniper", UUID.fromString("c8d0deac-5040-4044-9986-bc7735750c34"));
+        DAMAGE_UUIDS.put("smg", UUID.fromString("8cb8dcdb-2eef-433c-a4db-6d17b1617082"));
+        DAMAGE_UUIDS.put("lmg", UUID.fromString("e20233c4-668a-4bf4-97a1-17889faedc4e"));
+        DAMAGE_UUIDS.put("launcher", UUID.fromString("d55edb82-be08-4b59-a93c-efd41b825ddb"));
         
         DAMAGE_NAMES.put("pistol", "tcc.despicable_acceleration.pistol_damage");
         DAMAGE_NAMES.put("rifle", "tcc.despicable_acceleration.rifle_damage");
@@ -56,8 +56,8 @@ public class DespicableAcceleration extends ItemBaseCurio {
     }
     
     // 射击速度和通用伤害的属性修饰符
-    private static final UUID FIRING_SPEED_UUID = UUID.fromString("42345678-1234-1234-1234-123456789abc");
-    private static final UUID GENERAL_DAMAGE_UUID = UUID.fromString("42345678-1234-1234-1234-123456789abd");
+    private static final UUID FIRING_SPEED_UUID = UUID.fromString("46acf410-597b-4388-a0c2-9f39f5934831");
+    private static final UUID GENERAL_DAMAGE_UUID = UUID.fromString("adfdea37-0701-41c8-b042-59f7453b0cde");
     
     // 修饰符名称
     private static final String FIRING_SPEED_NAME = "tcc.despicable_acceleration.firing_speed";

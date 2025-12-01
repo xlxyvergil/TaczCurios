@@ -23,9 +23,9 @@ import java.util.UUID;
 public class CarefulHeart extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID LAUNCHER_DAMAGE_UUID = UUID.fromString("72345678-1234-1234-1234-123456789abc");
-    private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("72345678-1234-1234-1234-123456789abd");
-    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("72345678-1234-1234-1234-123456789abe");
+    private static final UUID LAUNCHER_DAMAGE_UUID = UUID.fromString("81343572-fe9a-4cf2-bdf9-253af5a153c1");
+    private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("2fd98843-cf54-4ca7-949d-e8d50e295c86");
+    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("e966cd29-d1c2-4770-a422-0f71c2ef4409");
     
     // 修饰符名称
     private static final String LAUNCHER_DAMAGE_NAME = "tcc.careful_heart.launcher_damage";

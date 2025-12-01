@@ -22,7 +22,7 @@ import java.util.UUID;
 public class ProphecyPact extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
-    private static final UUID DAMAGE_UUID = UUID.fromString("a2345678-1234-1234-1234-123456789abc");
+    private static final UUID DAMAGE_UUID = UUID.fromString("6edbaedf-2502-4fe0-8e2c-9054d6a9ecc1");
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.prophecy_pact.pistol_damage";

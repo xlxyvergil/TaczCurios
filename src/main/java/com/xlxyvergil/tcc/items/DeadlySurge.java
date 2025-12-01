@@ -22,8 +22,8 @@ import java.util.UUID;
 public class DeadlySurge extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("66666666-6666-6666-6666-666666666666");
-    private static final UUID BULLET_COUNT_UUID = UUID.fromString("66666666-6666-6666-6667-666666666667");
+    private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("d8e4852c-2b0c-4a77-a9b3-a2a84683ae93");
+    private static final UUID BULLET_COUNT_UUID = UUID.fromString("b00e1320-1674-4bdb-8456-6fe4b80791fc");
 
     // 修饰符名称
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.deadly_surge.rounds_per_minute";

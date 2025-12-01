@@ -26,8 +26,8 @@ import java.util.UUID;
 public class CorruptMagazine extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID MAGAZINE_UUID = UUID.fromString("22345678-1234-1234-1234-123456789ab1");
-    private static final UUID RELOAD_UUID = UUID.fromString("32345678-1234-1234-1234-123456789ab1");
+    private static final UUID MAGAZINE_UUID = UUID.fromString("5d489ba1-55da-4f3a-83ea-69096eb4cccb");
+    private static final UUID RELOAD_UUID = UUID.fromString("b747742d-1f42-4921-a900-af73409d453f");
     
     // 修饰符名称
     private static final String MAGAZINE_NAME = "tcc.corrupt_magazine.magazine_capacity";

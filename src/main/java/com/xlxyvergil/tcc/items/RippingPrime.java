@@ -22,8 +22,8 @@ import java.util.UUID;
 public class RippingPrime extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("33333333-1234-1234-1234-123456789abc");
-    private static final UUID PIERCE_UUID = UUID.fromString("33333333-1234-1234-1234-123456789abd");
+    private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("e3eb5b32-fdfc-47ca-988c-a82d9d8173a7");
+    private static final UUID PIERCE_UUID = UUID.fromString("269dbf48-02f5-43f9-a4f2-50bf03aa10a6");
     
     // 修饰符名称
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.ripping_prime.rounds_per_minute";

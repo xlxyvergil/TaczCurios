@@ -26,7 +26,7 @@ import java.util.UUID;
 public class SplitChamber extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID AMMO_UUID = UUID.fromString("42345678-1234-1234-1234-123456789ab1");
+    private static final UUID AMMO_UUID = UUID.fromString("7ee8eee4-ae89-490c-83d1-1392a6a71aa7");
     
     // 修饰符名称
     private static final String AMMO_NAME = "tcc.split_chamber.bullet_count";

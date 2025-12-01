@@ -21,7 +21,7 @@ import java.util.UUID;
 public class UralWolfTag extends ItemBaseCurio {
     
     // 爆头倍率修饰符的UUID（确保唯一性）
-    private static final UUID HEADSHOT_MULTIPLIER_MODIFIER_UUID = UUID.fromString("12345678-1234-1234-1234-123456789013");
+    private static final UUID HEADSHOT_MULTIPLIER_MODIFIER_UUID = UUID.fromString("96a4146f-8ea4-4c23-be07-d007e222c5f6");
     
     public UralWolfTag(Properties properties) {
         super(properties);

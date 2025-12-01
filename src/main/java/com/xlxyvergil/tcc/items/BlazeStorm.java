@@ -21,8 +21,8 @@ import java.util.UUID;
 public class BlazeStorm extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("11111111-1234-1234-1234-123456789abc");
-    private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("11111111-1234-1234-1234-123456789abd");
+    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("aceef087-5474-41ce-89a5-6429feffdcbc");
+    private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("5e9bcd94-dfa4-4531-8861-0856b379ac6a");
     
     // 修饰符名称
     private static final String EXPLOSION_RADIUS_NAME = "tcc.blaze_storm.explosion_radius";

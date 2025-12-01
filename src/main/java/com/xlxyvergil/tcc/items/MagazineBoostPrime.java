@@ -24,7 +24,7 @@ import java.util.UUID;
 public class MagazineBoostPrime extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID MAGAZINE_UUID = UUID.fromString("55555555-5555-5555-5555-555555555555");
+    private static final UUID MAGAZINE_UUID = UUID.fromString("ba7337bb-f1f8-47c4-85fb-db0eef257283");
 
     // 修饰符名称
     private static final String MAGAZINE_NAME = "tcc.magazine_boost_prime.magazine_capacity";

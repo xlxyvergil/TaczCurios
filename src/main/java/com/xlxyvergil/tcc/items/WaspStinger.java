@@ -22,7 +22,7 @@ import java.util.UUID;
 public class WaspStinger extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
-    private static final UUID DAMAGE_UUID = UUID.fromString("82345678-1234-1234-1234-123456789abc");
+    private static final UUID DAMAGE_UUID = UUID.fromString("e1d2fcde-7ee0-4607-ade2-5b24292f8a52");
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.wasp_stinger.pistol_damage";

@@ -21,7 +21,7 @@ import java.util.UUID;
 public class OppressionPointPrime extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
-    private static final UUID MELEE_DAMAGE_UUID = UUID.fromString("88888888-1234-1234-1234-123456789abd");
+    private static final UUID MELEE_DAMAGE_UUID = UUID.fromString("b4763540-e80b-4bab-9e64-a4a2494d9f5e");
     
     // 修饰符名称
     private static final String MELEE_DAMAGE_NAME = "tcc.oppression_point_prime.melee_damage";

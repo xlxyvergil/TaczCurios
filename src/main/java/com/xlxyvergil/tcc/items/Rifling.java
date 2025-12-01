@@ -23,11 +23,11 @@ public class Rifling extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID[] DAMAGE_UUIDS = {
-        UUID.fromString("62345678-1234-1234-1234-123456789abc"),
-        UUID.fromString("62345678-1234-1234-1234-123456789abd"),
-        UUID.fromString("62345678-1234-1234-1234-123456789abe"),
-        UUID.fromString("62345678-1234-1234-1234-123456789abf"),
-        UUID.fromString("62345678-1234-1234-1234-123456789ab0")
+        UUID.fromString("8da03d35-138b-4b16-8f58-afd8f296252f"),
+        UUID.fromString("fcb27cd7-a90e-4e1c-8316-976ba894dd4a"),
+        UUID.fromString("e20e4bfe-2343-42ac-89b8-78f3e47081f8"),
+        UUID.fromString("a2257621-fad8-4670-8b58-2f253947a1c6"),
+        UUID.fromString("35741afc-9a1f-458d-89f0-ffd97d2a4832")
     };
     
     // 修饰符名称

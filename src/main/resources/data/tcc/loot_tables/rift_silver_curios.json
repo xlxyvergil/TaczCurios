@@ -138,7 +138,7 @@
         {
           "type": "minecraft:item",
           "weight": 1150,
-          "name": "tcc:magazine_boost"
+          "name": "tcc:burst_reload"
         },
         {
           "type": "minecraft:item",
@@ -213,7 +213,7 @@
         {
           "type": "minecraft:item",
           "weight": 1150,
-          "name": "tcc:magazine_boost_new"
+          "name": "tcc:magazine_boost"
         },
         {
           "type": "minecraft:item",

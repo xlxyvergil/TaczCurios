@@ -23,7 +23,7 @@ import java.util.UUID;
 public class RedMovementTag extends ItemBaseCurio {
     
     // 移动速度修饰符的UUID（确保唯一性）
-    private static final UUID MOVE_SPEED_MODIFIER_UUID = UUID.fromString("12345678-1234-1234-1234-123456789012");
+    private static final UUID MOVE_SPEED_MODIFIER_UUID = UUID.fromString("e3ab07c7-2719-4942-99c7-526d58ba3736");
     
     public RedMovementTag(Properties properties) {
         super(properties);

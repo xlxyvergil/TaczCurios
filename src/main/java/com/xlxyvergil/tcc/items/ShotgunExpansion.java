@@ -24,7 +24,7 @@ import java.util.UUID;
 public class ShotgunExpansion extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID MAGAZINE_UUID = UUID.fromString("77777777-7777-7777-7777-777777777777");
+    private static final UUID MAGAZINE_UUID = UUID.fromString("462a2a97-e617-46fc-87af-d9f3b1e38837");
 
     // 修饰符名称
     private static final String MAGAZINE_NAME = "tcc.shotgun_expansion.magazine_capacity";

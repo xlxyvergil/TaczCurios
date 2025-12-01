@@ -36,16 +36,16 @@
   "item.tcc.heaven_fire_apocalypse.desc": "踏上前来",
   "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 提升%1$s%%通用枪械伤害 +%2$s爆炸范围 提升%3$s%%爆炸伤害 扣除%4$s%%当前生命值 为周围%5$s格内玩家提供%6$s%%通用枪械伤害加成 持续%7$s秒",
   
-  "item.tcc.magazine_boost": "§9爆发装填",
-  "item.tcc.magazine_boost.desc": "爆发装填是一张能够提升步枪类武器装填速度的饰品",
-  "item.tcc.magazine_boost.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填速度",
+  "item.tcc.burst_reload": "§9爆发装填",
+  "item.tcc.burst_reload.desc": "爆发装填是一个能够提升步枪类武器装填速度的饰品",
+  "item.tcc.burst_reload.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填速度",
   
   "item.tcc.corrupt_magazine": "§6腐败弹匣",
   "item.tcc.corrupt_magazine.desc": "腐败弹匣是一个适用于突击步枪的堕落饰品，牺牲装填速度提升弹匣容量",
   "item.tcc.corrupt_magazine.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹匣容量，降低%2$s%%装填速度",
   
   "item.tcc.split_chamber": "§6分裂膛室",
-  "item.tcc.split_chamber.desc": "分裂膛室是一张能够增加步枪类武器多重射击的饰品",
+  "item.tcc.split_chamber.desc": "分裂膛室是一个能够增加步枪类武器多重射击的饰品",
   "item.tcc.split_chamber.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹头数量",
   
   "item.tcc.despicable_acceleration": "§6卑劣加速",
@@ -57,7 +57,7 @@
   "item.tcc.merged_rifling.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器伤害和%2$s%%持枪移动速度，无法与膛线同时装备",
   
   "item.tcc.alloy_drill": "§6合金钻头",
-  "item.tcc.alloy_drill.desc": "合金钻头是一张能增加步枪类武器穿透的饰品",
+  "item.tcc.alloy_drill.desc": "合金钻头是一个能增加步枪类武器穿透的饰品",
   "item.tcc.alloy_drill.effect": "提升%1$s%%护甲穿透",
   
   "item.tcc.careful_heart": "§f我小心海也绝非鳝类",
@@ -65,7 +65,7 @@
   "item.tcc.careful_heart.effect": "提升%1$s%%重型武器伤害加成，%2$s%%爆炸伤害加成，%3$s%%爆炸范围加成",
   
   "item.tcc.blaze_storm": "§6烈焰风暴",
-  "item.tcc.blaze_storm.desc": "烈焰风暴是一张适用于特定步枪类武器的饰品，能够增加武器范围伤害的范围。",
+  "item.tcc.blaze_storm.desc": "烈焰风暴是一个适用于特定步枪类武器的饰品，能够增加武器范围伤害的范围。",
   "item.tcc.blaze_storm.effect": "增加%1$s%%爆炸范围，增加%2$s%%爆炸伤害，无法与烈焰风暴Prime同时装备",
   
   "item.tcc.blaze_storm_prime": "§f烈焰风暴Prime",
@@ -81,15 +81,15 @@
   "item.tcc.close_combat_prime.effect": "提升%1$s%%霰弹枪伤害",
   
   "item.tcc.evil_accuracy": "§6极恶精准",
-  "item.tcc.evil_accuracy.desc": "极恶精准是一张特殊功能饰品，能减少90%后坐力和36%射速。",
+  "item.tcc.evil_accuracy.desc": "极恶精准是一个特殊功能饰品，能减少90%后坐力和36%射速。",
   "item.tcc.evil_accuracy.effect": "降低%1$s%%后坐力，降低%2$s%%射速",
   
   "item.tcc.limit_speed": "§b极限速度",
-  "item.tcc.limit_speed.desc": "极限速度是一张能提升步枪类武器投射物速度的饰品",
+  "item.tcc.limit_speed.desc": "极限速度是一个能提升步枪类武器投射物速度的饰品",
   "item.tcc.limit_speed.effect": "提高%1$s%%弹药速度",
   
   "item.tcc.ferocious_extension": "§b凶恶延伸",
-  "item.tcc.ferocious_extension.desc": "凶恶延伸是一张能增加武器射程的饰品",
+  "item.tcc.ferocious_extension.desc": "凶恶延伸是一个能增加武器射程的饰品",
   "item.tcc.ferocious_extension.effect": "提高%1$s%%子弹射程",
   
   "item.tcc.rifling": "§b膛线",
@@ -97,23 +97,23 @@
   "item.tcc.rifling.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器伤害，无法与并合膛线同时装备",
   
   "item.tcc.close_range_shot": "§b抵近射击",
-  "item.tcc.close_range_shot.desc": "抵近射击是一张能够增加霰弹枪基础伤害的饰品",
+  "item.tcc.close_range_shot.desc": "抵近射击是一个能够增加霰弹枪基础伤害的饰品",
   "item.tcc.close_range_shot.effect": "提升%1$s%%霰弹枪伤害",
   
   "item.tcc.heavy_firepower": "§6重装火力",
-  "item.tcc.heavy_firepower.desc": "重装火力是一张能够增加手枪伤害，但减少精准度的堕落饰品",
+  "item.tcc.heavy_firepower.desc": "重装火力是一个能够增加手枪伤害，但减少精准度的堕落饰品",
   "item.tcc.heavy_firepower.effect": "提升%1$s%%手枪伤害，降低%2$s%%精准度",
   
   "item.tcc.wasp_stinger": "§b黄蜂螫刺",
-  "item.tcc.wasp_stinger.desc": "黄蜂螫刺是一张能增加手枪基础伤害的饰品",
+  "item.tcc.wasp_stinger.desc": "黄蜂螫刺是一个能增加手枪基础伤害的饰品",
   "item.tcc.wasp_stinger.effect": "提升%1$s%%手枪伤害",
   
   "item.tcc.prophecy_pact": "§9预言契约",
-  "item.tcc.prophecy_pact.desc": "预言契约是一张可以提升次要手枪基础伤害的饰品",
+  "item.tcc.prophecy_pact.desc": "预言契约是一个可以提升次要手枪基础伤害的饰品",
   "item.tcc.prophecy_pact.effect": "提升%1$s%%手枪伤害",
   
   "item.tcc.malignant_spread": "§6恶性扩散",
-  "item.tcc.malignant_spread.desc": "恶性扩散是一张霰弹枪堕落饰品，以减少精准度为代价提升基础伤害",
+  "item.tcc.malignant_spread.desc": "恶性扩散是一个霰弹枪堕落饰品，以减少精准度为代价提升基础伤害",
   "item.tcc.malignant_spread.effect": "提升%1$s%%霰弹枪伤害，降低%2$s%%精准度",
   
   "item.tcc.chamber": "§b蓄力装填",
@@ -134,31 +134,31 @@
   "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。",
 
   "item.tcc.tactical_reload": "§9战术上膛",
-  "item.tcc.tactical_reload.desc": "战术上膛是一张能提升霰弹枪装填速度的饰品",
+  "item.tcc.tactical_reload.desc": "战术上膛是一个能提升霰弹枪装填速度的饰品",
   "item.tcc.tactical_reload.effect": "提升%1$s%%霰弹枪装填速度",
 
   "item.tcc.overloaded_magazine": "§6过载弹匣",
-  "item.tcc.overloaded_magazine.desc": "过载弹匣是一张霰弹枪堕落饰品，能够增加弹匣容量，但减少装填速度",
+  "item.tcc.overloaded_magazine.desc": "过载弹匣是一个霰弹枪堕落饰品，能够增加弹匣容量，但减少装填速度",
   "item.tcc.overloaded_magazine.effect": "提升%1$s%%霰弹枪弹匣容量，降低%2$s%%装填速度",
 
   "item.tcc.infernal_chamber": "§6地狱弹膛",
-  "item.tcc.infernal_chamber.desc": "地狱弹膛是一张增加霰弹枪多重射击的饰品",
+  "item.tcc.infernal_chamber.desc": "地狱弹膛是一个增加霰弹枪多重射击的饰品",
   "item.tcc.infernal_chamber.effect": "提升%1$s%%霰弹枪弹头数量",
 
   "item.tcc.sustained_fire": "§9持续火力",
-  "item.tcc.sustained_fire.desc": "持续火力是一张能增加次要武器装填速度的饰品",
+  "item.tcc.sustained_fire.desc": "持续火力是一个能增加次要武器装填速度的饰品",
   "item.tcc.sustained_fire.effect": "提升%1$s%%手枪装填速度",
 
   "item.tcc.infected_magazine": "§6感染弹匣",
-  "item.tcc.infected_magazine.desc": "感染弹匣是一张堕落饰品，以牺牲装填速度为代价提升弹匣容量",
+  "item.tcc.infected_magazine.desc": "感染弹匣是一个堕落饰品，以牺牲装填速度为代价提升弹匣容量",
   "item.tcc.infected_magazine.effect": "提升%1$s%%手枪弹匣容量，降低%2$s%%装填速度",
 
   "item.tcc.deadly_surge": "§6致命洪流",
-  "item.tcc.deadly_surge.desc": "致命洪流是一张能增加手枪射速和多重射击的噩梦饰品",
+  "item.tcc.deadly_surge.desc": "致命洪流是一个能增加手枪射速和多重射击的噩梦饰品",
   "item.tcc.deadly_surge.effect": "提升%1$s%%手枪射速，提升%2$s%%弹头数量",
 
   "item.tcc.bullet_spread": "§6弹头扩散",
-  "item.tcc.bullet_spread.desc": "弹头扩散是一张能够增加手枪多重射击的饰品",
+  "item.tcc.bullet_spread.desc": "弹头扩散是一个能够增加手枪多重射击的饰品",
   "item.tcc.bullet_spread.effect": "提升%1$s%%手枪弹头数量",
   
   "item.tcc.oppression_point": "§9压迫点",
@@ -170,7 +170,7 @@
   "item.tcc.oppression_point_prime.effect": "提升%1$s%%近战伤害",
   
   "item.tcc.sword_wind": "§9剑风",
-  "item.tcc.sword_wind.desc": "剑风是一张能够增加近战武器攻击范围的饰品",
+  "item.tcc.sword_wind.desc": "剑风是一个能够增加近战武器攻击范围的饰品",
   "item.tcc.sword_wind.effect": "提升%1$s近战距离",
   
   "item.tcc.sword_wind_prime": "§f剑风Prime",
@@ -198,19 +198,19 @@
   "item.tcc.magazine_boost_prime.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹匣容量",
   
   "item.tcc.tandem_magazine_prime": "§f串联弹匣Prime",
-  "item.tcc.tandem_magazine_prime.desc": "串联弹匣是一张能提升手枪弹匣容量的饰品",
+  "item.tcc.tandem_magazine_prime.desc": "串联弹匣是一个能提升手枪弹匣容量的饰品",
   "item.tcc.tandem_magazine_prime.effect": "提升%1$s%%手枪弹匣容量",
   
   "item.tcc.shotgun_expansion": "§9霰弹扩充",
-  "item.tcc.shotgun_expansion.desc": "霰弹扩充是一张能够增加弹匣容量的霰弹枪的饰品",
+  "item.tcc.shotgun_expansion.desc": "霰弹扩充是一个能够增加弹匣容量的霰弹枪的饰品",
   "item.tcc.shotgun_expansion.effect": "提升%1$s%%霰弹枪弹匣容量",
   
-  "item.tcc.magazine_boost_new": "§9弹匣增幅",
-  "item.tcc.magazine_boost_new.desc": "弹匣增幅是一张能够提升步枪类武器弹匣容量的饰品",
-  "item.tcc.magazine_boost_new.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量",
+  "item.tcc.magazine_boost": "§9弹匣增幅",
+  "item.tcc.magazine_boost.desc": "弹匣增幅是一个能够提升步枪类武器弹匣容量的饰品",
+  "item.tcc.magazine_boost.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量",
   
   "item.tcc.tandem_magazine": "§9串联弹匣",
-  "item.tcc.tandem_magazine.desc": "串联弹匣是一张能提升次要武器弹匣容量的饰品",
+  "item.tcc.tandem_magazine.desc": "串联弹匣是一个能提升次要武器弹匣容量的饰品",
   "item.tcc.tandem_magazine.effect": "提升%1$s%%手枪弹匣容量",
 
   "tcc.tooltip.slot": "§7装备槽位：§aTCC饰品栏",

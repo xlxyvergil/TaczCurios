@@ -22,8 +22,8 @@ import java.util.UUID;
 public class EvilAccuracy extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID RECOIL_UUID = UUID.fromString("55555555-1234-1234-1234-123456789abc");
-    private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("55555555-1234-1234-1234-123456789abd");
+    private static final UUID RECOIL_UUID = UUID.fromString("98a8e44a-7d8d-4d10-b934-7e1e1c1c8fca");
+    private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("7da86e2a-9c63-4d3f-8237-feda8559638e");
     
     // 修饰符名称
     private static final String RECOIL_NAME = "tcc.evil_accuracy.recoil";

@@ -22,7 +22,7 @@ import java.util.UUID;
 public class TacticalReload extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID RELOAD_UUID = UUID.fromString("11111111-1111-1111-1111-111111111111");
+    private static final UUID RELOAD_UUID = UUID.fromString("11efa1b9-0f1d-4dcb-bc3f-ff0a5dc42811");
 
     // 修饰符名称
     private static final String RELOAD_NAME = "tcc.tactical_reload.reload";

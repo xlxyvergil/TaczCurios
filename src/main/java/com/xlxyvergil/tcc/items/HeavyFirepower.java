@@ -21,8 +21,8 @@ import java.util.UUID;
 public class HeavyFirepower extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID DAMAGE_UUID = UUID.fromString("72345678-1234-1234-1234-123456789abc");
-    private static final UUID INACCURACY_UUID = UUID.fromString("72345678-1234-1234-1234-123456789abd");
+    private static final UUID DAMAGE_UUID = UUID.fromString("401a1d7b-9724-4602-a956-ff32a991648f");
+    private static final UUID INACCURACY_UUID = UUID.fromString("5c03b799-4491-4c9c-ab68-7678a42a9b4a");
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.heavy_firepower.damage";

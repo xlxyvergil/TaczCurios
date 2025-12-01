@@ -22,8 +22,8 @@ import java.util.UUID;
 public class MalignantSpread extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID DAMAGE_UUID = UUID.fromString("92345678-1234-1234-1234-123456789abc");
-    private static final UUID INACCURACY_UUID = UUID.fromString("92345678-1234-1234-1234-123456789abd");
+    private static final UUID DAMAGE_UUID = UUID.fromString("5bfabff0-b8df-48cd-9ecb-95027aafbf69");
+    private static final UUID INACCURACY_UUID = UUID.fromString("03755bb2-350f-47ee-821f-db51a2a7f149");
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.malignant_spread.damage";

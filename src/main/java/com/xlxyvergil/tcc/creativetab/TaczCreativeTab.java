@@ -56,7 +56,7 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.CHAMBER.get());
                 output.accept(TaczItems.CHAMBER_PRIME.get());
                 // 新增的三个饰品
-                output.accept(TaczItems.MAGAZINE_BOOST.get());
+                output.accept(TaczItems.BURST_RELOAD.get());
                 output.accept(TaczItems.CORRUPT_MAGAZINE.get());
                 output.accept(TaczItems.SPLIT_CHAMBER.get());
                 // 霰弹枪饰品
@@ -84,7 +84,7 @@ public class TaczCreativeTab {
                 
                 // 添加新的普通饰品
                 output.accept(TaczItems.SHOTGUN_EXPANSION.get());
-                output.accept(TaczItems.MAGAZINE_BOOST_NEW.get());
+                output.accept(TaczItems.MAGAZINE_BOOST.get());
                 output.accept(TaczItems.TANDEM_MAGAZINE.get());
                 
                 // 添加材料物品

@@ -30,7 +30,7 @@ import java.util.UUID;
 public class ChamberPrime extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID DAMAGE_UUID = UUID.fromString("82345678-1234-1234-1234-123456789abc");
+    private static final UUID DAMAGE_UUID = UUID.fromString("9ab0de22-87e4-4fa1-a539-cd50dfe7590c");
     
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.chamber_prime.damage";

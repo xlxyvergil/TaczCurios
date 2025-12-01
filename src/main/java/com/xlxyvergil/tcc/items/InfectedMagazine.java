@@ -22,8 +22,8 @@ import java.util.UUID;
 public class InfectedMagazine extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("55555555-5555-5555-5555-555555555555");
-    private static final UUID RELOAD_UUID = UUID.fromString("55555555-5555-5555-5556-555555555556");
+    private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("f7d6ce3b-7168-44d0-9637-c4eb2caf0fbc");
+    private static final UUID RELOAD_UUID = UUID.fromString("fa325acb-cb87-4288-8d10-c3d637b9242c");
 
     // 修饰符名称
     private static final String MAGAZINE_CAPACITY_NAME = "tcc.infected_magazine.magazine_capacity";

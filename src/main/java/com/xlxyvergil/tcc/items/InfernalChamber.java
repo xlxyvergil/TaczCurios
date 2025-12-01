@@ -22,7 +22,7 @@ import java.util.UUID;
 public class InfernalChamber extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识修饰符
-    private static final UUID BULLET_COUNT_UUID = UUID.fromString("33333333-3333-3333-3333-333333333333");
+    private static final UUID BULLET_COUNT_UUID = UUID.fromString("50d58834-a161-4b25-a13d-e56a375cd970");
 
     // 修饰符名称
     private static final String BULLET_COUNT_NAME = "tcc.infernal_chamber.bullet_count";

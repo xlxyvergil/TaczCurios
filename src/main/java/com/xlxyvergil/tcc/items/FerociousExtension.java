@@ -22,7 +22,7 @@ import java.util.UUID;
 public class FerociousExtension extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID EFFECTIVE_RANGE_UUID = UUID.fromString("77777777-1234-1234-1234-123456789abc");
+    private static final UUID EFFECTIVE_RANGE_UUID = UUID.fromString("2774a4d4-b53c-4799-bb4c-fd7dc117264f");
     
     // 修饰符名称
     private static final String EFFECTIVE_RANGE_NAME = "tcc.ferocious_extension.effective_range";

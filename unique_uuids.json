@@ -1,0 +1,434 @@
+{
+  "uuids": [
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\AlloyDrill.java",
+      "field": "ARMOR_IGNORE_UUID",
+      "uuid": "06d45b6d-c8d2-4372-bdfd-b427651a2366"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BlazeStorm.java",
+      "field": "EXPLOSION_RADIUS_UUID",
+      "uuid": "aceef087-5474-41ce-89a5-6429feffdcbc"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BlazeStorm.java",
+      "field": "EXPLOSION_DAMAGE_UUID",
+      "uuid": "5e9bcd94-dfa4-4531-8861-0856b379ac6a"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BlazeStormPrime.java",
+      "field": "EXPLOSION_RADIUS_UUID",
+      "uuid": "248f06a5-5144-47a0-b56a-6d830ade21b9"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BlazeStormPrime.java",
+      "field": "EXPLOSION_DAMAGE_UUID",
+      "uuid": "76d7748e-2371-4513-90cc-880f469f389a"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BulletSpread.java",
+      "field": "BULLET_COUNT_UUID",
+      "uuid": "0e7e5d6a-c006-4b94-b5fa-ada36d9f71d2"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BurstReloadPrime.java",
+      "field": "RELOAD_UUID",
+      "uuid": "4e639098-414e-4541-9118-c92ca4670c52"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CarefulHeart.java",
+      "field": "LAUNCHER_DAMAGE_UUID",
+      "uuid": "81343572-fe9a-4cf2-bdf9-253af5a153c1"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CarefulHeart.java",
+      "field": "EXPLOSION_DAMAGE_UUID",
+      "uuid": "2fd98843-cf54-4ca7-949d-e8d50e295c86"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CarefulHeart.java",
+      "field": "EXPLOSION_RADIUS_UUID",
+      "uuid": "e966cd29-d1c2-4770-a422-0f71c2ef4409"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\Chamber.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "0d407ca4-24c0-4db7-bc3a-f7d92ab8f2ed"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\ChamberPrime.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "9ab0de22-87e4-4fa1-a539-cd50dfe7590c"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CloseCombatPrime.java",
+      "field": "SHOTGUN_DAMAGE_UUID",
+      "uuid": "fa19535c-5dcb-4c3c-833f-53ea1c9bc5b0"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CloseRangeShot.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "606453a5-947e-4020-8fc8-3f43c2c8cce9"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CorruptMagazine.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "5d489ba1-55da-4f3a-83ea-69096eb4cccb"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\CorruptMagazine.java",
+      "field": "RELOAD_UUID",
+      "uuid": "b747742d-1f42-4921-a900-af73409d453f"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DeadlySurge.java",
+      "field": "ROUNDS_PER_MINUTE_UUID",
+      "uuid": "d8e4852c-2b0c-4a77-a9b3-a2a84683ae93"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DeadlySurge.java",
+      "field": "BULLET_COUNT_UUID",
+      "uuid": "b00e1320-1674-4bdb-8456-6fe4b80791fc"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DepletedReload.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "17c2b815-8561-4354-a395-d03c4ac4e029"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DepletedReload.java",
+      "field": "RELOAD_UUID",
+      "uuid": "68cef118-0938-46f4-881f-698e812abf70"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"pistol\"",
+      "uuid": "ca7ca83d-5439-4fde-a7bf-236d257d5430"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"rifle\"",
+      "uuid": "7821adde-57d1-42e8-a873-91612b86c24b"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"shotgun\"",
+      "uuid": "bc3c2aee-ea60-4c98-8f2b-7f7d89523ccc"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"sniper\"",
+      "uuid": "c8d0deac-5040-4044-9986-bc7735750c34"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"smg\"",
+      "uuid": "8cb8dcdb-2eef-433c-a4db-6d17b1617082"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"lmg\"",
+      "uuid": "e20233c4-668a-4bf4-97a1-17889faedc4e"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "DAMAGE_UUIDS.put(\"launcher\"",
+      "uuid": "d55edb82-be08-4b59-a93c-efd41b825ddb"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "FIRING_SPEED_UUID",
+      "uuid": "46acf410-597b-4388-a0c2-9f39f5934831"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\DespicableAcceleration.java",
+      "field": "GENERAL_DAMAGE_UUID",
+      "uuid": "adfdea37-0701-41c8-b042-59f7453b0cde"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\EvilAccuracy.java",
+      "field": "RECOIL_UUID",
+      "uuid": "98a8e44a-7d8d-4d10-b934-7e1e1c1c8fca"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\EvilAccuracy.java",
+      "field": "ROUNDS_PER_MINUTE_UUID",
+      "uuid": "7da86e2a-9c63-4d3f-8237-feda8559638e"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\FerociousExtension.java",
+      "field": "EFFECTIVE_RANGE_UUID",
+      "uuid": "2774a4d4-b53c-4799-bb4c-fd7dc117264f"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavenFireApocalypse.java",
+      "field": "GUN_DAMAGE_UUID",
+      "uuid": "8c87e97e-cc63-415f-b92d-6ac2e521b219"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavenFireApocalypse.java",
+      "field": "EXPLOSION_RADIUS_UUID",
+      "uuid": "79f78f03-e9ba-4567-9ba9-75f729f6c3e8"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavenFireApocalypse.java",
+      "field": "EXPLOSION_DAMAGE_UUID",
+      "uuid": "3de85a73-816c-49c0-bc43-4c7dec18c951"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavenFireApocalypse.java",
+      "field": "NEARBY_GUN_DAMAGE_UUID",
+      "uuid": "916209dd-ba04-45c9-9d6e-ccb29a7c6a0a"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavenFireJudgment.java",
+      "field": "GUN_DAMAGE_UUID",
+      "uuid": "daa1ac19-3221-43ba-b951-788015e19255"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyCaliberTag.java",
+      "field": "DAMAGE_UUIDS[0]",
+      "uuid": "0de3ed5d-9cb1-4c22-8bd1-c9b68ac13e9f"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyCaliberTag.java",
+      "field": "DAMAGE_UUIDS[1]",
+      "uuid": "86c52112-49e1-4d80-84b1-5a327ffbc971"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyCaliberTag.java",
+      "field": "DAMAGE_UUIDS[2]",
+      "uuid": "216b141e-17b3-44f0-a03c-ddfc5758a15e"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyCaliberTag.java",
+      "field": "DAMAGE_UUIDS[3]",
+      "uuid": "7df0af83-2c3e-4680-b17f-4c37dc55dea8"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyCaliberTag.java",
+      "field": "DAMAGE_UUIDS[4]",
+      "uuid": "006a5e24-258e-487f-9301-dfb07c08caa3"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyFirepower.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "401a1d7b-9724-4602-a956-ff32a991648f"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\HeavyFirepower.java",
+      "field": "INACCURACY_UUID",
+      "uuid": "5c03b799-4491-4c9c-ab68-7678a42a9b4a"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\InfectedMagazine.java",
+      "field": "MAGAZINE_CAPACITY_UUID",
+      "uuid": "f7d6ce3b-7168-44d0-9637-c4eb2caf0fbc"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\InfectedMagazine.java",
+      "field": "RELOAD_UUID",
+      "uuid": "fa325acb-cb87-4288-8d10-c3d637b9242c"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\InfernalChamber.java",
+      "field": "BULLET_COUNT_UUID",
+      "uuid": "50d58834-a161-4b25-a13d-e56a375cd970"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\LimitSpeed.java",
+      "field": "AMMO_SPEED_UUID",
+      "uuid": "ad27e195-8647-4497-8792-9720043e1e95"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\BurstReload.java",
+      "field": "RELOAD_UUID",
+      "uuid": "cf64bdda-7972-4439-ab6a-1fe552c4caa3"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MagazineBoost.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "1b4da84f-2d2a-44e4-bed2-986811a6d6ea"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MagazineBoostPrime.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "ba7337bb-f1f8-47c4-85fb-db0eef257283"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MalignantSpread.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "5bfabff0-b8df-48cd-9ecb-95027aafbf69"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MalignantSpread.java",
+      "field": "INACCURACY_UUID",
+      "uuid": "03755bb2-350f-47ee-821f-db51a2a7f149"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MergedRifling.java",
+      "field": "DAMAGE_UUIDS[0]",
+      "uuid": "f36f64c9-c3ec-4faf-b233-1d3ae64ef940"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MergedRifling.java",
+      "field": "DAMAGE_UUIDS[1]",
+      "uuid": "32254b9b-364b-44de-bbf2-352df3726ac5"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MergedRifling.java",
+      "field": "DAMAGE_UUIDS[2]",
+      "uuid": "adfae406-517c-442b-99cb-1708ec1f1f63"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MergedRifling.java",
+      "field": "DAMAGE_UUIDS[3]",
+      "uuid": "f1f1f906-2111-425c-bb8c-be24a54a1f95"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MergedRifling.java",
+      "field": "DAMAGE_UUIDS[4]",
+      "uuid": "39f3a9fd-562e-48bf-b26f-fbe3d106e7e8"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\MergedRifling.java",
+      "field": "MOVEMENT_SPEED_UUID",
+      "uuid": "6967f153-c8f1-4f6c-9752-bd2f5e5253c2"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\OppressionPoint.java",
+      "field": "MELEE_DAMAGE_UUID",
+      "uuid": "1f7eab00-eb00-4941-9404-4fdd3eb10515"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\OppressionPointPrime.java",
+      "field": "MELEE_DAMAGE_UUID",
+      "uuid": "b4763540-e80b-4bab-9e64-a4a2494d9f5e"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\OverloadedMagazine.java",
+      "field": "MAGAZINE_CAPACITY_UUID",
+      "uuid": "ac732131-54e3-4205-addf-96167a044710"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\OverloadedMagazine.java",
+      "field": "RELOAD_UUID",
+      "uuid": "9cd14129-3da2-47a1-bff1-b78ab747b9e9"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\ProphecyPact.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "6edbaedf-2502-4fe0-8e2c-9054d6a9ecc1"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\RedMovementTag.java",
+      "field": "MOVE_SPEED_MODIFIER_UUID",
+      "uuid": "e3ab07c7-2719-4942-99c7-526d58ba3736"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\Rifling.java",
+      "field": "DAMAGE_UUIDS[0]",
+      "uuid": "8da03d35-138b-4b16-8f58-afd8f296252f"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\Rifling.java",
+      "field": "DAMAGE_UUIDS[1]",
+      "uuid": "fcb27cd7-a90e-4e1c-8316-976ba894dd4a"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\Rifling.java",
+      "field": "DAMAGE_UUIDS[2]",
+      "uuid": "e20e4bfe-2343-42ac-89b8-78f3e47081f8"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\Rifling.java",
+      "field": "DAMAGE_UUIDS[3]",
+      "uuid": "a2257621-fad8-4670-8b58-2f253947a1c6"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\Rifling.java",
+      "field": "DAMAGE_UUIDS[4]",
+      "uuid": "35741afc-9a1f-458d-89f0-ffd97d2a4832"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\RippingPrime.java",
+      "field": "ROUNDS_PER_MINUTE_UUID",
+      "uuid": "e3eb5b32-fdfc-47ca-988c-a82d9d8173a7"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\RippingPrime.java",
+      "field": "PIERCE_UUID",
+      "uuid": "269dbf48-02f5-43f9-a4f2-50bf03aa10a6"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\ShotgunExpansion.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "462a2a97-e617-46fc-87af-d9f3b1e38837"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\ShotgunExpansionPrime.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "8c17e10f-b8fe-41b6-b0e7-ae214bed3dd4"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\SoldierBasicTag.java",
+      "field": "GUN_DAMAGE_UUID",
+      "uuid": "725a607c-13fd-4aec-874e-07afbc5acaf4"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\SoldierSpecificTag.java",
+      "field": "GUN_DAMAGE_UUID",
+      "uuid": "bbd020e4-a079-46e1-b236-3eea2c13da4f"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\SplitChamber.java",
+      "field": "AMMO_UUID",
+      "uuid": "7ee8eee4-ae89-490c-83d1-1392a6a71aa7"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\SustainedFire.java",
+      "field": "RELOAD_UUID",
+      "uuid": "45c0a867-83d3-4c7b-a316-20ef80ad857e"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\SwordWind.java",
+      "field": "MELEE_DISTANCE_UUID",
+      "uuid": "3f7ed736-62d3-4835-bc94-2834d4b91832"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\SwordWindPrime.java",
+      "field": "MELEE_DISTANCE_UUID",
+      "uuid": "3a32b0f7-9ef5-4c63-bb08-610762942881"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\TacticalReload.java",
+      "field": "RELOAD_UUID",
+      "uuid": "11efa1b9-0f1d-4dcb-bc3f-ff0a5dc42811"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\TacticalReloadPrime.java",
+      "field": "RELOAD_UUID",
+      "uuid": "d2f96b0d-cb4b-4cef-a71c-19930ba0ebff"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\TandemMagazine.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "4d1a2d40-9496-4740-b146-ea6b6cdcd123"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\TandemMagazinePrime.java",
+      "field": "MAGAZINE_UUID",
+      "uuid": "6f7eb1f1-c846-47cc-bbc7-73813bb57e30"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\UralWolfTag.java",
+      "field": "HEADSHOT_MULTIPLIER_MODIFIER_UUID",
+      "uuid": "96a4146f-8ea4-4c23-be07-d007e222c5f6"
+    },
+    {
+      "file": "src\\main\\java\\com\\xlxyvergil\\tcc\\items\\WaspStinger.java",
+      "field": "DAMAGE_UUID",
+      "uuid": "e1d2fcde-7ee0-4607-ade2-5b24292f8a52"
+    }
+  ]
+}

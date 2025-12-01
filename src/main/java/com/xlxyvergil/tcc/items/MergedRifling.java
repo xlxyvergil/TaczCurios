@@ -27,13 +27,13 @@ public class MergedRifling extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID[] DAMAGE_UUIDS = {
-        UUID.fromString("52345678-1234-1234-1234-123456789abc"),
-        UUID.fromString("52345678-1234-1234-1234-123456789abd"),
-        UUID.fromString("52345678-1234-1234-1234-123456789abe"),
-        UUID.fromString("52345678-1234-1234-1234-123456789abf"),
-        UUID.fromString("52345678-1234-1234-1234-123456789ab0")
+        UUID.fromString("f36f64c9-c3ec-4faf-b233-1d3ae64ef940"),
+        UUID.fromString("32254b9b-364b-44de-bbf2-352df3726ac5"),
+        UUID.fromString("adfae406-517c-442b-99cb-1708ec1f1f63"),
+        UUID.fromString("f1f1f906-2111-425c-bb8c-be24a54a1f95"),
+        UUID.fromString("39f3a9fd-562e-48bf-b26f-fbe3d106e7e8")
     };
-    private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("52345678-1234-1234-1234-123456789ab0");
+    private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("6967f153-c8f1-4f6c-9752-bd2f5e5253c2");
     
     // 修饰符名称
     private static final String[] DAMAGE_NAMES = {

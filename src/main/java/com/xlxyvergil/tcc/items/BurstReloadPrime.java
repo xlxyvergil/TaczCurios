@@ -24,7 +24,7 @@ import java.util.UUID;
 public class BurstReloadPrime extends ItemBaseCurio {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰符
-    private static final UUID RELOAD_UUID = UUID.fromString("22222222-2222-2222-2222-222222222222");
+    private static final UUID RELOAD_UUID = UUID.fromString("4e639098-414e-4541-9118-c92ca4670c52");
 
     // 修饰符名称
     private static final String RELOAD_NAME = "tcc.burst_reload_prime.reload_speed";
@@ -63,7 +63,7 @@ public class BurstReloadPrime extends ItemBaseCurio {
 
     /**
      * 检查是否可以装备到指定插槽
-     * BurstReloadPrime与DepletedReload互斥，不能同时装备
+     * BurstReloadPrime与BurstReload互斥，不能同时装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -72,10 +72,10 @@ public class BurstReloadPrime extends ItemBaseCurio {
             return false;
         }
         
-        // 检查是否已经装备了DepletedReload
+        // 检查是否已经装备了BurstReload
         return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
             .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof DepletedReload))
+                itemStack -> itemStack.getItem() instanceof BurstReload))
             .orElse(java.util.Optional.empty()).isPresent();
     }
 

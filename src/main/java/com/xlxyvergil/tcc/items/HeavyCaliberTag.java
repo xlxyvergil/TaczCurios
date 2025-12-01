@@ -22,11 +22,11 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID[] DAMAGE_UUIDS = {
-        UUID.fromString("52345678-1234-1234-1234-123456789abc"),
-        UUID.fromString("52345678-1234-1234-1234-123456789abd"),
-        UUID.fromString("52345678-1234-1234-1234-123456789abe"),
-        UUID.fromString("52345678-1234-1234-1234-123456789abf"),
-        UUID.fromString("52345678-1234-1234-1234-123456789ab0")
+        UUID.fromString("0de3ed5d-9cb1-4c22-8bd1-c9b68ac13e9f"),
+        UUID.fromString("86c52112-49e1-4d80-84b1-5a327ffbc971"),
+        UUID.fromString("216b141e-17b3-44f0-a03c-ddfc5758a15e"),
+        UUID.fromString("7df0af83-2c3e-4680-b17f-4c37dc55dea8"),
+        UUID.fromString("006a5e24-258e-487f-9301-dfb07c08caa3")
     };
     
     // 修饰符名称
