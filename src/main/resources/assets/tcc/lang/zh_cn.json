@@ -12,7 +12,7 @@
   "item.tcc.soldier_basic_tag.desc": "提供30%通用枪械伤害加成",
   "item.tcc.soldier_basic_tag.effect": "提供%1$s%%通用枪械伤害加成",
   
-  "item.tcc.soldier_specific_tag": "§7士兵特定挂牌",
+  "item.tcc.soldier_specific_tag": "§f士兵特定挂牌",
   "item.tcc.soldier_specific_tag.desc": "提供55%通用枪械伤害加成",
   "item.tcc.soldier_specific_tag.effect": "提供%1$s%%通用枪械伤害加成",
   

@@ -12,7 +12,7 @@
   "item.tcc.soldier_basic_tag.desc": "Provide 30% universal firearm damage bonus",
   "item.tcc.soldier_basic_tag.effect": "Provide %1$s%% universal firearm damage bonus",
   
-  "item.tcc.soldier_specific_tag": "§7Soldier Specific Tag",
+  "item.tcc.soldier_specific_tag": "§fSoldier Specific Tag",
   "item.tcc.soldier_specific_tag.desc": "Provide 55% universal firearm damage bonus",
   "item.tcc.soldier_specific_tag.effect": "Provide %1$s%% universal firearm damage bonus",
   

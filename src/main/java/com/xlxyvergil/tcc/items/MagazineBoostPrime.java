@@ -63,7 +63,7 @@ public class MagazineBoostPrime extends ItemBaseCurio {
 
     /**
      * 检查是否可以装备到指定插槽
-     * MagazineBoostPrime与MagazineBoostNew互斥，不能同时装备
+     * MagazineBoostPrime与MagazineBoost互斥，不能同时装备
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -72,10 +72,10 @@ public class MagazineBoostPrime extends ItemBaseCurio {
             return false;
         }
         
-        // 检查是否已经装备了MagazineBoostNew
+        // 检查是否已经装备了MagazineBoost
         return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
             .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof MagazineBoostNew))
+                itemStack -> itemStack.getItem() instanceof MagazineBoost))
             .orElse(java.util.Optional.empty()).isPresent();
     }
 

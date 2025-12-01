@@ -134,9 +134,9 @@ dependencies {
     // Curios API dependency (from libs folder)
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.14.1+1.20.1")
     // TaczAttributeAdd dependency (from libs folder) - using local jar file
-    implementation files("libs/taa-1.0.7.jar")
+    implementation files("libs/taa-1.0.8+1.20.1.jar")
     // TACZ dependency (from libs folder) - using local jar file
-    implementation fg.deobf(files("libs/tacz-1.20.1-1.1.6-hotfix.jar"))
+    implementation fg.deobf(files("libs/tacz-1.20.1-1.1.7-release.jar"))
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
