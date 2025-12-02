@@ -10,7 +10,7 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="tcc"
-version="1.0.8"
+version="1.0.9"
 displayName="TaczCurios"
 authors="xlxyvergil"
 description="A Minecraft 1.20.1 jewelry mod that adds various accessories with special effects. Dependencies: Curios API and TaczAttributeAdd."
