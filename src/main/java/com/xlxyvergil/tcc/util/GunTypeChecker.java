@@ -1,18 +1,19 @@
 package com.xlxyvergil.tcc.util;
 
+import java.util.Set;
+
 import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.entity.IGunOperator;
-import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
+import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
+import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
 import com.xlxyvergil.taa.context.ShooterContext;
 import com.xlxyvergil.taa.modifier.AmmoCountModifier;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.Set;
 
 public class GunTypeChecker {
     // 定义支持的枪械类型集合
@@ -115,7 +116,7 @@ public class GunTypeChecker {
                             if (cache != null) {
                                 Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
                                 if (modifiedAmmoCount != null) {
-                                    maxAmmoCount = modifiedAmmoCount + barrelBulletAmount; // 使用缓存值并加上枪管中的子弹
+                                    maxAmmoCount = modifiedAmmoCount; // 使用缓存值并加上枪管中的子弹
                                 }
                             }
                         }
@@ -129,7 +130,7 @@ public class GunTypeChecker {
                             if (cache != null) {
                                 Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
                                 if (modifiedAmmoCount != null) {
-                                    maxAmmoCount = modifiedAmmoCount + barrelBulletAmount; // 使用缓存值并加上枪管中的子弹
+                                    maxAmmoCount = modifiedAmmoCount; // 使用缓存值并加上枪管中的子弹
                                 }
                             }
                         }
