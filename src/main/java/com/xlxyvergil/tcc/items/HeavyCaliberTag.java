@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  * 重口径 - 提升特定枪械伤害，增加不精准度
- * 效果：提升特定枪械伤害（加算），增加不精准度（乘算）
+ * 效果：提升特定枪械伤害（加算），增加不精准度（加算）
  */
 public class HeavyCaliberTag extends ItemBaseCurio {
     
@@ -87,7 +87,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     
     /**
      * 应用重口径效果
-     * 提升特定枪械伤害（加算）和不精准度（乘算）
+     * 提升特定枪械伤害（加算）和不精准度（加算）
      */
     public void applyHeavyCaliberEffects(Player player) {
         var attributes = player.getAttributes();
@@ -128,7 +128,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
             }
         }
         
-        // 应用不精准度提升（乘算）
+        // 应用不精准度提升（加算）
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
@@ -146,7 +146,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
                     DAMAGE_UUIDS[0],
                     "tcc.heavy_caliber.inaccuracy",
                     inaccuracyBoost,
-                    AttributeModifier.Operation.MULTIPLY_BASE
+                    AttributeModifier.Operation.ADDITION
                 );
                 inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
             }

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  * 重装火力 - 提升165%手枪伤害，提高55%不精准度
- * 效果：提升165%手枪伤害（加算），提高55%不精准度（乘算）
+ * 效果：提升165%手枪伤害（加算），提高55%不精准度（加算）
  */
 public class HeavyFirepower extends ItemBaseCurio {
     
@@ -112,7 +112,7 @@ public class HeavyFirepower extends ItemBaseCurio {
             pistolDamageAttribute.addPermanentModifier(pistolDamageModifier);
         }
         
-        // 应用不精准度提升（乘算）
+        // 应用不精准度提升（加算）
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
@@ -125,12 +125,12 @@ public class HeavyFirepower extends ItemBaseCurio {
             
             // 检查玩家是否持有手枪，只有持有手枪时才应用不精准度加成
             if (GunTypeChecker.isHoldingPistol(player)) {
-                // 添加配置的不精准度加成（乘算）
+                // 添加配置的不精准度加成（加算）
                 var inaccuracyModifier = new AttributeModifier(
                     INACCURACY_UUID,
                     INACCURACY_NAME,
                     inaccuracyBoost,
-                    AttributeModifier.Operation.MULTIPLY_BASE
+                    AttributeModifier.Operation.ADDITION
                 );
                 inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
             }

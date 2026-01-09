@@ -23,10 +23,12 @@ public class BlazeStorm extends ItemBaseCurio {
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("aceef087-5474-41ce-89a5-6429feffdcbc");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("5e9bcd94-dfa4-4531-8861-0856b379ac6a");
+    private static final UUID EXPLOSION_ENABLED_UUID = UUID.fromString("5e9bcd94-dfa4-89a5-8861-0856b379ac6a");
     
     // 修饰符名称
     private static final String EXPLOSION_RADIUS_NAME = "tcc.blaze_storm.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.blaze_storm.explosion_damage";
+    private static final String EXPLOSION_ENABLED_NAME = "tcc.blaze_storm.explosion_enabled";
     
     public BlazeStorm(Properties properties) {
         super(properties);
@@ -89,15 +91,19 @@ public class BlazeStorm extends ItemBaseCurio {
      * 增加配置中的爆炸范围和爆炸伤害加成（乘算）
      */
     private void applyEffects(Player player) {
-        // 获取配置中的爆炸范围和爆炸伤害加成值
+        // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性值
         double explosionRadiusBoost = TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get();
+        double explosionEnabled = TaczCuriosConfig.COMMON.blazeStormExplosionEnabled.get();
         
         // 应用爆炸范围加成
         applyAttributeModifier(player, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
         
         // 应用爆炸伤害加成
         applyAttributeModifier(player, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
+        
+        // 应用爆炸启用属性
+        applyAttributeModifier(player, "taa", "explosion_enabled", explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME);
     }
     
     /**

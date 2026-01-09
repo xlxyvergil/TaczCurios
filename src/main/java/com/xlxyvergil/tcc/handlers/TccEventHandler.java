@@ -90,23 +90,26 @@ public class TccEventHandler {
         
         // 只处理原版箱子战利品表
         if (VANILLA_CHESTS.contains(tableName)) {
-            // 获取裂隙碎银物品
-            ItemStack riftSilverStack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(TaczCurios.MODID, "rift_silver")));
-            
-            // 如果成功获取到裂隙碎银物品，则添加到战利品表中
-            if (!riftSilverStack.isEmpty()) {
-                // 根据概率确定裂隙碎银的数量: 70%概率1个，20%概率2个，10%概率3个
-                int count = 1;
-                float chance = RANDOM.nextFloat();
-                if (chance < 0.1f) { // 10%概率
-                    count = 3;
-                } else if (chance < 0.3f) { // 20%概率
-                    count = 2;
-                }
-                // 70%概率保持count=1
+            // 根据配置的几率决定是否生成裂隙碎银
+            if (RANDOM.nextFloat() <= com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.riftSilverChestSpawnChance.get()) {
+                // 获取裂隙碎银物品
+                ItemStack riftSilverStack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(TaczCurios.MODID, "rift_silver")));
                 
-                // 使用固定数量而非范围，因为数量已经根据概率确定
-                LootTableHelper.addLootEntryToChest(event.getTable(), riftSilverStack, 1, count, 15); // 权重15，数量根据概率确定
+                // 如果成功获取到裂隙碎银物品，则添加到战利品表中
+                if (!riftSilverStack.isEmpty()) {
+                    // 根据概率确定裂隙碎银的数量: 70%概率1个，20%概率2个，10%概率3个
+                    int count = 1;
+                    float chance = RANDOM.nextFloat();
+                    if (chance < 0.1f) { // 10%概率
+                        count = 3;
+                    } else if (chance < 0.3f) { // 20%概率
+                        count = 2;
+                    }
+                    // 70%概率保持count=1
+                    
+                    // 使用固定数量而非范围，因为数量已经根据概率确定
+                    LootTableHelper.addLootEntryToChest(event.getTable(), riftSilverStack, 1, count, 15); // 权重15，数量根据概率确定
+                }
             }
         }
     }

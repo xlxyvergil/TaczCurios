@@ -29,6 +29,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionRadius;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionDamage;
+        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionEnabled;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseHealthCost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerDamageBoost;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
@@ -55,14 +56,18 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue carefulHeartLauncherDamageBoost;
         public final ForgeConfigSpec.DoubleValue carefulHeartExplosionDamageBoost;
         public final ForgeConfigSpec.DoubleValue carefulHeartExplosionRadiusBoost;
+        public final ForgeConfigSpec.DoubleValue carefulHeartExplosionEnabled;
         
         // 烈焰风暴配置
         public final ForgeConfigSpec.DoubleValue blazeStormExplosionRadiusBoost;
         public final ForgeConfigSpec.DoubleValue blazeStormExplosionDamageBoost;
+        public final ForgeConfigSpec.DoubleValue blazeStormExplosionEnabled;
         
         // 烈焰风暴Prime配置
         public final ForgeConfigSpec.DoubleValue blazeStormPrimeExplosionRadiusBoost;
         public final ForgeConfigSpec.DoubleValue blazeStormPrimeExplosionDamageBoost;
+        public final ForgeConfigSpec.DoubleValue blazeStormPrimeExplosionEnabled;
+        
         
         // 撕裂Prime配置
         public final ForgeConfigSpec.DoubleValue rippingPrimeFireRateBoost;
@@ -194,6 +199,9 @@ public class TaczCuriosConfig {
         // 串联弹匣配置
         public final ForgeConfigSpec.DoubleValue tandemMagazineCapacityBoost;
         
+        // 裂隙碎银配置
+        public final ForgeConfigSpec.DoubleValue riftSilverChestSpawnChance;
+        
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
             
@@ -224,6 +232,9 @@ public class TaczCuriosConfig {
             heavenFireApocalypseExplosionDamage = builder
                     .comment("爆炸伤害加成 (默认: 10.0 = 1000%)")
                     .defineInRange("explosionDamage", 10.0, 0, 100);
+            heavenFireApocalypseExplosionEnabled = builder
+                    .comment("爆炸启用属性 (默认: 2.0)")
+                    .defineInRange("explosionEnabled", 2.0, 0, 100);
             heavenFireApocalypseHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: 1.0 = 100%)")
                     .defineInRange("healthCost", 1.0, 0, 1);
@@ -290,27 +301,36 @@ public class TaczCuriosConfig {
             carefulHeartExplosionRadiusBoost = builder
                     .comment("爆炸范围加成 (默认: 3.0 = 300%)")
                     .defineInRange("explosionRadiusBoost", 3.0, 0, 100);
+            carefulHeartExplosionEnabled = builder
+                    .comment("爆炸启用属性 (默认: 2.0)")
+                    .defineInRange("explosionEnabled", 2.0, 0, 100);
             builder.pop();
             
             // 烈焰风暴配置
-            builder.comment("烈焰风暴饰品配置").push("blaze_storm");
-            blazeStormExplosionRadiusBoost = builder
-                    .comment("爆炸范围加成 (默认: 0.24 = 24%)")
-                    .defineInRange("explosionRadiusBoost", 0.24, 0, 100);
-            blazeStormExplosionDamageBoost = builder
-                    .comment("爆炸伤害加成 (默认: 0.24 = 24%)")
-                    .defineInRange("explosionDamageBoost", 0.24, 0, 100);
-            builder.pop();
-            
-            // 烈焰风暴Prime配置
-            builder.comment("烈焰风暴Prime饰品配置").push("blaze_storm_prime");
-            blazeStormPrimeExplosionRadiusBoost = builder
-                    .comment("爆炸范围加成 (默认: 0.66 = 66%)")
-                    .defineInRange("explosionRadiusBoost", 0.66, 0, 100);
-            blazeStormPrimeExplosionDamageBoost = builder
-                    .comment("爆炸伤害加成 (默认: 0.66 = 66%)")
-                    .defineInRange("explosionDamageBoost", 0.66, 0, 100);
-            builder.pop();
+        builder.comment("烈焰风暴饰品配置").push("blaze_storm");
+        blazeStormExplosionRadiusBoost = builder
+                .comment("爆炸范围加成 (默认: 0.24 = 24%)")
+                .defineInRange("explosionRadiusBoost", 0.24, 0, 100);
+        blazeStormExplosionDamageBoost = builder
+                .comment("爆炸伤害加成 (默认: 0.24 = 24%)")
+                .defineInRange("explosionDamageBoost", 0.24, 0, 100);
+        blazeStormExplosionEnabled = builder
+                .comment("爆炸启用属性 (默认: 2.0)")
+                .defineInRange("explosionEnabled", 2.0, 0, 100);
+        builder.pop();
+        
+        // 烈焰风暴Prime配置
+        builder.comment("烈焰风暴Prime饰品配置").push("blaze_storm_prime");
+        blazeStormPrimeExplosionRadiusBoost = builder
+                .comment("爆炸范围加成 (默认: 0.66 = 66%)")
+                .defineInRange("explosionRadiusBoost", 0.66, 0, 100);
+        blazeStormPrimeExplosionDamageBoost = builder
+                .comment("爆炸伤害加成 (默认: 0.66 = 66%)")
+                .defineInRange("explosionDamageBoost", 0.66, 0, 100);
+        blazeStormPrimeExplosionEnabled = builder
+                .comment("爆炸启用属性 (默认: 2.0)")
+                .defineInRange("explosionEnabled", 2.0, 0, 100);
+        builder.pop();
             
             // 撕裂Prime配置
             builder.comment("撕裂Prime饰品配置").push("ripping_prime");
@@ -620,6 +640,13 @@ public class TaczCuriosConfig {
             tandemMagazineCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.3 = 30%)")
                     .defineInRange("capacityBoost", 0.3, 0, 100);
+            builder.pop();
+            
+            // 裂隙碎银配置
+            builder.comment("裂隙碎银配置").push("rift_silver");
+            riftSilverChestSpawnChance = builder
+                    .comment("裂隙碎银在箱子中的生成几率 (默认: 0.05 = 5%)")
+                    .defineInRange("chestSpawnChance", 0.05, 0, 1);
             builder.pop();
             
             builder.pop();

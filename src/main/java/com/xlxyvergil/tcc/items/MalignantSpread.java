@@ -17,7 +17,7 @@ import java.util.UUID;
 
 /**
  * 恶性扩散 - 提升165%霰弹枪伤害，提高55%不精准度
- * 效果：提升165%霰弹枪伤害（加算），提高55%不精准度（乘算）
+ * 效果：提升165%霰弹枪伤害（加算），提高55%不精准度（加算）
  */
 public class MalignantSpread extends ItemBaseCurio {
     
@@ -112,7 +112,7 @@ public class MalignantSpread extends ItemBaseCurio {
             shotgunDamageAttribute.addPermanentModifier(shotgunDamageModifier);
         }
         
-        // 应用不精准度提升（乘算）
+        // 应用不精准度提升（加算）
         var inaccuracyAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
@@ -130,7 +130,7 @@ public class MalignantSpread extends ItemBaseCurio {
                     INACCURACY_UUID,
                     INACCURACY_NAME,
                     inaccuracyBoost,
-                    AttributeModifier.Operation.MULTIPLY_BASE
+                    AttributeModifier.Operation.ADDITION
                 );
                 inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
             }

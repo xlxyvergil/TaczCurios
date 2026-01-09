@@ -31,6 +31,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("79f78f03-e9ba-4567-9ba9-75f729f6c3e8");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
+    private static final UUID EXPLOSION_ENABLED_UUID = UUID.fromString("d4e5f6a7-b8c9-0d1e-2a3b-4c5d6e7f8a9b");
     
     // 用于周围玩家的加成UUID
     private static final UUID NEARBY_GUN_DAMAGE_UUID = UUID.fromString("916209dd-ba04-45c9-9d6e-ccb29a7c6a0a");
@@ -39,6 +40,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";
     private static final String EXPLOSION_RADIUS_NAME = "tcc.heaven_fire_apocalypse.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
+    private static final String EXPLOSION_ENABLED_NAME = "tcc.heaven_fire_apocalypse.explosion_enabled";
     private static final String NEARBY_GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.nearby_gun_damage";
     
     // 用于追踪周围玩家加成效果的标记
@@ -103,10 +105,11 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         if (healthPercentage >= 1.0) {
             // 血量为100%时应用效果
             
-            // 获取配置中的伤害加成、爆炸范围和爆炸伤害值
+            // 获取配置中的伤害加成、爆炸范围、爆炸伤害和爆炸启用属性值
             double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
             double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
             double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
+            double explosionEnabled = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionEnabled.get();
             
             // 应用配置中的通用枪械伤害加成
             applyAttributeModifier(player, "taa", "bullet_gundamage", damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -116,6 +119,9 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
             
             // 应用配置中的爆炸伤害加成
             applyAttributeModifier(player, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            
+            // 应用配置中的爆炸启用属性
+            applyAttributeModifier(player, "taa", "explosion_enabled", explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.ADDITION);
         } else {
             // 血量不为100%时移除效果
             removeEffects(player);
@@ -155,6 +161,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         removeAttributeModifier(player, "taa", "bullet_gundamage", GUN_DAMAGE_UUID);
         removeAttributeModifier(player, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
         removeAttributeModifier(player, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);
+        removeAttributeModifier(player, "taa", "explosion_enabled", EXPLOSION_ENABLED_UUID);
     }
     
     /**

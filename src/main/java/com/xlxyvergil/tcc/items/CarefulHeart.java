@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -31,6 +32,8 @@ public class CarefulHeart extends ItemBaseCurio {
     private static final String LAUNCHER_DAMAGE_NAME = "tcc.careful_heart.launcher_damage";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.careful_heart.explosion_damage";
     private static final String EXPLOSION_RADIUS_NAME = "tcc.careful_heart.explosion_radius";
+    private static final UUID EXPLOSION_ENABLED_UUID = UUID.fromString("248f06a5-5144-4770-b56a-6d830ade21b9");
+    private static final String EXPLOSION_ENABLED_NAME = "tcc.careful_heart.explosion_enabled";
     
     
     public CarefulHeart(Properties properties) {
@@ -146,6 +149,29 @@ public class CarefulHeart extends ItemBaseCurio {
             );
             explosionRadiusAttribute.addPermanentModifier(explosionRadiusModifier);
         }
+        
+        // 应用爆炸启用属性
+        var explosionEnabledAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "explosion_enabled")
+            )
+        );
+        
+        if (explosionEnabledAttribute != null) {
+            // 检查是否已经存在相同的修饰符，如果存在则移除
+            explosionEnabledAttribute.removeModifier(EXPLOSION_ENABLED_UUID);
+            
+            // 获取配置中的爆炸启用属性值
+            double explosionEnabled = TaczCuriosConfig.COMMON.carefulHeartExplosionEnabled.get();
+            // 添加配置的爆炸启用属性
+            var explosionEnabledModifier = new net.minecraft.world.entity.ai.attributes.AttributeModifier(
+                EXPLOSION_ENABLED_UUID,
+                EXPLOSION_ENABLED_NAME,
+                explosionEnabled,
+                net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADDITION
+            );
+            explosionEnabledAttribute.addPermanentModifier(explosionEnabledModifier);
+        }
     }
     
     /**
@@ -185,6 +211,17 @@ public class CarefulHeart extends ItemBaseCurio {
         
         if (explosionRadiusAttribute != null) {
             explosionRadiusAttribute.removeModifier(EXPLOSION_RADIUS_UUID);
+        }
+        
+        // 移除爆炸启用属性
+        var explosionEnabledAttribute = attributes.getInstance(
+            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
+                new net.minecraft.resources.ResourceLocation("taa", "explosion_enabled")
+            )
+        );
+        
+        if (explosionEnabledAttribute != null) {
+            explosionEnabledAttribute.removeModifier(EXPLOSION_ENABLED_UUID);
         }
     }
     
