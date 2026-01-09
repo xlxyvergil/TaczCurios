@@ -193,7 +193,7 @@ public class TaczCuriosConfig {
         // 霰弹扩充配置
         public final ForgeConfigSpec.DoubleValue shotgunExpansionCapacityBoost;
         
-        // 弹匣增幅配置（新）
+        // 弹匣增幅配置
         public final ForgeConfigSpec.DoubleValue magazineBoostCapacityBoost;
         
         // 串联弹匣配置
@@ -628,8 +628,8 @@ public class TaczCuriosConfig {
                     .defineInRange("capacityBoost", 0.6, 0, 100);
             builder.pop();
             
-            // 弹匣增幅配置（新）
-            builder.comment("弹匣增幅饰品配置（新）").push("magazine_boost_new");
+            // 弹匣增幅配置
+            builder.comment("弹匣增幅饰品配置").push("magazine_boost");
             magazineBoostCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.3 = 30%)")
                     .defineInRange("capacityBoost", 0.3, 0, 100);
