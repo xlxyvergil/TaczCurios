@@ -2,8 +2,8 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,10 +41,8 @@ public class BlazeStorm extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        // 给生物添加属性加成
+        applyBlazeStormEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -54,10 +52,8 @@ public class BlazeStorm extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeEffects(player);
-        }
+        // 移除生物的属性加成
+        removeBlazeStormEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -90,27 +86,27 @@ public class BlazeStorm extends ItemBaseCurio {
      * 应用所有效果加成
      * 增加配置中的爆炸范围和爆炸伤害加成（乘算）
      */
-    private void applyEffects(Player player) {
+    private void applyBlazeStormEffects(LivingEntity livingEntity) {
         // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性值
         double explosionRadiusBoost = TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get();
         double explosionEnabled = TaczCuriosConfig.COMMON.blazeStormExplosionEnabled.get();
         
         // 应用爆炸范围加成
-        applyAttributeModifier(player, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
+        applyAttributeModifier(livingEntity, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME);
         
         // 应用爆炸伤害加成
-        applyAttributeModifier(player, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
+        applyAttributeModifier(livingEntity, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME);
         
         // 应用爆炸启用属性
-        applyAttributeModifier(player, "taa", "explosion_enabled", explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME);
+        applyAttributeModifier(livingEntity, "taa", "explosion_enabled", explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME);
     }
     
     /**
      * 通用的属性修饰符应用方法
      */
-    private void applyAttributeModifier(Player player, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName) {
-        var attributes = player.getAttributes();
+    private void applyAttributeModifier(LivingEntity livingEntity, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName) {
+        var attributes = livingEntity.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
 new ResourceLocation(namespace, attributeName)
@@ -135,16 +131,17 @@ new ResourceLocation(namespace, attributeName)
     /**
      * 移除所有效果加成
      */
-    private void removeEffects(Player player) {
-        removeAttributeModifier(player, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
-        removeAttributeModifier(player, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);
+    private void removeBlazeStormEffects(LivingEntity livingEntity) {
+        removeAttributeModifier(livingEntity, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
+        removeAttributeModifier(livingEntity, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);
+        removeAttributeModifier(livingEntity, "taa", "explosion_enabled", EXPLOSION_ENABLED_UUID);
     }
     
     /**
      * 通用的属性修饰符移除方法
      */
-    private void removeAttributeModifier(Player player, String namespace, String attributeName, UUID uuid) {
-        var attributes = player.getAttributes();
+    private void removeAttributeModifier(LivingEntity livingEntity, String namespace, String attributeName, UUID uuid) {
+        var attributes = livingEntity.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation(namespace, attributeName)
@@ -162,9 +159,7 @@ new ResourceLocation(namespace, attributeName)
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        applyBlazeStormEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -200,7 +195,7 @@ new ResourceLocation(namespace, attributeName)
      * 当玩家切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyBlazeStormEffects(livingEntity);
     }
 }

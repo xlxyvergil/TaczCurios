@@ -3,8 +3,9 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -21,11 +22,11 @@ import java.util.UUID;
  */
 public class InfectedMagazine extends ItemBaseCurio {
 
-    // 属性修饰符UUID - 用于唯一标识修饰符
+    // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("f7d6ce3b-7168-44d0-9637-c4eb2caf0fbc");
     private static final UUID RELOAD_UUID = UUID.fromString("fa325acb-cb87-4288-8d10-c3d637b9242c");
 
-    // 修饰符名称
+    // 修饰符名
     private static final String MAGAZINE_CAPACITY_NAME = "tcc.infected_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.infected_magazine.reload";
 
@@ -40,10 +41,8 @@ public class InfectedMagazine extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
 
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyInfectedMagazineEffects(player);
-        }
+        // 给生物添加属性修改
+        applyInfectedMagazineEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -53,10 +52,8 @@ public class InfectedMagazine extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeInfectedMagazineEffects(player);
-        }
+        // 移除生物的属性修改
+        removeInfectedMagazineEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -69,7 +66,7 @@ public class InfectedMagazine extends ItemBaseCurio {
     }
 
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -80,8 +77,8 @@ public class InfectedMagazine extends ItemBaseCurio {
      * 应用感染弹匣效果
      * 提升弹匣容量（加算）和降低装填速度（加算）
      */
-    public void applyInfectedMagazineEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyInfectedMagazineEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 获取弹匣容量属性
         var capacityAttribute = attributes.getInstance(
@@ -106,9 +103,9 @@ public class InfectedMagazine extends ItemBaseCurio {
             reloadAttribute.removeModifier(RELOAD_UUID);
         }
 
-        // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-        if (GunTypeChecker.isHoldingPistol(player)) {
-            // 获取配置中的弹匣容量加成值和装填速度减益值
+        // 检查生物是否持有手枪，只有持有手枪时才应用加成
+        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+            // 获取配置中的弹匣容量加成值和装填速度减益
             double magazineCapacityBoost = TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get();
             double reloadDebuff = -TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get();
 
@@ -141,8 +138,8 @@ public class InfectedMagazine extends ItemBaseCurio {
     /**
      * 移除感染弹匣效果
      */
-    public void removeInfectedMagazineEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeInfectedMagazineEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 获取弹匣容量属性
         var capacityAttribute = attributes.getInstance(
@@ -168,14 +165,12 @@ public class InfectedMagazine extends ItemBaseCurio {
     }
 
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyInfectedMagazineEffects(player);
-        }
+        applyInfectedMagazineEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -208,10 +203,10 @@ public class InfectedMagazine extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyInfectedMagazineEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyInfectedMagazineEffects(livingEntity);
     }
 }

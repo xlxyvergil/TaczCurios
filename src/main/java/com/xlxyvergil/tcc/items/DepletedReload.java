@@ -6,7 +6,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,10 +44,8 @@ public class DepletedReload extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
 
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyDepletedReloadEffects(player);
-        }
+        // 给生物添加属性修改
+        applyDepletedReloadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -57,10 +55,8 @@ public class DepletedReload extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeDepletedReloadEffects(player);
-        }
+        // 移除生物的属性修改
+        removeDepletedReloadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -84,8 +80,8 @@ public class DepletedReload extends ItemBaseCurio {
      * 应用耗竭装填效果
      * 降低弹匣容量，提升装填速度
      */
-    public void applyDepletedReloadEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyDepletedReloadEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 弹匣容量属性
         var magazineAttribute = attributes.getInstance(
@@ -109,8 +105,8 @@ public class DepletedReload extends ItemBaseCurio {
             reloadAttribute.removeModifier(RELOAD_UUID);
         }
 
-        // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-        if (GunTypeChecker.isHoldingSniper(player)) {
+        // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+        if (GunTypeChecker.isHoldingSniper(livingEntity)) {
             // 获取配置中的弹匣容量减少值
             double magazinePenalty = TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get();
             // 添加配置的弹匣容量减少（加算）
@@ -142,8 +138,8 @@ public class DepletedReload extends ItemBaseCurio {
     /**
      * 移除耗竭装填效果
      */
-    public void removeDepletedReloadEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeDepletedReloadEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 弹匣容量属性
         var magazineAttribute = attributes.getInstance(
@@ -173,9 +169,7 @@ public class DepletedReload extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyDepletedReloadEffects(player);
-        }
+        applyDepletedReloadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -209,10 +203,10 @@ public class DepletedReload extends ItemBaseCurio {
     }
 
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyDepletedReloadEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyDepletedReloadEffects(livingEntity);
     }
 }

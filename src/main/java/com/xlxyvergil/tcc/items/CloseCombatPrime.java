@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.items;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,10 +41,8 @@ public class CloseCombatPrime extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加霰弹枪伤害属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyShotgunDamageBonus(player);
-        }
+        // 给生物添加霰弹枪伤害属性加成
+        applyShotgunDamageBonus((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -54,10 +52,8 @@ public class CloseCombatPrime extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的霰弹枪伤害属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeShotgunDamageBonus(player);
-        }
+        // 移除生物的霰弹枪伤害属性加成
+        removeShotgunDamageBonus((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -71,17 +67,15 @@ public class CloseCombatPrime extends ItemBaseCurio {
             return false;
         }
         
-        // 检查玩家是否已经装备了CloseRangeShot
-        if (slotContext.entity() instanceof Player player) {
-            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-            if (curiosHandler != null) {
-                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-                if (tccSlotHandler != null) {
-                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                        if (equippedStack.getItem() instanceof CloseRangeShot) {
-                            return false; // 如果已经装备了CloseRangeShot，则不能装备CloseCombatPrime
-                        }
+        // 检查生物是否已经装备了CloseRangeShot
+        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
+        if (curiosHandler != null) {
+            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+            if (tccSlotHandler != null) {
+                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                    if (equippedStack.getItem() instanceof CloseRangeShot) {
+                        return false; // 如果已经装备了CloseRangeShot，则不能装备CloseCombatPrime
                     }
                 }
             }
@@ -99,10 +93,10 @@ public class CloseCombatPrime extends ItemBaseCurio {
     
     /**
      * 应用霰弹枪伤害加成
-     * 给玩家添加165%的霰弹枪伤害加成（加法）
+     * 给生物添加霰弹枪伤害加成（加法）
      */
-    private void applyShotgunDamageBonus(Player player) {
-        var attributes = player.getAttributes();
+    private void applyShotgunDamageBonus(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         var damageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
@@ -131,8 +125,8 @@ public class CloseCombatPrime extends ItemBaseCurio {
     /**
      * 移除霰弹枪伤害加成
      */
-    private void removeShotgunDamageBonus(Player player) {
-        var attributes = player.getAttributes();
+    private void removeShotgunDamageBonus(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         var damageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
@@ -152,9 +146,7 @@ public class CloseCombatPrime extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyShotgunDamageBonus(player);
-        }
+        applyShotgunDamageBonus((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -189,10 +181,10 @@ public class CloseCombatPrime extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyShotgunDamageBonus(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyShotgunDamageBonus(livingEntity);
     }
 }

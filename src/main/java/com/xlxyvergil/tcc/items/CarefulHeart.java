@@ -2,7 +2,7 @@ package com.xlxyvergil.tcc.items;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -47,9 +47,9 @@ public class CarefulHeart extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加发射器伤害、爆炸伤害和爆炸范围属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyHeartEffects(player);
+        // 给生物添加发射器伤害、爆炸伤害和爆炸范围属性加成
+        if (slotContext.entity() instanceof LivingEntity) {
+            applyHeartEffects((LivingEntity) slotContext.entity());
         }
     }
     
@@ -60,9 +60,9 @@ public class CarefulHeart extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的发射器伤害、爆炸伤害和爆炸范围属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeHeartEffects(player);
+        // 移除生物的发射器伤害、爆炸伤害和爆炸范围属性加成
+        if (slotContext.entity() instanceof LivingEntity) {
+            removeHeartEffects((LivingEntity) slotContext.entity());
         }
     }
     
@@ -78,8 +78,8 @@ public class CarefulHeart extends ItemBaseCurio {
      * 应用心海效果
      * 提升发射器伤害、爆炸伤害和爆炸范围
      */
-    private void applyHeartEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyHeartEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 应用发射器伤害提升
         var launcherDamageAttribute = attributes.getInstance(
@@ -177,8 +177,8 @@ public class CarefulHeart extends ItemBaseCurio {
     /**
      * 移除心海效果
      */
-    private void removeHeartEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeHeartEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 移除发射器伤害加成
         var launcherDamageAttribute = attributes.getInstance(
@@ -231,8 +231,8 @@ public class CarefulHeart extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyHeartEffects(player);
+        if (slotContext.entity() instanceof LivingEntity) {
+            applyHeartEffects((LivingEntity) slotContext.entity());
         }
     }
     
@@ -277,7 +277,7 @@ public class CarefulHeart extends ItemBaseCurio {
      * 当玩家切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyHeartEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyHeartEffects(livingEntity);
     }
 }

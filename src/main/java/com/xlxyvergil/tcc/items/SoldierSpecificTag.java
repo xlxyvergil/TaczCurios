@@ -2,8 +2,9 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -23,10 +24,10 @@ import java.util.UUID;
  */
 public class SoldierSpecificTag extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("bbd020e4-a079-46e1-b236-3eea2c13da4f");
     
-    // 修饰符名称
+    // 修饰符名
     private static final String GUN_DAMAGE_NAME = "tcc.soldier_specific_tag.gun_damage";
     
     public SoldierSpecificTag(Properties properties) {
@@ -40,10 +41,8 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加枪械伤害属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyGunDamageBonus(player);
-        }
+        // 给实体添加枪械伤害属性加成
+        applyGunDamageBonus((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -53,15 +52,13 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的枪械伤害属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeGunDamageBonus(player);
-        }
+        // 移除实体的枪械伤害属性加成
+        removeGunDamageBonus((LivingEntity) slotContext.entity());
     }
     
     /**
      * 检查是否可以装备到指定插槽
-     * SoldierSpecificTag与SoldierBasicTag互斥，不能同时装备
+     * SoldierSpecificTag与SoldierBasicTag互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -70,17 +67,15 @@ public class SoldierSpecificTag extends ItemBaseCurio {
             return false;
         }
         
-        // 检查玩家是否已经装备了SoldierBasicTag
-        if (slotContext.entity() instanceof Player player) {
-            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-            if (curiosHandler != null) {
-                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-                if (tccSlotHandler != null) {
-                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                        if (equippedStack.getItem() instanceof SoldierBasicTag) {
-                            return false; // 如果已经装备了SoldierBasicTag，则不能装备SoldierSpecificTag
-                        }
+        // 检查实体是否已经装备了SoldierBasicTag
+        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
+        if (curiosHandler != null) {
+            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+            if (tccSlotHandler != null) {
+                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                    if (equippedStack.getItem() instanceof SoldierBasicTag) {
+                        return false; // 如果已经装备了SoldierBasicTag，则不能装备SoldierSpecificTag
                     }
                 }
             }
@@ -90,7 +85,7 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -101,9 +96,9 @@ public class SoldierSpecificTag extends ItemBaseCurio {
      * 应用枪械伤害加成
      * 给玩家添加配置中的通用枪械伤害加成（乘法）
      */
-    private void applyGunDamageBonus(Player player) {
+    private void applyGunDamageBonus(LivingEntity livingEntity) {
         // 使用TaczAttributeAdd中的通用枪械伤害属性
-        var attributes = player.getAttributes();
+        var attributes = livingEntity.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
@@ -111,11 +106,11 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         );
         
         if (gunDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符
+            // 检查是否已经存在相同的修饰
             if (gunDamageAttribute.getModifier(GUN_DAMAGE_UUID) == null) {
-                // 获取配置中的伤害加成值
+                // 获取配置中的伤害加成
                 double damageBoost = TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get();
-                // 添加配置中的伤害加成，使用乘法操作
+                // 添加配置中的伤害加成，使用乘法操
                 AttributeModifier modifier = new AttributeModifier(
                     GUN_DAMAGE_UUID,
                     GUN_DAMAGE_NAME,
@@ -130,8 +125,8 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     /**
      * 移除枪械伤害加成
      */
-    private void removeGunDamageBonus(Player player) {
-        var attributes = player.getAttributes();
+    private void removeGunDamageBonus(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
@@ -145,14 +140,12 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当实体持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyGunDamageBonus(player);
-        }
+        applyGunDamageBonus((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -183,10 +176,10 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当实体切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyGunDamageBonus(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyGunDamageBonus(livingEntity);
     }
 }

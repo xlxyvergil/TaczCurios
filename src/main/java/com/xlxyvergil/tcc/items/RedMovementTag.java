@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -17,8 +17,8 @@ import java.util.UUID;
 
 
 /**
- * 红-有-三饰品 - 提供持枪移动速度加成
- * 通过TaczAttributeAdd的move_speed属性实现
+ * 三饰- 提供持枪移动速度加成
+ * 通过TaczAttributeAdd的move_speed属性实
  */
 public class RedMovementTag extends ItemBaseCurio {
     
@@ -31,16 +31,16 @@ public class RedMovementTag extends ItemBaseCurio {
     
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player) {
-            applyMovementSpeedEffect(slotContext.entity());
+        if (slotContext.entity() instanceof LivingEntity) {
+            applyMovementSpeedEffect((LivingEntity) slotContext.entity());
         }
         super.onEquip(slotContext, prevStack, stack);
     }
     
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player) {
-            removeMovementSpeedEffect(slotContext.entity());
+        if (slotContext.entity() instanceof LivingEntity) {
+            removeMovementSpeedEffect((LivingEntity) slotContext.entity());
         }
         super.onUnequip(slotContext, newStack, stack);
     }
@@ -48,9 +48,7 @@ public class RedMovementTag extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 每tick检查并确保移动速度效果生效
-        if (slotContext.entity() instanceof Player player) {
-            ensureMovementSpeedEffect(slotContext.entity());
-        }
+        ensureMovementSpeedEffect((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -69,7 +67,7 @@ public class RedMovementTag extends ItemBaseCurio {
         if (moveSpeedAttribute != null) {
             // 移除可能存在的旧修饰符，然后添加新的
             moveSpeedAttribute.removeModifier(MOVE_SPEED_MODIFIER_UUID);
-            // 获取配置中的移动速度加成值
+            // 获取配置中的移动速度加成
             double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get();
             moveSpeedAttribute.addTransientModifier(
                 new AttributeModifier(
@@ -116,7 +114,7 @@ public class RedMovementTag extends ItemBaseCurio {
             // 检查修饰符是否还存在，如果不存在则重新添加
             var modifier = moveSpeedAttribute.getModifier(MOVE_SPEED_MODIFIER_UUID);
             if (modifier == null) {
-                // 获取配置中的移动速度加成值
+                // 获取配置中的移动速度加成
                 double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get();
                 moveSpeedAttribute.addTransientModifier(
                     new AttributeModifier(
@@ -164,7 +162,7 @@ public class RedMovementTag extends ItemBaseCurio {
      * 当玩家切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyMovementSpeedEffect(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyMovementSpeedEffect(livingEntity);
     }
 }

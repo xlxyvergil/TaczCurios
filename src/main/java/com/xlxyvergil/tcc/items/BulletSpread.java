@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -39,10 +39,8 @@ public class BulletSpread extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
 
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyBulletSpreadEffects(player);
-        }
+        // 给生物添加属性修改
+        applyBulletSpreadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -52,10 +50,8 @@ public class BulletSpread extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeBulletSpreadEffects(player);
-        }
+        // 移除生物的属性修改
+        removeBulletSpreadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -79,8 +75,8 @@ public class BulletSpread extends ItemBaseCurio {
      * 应用弹头扩散效果
      * 提升弹头数量（加算）
      */
-    public void applyBulletSpreadEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyBulletSpreadEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 获取弹头数量属性
         var bulletCountAttribute = attributes.getInstance(
@@ -93,8 +89,8 @@ public class BulletSpread extends ItemBaseCurio {
             // 移除已存在的修饰符
             bulletCountAttribute.removeModifier(BULLET_COUNT_UUID);
 
-            // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-            if (GunTypeChecker.isHoldingPistol(player)) {
+            // 检查生物是否持有手枪，只有持有手枪时才应用加成
+            if (GunTypeChecker.isHoldingPistol(livingEntity)) {
                 // 获取配置中的弹头数量加成值
                 double bulletCountBoost = TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get();
                 // 添加配置的弹头数量加成（加算）
@@ -112,8 +108,8 @@ public class BulletSpread extends ItemBaseCurio {
     /**
      * 移除弹头扩散效果
      */
-    public void removeBulletSpreadEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeBulletSpreadEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 获取弹头数量属性
         var bulletCountAttribute = attributes.getInstance(
@@ -133,9 +129,7 @@ public class BulletSpread extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyBulletSpreadEffects(player);
-        }
+        applyBulletSpreadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -166,10 +160,10 @@ public class BulletSpread extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyBulletSpreadEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyBulletSpreadEffects(livingEntity);
     }
 }

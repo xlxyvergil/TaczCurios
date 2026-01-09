@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,10 +41,8 @@ public class DeadlySurge extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
 
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyDeadlySurgeEffects(player);
-        }
+        // 给生物添加属性修改
+        applyDeadlySurgeEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -54,10 +52,8 @@ public class DeadlySurge extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeDeadlySurgeEffects(player);
-        }
+        // 移除生物的属性修改
+        removeDeadlySurgeEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -81,8 +77,8 @@ public class DeadlySurge extends ItemBaseCurio {
      * 应用致命洪流效果
      * 提升射速（加算）和弹头数量（加算）
      */
-    public void applyDeadlySurgeEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyDeadlySurgeEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 获取射速属性
         var rpmAttribute = attributes.getInstance(
@@ -107,8 +103,8 @@ public class DeadlySurge extends ItemBaseCurio {
             bulletCountAttribute.removeModifier(BULLET_COUNT_UUID);
         }
 
-        // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-        if (GunTypeChecker.isHoldingPistol(player)) {
+        // 检查生物是否持有手枪，只有持有手枪时才应用加成
+        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
             // 应用射速加成
             if (rpmAttribute != null) {
                 // 获取配置中的射速加成值
@@ -142,8 +138,8 @@ public class DeadlySurge extends ItemBaseCurio {
     /**
      * 移除致命洪流效果
      */
-    public void removeDeadlySurgeEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeDeadlySurgeEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
         // 获取射速属性
         var roundsPerMinuteAttribute = attributes.getInstance(
@@ -174,9 +170,7 @@ public class DeadlySurge extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyDeadlySurgeEffects(player);
-        }
+        applyDeadlySurgeEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -208,10 +202,10 @@ public class DeadlySurge extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyDeadlySurgeEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyDeadlySurgeEffects(livingEntity);
     }
 }

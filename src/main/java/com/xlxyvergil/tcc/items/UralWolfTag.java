@@ -4,7 +4,6 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -29,16 +28,16 @@ public class UralWolfTag extends ItemBaseCurio {
     
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player) {
-            applyHeadshotMultiplierEffect(slotContext.entity());
+        if (slotContext.entity() instanceof LivingEntity) {
+            applyHeadshotMultiplierEffect((LivingEntity) slotContext.entity());
         }
         super.onEquip(slotContext, prevStack, stack);
     }
     
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player) {
-            removeHeadshotMultiplierEffect(slotContext.entity());
+        if (slotContext.entity() instanceof LivingEntity) {
+            removeHeadshotMultiplierEffect((LivingEntity) slotContext.entity());
         }
         super.onUnequip(slotContext, newStack, stack);
     }
@@ -121,10 +120,10 @@ public class UralWolfTag extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyHeadshotMultiplierEffect(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyHeadshotMultiplierEffect(livingEntity);
     }
 }

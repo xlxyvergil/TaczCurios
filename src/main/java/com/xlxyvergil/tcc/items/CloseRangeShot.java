@@ -1,10 +1,9 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -42,10 +41,8 @@ public class CloseRangeShot extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        // 给生物添加伤害属性修改
+        applyEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -55,10 +52,8 @@ public class CloseRangeShot extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeEffects(player);
-        }
+        // 移除生物的伤害属性修改
+        removeEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -72,17 +67,15 @@ public class CloseRangeShot extends ItemBaseCurio {
             return false;
         }
         
-        // 检查玩家是否已经装备了CloseCombatPrime
-        if (slotContext.entity() instanceof Player player) {
-            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-            if (curiosHandler != null) {
-                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-                if (tccSlotHandler != null) {
-                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                        if (equippedStack.getItem() instanceof CloseCombatPrime) {
-                            return false; // 如果已经装备了CloseCombatPrime，则不能装备CloseRangeShot
-                        }
+        // 检查生物是否已经装备了CloseCombatPrime
+        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
+        if (curiosHandler != null) {
+            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+            if (tccSlotHandler != null) {
+                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                    if (equippedStack.getItem() instanceof CloseCombatPrime) {
+                        return false; // 如果已经装备了CloseCombatPrime，则不能装备CloseRangeShot
                     }
                 }
             }
@@ -103,8 +96,8 @@ public class CloseRangeShot extends ItemBaseCurio {
      * 应用效果
      * 提升霰弹枪伤害（加算）
      */
-    private void applyEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 霰弹枪伤害属性
         var shotgunDamageAttribute = attributes.getInstance(
@@ -134,8 +127,8 @@ public class CloseRangeShot extends ItemBaseCurio {
     /**
      * 移除效果
      */
-    private void removeEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 霰弹枪伤害属性
         var shotgunDamageAttribute = attributes.getInstance(
@@ -156,9 +149,7 @@ public class CloseRangeShot extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        applyEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -189,10 +180,10 @@ public class CloseRangeShot extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 }

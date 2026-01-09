@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -57,10 +58,8 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        // 给生物添加属性加成
+        applyEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -70,10 +69,8 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeEffects(player);
-        }
+        // 移除生物的属性加成
+        removeEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -96,11 +93,11 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     
     /**
      * 应用所有效果加成
-     * 玩家血量为100%时，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage
+     * 生物血量为100%时，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage
      */
-    public void applyEffects(Player player) {
-        // 检查玩家血量是否为100%（等于最大生命值）
-        float healthPercentage = player.getHealth() / player.getMaxHealth();
+    public void applyEffects(LivingEntity livingEntity) {
+        // 检查生物血量是否为100%（等于最大生命值）
+        float healthPercentage = livingEntity.getHealth() / livingEntity.getMaxHealth();
         
         if (healthPercentage >= 1.0) {
             // 血量为100%时应用效果
@@ -112,27 +109,27 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
             double explosionEnabled = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionEnabled.get();
             
             // 应用配置中的通用枪械伤害加成
-            applyAttributeModifier(player, "taa", "bullet_gundamage", damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            applyAttributeModifier(livingEntity, "taa", "bullet_gundamage", damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
             
             // 应用配置中的爆炸范围加成
-            applyAttributeModifier(player, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
+            applyAttributeModifier(livingEntity, "taa", "explosion_radius", explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
             
             // 应用配置中的爆炸伤害加成
-            applyAttributeModifier(player, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            applyAttributeModifier(livingEntity, "taa", "explosion_damage", explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
             
             // 应用配置中的爆炸启用属性
-            applyAttributeModifier(player, "taa", "explosion_enabled", explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.ADDITION);
+            applyAttributeModifier(livingEntity, "taa", "explosion_enabled", explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.ADDITION);
         } else {
             // 血量不为100%时移除效果
-            removeEffects(player);
+            removeEffects(livingEntity);
         }
     }
     
     /**
      * 通用的属性修饰符应用方法
      */
-    private void applyAttributeModifier(Player player, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName, AttributeModifier.Operation operation) {
-        var attributes = player.getAttributes();
+    private void applyAttributeModifier(LivingEntity livingEntity, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName, AttributeModifier.Operation operation) {
+        var attributes = livingEntity.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation(namespace, attributeName)
@@ -157,18 +154,18 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     /**
      * 移除所有效果加成
      */
-    public void removeEffects(Player player) {
-        removeAttributeModifier(player, "taa", "bullet_gundamage", GUN_DAMAGE_UUID);
-        removeAttributeModifier(player, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
-        removeAttributeModifier(player, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);
-        removeAttributeModifier(player, "taa", "explosion_enabled", EXPLOSION_ENABLED_UUID);
+    public void removeEffects(LivingEntity livingEntity) {
+        removeAttributeModifier(livingEntity, "taa", "bullet_gundamage", GUN_DAMAGE_UUID);
+        removeAttributeModifier(livingEntity, "taa", "explosion_radius", EXPLOSION_RADIUS_UUID);
+        removeAttributeModifier(livingEntity, "taa", "explosion_damage", EXPLOSION_DAMAGE_UUID);
+        removeAttributeModifier(livingEntity, "taa", "explosion_enabled", EXPLOSION_ENABLED_UUID);
     }
     
     /**
      * 通用的属性修饰符移除方法
      */
-    private void removeAttributeModifier(Player player, String namespace, String attributeName, UUID uuid) {
-        var attributes = player.getAttributes();
+    private void removeAttributeModifier(LivingEntity livingEntity, String namespace, String attributeName, UUID uuid) {
+        var attributes = livingEntity.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation(namespace, attributeName)
@@ -235,31 +232,31 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     public static void onLivingHurt(LivingHurtEvent event) {
         DamageSource source = event.getSource();
         
-        // 检查伤害来源是否是玩家
-        if (source.getEntity() instanceof Player player) {
-            // 检查玩家是否装备了天火劫灭
-            if (hasHeavenFireApocalypseEquipped(player)) {
-                // 检查玩家是否手持枪械
-                ItemStack mainHandItem = player.getMainHandItem();
+        // 检查伤害来源是否是生物
+        if (source.getEntity() instanceof LivingEntity livingEntity) {
+            // 检查生物是否装备了天火劫灭
+            if (hasHeavenFireApocalypseEquipped(livingEntity)) {
+                // 检查生物是否手持枪械
+                ItemStack mainHandItem = livingEntity.getMainHandItem();
                 com.tacz.guns.api.item.IGun iGun = com.tacz.guns.api.item.IGun.getIGunOrNull(mainHandItem);
                 
-                // 只有在玩家手持枪械时才触发效果
+                // 只有在生物手持枪械时才触发效果
                 if (iGun != null) {
-                    // 检查玩家血量是否为100%
-                    float healthPercentage = player.getHealth() / player.getMaxHealth();
+                    // 检查生物血量是否为100%
+                    float healthPercentage = livingEntity.getHealth() / livingEntity.getMaxHealth();
                     if (healthPercentage < 1.0) {
                         return; // 血量不为100%时不生效
                     }
                     
-                    // 造成伤害后对玩家造成当前生命值100%的伤害
-                    float currentHealth = player.getHealth();
+                    // 造成伤害后对生物造成当前生命值100%的伤害
+                    float currentHealth = livingEntity.getHealth();
                     float healthToDeduct = currentHealth * 1.0f;
                     
                     if (healthToDeduct > 0) {
-                        player.hurt(player.damageSources().magic(), healthToDeduct);
+                        livingEntity.hurt(livingEntity.damageSources().magic(), healthToDeduct);
                         
-                        // 显示扣除生命值的提示
-                        if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+                        // 显示扣除生命值的提示（仅对玩家）
+                        if (livingEntity instanceof Player player && net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                             player.displayClientMessage(
                                 net.minecraft.network.chat.Component.literal(
                                     "§4天火劫灭反噬 - 生命值-100%当前生命值"
@@ -272,12 +269,12 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                     // 获取配置中的影响范围
                     double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
                     
-                    // 对玩家周围的其他玩家提供配置中持续时间和伤害加成的bullet_gundamage加成（加算）
-                    List<Player> nearbyPlayers = player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(nearbyPlayerRadius));
+                    // 对周围的其他玩家提供配置中持续时间和伤害加成的bullet_gundamage加成（加算）
+                    List<Player> nearbyPlayers = livingEntity.level().getEntitiesOfClass(Player.class, livingEntity.getBoundingBox().inflate(nearbyPlayerRadius));
 
                     for (Player nearbyPlayer : nearbyPlayers) {
                         // 排除自己
-                        if (nearbyPlayer == player) continue;
+                        if (nearbyPlayer == livingEntity) continue;
 
                         // 给周围玩家添加属性修饰符
                         var attributes = nearbyPlayer.getAttributes();
@@ -314,8 +311,8 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                     double nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100;
                     int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
                     
-                    // 显示提示信息
-                    if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+                    // 显示提示信息（仅对玩家）
+                    if (livingEntity instanceof Player player && net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                         player.displayClientMessage(
                             net.minecraft.network.chat.Component.literal(
                                 "§6天火劫灭 - 为周围玩家提供" + nearbyPlayerDuration + "秒的" + String.format("%.0f", nearbyPlayerDamageBoost) + "%枪械伤害加成"
@@ -331,8 +328,8 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     /**
      * 每tick检查并移除周围玩家的加成效果
      */
-    public static void tickNearbyPlayerBuffs(Player player) {
-        net.minecraft.nbt.CompoundTag persistentData = player.getPersistentData();
+    public static void tickNearbyPlayerBuffs(LivingEntity livingEntity) {
+        net.minecraft.nbt.CompoundTag persistentData = livingEntity.getPersistentData();
         if (persistentData.contains(NEARBY_BUFF_DURATION_TAG)) {
             int duration = persistentData.getInt(NEARBY_BUFF_DURATION_TAG);
             
@@ -341,7 +338,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                 persistentData.putInt(NEARBY_BUFF_DURATION_TAG, duration - 1);
             } else {
                 // 移除加成效果
-                var attributes = player.getAttributes();
+                var attributes = livingEntity.getAttributes();
                 var gunDamageAttribute = attributes.getInstance(
                     net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                         new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
@@ -364,26 +361,24 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效，检查血量条件
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        applyEffects((LivingEntity) slotContext.entity());
     }
     
     /**
-     * 检查玩家是否装备了天火劫灭
+     * 检查生物是否装备了天火劫灭
      */
-    private static boolean hasHeavenFireApocalypseEquipped(Player player) {
-        // 使用Curios API检查玩家是否装备了天火劫灭
-        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player)
+    private static boolean hasHeavenFireApocalypseEquipped(LivingEntity livingEntity) {
+        // 使用Curios API检查生物是否装备了天火劫灭
+        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(livingEntity)
             .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof HeavenFireApocalypse))
             .orElse(java.util.Optional.empty()).isPresent();
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 }

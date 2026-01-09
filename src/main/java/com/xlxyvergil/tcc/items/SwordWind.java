@@ -2,8 +2,8 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -16,18 +16,18 @@ import java.util.UUID;
 
 /**
  * 剑风 - 提升1.1近战距离
- * 效果：提升1.1近战距离（加算）
+ * 效果：提.1近战距离（加算）
  */
 public class SwordWind extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID MELEE_DISTANCE_UUID = UUID.fromString("3f7ed736-62d3-4835-bc94-2834d4b91832");
     
-    // 修饰符名称
+    // 修饰符名
     private static final String MELEE_DISTANCE_NAME = "tcc.sword_wind.melee_distance";
     
     // 效果参数
-    // private static final double MELEE_DISTANCE_BOOST = 1.1; // 1.1加成 - 现在从配置文件读取
+    // private static final double MELEE_DISTANCE_BOOST = 1.1; // 1.1加成 - 现在从配置文件读
     
     public SwordWind(Properties properties) {
         super(properties);
@@ -35,7 +35,7 @@ public class SwordWind extends ItemBaseCurio {
     
     /**
      * 检查是否可以装备到指定插槽
-     * SwordWind与SwordWindPrime互斥，不能同时装备
+     * SwordWind与SwordWindPrime互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -52,33 +52,28 @@ public class SwordWind extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
+     * 当饰品被装备时调
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            applySwordWindEffects(player);
-        }
+        applySwordWindEffects((LivingEntity) slotContext.entity());
     }
     
     /**
-     * 当饰品被卸下时调用
+     * 当饰品被卸下时调
      */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            removeSwordWindEffects(player);
-        }
+        removeSwordWindEffects((LivingEntity) slotContext.entity());
     }
     
     /**
      * 应用剑风效果
-     * 给玩家添加1.1的近战距离加成（加算）
-     */
-    private void applySwordWindEffects(Player player) {
-        var attributes = player.getAttributes();
+     * 给实体添.1的近战距离加成（加算     */
+    private void applySwordWindEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 近战距离属性
+        // 近战距离属
         var meleeDistanceAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "melee_distance")
@@ -86,13 +81,13 @@ public class SwordWind extends ItemBaseCurio {
         );
         
         if (meleeDistanceAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
+            // 检查是否已经存在相同的修饰符，如果存在则移
             meleeDistanceAttribute.removeModifier(MELEE_DISTANCE_UUID);
             
-            // 从配置文件获取近战距离加成值
+            // 从配置文件获取近战距离加成
             double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindMeleeRangeBoost.get();
             
-            // 添加配置的近战距离加成（加算）
+            // 添加配置的近战距离加成（加算
             var meleeDistanceModifier = new AttributeModifier(
                 MELEE_DISTANCE_UUID,
                 MELEE_DISTANCE_NAME,
@@ -106,10 +101,10 @@ public class SwordWind extends ItemBaseCurio {
     /**
      * 移除剑风效果
      */
-    private void removeSwordWindEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeSwordWindEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 近战距离属性
+        // 近战距离属
         var meleeDistanceAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "melee_distance")
@@ -148,3 +143,4 @@ public class SwordWind extends ItemBaseCurio {
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 }
+

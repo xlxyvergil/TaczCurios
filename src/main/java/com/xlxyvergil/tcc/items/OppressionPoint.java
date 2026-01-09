@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -56,9 +56,7 @@ public class OppressionPoint extends ItemBaseCurio {
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            applyOppressionPointEffects(player);
-        }
+        applyOppressionPointEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -66,17 +64,15 @@ public class OppressionPoint extends ItemBaseCurio {
      */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            removeOppressionPointEffects(player);
-        }
+        removeOppressionPointEffects((LivingEntity) slotContext.entity());
     }
     
     /**
      * 应用压迫点效果
-     * 给玩家添加120%的近战伤害加成（加算）
+     * 给生物添加120%的近战伤害加成（加算）
      */
-    private void applyOppressionPointEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyOppressionPointEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 近战伤害属性
         var meleeDamageAttribute = attributes.getInstance(
@@ -103,8 +99,8 @@ public class OppressionPoint extends ItemBaseCurio {
     /**
      * 移除压迫点效果
      */
-    private void removeOppressionPointEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeOppressionPointEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 近战伤害属性
         var meleeDamageAttribute = attributes.getInstance(

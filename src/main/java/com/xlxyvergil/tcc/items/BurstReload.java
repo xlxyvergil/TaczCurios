@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,10 +45,8 @@ public class BurstReload extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyBurstReloadEffects(player);
-        }
+        // 给生物添加属性修改
+        applyBurstReloadEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -57,10 +56,8 @@ public class BurstReload extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeBurstReloadEffects(player);
-        }
+        // 移除生物的属性修改
+        removeBurstReloadEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -93,8 +90,8 @@ public class BurstReload extends ItemBaseCurio {
      * 应用爆发装填效果
      * 提升装填速度（加算）
      */
-    public void applyBurstReloadEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyBurstReloadEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
@@ -107,8 +104,8 @@ public class BurstReload extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             reloadAttribute.removeModifier(RELOAD_UUID);
             
-            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
+            // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+            if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
                 // 获取配置中的装填速度加成值
                 double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get();
                 // 添加配置的装填速度加成（加算）
@@ -127,8 +124,8 @@ public class BurstReload extends ItemBaseCurio {
     /**
      * 移除爆发装填效果
      */
-    public void removeBurstReloadEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeBurstReloadEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 装填速度属性（不带枪械类型）
         var reloadAttribute = attributes.getInstance(
@@ -148,9 +145,7 @@ public class BurstReload extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyBurstReloadEffects(player);
-        }
+        applyBurstReloadEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -181,10 +176,10 @@ public class BurstReload extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyBurstReloadEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyBurstReloadEffects(livingEntity);
     }
 }

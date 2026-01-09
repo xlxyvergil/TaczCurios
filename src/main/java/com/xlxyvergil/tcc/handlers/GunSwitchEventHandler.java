@@ -10,8 +10,6 @@ import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import com.xlxyvergil.tcc.TaczCurios;
 
-import java.util.Optional;
-
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class GunSwitchEventHandler {
     

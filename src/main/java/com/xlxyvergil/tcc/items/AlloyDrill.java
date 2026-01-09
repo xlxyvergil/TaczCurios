@@ -2,7 +2,7 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -36,9 +36,9 @@ public class AlloyDrill extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加护甲忽略属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyAlloyDrillEffects(player);
+        // 给生物添加护甲忽略属性加成
+        if (slotContext.entity() instanceof LivingEntity) {
+            applyAlloyDrillEffects((LivingEntity) slotContext.entity());
         }
     }
     
@@ -49,9 +49,9 @@ public class AlloyDrill extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的护甲忽略属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeAlloyDrillEffects(player);
+        // 移除生物的护甲忽略属性加成
+        if (slotContext.entity() instanceof LivingEntity) {
+            removeAlloyDrillEffects((LivingEntity) slotContext.entity());
         }
     }
     
@@ -67,8 +67,8 @@ public class AlloyDrill extends ItemBaseCurio {
      * 应用钻头效果
      * 提升护甲忽略能力
      */
-    private void applyAlloyDrillEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyAlloyDrillEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 获取配置中的护甲穿透加成值
         double armorIgnoreBoost = TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get();
@@ -98,8 +98,8 @@ public class AlloyDrill extends ItemBaseCurio {
     /**
      * 移除钻头效果
      */
-    private void removeAlloyDrillEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeAlloyDrillEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 移除护甲忽略能力加成
         var armorIgnoreAttribute = attributes.getInstance(
@@ -114,13 +114,13 @@ public class AlloyDrill extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当饰品在插槽中时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyAlloyDrillEffects(player);
+        if (slotContext.entity() instanceof LivingEntity) {
+            applyAlloyDrillEffects((LivingEntity) slotContext.entity());
         }
     }
 
@@ -159,10 +159,10 @@ public class AlloyDrill extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyAlloyDrillEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyAlloyDrillEffects(livingEntity);
     }
 }

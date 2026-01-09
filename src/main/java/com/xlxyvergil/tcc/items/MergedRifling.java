@@ -3,8 +3,9 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -56,10 +57,8 @@ public class MergedRifling extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加伤害和移动速度属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyMergedRiflingEffects(player);
-        }
+        // 给生物添加伤害和移动速度属性修改
+        applyMergedRiflingEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -69,15 +68,13 @@ public class MergedRifling extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的伤害和移动速度属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeRiflingEffects(player);
-        }
+        // 移除生物的伤害和移动速度属性修改
+        removeRiflingEffects((LivingEntity) slotContext.entity());
     }
     
     /**
      * 检查是否可以装备到指定插槽
-     * MergedRifling与Rifling互斥，不能同时装备
+     * MergedRifling与Rifling互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -86,17 +83,15 @@ public class MergedRifling extends ItemBaseCurio {
             return false;
         }
         
-        // 检查玩家是否已经装备了Rifling
-        if (slotContext.entity() instanceof Player player) {
-            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-            if (curiosHandler != null) {
-                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-                if (tccSlotHandler != null) {
-                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                        if (equippedStack.getItem() instanceof Rifling) {
-                            return false; // 如果已经装备了Rifling，则不能装备MergedRifling
-                        }
+        // 检查生物是否已经装备了Rifling
+        ICuriosItemHandler curiosHandler = ((LivingEntity)slotContext.entity()).getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
+        if (curiosHandler != null) {
+            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+            if (tccSlotHandler != null) {
+                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                    if (equippedStack.getItem() instanceof Rifling) {
+                        return false; // 如果已经装备了Rifling，则不能装备MergedRifling
                     }
                 }
             }
@@ -106,7 +101,7 @@ public class MergedRifling extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -115,10 +110,10 @@ public class MergedRifling extends ItemBaseCurio {
     
     /**
      * 应用膛线效果
-     * 提升特定枪械伤害和持枪移动速度（都使用加算）
+     * 提升特定枪械伤害和持枪移动速度（都使用加算
      */
-    public void applyMergedRiflingEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyMergedRiflingEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 特定枪械类型
         String[] gunTypes = {
@@ -129,7 +124,7 @@ public class MergedRifling extends ItemBaseCurio {
             "bullet_gundamage_launcher"
         };
         
-        // 获取配置中的伤害加成值和移动速度加成值
+        // 获取配置中的伤害加成值和移动速度加成
         double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get();
         double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get();
         
@@ -142,7 +137,7 @@ public class MergedRifling extends ItemBaseCurio {
             );
             
             if (gunDamageAttribute != null) {
-                // 检查是否已经存在相同的修饰符，如果存在则移除
+                // 检查是否已经存在相同的修饰符，如果存在则移
                 gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
                 
                 // 添加配置中的特定枪械伤害加成（加算）
@@ -167,10 +162,10 @@ public class MergedRifling extends ItemBaseCurio {
             movementSpeedAttribute.removeModifier(MOVEMENT_SPEED_UUID);
         }
         
-        // 检查玩家是否手持特定类型的枪械
-        boolean shouldApplyMovementSpeed = GunTypeChecker.isHoldingDmgBoostGunType(player);
+        // 检查生物是否手持特定类型的枪械
+        boolean shouldApplyMovementSpeed = GunTypeChecker.isHoldingDmgBoostGunType(livingEntity);
         
-        // 只在玩家手持特定类型枪械时应用移动速度加成
+        // 只在生物手持特定类型枪械时应用移动速度加成
         if (shouldApplyMovementSpeed && movementSpeedAttribute != null) {
             // 添加配置中的持枪移动速度提升（加算）
             var movementSpeedModifier = new AttributeModifier(
@@ -187,8 +182,8 @@ public class MergedRifling extends ItemBaseCurio {
     /**
      * 移除膛线效果
      */
-    public void removeRiflingEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeRiflingEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 特定枪械类型
         String[] gunTypes = {
@@ -225,14 +220,12 @@ public class MergedRifling extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyMergedRiflingEffects(player);
-        }
+        applyMergedRiflingEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -265,10 +258,10 @@ public class MergedRifling extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyMergedRiflingEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyMergedRiflingEffects(livingEntity);
     }
 }

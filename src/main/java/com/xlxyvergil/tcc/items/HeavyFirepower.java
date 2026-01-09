@@ -3,8 +3,8 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -15,16 +15,16 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 重装火力 - 提升165%手枪伤害，提高55%不精准度
- * 效果：提升165%手枪伤害（加算），提高55%不精准度（加算）
+ * 重装火力 - 提升165%手枪伤害，提5%不精准度
+ * 效果：提65%手枪伤害（加算），提5%不精准度（加算）
  */
 public class HeavyFirepower extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识修饰符
+    // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("401a1d7b-9724-4602-a956-ff32a991648f");
     private static final UUID INACCURACY_UUID = UUID.fromString("5c03b799-4491-4c9c-ab68-7678a42a9b4a");
     
-    // 修饰符名称
+    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.heavy_firepower.damage";
     private static final String INACCURACY_NAME = "tcc.heavy_firepower.inaccuracy";
     
@@ -35,29 +35,25 @@ public class HeavyFirepower extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
+     * 当饰品被装备时调
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyHeavyFirepowerEffects(player);
-        }
+        // 给实体添加属性修改
+        applyHeavyFirepowerEffects((LivingEntity) slotContext.entity());
     }
     
     /**
-     * 当饰品被卸下时调用
+     * 当饰品被卸下时调
      */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeHeavyFirepowerEffects(player);
-        }
+        // 移除实体的属性修改
+        removeHeavyFirepowerEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -70,7 +66,7 @@ public class HeavyFirepower extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -79,30 +75,29 @@ public class HeavyFirepower extends ItemBaseCurio {
     
     /**
      * 应用重装火力效果
-     * 提升手枪伤害（加算）和不精准度（乘算）
-     */
-    public void applyHeavyFirepowerEffects(Player player) {
-        var attributes = player.getAttributes();
+     * 提升手枪伤害（加算）和不精准度（乘算     */
+    public void applyHeavyFirepowerEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 获取手枪伤害属性
+        // 获取手枪伤害属
         var pistolDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_pistol")
             )
         );
         
-        // 移除已存在的修饰符
+        // 移除已存在的修饰
         if (pistolDamageAttribute != null) {
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
         }
         
-        // 从配置文件获取手枪伤害加成值
+        // 从配置文件获取手枪伤害加成
         double damageBoost = TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get();
         double inaccuracyBoost = TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get();
         
-        // 直接应用手枪伤害加成，无需检查是否手持手枪
+        // 直接应用手枪伤害加成，无需检查是否手持手
         if (pistolDamageAttribute != null) {
-            // 添加配置的手枪伤害加成（加算）
+            // 添加配置的手枪伤害加成（加算
             var pistolDamageModifier = new AttributeModifier(
                 DAMAGE_UUID,
                 DAMAGE_NAME,
@@ -120,12 +115,12 @@ public class HeavyFirepower extends ItemBaseCurio {
         );
         
         if (inaccuracyAttribute != null) {
-            // 移除已存在的修饰符
+            // 移除已存在的修饰
             inaccuracyAttribute.removeModifier(INACCURACY_UUID);
             
-            // 检查玩家是否持有手枪，只有持有手枪时才应用不精准度加成
-            if (GunTypeChecker.isHoldingPistol(player)) {
-                // 添加配置的不精准度加成（加算）
+            // 检查实体是否持有手枪，只有持有手枪时才应用不精准度加成
+            if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+                // 添加配置的不精准度加成（加算
                 var inaccuracyModifier = new AttributeModifier(
                     INACCURACY_UUID,
                     INACCURACY_NAME,
@@ -141,10 +136,10 @@ public class HeavyFirepower extends ItemBaseCurio {
     /**
      * 移除重装火力效果
      */
-    public void removeHeavyFirepowerEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeHeavyFirepowerEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 获取手枪伤害属性
+        // 获取手枪伤害属
         var pistolDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_pistol")
@@ -173,9 +168,7 @@ public class HeavyFirepower extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyHeavyFirepowerEffects(player);
-        }
+        applyHeavyFirepowerEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -207,10 +200,11 @@ public class HeavyFirepower extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当实体切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyHeavyFirepowerEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyHeavyFirepowerEffects(livingEntity);
     }
 }
+

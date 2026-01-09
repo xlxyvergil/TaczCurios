@@ -8,7 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -48,10 +48,8 @@ public class CorruptMagazine extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyCorruptMagazineEffects(player);
-        }
+        // 给生物添加属性修改
+        applyCorruptMagazineEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -61,10 +59,8 @@ public class CorruptMagazine extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeCorruptMagazineEffects(player);
-        }
+        // 移除生物的属性修改
+        removeCorruptMagazineEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -88,8 +84,8 @@ public class CorruptMagazine extends ItemBaseCurio {
      * 应用腐败弹匣效果
      * 提升弹匣容量（加算）并降低装填速度（加算）
      */
-    public void applyCorruptMagazineEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyCorruptMagazineEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 弹匣容量属性（不带枪械类型）
         var capacityAttribute = attributes.getInstance(
@@ -110,8 +106,8 @@ public class CorruptMagazine extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             capacityAttribute.removeModifier(MAGAZINE_UUID);
             
-            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
+            // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+            if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
                 // 获取配置中的弹匣容量加成值
                 double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get();
                 // 添加配置的弹匣容量加成（加算）
@@ -130,8 +126,8 @@ public class CorruptMagazine extends ItemBaseCurio {
             // 检查是否已经存在相同的修饰符，如果存在则移除
             reloadAttribute.removeModifier(RELOAD_UUID);
             
-            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
+            // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+            if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
                 // 获取配置中的装填速度降低值
                 double reloadPenalty = -TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
                 // 添加配置的装填速度降低（加算）
@@ -150,8 +146,8 @@ public class CorruptMagazine extends ItemBaseCurio {
     /**
      * 移除腐败弹匣效果
      */
-    public void removeCorruptMagazineEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeCorruptMagazineEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 弹匣容量属性（不带枪械类型）
         var magazineAttribute = attributes.getInstance(
@@ -184,9 +180,7 @@ public class CorruptMagazine extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyCorruptMagazineEffects(player);
-        }
+        applyCorruptMagazineEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -218,10 +212,10 @@ public class CorruptMagazine extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyCorruptMagazineEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyCorruptMagazineEffects(livingEntity);
     }
 }

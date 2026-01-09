@@ -5,8 +5,9 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -19,14 +20,14 @@ import java.util.UUID;
 
 /**
  * 霰弹扩充Prime - 提升弹匣容量
- * 效果：提升110%弹匣容量，仅对霰弹枪生效
+ * 效果：提10%弹匣容量，仅对霰弹枪生效
  */
 public class ShotgunExpansionPrime extends ItemBaseCurio {
 
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("8c17e10f-b8fe-41b6-b0e7-ae214bed3dd4");
 
-    // 修饰符名称
+    // 修饰符名
     private static final String MAGAZINE_NAME = "tcc.shotgun_expansion_prime.magazine_capacity";
 
     public ShotgunExpansionPrime(Properties properties) {
@@ -42,10 +43,8 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
 
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyShotgunExpansionPrimeEffects(player);
-        }
+        // 给生物添加属性修改
+        applyShotgunExpansionPrimeEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -55,15 +54,13 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeShotgunExpansionPrimeEffects(player);
-        }
+        // 移除生物的属性修改
+        removeShotgunExpansionPrimeEffects((LivingEntity) slotContext.entity());
     }
 
     /**
      * 检查是否可以装备到指定插槽
-     * ShotgunExpansionPrime与ShotgunExpansion互斥，不能同时装备
+     * ShotgunExpansionPrime与ShotgunExpansion互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -80,7 +77,7 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     }
 
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -91,26 +88,26 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
      * 应用霰弹扩充Prime效果
      * 提升弹匣容量
      */
-    public void applyShotgunExpansionPrimeEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyShotgunExpansionPrimeEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
-        // 弹匣容量属性
+        // 弹匣容量属
         var magazineAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "magazine_capacity")
             )
         );
 
-        // 移除已存在的修饰符
+        // 移除已存在的修饰
         if (magazineAttribute != null) {
             magazineAttribute.removeModifier(MAGAZINE_UUID);
         }
 
-        // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-        if (GunTypeChecker.isHoldingShotgun(player)) {
-            // 获取配置中的弹匣容量加成值
+        // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+            // 获取配置中的弹匣容量加成
             double magazineBoost = TaczCuriosConfig.COMMON.shotgunExpansionPrimeCapacityBoost.get();
-            // 添加配置的弹匣容量加成（加算）
+            // 添加配置的弹匣容量加成（加算
             if (magazineAttribute != null) {
                 var magazineModifier = new AttributeModifier(
                     MAGAZINE_UUID,
@@ -126,10 +123,10 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     /**
      * 移除霰弹扩充Prime效果
      */
-    public void removeShotgunExpansionPrimeEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeShotgunExpansionPrimeEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
-        // 弹匣容量属性
+        // 弹匣容量属
         var magazineAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "magazine_capacity")
@@ -142,14 +139,12 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     }
 
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyShotgunExpansionPrimeEffects(player);
-        }
+        applyShotgunExpansionPrimeEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -180,10 +175,10 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     }
 
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyShotgunExpansionPrimeEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyShotgunExpansionPrimeEffects(livingEntity);
     }
 }

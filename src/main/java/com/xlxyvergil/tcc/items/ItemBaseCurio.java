@@ -1,6 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
@@ -44,7 +44,7 @@ public class ItemBaseCurio extends Item implements ICurioItem {
      * 当玩家切换武器时被GunSwitchEventHandler调用
      * 子类需要重写此方法来实现具体的效果逻辑
      */
-    public void applyGunSwitchEffect(Player player) {
+    public void applyGunSwitchEffect(LivingEntity entity) {
         // 默认实现为空，子类可以重写
     }
 }

@@ -7,8 +7,9 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,10 +26,10 @@ import java.util.UUID;
  */
 public class SplitChamber extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID AMMO_UUID = UUID.fromString("7ee8eee4-ae89-490c-83d1-1392a6a71aa7");
     
-    // 修饰符名称
+    // 修饰符名
     private static final String AMMO_NAME = "tcc.split_chamber.bullet_count";
     
     public SplitChamber(Properties properties) {
@@ -44,10 +45,8 @@ public class SplitChamber extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applySplitChamberEffects(player);
-        }
+        // 给生物添加属性修改
+        applySplitChamberEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -57,10 +56,8 @@ public class SplitChamber extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeSplitChamberEffects(player);
-        }
+        // 移除生物的属性修改
+        removeSplitChamberEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -73,7 +70,7 @@ public class SplitChamber extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -84,10 +81,10 @@ public class SplitChamber extends ItemBaseCurio {
      * 应用分裂膛室效果
      * 提升弹头数量（加算）
      */
-    public void applySplitChamberEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applySplitChamberEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 弹头数量属性（不带枪械类型）
+        // 弹头数量属性（不带枪械类型
         var ammoAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_count")
@@ -95,12 +92,12 @@ public class SplitChamber extends ItemBaseCurio {
         );
         
         if (ammoAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
+            // 检查是否已经存在相同的修饰符，如果存在则移
             ammoAttribute.removeModifier(AMMO_UUID);
             
-            // 检查玩家是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player)) {
-                // 获取配置中的弹头数量加成值
+            // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+            if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+                // 获取配置中的弹头数量加成
                 double ammoBoost = TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get();
                 
                 // 添加弹头数量加成（加算）
@@ -119,10 +116,10 @@ public class SplitChamber extends ItemBaseCurio {
     /**
      * 移除分裂膛室效果
      */
-    public void removeSplitChamberEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeSplitChamberEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 弹头数量属性（不带枪械类型）
+        // 弹头数量属性（不带枪械类型
         var ammoAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "bullet_count")
@@ -135,14 +132,12 @@ public class SplitChamber extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applySplitChamberEffects(player);
-        }
+        applySplitChamberEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -173,10 +168,10 @@ public class SplitChamber extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applySplitChamberEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applySplitChamberEffects(livingEntity);
     }
 }

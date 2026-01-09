@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -74,10 +74,8 @@ public class DespicableAcceleration extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加射击速度和伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyAccelerationEffects(player);
-        }
+        // 给生物添加射击速度和伤害属性修改
+        applyAccelerationEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -87,10 +85,8 @@ public class DespicableAcceleration extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的射击速度和伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeAccelerationEffects(player);
-        }
+        // 移除生物的射击速度和伤害属性修改
+        removeAccelerationEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -105,8 +101,8 @@ public class DespicableAcceleration extends ItemBaseCurio {
      * 应用加速效果
      * 提升射击速度，降低通用伤害和7种特定枪械伤害
      */
-    private void applyAccelerationEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyAccelerationEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 获取配置中的射击速度加成和伤害降低值
         double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get();
@@ -181,8 +177,8 @@ public class DespicableAcceleration extends ItemBaseCurio {
     /**
      * 移除加速效果
      */
-    private void removeAccelerationEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeAccelerationEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 移除射击速度加成
         var firingSpeedAttribute = attributes.getInstance(
@@ -226,9 +222,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyAccelerationEffects(player);
-        }
+        applyAccelerationEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -268,10 +262,10 @@ public class DespicableAcceleration extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyAccelerationEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyAccelerationEffects(livingEntity);
     }
 }

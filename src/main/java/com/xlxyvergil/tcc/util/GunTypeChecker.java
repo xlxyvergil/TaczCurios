@@ -12,7 +12,6 @@ import com.xlxyvergil.taa.modifier.AmmoCountModifier;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class GunTypeChecker {
@@ -23,13 +22,13 @@ public class GunTypeChecker {
     public static final Set<String> SNIPER_GUN_TYPES = Set.of("sniper");
     
     /**
-     * 检查玩家是否持有指定类型的枪械
-     * @param player 玩家实体
+     * 检查生物是否持有指定类型的枪械
+     * @param livingEntity 生物实体
      * @param validTypes 有效的枪械类型集合
-     * @return 如果玩家持有指定类型的枪械返回true，否则返回false
+     * @return 如果生物持有指定类型的枪械返回true，否则返回false
      */
-    public static boolean isHoldingValidGunType(Player player, Set<String> validTypes) {
-        ItemStack mainHandItem = player.getMainHandItem();
+    public static boolean isHoldingValidGunType(LivingEntity livingEntity, Set<String> validTypes) {
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(mainHandItem);
         
         if (iGun != null) {
@@ -44,48 +43,48 @@ public class GunTypeChecker {
     }
     
     /**
-     * 检查玩家是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、发射器）
-     * @param player 玩家实体
-     * @return 如果玩家持有支持伤害加成的枪械类型返回true，否则返回false
+     * 检查生物是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、发射器）
+     * @param livingEntity 生物实体
+     * @return 如果生物持有支持伤害加成的枪械类型返回true，否则返回false
      */
-    public static boolean isHoldingDmgBoostGunType(Player player) {
-        return isHoldingValidGunType(player, DMG_BOOST_GUN_TYPES);
+    public static boolean isHoldingDmgBoostGunType(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, DMG_BOOST_GUN_TYPES);
     }
     
     /**
-     * 检查玩家是否持有霰弹枪
-     * @param player 玩家实体
-     * @return 如果玩家持有霰弹枪返回true，否则返回false
+     * 检查生物是否持有霰弹枪
+     * @param livingEntity 生物实体
+     * @return 如果生物持有霰弹枪返回true，否则返回false
      */
-    public static boolean isHoldingShotgun(Player player) {
-        return isHoldingValidGunType(player, SHOTGUN_GUN_TYPES);
+    public static boolean isHoldingShotgun(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, SHOTGUN_GUN_TYPES);
     }
     
     /**taa:magazine_capacity
-     * 检查玩家是否持有手枪
-     * @param player 玩家实体
-     * @return 如果玩家持有手枪返回true，否则返回false
+     * 检查生物是否持有手枪
+     * @param livingEntity 生物实体
+     * @return 如果生物持有手枪返回true，否则返回false
      */
-    public static boolean isHoldingPistol(Player player) {
-        return isHoldingValidGunType(player, PISTOL_GUN_TYPES);
+    public static boolean isHoldingPistol(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, PISTOL_GUN_TYPES);
     }
     
     /**
-     * 检查玩家是否持有狙击枪
-     * @param player 玩家实体
-     * @return 如果玩家持有狙击枪返回true，否则返回false
+     * 检查生物是否持有狙击枪
+     * @param livingEntity 生物实体
+     * @return 如果生物持有狙击枪返回true，否则返回false
      */
-    public static boolean isHoldingSniper(Player player) {
-        return isHoldingValidGunType(player, SNIPER_GUN_TYPES);
+    public static boolean isHoldingSniper(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, SNIPER_GUN_TYPES);
     }
     
     /**
-     * 检查玩家手中枪械的当前弹匣是否满弹药
-     * @param player 玩家实体
-     * @return 如果玩家持有枪械且弹匣满弹药返回true，否则返回false
+     * 检查生物手中枪械的当前弹匣是否满弹药
+     * @param livingEntity 生物实体
+     * @return 如果生物持有枪械且弹匣满弹药返回true，否则返回false
      */
-    public static boolean isHoldingGunWithFullMagazine(Player player) {
-        ItemStack mainHandItem = player.getMainHandItem();
+    public static boolean isHoldingGunWithFullMagazine(LivingEntity livingEntity) {
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(mainHandItem);
         
         if (iGun == null) {
@@ -122,9 +121,9 @@ public class GunTypeChecker {
                         }
                     }
                     
-                    // 如果ShooterContext中没有，尝试从玩家获取缓存数据（备选方案）
+                    // 如果ShooterContext中没有，尝试从生物获取缓存数据（备选方案）
                     if (maxAmmoCount == ammoAmount) { // 只有在还没有修改值时才尝试
-                        IGunOperator operator = IGunOperator.fromLivingEntity(player);
+                        IGunOperator operator = IGunOperator.fromLivingEntity(livingEntity);
                         if (operator != null) {
                             AttachmentCacheProperty cache = operator.getCacheProperty();
                             if (cache != null) {

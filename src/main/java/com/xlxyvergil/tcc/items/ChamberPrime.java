@@ -6,16 +6,14 @@ import com.xlxyvergil.tcc.handlers.CuriosItemEventHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
-import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 
 import javax.annotation.Nullable;
@@ -46,14 +44,13 @@ public class ChamberPrime extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyChamberPrimeEffect(player);
-            
-            // 如果是服务端玩家，通知更新缓存
-            if (player instanceof ServerPlayer serverPlayer) {
-                CuriosItemEventHandler.onCurioEquip(serverPlayer, stack);
-            }
+        // 给生物添加属性修改
+        LivingEntity livingEntity = (LivingEntity) slotContext.entity();
+        applyChamberPrimeEffect(livingEntity);
+        
+        // 如果是服务端玩家，通知更新缓存
+        if (livingEntity instanceof ServerPlayer serverPlayer) {
+            CuriosItemEventHandler.onCurioEquip(serverPlayer, stack);
         }
     }
     
@@ -64,14 +61,13 @@ public class ChamberPrime extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeChamberPrimeEffect(player);
-            
-            // 如果是服务端玩家，通知更新缓存
-            if (player instanceof ServerPlayer serverPlayer) {
-                CuriosItemEventHandler.onCurioUnequip(serverPlayer, stack);
-            }
+        // 移除生物的属性修改
+        LivingEntity livingEntity = (LivingEntity) slotContext.entity();
+        removeChamberPrimeEffect(livingEntity);
+        
+        // 如果是服务端玩家，通知更新缓存
+        if (livingEntity instanceof ServerPlayer serverPlayer) {
+            CuriosItemEventHandler.onCurioUnequip(serverPlayer, stack);
         }
     }
     
@@ -86,17 +82,15 @@ public class ChamberPrime extends ItemBaseCurio {
             return false;
         }
         
-        // 检查玩家是否已经装备了Chamber
-        if (slotContext.entity() instanceof Player player) {
-            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-            if (curiosHandler != null) {
-                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-                if (tccSlotHandler != null) {
-                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                        if (equippedStack.getItem() instanceof Chamber) {
-                            return false; // 如果已经装备了Chamber，则不能装备ChamberPrime
-                        }
+        // 检查生物是否已经装备了Chamber
+        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
+        if (curiosHandler != null) {
+            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+            if (tccSlotHandler != null) {
+                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                    if (equippedStack.getItem() instanceof Chamber) {
+                        return false; // 如果已经装备了Chamber，则不能装备ChamberPrime
                     }
                 }
             }
@@ -114,22 +108,22 @@ public class ChamberPrime extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyChamberPrimeEffect(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyChamberPrimeEffect(livingEntity);
     }
     
     /**
      * 应用膛室Prime效果
      * 提升狙击枪伤害（乘算）
      */
-    public void applyChamberPrimeEffect(Player player) {
-        // 检查玩家主手是否持有狙击枪且弹匣满弹药
-        boolean shouldApply = GunTypeChecker.isHoldingSniper(player) && GunTypeChecker.isHoldingGunWithFullMagazine(player);
+    public void applyChamberPrimeEffect(LivingEntity livingEntity) {
+        // 检查生物主手是否持有狙击枪且弹匣满弹药
+        boolean shouldApply = GunTypeChecker.isHoldingSniper(livingEntity) && GunTypeChecker.isHoldingGunWithFullMagazine(livingEntity);
         
-        var attributes = player.getAttributes();
+        var attributes = livingEntity.getAttributes();
         
         // 获取狙击枪伤害属性
         var gunDamageAttribute = attributes.getInstance(
@@ -158,9 +152,9 @@ public class ChamberPrime extends ItemBaseCurio {
         }
         
         // 更新TACZ缓存
-        ItemStack mainHandItem = player.getMainHandItem();
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
         if (mainHandItem.getItem() instanceof IGun) {
-            if (player instanceof ServerPlayer serverPlayer) {
+            if (livingEntity instanceof ServerPlayer serverPlayer) {
                 AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
             }
         }
@@ -169,8 +163,8 @@ public class ChamberPrime extends ItemBaseCurio {
     /**
      * 移除膛室Prime效果
      */
-    public void removeChamberPrimeEffect(Player player) {
-        var attributes = player.getAttributes();
+    public void removeChamberPrimeEffect(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 获取狙击枪伤害属性
         var gunDamageAttribute = attributes.getInstance(
@@ -184,9 +178,9 @@ public class ChamberPrime extends ItemBaseCurio {
         }
         
         // 更新TACZ缓存
-        ItemStack mainHandItem = player.getMainHandItem();
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
         if (mainHandItem.getItem() instanceof IGun) {
-            if (player instanceof ServerPlayer serverPlayer) {
+            if (livingEntity instanceof ServerPlayer serverPlayer) {
                 AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
             }
         }
@@ -198,9 +192,7 @@ public class ChamberPrime extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyChamberPrimeEffect(player);
-        }
+        applyChamberPrimeEffect((LivingEntity) slotContext.entity());
     }
     
     /**

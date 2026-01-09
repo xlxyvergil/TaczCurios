@@ -3,8 +3,9 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -21,10 +22,10 @@ import java.util.UUID;
  */
 public class SustainedFire extends ItemBaseCurio {
 
-    // 属性修饰符UUID - 用于唯一标识修饰符
+    // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID RELOAD_UUID = UUID.fromString("45c0a867-83d3-4c7b-a316-20ef80ad857e");
 
-    // 修饰符名称
+    // 修饰符名
     private static final String RELOAD_NAME = "tcc.sustained_fire.reload";
 
     public SustainedFire(Properties properties) {
@@ -38,10 +39,8 @@ public class SustainedFire extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
 
-        // 给玩家添加属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applySustainedFireEffects(player);
-        }
+        // 给生物添加属性修改
+        applySustainedFireEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -51,10 +50,8 @@ public class SustainedFire extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
 
-        // 移除玩家的属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeSustainedFireEffects(player);
-        }
+        // 移除生物的属性修改
+        removeSustainedFireEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -67,7 +64,7 @@ public class SustainedFire extends ItemBaseCurio {
     }
 
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -78,10 +75,10 @@ public class SustainedFire extends ItemBaseCurio {
      * 应用持续火力效果
      * 提升装填速度（加算）
      */
-    public void applySustainedFireEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applySustainedFireEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
-        // 获取装填速度属性
+        // 获取装填速度属
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "reload_time")
@@ -89,12 +86,12 @@ public class SustainedFire extends ItemBaseCurio {
         );
 
         if (reloadAttribute != null) {
-            // 移除已存在的修饰符
+            // 移除已存在的修饰
             reloadAttribute.removeModifier(RELOAD_UUID);
 
-            // 检查玩家是否持有手枪，只有持有手枪时才应用加成
-            if (GunTypeChecker.isHoldingPistol(player)) {
-                // 获取配置中的装填速度加成值
+            // 检查生物是否持有手枪，只有持有手枪时才应用加成
+            if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+                // 获取配置中的装填速度加成
                 double reloadBoost = TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get();
                 // 添加配置中的装填速度加成（加算）
                 var reloadModifier = new AttributeModifier(
@@ -111,10 +108,10 @@ public class SustainedFire extends ItemBaseCurio {
     /**
      * 移除持续火力效果
      */
-    public void removeSustainedFireEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeSustainedFireEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
 
-        // 获取装填速度属性
+        // 获取装填速度属
         var reloadAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation("taa", "reload_time")
@@ -127,14 +124,12 @@ public class SustainedFire extends ItemBaseCurio {
     }
 
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applySustainedFireEffects(player);
-        }
+        applySustainedFireEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -165,10 +160,10 @@ public class SustainedFire extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applySustainedFireEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applySustainedFireEffects(livingEntity);
     }
 }

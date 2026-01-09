@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -38,10 +38,8 @@ public class FerociousExtension extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加属性加成
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        // 给生物添加属性加成
+        applyEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -51,10 +49,8 @@ public class FerociousExtension extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的属性加成
-        if (slotContext.entity() instanceof Player player) {
-            removeEffects(player);
-        }
+        // 移除生物的属性加成
+        removeEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -78,19 +74,19 @@ public class FerociousExtension extends ItemBaseCurio {
      * 应用所有效果加成
      * 提高配置中的子弹射程（乘算）
      */
-    private void applyEffects(Player player) {
+    private void applyEffects(LivingEntity livingEntity) {
         // 获取配置中的子弹射程加成值
         double rangeBoost = TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get();
         
         // 应用有效射程加成 (配置中的乘算值)
-        applyAttributeModifier(player, "taa", "effective_range", rangeBoost, EFFECTIVE_RANGE_UUID, EFFECTIVE_RANGE_NAME);
+        applyAttributeModifier(livingEntity, "taa", "effective_range", rangeBoost, EFFECTIVE_RANGE_UUID, EFFECTIVE_RANGE_NAME);
     }
     
     /**
      * 通用的属性修饰符应用方法
      */
-    private void applyAttributeModifier(Player player, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName) {
-        var attributes = player.getAttributes();
+    private void applyAttributeModifier(LivingEntity livingEntity, String namespace, String attributeName, double multiplier, UUID uuid, String modifierName) {
+        var attributes = livingEntity.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
 new ResourceLocation(namespace, attributeName)
@@ -115,15 +111,15 @@ new ResourceLocation(namespace, attributeName)
     /**
      * 移除所有效果加成
      */
-    private void removeEffects(Player player) {
-        removeAttributeModifier(player, "taa", "effective_range", EFFECTIVE_RANGE_UUID);
+    private void removeEffects(LivingEntity livingEntity) {
+        removeAttributeModifier(livingEntity, "taa", "effective_range", EFFECTIVE_RANGE_UUID);
     }
     
     /**
      * 通用的属性修饰符移除方法
      */
-    private void removeAttributeModifier(Player player, String namespace, String attributeName, UUID uuid) {
-        var attributes = player.getAttributes();
+    private void removeAttributeModifier(LivingEntity livingEntity, String namespace, String attributeName, UUID uuid) {
+        var attributes = livingEntity.getAttributes();
         var attribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new ResourceLocation(namespace, attributeName)
@@ -141,9 +137,7 @@ new ResourceLocation(namespace, attributeName)
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyEffects(player);
-        }
+        applyEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -174,10 +168,10 @@ new ResourceLocation(namespace, attributeName)
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 }

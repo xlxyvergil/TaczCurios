@@ -2,8 +2,9 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -17,11 +18,11 @@ import java.util.UUID;
 
 /**
  * 膛线 - 提升特定枪械伤害
- * 效果：特定枪械伤害加成（加算）
+ * 效果：特定枪械伤害加成（加算
  */
 public class Rifling extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("8da03d35-138b-4b16-8f58-afd8f296252f"),
         UUID.fromString("fcb27cd7-a90e-4e1c-8316-976ba894dd4a"),
@@ -30,7 +31,7 @@ public class Rifling extends ItemBaseCurio {
         UUID.fromString("35741afc-9a1f-458d-89f0-ffd97d2a4832")
     };
     
-    // 修饰符名称
+    // 修饰符名
     private static final String[] DAMAGE_NAMES = {
         "tcc.rifling.rifle_damage",
         "tcc.rifling.sniper_damage",
@@ -50,10 +51,8 @@ public class Rifling extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyRiflingEffects(player);
-        }
+        // 给生物添加伤害属性修改
+        applyRiflingEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -63,15 +62,13 @@ public class Rifling extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeRiflingEffects(player);
-        }
+        // 移除生物的伤害属性修改
+        removeRiflingEffects((LivingEntity) slotContext.entity());
     }
     
     /**
      * 检查是否可以装备到指定插槽
-     * Rifling与MergedRifling互斥，不能同时装备
+     * Rifling与MergedRifling互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -80,17 +77,16 @@ public class Rifling extends ItemBaseCurio {
             return false;
         }
         
-        // 检查玩家是否已经装备了MergedRifling
-        if (slotContext.entity() instanceof Player player) {
-            ICuriosItemHandler curiosHandler = player.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-            if (curiosHandler != null) {
-                ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-                if (tccSlotHandler != null) {
-                    for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                        ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                        if (equippedStack.getItem() instanceof MergedRifling) {
-                            return false; // 如果已经装备了MergedRifling，则不能装备Rifling
-                        }
+        // 检查生物是否已经装备了MergedRifling
+        LivingEntity livingEntity = (LivingEntity) slotContext.entity();
+        ICuriosItemHandler curiosHandler = livingEntity.getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
+        if (curiosHandler != null) {
+            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
+            if (tccSlotHandler != null) {
+                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
+                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
+                    if (equippedStack.getItem() instanceof MergedRifling) {
+                        return false; // 如果已经装备了MergedRifling，则不能装备Rifling
                     }
                 }
             }
@@ -100,7 +96,7 @@ public class Rifling extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -111,8 +107,8 @@ public class Rifling extends ItemBaseCurio {
      * 应用膛线效果
      * 提升特定枪械伤害（加算）
      */
-    public void applyRiflingEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void applyRiflingEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 特定枪械类型
         String[] gunTypes = {
@@ -123,7 +119,7 @@ public class Rifling extends ItemBaseCurio {
             "bullet_gundamage_launcher"
         };
         
-        // 获取配置中的伤害加成值
+        // 获取配置中的伤害加成
         double damageBoost = TaczCuriosConfig.COMMON.riflingDamageBoost.get();
         
         // 应用特定枪械伤害提升（加算）
@@ -135,7 +131,7 @@ public class Rifling extends ItemBaseCurio {
             );
             
             if (gunDamageAttribute != null) {
-                // 检查是否已经存在相同的修饰符，如果存在则移除
+                // 检查是否已经存在相同的修饰符，如果存在则移
                 gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
                 
                 // 添加特定枪械伤害加成（加算）
@@ -154,8 +150,8 @@ public class Rifling extends ItemBaseCurio {
     /**
      * 移除膛线效果
      */
-    public void removeRiflingEffects(Player player) {
-        var attributes = player.getAttributes();
+    public void removeRiflingEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 特定枪械类型
         String[] gunTypes = {
@@ -181,14 +177,12 @@ public class Rifling extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyRiflingEffects(player);
-        }
+        applyRiflingEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -219,10 +213,10 @@ public class Rifling extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当生物切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyRiflingEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyRiflingEffects(livingEntity);
     }
 }

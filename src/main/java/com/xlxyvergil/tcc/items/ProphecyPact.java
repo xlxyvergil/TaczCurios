@@ -2,8 +2,9 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
+
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -17,18 +18,18 @@ import java.util.UUID;
 
 /**
  * 预言契约 - 提升手枪90%伤害
- * 效果：手枪伤害+90%（加算）
+ * 效果：手枪伤90%（加算）
  */
 public class ProphecyPact extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("6edbaedf-2502-4fe0-8e2c-9054d6a9ecc1");
     
-    // 修饰符名称
+    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.prophecy_pact.pistol_damage";
     
     // 效果参数
-    // private static final double DAMAGE_BOOST = 0.90;       // 90%手枪伤害提升（加算） - 现在从配置文件读取
+    // private static final double DAMAGE_BOOST = 0.90;       // 90%手枪伤害提升（加算） - 现在从配置文件读
     
     public ProphecyPact(Properties properties) {
         super(properties);
@@ -41,10 +42,8 @@ public class ProphecyPact extends ItemBaseCurio {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyProphecyPactEffects(player);
-        }
+        // 给生物添加伤害属性修改
+        applyProphecyPactEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -54,10 +53,8 @@ public class ProphecyPact extends ItemBaseCurio {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeProphecyPactEffects(player);
-        }
+        // 移除生物的伤害属性修改
+        removeProphecyPactEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -70,7 +67,7 @@ public class ProphecyPact extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -81,8 +78,8 @@ public class ProphecyPact extends ItemBaseCurio {
      * 应用效果
      * 提升手枪伤害（加算）
      */
-    private void applyProphecyPactEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyProphecyPactEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 手枪伤害属性
         var pistolDamageAttribute = attributes.getInstance(
@@ -92,10 +89,10 @@ public class ProphecyPact extends ItemBaseCurio {
         );
         
         if (pistolDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
+            // 检查是否已经存在相同的修饰符，如果存在则移
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
             
-            // 从配置文件获取手枪伤害加成值
+            // 从配置文件获取手枪伤害加成
             double damageBoost = TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get();
             
             // 添加配置的手枪伤害加成（加算）
@@ -112,8 +109,8 @@ public class ProphecyPact extends ItemBaseCurio {
     /**
      * 移除效果
      */
-    private void removeProphecyPactEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeProphecyPactEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
         // 手枪伤害属性
         var pistolDamageAttribute = attributes.getInstance(
@@ -129,14 +126,12 @@ public class ProphecyPact extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 当生物持有时，每tick更新效果
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyProphecyPactEffects(player);
-        }
+        applyProphecyPactEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -170,7 +165,7 @@ public class ProphecyPact extends ItemBaseCurio {
      * 当玩家切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyProphecyPactEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyProphecyPactEffects(livingEntity);
     }
 }

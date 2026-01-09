@@ -2,8 +2,8 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -17,14 +17,14 @@ import java.util.UUID;
 
 /**
  * 黄蜂蜇刺 - 提升手枪伤害
- * 效果：手枪伤害加成（加算）
+ * 效果：手枪伤害加成（加算
  */
 public class WaspStinger extends ItemBaseCurio {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("e1d2fcde-7ee0-4607-ade2-5b24292f8a52");
     
-    // 修饰符名称
+    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.wasp_stinger.pistol_damage";
     
     public WaspStinger(Properties properties) {
@@ -32,29 +32,25 @@ public class WaspStinger extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
+     * 当饰品被装备时调
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
         
-        // 给玩家添加伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            applyWaspStingerEffects(player);
-        }
+        // 给实体添加伤害属性修改
+        applyWaspStingerEffects((LivingEntity) slotContext.entity());
     }
     
     /**
-     * 当饰品被卸下时调用
+     * 当饰品被卸下时调
      */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
         
-        // 移除玩家的伤害属性修改
-        if (slotContext.entity() instanceof Player player) {
-            removeWaspStingerEffects(player);
-        }
+        // 移除实体的伤害属性修改
+        removeWaspStingerEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -67,7 +63,7 @@ public class WaspStinger extends ItemBaseCurio {
     }
     
     /**
-     * 当物品在Curios插槽中时被右键点击
+     * 当物品在Curios插槽中时被右键点
      */
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
@@ -78,13 +74,13 @@ public class WaspStinger extends ItemBaseCurio {
      * 应用效果
      * 提升手枪伤害（加算）
      */
-    private void applyWaspStingerEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void applyWaspStingerEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 获取配置中的手枪伤害加成值
+        // 获取配置中的手枪伤害加成
         double damageBoost = TaczCuriosConfig.COMMON.waspStingerDamageBoost.get();
         
-        // 手枪伤害属性
+        // 手枪伤害属
         var pistolDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_pistol")
@@ -92,7 +88,7 @@ public class WaspStinger extends ItemBaseCurio {
         );
         
         if (pistolDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
+            // 检查是否已经存在相同的修饰符，如果存在则移
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
             
             // 添加配置中的手枪伤害加成（加算）
@@ -109,10 +105,10 @@ public class WaspStinger extends ItemBaseCurio {
     /**
      * 移除效果
      */
-    private void removeWaspStingerEffects(Player player) {
-        var attributes = player.getAttributes();
+    private void removeWaspStingerEffects(LivingEntity livingEntity) {
+        var attributes = livingEntity.getAttributes();
         
-        // 手枪伤害属性
+        // 手枪伤害属
         var pistolDamageAttribute = attributes.getInstance(
             net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
                 new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_pistol")
@@ -120,7 +116,7 @@ public class WaspStinger extends ItemBaseCurio {
         );
         
         if (pistolDamageAttribute != null) {
-            // 移除修饰符
+            // 移除修饰
             pistolDamageAttribute.removeModifier(DAMAGE_UUID);
         }
     }
@@ -131,9 +127,7 @@ public class WaspStinger extends ItemBaseCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         // 确保效果持续生效
-        if (slotContext.entity() instanceof Player player) {
-            applyWaspStingerEffects(player);
-        }
+        applyWaspStingerEffects((LivingEntity) slotContext.entity());
     }
 
     /**
@@ -164,10 +158,12 @@ public class WaspStinger extends ItemBaseCurio {
     }
     
     /**
-     * 当玩家切换武器时应用效果
+     * 当实体切换武器时应用效果
      */
     @Override
-    public void applyGunSwitchEffect(Player player) {
-        applyWaspStingerEffects(player);
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyWaspStingerEffects(livingEntity);
     }
 }
+
+
