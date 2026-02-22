@@ -118,10 +118,8 @@ public class AlloyDrill extends ItemBaseCurio {
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        if (slotContext.entity() instanceof LivingEntity) {
-            applyAlloyDrillEffects((LivingEntity) slotContext.entity());
-        }
+        // 属性修饰符是持久的，不需要每tick刷新
+        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
     }
 
     /**

@@ -360,8 +360,6 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效，检查血量条件
-        applyEffects((LivingEntity) slotContext.entity());
     }
     
     /**
