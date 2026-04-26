@@ -249,6 +249,11 @@
           "type": "minecraft:item",
           "weight": 79,
           "name": "tcc:tandem_magazine_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:kikaku_ichijin"
         }
       ]
     }

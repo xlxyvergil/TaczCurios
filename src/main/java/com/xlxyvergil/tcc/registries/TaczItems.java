@@ -21,6 +21,7 @@ import com.xlxyvergil.tcc.items.HeavyCaliberTag;
 import com.xlxyvergil.tcc.items.HeavyFirepower;
 import com.xlxyvergil.tcc.items.InfectedMagazine;
 import com.xlxyvergil.tcc.items.InfernalChamber;
+import com.xlxyvergil.tcc.items.KikakuIchijin;
 import com.xlxyvergil.tcc.items.LimitSpeed;
 import com.xlxyvergil.tcc.items.BurstReload;
 import com.xlxyvergil.tcc.items.MalignantSpread;
@@ -365,4 +366,10 @@ public class TaczItems {
         () -> new TandemMagazine(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON)));
+    
+    // 掎角一阵 - 裂隙级饰品
+    public static final RegistryObject<Item> KIKAKU_ICHIJIN = ITEMS.register("kikaku_ichijin", 
+        () -> new KikakuIchijin(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
 }

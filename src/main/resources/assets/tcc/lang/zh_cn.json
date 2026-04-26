@@ -37,12 +37,12 @@
   "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 提升%1$s%%通用枪械伤害 +%2$s爆炸范围 提升%3$s%%爆炸伤害 扣除%4$s%%当前生命值 为周围%5$s格内玩家提供%6$s%%通用枪械伤害加成 持续%7$s秒",
   
   "item.tcc.burst_reload": "§9爆发装填",
-  "item.tcc.burst_reload.desc": "爆发装填是一个能够提升步枪类武器装填速度的饰品",
-  "item.tcc.burst_reload.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填速度",
+  "item.tcc.burst_reload.desc": "爆发装填是一个能够提升步枪类武器装填时间的饰品",
+  "item.tcc.burst_reload.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
   
   "item.tcc.corrupt_magazine": "§6腐败弹匣",
-  "item.tcc.corrupt_magazine.desc": "腐败弹匣是一个适用于突击步枪的堕落饰品，牺牲装填速度提升弹匣容量",
-  "item.tcc.corrupt_magazine.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹匣容量，降低%2$s%%装填速度",
+  "item.tcc.corrupt_magazine.desc": "腐败弹匣是一个适用于突击步枪的堕落饰品，牺牲装填时间提升弹匣容量",
+  "item.tcc.corrupt_magazine.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹匣容量，降低%2$s%%装填时间",
   
   "item.tcc.split_chamber": "§6分裂膛室",
   "item.tcc.split_chamber.desc": "分裂膛室是一个能够增加步枪类武器多重射击的饰品",
@@ -134,24 +134,24 @@
   "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。",
 
   "item.tcc.tactical_reload": "§9战术上膛",
-  "item.tcc.tactical_reload.desc": "战术上膛是一个能提升霰弹枪装填速度的饰品",
-  "item.tcc.tactical_reload.effect": "提升%1$s%%霰弹枪装填速度",
+  "item.tcc.tactical_reload.desc": "战术上膛是一个能提升霰弹枪装填时间的饰品",
+  "item.tcc.tactical_reload.effect": "提升%1$s%%霰弹枪装填时间",
 
   "item.tcc.overloaded_magazine": "§6过载弹匣",
-  "item.tcc.overloaded_magazine.desc": "过载弹匣是一个霰弹枪堕落饰品，能够增加弹匣容量，但减少装填速度",
-  "item.tcc.overloaded_magazine.effect": "提升%1$s%%霰弹枪弹匣容量，降低%2$s%%装填速度",
+  "item.tcc.overloaded_magazine.desc": "过载弹匣是一个霰弹枪堕落饰品，能够增加弹匣容量，但减少装填时间",
+  "item.tcc.overloaded_magazine.effect": "提升%1$s%%霰弹枪弹匣容量，降低%2$s%%装填时间",
 
   "item.tcc.infernal_chamber": "§6地狱弹膛",
   "item.tcc.infernal_chamber.desc": "地狱弹膛是一个增加霰弹枪多重射击的饰品",
   "item.tcc.infernal_chamber.effect": "提升%1$s%%霰弹枪弹头数量",
 
   "item.tcc.sustained_fire": "§9持续火力",
-  "item.tcc.sustained_fire.desc": "持续火力是一个能增加次要武器装填速度的饰品",
-  "item.tcc.sustained_fire.effect": "提升%1$s%%手枪装填速度",
+  "item.tcc.sustained_fire.desc": "持续火力是一个能增加次要武器装填时间的饰品",
+  "item.tcc.sustained_fire.effect": "提升%1$s%%手枪装填时间",
 
   "item.tcc.infected_magazine": "§6感染弹匣",
-  "item.tcc.infected_magazine.desc": "感染弹匣是一个堕落饰品，以牺牲装填速度为代价提升弹匣容量",
-  "item.tcc.infected_magazine.effect": "提升%1$s%%手枪弹匣容量，降低%2$s%%装填速度",
+  "item.tcc.infected_magazine.desc": "感染弹匣是一个堕落饰品，以牺牲装填时间为代价提升弹匣容量",
+  "item.tcc.infected_magazine.effect": "提升%1$s%%手枪弹匣容量，降低%2$s%%装填时间",
 
   "item.tcc.deadly_surge": "§6致命洪流",
   "item.tcc.deadly_surge.desc": "致命洪流是一个能增加手枪射速和多重射击的噩梦饰品",
@@ -178,16 +178,16 @@
   "item.tcc.sword_wind_prime.effect": "提升%1$s近战距离",
   
   "item.tcc.depleted_reload": "§6耗竭装填",
-  "item.tcc.depleted_reload.desc": "耗竭装填是一个适用于狙击枪的堕落饰品，牺牲弹匣容量来增加装填速度",
-  "item.tcc.depleted_reload.effect": "降低%1$s%%弹匣容量，提升%2$s%%装填速度",
+  "item.tcc.depleted_reload.desc": "耗竭装填是一个适用于狙击枪的堕落饰品，牺牲弹匣容量来增加装填时间",
+  "item.tcc.depleted_reload.effect": "降低%1$s%%弹匣容量，提升%2$s%%装填时间",
   
   "item.tcc.burst_reload_prime": "§f爆发装填Prime",
-  "item.tcc.burst_reload_prime.desc": "爆发装填Prime是爆发装填的Prime版，能提升步枪类武器的装填速度",
-  "item.tcc.burst_reload_prime.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填速度",
+  "item.tcc.burst_reload_prime.desc": "爆发装填Prime是爆发装填的Prime版，能提升步枪类武器的装填时间",
+  "item.tcc.burst_reload_prime.effect": "提升%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
   
   "item.tcc.tactical_reload_prime": "§f战术上膛Prime",
   "item.tcc.tactical_reload_prime.desc": "战术上膛Prime是战术上膛的Prime版",
-  "item.tcc.tactical_reload_prime.effect": "提升%1$s%%霰弹枪装填速度",
+  "item.tcc.tactical_reload_prime.effect": "提升%1$s%%霰弹枪装填时间",
   
   "item.tcc.shotgun_expansion_prime": "§f霰弹扩充Prime",
   "item.tcc.shotgun_expansion_prime.desc": "霰弹扩充Prime是霰弹扩充的Prime版本",
@@ -212,6 +212,14 @@
   "item.tcc.tandem_magazine": "§9串联弹匣",
   "item.tcc.tandem_magazine.desc": "串联弹匣是一个能提升次要武器弹匣容量的饰品",
   "item.tcc.tandem_magazine.effect": "提升%1$s%%手枪弹匣容量",
+
+  "item.tcc.kikaku_ichijin": "§d掎角一阵",
+  "item.tcc.kikaku_ichijin.desc": "这是必要的牺牲",
+  "item.tcc.kikaku_ichijin.effect": "造成伤害时，以64格内最近的玩家或女仆为祭品，用祭品总血量的倍率乘以伤害，破坏目标周围球形范围的方块，祭品死亡",
+
+  "message.tcc.kikaku_ichijin.self_sacrifice": "stella",
+  "message.tcc.kikaku_ichijin.sacrifice": "%s这是必要的牺牲，你明白吧",
+  "message.tcc.kikaku_ichijin.sacrificed": "你被%s献祭了",
 
   "tcc.tooltip.slot": "§7装备槽位：§aTCC饰品栏",
   "tcc.tooltip.rarity.common": "§7稀有度：§9常见",

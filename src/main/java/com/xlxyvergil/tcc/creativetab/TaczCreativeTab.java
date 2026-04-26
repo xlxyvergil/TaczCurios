@@ -87,6 +87,9 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.MAGAZINE_BOOST.get());
                 output.accept(TaczItems.TANDEM_MAGAZINE.get());
                 
+                // 添加裂隙级饰品
+                output.accept(TaczItems.KIKAKU_ICHIJIN.get());
+                
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());
                 output.accept(TaczItems.RIFT_SILVER.get());

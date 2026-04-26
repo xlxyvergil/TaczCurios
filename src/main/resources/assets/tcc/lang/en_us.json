@@ -37,12 +37,12 @@
   "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health Increase %1$s%% universal firearm damage +%2$s explosion range Increase %3$s%% explosion damage Subtract %4$s%% current health Provide %5$s%% universal firearm damage bonus to players within %6$s blocks for %7$s seconds",
   
   "item.tcc.burst_reload": "§9Burst Reload",
-  "item.tcc.burst_reload.desc": "Burst reload is a curio that can improve the reload speed of rifle-type weapons",
-  "item.tcc.burst_reload.effect": "Increase %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload speed",
+  "item.tcc.burst_reload.desc": "Burst reload is a curio that can improve the reload time of rifle-type weapons",
+  "item.tcc.burst_reload.effect": "Increase %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",
   
   "item.tcc.corrupt_magazine": "§6Corrupt Magazine",
-  "item.tcc.corrupt_magazine.desc": "Corrupt magazine is a fallen curio for assault rifles that sacrifices reload speed to increase magazine capacity",
-  "item.tcc.corrupt_magazine.effect": "Increase %1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity, reduce %2$s%% reload speed",
+  "item.tcc.corrupt_magazine.desc": "Corrupt magazine is a fallen curio for assault rifles that sacrifices reload time to increase magazine capacity",
+  "item.tcc.corrupt_magazine.effect": "Increase %1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity, reduce %2$s%% reload time",
   
   "item.tcc.split_chamber": "§6Split Chamber",
   "item.tcc.split_chamber.desc": "Split chamber is a curio that can increase the multiple shots of rifle-type weapons",
@@ -134,24 +134,24 @@
   "item.tcc.rift_silver.usage": "Use to randomly obtain 1 curio.",
 
   "item.tcc.tactical_reload": "§9Tactical Reload",
-  "item.tcc.tactical_reload.desc": "Tactical reload is a curio that can improve the reload speed of shotguns",
-  "item.tcc.tactical_reload.effect": "Increase %1$s%% shotgun reload speed",
+  "item.tcc.tactical_reload.desc": "Tactical reload is a curio that can improve the reload time of shotguns",
+  "item.tcc.tactical_reload.effect": "Increase %1$s%% shotgun reload time",
 
   "item.tcc.overloaded_magazine": "§6Overloaded Magazine",
-  "item.tcc.overloaded_magazine.desc": "Overloaded magazine is a shotgun fallen curio that can increase magazine capacity but reduce reload speed",
-  "item.tcc.overloaded_magazine.effect": "Increase %1$s%% shotgun magazine capacity, reduce %2$s%% reload speed",
+  "item.tcc.overloaded_magazine.desc": "Overloaded magazine is a shotgun fallen curio that can increase magazine capacity but reduce reload time",
+  "item.tcc.overloaded_magazine.effect": "Increase %1$s%% shotgun magazine capacity, reduce %2$s%% reload time",
 
   "item.tcc.infernal_chamber": "§6Infernal Chamber",
   "item.tcc.infernal_chamber.desc": "Infernal chamber is a curio that increases multiple shots of shotguns",
   "item.tcc.infernal_chamber.effect": "Increase %1$s%% shotgun bullet count",
 
   "item.tcc.sustained_fire": "§9Sustained Fire",
-  "item.tcc.sustained_fire.desc": "Sustained fire is a curio that can increase the reload speed of secondary weapons",
-  "item.tcc.sustained_fire.effect": "Increase %1$s%% pistol reload speed",
+  "item.tcc.sustained_fire.desc": "Sustained fire is a curio that can increase the reload time of secondary weapons",
+  "item.tcc.sustained_fire.effect": "Increase %1$s%% pistol reload time",
 
   "item.tcc.infected_magazine": "§6Infected Magazine",
-  "item.tcc.infected_magazine.desc": "Infected magazine is a fallen curio that sacrifices reload speed to increase magazine capacity",
-  "item.tcc.infected_magazine.effect": "Increase %1$s%% pistol magazine capacity, reduce %2$s%% reload speed",
+  "item.tcc.infected_magazine.desc": "Infected magazine is a fallen curio that sacrifices reload time to increase magazine capacity",
+  "item.tcc.infected_magazine.effect": "Increase %1$s%% pistol magazine capacity, reduce %2$s%% reload time",
 
   "item.tcc.deadly_surge": "§6Deadly Surge",
   "item.tcc.deadly_surge.desc": "Deadly surge is a nightmare curio that can increase pistol fire rate and multiple shots",
@@ -178,16 +178,16 @@
   "item.tcc.sword_wind_prime.effect": "Increase %1$s melee distance",
   
   "item.tcc.depleted_reload": "§6Depleted Reload",
-  "item.tcc.depleted_reload.desc": "Depleted reload is a fallen curio for sniper rifles that sacrifices magazine capacity to increase reload speed",
-  "item.tcc.depleted_reload.effect": "Reduce %1$s%% magazine capacity, increase %2$s%% reload speed",
+  "item.tcc.depleted_reload.desc": "Depleted reload is a fallen curio for sniper rifles that sacrifices magazine capacity to increase reload time",
+  "item.tcc.depleted_reload.effect": "Reduce %1$s%% magazine capacity, increase %2$s%% reload time",
   
   "item.tcc.burst_reload_prime": "§fBurst Reload Prime",
-  "item.tcc.burst_reload_prime.desc": "Burst reload prime is the prime version of burst reload that can improve the reload speed of rifle-type weapons",
-  "item.tcc.burst_reload_prime.effect": "Increase %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload speed",
+  "item.tcc.burst_reload_prime.desc": "Burst reload prime is the prime version of burst reload that can improve the reload time of rifle-type weapons",
+  "item.tcc.burst_reload_prime.effect": "Increase %1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",
   
   "item.tcc.tactical_reload_prime": "§fTactical Reload Prime",
   "item.tcc.tactical_reload_prime.desc": "Tactical reload prime is the prime version of tactical reload",
-  "item.tcc.tactical_reload_prime.effect": "Increase %1$s%% shotgun reload speed",
+  "item.tcc.tactical_reload_prime.effect": "Increase %1$s%% shotgun reload time",
   
   "item.tcc.shotgun_expansion_prime": "§fShotgun Expansion Prime",
   "item.tcc.shotgun_expansion_prime.desc": "Shotgun expansion prime is the prime version of shotgun expansion",
@@ -212,6 +212,14 @@
   "item.tcc.tandem_magazine": "§9Tandem Magazine",
   "item.tcc.tandem_magazine.desc": "Tandem magazine is a curio that can improve the magazine capacity of secondary weapons",
   "item.tcc.tandem_magazine.effect": "Increase %1$s%% pistol magazine capacity",
+
+  "item.tcc.kikaku_ichijin": "§dKikaku Ichijin",
+  "item.tcc.kikaku_ichijin.desc": "Sacrifice a companion to unleash a devastating attack",
+  "item.tcc.kikaku_ichijin.effect": "When dealing damage, use the nearest player or maid within 64 blocks as a sacrifice. Multiply damage by a multiplier of the sacrifice's max HP, destroy blocks in a spherical range around the target, and the sacrifice dies",
+
+  "message.tcc.kikaku_ichijin.self_sacrifice": "stella",
+  "message.tcc.kikaku_ichijin.sacrifice": "%s, this is a necessary sacrifice, you understand, right?",
+  "message.tcc.kikaku_ichijin.sacrificed": "You were sacrificed by %s",
 
   "tcc.tooltip.slot": "§7Equipment Slot: §aTACZ Curio Slot",
   "tcc.tooltip.rarity.common": "§7Rarity: §9Common",

@@ -199,6 +199,10 @@ public class TaczCuriosConfig {
         // 裂隙碎银配置
         public final ForgeConfigSpec.DoubleValue riftSilverChestSpawnChance;
         
+        // 掎角一阵配置
+        public final ForgeConfigSpec.DoubleValue kikakuIchijinHealthMultiplier;
+        public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyUnbreakableBlocks;
+        
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
             
@@ -644,6 +648,16 @@ public class TaczCuriosConfig {
             riftSilverChestSpawnChance = builder
                     .comment("裂隙碎银在箱子中的生成几率 (默认: 0.05 = 5%)")
                     .defineInRange("chestSpawnChance", 0.05, -1, 1);
+            builder.pop();
+            
+            // 掎角一阵配置
+            builder.comment("掎角一阵饰品配置").push("kikaku_ichijin");
+            kikakuIchijinHealthMultiplier = builder
+                    .comment("伤害倍率，基于祭品总血量的比例 (默认: 0.2 = 20%，范围: 0.2-1.0)")
+                    .defineInRange("healthMultiplier", 0.2, 0.2, 1.0);
+            kikakuIchijinDestroyUnbreakableBlocks = builder
+                    .comment("是否破坏不可破坏方块（如基岩） (默认: false)")
+                    .define("destroyUnbreakableBlocks", false);
             builder.pop();
             
             builder.pop();

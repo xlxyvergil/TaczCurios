@@ -134,6 +134,11 @@
           "type": "minecraft:item",
           "weight": 1,
           "name": "tcc:heaven_fire_apocalypse"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:kikaku_ichijin"
         }
       ]
     }
