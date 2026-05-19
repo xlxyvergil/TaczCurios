@@ -166,9 +166,6 @@ public class CloseCombatPrime extends ItemBaseCurio {
         tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
-        // 添加霰弹枪伤害加成的详细列表
-        tooltip.add(Component.literal("  §7• §6+" + String.format("%+.0f", damageBoost) + "% §7霰弹枪伤害")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
