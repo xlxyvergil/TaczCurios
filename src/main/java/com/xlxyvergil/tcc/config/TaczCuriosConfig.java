@@ -212,11 +212,11 @@ public class TaczCuriosConfig {
                     .comment("通用枪械伤害加成 (默认: 3.25 = 325%)")
                     .defineInRange("damageBoost", 3.25, -1, 100);
             heavenFireJudgmentHealthCost = builder
-                    .comment("触发时扣除的当前生命值比例 (默认: 0.3 = 30%)")
-                    .defineInRange("healthCost", 0.3, -1, 1);
+                    .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
+                    .defineInRange("healthCost", -0.3, -1, 1);
             heavenFireJudgmentHealthDrain = builder
-                    .comment("每秒消耗的最大生命值比例 (默认: 0.05 = 5%)")
-                    .defineInRange("healthDrain", 0.05, -1, 1);
+                    .comment("每秒消耗的最大生命值比例 (默认: -0.05 = -5%)")
+                    .defineInRange("healthDrain", -0.05, -1, 1);
             heavenFireJudgmentDrainDuration = builder
                     .comment("生命值消耗持续时间(秒) (默认: 5)")
                     .defineInRange("drainDuration", 5, -1, 300);
@@ -237,8 +237,8 @@ public class TaczCuriosConfig {
                     .comment("爆炸启用属性 (默认: 2.0)")
                     .defineInRange("explosionEnabled", 2.0, -1, 100);
             heavenFireApocalypseHealthCost = builder
-                    .comment("触发时扣除的当前生命值比例 (默认: 1.0 = 100%)")
-                    .defineInRange("healthCost", 1.0, -1, 1);
+                    .comment("触发时扣除的当前生命值比例 (默认: -1.0 = -100%)")
+                    .defineInRange("healthCost", -1.0, -1, 1);
             heavenFireApocalypseNearbyPlayerDamageBoost = builder
                     .comment("附近玩家获得的伤害加成 (默认: 1.0 = 100%)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
