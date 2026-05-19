@@ -211,8 +211,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                 String.format("%+.0f", healthCost),
                 String.format("%+.0f", nearbyPlayerRadius), 
                 String.format("%+.0f", nearbyPlayerDamageBoost),
-                String.format("%d", nearbyPlayerDuration))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+                String.format("%d", nearbyPlayerDuration)));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -245,9 +244,10 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                         return; // 血量不为100%时不生效
                     }
                     
-                    // 造成伤害后对生物造成当前生命值100%的伤害
+                    // 造成伤害后对生物造成当前生命值配置比例的伤害
                     float currentHealth = livingEntity.getHealth();
-                    float healthToDeduct = currentHealth * 1.0f;
+                    double healthCostConfig = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get();
+                    float healthToDeduct = currentHealth * (float)(-healthCostConfig);  // 取反得到正值
                     
                     if (healthToDeduct > 0) {
                         livingEntity.hurt(livingEntity.damageSources().magic(), healthToDeduct);
@@ -256,7 +256,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                         if (livingEntity instanceof Player player && net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                             player.displayClientMessage(
                                 net.minecraft.network.chat.Component.literal(
-                                    "§4天火劫灭反噬 - 生命值-100%当前生命值"
+                                    "§4天火劫灭反噬 - 生命值" + String.format("%+.0f", healthCostConfig * 100) + "%当前生命值"
                                 ),
                                 true
                             );
