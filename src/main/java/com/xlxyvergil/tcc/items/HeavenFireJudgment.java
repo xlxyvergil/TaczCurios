@@ -162,8 +162,7 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                 String.format("%+.0f", damageBoost), 
                 String.format("%+.0f", healthCost), 
                 String.format("%+.0f", healthDrain), 
-                String.format("%d", drainDuration))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+                String.format("%d", drainDuration)));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -201,14 +200,14 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
                     double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get();
                     int drainDuration = TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get();
                     
-                    // 计算扣除配置的生命值比例后的血量百分比
-                    float healthAfterDeduction = (livingEntity.getHealth() - livingEntity.getHealth() * (float)healthCost) / livingEntity.getMaxHealth();
+                    // 计算扣除配置的生命值比例后的血量百分比（healthCost为负值，取绝对值计算）
+                    float healthAfterDeduction = (livingEntity.getHealth() + livingEntity.getHealth() * (float)healthCost) / livingEntity.getMaxHealth();
                     if (healthAfterDeduction <= 0.4) {
                         return; // 扣除配置的生命值比例后如果低于或等于40%，则不触发效果
                     }
 
-                    // 立即扣除配置的生命值比例
-                    float healthToDeduct = livingEntity.getHealth() * (float)healthCost;
+                    // 立即扣除配置的生命值比例（healthCost为负值，取反得到正的伤害值）
+                    float healthToDeduct = livingEntity.getHealth() * (float)(-healthCost);
                     if (healthToDeduct > 0) {
                         livingEntity.hurt(livingEntity.damageSources().magic(), healthToDeduct);
                     }
@@ -243,13 +242,13 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         if (duration > 0) {
             // 每秒触发一次伤害（20 ticks = 1秒）
             if (livingEntity.tickCount % 20 == 0) {
-                // 获取配置中的生命值消耗比例
+                // 获取配置中的生命值消耗比例（负值）
                 double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get();
                 
                 // 检查扣除配置的生命值消耗比例后是否会低于40%
                 float maxHealth = livingEntity.getMaxHealth();
                 float currentHealth = livingEntity.getHealth();
-                float healthToDeduct = (float) (maxHealth * healthDrain);
+                float healthToDeduct = (float) (maxHealth * (-healthDrain));  // 取反得到正值
                 float healthAfterDeduction = (currentHealth - healthToDeduct) / maxHealth;
                 
                 if (healthAfterDeduction > 0.4) {
