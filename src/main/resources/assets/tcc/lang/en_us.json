@@ -27,7 +27,7 @@
   "item.tcc.heaven_fire_judgment.effect": "%1$s%% universal firearm damage %2$s%% current health %3$s%% max health/sec for %4$s seconds Disable when health below 40%%",
   
   "item.tcc.heaven_fire_apocalypse": "§dHeaven Fire Apocalypse",
-  "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health %1$s%% universal firearm damage +%2$s explosion range %3$s%% explosion damage %4$s%% current health %5$s%% universal firearm damage bonus to players within %6$s blocks for %7$s seconds",
+  "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health %1$s%% universal firearm damage %2$s explosion range %3$s%% explosion damage %4$s%% current health %5$s%% universal firearm damage bonus to players within %6$s blocks for %7$s seconds",
   
   "item.tcc.burst_reload": "§9Burst Reload",
   "item.tcc.burst_reload.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",

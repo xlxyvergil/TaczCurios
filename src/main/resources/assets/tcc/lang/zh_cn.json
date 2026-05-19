@@ -27,7 +27,7 @@
   "item.tcc.heaven_fire_judgment.effect": "%1$s%%通用枪械伤害 %2$s%%当前生命值 %3$s%%最大生命值/秒 持续%4$s秒 血量低于40%%时无效",
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
-  "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 %1$s%%通用枪械伤害 +%2$s爆炸范围 %3$s%%爆炸伤害 %4$s%%当前生命值 为周围%5$s格内玩家%6$s%%通用枪械伤害 持续%7$s秒",
+  "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 %1$s%%通用枪械伤害 %2$s爆炸范围 %3$s%%爆炸伤害 %4$s%%当前生命值 为周围%5$s格内玩家%6$s%%通用枪械伤害 持续%7$s秒",
   
   "item.tcc.burst_reload": "§9爆发装填",
   "item.tcc.burst_reload.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
