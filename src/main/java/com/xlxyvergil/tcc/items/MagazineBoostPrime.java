@@ -161,7 +161,7 @@ public class MagazineBoostPrime extends ItemBaseCurio {
         // 添加装备效果
         double magazineBoost = TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.magazine_boost_prime.effect", String.format("%+.0f", magazineBoost))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.DARK_PURPLE));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

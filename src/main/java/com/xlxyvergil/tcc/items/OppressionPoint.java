@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -129,7 +131,7 @@ public class OppressionPoint extends ItemBaseCurio {
         // 添加装备效果
         double meleeDamageBoost = TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.oppression_point.effect", String.format("%+.0f", meleeDamageBoost))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.BLUE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

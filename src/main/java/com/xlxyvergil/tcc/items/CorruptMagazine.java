@@ -199,7 +199,7 @@ public class CorruptMagazine extends ItemBaseCurio {
         double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get() * 100;
         double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect", String.format("%+.0f", magazineBoost), String.format("%+.0f", reloadPenalty))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.GOLD));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

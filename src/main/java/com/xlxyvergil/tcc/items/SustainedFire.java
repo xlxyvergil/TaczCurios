@@ -2,6 +2,8 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -147,7 +149,7 @@ public class SustainedFire extends ItemBaseCurio {
         // 添加装备效果
         double reloadBoost = TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.sustained_fire.effect", String.format("%+.0f", reloadBoost))
-            .withStyle(net.minecraft.ChatFormatting.GREEN));
+            .withStyle(ChatFormatting.BLUE));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

@@ -2,6 +2,8 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -245,7 +247,7 @@ public class MergedRifling extends ItemBaseCurio {
         double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
                 String.format("%+.0f", damageBoost), String.format("%+.0f", speedBoost))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

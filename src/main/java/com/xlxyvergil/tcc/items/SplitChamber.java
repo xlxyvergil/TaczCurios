@@ -155,7 +155,7 @@ public class SplitChamber extends ItemBaseCurio {
         // 添加装备效果
         double ammoBoost = TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.split_chamber.effect", String.format("%+.0f", ammoBoost))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.GOLD));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

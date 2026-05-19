@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -242,7 +244,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
         double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
                 String.format("%+.0f", firingSpeedBoost), String.format("%+.0f", damageReduction))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.GOLD));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

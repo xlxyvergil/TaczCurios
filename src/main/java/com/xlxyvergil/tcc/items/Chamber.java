@@ -3,6 +3,8 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.handlers.CuriosItemEventHandler;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -204,7 +206,7 @@ public class Chamber extends ItemBaseCurio {
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.chamberSniperDamageBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.chamber.effect", String.format("%+.0f", damageBoost))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.AQUA));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

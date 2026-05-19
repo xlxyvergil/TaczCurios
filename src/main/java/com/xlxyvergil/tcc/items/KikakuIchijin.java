@@ -3,6 +3,8 @@ package com.xlxyvergil.tcc.items;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -71,7 +73,7 @@ public class KikakuIchijin extends ItemBaseCurio {
 
         // 添加装备效果
         tooltip.add(Component.translatable("item.tcc.kikaku_ichijin.effect")
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.DARK_PURPLE));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

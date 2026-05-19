@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -148,7 +150,7 @@ public class ProphecyPact extends ItemBaseCurio {
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect", String.format("%+.0f", damageBoost))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.BLUE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

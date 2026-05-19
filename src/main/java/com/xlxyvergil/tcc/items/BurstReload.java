@@ -162,7 +162,7 @@ public class BurstReload extends ItemBaseCurio {
         // 添加装备效果
         double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.burst_reload.effect", String.format("%+.0f", reloadBoost))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.BLUE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -130,7 +132,7 @@ public class SwordWindPrime extends ItemBaseCurio {
         // 添加装备效果
         double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
         tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%+.0f", meleeDistanceBoost))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

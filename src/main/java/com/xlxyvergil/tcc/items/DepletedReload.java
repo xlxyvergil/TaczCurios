@@ -190,7 +190,7 @@ public class DepletedReload extends ItemBaseCurio {
         tooltip.add(Component.translatable("item.tcc.depleted_reload.effect", 
                                           String.format("%+.0f", magazinePenalty), 
                                           String.format("%+.0f", reloadBoost))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.GOLD));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

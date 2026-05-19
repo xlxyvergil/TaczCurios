@@ -2,6 +2,8 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -190,7 +192,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         double reloadDebuff = TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.infected_magazine.effect", 
                 String.format("%+.0f", magazineCapacityBoost), String.format("%+.0f", reloadDebuff))
-            .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.GOLD));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
