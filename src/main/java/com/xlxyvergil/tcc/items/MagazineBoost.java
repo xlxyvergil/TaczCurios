@@ -153,16 +153,14 @@ public class MagazineBoost extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.magazine_boost.desc")
-            .withStyle(ChatFormatting.GRAY));
+
 
         // 添加空行分隔
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
         double magazineBoost = TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.magazine_boost.effect", String.format("%.0f", magazineBoost))
+        tooltip.add(Component.translatable("item.tcc.magazine_boost.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

@@ -267,10 +267,10 @@ public class TaczCuriosConfig {
             // 卑劣加速配置
             builder.comment("卑劣加速饰品配置").push("despicable_acceleration");
             despicableAccelerationFireRateBoost = builder
-                    .comment("射击速度加成 (默认: 0.9 = 90%)")
+                    .comment("射击速度加成 (默认: +0.9 = +90%)")
                     .defineInRange("fireRateBoost", 0.9, -1, 100);
             despicableAccelerationDamageReduction = builder
-                    .comment("通用伤害降低 (默认: 0.15 = 15%)")
+                    .comment("伤害降低 (默认: -0.15 = -15%)")
                     .defineInRange("damageReduction", 0.15, -1, 1);
             builder.pop();
             
@@ -353,11 +353,11 @@ public class TaczCuriosConfig {
             // 极恶精准配置
             builder.comment("极恶精准饰品配置").push("evil_accuracy");
             evilAccuracyRecoilReduction = builder
-                    .comment("后坐力降低 (默认: 0.9 = 90%)")
+                    .comment("后坐力降低 (默认: -0.9 = -90%)")
                     .defineInRange("recoilReduction", -0.9, -1, 1);
             evilAccuracyFireRateReduction = builder
-                    .comment("射速降低 (默认: 0.36 = 36%)")
-                    .defineInRange("fireRateReduction", 0.36, -1, 1);
+                    .comment("射速降低 (默认: -0.36 = -36%)")
+                    .defineInRange("fireRateReduction", -0.36, -1, 1);
             builder.pop();
             
             // 极限速度配置
@@ -384,10 +384,10 @@ public class TaczCuriosConfig {
             // 重装火力配置
             builder.comment("重装火力饰品配置").push("heavy_firepower");
             heavyFirepowerDamageBoost = builder
-                    .comment("手枪伤害加成 (默认: 1.65 = 165%)")
+                    .comment("手枪伤害加成 (默认: +1.65 = +165%)")
                     .defineInRange("damageBoost", 1.65, -1, 100);
             heavyFirepowerAccuracyReduction = builder
-                    .comment("精准度降低 (默认: 0.55 = 55%)")
+                    .comment("扩散程度增加 (默认: +0.55 = +55%)")
                     .defineInRange("accuracyReduction", 0.55, -1, 1);
             builder.pop();
             
@@ -408,10 +408,10 @@ public class TaczCuriosConfig {
             // 恶性扩散配置
             builder.comment("恶性扩散饰品配置").push("malignant_spread");
             malignantSpreadDamageBoost = builder
-                    .comment("霰弹枪伤害加成 (默认: 1.65 = 165%)")
+                    .comment("霰弹枪伤害加成 (默认: +1.65 = +165%)")
                     .defineInRange("damageBoost", 1.65, -1, 100);
             malignantSpreadAccuracyReduction = builder
-                    .comment("精准度降低 (默认: 0.55 = 55%)")
+                    .comment("扩散程度增加 (默认: +0.55 = +55%)")
                     .defineInRange("accuracyReduction", 0.55, -1, 1);
             builder.pop();
             
@@ -432,17 +432,17 @@ public class TaczCuriosConfig {
             // 战术上膛配置
             builder.comment("战术上膛饰品配置").push("tactical_reload");
             tacticalReloadSpeedBoost = builder
-                    .comment("霰弹枪装填速度加成 (默认: 0.6 = 60%)")
+                    .comment("霰弹枪装填时间加成 (默认: -0.6 = -60%)")
                     .defineInRange("reloadSpeedBoost", -0.6, -1, 100);
             builder.pop();
             
             // 过载弹匣配置
             builder.comment("过载弹匣饰品配置").push("overloaded_magazine");
             overloadedMagazineCapacityBoost = builder
-                    .comment("霰弹枪弹匣容量加成 (默认: 0.6 = 60%)")
+                    .comment("霰弹枪弹匣容量加成 (默认: +0.6 = +60%)")
                     .defineInRange("capacityBoost", 0.6, -1, 100);
             overloadedMagazineReloadSpeedReduction = builder
-                    .comment("装填速度降低 (默认: 0.18 = 18%)")
+                    .comment("装填时间增加 (默认: +0.18 = +18%)")
                     .defineInRange("reloadSpeedReduction", 0.18, -1, 1);
             builder.pop();
             
@@ -456,17 +456,17 @@ public class TaczCuriosConfig {
             // 持续火力配置
             builder.comment("持续火力饰品配置").push("sustained_fire");
             sustainedFireReloadSpeedBoost = builder
-                    .comment("手枪装填速度加成 (默认: 0.48 = 48%)")
+                    .comment("手枪装填时间加成 (默认: -0.48 = -48%)")
                     .defineInRange("reloadSpeedBoost", -0.48, -1, 100);
             builder.pop();
             
             // 感染弹匣配置
             builder.comment("感染弹匣饰品配置").push("infected_magazine");
             infectedMagazineCapacityBoost = builder
-                    .comment("手枪弹匣容量加成 (默认: 0.6 = 60%)")
+                    .comment("手枪弹匣容量加成 (默认: +0.6 = +60%)")
                     .defineInRange("capacityBoost", 0.6, -1, 100);
             infectedMagazineReloadSpeedReduction = builder
-                    .comment("装填速度降低 (默认: 0.3 = 30%)")
+                    .comment("装填时间增加 (默认: +0.3 = +30%)")
                     .defineInRange("reloadSpeedReduction", 0.3, -1, 1);
             builder.pop();
             
@@ -504,7 +504,7 @@ public class TaczCuriosConfig {
             // 爆发装填配置
             builder.comment("爆发装填饰品配置").push("burst_reload");
             burstReloadReloadSpeedBoost = builder
-                    .comment("装填速度加成 (默认: 0.3 = 30%)")
+                    .comment("装填时间加成 (默认: -0.3 = -30%)")
                     .defineInRange("reloadSpeedBoost",-0.3, -1, 100);
             builder.pop();
             
@@ -525,20 +525,20 @@ public class TaczCuriosConfig {
             // 腐败弹匣配置
             builder.comment("腐败弹匣饰品配置").push("corrupt_magazine");
             corruptMagazineCapacityBoost = builder
-                    .comment("弹匣容量加成 (默认: 0.66 = 66%)")
+                    .comment("弹匣容量加成 (默认: +0.66 = +66%)")
                     .defineInRange("capacityBoost", 0.66, -1, 100);
             corruptMagazineReloadSpeedReduction = builder
-                    .comment("装填速度降低 (默认: 0.33 = 33%)")
+                    .comment("装填时间增加 (默认: +0.33 = +33%)")
                     .defineInRange("reloadSpeedReduction", 0.33, -1, 1);
             builder.pop();
             
             // 重口径配置
             builder.comment("重口径饰品配置").push("heavy_caliber_tag");
             heavyCaliberTagDamageBoost = builder
-                    .comment("特定枪械伤害加成 (默认: 1.65 = 165%)")
+                    .comment("特定枪械伤害加成 (默认: +1.65 = +165%)")
                     .defineInRange("damageBoost", 1.65, -1, 100);
             heavyCaliberTagInaccuracyBoost = builder
-                    .comment("不精准度加成 (默认: 0.55 = 55%)")
+                    .comment("扩散程度加成 (默认: +0.55 = +55%)")
                     .defineInRange("inaccuracyBoost", 0.55, -1, 100);
             builder.pop();
             
@@ -559,7 +559,7 @@ public class TaczCuriosConfig {
             // 弹匣增幅配置
             builder.comment("弹匣增幅饰品配置").push("magazine_boost");
             magazineBoostReloadSpeedBoost = builder
-                    .comment("装填速度加成 (默认: 0.3 = 30%)")
+                    .comment("装填时间加成 (默认: -0.3 = -30%)")
                     .defineInRange("reloadSpeedBoost",-0.3, -1, 100);
             builder.pop();
             
@@ -583,21 +583,21 @@ public class TaczCuriosConfig {
                     .comment("弹匣容量减少 (默认: -0.6 = -60%)")
                     .defineInRange("magazineCapacityPenalty", -0.6, -1, 0);
             depletedReloadReloadSpeedBoost = builder
-                    .comment("装填速度加成 (默认: 0.48 = 48%)")
+                    .comment("装填时间加成 (默认: -0.48 = -48%)")
                     .defineInRange("reloadSpeedBoost", -0.48, -1, 100);
             builder.pop();
             
             // 爆发装填Prime配置
             builder.comment("爆发装填Prime饰品配置").push("burst_reload_prime");
             burstReloadPrimeReloadSpeedBoost = builder
-                    .comment("装填速度加成 (默认: 0.55 = 55%)")
+                    .comment("装填时间加成 (默认: -0.55 = -55%)")
                     .defineInRange("reloadSpeedBoost", -0.55, -1, 100);
             builder.pop();
             
             // 战术上膛Prime配置
             builder.comment("战术上膛Prime饰品配置").push("tactical_reload_prime");
             tacticalReloadPrimeReloadSpeedBoost = builder
-                    .comment("装填速度加成 (默认: 1.0 = 100%)")
+                    .comment("装填时间加成 (默认: -1.0 = -100%)")
                     .defineInRange("reloadSpeedBoost", -1.0, -1, 100);
             builder.pop();
             

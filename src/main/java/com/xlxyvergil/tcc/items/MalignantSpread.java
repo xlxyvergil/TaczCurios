@@ -177,9 +177,7 @@ public class MalignantSpread extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.malignant_spread.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -187,7 +185,7 @@ public class MalignantSpread extends ItemBaseCurio {
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() * 100;
         double inaccuracyBoost = TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.malignant_spread.effect", String.format("%.0f", damageBoost), String.format("%.0f", inaccuracyBoost))
+        tooltip.add(Component.translatable("item.tcc.malignant_spread.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

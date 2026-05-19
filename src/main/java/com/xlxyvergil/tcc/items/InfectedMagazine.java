@@ -180,9 +180,7 @@ public class InfectedMagazine extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.infected_magazine.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
 
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -191,7 +189,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         double magazineCapacityBoost = TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get() * 100;
         double reloadDebuff = TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.infected_magazine.effect", 
-                String.format("%.0f", magazineCapacityBoost), String.format("%.0f", reloadDebuff))
+                String.format("%+.0f", magazineCapacityBoost), String.format("%+.0f", reloadDebuff))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

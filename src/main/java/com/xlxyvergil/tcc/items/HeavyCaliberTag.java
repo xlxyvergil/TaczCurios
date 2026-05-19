@@ -203,9 +203,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -214,7 +212,7 @@ public class HeavyCaliberTag extends ItemBaseCurio {
         double damageBoost = TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get() * 100;
         double inaccuracyBoost = TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect", 
-                String.format("%.0f", damageBoost), String.format("%.0f", inaccuracyBoost))
+                String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

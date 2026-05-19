@@ -202,16 +202,14 @@ public class ChamberPrime extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.chamber_prime.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.chamber_prime.effect", String.format("%.0f", damageBoost))
+        tooltip.add(Component.translatable("item.tcc.chamber_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

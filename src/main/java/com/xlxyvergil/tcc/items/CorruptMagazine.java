@@ -190,9 +190,7 @@ public class CorruptMagazine extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.desc")
-            .withStyle(ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -200,7 +198,7 @@ public class CorruptMagazine extends ItemBaseCurio {
         // 添加装备效果
         double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get() * 100;
         double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect", String.format("%.0f", magazineBoost), String.format("%.0f", reloadPenalty))
+        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect", String.format("%+.0f", magazineBoost), String.format("%+.0f", reloadPenalty))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

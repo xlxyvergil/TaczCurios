@@ -235,9 +235,7 @@ public class MergedRifling extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.merged_rifling.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -246,7 +244,7 @@ public class MergedRifling extends ItemBaseCurio {
         double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() * 100;
         double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
-                String.format("%.0f", damageBoost), String.format("%.0f", speedBoost))
+                String.format("%+.0f", damageBoost), String.format("%+.0f", speedBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

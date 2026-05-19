@@ -179,9 +179,7 @@ public class DepletedReload extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.depleted_reload.desc")
-            .withStyle(ChatFormatting.GRAY));
+
 
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -190,8 +188,8 @@ public class DepletedReload extends ItemBaseCurio {
         double magazinePenalty = Math.abs(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get() * 100);
         double reloadBoost = TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.depleted_reload.effect", 
-                                          String.format("%.0f", magazinePenalty), 
-                                          String.format("%.0f", reloadBoost))
+                                          String.format("%+.0f", magazinePenalty), 
+                                          String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         // 添加饰品槽位信息

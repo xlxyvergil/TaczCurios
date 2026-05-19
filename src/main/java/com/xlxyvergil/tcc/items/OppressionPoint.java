@@ -121,16 +121,14 @@ public class OppressionPoint extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.oppression_point.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         double meleeDamageBoost = TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.oppression_point.effect", String.format("%.0f", meleeDamageBoost))
+        tooltip.add(Component.translatable("item.tcc.oppression_point.effect", String.format("%+.0f", meleeDamageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

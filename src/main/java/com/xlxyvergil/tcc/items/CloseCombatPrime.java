@@ -156,20 +156,18 @@ public class CloseCombatPrime extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.close_combat_prime.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%.0f", damageBoost))
+        tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加霰弹枪伤害加成的详细列表
-        tooltip.add(Component.literal("  §7• §6+" + String.format("%.0f", damageBoost) + "% §7霰弹枪伤害")
+        tooltip.add(Component.literal("  §7• §6+" + String.format("%+.0f", damageBoost) + "% §7霰弹枪伤害")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
         
         // 添加饰品槽位信息

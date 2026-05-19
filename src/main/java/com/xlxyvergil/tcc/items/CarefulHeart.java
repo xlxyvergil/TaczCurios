@@ -243,9 +243,7 @@ public class CarefulHeart extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.careful_heart.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -255,7 +253,7 @@ public class CarefulHeart extends ItemBaseCurio {
         double explosionDamageBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get() * 100;
         double explosionRadiusBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.careful_heart.effect", 
-                String.format("%.0f", launcherDamageBoost), String.format("%.0f", explosionDamageBoost), String.format("%.0f", explosionRadiusBoost))
+                String.format("%+.0f", launcherDamageBoost), String.format("%+.0f", explosionDamageBoost), String.format("%+.0f", explosionRadiusBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

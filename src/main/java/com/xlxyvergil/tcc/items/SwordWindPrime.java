@@ -122,16 +122,14 @@ public class SwordWindPrime extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
-        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%.0f", meleeDistanceBoost))
+        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%+.0f", meleeDistanceBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

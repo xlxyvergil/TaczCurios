@@ -143,9 +143,7 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -161,9 +159,9 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
         double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get() * 100;
         int drainDuration = TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.effect", 
-                String.format("%.0f", damageBoost), 
-                String.format("%.0f", healthCost), 
-                String.format("%.0f", healthDrain), 
+                String.format("%+.0f", damageBoost), 
+                String.format("%+.0f", healthCost), 
+                String.format("%+.0f", healthDrain), 
                 String.format("%d", drainDuration))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         

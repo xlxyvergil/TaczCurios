@@ -155,9 +155,7 @@ public class RippingPrime extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.ripping_prime.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -166,7 +164,7 @@ public class RippingPrime extends ItemBaseCurio {
         double fireRateBoost = TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get() * 100;
         double penetrationBoost = TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get();
         tooltip.add(Component.translatable("item.tcc.ripping_prime.effect", 
-                String.format("%.0f", fireRateBoost), String.format("%.1f", penetrationBoost))
+                String.format("%+.0f", fireRateBoost), String.format("%.1f", penetrationBoost))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

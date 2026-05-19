@@ -232,9 +232,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.despicable_acceleration.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -243,7 +241,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
         double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() * 100;
         double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
-                String.format("%.0f", firingSpeedBoost), String.format("%.0f", damageReduction))
+                String.format("%+.0f", firingSpeedBoost), String.format("%+.0f", damageReduction))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

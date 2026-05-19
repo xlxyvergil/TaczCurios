@@ -151,6 +151,8 @@ dependencies {
     implementation fg.deobf("maven.modrinth:taczattributeadd:1.2.0-hotfix")
     // TACZ dependency from Modrinth (1.1.7-hotfix)
     implementation fg.deobf("maven.modrinth:timeless-and-classics-zero:1.1.7-hotfix")
+    // Touhou Little Maid (optional dependency, compile only)
+    compileOnly fg.deobf("maven.modrinth:touhou-little-maid:1.1.14")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

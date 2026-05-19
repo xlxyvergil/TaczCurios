@@ -183,10 +183,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -208,12 +205,12 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
         double nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100;
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.effect", 
-                String.format("%.0f", damageBoost), 
-                String.format("%.0f", explosionRadiusBoost), 
-                String.format("%.0f", explosionDamageBoost), 
-                String.format("%.0f", healthCost),
-                String.format("%.0f", nearbyPlayerRadius), 
-                String.format("%.0f", nearbyPlayerDamageBoost),
+                String.format("%+.0f", damageBoost), 
+                String.format("%+.0f", explosionRadiusBoost), 
+                String.format("%+.0f", explosionDamageBoost), 
+                String.format("%+.0f", healthCost),
+                String.format("%+.0f", nearbyPlayerRadius), 
+                String.format("%+.0f", nearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
@@ -315,7 +312,7 @@ public class HeavenFireApocalypse extends ItemBaseCurio {
                     if (livingEntity instanceof Player player && net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
                         player.displayClientMessage(
                             net.minecraft.network.chat.Component.literal(
-                                "§6天火劫灭 - 为周围玩家提供" + nearbyPlayerDuration + "秒的" + String.format("%.0f", nearbyPlayerDamageBoost) + "%枪械伤害加成"
+                                "§6天火劫灭 - 为周围玩家提供" + nearbyPlayerDuration + "秒的" + String.format("%+.0f", nearbyPlayerDamageBoost) + "%枪械伤害加成"
                             ),
                             true
                         );

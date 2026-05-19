@@ -8,7 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -155,16 +154,14 @@ public class BurstReload extends ItemBaseCurio {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.burst_reload.desc")
-            .withStyle(ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
         double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get() * 100;
-        tooltip.add(Component.translatable("item.tcc.burst_reload.effect", String.format("%.0f", reloadBoost))
+        tooltip.add(Component.translatable("item.tcc.burst_reload.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息

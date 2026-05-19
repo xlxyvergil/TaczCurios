@@ -154,9 +154,7 @@ new ResourceLocation(namespace, attributeName)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-        // 添加物品描述
-        tooltip.add(Component.translatable("item.tcc.evil_accuracy.desc")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
@@ -165,7 +163,7 @@ new ResourceLocation(namespace, attributeName)
         double recoilReduction = TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get() * 100;
         double fireRateReduction = TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.evil_accuracy.effect", 
-                String.format("%.0f", recoilReduction), String.format("%.0f", fireRateReduction))
+                String.format("%+.0f", recoilReduction), String.format("%+.0f", fireRateReduction))
             .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
         
         // 添加饰品槽位信息
