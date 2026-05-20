@@ -110,7 +110,7 @@ public class OverloadedMagazine extends ItemBaseCurio {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
             // 获取配置中的弹匣容量加成值和装填速度减益
             double magazineCapacityBoost = TaczCuriosConfig.COMMON.overloadedMagazineCapacityBoost.get();
-            double reloadDebuff = -TaczCuriosConfig.COMMON.overloadedMagazineReloadSpeedReduction.get();
+            double reloadDebuff = TaczCuriosConfig.COMMON.overloadedMagazineReloadSpeedReduction.get();
 
             // 应用弹匣容量加成
             if (capacityAttribute != null) {

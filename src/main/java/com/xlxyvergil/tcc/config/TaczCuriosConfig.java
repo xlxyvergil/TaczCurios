@@ -271,7 +271,7 @@ public class TaczCuriosConfig {
                     .defineInRange("fireRateBoost", 0.9, -1, 100);
             despicableAccelerationDamageReduction = builder
                     .comment("伤害降低 (默认: -0.15 = -15%)")
-                    .defineInRange("damageReduction", 0.15, -1, 1);
+                    .defineInRange("damageReduction", -0.15, -1, 0);
             builder.pop();
             
             // 并合膛线配置
@@ -357,7 +357,7 @@ public class TaczCuriosConfig {
                     .defineInRange("recoilReduction", -0.9, -1, 1);
             evilAccuracyFireRateReduction = builder
                     .comment("射速降低 (默认: -0.36 = -36%)")
-                    .defineInRange("fireRateReduction", -0.36, -1, 1);
+                    .defineInRange("fireRateReduction", -0.36, -1, 0);
             builder.pop();
             
             // 极限速度配置

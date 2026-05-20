@@ -108,7 +108,7 @@ public class DespicableAcceleration extends ItemBaseCurio {
         
         // 获取配置中的射击速度加成和伤害降低值
         double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get();
-        double damageReduction = -TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get();
+        double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get();
         
         // 应用射击速度提升
         var rpmAttribute = attributes.getInstance(

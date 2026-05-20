@@ -81,7 +81,7 @@ public class EvilAccuracy extends ItemBaseCurio {
     public void applyEffects(LivingEntity livingEntity) {
         // 获取配置中的后坐力降低和射速降低值
         double recoilReduction = TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get();
-        double fireRateReduction = -TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get();
+        double fireRateReduction = TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get();
         
         // 应用后坐力降低
         applyAttributeModifier(livingEntity, "taa", "recoil", recoilReduction, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);

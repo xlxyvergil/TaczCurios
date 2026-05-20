@@ -129,7 +129,7 @@ public class CorruptMagazine extends ItemBaseCurio {
             // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
             if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
                 // 获取配置中的装填速度降低值
-                double reloadPenalty = -TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
+                double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
                 // 添加配置的装填速度降低（加算）
                 var reloadModifier = new AttributeModifier(
                     RELOAD_UUID,

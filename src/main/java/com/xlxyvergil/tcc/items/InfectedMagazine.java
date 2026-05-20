@@ -109,7 +109,7 @@ public class InfectedMagazine extends ItemBaseCurio {
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
             // 获取配置中的弹匣容量加成值和装填速度减益
             double magazineCapacityBoost = TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get();
-            double reloadDebuff = -TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get();
+            double reloadDebuff = TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get();
 
             // 应用弹匣容量加成
             if (capacityAttribute != null) {
