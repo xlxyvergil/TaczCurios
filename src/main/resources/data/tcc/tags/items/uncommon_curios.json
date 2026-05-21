@@ -7,6 +7,7 @@
     "tcc:ferocious_extension",
     "tcc:rifling",
     "tcc:close_range_shot",
-    "tcc:wasp_stinger"
+    "tcc:wasp_stinger",
+    "tcc:tactical_reload"
   ]
 }

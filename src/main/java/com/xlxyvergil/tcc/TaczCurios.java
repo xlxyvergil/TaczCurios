@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
 import com.xlxyvergil.tcc.network.TccNetwork;
+import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -62,6 +63,8 @@ public class TaczCurios
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             TaczVillagers.registerTrades();
+            // 初始化 Apotheosis 神化属性集成
+            ApothicCuriosIntegration.init();
         });
     }
     

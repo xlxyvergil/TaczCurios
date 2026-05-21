@@ -12,6 +12,12 @@
     "tcc:chamber",
     "tcc:corrupt_magazine",
     "tcc:split_chamber",
-    "tcc:depleted_reload"
+    "tcc:depleted_reload",
+    "tcc:overloaded_magazine",
+    "tcc:infernal_chamber",
+    "tcc:sustained_fire",
+    "tcc:infected_magazine",
+    "tcc:deadly_surge",
+    "tcc:bullet_spread"
   ]
 }

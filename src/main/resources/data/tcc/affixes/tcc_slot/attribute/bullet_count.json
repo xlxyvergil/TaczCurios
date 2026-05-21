@@ -1,0 +1,40 @@
+{
+    "type": "apotheosis:attribute",
+    "attribute": "taa:bullet_count",
+    "operation": "ADDITION",
+    "values": {
+        "common": {
+            "min": 1,
+            "steps": 2,
+            "step": 1
+        },
+        "uncommon": {
+            "min": 2,
+            "steps": 3,
+            "step": 1
+        },
+        "rare": {
+            "min": 3,
+            "steps": 4,
+            "step": 1
+        },
+        "epic": {
+            "min": 4,
+            "steps": 5,
+            "step": 1
+        },
+        "mythic": {
+            "min": 6,
+            "steps": 6,
+            "step": 1
+        },
+        "ancient": {
+            "min": 8,
+            "steps": 8,
+            "step": 1
+        }
+    },
+    "types": [
+        "curios:tcc_slot"
+    ]
+}

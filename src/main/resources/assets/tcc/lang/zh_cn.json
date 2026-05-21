@@ -3,6 +3,10 @@
   
   "curios.identifier.tcc_slot": "Tacz饰品栏",
   
+  "// TAA属性本地化覆盖": "",
+  "attribute.name.taa.explosion_knockbacknew": "爆炸击退",
+  "attribute.name.taa.explosion_knockbacknew.desc": "爆炸击退效果",
+  
   "block.tcc.teshin_workbench": "泰辛工作台",
   
   "entity.minecraft.villager.teshin": "泰辛",
@@ -175,5 +179,51 @@
   "tcc.tooltip.rarity.rare": "§7稀有度：§6稀有",
   "tcc.tooltip.rarity.epic": "§7稀有度：§d史诗",
   "tcc.tooltip.rarity.legendary": "§7稀有度：§f传说",
-  "tcc.tooltip.rarity.mythic": "§7稀有度：§d裂隙"
+  "tcc.tooltip.rarity.mythic": "§7稀有度：§d裂隙",
+
+  "// Apotheosis词缀 - 暴击属性": "",
+  "affix.tcc:tcc_slot/attribute/critical_chance": "易暴击", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "心胸大开",
+  "affix.tcc:tcc_slot/attribute/critical_damage": "打得疼", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "致命武力",
+
+  "// Apotheosis词缀 - TAA核心战斗属性": "",
+  "affix.tcc:tcc_slot/attribute/gun_damage": "火力猛", "affix.tcc:tcc_slot/attribute/gun_damage.suffix": "已强化枪械",
+  "affix.tcc:tcc_slot/attribute/fire_rate": "射速快", "affix.tcc:tcc_slot/attribute/fire_rate.suffix": "超省子弹！",
+  "affix.tcc:tcc_slot/attribute/magazine_capacity": "弹匣大", "affix.tcc:tcc_slot/attribute/magazine_capacity.suffix": "配备大弹鼓",
+  "affix.tcc:tcc_slot/attribute/reload_time": "装填快", "affix.tcc:tcc_slot/attribute/reload_time.suffix": "快速装填大师",
+  "affix.tcc:tcc_slot/attribute/headshot_damage": "爆头狠", "affix.tcc:tcc_slot/attribute/headshot_damage.suffix": "爆头爱好者",
+  "affix.tcc:tcc_slot/attribute/ads_speed": "开镜快", "affix.tcc:tcc_slot/attribute/ads_speed.suffix": "冷静射手",
+  "affix.tcc:tcc_slot/attribute/pierce": "穿透强", "affix.tcc:tcc_slot/attribute/pierce.suffix": "穿爆燃弹",
+  "affix.tcc:tcc_slot/attribute/recoil_reduction": "后坐小", "affix.tcc:tcc_slot/attribute/recoil_reduction.suffix": "人体支架",
+  "affix.tcc:tcc_slot/attribute/accuracy": "精度高", "affix.tcc:tcc_slot/attribute/accuracy.suffix": "强迫症福音",
+  "affix.tcc:tcc_slot/attribute/armor_penetration": "破甲狠", "affix.tcc:tcc_slot/attribute/armor_penetration.suffix": "护甲粉碎机",
+  "affix.tcc:tcc_slot/attribute/bullet_count": "子弹多", "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "一枪变多枪",
+  "affix.tcc:tcc_slot/attribute/explosion_radius": "爆炸广", "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "拆迁办主任",
+  "affix.tcc:tcc_slot/attribute/explosion_damage": "爆炸猛", "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT成精",
+  "affix.tcc:tcc_slot/attribute/ignite": "点火易", "affix.tcc:tcc_slot/attribute/ignite.suffix": "行走的打火机",
+  "affix.tcc:tcc_slot/attribute/knockback": "击退远", "affix.tcc:tcc_slot/attribute/knockback.suffix": "人体保龄球",
+  "affix.tcc:tcc_slot/attribute/effective_range": "射程远", "affix.tcc:tcc_slot/attribute/effective_range.suffix": "超视距打击",
+  "affix.tcc:tcc_slot/attribute/ammo_speed": "弹速快", "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "超音速快递",
+  "affix.tcc:tcc_slot/attribute/move_speed": "移速快", "affix.tcc:tcc_slot/attribute/move_speed.suffix": "减肥成功",
+  "affix.tcc:tcc_slot/attribute/silence": "消音好", "affix.tcc:tcc_slot/attribute/silence.suffix": "安静的美男子",
+  "affix.tcc:tcc_slot/attribute/weight_reduction": "重量轻", "affix.tcc:tcc_slot/attribute/weight_reduction.suffix": "轻量化大师",
+  
+  "// 精准度细分词缀": "",
+  "affix.tcc:tcc_slot/attribute/accuracy_stand": "站得稳", "affix.tcc:tcc_slot/attribute/accuracy_stand.suffix": "站桩输出",
+  "affix.tcc:tcc_slot/attribute/accuracy_move": "跑得准", "affix.tcc:tcc_slot/attribute/accuracy_move.suffix": "跑打达人",
+  "affix.tcc:tcc_slot/attribute/accuracy_sneak": "蹲得稳", "affix.tcc:tcc_slot/attribute/accuracy_sneak.suffix": "苟王之王",
+  "affix.tcc:tcc_slot/attribute/accuracy_lie": "趴得准", "affix.tcc:tcc_slot/attribute/accuracy_lie.suffix": "地躺拳法",
+  "affix.tcc:tcc_slot/attribute/accuracy_aim": "瞄得准", "affix.tcc:tcc_slot/attribute/accuracy_aim.suffix": "瞄不准算我输",
+  
+  "// 后坐力细分词缀": "",
+  "affix.tcc:tcc_slot/attribute/recoil_pitch": "垂直稳", "affix.tcc:tcc_slot/attribute/recoil_pitch.suffix": "垂直压枪",
+  "affix.tcc:tcc_slot/attribute/recoil_yaw": "水平稳", "affix.tcc:tcc_slot/attribute/recoil_yaw.suffix": "水平压枪",
+  
+  "// Apotheosis词缀 - TAA专属枪械伤害": "",
+  "affix.tcc:tcc_slot/attribute/pistol_damage": "手枪强", "affix.tcc:tcc_slot/attribute/pistol_damage.suffix": "小手枪大威力",
+  "affix.tcc:tcc_slot/attribute/rifle_damage": "步枪强", "affix.tcc:tcc_slot/attribute/rifle_damage.suffix": "步枪特化专家",
+  "affix.tcc:tcc_slot/attribute/shotgun_damage": "霰弹强", "affix.tcc:tcc_slot/attribute/shotgun_damage.suffix": "贴脸输出王者",
+  "affix.tcc:tcc_slot/attribute/sniper_damage": "狙击强", "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "千里之外取人首级",
+  "affix.tcc:tcc_slot/attribute/smg_damage": "冲锋强", "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "冲锋狂魔",
+  "affix.tcc:tcc_slot/attribute/lmg_damage": "机枪强", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "火力压制大师",
+  "affix.tcc:tcc_slot/attribute/launcher_damage": "重武强", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "重火力爱好者"
 }

@@ -130,6 +130,14 @@ repositories {
         }
     }
 
+    // CurseMaven for Apotheosis dependencies
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
     flatDir {
@@ -153,6 +161,10 @@ dependencies {
     implementation fg.deobf("maven.modrinth:timeless-and-classics-zero:1.1.7-hotfix")
     // Touhou Little Maid (optional dependency, compile only)
     compileOnly fg.deobf("maven.modrinth:touhou-little-maid:1.1.14")
+    // Apotheosis dependencies for affix support (optional, compile only)
+    compileOnly fg.deobf("curse.maven:apotheosis-313970:6461960")
+    compileOnly fg.deobf("curse.maven:placebo-283644:6274231")
+    compileOnly fg.deobf("curse.maven:apothic-attributes-898963:5634071")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
