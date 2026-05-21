@@ -2,6 +2,7 @@
   "itemGroup.tcc.tacz_curio_tab": "Tacz饰品",
   
   "curios.identifier.tcc_slot": "Tacz饰品栏",
+  "curios.modifiers.tcc_slot": "Tacz饰品属性：",
   
   "// TAA属性本地化覆盖": "",
   "attribute.name.taa.explosion_knockbacknew": "爆炸击退",
@@ -199,7 +200,6 @@
   "affix.tcc:tcc_slot/attribute/bullet_count": "子弹多", "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "一枪变多枪",
   "affix.tcc:tcc_slot/attribute/explosion_radius": "爆炸广", "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "拆迁办主任",
   "affix.tcc:tcc_slot/attribute/explosion_damage": "爆炸猛", "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT成精",
-  "affix.tcc:tcc_slot/attribute/ignite": "点火易", "affix.tcc:tcc_slot/attribute/ignite.suffix": "行走的打火机",
   "affix.tcc:tcc_slot/attribute/knockback": "击退远", "affix.tcc:tcc_slot/attribute/knockback.suffix": "人体保龄球",
   "affix.tcc:tcc_slot/attribute/effective_range": "射程远", "affix.tcc:tcc_slot/attribute/effective_range.suffix": "超视距打击",
   "affix.tcc:tcc_slot/attribute/ammo_speed": "弹速快", "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "超音速快递",

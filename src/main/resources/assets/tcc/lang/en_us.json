@@ -2,6 +2,7 @@
   "itemGroup.tcc.tacz_curio_tab": "TACZ Curios",
   
   "curios.identifier.tcc_slot": "TACZ Curio Slot",
+  "curios.modifiers.tcc_slot": "TACZ Curio Attributes:",
   
   "block.tcc.teshin_workbench": "Teshin Workbench",
   
@@ -175,5 +176,50 @@
   "tcc.tooltip.rarity.rare": "§7Rarity: §6Rare",
   "tcc.tooltip.rarity.epic": "§7Rarity: §dEpic",
   "tcc.tooltip.rarity.legendary": "§7Rarity: §fLegendary",
-  "tcc.tooltip.rarity.mythic": "§7Rarity: §dRift"
+  "tcc.tooltip.rarity.mythic": "§7Rarity: §dRift",
+
+  "// Apotheosis Affixes - Critical Attributes": "",
+  "affix.tcc:tcc_slot/attribute/critical_chance": "Easy Crit", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "Wide Open Heart",
+  "affix.tcc:tcc_slot/attribute/critical_damage": "Hard Hit", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "Deadly Force",
+
+  "// Apotheosis Affixes - TAA Core Combat Attributes": "",
+  "affix.tcc:tcc_slot/attribute/gun_damage": "Strong Firepower", "affix.tcc:tcc_slot/attribute/gun_damage.suffix": "Enhanced Gun",
+  "affix.tcc:tcc_slot/attribute/fire_rate": "Fast Fire", "affix.tcc:tcc_slot/attribute/fire_rate.suffix": "Bullet Saver!",
+  "affix.tcc:tcc_slot/attribute/magazine_capacity": "Big Mag", "affix.tcc:tcc_slot/attribute/magazine_capacity.suffix": "Equipped with Drum Mag",
+  "affix.tcc:tcc_slot/attribute/reload_time": "Quick Reload", "affix.tcc:tcc_slot/attribute/reload_time.suffix": "Reload Master",
+  "affix.tcc:tcc_slot/attribute/headshot_damage": "Brutal Headshot", "affix.tcc:tcc_slot/attribute/headshot_damage.suffix": "Headshot Enthusiast",
+  "affix.tcc:tcc_slot/attribute/ads_speed": "Quick ADS", "affix.tcc:tcc_slot/attribute/ads_speed.suffix": "Calm Shooter",
+  "affix.tcc:tcc_slot/attribute/pierce": "Strong Pierce", "affix.tcc:tcc_slot/attribute/pierce.suffix": "Piercing Incendiary",
+  "affix.tcc:tcc_slot/attribute/recoil_reduction": "Low Recoil", "affix.tcc:tcc_slot/attribute/recoil_reduction.suffix": "Human Tripod",
+  "affix.tcc:tcc_slot/attribute/accuracy": "High Precision", "affix.tcc:tcc_slot/attribute/accuracy.suffix": "OCD's Dream",
+  "affix.tcc:tcc_slot/attribute/armor_penetration": "Brutal Penetration", "affix.tcc:tcc_slot/attribute/armor_penetration.suffix": "Armor Crusher",
+  "affix.tcc:tcc_slot/attribute/bullet_count": "More Bullets", "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "One Shot Becomes Many",
+  "affix.tcc:tcc_slot/attribute/explosion_radius": "Wide Blast", "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "Demolition Chief",
+  "affix.tcc:tcc_slot/attribute/explosion_damage": "Heavy Blast", "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT Spirit",
+  "affix.tcc:tcc_slot/attribute/knockback": "Far Knockback", "affix.tcc:tcc_slot/attribute/knockback.suffix": "Human Bowling",
+  "affix.tcc:tcc_slot/attribute/effective_range": "Long Range", "affix.tcc:tcc_slot/attribute/effective_range.suffix": "Beyond Visual Range",
+  "affix.tcc:tcc_slot/attribute/ammo_speed": "Fast Ammo", "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "Supersonic Express",
+  "affix.tcc:tcc_slot/attribute/move_speed": "Fast Move", "affix.tcc:tcc_slot/attribute/move_speed.suffix": "Weight Loss Success",
+  "affix.tcc:tcc_slot/attribute/silence": "Good Silence", "affix.tcc:tcc_slot/attribute/silence.suffix": "Quiet Gentleman",
+  "affix.tcc:tcc_slot/attribute/weight_reduction": "Light Weight", "affix.tcc:tcc_slot/attribute/weight_reduction.suffix": "Lightweight Master",
+  
+  "// Accuracy Sub-Affixes": "",
+  "affix.tcc:tcc_slot/attribute/accuracy_stand": "Steady Stand", "affix.tcc:tcc_slot/attribute/accuracy_stand.suffix": "Stationary DPS",
+  "affix.tcc:tcc_slot/attribute/accuracy_move": "Accurate Run", "affix.tcc:tcc_slot/attribute/accuracy_move.suffix": "Run & Gun Expert",
+  "affix.tcc:tcc_slot/attribute/accuracy_sneak": "Steady Crouch", "affix.tcc:tcc_slot/attribute/accuracy_sneak.suffix": "King of Camping",
+  "affix.tcc:tcc_slot/attribute/accuracy_lie": "Accurate Prone", "affix.tcc:tcc_slot/attribute/accuracy_lie.suffix": "Ground Boxing",
+  "affix.tcc:tcc_slot/attribute/accuracy_aim": "Precise Aim", "affix.tcc:tcc_slot/attribute/accuracy_aim.suffix": "Can't Miss",
+  
+  "// Recoil Sub-Affixes": "",
+  "affix.tcc:tcc_slot/attribute/recoil_pitch": "Vertical Stable", "affix.tcc:tcc_slot/attribute/recoil_pitch.suffix": "Vertical Control",
+  "affix.tcc:tcc_slot/attribute/recoil_yaw": "Horizontal Stable", "affix.tcc:tcc_slot/attribute/recoil_yaw.suffix": "Horizontal Control",
+  
+  "// Apotheosis Affixes - TAA Exclusive Gun Damage": "",
+  "affix.tcc:tcc_slot/attribute/pistol_damage": "Strong Pistol", "affix.tcc:tcc_slot/attribute/pistol_damage.suffix": "Small Gun Big Power",
+  "affix.tcc:tcc_slot/attribute/rifle_damage": "Strong Rifle", "affix.tcc:tcc_slot/attribute/rifle_damage.suffix": "Rifle Specialist",
+  "affix.tcc:tcc_slot/attribute/shotgun_damage": "Strong Shotgun", "affix.tcc:tcc_slot/attribute/shotgun_damage.suffix": "Close Range King",
+  "affix.tcc:tcc_slot/attribute/sniper_damage": "Strong Sniper", "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "Thousand Yard Kill",
+  "affix.tcc:tcc_slot/attribute/smg_damage": "Strong SMG", "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "Charge Maniac",
+  "affix.tcc:tcc_slot/attribute/lmg_damage": "Strong LMG", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "Suppression Master",
+  "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover"
 }

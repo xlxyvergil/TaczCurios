@@ -1,7 +1,7 @@
 {
     "type": "apotheosis:attribute",
     "attribute": "taa:armor_ignore",
-    "operation": "ADDITION",
+    "operation": "MULTIPLY_BASE",
     "values": {
         "common": {
             "min": 0.02,
