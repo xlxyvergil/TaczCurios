@@ -203,6 +203,9 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue kikakuIchijinHealthMultiplier;
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyUnbreakableBlocks;
         
+        // Apotheosis集成配置
+        public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
+        
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
             
@@ -658,6 +661,13 @@ public class TaczCuriosConfig {
             kikakuIchijinDestroyUnbreakableBlocks = builder
                     .comment("是否破坏不可破坏方块（如基岩） (默认: false)")
                     .define("destroyUnbreakableBlocks", false);
+            builder.pop();
+            
+            // Apotheosis集成配置
+            builder.comment("Apotheosis神化属性集成配置").push("apotheosis_integration");
+            enableApotheosisIntegration = builder
+                    .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: true)")
+                    .define("enableApotheosisIntegration", true);
             builder.pop();
             
             builder.pop();

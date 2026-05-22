@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "tcc:soldier_specific_tag",
     "tcc:red_movement_tag",
     "tcc:merged_rifling",
     "tcc:limit_speed",

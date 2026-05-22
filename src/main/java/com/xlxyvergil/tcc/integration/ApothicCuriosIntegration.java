@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.integration;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,11 @@ public class ApothicCuriosIntegration {
      */
     public static void init() {
         if (initialized) return;
+        
+        // 检查是否启用了Apotheosis集成
+        if (!TaczCuriosConfig.COMMON.enableApotheosisIntegration.get()) {
+            return;
+        }
         
         // 检查 Apotheosis 是否加载
         if (!ModList.get().isLoaded(APOTHEOSIS_MODID)) {

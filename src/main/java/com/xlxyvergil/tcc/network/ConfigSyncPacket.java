@@ -307,6 +307,10 @@ public class ConfigSyncPacket {
             if (config.has("kikakuIchijinDestroyUnbreakableBlocks"))
                 TaczCuriosConfig.COMMON.kikakuIchijinDestroyUnbreakableBlocks.set(config.get("kikakuIchijinDestroyUnbreakableBlocks").getAsBoolean());
             
+            // Apotheosis集成配置
+            if (config.has("enableApotheosisIntegration"))
+                TaczCuriosConfig.COMMON.enableApotheosisIntegration.set(config.get("enableApotheosisIntegration").getAsBoolean());
+            
             TaczCurios.LOGGER.info("已同步服务端全部配置数据");
         } catch (Exception e) {
             TaczCurios.LOGGER.error("配置同步失败", e);
@@ -501,6 +505,9 @@ public class ConfigSyncPacket {
         // 掎角一阵配置
         config.addProperty("kikakuIchijinHealthMultiplier", TaczCuriosConfig.COMMON.kikakuIchijinHealthMultiplier.get());
         config.addProperty("kikakuIchijinDestroyUnbreakableBlocks", TaczCuriosConfig.COMMON.kikakuIchijinDestroyUnbreakableBlocks.get());
+        
+        // Apotheosis集成配置
+        config.addProperty("enableApotheosisIntegration", TaczCuriosConfig.COMMON.enableApotheosisIntegration.get());
         
         return new ConfigSyncPacket(GSON.toJson(config));
     }

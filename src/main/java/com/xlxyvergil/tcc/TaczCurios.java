@@ -16,11 +16,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-// 这里的值应该与META-INF/mods.toml文件中的条目匹配
 @Mod(TaczCurios.MODID)
 public class TaczCurios
 {
-    // 在一个公共位置定义mod id，供所有地方引用
     public static final String MODID = "tcc";
     // 直接引用slf4j日志记录器
     public static final Logger LOGGER = LogUtils.getLogger();
@@ -39,10 +37,8 @@ public class TaczCurios
         TaczPoiTypes.POI_TYPES.register(modEventBus);
         TaczVillagers.PROFESSIONS.register(modEventBus);
         TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
-        //TaczAttributes.ATTRIBUTES.register(modEventBus);
-        //TaczSounds.SOUNDS.register(modEventBus);
 
-        // 为我们感兴趣的服务器和其他游戏事件注册自己
+        
         MinecraftForge.EVENT_BUS.register(this);
         // 注册战利品表事件处理器
         MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
@@ -63,8 +59,10 @@ public class TaczCurios
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             TaczVillagers.registerTrades();
-            // 初始化 Apotheosis 神化属性集成
-            ApothicCuriosIntegration.init();
+            // 检查是否启用了Apotheosis集成，然后初始化 Apotheosis 神化属性集成
+            if (com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.enableApotheosisIntegration.get()) {
+                ApothicCuriosIntegration.init();
+            }
         });
     }
     
