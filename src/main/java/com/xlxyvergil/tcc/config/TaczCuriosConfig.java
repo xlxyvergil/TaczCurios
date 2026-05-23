@@ -666,8 +666,8 @@ public class TaczCuriosConfig {
             // Apotheosis集成配置
             builder.comment("Apotheosis神化属性集成配置").push("apotheosis_integration");
             enableApotheosisIntegration = builder
-                    .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: true)")
-                    .define("enableApotheosisIntegration", true);
+                    .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: false)")
+                    .define("enableApotheosisIntegration", false);
             builder.pop();
             
             builder.pop();
