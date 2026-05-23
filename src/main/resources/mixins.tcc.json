@@ -6,6 +6,7 @@
   "plugin": "com.xlxyvergil.tcc.mixin.TccMixinPlugin",
   "mixins": [
     "ForgeHooksMixin",
+    "LivingEntityAccessor",
     "apothiccurios.LootCategoryMixin",
     "apothiccurios.EnchantmentHelperMixin"
   ],

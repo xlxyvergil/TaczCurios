@@ -8,12 +8,15 @@ import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
 import com.xlxyvergil.tcc.network.TccNetwork;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
+import com.xlxyvergil.tcc.core.TccAttributes;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.slf4j.Logger;
 
 @Mod(TaczCurios.MODID)
@@ -37,6 +40,7 @@ public class TaczCurios
         TaczPoiTypes.POI_TYPES.register(modEventBus);
         TaczVillagers.PROFESSIONS.register(modEventBus);
         TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        TccAttributes.register(modEventBus);
 
         
         MinecraftForge.EVENT_BUS.register(this);

@@ -8,12 +8,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -201,13 +199,19 @@ public class KikakuIchijin extends ItemBaseCurio {
 
     /**
      * 破坏目标周围球形范围内的方块（变成掉落物）
-     * 半径6格的球形范围，根据配置决定是否破坏不可破坏方块
+     * 半径6格的球形范围，根据配置决定是否破坏不可破坏方块和普通方块
      */
     private static void destroyBlocksAroundVictim(ServerLevel level, LivingEntity victim) {
         BlockPos center = victim.blockPosition();
         int radius = 6; // 球形半径6格
         double radiusSq = radius * radius; // 半径平方，用于距离计算
         boolean destroyUnbreakable = TaczCuriosConfig.COMMON.kikakuIchijinDestroyUnbreakableBlocks.get();
+        boolean destroyNormal = TaczCuriosConfig.COMMON.kikakuIchijinDestroyNormalBlocks.get();
+        
+        // 如果两个都关闭，直接返回
+        if (!destroyUnbreakable && !destroyNormal) {
+            return;
+        }
 
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -225,9 +229,17 @@ public class KikakuIchijin extends ItemBaseCurio {
                         continue;
                     }
 
-                    // 根据配置决定是否跳过不可破坏方块
-                    if (!destroyUnbreakable && blockState.getDestroySpeed(level, pos) < 0) {
-                        continue;
+                    float destroySpeed = blockState.getDestroySpeed(level, pos);
+                    
+                    // 判断方块类型
+                    boolean isUnbreakable = destroySpeed < 0;
+                    
+                    // 根据配置决定是否跳过
+                    if (isUnbreakable && !destroyUnbreakable) {
+                        continue; // 不可破坏方块且配置不允许
+                    }
+                    if (!isUnbreakable && !destroyNormal) {
+                        continue; // 普通方块且配置不允许
                     }
 
                     // 破坏方块并掉落

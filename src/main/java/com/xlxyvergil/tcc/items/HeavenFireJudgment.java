@@ -1,14 +1,21 @@
 package com.xlxyvergil.tcc.items;
 
+import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.item.IGun;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.util.TacDamageHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.registries.ForgeRegistries;
+import top.theillusivec4.curios.api.CuriosApi;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
@@ -24,7 +31,7 @@ import java.util.UUID;
  * 效果：玩家血量高于40%时，提升玩家325%的bullet_gundamage，造成伤害后玩家立即扣除30%血量，
  * 然后每秒消耗最大HP的5%，持续5秒。玩家血量低于40%时，此饰品的全部效果都不生效。
  */
-@Mod.EventBusSubscriber(modid = "tcc")
+@Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireJudgment extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
@@ -35,6 +42,9 @@ public class HeavenFireJudgment extends ItemBaseCurio {
     
     // 添加一个用于追踪持续伤害效果的标记
     private static final String DAMAGE_TAG = "HeavenFireJudgment_Damage";
+    
+    // 添加一个用于追踪持续伤害开始时间的标记
+    private static final String DAMAGE_START_TIME_TAG = "HeavenFireJudgment_DamageStartTime";
     
     public HeavenFireJudgment(Properties properties) {
         super(properties);
@@ -74,7 +84,7 @@ public class HeavenFireJudgment extends ItemBaseCurio {
         }
         
         // 检查是否已经装备了HeavenFireApocalypse
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
+        return !CuriosApi.getCuriosInventory(slotContext.entity())
             .map(inv -> inv.findFirstCurio(
                 itemStack -> itemStack.getItem() instanceof HeavenFireApocalypse))
             .orElse(java.util.Optional.empty()).isPresent();
@@ -99,8 +109,8 @@ public class HeavenFireJudgment extends ItemBaseCurio {
         // 使用TaczAttributeAdd中的通用枪械伤害属性
         var attributes = livingEntity.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+            ForgeRegistries.ATTRIBUTES.getValue(
+                new ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
@@ -125,8 +135,8 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     private void removeGunDamageBonus(LivingEntity livingEntity) {
         var attributes = livingEntity.getAttributes();
         var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
+            ForgeRegistries.ATTRIBUTES.getValue(
+                new ResourceLocation("taa", "bullet_gundamage")
             )
         );
         
@@ -173,51 +183,47 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     }
     
     /**
-     * 监听伤害事件，处理伤害触发后的生命值扣除
+     * 监听 TACZ 枪械伤害事件，处理伤害触发后的生命值扣除
      */
     @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        DamageSource source = event.getSource();
+    public static void onGunHurt(EntityHurtByGunEvent.Post event) {
+        // 使用工具类检查并获取攻击者
+        LivingEntity attacker = TacDamageHelper.getAttacker(event);
+        if (attacker == null) {
+            return;
+        }
         
-        // 检查伤害来源是否是LivingEntity
-        if (source.getEntity() instanceof LivingEntity livingEntity) {
-            // 检查实体是否装备了天火圣裁
-            if (hasHeavenFireJudgmentEquipped(livingEntity)) {
-                // 检查实体是否手持枪械
-                ItemStack mainHandItem = livingEntity.getMainHandItem();
-                com.tacz.guns.api.item.IGun iGun = com.tacz.guns.api.item.IGun.getIGunOrNull(mainHandItem);
-                
-                // 只有在实体手持枪械时才触发效果
-                if (iGun != null) {
-                    // 检查实体血量是否高于40%
-                    float healthPercentage = livingEntity.getHealth() / livingEntity.getMaxHealth();
-                    if (healthPercentage <= 0.4) {
-                        return; // 血量低于或等于40%时不生效
-                    }
+        // 检查攻击者是否装备了天火圣裁
+        if (!hasHeavenFireJudgmentEquipped(attacker)) {
+            return;
+        }
+        
+        // 只在服务端执行
+        if (!(attacker.level() instanceof ServerLevel)) {
+            return;
+        }
+        
+        // 检查攻击者是否手持枪械
+        ItemStack mainHandItem = attacker.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        // 只有在攻击者手持枪械时才触发效果
+        if (iGun != null) {
+            // 获取配置中的生命值扣除比例和持续时间
+            double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get();
+            int drainDuration = TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get();
 
-                    // 获取配置中的生命值扣除比例和持续时间
-                    double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get();
-                    double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get();
-                    int drainDuration = TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get();
-                    
-                    // 计算扣除配置的生命值比例后的血量百分比（healthCost为负值，取绝对值计算）
-                    float healthAfterDeduction = (livingEntity.getHealth() + livingEntity.getHealth() * (float)healthCost) / livingEntity.getMaxHealth();
-                    if (healthAfterDeduction <= 0.4) {
-                        return; // 扣除配置的生命值比例后如果低于或等于40%，则不触发效果
-                    }
-
-                    // 立即扣除配置的生命值比例（healthCost为负值，取反得到正的伤害值）
-                    float healthToDeduct = livingEntity.getHealth() * (float)(-healthCost);
-                    if (healthToDeduct > 0) {
-                        livingEntity.hurt(livingEntity.damageSources().magic(), healthToDeduct);
-                    }
-                    
-                    // 设置持续伤害效果：每秒消耗最大生命值的配置比例，持续配置的秒数
-                    // 这里我们通过给实体添加一个NBT标签来跟踪效果
-                    net.minecraft.nbt.CompoundTag persistentData = livingEntity.getPersistentData();
-                    persistentData.putInt(DAMAGE_TAG, drainDuration); // 持续配置的秒数
-                }
+            // 立即扣除配置的生命值比例（healthCost为负值，取反得到正值）
+            float healthToDeduct = attacker.getHealth() * (float)(-healthCost);
+            if (healthToDeduct > 0) {
+                // 使用虚空伤害源，绕过护甲、魔法减免和附魔减伤
+                attacker.hurt(TccDamageSources.voidDamage(attacker), healthToDeduct);
             }
+            
+            // 设置持续伤害效果：等待2秒后开始，每2秒消耗最大生命值的配置比例，持续配置的秒数
+            CompoundTag persistentData = attacker.getPersistentData();
+            persistentData.putInt(DAMAGE_TAG, drainDuration);
+            persistentData.putLong(DAMAGE_START_TIME_TAG, attacker.level().getGameTime());
         }
     }
     
@@ -227,45 +233,47 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity livingEntity = (LivingEntity) slotContext.entity();
-        // 检查实体血量是否高于40%
-        float healthPercentage = livingEntity.getHealth() / livingEntity.getMaxHealth();
-        if (healthPercentage <= 0.4) {
-            // 血量低于40%时移除加成并清除持续伤害效果
-            removeGunDamageBonus(livingEntity);
-            livingEntity.getPersistentData().remove(DAMAGE_TAG);
-            return;
-        }
-        
-        net.minecraft.nbt.CompoundTag persistentData = livingEntity.getPersistentData();
+            
+        CompoundTag persistentData = livingEntity.getPersistentData();
         int duration = persistentData.getInt(DAMAGE_TAG);
-        
+            
         if (duration > 0) {
-            // 每秒触发一次伤害（20 ticks = 1秒）
-            if (livingEntity.tickCount % 20 == 0) {
+            // 检查是否已经过了2秒延迟
+            long currentTime = livingEntity.level().getGameTime();
+            long startTime = persistentData.getLong(DAMAGE_START_TIME_TAG);
+            long elapsedTime = currentTime - startTime;
+            
+            // 等待2秒（40 ticks）后开始持续伤害，每2秒（40 ticks）触发一次
+            if (elapsedTime >= 40 && (elapsedTime - 40) % 40 == 0) {
                 // 获取配置中的生命值消耗比例（负值）
                 double healthDrain = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get();
-                
-                // 检查扣除配置的生命值消耗比例后是否会低于40%
+                    
+                // 计算要扣除的血量
                 float maxHealth = livingEntity.getMaxHealth();
                 float currentHealth = livingEntity.getHealth();
                 float healthToDeduct = (float) (maxHealth * (-healthDrain));  // 取反得到正值
-                float healthAfterDeduction = (currentHealth - healthToDeduct) / maxHealth;
-                
-                if (healthAfterDeduction > 0.4) {
-                    // 只有扣除后血量仍高于40%才造成伤害
-                    if (healthToDeduct > 0) {
-                        livingEntity.hurt(livingEntity.damageSources().magic(), healthToDeduct);
-                    }
                     
+                // 确保不会扣到0以下
+                if (healthToDeduct > 0 && currentHealth > healthToDeduct) {
+                    // 使用虚空伤害源，绕过护甲、魔法减免和附魔减伤
+                    livingEntity.hurt(TccDamageSources.voidDamage(livingEntity), healthToDeduct);
+                        
                     // 减少持续时间
-                    persistentData.putInt(DAMAGE_TAG, duration - 1);
+                    persistentData.putInt(DAMAGE_TAG, duration - 2);
+                    
+                    // 如果持续时间<=0，清除效果
+                    if (duration - 2 <= 0) {
+                        persistentData.remove(DAMAGE_TAG);
+                        persistentData.remove(DAMAGE_START_TIME_TAG);
+                    }
                 } else {
-                    // 如果会造成血量低于40%，则清除效果
+                    // 如果会造成血量低于0，则清除效果
                     persistentData.remove(DAMAGE_TAG);
+                    persistentData.remove(DAMAGE_START_TIME_TAG);
                 }
             }
         } else {
-            // 确保属性加成持续生效
+            // 确俚属性加成持续生效
             applyGunDamageBonus(livingEntity);
         }
     }
@@ -275,9 +283,20 @@ new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
      */
     private static boolean hasHeavenFireJudgmentEquipped(LivingEntity livingEntity) {
         // 使用Curios API检查实体是否装备了天火圣裁
-        return top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(livingEntity)
-            .map(inv -> inv.findFirstCurio(stack -> stack.getItem() instanceof HeavenFireJudgment))
-            .orElse(java.util.Optional.empty()).isPresent();
+        return CuriosApi.getCuriosInventory(livingEntity)
+            .map(handler -> {
+                var stacksHandler = handler.getCurios().get("tcc_slot");
+                if (stacksHandler != null) {
+                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                        if (stack.getItem() instanceof HeavenFireJudgment) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            })
+            .orElse(false);
     }
     
     /**

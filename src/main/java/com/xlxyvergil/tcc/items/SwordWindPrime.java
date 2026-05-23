@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.ForgeMod;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
@@ -17,16 +17,16 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 剑风Prime - 提升3近战距离
- * 效果：提近战距离（加算）
+ * 剑风Prime - 提升实体交互范围
+ * 效果：提升实体交互范围（加算）
  */
 public class SwordWindPrime extends ItemBaseCurio {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰
-    private static final UUID MELEE_DISTANCE_UUID = UUID.fromString("3a32b0f7-9ef5-4c63-bb08-610762942881");
+    private static final UUID ENTITY_INTERACTION_RANGE_UUID = UUID.fromString("3a32b0f7-9ef5-4c63-bb08-610762942881");
     
     // 修饰符名
-    private static final String MELEE_DISTANCE_NAME = "tcc.sword_wind_prime.melee_distance";
+    private static final String ENTITY_INTERACTION_RANGE_NAME = "tcc.sword_wind_prime.entity_interaction_range";
     
  
     
@@ -70,32 +70,29 @@ public class SwordWindPrime extends ItemBaseCurio {
     
     /**
      * 应用剑风Prime效果
-     * 给实体添的近战距离加成（加算     */
+     * 给实体添加实体交互范围加成（加算）
+     */
     private void applySwordWindPrimeEffects(LivingEntity livingEntity) {
         var attributes = livingEntity.getAttributes();
         
-        // 近战距离属
-        var meleeDistanceAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "melee_distance")
-            )
-        );
+        // 实体交互范围属性（Forge）
+        var interactionRangeAttribute = attributes.getInstance(ForgeMod.ENTITY_REACH.get());
         
-        if (meleeDistanceAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移
-            meleeDistanceAttribute.removeModifier(MELEE_DISTANCE_UUID);
+        if (interactionRangeAttribute != null) {
+            // 检查是否已经存在相同的修饰符，如果存在则移除
+            interactionRangeAttribute.removeModifier(ENTITY_INTERACTION_RANGE_UUID);
             
-            // 从配置文件获取近战距离加成
-            double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
+            // 从配置文件获取实体交互范围加成
+            double rangeBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
             
-            // 添加配置的近战距离加成（加算
-            var meleeDistanceModifier = new AttributeModifier(
-                MELEE_DISTANCE_UUID,
-                MELEE_DISTANCE_NAME,
-                meleeDistanceBoost,
+            // 添加配置的实体交互范围加成（加算）
+            var rangeModifier = new AttributeModifier(
+                ENTITY_INTERACTION_RANGE_UUID,
+                ENTITY_INTERACTION_RANGE_NAME,
+                rangeBoost,
                 AttributeModifier.Operation.ADDITION
             );
-            meleeDistanceAttribute.addPermanentModifier(meleeDistanceModifier);
+            interactionRangeAttribute.addPermanentModifier(rangeModifier);
         }
     }
     
@@ -105,15 +102,11 @@ public class SwordWindPrime extends ItemBaseCurio {
     private void removeSwordWindPrimeEffects(LivingEntity livingEntity) {
         var attributes = livingEntity.getAttributes();
         
-        // 近战距离属
-        var meleeDistanceAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "melee_distance")
-            )
-        );
+        // 实体交互范围属性（Forge）
+        var interactionRangeAttribute = attributes.getInstance(ForgeMod.ENTITY_REACH.get());
         
-        if (meleeDistanceAttribute != null) {
-            meleeDistanceAttribute.removeModifier(MELEE_DISTANCE_UUID);
+        if (interactionRangeAttribute != null) {
+            interactionRangeAttribute.removeModifier(ENTITY_INTERACTION_RANGE_UUID);
         }
     }
     

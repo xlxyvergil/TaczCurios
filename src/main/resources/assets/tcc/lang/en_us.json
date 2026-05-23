@@ -221,5 +221,15 @@
   "affix.tcc:tcc_slot/attribute/sniper_damage": "Strong Sniper", "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "Thousand Yard Kill",
   "affix.tcc:tcc_slot/attribute/smg_damage": "Strong SMG", "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "Charge Maniac",
   "affix.tcc:tcc_slot/attribute/lmg_damage": "Strong LMG", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "Suppression Master",
-  "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover"
+  "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover",
+  
+  "// Void Damage Attribute": "",
+  "attribute.name.tcc.void_damage": "Void Damage",
+  "attribute.name.tcc.void_damage.desc": "Bonus void damage on attack, bypasses armor and magic resistance",
+  "attribute.name.tcc.void_damage_resistance": "Void Damage Resistance",
+  "attribute.name.tcc.void_damage_resistance.desc": "Percentage reduction of incoming void damage",
+  
+  "// Void Damage Death Messages": "",
+  "death.attack.void_damage": "%1$s was consumed by the void",
+  "death.attack.void_damage.player": "%1$s was consumed by the void whilst fighting %2$s"
 }

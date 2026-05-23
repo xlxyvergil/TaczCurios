@@ -202,6 +202,7 @@ public class TaczCuriosConfig {
         // 掎角一阵配置
         public final ForgeConfigSpec.DoubleValue kikakuIchijinHealthMultiplier;
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyUnbreakableBlocks;
+        public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyNormalBlocks;
         
         // Apotheosis集成配置
         public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
@@ -221,8 +222,8 @@ public class TaczCuriosConfig {
                     .comment("每秒消耗的最大生命值比例 (默认: -0.05 = -5%)")
                     .defineInRange("healthDrain", -0.05, -1, 1);
             heavenFireJudgmentDrainDuration = builder
-                    .comment("生命值消耗持续时间(秒) (默认: 5)")
-                    .defineInRange("drainDuration", 5, -1, 300);
+                    .comment("生命值消耗持续时间(秒) (默认: 6)")
+                    .defineInRange("drainDuration", 6, -1, 300);
             builder.pop();
             
             // 天火劫灭配置
@@ -661,6 +662,9 @@ public class TaczCuriosConfig {
             kikakuIchijinDestroyUnbreakableBlocks = builder
                     .comment("是否破坏不可破坏方块（如基岩） (默认: false)")
                     .define("destroyUnbreakableBlocks", false);
+            kikakuIchijinDestroyNormalBlocks = builder
+                    .comment("是否破坏普通方块 (默认: false)")
+                    .define("destroyNormalBlocks", false);
             builder.pop();
             
             // Apotheosis集成配置
