@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -12,8 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 
 import javax.annotation.Nullable;
@@ -26,7 +26,7 @@ import java.util.UUID;
  * 并合膛线 - 提升特定枪械伤害，提高持枪移动速度
  * 效果：特定枪械伤害加成（加算），持枪移动速度加成（加算）
  */
-public class MergedRifling extends ItemBaseCurio {
+public class MergedRifling extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID[] DAMAGE_UUIDS = {
@@ -53,182 +53,50 @@ public class MergedRifling extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给生物添加伤害和移动速度属性修改
-        applyMergedRiflingEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除生物的伤害和移动速度属性修改
-        removeRiflingEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
      * 检查是否可以装备到指定插槽
      * MergedRifling与Rifling互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
         if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
-        
-        // 检查生物是否已经装备了Rifling
-        ICuriosItemHandler curiosHandler = ((LivingEntity)slotContext.entity()).getCapability(top.theillusivec4.curios.api.CuriosCapability.INVENTORY).orElse(null);
-        if (curiosHandler != null) {
-            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-            if (tccSlotHandler != null) {
-                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                    if (equippedStack.getItem() instanceof Rifling) {
-                        return false; // 如果已经装备了Rifling，则不能装备MergedRifling
-                    }
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
+        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof Rifling);
     }
     
     /**
      * 应用膛线效果
      * 提升特定枪械伤害和持枪移动速度（都使用加算
      */
-    public void applyMergedRiflingEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 特定枪械类型
-        String[] gunTypes = {
-            "bullet_gundamage_rifle",
-            "bullet_gundamage_sniper",
-            "bullet_gundamage_smg",
-            "bullet_gundamage_lmg",
-            "bullet_gundamage_launcher"
-        };
-        
-        // 获取配置中的伤害加成值和移动速度加成
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
         double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get();
         double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get();
         
-        // 应用特定枪械伤害提升（加算）
-        for (int i = 0; i < gunTypes.length; i++) {
-            var gunDamageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", gunTypes[i])
-                )
-            );
-            
-            if (gunDamageAttribute != null) {
-                // 检查是否已经存在相同的修饰符，如果存在则移
-                gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
-                
-                // 添加配置中的特定枪械伤害加成（加算）
-                var gunDamageModifier = new AttributeModifier(
-                    DAMAGE_UUIDS[i],
-                    DAMAGE_NAMES[i],
-                    damageBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                gunDamageAttribute.addPermanentModifier(gunDamageModifier);
-            }
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, damageBoost, DAMAGE_UUIDS[0], DAMAGE_NAMES[0], AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, damageBoost, DAMAGE_UUIDS[1], DAMAGE_NAMES[1], AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SMG, damageBoost, DAMAGE_UUIDS[2], DAMAGE_NAMES[2], AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LMG, damageBoost, DAMAGE_UUIDS[3], DAMAGE_NAMES[3], AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, damageBoost, DAMAGE_UUIDS[4], DAMAGE_NAMES[4], AttributeModifier.Operation.ADDITION);
+        
+        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVE_SPEED, speedBoost, MOVEMENT_SPEED_UUID, MOVEMENT_SPEED_NAME, AttributeModifier.Operation.ADDITION);
         }
-        
-        // 移除之前的移动速度效果
-        var movementSpeedAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "move_speed")
-            )
-        );
-        
-        if (movementSpeedAttribute != null) {
-            movementSpeedAttribute.removeModifier(MOVEMENT_SPEED_UUID);
-        }
-        
-        // 检查生物是否手持特定类型的枪械
-        boolean shouldApplyMovementSpeed = GunTypeChecker.isHoldingDmgBoostGunType(livingEntity);
-        
-        // 只在生物手持特定类型枪械时应用移动速度加成
-        if (shouldApplyMovementSpeed && movementSpeedAttribute != null) {
-            // 添加配置中的持枪移动速度提升（加算）
-            var movementSpeedModifier = new AttributeModifier(
-                MOVEMENT_SPEED_UUID,
-                MOVEMENT_SPEED_NAME,
-                speedBoost,
-                AttributeModifier.Operation.ADDITION
-            );
-            movementSpeedAttribute.addPermanentModifier(movementSpeedModifier);
-        }
-        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
      * 移除膛线效果
      */
-    public void removeRiflingEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 特定枪械类型
-        String[] gunTypes = {
-            "bullet_gundamage_rifle",
-            "bullet_gundamage_sniper",
-            "bullet_gundamage_smg",
-            "bullet_gundamage_lmg",
-            "bullet_gundamage_launcher"
-        };
-        
-        // 移除特定枪械伤害加成
-        for (int i = 0; i < gunTypes.length; i++) {
-            var gunDamageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", gunTypes[i])
-                )
-            );
-            
-            if (gunDamageAttribute != null) {
-                gunDamageAttribute.removeModifier(DAMAGE_UUIDS[i]);
-            }
-        }
-        
-        // 移除移动速度加成
-        var movementSpeedAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "move_speed")
-            )
-        );
-        
-        if (movementSpeedAttribute != null) {
-            movementSpeedAttribute.removeModifier(MOVEMENT_SPEED_UUID);
-        }
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, DAMAGE_UUIDS[0]);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, DAMAGE_UUIDS[1]);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SMG, DAMAGE_UUIDS[2]);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LMG, DAMAGE_UUIDS[3]);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, DAMAGE_UUIDS[4]);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVE_SPEED, MOVEMENT_SPEED_UUID);
     }
     
-    /**
-     * 当生物持有时，每tick更新效果
-     */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
-    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
@@ -262,6 +130,6 @@ public class MergedRifling extends ItemBaseCurio {
      */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyMergedRiflingEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }

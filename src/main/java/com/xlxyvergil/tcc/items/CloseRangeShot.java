@@ -1,29 +1,27 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-
-
 /**
  * 抵近射击 - 提升霰弹枪90%伤害
  * 效果：霰弹枪伤害+90%（加算）
  */
-public class CloseRangeShot extends ItemBaseCurio {
+public class CloseRangeShot extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
     private static final UUID DAMAGE_UUID = UUID.fromString("606453a5-947e-4020-8fc8-3f43c2c8cce9");
@@ -31,31 +29,8 @@ public class CloseRangeShot extends ItemBaseCurio {
     // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.close_range_shot.shotgun_damage";
     
-    
     public CloseRangeShot(Properties properties) {
         super(properties);
-    }
-    
-    /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给生物添加伤害属性修改
-        applyEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除生物的伤害属性修改
-        removeEffects((LivingEntity) slotContext.entity());
     }
     
     /**
@@ -70,90 +45,29 @@ public class CloseRangeShot extends ItemBaseCurio {
         }
         
         // 检查生物是否已经装备了CloseCombatPrime
-        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
-        if (curiosHandler != null) {
-            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-            if (tccSlotHandler != null) {
-                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                    if (equippedStack.getItem() instanceof CloseCombatPrime) {
-                        return false; // 如果已经装备了CloseCombatPrime，则不能装备CloseRangeShot
-                    }
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点击
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
+        LivingEntity entity = (LivingEntity) slotContext.entity();
+        return !hasEquipped(entity, itemStack -> itemStack.getItem() instanceof CloseCombatPrime);
     }
     
     /**
      * 应用效果
      * 提升霰弹枪伤害（加算）
      */
-    private void applyEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 霰弹枪伤害属性
-        var shotgunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_shotgun")
-            )
-        );
-        
-        if (shotgunDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            shotgunDamageAttribute.removeModifier(DAMAGE_UUID);
-            
-            // 从配置文件获取伤害加成值
-            double damageBoost = TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get();
-            
-            // 添加配置的霰弹枪伤害加成（加算）
-            var damageModifier = new AttributeModifier(
-                DAMAGE_UUID,
-                DAMAGE_NAME,
-                damageBoost,
-                AttributeModifier.Operation.ADDITION
-            );
-            shotgunDamageAttribute.addPermanentModifier(damageModifier);
-        }
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
+        double damageBoost = TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get();
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
     /**
      * 移除效果
      */
-    private void removeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 霰弹枪伤害属性
-        var shotgunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_shotgun")
-            )
-        );
-        
-        if (shotgunDamageAttribute != null) {
-            // 移除修饰符
-            shotgunDamageAttribute.removeModifier(DAMAGE_UUID);
-        }
-    }
-    
-    /**
-     * 当玩家持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        applyEffects((LivingEntity) slotContext.entity());
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, DAMAGE_UUID);
     }
     
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

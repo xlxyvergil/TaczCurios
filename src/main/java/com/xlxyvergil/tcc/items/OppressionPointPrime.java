@@ -1,11 +1,12 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -20,14 +21,13 @@ import java.util.UUID;
  * 压迫点Prime - 提升近战伤害
  * 效果：提升近战伤害（加算）
  */
-public class OppressionPointPrime extends ItemBaseCurio {
+public class OppressionPointPrime extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰符
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("b4763540-e80b-4bab-9e64-a4a2494d9f5e");
     
     // 修饰符名称
     private static final String ATTACK_DAMAGE_NAME = "tcc.oppression_point_prime.attack_damage";
-    
     
     public OppressionPointPrime(Properties properties) {
         super(properties);
@@ -39,76 +39,30 @@ public class OppressionPointPrime extends ItemBaseCurio {
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
         if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
-        
-        // 检查是否已经装备了OppressionPoint
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
-            .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof OppressionPoint))
-            .orElse(java.util.Optional.empty()).isPresent();
-    }
-    
-    /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        applyOppressionPointPrimeEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        removeOppressionPointPrimeEffects((LivingEntity) slotContext.entity());
+        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof OppressionPoint);
     }
     
     /**
      * 应用压迫点Prime效果
      * 给生物添加近战伤害加成（加算）
      */
-    private void applyOppressionPointPrimeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 攻击伤害属性（原版）
-        var attackDamageAttribute = attributes.getInstance(Attributes.ATTACK_DAMAGE);
-        
-        if (attackDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            attackDamageAttribute.removeModifier(ATTACK_DAMAGE_UUID);
-            
-            // 从配置文件获取近战伤害加成
-            double damageBoost = TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get();
-            
-            // 添加配置的近战伤害加成（加算）
-            var damageModifier = new AttributeModifier(
-                ATTACK_DAMAGE_UUID,
-                ATTACK_DAMAGE_NAME,
-                damageBoost,
-                AttributeModifier.Operation.ADDITION
-            );
-            attackDamageAttribute.addPermanentModifier(damageModifier);
-        }
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
+        double damageBoost = TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get();
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
     /**
      * 移除压迫点Prime效果
      */
-    private void removeOppressionPointPrimeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 攻击伤害属性（原版）
-        var attackDamageAttribute = attributes.getInstance(Attributes.ATTACK_DAMAGE);
-        
-        if (attackDamageAttribute != null) {
-            attackDamageAttribute.removeModifier(ATTACK_DAMAGE_UUID);
-        }
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
     }
-    
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

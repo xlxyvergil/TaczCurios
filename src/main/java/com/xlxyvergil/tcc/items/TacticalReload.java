@@ -1,16 +1,17 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.resources.ResourceLocation;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
@@ -21,7 +22,7 @@ import java.util.UUID;
  * 战术上膛 - 提升装填速度
  * 效果：提升装填速度（加算）
  */
-public class TacticalReload extends ItemBaseCurio {
+public class TacticalReload extends BaseCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID RELOAD_UUID = UUID.fromString("11efa1b9-0f1d-4dcb-bc3f-ff0a5dc42811");
@@ -34,112 +35,28 @@ public class TacticalReload extends ItemBaseCurio {
     }
 
     /**
-     * 当饰品被装备时调
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-
-        // 给实体添加属性修改
-        applyTacticalReloadEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 当饰品被卸下时调
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-
-        // 移除实体的属性修改
-        removeTacticalReloadEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
      * 检查是否可以装备到指定插槽
      * TacticalReload与TacticalReloadPrime互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
         if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
-        
-        // 检查是否已经装备了TacticalReloadPrime
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
-            .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof TacticalReloadPrime))
-            .orElse(java.util.Optional.empty()).isPresent();
+        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof TacticalReloadPrime);
     }
 
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-
-    /**
-     * 应用战术上膛效果
-     * 提升装填速度（加算）
-     */
-    public void applyTacticalReloadEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 获取装填速度属
-        var reloadAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "reload_time")
-            )
-        );
-
-        if (reloadAttribute != null) {
-            // 移除已存在的修饰
-            reloadAttribute.removeModifier(RELOAD_UUID);
-
-            // 检查实体是否持有霰弹枪，只有持有霰弹枪时才应用加成
-            if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-                // 获取配置中的装填速度加成
-                double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get();
-                // 添加装填速度加成（加算）
-                var reloadModifier = new AttributeModifier(
-                    RELOAD_UUID,
-                    RELOAD_NAME,
-                    reloadBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                reloadAttribute.addPermanentModifier(reloadModifier);
-            }
+    protected void applyEffects(LivingEntity livingEntity) {
+        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+            double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get();
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
 
-    /**
-     * 移除战术上膛效果
-     */
-    public void removeTacticalReloadEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 获取装填速度属
-        var reloadAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_time")
-            )
-        );
-
-        if (reloadAttribute != null) {
-            reloadAttribute.removeModifier(RELOAD_UUID);
-        }
-    }
-
-    /**
-     * 当玩家持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
     }
 
     /**
@@ -167,12 +84,9 @@ public class TacticalReload extends ItemBaseCurio {
         tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
     
-    /**
-     * 当实体切换武器时应用效果
-     */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyTacticalReloadEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }
 

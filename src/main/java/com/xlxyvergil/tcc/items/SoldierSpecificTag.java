@@ -1,30 +1,27 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-
-
 /**
  * 士兵特定挂牌 - 提供通用枪械伤害加成（乘法）
  * 效果：为玩家提供通用枪械伤害加成（乘法）
  */
-public class SoldierSpecificTag extends ItemBaseCurio {
+public class SoldierSpecificTag extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("bbd020e4-a079-46e1-b236-3eea2c13da4f");
@@ -37,117 +34,26 @@ public class SoldierSpecificTag extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给实体添加枪械伤害属性加成
-        applyGunDamageBonus((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除实体的枪械伤害属性加成
-        removeGunDamageBonus((LivingEntity) slotContext.entity());
-    }
-    
-    /**
      * 检查是否可以装备到指定插槽
      * SoldierSpecificTag与SoldierBasicTag互斥，不能同时装
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
         if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
-        
-        // 检查实体是否已经装备了SoldierBasicTag
-        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
-        if (curiosHandler != null) {
-            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-            if (tccSlotHandler != null) {
-                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                    if (equippedStack.getItem() instanceof SoldierBasicTag) {
-                        return false; // 如果已经装备了SoldierBasicTag，则不能装备SoldierSpecificTag
-                    }
-                }
-            }
-        }
-        
-        return true;
+        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof SoldierBasicTag);
     }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
+
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
+    protected void applyEffects(LivingEntity livingEntity) {
+        double damageBoost = TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get();
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
-    /**
-     * 应用枪械伤害加成
-     * 给玩家添加配置中的通用枪械伤害加成（乘法）
-     */
-    private void applyGunDamageBonus(LivingEntity livingEntity) {
-        // 使用TaczAttributeAdd中的通用枪械伤害属性
-        var attributes = livingEntity.getAttributes();
-        var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        if (gunDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰
-            if (gunDamageAttribute.getModifier(GUN_DAMAGE_UUID) == null) {
-                // 获取配置中的伤害加成
-                double damageBoost = TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get();
-                // 添加配置中的伤害加成，使用乘法操
-                AttributeModifier modifier = new AttributeModifier(
-                    GUN_DAMAGE_UUID,
-                    GUN_DAMAGE_NAME,
-                    damageBoost,
-                    AttributeModifier.Operation.MULTIPLY_BASE
-                );
-                gunDamageAttribute.addPermanentModifier(modifier);
-            }
-        }
-    }
-    
-    /**
-     * 移除枪械伤害加成
-     */
-    private void removeGunDamageBonus(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        if (gunDamageAttribute != null) {
-            // 移除之前添加的修饰符
-            gunDamageAttribute.removeModifier(GUN_DAMAGE_UUID);
-        }
-    }
-    
-    /**
-     * 当实体持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
     }
 
     /**
@@ -175,11 +81,8 @@ public class SoldierSpecificTag extends ItemBaseCurio {
         tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
     
-    /**
-     * 当实体切换武器时应用效果
-     */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyGunDamageBonus(livingEntity);
+        applyEffects(livingEntity);
     }
 }

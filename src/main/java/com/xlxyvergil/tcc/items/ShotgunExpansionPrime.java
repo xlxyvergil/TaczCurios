@@ -1,15 +1,14 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
@@ -20,9 +19,9 @@ import java.util.UUID;
 
 /**
  * 霰弹扩充Prime - 提升弹匣容量
- * 效果：提10%弹匣容量，仅对霰弹枪生效
+ * 效果：提升弹匣容量，仅对霰弹枪生效
  */
-public class ShotgunExpansionPrime extends ItemBaseCurio {
+public class ShotgunExpansionPrime extends BaseCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("8c17e10f-b8fe-41b6-b0e7-ae214bed3dd4");
@@ -31,31 +30,7 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
     private static final String MAGAZINE_NAME = "tcc.shotgun_expansion_prime.magazine_capacity";
 
     public ShotgunExpansionPrime(Properties properties) {
-        super(properties
-            .stacksTo(1)
-            .rarity(Rarity.EPIC));
-    }
-
-    /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-
-        // 给生物添加属性修改
-        applyShotgunExpansionPrimeEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-
-        // 移除生物的属性修改
-        removeShotgunExpansionPrimeEffects((LivingEntity) slotContext.entity());
+        super(properties);
     }
 
     /**
@@ -64,87 +39,23 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
         if (!slotContext.identifier().equals("tcc_slot")) {
             return false;
         }
-        
-        // 检查是否已经装备了ShotgunExpansion
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
-            .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof ShotgunExpansion))
-            .orElse(java.util.Optional.empty()).isPresent();
+        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof ShotgunExpansion);
     }
 
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-
-    /**
-     * 应用霰弹扩充Prime效果
-     * 提升弹匣容量
-     */
-    public void applyShotgunExpansionPrimeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 弹匣容量属
-        var magazineAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-
-        // 移除已存在的修饰
-        if (magazineAttribute != null) {
-            magazineAttribute.removeModifier(MAGAZINE_UUID);
-        }
-
-        // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+    protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            // 获取配置中的弹匣容量加成
             double magazineBoost = TaczCuriosConfig.COMMON.shotgunExpansionPrimeCapacityBoost.get();
-            // 添加配置的弹匣容量加成（加算
-            if (magazineAttribute != null) {
-                var magazineModifier = new AttributeModifier(
-                    MAGAZINE_UUID,
-                    MAGAZINE_NAME,
-                    magazineBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                magazineAttribute.addPermanentModifier(magazineModifier);
-            }
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
 
-    /**
-     * 移除霰弹扩充Prime效果
-     */
-    public void removeShotgunExpansionPrimeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 弹匣容量属
-        var magazineAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-
-        if (magazineAttribute != null) {
-            magazineAttribute.removeModifier(MAGAZINE_UUID);
-        }
-    }
-
-    /**
-     * 当生物持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_UUID);
     }
 
     /**
@@ -172,11 +83,8 @@ public class ShotgunExpansionPrime extends ItemBaseCurio {
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
-    /**
-     * 当生物切换武器时应用效果
-     */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyShotgunExpansionPrimeEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }
