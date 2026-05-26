@@ -1,5 +1,5 @@
 {
-  "gem": "apotheosis:core/samurai",
+  "gem": "apotheosis:the_end/mageslayer",
   "bonuses": [{
     "type": "apotheosis:attribute",
     "gem_class": {
@@ -8,7 +8,7 @@
         "curios:tcc_slot"
       ]
     },
-    "attribute": "attributeslib:crit_chance",
+    "attribute": "attributeslib:magic_resist",
     "operation": "ADDITION",
     "values": {
       "common": 0.01,

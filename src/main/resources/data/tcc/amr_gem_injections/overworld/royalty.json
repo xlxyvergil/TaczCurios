@@ -1,0 +1,22 @@
+{
+  "gem": "apotheosis:overworld/royalty",
+  "bonuses": [{
+    "type": "apotheosis:attribute",
+    "gem_class": {
+      "key": "tcc_slot",
+      "types": [
+        "curios:tcc_slot"
+      ]
+    },
+    "attribute": "minecraft:generic.luck",
+    "operation": "ADDITION",
+    "values": {
+      "common": 1,
+      "uncommon": 2,
+      "rare": 3,
+      "epic": 4,
+      "mythic": 5,
+      "ancient": 6
+    }
+  }]
+}

@@ -182,7 +182,7 @@
   "tcc.tooltip.rarity.legendary": "§7稀有度：§f传说",
   "tcc.tooltip.rarity.mythic": "§7稀有度：§d裂隙",
 
-  "gem_class.curios.tcc_slot": "TCC饰品",
+  "gem_class.tcc_slot": "TCC饰品",
   "text.apotheosis.category.curios:tcc_slot.plural": "TCC饰品",
   "// Apotheosis词缀 - 暴击属性": "",
   "affix.tcc:tcc_slot/attribute/critical_chance": "易暴击", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "心胸大开",

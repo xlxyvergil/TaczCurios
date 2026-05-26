@@ -1,0 +1,22 @@
+{
+  "gem": "apotheosis:the_nether/blood_lord",
+  "bonuses": [{
+    "type": "apotheosis:attribute",
+    "gem_class": {
+      "key": "tcc_slot",
+      "types": [
+        "curios:tcc_slot"
+      ]
+    },
+    "attribute": "tcc:imaginary_damage_resistance",
+    "operation": "ADDITION",
+    "values": {
+      "common": 1,
+      "uncommon": 2,
+      "rare": 3,
+      "epic": 4,
+      "mythic": 5,
+      "ancient": 6
+    }
+  }]
+}

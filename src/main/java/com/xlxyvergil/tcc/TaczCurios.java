@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc;
 
 import com.mojang.logging.LogUtils;
-import com.xlxyvergil.tcc.affix.GunMobEffectAffix;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.handlers.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.handlers.TccEventHandler;
@@ -11,8 +10,6 @@ import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
 import com.xlxyvergil.tcc.network.TccNetwork;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import com.xlxyvergil.tcc.core.TccAttributes;
-import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -63,18 +60,14 @@ public class TaczCurios
         
         // 安全地注册客户端事件处理器
         registerClientEventsSafely();
+        
+        // 必须在构造函数中初始化 Apotheosis 集成，确保在词缀数据加载前完成注册
+        ApothicCuriosIntegration.init();
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             TaczVillagers.registerTrades();
-            // 检查是否启用了Apotheosis集成，然后初始化 Apotheosis 神化属性集成
-            if (com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.enableApotheosisIntegration.get()) {
-                ApothicCuriosIntegration.init();
-                // 注册 TCC 自定义枪械词缀类型
-                AffixRegistry.INSTANCE.registerCodec(
-                    new ResourceLocation(MODID, "gun_mob_effect"), GunMobEffectAffix.CODEC);
-            }
         });
     }
     

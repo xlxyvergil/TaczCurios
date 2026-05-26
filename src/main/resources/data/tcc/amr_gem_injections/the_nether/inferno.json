@@ -1,0 +1,22 @@
+{
+  "gem": "apotheosis:the_nether/inferno",
+  "bonuses": [{
+    "type": "apotheosis:attribute",
+    "gem_class": {
+      "key": "tcc_slot",
+      "types": [
+        "curios:tcc_slot"
+      ]
+    },
+    "attribute": "attributeslib:fire_damage",
+    "operation": "ADDITION",
+    "values": {
+      "common": 1,
+      "uncommon": 2,
+      "rare": 3,
+      "epic": 4,
+      "mythic": 5,
+      "ancient": 6
+    }
+  }]
+}

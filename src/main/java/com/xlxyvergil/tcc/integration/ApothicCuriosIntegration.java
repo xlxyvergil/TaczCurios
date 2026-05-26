@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.integration;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.TaczCurios;
+import daripher.apothiccurios.ApothicCuriosMod;
 import net.minecraftforge.fml.ModList;
 
 /**
@@ -17,7 +19,7 @@ public class ApothicCuriosIntegration {
     
     /**
      * 初始化神化属性集成
-     * 仅在配置启用且 Apothic-Curios 模组存在时执行
+     * 必须在 mod 构造函数中调用，确保在词缀数据加载前完成注册
      */
     public static void init() {
         if (initialized) return;
@@ -33,11 +35,11 @@ public class ApothicCuriosIntegration {
         }
         
         try {
-            // Apothic-Curios 会自动处理所有 Curios 插槽的战利品类别注册
-            // 我们只需要标记已初始化即可
+            // 必须在早期注册 tcc_slot 的 LootCategory，确保词缀数据加载时能找到
+            ApothicCuriosMod.registerCurioLootCategory("curios:tcc_slot");
             initialized = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            TaczCurios.LOGGER.error("Failed to initialize Apotheosis integration", e);
         }
     }
     

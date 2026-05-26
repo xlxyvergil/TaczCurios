@@ -49,3 +49,10 @@ mandatory=false
 versionRange="*"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.tcc]]
+modId="attributeslib"
+mandatory=true
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
