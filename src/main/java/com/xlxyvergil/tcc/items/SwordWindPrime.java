@@ -11,7 +11,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -35,18 +34,6 @@ public class SwordWindPrime extends BaseCurioItem {
         super(properties);
     }
     
-    /**
-     * 检查是否可以装备到指定插槽
-     * SwordWindPrime与SwordWind互斥，不能同时装
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof SwordWind);
-    }
-
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         double rangeBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();

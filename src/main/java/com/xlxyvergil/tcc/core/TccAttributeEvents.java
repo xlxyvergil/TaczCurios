@@ -1,66 +1,84 @@
 package com.xlxyvergil.tcc.core;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
+import dev.shadowsoffire.attributeslib.api.ALObjects;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import com.xlxyvergil.tcc.mixin.LivingEntityAccessor;
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
-    
-    /**
-     * 监听所有攻击事件，附加虚空伤害
-     * 适用于：近战、TACZ枪械、其他模组的远程/魔法攻击
-     */
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void voidDamageOnAttack(LivingAttackEvent e) {
-        if (e.getEntity().level().isClientSide || e.getEntity().isDeadOrDying()) return;
-        
-        // 获取攻击者（可能是玩家、实体、或null）
-        if (e.getSource().getEntity() instanceof LivingEntity attacker) {
-            // 读取攻击者的虚空伤害属性值
-            double voidDmg = attacker.getAttributeValue(TccAttributes.VOID_DAMAGE.get());
+    public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
+        LivingEntity target = event.getEntity();
+        if (target.level().isClientSide || target.isDeadOrDying()) return;
+
+        DamageSource source = event.getSource();
+
+        if (source.getMsgId() != null && source.getMsgId().equals("imaginary_damage")) {
+            double resistance = target.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             
-            if (voidDmg > 0.001) {
-                LivingEntity target = e.getEntity();
-                
-                // 读取目标的虚空伤害抗性（百分比）
-                double resistance = target.getAttributeValue(TccAttributes.VOID_DAMAGE_RESISTANCE.get());
-                
-                // 计算实际伤害：应用抗性减免
-                float damage = (float) (voidDmg * (1.0 - resistance / 100.0));
-                
-                // 如果抗性 100%，完全免疫
-                if (damage <= 0) {
-                    return;
+            // 限制抗性值范围：最低1，最高100
+            resistance = Math.max(1.0, Math.min(100.0, resistance));
+
+            float originalDamage = event.getAmount();
+            float damageAfterResistance = (float) (originalDamage * (1.0 - resistance / 100.0));
+            
+            // 虚数伤害根据目标流血层数增伤（5%每层）
+            var bleedingEffect = ALObjects.MobEffects.BLEEDING.get();
+            int bleedingLevel = 0;
+            if (bleedingEffect != null) {
+                var effectInstance = target.getEffect(bleedingEffect);
+                if (effectInstance != null) {
+                    bleedingLevel = effectInstance.getAmplifier() + 1;
                 }
+            }
+            float finalDamage = damageAfterResistance * (1.0f + bleedingLevel * 0.05f);
+
+            event.setAmount(finalDamage);
+            
+            // 虚数伤害施加虚数流血效果（根据抗性判断）
+            int maxLevel = TaczCuriosConfig.COMMON.imaginaryBleedingMaxLevel.get();
+            int duration = TaczCuriosConfig.COMMON.imaginaryBleedingDuration.get();
+            
+            // 根据抗性计算最大可施加等级：每20%抗性降低1级
+            // 0%抗性=5级, 20%=4级, 40%=3级, 60%=2级, 80%=1级, 100%=0级(不施加)
+            int resistanceInt = (int) Math.round(resistance);
+            int allowedMaxLevel = Math.max(0, maxLevel - (resistanceInt / 20));
+            
+            if (allowedMaxLevel > 0) {
+                // 计算施加概率：100%抗性=0%, 0%抗性=100%
+                double applyChance = 1.0 - (resistance / 100.0);
                 
-                // 虚空伤害：直接扣除生命值，不碰吸收值
-                float newHealth = target.getHealth() - damage;
-                
-                // 检查是否会致死，如果是则尝试触发不死图腾
-                if (newHealth <= 0) {
-                    // 调用原版不死图腾检查机制
-                    boolean totemActivated = ((LivingEntityAccessor) target).callCheckTotemDeathProtection(e.getSource());
+                // 随机判定是否施加
+                Random random = new Random();
+                if (random.nextDouble() < applyChance) {
+                    // 检查是否已有虚数流血效果，如果有则叠加等级（不超过抗性允许的等级）
+                    var imaginaryBleeding = TccMobEffects.IMAGINARY_BLEEDING.get();
+                    MobEffectInstance existingEffect = target.getEffect(imaginaryBleeding);
+                    int newAmplifier = 0;
                     
-                    if (!totemActivated) {
-                        // 没有不死图腾，直接死亡
-                        target.setHealth(0);
-                        target.die(e.getSource());
-                        return;
+                    if (existingEffect != null) {
+                        newAmplifier = Math.min(existingEffect.getAmplifier() + 1, allowedMaxLevel - 1);
                     }
-                    // 不死图腾已激活，checkTotemDeathProtection 会自动设置生命值为 1
-                    return;
+                    
+                    target.addEffect(new MobEffectInstance(
+                        imaginaryBleeding,
+                        duration * 20,  // 转换为tick
+                        newAmplifier,
+                        false,  // 不是药水
+                        false,  // 不显示粒子
+                        true    // 显示图标
+                    ));
                 }
-                
-                // 不会致死，直接设置新生命值
-                target.setHealth(newHealth);
-                
-                // 触发受伤效果
-                target.hurtMarked = true;
             }
         }
     }

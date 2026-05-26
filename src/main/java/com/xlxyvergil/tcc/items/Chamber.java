@@ -7,13 +7,11 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 
@@ -36,22 +34,6 @@ public class Chamber extends BaseCurioItem {
     
     public Chamber(Properties properties) {
         super(properties);
-    }
-    
-    /**
-     * 检查是否可以装备到指定插槽
-     * Chamber与ChamberPrime互斥，不能同时装备
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        
-        // 检查生物是否已经装备了ChamberPrime
-        LivingEntity entity = (LivingEntity) slotContext.entity();
-        return !hasEquipped(entity, itemStack -> itemStack.getItem() instanceof ChamberPrime);
     }
     
     /**
@@ -89,11 +71,11 @@ public class Chamber extends BaseCurioItem {
      */
     private void updateTaczCache(LivingEntity livingEntity) {
         ItemStack mainHandItem = livingEntity.getMainHandItem();
-        if (mainHandItem.getItem() instanceof IGun && livingEntity instanceof ServerPlayer serverPlayer) {
-            AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
+        if (mainHandItem.getItem() instanceof IGun) {
+            AttachmentPropertyManager.postChangeEvent(livingEntity, mainHandItem);
         }
     }
-    
+
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

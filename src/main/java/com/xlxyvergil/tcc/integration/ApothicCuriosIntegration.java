@@ -1,26 +1,23 @@
 package com.xlxyvergil.tcc.integration;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import dev.shadowsoffire.apotheosis.adventure.loot.LootCategory;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.ModList;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotContext;
-
-import java.util.function.Predicate;
 
 /**
  * Apotheosis 神化属性集成
  * 为 TaczCurios 饰品添加词缀和宝石支持
+ * 
+ * 注意：此集成需要 Apothic-Curios 模组才能生效
+ * Apothic-Curios 会自动处理所有 Curios 插槽的战利品类别注册和词缀效果应用
  */
 public class ApothicCuriosIntegration {
     
-    private static final String APOTHEOSIS_MODID = "apotheosis";
+    private static final String APOTHIC_CURIOS_MODID = "apothiccurios";
     private static boolean initialized = false;
     
     /**
      * 初始化神化属性集成
+     * 仅在配置启用且 Apothic-Curios 模组存在时执行
      */
     public static void init() {
         if (initialized) return;
@@ -30,39 +27,18 @@ public class ApothicCuriosIntegration {
             return;
         }
         
-        // 检查 Apotheosis 是否加载
-        if (!ModList.get().isLoaded(APOTHEOSIS_MODID)) {
+        // 检查 Apothic-Curios 是否加载（它负责让饰品支持神化属性）
+        if (!ModList.get().isLoaded(APOTHIC_CURIOS_MODID)) {
             return;
         }
         
         try {
-            // 为所有 Curios 插槽类型注册战利品类别
-            registerCurioLootCategories();
+            // Apothic-Curios 会自动处理所有 Curios 插槽的战利品类别注册
+            // 我们只需要标记已初始化即可
             initialized = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
-    /**
-     * 为 Curios 插槽注册战利品类别
-     * 参考 Apothic-Curios 的实现
-     */
-    private static void registerCurioLootCategories() {
-        // 获取所有已注册的 Curios 插槽类型 ID
-        CuriosApi.getSlotHelper().getSlotTypeIds().forEach(slotId -> {
-            String categoryId = "curios:" + slotId;
-            
-            // 创建插槽验证器
-            SlotContext slotContext = new SlotContext(slotId, null, 0, false, false);
-            Predicate<ItemStack> validator = stack -> CuriosApi.isStackValid(slotContext, stack);
-            
-            // 使用假的装备槽位（与 Apothic-Curios 一致）
-            EquipmentSlot[] fakeSlots = {EquipmentSlot.LEGS};
-            
-            // 注册战利品类别
-            LootCategory.register(null, categoryId, validator, fakeSlots);
-        });
     }
     
     /**

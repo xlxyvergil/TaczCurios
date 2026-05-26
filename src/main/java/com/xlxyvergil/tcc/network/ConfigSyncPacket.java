@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.network;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -44,10 +46,30 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.set(config.get("heavenFireJudgmentDamageBoost").getAsDouble());
             if (config.has("heavenFireJudgmentHealthCost"))
                 TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.set(config.get("heavenFireJudgmentHealthCost").getAsDouble());
-            if (config.has("heavenFireJudgmentHealthDrain"))
-                TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.set(config.get("heavenFireJudgmentHealthDrain").getAsDouble());
-            if (config.has("heavenFireJudgmentDrainDuration"))
-                TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.set(config.get("heavenFireJudgmentDrainDuration").getAsInt());
+            if (config.has("heavenFireJudgmentDamageConversionRatio"))
+                TaczCuriosConfig.COMMON.heavenFireJudgmentDamageConversionRatio.set(config.get("heavenFireJudgmentDamageConversionRatio").getAsDouble());
+            if (config.has("heavenFireJudgmentGunTypes")) {
+                java.util.List<String> list = new java.util.ArrayList<>();
+                JsonArray arr = config.getAsJsonArray("heavenFireJudgmentGunTypes");
+                for (JsonElement e : arr) list.add(e.getAsString());
+                TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.set(list);
+            }
+            
+            // 天火流血效果配置（两个饰品共用）
+            if (config.has("heavenFireBleedingDamagePerLevel"))
+                TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.set(config.get("heavenFireBleedingDamagePerLevel").getAsDouble());
+            if (config.has("heavenFireBleedingMaxLevel"))
+                TaczCuriosConfig.COMMON.heavenFireBleedingMaxLevel.set(config.get("heavenFireBleedingMaxLevel").getAsInt());
+            if (config.has("heavenFireBleedingDuration"))
+                TaczCuriosConfig.COMMON.heavenFireBleedingDuration.set(config.get("heavenFireBleedingDuration").getAsInt());
+            
+            // 虚数流血效果配置
+            if (config.has("imaginaryBleedingDamagePerLevel"))
+                TaczCuriosConfig.COMMON.imaginaryBleedingDamagePerLevel.set(config.get("imaginaryBleedingDamagePerLevel").getAsDouble());
+            if (config.has("imaginaryBleedingMaxLevel"))
+                TaczCuriosConfig.COMMON.imaginaryBleedingMaxLevel.set(config.get("imaginaryBleedingMaxLevel").getAsInt());
+            if (config.has("imaginaryBleedingDuration"))
+                TaczCuriosConfig.COMMON.imaginaryBleedingDuration.set(config.get("imaginaryBleedingDuration").getAsInt());
             
             // 天火劫灭配置
             if (config.has("heavenFireApocalypseDamageBoost"))
@@ -66,6 +88,16 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.set(config.get("heavenFireApocalypseNearbyPlayerDuration").getAsInt());
             if (config.has("heavenFireApocalypseNearbyPlayerRadius"))
                 TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.set(config.get("heavenFireApocalypseNearbyPlayerRadius").getAsDouble());
+            if (config.has("heavenFireApocalypseNearbyPlayerPotionAmplifier"))
+                TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.set(config.get("heavenFireApocalypseNearbyPlayerPotionAmplifier").getAsInt());
+            if (config.has("heavenFireApocalypseDamageConversionRatio"))
+                TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.set(config.get("heavenFireApocalypseDamageConversionRatio").getAsDouble());
+            if (config.has("heavenFireApocalypseGunTypes")) {
+                java.util.List<String> list = new java.util.ArrayList<>();
+                JsonArray arr = config.getAsJsonArray("heavenFireApocalypseGunTypes");
+                for (JsonElement e : arr) list.add(e.getAsString());
+                TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.set(list);
+            }
             
             // 膛线配置
             if (config.has("riflingDamageBoost"))
@@ -306,10 +338,18 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.kikakuIchijinHealthMultiplier.set(config.get("kikakuIchijinHealthMultiplier").getAsDouble());
             if (config.has("kikakuIchijinDestroyUnbreakableBlocks"))
                 TaczCuriosConfig.COMMON.kikakuIchijinDestroyUnbreakableBlocks.set(config.get("kikakuIchijinDestroyUnbreakableBlocks").getAsBoolean());
+            if (config.has("kikakuIchijinDestroyNormalBlocks"))
+                TaczCuriosConfig.COMMON.kikakuIchijinDestroyNormalBlocks.set(config.get("kikakuIchijinDestroyNormalBlocks").getAsBoolean());
             
             // Apotheosis集成配置
             if (config.has("enableApotheosisIntegration"))
                 TaczCuriosConfig.COMMON.enableApotheosisIntegration.set(config.get("enableApotheosisIntegration").getAsBoolean());
+            if (config.has("curioConflicts")) {
+                java.util.List<String> conflicts = new java.util.ArrayList<>();
+                JsonArray arr = config.getAsJsonArray("curioConflicts");
+                for (JsonElement e : arr) conflicts.add(e.getAsString());
+                TaczCuriosConfig.COMMON.curioConflicts.set(conflicts);
+            }
             
             TaczCurios.LOGGER.info("已同步服务端全部配置数据");
         } catch (Exception e) {
@@ -323,8 +363,22 @@ public class ConfigSyncPacket {
         // 天火圣裁配置
         config.addProperty("heavenFireJudgmentDamageBoost", TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get());
         config.addProperty("heavenFireJudgmentHealthCost", TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get());
-        config.addProperty("heavenFireJudgmentHealthDrain", TaczCuriosConfig.COMMON.heavenFireJudgmentHealthDrain.get());
-        config.addProperty("heavenFireJudgmentDrainDuration", TaczCuriosConfig.COMMON.heavenFireJudgmentDrainDuration.get());
+        config.addProperty("heavenFireJudgmentDamageConversionRatio", TaczCuriosConfig.COMMON.heavenFireJudgmentDamageConversionRatio.get());
+        {
+            JsonArray arr = new JsonArray();
+            for (String s : TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get()) arr.add(s);
+            config.add("heavenFireJudgmentGunTypes", arr);
+        }
+        
+        // 天火流血效果配置（两个饰品共用）
+        config.addProperty("heavenFireBleedingDamagePerLevel", TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.get());
+        config.addProperty("heavenFireBleedingMaxLevel", TaczCuriosConfig.COMMON.heavenFireBleedingMaxLevel.get());
+        config.addProperty("heavenFireBleedingDuration", TaczCuriosConfig.COMMON.heavenFireBleedingDuration.get());
+        
+        // 虚数流血效果配置
+        config.addProperty("imaginaryBleedingDamagePerLevel", TaczCuriosConfig.COMMON.imaginaryBleedingDamagePerLevel.get());
+        config.addProperty("imaginaryBleedingMaxLevel", TaczCuriosConfig.COMMON.imaginaryBleedingMaxLevel.get());
+        config.addProperty("imaginaryBleedingDuration", TaczCuriosConfig.COMMON.imaginaryBleedingDuration.get());
         
         // 天火劫灭配置
         config.addProperty("heavenFireApocalypseDamageBoost", TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get());
@@ -335,6 +389,13 @@ public class ConfigSyncPacket {
         config.addProperty("heavenFireApocalypseNearbyPlayerDamageBoost", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get());
         config.addProperty("heavenFireApocalypseNearbyPlayerDuration", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get());
         config.addProperty("heavenFireApocalypseNearbyPlayerRadius", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get());
+        config.addProperty("heavenFireApocalypseNearbyPlayerPotionAmplifier", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get());
+        config.addProperty("heavenFireApocalypseDamageConversionRatio", TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get());
+        {
+            JsonArray arr = new JsonArray();
+            for (String s : TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get()) arr.add(s);
+            config.add("heavenFireApocalypseGunTypes", arr);
+        }
         
         // 膛线配置
         config.addProperty("riflingDamageBoost", TaczCuriosConfig.COMMON.riflingDamageBoost.get());
@@ -505,9 +566,15 @@ public class ConfigSyncPacket {
         // 掎角一阵配置
         config.addProperty("kikakuIchijinHealthMultiplier", TaczCuriosConfig.COMMON.kikakuIchijinHealthMultiplier.get());
         config.addProperty("kikakuIchijinDestroyUnbreakableBlocks", TaczCuriosConfig.COMMON.kikakuIchijinDestroyUnbreakableBlocks.get());
+        config.addProperty("kikakuIchijinDestroyNormalBlocks", TaczCuriosConfig.COMMON.kikakuIchijinDestroyNormalBlocks.get());
         
         // Apotheosis集成配置
         config.addProperty("enableApotheosisIntegration", TaczCuriosConfig.COMMON.enableApotheosisIntegration.get());
+        {
+            JsonArray arr = new JsonArray();
+            for (String s : TaczCuriosConfig.COMMON.curioConflicts.get()) arr.add(s);
+            config.add("curioConflicts", arr);
+        }
         
         return new ConfigSyncPacket(GSON.toJson(config));
     }

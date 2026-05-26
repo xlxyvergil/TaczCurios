@@ -3,12 +3,9 @@
   "minVersion": "0.8",
   "package": "com.xlxyvergil.tcc.mixin",
   "compatibilityLevel": "JAVA_17",
-  "plugin": "com.xlxyvergil.tcc.mixin.TccMixinPlugin",
   "mixins": [
     "ForgeHooksMixin",
-    "LivingEntityAccessor",
-    "apothiccurios.LootCategoryMixin",
-    "apothiccurios.EnchantmentHelperMixin"
+    "LivingEntityAccessor"
   ],
   "injectors": [],
   "refmap": "tcc.refmap.json"

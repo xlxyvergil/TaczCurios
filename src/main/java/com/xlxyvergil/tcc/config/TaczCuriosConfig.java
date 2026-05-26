@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.config;
 
+import java.util.List;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -19,9 +21,19 @@ public class TaczCuriosConfig {
         // 天火圣裁配置
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
-        public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthDrain;
-        public final ForgeConfigSpec.IntValue heavenFireJudgmentDrainDuration;
+        public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageConversionRatio;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> heavenFireJudgmentGunTypes;
         
+        // 天火流血效果配置（两个饰品共用）
+        public final ForgeConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
+        public final ForgeConfigSpec.IntValue heavenFireBleedingMaxLevel;
+        public final ForgeConfigSpec.IntValue heavenFireBleedingDuration;
+        
+        // 虚数流血效果配置
+        public final ForgeConfigSpec.DoubleValue imaginaryBleedingDamagePerLevel;
+        public final ForgeConfigSpec.IntValue imaginaryBleedingMaxLevel;
+        public final ForgeConfigSpec.IntValue imaginaryBleedingDuration;
+
         // 天火劫灭配置
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionRadius;
@@ -29,8 +41,11 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionEnabled;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseHealthCost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerDamageBoost;
+        public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerRadius;
+        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageConversionRatio;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> heavenFireApocalypseGunTypes;
         
         // 膛线配置
         public final ForgeConfigSpec.DoubleValue riflingDamageBoost;
@@ -207,6 +222,9 @@ public class TaczCuriosConfig {
         // Apotheosis集成配置
         public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
         
+        // 饰品互斥配置
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
+        
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
             
@@ -218,12 +236,38 @@ public class TaczCuriosConfig {
             heavenFireJudgmentHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
                     .defineInRange("healthCost", -0.3, -1, 1);
-            heavenFireJudgmentHealthDrain = builder
-                    .comment("每秒消耗的最大生命值比例 (默认: -0.05 = -5%)")
-                    .defineInRange("healthDrain", -0.05, -1, 1);
-            heavenFireJudgmentDrainDuration = builder
-                    .comment("生命值消耗持续时间(秒) (默认: 6)")
-                    .defineInRange("drainDuration", 6, -1, 300);
+            heavenFireJudgmentDamageConversionRatio = builder
+                    .comment("枪械伤害转换为虚数伤害后保留的比例 (默认: 0.1 = 保留10%，即90%转换为虚数伤害)")
+                    .defineInRange("damageConversionRatio", 0.1, 0, 1);
+            heavenFireJudgmentGunTypes = builder
+                    .comment("天火圣裁生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
+                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
+            builder.pop();
+            
+            // 天火流血效果配置（两个饰品共用）
+            builder.comment("天火流血效果配置（两个饰品共用）").push("heaven_fire_bleeding");
+            heavenFireBleedingDamagePerLevel = builder
+                    .comment("每级流血效果造成的最大生命值比例伤害 (默认: -0.1 = -10% maxHP/级)")
+                    .defineInRange("damagePerLevel", -0.1, -1, 0);
+            heavenFireBleedingMaxLevel = builder
+                    .comment("流血效果最大等级 (默认: 5)")
+                    .defineInRange("maxLevel", 5, 1, 10);
+            heavenFireBleedingDuration = builder
+                    .comment("流血效果持续时间(秒) (默认: 5)")
+                    .defineInRange("duration", 5, 1, 60);
+            builder.pop();
+            
+            // 虚数流血效果配置
+            builder.comment("虚数流血效果配置").push("imaginary_bleeding");
+            imaginaryBleedingDamagePerLevel = builder
+                    .comment("每级虚数流血效果造成的最大生命值比例伤害 (默认: -0.01 = -1% maxHP/级)")
+                    .defineInRange("damagePerLevel", -0.01, -1, 0);
+            imaginaryBleedingMaxLevel = builder
+                    .comment("虚数流血效果最大等级 (默认: 5)")
+                    .defineInRange("maxLevel", 5, 1, 10);
+            imaginaryBleedingDuration = builder
+                    .comment("虚数流血效果持续时间(秒) (默认: 10)")
+                    .defineInRange("duration", 10, 1, 60);
             builder.pop();
             
             // 天火劫灭配置
@@ -246,12 +290,21 @@ public class TaczCuriosConfig {
             heavenFireApocalypseNearbyPlayerDamageBoost = builder
                     .comment("附近玩家获得的伤害加成 (默认: 1.0 = 100%)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
+            heavenFireApocalypseNearbyPlayerPotionAmplifier = builder
+                    .comment("附近玩家获得的 bullet_gundamage 药水等级 (TAA药水: 每级+1%伤害, 公式=(等级+1)%, 默认: 99 = 100%)")
+                    .defineInRange("nearbyPlayerPotionAmplifier", 99, 0, 999);
             heavenFireApocalypseNearbyPlayerDuration = builder
                     .comment("附近玩家获得伤害加成的持续时间(秒) (默认: 15)")
                     .defineInRange("nearbyPlayerDuration", 15, -1, 300);
             heavenFireApocalypseNearbyPlayerRadius = builder
                     .comment("影响附近玩家的范围 (默认: 32)")
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
+            heavenFireApocalypseDamageConversionRatio = builder
+                    .comment("枪械伤害转换为虚数伤害后保留的比例 (默认: 0.3 = 保留30%，即70%转换为虚数伤害)")
+                    .defineInRange("damageConversionRatio", 0.3, 0, 1);
+            heavenFireApocalypseGunTypes = builder
+                    .comment("天火劫灭生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
+                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
             builder.pop();
             
             // 膛线配置
@@ -672,6 +725,29 @@ public class TaczCuriosConfig {
             enableApotheosisIntegration = builder
                     .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: false)")
                     .define("enableApotheosisIntegration", false);
+            builder.pop();
+            
+            // 饰品互斥配置
+            builder.comment("饰品互斥配置（格式：物品1,物品2 表示互斥）").push("curio_conflicts");
+            curioConflicts = builder
+                    .comment("互斥饰品组列表，每组用逗号分隔的物品注册名表示互斥关系")
+                    .defineList("conflictGroups", 
+                        List.of(
+                            "tcc:heaven_fire_judgment,tcc:heaven_fire_apocalypse",
+                            "tcc:soldier_basic_tag,tcc:soldier_specific_tag",
+                            "tcc:tactical_reload,tcc:tactical_reload_prime",
+                            "tcc:burst_reload,tcc:burst_reload_prime",
+                            "tcc:tandem_magazine,tcc:tandem_magazine_prime",
+                            "tcc:shotgun_expansion,tcc:shotgun_expansion_prime",
+                            "tcc:magazine_boost,tcc:magazine_boost_prime",
+                            "tcc:rifling,tcc:merged_rifling",
+                            "tcc:sword_wind,tcc:sword_wind_prime",
+                            "tcc:blaze_storm,tcc:blaze_storm_prime",
+                            "tcc:oppression_point,tcc:oppression_point_prime",
+                            "tcc:chamber,tcc:chamber_prime",
+                            "tcc:close_range_shot,tcc:close_combat_prime"
+                        ), 
+                        o -> o instanceof String);
             builder.pop();
             
             builder.pop();

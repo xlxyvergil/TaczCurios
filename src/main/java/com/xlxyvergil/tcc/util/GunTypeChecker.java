@@ -1,5 +1,8 @@
 package com.xlxyvergil.tcc.util;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.tacz.guns.api.TimelessAPI;
@@ -12,6 +15,7 @@ import com.xlxyvergil.taa.modifier.AmmoCountModifier;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.ItemStack;
 
 public class GunTypeChecker {
@@ -147,5 +151,26 @@ public class GunTypeChecker {
                 return currentAmmo == maxAmmoCount;
             })
             .orElse(false);
+    }
+
+    public static boolean isHoldingConfiguredGunTypes(LivingEntity livingEntity, List<? extends String> gunTypes) {
+        return isHoldingValidGunType(livingEntity, new HashSet<>(gunTypes));
+    }
+
+    public static List<Attribute> getDamageAttributesForGunTypes(List<? extends String> gunTypes) {
+        List<Attribute> attributes = new ArrayList<>();
+        attributes.add(AttributeHelper.BULLET_GUNDAMAGE);
+        for (String type : gunTypes) {
+            switch (type) {
+                case "pistol" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_PISTOL);
+                case "rifle" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_RIFLE);
+                case "shotgun" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN);
+                case "sniper" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SNIPER);
+                case "smg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SMG);
+                case "mg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_LMG);
+                case "rpg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER);
+            }
+        }
+        return attributes;
     }
 }

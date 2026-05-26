@@ -2,10 +2,14 @@ package com.xlxyvergil.tcc.handlers;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.helpers.LootTableHelper;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
@@ -111,6 +115,22 @@ public class TccEventHandler {
                     LootTableHelper.addLootEntryToChest(event.getTable(), riftSilverStack, 1, count, 15); // 权重15，数量根据概率确定
                 }
             }
+        }
+    }
+    
+    /**
+     * 阻止天火流血、天火劫灭buff和延迟标记被外部移除(牛奶、命令等)
+     * 允许自然过期(MobEffectEvent.Remove不会在自然过期时触发)
+     */
+    @SubscribeEvent
+    public void onEffectRemove(MobEffectEvent.Remove event) {
+        MobEffectInstance effect = event.getEffectInstance();
+        if (effect != null && (
+            effect.getEffect() == TccMobEffects.HEAVEN_FIRE_BLEEDING.get() ||
+            effect.getEffect() == TccMobEffects.HEAVEN_FIRE_APOCALYPSE_BUFF.get() ||
+            effect.getEffect() == TccMobEffects.HEAVEN_FIRE_APOCALYPSE_DELAY.get()
+        )) {
+            event.setResult(Event.Result.DENY);
         }
     }
 }

@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -35,18 +34,6 @@ public class BurstReloadPrime extends BaseCurioItem {
         super(properties
             .stacksTo(1)
             .rarity(Rarity.EPIC));
-    }
-
-    /**
-     * 检查是否可以装备到指定插槽
-     * BurstReloadPrime与BurstReload互斥，不能同时装备
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof BurstReload);
     }
 
     @Override

@@ -29,7 +29,7 @@
   "item.tcc.ural_wolf_tag.effect": "%1$s%%爆头倍率",
   
   "item.tcc.heaven_fire_judgment": "§f天火圣裁",
-  "item.tcc.heaven_fire_judgment.effect": "%1$s%%通用枪械伤害 %2$s%%当前生命值 %3$s%%最大生命值/秒 持续%4$s秒 血量低于40%%时无效",
+  "item.tcc.heaven_fire_judgment.effect": "%1$s%%通用枪械伤害 %2$s%%当前生命值 施加流血效果：%3$s%%最大生命值/级 持续%4$s秒 血量低于40%%时无效",
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
   "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 %1$s%%通用枪械伤害 %2$s爆炸范围 %3$s%%爆炸伤害 %4$s%%当前生命值 为周围%5$s格内玩家%6$s%%通用枪械伤害 持续%7$s秒",
@@ -182,6 +182,8 @@
   "tcc.tooltip.rarity.legendary": "§7稀有度：§f传说",
   "tcc.tooltip.rarity.mythic": "§7稀有度：§d裂隙",
 
+  "gem_class.curios.tcc_slot": "TCC饰品",
+  "text.apotheosis.category.curios:tcc_slot.plural": "TCC饰品",
   "// Apotheosis词缀 - 暴击属性": "",
   "affix.tcc:tcc_slot/attribute/critical_chance": "易暴击", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "心胸大开",
   "affix.tcc:tcc_slot/attribute/critical_damage": "打得疼", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "致命武力",
@@ -227,13 +229,21 @@
   "affix.tcc:tcc_slot/attribute/lmg_damage": "机枪强", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "火力压制大师",
   "affix.tcc:tcc_slot/attribute/launcher_damage": "重武强", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "重火力爱好者",
     
-  "// 虚空伤害属性": "",
-  "attribute.name.tcc.void_damage": "虚空伤害",
-  "attribute.name.tcc.void_damage.desc": "攻击时附加虚空伤害，绕过护甲和魔法减免",
-  "attribute.name.tcc.void_damage_resistance": "虚空伤害抗性",
-  "attribute.name.tcc.void_damage_resistance.desc": "按百分比减免受到的虚空伤害",
+  "// Apotheosis词缀 - mob_effect药水效果": "",
+  "affix.tcc:tcc_slot/mob_effect/bleeding": "放血", "affix.tcc:tcc_slot/mob_effect/bleeding.suffix": "伤口永不愈合",
+  "affix.tcc:tcc_slot/mob_effect/grievous": "致残", "affix.tcc:tcc_slot/mob_effect/grievous.suffix": "禁用治疗",
+  "affix.tcc:tcc_slot/mob_effect/sundering": "破甲", "affix.tcc:tcc_slot/mob_effect/sundering.suffix": "护甲粉碎者",
+    
+  "// 虚数伤害属性": "",
+  "attribute.name.tcc.imaginary_damage": "虚数伤害",
+  "attribute.name.tcc.imaginary_damage.desc": "攻击时附加虚数伤害，绕过护甲和魔法减免",
+  "attribute.name.tcc.imaginary_damage_resistance": "虚数伤害抗性",
+  "attribute.name.tcc.imaginary_damage_resistance.desc": "按百分比减免受到的虚数伤害",
   
-  "// 虚空伤害死亡信息": "",
-  "death.attack.void_damage": "%1$s被虚空吞噬了",
-  "death.attack.void_damage.player": "%1$s在与%2$s战斗时被虚空吞噬了"
+  "// 虚数伤害死亡信息": "",
+  "death.attack.imaginary_damage": "%1$s被虚数吞噬了",
+  "death.attack.imaginary_damage.player": "%1$s在与%2$s战斗时被虚数吞噬了",
+  
+  "// 天火流血效果": "",
+  "effect.tcc.heaven_fire_bleeding": "天火流血"
 }

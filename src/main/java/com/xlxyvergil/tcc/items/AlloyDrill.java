@@ -88,13 +88,6 @@ public class AlloyDrill extends BaseCurioItem {
     }
     
     /**
-     * 获取装备槽位
-     */
-    public String getSlot() {
-        return "tcc:tcc_slot";
-    }
-    
-    /**
      * 当生物切换武器时应用效果
      */
     @Override

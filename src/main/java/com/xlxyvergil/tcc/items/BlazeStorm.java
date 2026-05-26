@@ -38,23 +38,6 @@ public class BlazeStorm extends BaseCurioItem {
     }
     
     /**
-     * 检查是否可以装备到指定插槽
-     * 只能装备到tcc_slot槽位
-     * 与BlazeStormPrime互斥，不能同时装备
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在指定的槽位
-        if (!"tcc_slot".equals(slotContext.identifier())) {
-            return false;
-        }
-        
-        // 检查是否已经装备了BlazeStormPrime
-        LivingEntity entity = (LivingEntity) slotContext.entity();
-        return !hasEquipped(entity, itemStack -> itemStack.getItem() instanceof BlazeStormPrime);
-    }
-    
-    /**
      * 应用所有效果加成
      * 增加配置中的爆炸范围和爆炸伤害加成（乘算）
      */

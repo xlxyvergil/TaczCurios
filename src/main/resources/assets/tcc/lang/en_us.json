@@ -25,7 +25,7 @@
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",
   
   "item.tcc.heaven_fire_judgment": "§fHeaven Fire Judgment",
-  "item.tcc.heaven_fire_judgment.effect": "%1$s%% universal firearm damage %2$s%% current health %3$s%% max health/sec for %4$s seconds Disable when health below 40%%",
+  "item.tcc.heaven_fire_judgment.effect": "%1$s%% universal firearm damage %2$s%% current health Apply bleeding: %3$s%% max health/level for %4$s seconds Disable when health below 40%%",
   
   "item.tcc.heaven_fire_apocalypse": "§dHeaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health %1$s%% universal firearm damage %2$s explosion range %3$s%% explosion damage %4$s%% current health %5$s%% universal firearm damage bonus to players within %6$s blocks for %7$s seconds",
@@ -178,6 +178,8 @@
   "tcc.tooltip.rarity.legendary": "§7Rarity: §fLegendary",
   "tcc.tooltip.rarity.mythic": "§7Rarity: §dRift",
 
+  "gem_class.tcc.tcc_slot": "TCC Curios",
+
   "// Apotheosis Affixes - Critical Attributes": "",
   "affix.tcc:tcc_slot/attribute/critical_chance": "Easy Crit", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "Wide Open Heart",
   "affix.tcc:tcc_slot/attribute/critical_damage": "Hard Hit", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "Deadly Force",
@@ -222,14 +224,22 @@
   "affix.tcc:tcc_slot/attribute/smg_damage": "Strong SMG", "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "Charge Maniac",
   "affix.tcc:tcc_slot/attribute/lmg_damage": "Strong LMG", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "Suppression Master",
   "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover",
+    
+  "// Apotheosis Affixes - Mob Effects": "",
+  "affix.tcc:tcc_slot/mob_effect/bleeding": "Bleeding", "affix.tcc:tcc_slot/mob_effect/bleeding.suffix": "Wound Never Heals",
+  "affix.tcc:tcc_slot/mob_effect/grievous": "Crippling", "affix.tcc:tcc_slot/mob_effect/grievous.suffix": "Healing Disabled",
+  "affix.tcc:tcc_slot/mob_effect/sundering": "Sundering", "affix.tcc:tcc_slot/mob_effect/sundering.suffix": "Armor Shatterer",
   
-  "// Void Damage Attribute": "",
-  "attribute.name.tcc.void_damage": "Void Damage",
-  "attribute.name.tcc.void_damage.desc": "Bonus void damage on attack, bypasses armor and magic resistance",
-  "attribute.name.tcc.void_damage_resistance": "Void Damage Resistance",
-  "attribute.name.tcc.void_damage_resistance.desc": "Percentage reduction of incoming void damage",
+  "// Imaginary Damage Attribute": "",
+  "attribute.name.tcc.imaginary_damage": "Imaginary Damage",
+  "attribute.name.tcc.imaginary_damage.desc": "Bonus imaginary damage on attack, bypasses armor and magic resistance",
+  "attribute.name.tcc.imaginary_damage_resistance": "Imaginary Damage Resistance",
+  "attribute.name.tcc.imaginary_damage_resistance.desc": "Percentage reduction of incoming imaginary damage",
   
-  "// Void Damage Death Messages": "",
-  "death.attack.void_damage": "%1$s was consumed by the void",
-  "death.attack.void_damage.player": "%1$s was consumed by the void whilst fighting %2$s"
+  "// Imaginary Damage Death Messages": "",
+  "death.attack.imaginary_damage": "%1$s was consumed by the imaginary",
+  "death.attack.imaginary_damage.player": "%1$s was consumed by the imaginary whilst fighting %2$s",
+  
+  "// Heaven Fire Bleeding Effect": "",
+  "effect.tcc.heaven_fire_bleeding": "Heaven Fire Bleeding"
 }

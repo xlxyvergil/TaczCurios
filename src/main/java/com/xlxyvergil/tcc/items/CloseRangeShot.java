@@ -11,7 +11,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -31,22 +30,6 @@ public class CloseRangeShot extends BaseCurioItem {
     
     public CloseRangeShot(Properties properties) {
         super(properties);
-    }
-    
-    /**
-     * 检查是否可以装备到指定插槽
-     * CloseRangeShot与CloseCombatPrime互斥，不能同时装备
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        
-        // 检查生物是否已经装备了CloseCombatPrime
-        LivingEntity entity = (LivingEntity) slotContext.entity();
-        return !hasEquipped(entity, itemStack -> itemStack.getItem() instanceof CloseCombatPrime);
     }
     
     /**

@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -34,21 +33,6 @@ public class MagazineBoost extends BaseCurioItem {
         super(properties
             .stacksTo(1)
             .rarity(Rarity.COMMON));
-    }
-
-    /**
-     * 检查是否可以装备到指定插槽
-     * MagazineBoost与MagazineBoostPrime互斥，不能同时装
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        
-        // 检查是否已经装备了MagazineBoostPrime
-        return !hasEquipped(slotContext.entity(), itemStack -> itemStack.getItem() instanceof MagazineBoostPrime);
     }
 
     /**

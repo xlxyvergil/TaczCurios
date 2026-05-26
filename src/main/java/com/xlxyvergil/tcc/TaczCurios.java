@@ -1,7 +1,9 @@
 package com.xlxyvergil.tcc;
 
 import com.mojang.logging.LogUtils;
+import com.xlxyvergil.tcc.affix.GunMobEffectAffix;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.handlers.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.handlers.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
@@ -9,14 +11,14 @@ import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
 import com.xlxyvergil.tcc.network.TccNetwork;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import com.xlxyvergil.tcc.core.TccAttributes;
+import dev.shadowsoffire.apotheosis.adventure.affix.AffixRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import org.slf4j.Logger;
 
 @Mod(TaczCurios.MODID)
@@ -40,12 +42,15 @@ public class TaczCurios
         TaczPoiTypes.POI_TYPES.register(modEventBus);
         TaczVillagers.PROFESSIONS.register(modEventBus);
         TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
 
         
         MinecraftForge.EVENT_BUS.register(this);
         // 注册战利品表事件处理器
         MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
+        // 注册天火流血结算事件处理器
+        MinecraftForge.EVENT_BUS.register(new HeavenFireSettlementHandler());
         
         // 注册配置文件
         TaczCuriosConfig.registerConfigs();
@@ -66,6 +71,9 @@ public class TaczCurios
             // 检查是否启用了Apotheosis集成，然后初始化 Apotheosis 神化属性集成
             if (com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.enableApotheosisIntegration.get()) {
                 ApothicCuriosIntegration.init();
+                // 注册 TCC 自定义枪械词缀类型
+                AffixRegistry.INSTANCE.registerCodec(
+                    new ResourceLocation(MODID, "gun_mob_effect"), GunMobEffectAffix.CODEC);
             }
         });
     }
