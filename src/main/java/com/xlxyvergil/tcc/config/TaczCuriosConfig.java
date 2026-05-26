@@ -40,6 +40,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionDamage;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionEnabled;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseHealthCost;
+        public final ForgeConfigSpec.DoubleValue brahmaBeastsHealthCostReduction;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerDamageBoost;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
@@ -174,6 +175,22 @@ public class TaczCuriosConfig {
         // 红-有-三配置
         public final ForgeConfigSpec.DoubleValue redMovementTagSpeedBoost;
         
+        // 夏日沙滩配置
+        public final ForgeConfigSpec.DoubleValue summerBeachHeavenFireMultiplier;
+        
+        // 梵天百兽配置
+        public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
+        
+        // 救世配置
+        public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
+        public final ForgeConfigSpec.IntValue salvationResistanceLevel;
+        public final ForgeConfigSpec.DoubleValue salvationImaginaryResistance;
+        
+        // 无烬终焉配置
+        public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
+        public final ForgeConfigSpec.DoubleValue endlessExplosionDamage;
+        
         // 士兵基础挂牌配置
         public final ForgeConfigSpec.DoubleValue soldierBasicTagDamageBoost;
         
@@ -287,6 +304,9 @@ public class TaczCuriosConfig {
             heavenFireApocalypseHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -1.0 = -100%)")
                     .defineInRange("healthCost", -1.0, -1, 1);
+            brahmaBeastsHealthCostReduction = builder
+                    .comment("装备梵天百兽时天火劫灭扣血比例的减少值 (默认: 0.6 = 从扣100%变为扣40%，即保留60%血量)")
+                    .defineInRange("brahmaBeastsHealthCostReduction", 0.6, 0, 1);
             heavenFireApocalypseNearbyPlayerDamageBoost = builder
                     .comment("附近玩家获得的伤害加成 (默认: 1.0 = 100%)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
@@ -604,6 +624,46 @@ public class TaczCuriosConfig {
             redMovementTagSpeedBoost = builder
                     .comment("移动速度加成 (默认: 1.5 = 150%)")
                     .defineInRange("speedBoost", 1.5, -1, 100);
+            builder.pop();
+            
+            // 夏日沙滩配置
+            builder.comment("夏日沙滩饰品配置").push("summer_beach");
+            summerBeachHeavenFireMultiplier = builder
+                    .comment("夏日沙滩对天火饰品效果的增强系数 (默认: 2.0)")
+                    .defineInRange("heavenFireMultiplier", 2.0, 1, 100);
+            builder.pop();
+            
+            // 梵天百兽配置
+            builder.comment("梵天百兽饰品配置").push("brahma_beasts");
+            brahmaBeastsHeavenFireMultiplier = builder
+                    .comment("梵天百兽对天火饰品效果的增强系数 (默认: 4.0)")
+                    .defineInRange("heavenFireMultiplier", 4.0, 1, 100);
+            builder.pop();
+            
+            // 救世配置
+            builder.comment("救世饰品配置").push("salvation");
+            salvationHeavenFireMultiplier = builder
+                    .comment("救世对天火饰品效果的增强系数 (默认: 6.0)")
+                    .defineInRange("heavenFireMultiplier", 6.0, 1, 100);
+            salvationDamageReduction = builder
+                    .comment("救世伤害降低比例 (默认: 0.3 = 30%)")
+                    .defineInRange("damageReduction", 0.3, 0, 1);
+            salvationResistanceLevel = builder
+                    .comment("救世抗性提升等级 (默认: 2 = 抗性III)")
+                    .defineInRange("resistanceLevel", 2, 0, 10);
+            salvationImaginaryResistance = builder
+                    .comment("救世虚数抗性 (默认: 100.0)")
+                    .defineInRange("imaginaryResistance", 100.0, 0, 1000);
+            builder.pop();
+            
+            // 无烬终焉配置
+            builder.comment("无烬终焉饰品配置").push("endless");
+            endlessDamageBoost = builder
+                    .comment("无烬终焉通用枪械伤害加成 (默认: 0.5 = 50%)")
+                    .defineInRange("damageBoost", 0.5, -1, 100);
+            endlessExplosionDamage = builder
+                    .comment("无烬终焉爆炸伤害加成 (默认: 0.5 = 50%)")
+                    .defineInRange("explosionDamage", 0.5, -1, 100);
             builder.pop();
             
             // 士兵基础挂牌配置

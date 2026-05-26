@@ -31,6 +31,9 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.SOLDIER_SPECIFIC_TAG.get());
                 output.accept(TaczItems.HEAVY_CALIBER_TAG.get());
                 output.accept(TaczItems.RED_MOVEMENT_TAG.get());
+                output.accept(TaczItems.SUMMER_BEACH.get());
+                output.accept(TaczItems.BRAHMA_BEASTS.get());
+                output.accept(TaczItems.SALVATION.get());
                 output.accept(TaczItems.URAL_WOLF_TAG.get());
                 output.accept(TaczItems.ALLOY_DRILL.get());
                 output.accept(TaczItems.CAREFUL_HEART.get());

@@ -4,6 +4,9 @@
   "curios.identifier.tcc_slot": "TACZ Curio Slot",
   "curios.modifiers.tcc_slot": "TACZ Curio Attributes:",
   
+  "curios.identifier.tcc_3rd": "TACZ Third Curio Slot",
+  "curios.modifiers.tcc_3rd": "TACZ Third Curio Attributes:",
+  
   "block.tcc.teshin_workbench": "Teshin Workbench",
   
   "entity.minecraft.villager.teshin": "Teshin",
@@ -21,6 +24,26 @@
   "item.tcc.red_movement_tag": "§bRed-Has-Three",
   "item.tcc.red_movement_tag.effect": "%1$s%% gun movement speed",
   
+  "item.tcc.summer_beach": "§fSummer Beach",
+  "item.tcc.summer_beach.effect": "%1$s imaginary damage resistance",
+  "item.tcc.summer_beach.heaven_fire_boost": "Heaven Fire items damage retention increased by %1$s%%",
+  "item.tcc.summer_beach.wither_kills": "Wither Kills: %1$d/%2$d (+%1$d imaginary resistance)",
+  "item.tcc.summer_beach.bound": "Bound to: %1$s",
+  "item.tcc.summer_beach.how_to_obtain": "§7§oObtained when killed by Wither while wearing Heaven Fire Judgment (Bound)",
+  
+  "item.tcc.brahma_beasts": "§5Brahma Beasts",
+  "item.tcc.brahma_beasts.effect": "%1$s imaginary damage resistance",
+  "item.tcc.brahma_beasts.heaven_fire_boost": "Heaven Fire items damage retention increased by %1$s%%",
+  "item.tcc.brahma_beasts.ender_dragon_kills": "Ender Dragon Kills: %1$d/%2$d (+%1$d imaginary resistance)",
+  "item.tcc.brahma_beasts.bound": "Bound to: %1$s",
+  "item.tcc.brahma_beasts.how_to_obtain": "§7§oObtained by killing Ender Dragon while wearing both Heaven Fire Apocalypse and Summer Beach",
+  
+  "item.tcc.salvation": "§4Salvation",
+  "item.tcc.salvation.effect": "%1$s imaginary damage resistance",
+  "item.tcc.salvation.passive_bonuses": "Passive: +3 Armor, +5 Damage Absorption",
+  "item.tcc.salvation.heaven_fire_boost": "Heaven Fire items damage conversion increased by %1$s%%",
+  "item.tcc.salvation.how_to_obtain": "§7§oObtained when imaginary resistance >80 with Brahma Beasts + Heaven Fire Apocalypse after 30 Ender Dragon kills",
+  
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",
   
@@ -29,6 +52,11 @@
   
   "item.tcc.heaven_fire_apocalypse": "§dHeaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health %1$s%% universal firearm damage %2$s explosion range %3$s%% explosion damage %4$s%% current health %5$s%% universal firearm damage bonus to players within %6$s blocks for %7$s seconds",
+  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§oEvolve from Heaven Fire Judgment when bleeding settles with ≥40 imaginary resistance and alive",
+  
+  "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
+  "item.tcc.heaven_fire_apocalypse_endless.effect": "%1$s%% universal firearm damage %2$s explosion range %3$s%% explosion damage %4$s%% universal firearm damage bonus to players within %5$s blocks for %6$s seconds",
+  "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§oEvolved from Heaven Fire Apocalypse",
   
   "item.tcc.burst_reload": "§9Burst Reload",
   "item.tcc.burst_reload.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",
@@ -171,6 +199,7 @@
   "message.tcc.kikaku_ichijin.sacrificed": "You were sacrificed by %s",
 
   "tcc.tooltip.slot": "§7Equipment Slot: §aTACZ Curio Slot",
+  "tcc.tooltip.slot.3rd": "§7Equipment Slot: §aTCC 3rd Curio Slot",
   "tcc.tooltip.rarity.common": "§7Rarity: §9Common",
   "tcc.tooltip.rarity.uncommon": "§7Rarity: §bUncommon",
   "tcc.tooltip.rarity.rare": "§7Rarity: §6Rare",

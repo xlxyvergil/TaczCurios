@@ -82,8 +82,9 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 只检查槽位类型
-        if (!slotContext.identifier().equals("tcc_slot")) {
+        // 只检查槽位类型（支持 tcc_slot 和 tcc_3rd）
+        String slotId = slotContext.identifier();
+        if (!slotId.equals("tcc_slot") && !slotId.equals("tcc_3rd")) {
             return false;
         }
         
@@ -95,7 +96,7 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         if (!conflictNames.isEmpty()) {
             LazyOptional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(entity);
             Boolean hasConflict = curiosInventory.map(inv -> {
-                var handlerOpt = inv.getStacksHandler("tcc_slot");
+                var handlerOpt = inv.getStacksHandler(slotId);
                 if (handlerOpt.isPresent()) {
                     var handler = handlerOpt.orElse(null);
                     for (int i = 0; i < handler.getSlots(); i++) {

@@ -4,6 +4,9 @@
   "curios.identifier.tcc_slot": "Tacz饰品栏",
   "curios.modifiers.tcc_slot": "Tacz饰品属性：",
   
+  "curios.identifier.tcc_3rd": "Tacz第三饰品栏",
+  "curios.modifiers.tcc_3rd": "Tacz第三饰品属性：",
+  
   "// TAA属性本地化覆盖": "",
   "attribute.name.taa.explosion_knockbacknew": "爆炸击退",
   "attribute.name.taa.explosion_knockbacknew.desc": "爆炸击退效果",
@@ -25,6 +28,26 @@
   "item.tcc.red_movement_tag": "§b红-有-三",
   "item.tcc.red_movement_tag.effect": "%1$s%%持枪移动速度",
   
+  "item.tcc.summer_beach": "§f夏日沙滩",
+  "item.tcc.summer_beach.effect": "%1$s虚数抗性",
+  "item.tcc.summer_beach.heaven_fire_boost": "天火饰品伤害保留系数提高%1$s%%",
+  "item.tcc.summer_beach.wither_kills": "凋零击杀数: %1$d/%2$d (+%1$d虚数抗性)",
+  "item.tcc.summer_beach.bound": "已绑定至：%1$s",
+  "item.tcc.summer_beach.how_to_obtain": "§7§o装备天火圣裁被凋零击杀后获得（绑定）",
+  
+  "item.tcc.brahma_beasts": "§5梵天百兽",
+  "item.tcc.brahma_beasts.effect": "%1$s虚数抗性",
+  "item.tcc.brahma_beasts.heaven_fire_boost": "天火饰品伤害保留系数提高%1$s%%",
+  "item.tcc.brahma_beasts.ender_dragon_kills": "末影龙击杀数: %1$d/%2$d (+%1$d虚数抗性)",
+  "item.tcc.brahma_beasts.bound": "已绑定至：%1$s",
+  "item.tcc.brahma_beasts.how_to_obtain": "§7§o同时装备天火劫灭和夏日沙滩时击杀末影龙获得",
+  
+  "item.tcc.salvation": "§4救世",
+  "item.tcc.salvation.effect": "%1$s虚数抗性",
+  "item.tcc.salvation.passive_bonuses": "常驻: +3抗性, +5伤害吸收",
+  "item.tcc.salvation.heaven_fire_boost": "天火饰品伤害转换系数提高%1$s%%",
+  "item.tcc.salvation.how_to_obtain": "§7§o虚数抗性>80且装备梵天百兽+天火劫灭时击杀30次末影龙获得",
+  
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
   "item.tcc.ural_wolf_tag.effect": "%1$s%%爆头倍率",
   
@@ -33,6 +56,11 @@
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
   "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 %1$s%%通用枪械伤害 %2$s爆炸范围 %3$s%%爆炸伤害 %4$s%%当前生命值 为周围%5$s格内玩家%6$s%%通用枪械伤害 持续%7$s秒",
+  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o装备天火圣裁触发天火流血，结算时虚数抗性≥40且未死亡则进化",
+  
+  "item.tcc.heaven_fire_apocalypse_endless": "§4天火劫灭·无烬终焉",
+  "item.tcc.heaven_fire_apocalypse_endless.effect": "%1$s%%通用枪械伤害 %2$s爆炸范围 %3$s%%爆炸伤害 为周围%4$s格内玩家%5$s%%通用枪械伤害 持续%6$s秒",
+  "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§o由天火劫灭进化而来",
   
   "item.tcc.burst_reload": "§9爆发装填",
   "item.tcc.burst_reload.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
@@ -175,6 +203,7 @@
   "message.tcc.kikaku_ichijin.sacrificed": "你被%s献祭了",
 
   "tcc.tooltip.slot": "§7装备槽位：§aTCC饰品栏",
+  "tcc.tooltip.slot.3rd": "§7装备槽位：§aTCC第三饰品栏",
   "tcc.tooltip.rarity.common": "§7稀有度：§9常见",
   "tcc.tooltip.rarity.uncommon": "§7稀有度：§b罕见",
   "tcc.tooltip.rarity.rare": "§7稀有度：§6稀有",

@@ -25,6 +25,14 @@ public class HeavenFireHealthListener {
             return;
         }
         
+        // 检查受害者是否装备了救世，如果是则降低受到的伤害（可配置）
+        if (com.xlxyvergil.tcc.items.Salvation.hasSalvationEquipped(target)) {
+            double damageReduction = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationDamageReduction.get();
+            float originalDamage = event.getAmount();
+            float reducedDamage = originalDamage * (float)(1.0 - damageReduction);
+            event.setAmount(reducedDamage);
+        }
+        
         // 检查攻击者是否装备了天火圣裁或天火劫灭
         if (event.getSource().getEntity() instanceof LivingEntity attacker) {
             // 检查是否为虚数伤害（天火饰品转换的伤害类型）
@@ -42,9 +50,30 @@ public class HeavenFireHealthListener {
                     damageConversionRatio = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get();
                     hasHeavenFireItem = true;
                 }
+                // 检查天火劫灭·无烬终焉（已经是100%虚数伤害）
+                else if (com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
+                    damageConversionRatio = 1.0;  // 100%转换
+                    hasHeavenFireItem = true;
+                }
                 
                 // 应用伤害降低（类似七咒之戒的方案）
                 if (hasHeavenFireItem) {
+                    // 检查是否装备了救世，如果是则提高保留系数（优先级最高）
+                    if (com.xlxyvergil.tcc.items.Salvation.hasSalvationEquipped(attacker)) {
+                        double multiplier = TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get();
+                        damageConversionRatio *= multiplier;
+                    }
+                    // 检查是否装备了夏日沙滩
+                    else if (com.xlxyvergil.tcc.items.SummerBeach.hasSummerBeachEquipped(attacker)) {
+                        double multiplier = TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get();
+                        damageConversionRatio *= multiplier;
+                    }
+                    // 检查是否装备了梵天百兽
+                    else if (com.xlxyvergil.tcc.items.BrahmaBeasts.hasBrahmaBeastsEquipped(attacker)) {
+                        double multiplier = TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get();
+                        damageConversionRatio *= multiplier;
+                    }
+                    
                     float originalDamage = event.getAmount();
                     float reducedDamage = originalDamage * (float)damageConversionRatio;
                     event.setAmount(reducedDamage);

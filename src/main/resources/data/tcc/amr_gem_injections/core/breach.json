@@ -5,7 +5,8 @@
     "gem_class": {
       "key": "tcc_slot",
       "types": [
-        "curios:tcc_slot"
+        "curios:tcc_slot",
+        "curios:tcc_3rd"
       ]
     },
     "attribute": "taa:pierce",

@@ -160,6 +160,11 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.mythic"));
+        
+        // 添加获取方式
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.how_to_obtain")
+            .withStyle(net.minecraft.ChatFormatting.GRAY, net.minecraft.ChatFormatting.ITALIC));
     }
     
     /**
@@ -211,6 +216,12 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         // 造成伤害后直接设置玩家生命值（使用setHealth，不触发不死图腾）
         double healthCostConfig = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get();
+        
+        // 检查是否装备了梵天百兽，如果是则减少扣血比例
+        if (com.xlxyvergil.tcc.items.BrahmaBeasts.hasBrahmaBeastsEquipped(attacker)) {
+            double reduction = TaczCuriosConfig.COMMON.brahmaBeastsHealthCostReduction.get();
+            healthCostConfig += reduction;  // -1.0 + 0.6 = -0.4
+        }
         
         // 限制扣血比例：最高99%（至少保留1%血量）
         double clampedHealthCost = Math.min(-healthCostConfig, 0.99);
