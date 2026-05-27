@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc;
 
-import com.mojang.logging.LogUtils;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.handlers.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.handlers.TccEventHandler;
@@ -16,16 +15,13 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.slf4j.Logger;
 
 @Mod(TaczCurios.MODID)
 public class TaczCurios
 {
     public static final String MODID = "tcc";
-    // 直接引用slf4j日志记录器
-    public static final Logger LOGGER = LogUtils.getLogger();
 
-    public TaczCurios()
+    public TaczCurios() throws ClassNotFoundException
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -71,19 +67,10 @@ public class TaczCurios
         });
     }
     
-    private void registerClientEventsSafely() {
+    private void registerClientEventsSafely() throws ClassNotFoundException {
         // 仅在客户端环境中注册客户端事件处理器
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
-            try {
-                // 尝试注册客户端事件，如果在服务器上会因为缺少客户端类而失败
-                Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-            } catch (ClassNotFoundException e) {
-                // 在服务器环境中忽略，因为客户端类不可用
-                LOGGER.info("未找到ClientEventHandler，正在专用服务器上运行");
-            } catch (Exception e) {
-                // 其他异常也忽略
-                LOGGER.info("注册ClientEventHandler失败: " + e.getMessage());
-            }
+            Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
         }
     }
     
@@ -96,7 +83,6 @@ public class TaczCurios
                 player.connection.connection,
                 net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT
             );
-            LOGGER.info("已发送配置同步到玩家: " + event.getEntity().getName().getString());
         }
     }
 }

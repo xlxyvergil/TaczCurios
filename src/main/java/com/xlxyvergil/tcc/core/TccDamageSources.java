@@ -32,6 +32,7 @@ public class TccDamageSources {
     }
     
     public static DamageSource imaginaryDamage(Entity attacker) {
-        return new DamageSource(imaginaryDamageHolder);
+        // 使用三参数构造函数，使 source.getEntity() 能正确返回攻击者
+        return new DamageSource(imaginaryDamageHolder, null, attacker);
     }
 }

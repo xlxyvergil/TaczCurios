@@ -9,6 +9,9 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraftforge.api.distmarker.Dist;
@@ -45,12 +48,10 @@ public class HeavenFireApocalypse extends BaseCurioItem {
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("79f78f03-e9ba-4567-9ba9-75f729f6c3e8");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
-    private static final UUID EXPLOSION_ENABLED_UUID = UUID.fromString("d4e5f6a7-b8c9-0d1e-2a3b-4c5d6e7f8a9b");
     
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";
     private static final String EXPLOSION_RADIUS_NAME = "tcc.heaven_fire_apocalypse.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
-    private static final String EXPLOSION_ENABLED_NAME = "tcc.heaven_fire_apocalypse.explosion_enabled";
     
     
     public HeavenFireApocalypse(Properties properties) {
@@ -88,12 +89,10 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
         double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
-        double explosionEnabled = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionEnabled.get();
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.ADDITION);
     }
     
     @Override
@@ -101,7 +100,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, EXPLOSION_RADIUS_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, EXPLOSION_ENABLED_UUID);
     }
     
     @Override
@@ -129,6 +127,10 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
+        // 限定枪械类型
+        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get());
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+        
         // 添加装备效果
         // 根据语言文件中的占位符顺序调整参数传递顺序：
         // %1$s - damageBoost (通用枪械伤害加成)
@@ -143,7 +145,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get() * 100;
         double healthCost = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
-        int nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get() + 1;
+        int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.effect", 
                 String.format("%+.0f", damageBoost), 
@@ -154,16 +156,28 @@ public class HeavenFireApocalypse extends BaseCurioItem {
                 String.format("%+d", nearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration)));
         
+        // 伤害转换信息
+        double conversionPercent = (1 - TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get()) * 100;
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.damage_conversion",
+                String.format("%.0f", conversionPercent)));
+        
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.mythic"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
         
         // 添加获取方式
+        String entityNamespace = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
+        String entityName = entityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(entityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            entityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.how_to_obtain")
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.how_to_obtain", entityName)
             .withStyle(net.minecraft.ChatFormatting.GRAY, net.minecraft.ChatFormatting.ITALIC));
     }
     
@@ -247,16 +261,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
             false   // 不显示图标
         ));
         
-        // 显示扣除生命值的提示（仅对玩家）
-        if (attacker instanceof Player player && FMLEnvironment.dist == Dist.CLIENT) {
-            player.displayClientMessage(
-                net.minecraft.network.chat.Component.literal(
-                    "§4天火劫灭反噬 - 生命值" + String.format("%+.0f", healthCostConfig * 100) + "%当前生命值"
-                ),
-                true
-            );
-        }
-        
         // 获取配置中的影响范围
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
         
@@ -266,11 +270,11 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
 
         for (Player nearbyPlayer : nearbyPlayers) {
-            // 固定1级，实际加成由效果本身的perLevelValue控制
+            int potionAmplifier = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get();
             nearbyPlayer.addEffect(new MobEffectInstance(
                 TccMobEffects.HEAVEN_FIRE_APOCALYPSE_BUFF.get(),
                 nearbyPlayerDuration * 20,
-                0,  // 固定0级（显示为1级）
+                potionAmplifier,
                 false, false, true));
         }
     }

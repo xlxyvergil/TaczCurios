@@ -34,14 +34,9 @@ public class ApothicCuriosIntegration {
             return;
         }
         
-        try {
-            // 必须在早期注册 tcc_slot 的 LootCategory，确保词缀数据加载时能找到
-            ApothicCuriosMod.registerCurioLootCategory("curios:tcc_slot");
-            ApothicCuriosMod.registerCurioLootCategory("curios:tcc_3rd");
-            initialized = true;
-        } catch (Exception e) {
-            TaczCurios.LOGGER.error("Failed to initialize Apotheosis integration", e);
-        }
+        ApothicCuriosMod.registerCurioLootCategory("curios:tcc_slot");
+        ApothicCuriosMod.registerCurioLootCategory("curios:tcc_3rd");
+        initialized = true;
     }
     
     /**

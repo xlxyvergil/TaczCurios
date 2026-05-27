@@ -38,10 +38,9 @@ public class ConfigSyncPacket {
     }
 
     private static void handleOnClient(String configJson) {
-        try {
-            JsonObject config = GSON.fromJson(configJson, JsonObject.class);
-            
-            // 天火圣裁配置
+        JsonObject config = GSON.fromJson(configJson, JsonObject.class);
+
+        // 天火圣裁配置
             if (config.has("heavenFireJudgmentDamageBoost"))
                 TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.set(config.get("heavenFireJudgmentDamageBoost").getAsDouble());
             if (config.has("heavenFireJudgmentHealthCost"))
@@ -78,10 +77,10 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.set(config.get("heavenFireApocalypseExplosionRadius").getAsDouble());
             if (config.has("heavenFireApocalypseExplosionDamage"))
                 TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.set(config.get("heavenFireApocalypseExplosionDamage").getAsDouble());
-            if (config.has("heavenFireApocalypseExplosionEnabled"))
-                TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionEnabled.set(config.get("heavenFireApocalypseExplosionEnabled").getAsDouble());
             if (config.has("heavenFireApocalypseHealthCost"))
                 TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.set(config.get("heavenFireApocalypseHealthCost").getAsDouble());
+            if (config.has("brahmaBeastsHealthCostReduction"))
+                TaczCuriosConfig.COMMON.brahmaBeastsHealthCostReduction.set(config.get("brahmaBeastsHealthCostReduction").getAsDouble());
             if (config.has("heavenFireApocalypseNearbyPlayerDamageBoost"))
                 TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.set(config.get("heavenFireApocalypseNearbyPlayerDamageBoost").getAsDouble());
             if (config.has("heavenFireApocalypseNearbyPlayerDuration"))
@@ -275,6 +274,36 @@ public class ConfigSyncPacket {
             if (config.has("redMovementTagSpeedBoost"))
                 TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.set(config.get("redMovementTagSpeedBoost").getAsDouble());
             
+            // 夏日沙滩配置
+            if (config.has("summerBeachHeavenFireMultiplier"))
+                TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.set(config.get("summerBeachHeavenFireMultiplier").getAsDouble());
+            if (config.has("summerBeachObtainEntity"))
+                TaczCuriosConfig.COMMON.summerBeachObtainEntity.set(config.get("summerBeachObtainEntity").getAsString());
+            if (config.has("summerBeachEvolutionEntity"))
+                TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.set(config.get("summerBeachEvolutionEntity").getAsString());
+            
+            // 梵天百兽配置
+            if (config.has("brahmaBeastsHeavenFireMultiplier"))
+                TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.set(config.get("brahmaBeastsHeavenFireMultiplier").getAsDouble());
+            if (config.has("brahmaBeastsEvolutionEntity"))
+                TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.set(config.get("brahmaBeastsEvolutionEntity").getAsString());
+            
+            // 救世配置
+            if (config.has("salvationHeavenFireMultiplier"))
+                TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.set(config.get("salvationHeavenFireMultiplier").getAsDouble());
+            if (config.has("salvationDamageReduction"))
+                TaczCuriosConfig.COMMON.salvationDamageReduction.set(config.get("salvationDamageReduction").getAsDouble());
+            if (config.has("salvationResistanceLevel"))
+                TaczCuriosConfig.COMMON.salvationResistanceLevel.set(config.get("salvationResistanceLevel").getAsInt());
+            if (config.has("salvationImaginaryResistance"))
+                TaczCuriosConfig.COMMON.salvationImaginaryResistance.set(config.get("salvationImaginaryResistance").getAsDouble());
+            
+            // 无烬终焉配置
+            if (config.has("endlessDamageBoost"))
+                TaczCuriosConfig.COMMON.endlessDamageBoost.set(config.get("endlessDamageBoost").getAsDouble());
+            if (config.has("endlessExplosionDamage"))
+                TaczCuriosConfig.COMMON.endlessExplosionDamage.set(config.get("endlessExplosionDamage").getAsDouble());
+            
             // 弹匣增幅配置
             if (config.has("magazineBoostReloadSpeedBoost"))
                 TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.set(config.get("magazineBoostReloadSpeedBoost").getAsDouble());
@@ -349,11 +378,6 @@ public class ConfigSyncPacket {
                 JsonArray arr = config.getAsJsonArray("curioConflicts");
                 for (JsonElement e : arr) conflicts.add(e.getAsString());
                 TaczCuriosConfig.COMMON.curioConflicts.set(conflicts);
-            }
-            
-            TaczCurios.LOGGER.info("已同步服务端全部配置数据");
-        } catch (Exception e) {
-            TaczCurios.LOGGER.error("配置同步失败", e);
         }
     }
 
@@ -384,8 +408,8 @@ public class ConfigSyncPacket {
         config.addProperty("heavenFireApocalypseDamageBoost", TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get());
         config.addProperty("heavenFireApocalypseExplosionRadius", TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get());
         config.addProperty("heavenFireApocalypseExplosionDamage", TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get());
-        config.addProperty("heavenFireApocalypseExplosionEnabled", TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionEnabled.get());
         config.addProperty("heavenFireApocalypseHealthCost", TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get());
+        config.addProperty("brahmaBeastsHealthCostReduction", TaczCuriosConfig.COMMON.brahmaBeastsHealthCostReduction.get());
         config.addProperty("heavenFireApocalypseNearbyPlayerDamageBoost", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get());
         config.addProperty("heavenFireApocalypseNearbyPlayerDuration", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get());
         config.addProperty("heavenFireApocalypseNearbyPlayerRadius", TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get());
@@ -519,6 +543,25 @@ public class ConfigSyncPacket {
         
         // 红-有-三配置
         config.addProperty("redMovementTagSpeedBoost", TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get());
+        
+        // 夏日沙滩配置
+        config.addProperty("summerBeachHeavenFireMultiplier", TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get());
+        config.addProperty("summerBeachObtainEntity", TaczCuriosConfig.COMMON.summerBeachObtainEntity.get());
+        config.addProperty("summerBeachEvolutionEntity", TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get());
+        
+        // 梵天百兽配置
+        config.addProperty("brahmaBeastsHeavenFireMultiplier", TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get());
+        config.addProperty("brahmaBeastsEvolutionEntity", TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get());
+        
+        // 救世配置
+        config.addProperty("salvationHeavenFireMultiplier", TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get());
+        config.addProperty("salvationDamageReduction", TaczCuriosConfig.COMMON.salvationDamageReduction.get());
+        config.addProperty("salvationResistanceLevel", TaczCuriosConfig.COMMON.salvationResistanceLevel.get());
+        config.addProperty("salvationImaginaryResistance", TaczCuriosConfig.COMMON.salvationImaginaryResistance.get());
+        
+        // 无烬终焉配置
+        config.addProperty("endlessDamageBoost", TaczCuriosConfig.COMMON.endlessDamageBoost.get());
+        config.addProperty("endlessExplosionDamage", TaczCuriosConfig.COMMON.endlessExplosionDamage.get());
         
         // 弹匣增幅配置
         config.addProperty("magazineBoostReloadSpeedBoost", TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get());

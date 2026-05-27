@@ -1,11 +1,14 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccAttributes;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +32,8 @@ public class SummerBeach extends BaseCurioItem {
     
     // NBT 标签键
     private static final String KILL_COUNT_TAG = "WitherKillCount";
-    private static final int MAX_BONUS = 20;
+    private static final int MAX_BONUS = 20;  // 抗性加成封顶
+    private static final int MAX_KILLS = 30;  // 进化所需击杀数
     
     public SummerBeach(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -108,7 +112,7 @@ public class SummerBeach extends BaseCurioItem {
                         if (stack.getItem() instanceof SummerBeach) {
                             CompoundTag tag = stack.getOrCreateTag();
                             int currentCount = tag.getInt(KILL_COUNT_TAG);
-                            if (currentCount < MAX_BONUS) {
+                            if (currentCount < MAX_KILLS) {
                                 tag.putInt(KILL_COUNT_TAG, currentCount + 1);
                             }
                             break;
@@ -154,10 +158,19 @@ public class SummerBeach extends BaseCurioItem {
         // 获取 NBT 标签
         CompoundTag tag = stack.getTag();
         
-        // 添加凋零击杀进度
+        // 获取进化目标实体显示名
+        String entityNamespace = TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get();
+        String entityName = entityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(entityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            entityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
+        
+        // 添加击杀进度
         int killCount = tag != null ? tag.getInt(KILL_COUNT_TAG) : 0;
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.wither_kills", killCount, MAX_BONUS)
+        tooltip.add(Component.translatable("item.tcc.summer_beach.kill_progress", killCount, MAX_KILLS, entityName)
             .withStyle(ChatFormatting.GREEN));
         
         // 检查是否绑定
@@ -173,11 +186,25 @@ public class SummerBeach extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.slot.3rd"));
         
         // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
         
         // 添加获取方式
+        String obtainEntityNamespace = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
+        String obtainEntityName = obtainEntityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(obtainEntityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            obtainEntityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
+        String brahmaBeastsEntityNamespace = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
+        String brahmaBeastsEntityName = brahmaBeastsEntityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(brahmaBeastsEntityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            brahmaBeastsEntityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.how_to_obtain")
+        tooltip.add(Component.translatable("item.tcc.summer_beach.how_to_obtain", obtainEntityName, brahmaBeastsEntityName)
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
     

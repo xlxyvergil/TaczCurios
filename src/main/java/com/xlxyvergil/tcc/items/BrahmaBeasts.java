@@ -1,11 +1,14 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccAttributes;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,7 +32,8 @@ public class BrahmaBeasts extends BaseCurioItem {
     
     // NBT 标签键
     private static final String KILL_COUNT_TAG = "EnderDragonKillCount";
-    private static final int MAX_BONUS = 20;
+    private static final int MAX_BONUS = 20;  // 抗性封顶
+    private static final int MAX_KILLS = 30;  // 计数上限（进化用）
     
     public BrahmaBeasts(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -52,7 +56,7 @@ public class BrahmaBeasts extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        // 基础40点虚数抗性 + 击杀末影龙获得的额外抗性
+        // 基础40点虚数抗性 + 击杀末影龙获得的额外抗性（封顶20）
         int killCount = getEnderDragonKillCount(livingEntity);
         double bonusResistance = Math.min(killCount, MAX_BONUS);
         double totalResistance = 40.0 + bonusResistance;
@@ -108,7 +112,7 @@ public class BrahmaBeasts extends BaseCurioItem {
                         if (stack.getItem() instanceof BrahmaBeasts) {
                             CompoundTag tag = stack.getOrCreateTag();
                             int currentCount = tag.getInt(KILL_COUNT_TAG);
-                            if (currentCount < MAX_BONUS) {
+                            if (currentCount < MAX_KILLS) {
                                 tag.putInt(KILL_COUNT_TAG, currentCount + 1);
                             }
                             break;
@@ -154,10 +158,19 @@ public class BrahmaBeasts extends BaseCurioItem {
         // 获取 NBT 标签
         CompoundTag tag = stack.getTag();
         
-        // 添加末影龙击杀进度
+        // 获取进化目标实体显示名
+        String entityNamespace = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
+        String entityName = entityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(entityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            entityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
+        
+        // 添加击杀进度
         int killCount = tag != null ? tag.getInt(KILL_COUNT_TAG) : 0;
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.brahma_beasts.ender_dragon_kills", killCount, MAX_BONUS)
+        tooltip.add(Component.translatable("item.tcc.brahma_beasts.kill_progress", killCount, MAX_KILLS, entityName)
             .withStyle(ChatFormatting.GREEN));
         
         // 检查是否绑定
@@ -177,7 +190,7 @@ public class BrahmaBeasts extends BaseCurioItem {
         
         // 添加获取方式
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.brahma_beasts.how_to_obtain")
+        tooltip.add(Component.translatable("item.tcc.brahma_beasts.how_to_obtain", entityName)
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
     

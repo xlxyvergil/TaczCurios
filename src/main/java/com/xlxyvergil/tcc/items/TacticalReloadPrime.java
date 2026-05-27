@@ -67,7 +67,7 @@ public class TacticalReloadPrime extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
 
         // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
 
     @Override

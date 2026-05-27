@@ -1,58 +1,89 @@
 package com.xlxyvergil.tcc.effect;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.HeavenFireBleedingSettlementEvent;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-/**
- * 天火流血效果 - 基于最大生命值的百分比伤害
- * 每级造成配置比例的 maxHP 伤害，每2秒触发一次
- */
+import java.util.function.Consumer;
+
 public class HeavenFireBleedingEffect extends MobEffect {
 
+    private static final ResourceLocation ICON = new ResourceLocation("tcc", "textures/mob_effect/heaven_fire_bleeding.png");
+
     public HeavenFireBleedingEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0xFF4500); // 橙红色
+        super(MobEffectCategory.BENEFICIAL, 0xFF4500);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    
+    @Override
+    public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
+        consumer.accept(new IClientMobEffectExtensions() {
+            @Override
+            public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
+                RenderSystem.setShaderTexture(0, ICON);
+                RenderSystem.enableBlend();
+                guiGraphics.blit(ICON, x, y, 0, 0, 18, 18);
+                return true;
+            }
+
+            @Override
+            public boolean renderGuiIcon(MobEffectInstance instance, Gui gui, GuiGraphics guiGraphics, int x, int y, float z, float alpha) {
+                RenderSystem.setShaderTexture(0, ICON);
+                RenderSystem.enableBlend();
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+                guiGraphics.blit(ICON, x, y, 0, 0, 18, 18);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                return true;
+            }
+
+            @Override
+            public boolean isVisibleInInventory(MobEffectInstance instance) {
+                return true;
+            }
+
+            @Override
+            public boolean isVisibleInGui(MobEffectInstance instance) {
+                return true;
+            }
+        });
+    }
+
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        // 获取配置的每级伤害比例（负值，需要取反）
+        if (entity.level().isClientSide) return;
         double damagePerLevel = -TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.get();
-        
-        // 计算实际伤害：maxHP * 伤害比例 * (等级+1)
         float maxHealth = entity.getMaxHealth();
         float damage = (float) (maxHealth * damagePerLevel * (amplifier + 1));
-        
-        // 直接造成伤害，可触发不死图腾且绕过一切防御
         DamageSource imaginarySource = TccDamageSources.imaginaryDamage(entity);
         entity.hurt(imaginarySource, damage);
     }
 
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
-        // 每40 tick（2秒）触发一次扣血
         return duration % 40 == 0;
     }
-    
+
     @SubscribeEvent
     public void onExpired(MobEffectEvent.Expired event) {
         if (event.getEffectInstance().getEffect() != this) {
             return;
         }
-        
         LivingEntity entity = event.getEntity();
         boolean isDead = entity.isDeadOrDying();
-        
-        // 发布结算事件
         HeavenFireBleedingSettlementEvent settlementEvent = new HeavenFireBleedingSettlementEvent(entity, isDead);
         MinecraftForge.EVENT_BUS.post(settlementEvent);
     }

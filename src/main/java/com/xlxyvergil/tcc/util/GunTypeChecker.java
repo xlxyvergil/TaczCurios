@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.util;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.tacz.guns.api.TimelessAPI;
@@ -24,6 +25,25 @@ public class GunTypeChecker {
     public static final Set<String> SHOTGUN_GUN_TYPES = Set.of("shotgun");
     public static final Set<String> PISTOL_GUN_TYPES = Set.of("pistol");
     public static final Set<String> SNIPER_GUN_TYPES = Set.of("sniper");
+    
+    private static final Map<String, String> GUN_TYPE_DISPLAY_NAMES = Map.of(
+        "pistol", "手枪",
+        "rifle", "步枪", 
+        "shotgun", "霰弹枪",
+        "sniper", "狙击枪",
+        "smg", "冲锋枪",
+        "mg", "机枪",
+        "rpg", "发射器"
+    );
+    
+    /**
+     * 将枪械类型列表格式化为可读的显示字符串
+     */
+    public static String formatGunTypes(List<? extends String> gunTypes) {
+        return gunTypes.stream()
+            .map(type -> GUN_TYPE_DISPLAY_NAMES.getOrDefault(type, type))
+            .collect(java.util.stream.Collectors.joining(", "));
+    }
     
     /**
      * 检查生物是否持有指定类型的枪械

@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -37,14 +38,10 @@ import java.util.UUID;
 public class HeavenFireApocalypseEndless extends BaseCurioItem {
     
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
-    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("79f78f03-e9ba-4567-9ba9-75f729f6c3e8");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
-    private static final UUID EXPLOSION_ENABLED_UUID = UUID.fromString("d4e5f6a7-b8c9-0d1e-2a3b-4c5d6e7f8a9b");
     
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse_endless.gun_damage";
-    private static final String EXPLOSION_RADIUS_NAME = "tcc.heaven_fire_apocalypse_endless.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse_endless.explosion_damage";
-    private static final String EXPLOSION_ENABLED_NAME = "tcc.heaven_fire_apocalypse_endless.explosion_enabled";
     
     public HeavenFireApocalypseEndless(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -102,17 +99,20 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         
         tooltip.add(Component.literal(""));
         
-        // 使用与天火劫灭相同的参数格式，但不显示扣血信息
-        double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get() * 100;
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
-        double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get() * 100;
+        // 限定枪械类型
+        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get());
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+        
+        // 使用无烬终焉自身的配置值（damageBoost和explosionDamage），无爆炸范围
+        double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get() * 100;
+        double explosionDamageBoost = TaczCuriosConfig.COMMON.endlessExplosionDamage.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
-        int nearbyPlayerDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get() + 1;
+        int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
         
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.effect", 
                 String.format("%+.0f", damageBoost), 
-                String.format("%+.0f", explosionRadiusBoost), 
+                "0", 
                 String.format("%+.0f", explosionDamageBoost),
                 String.format("%+.0f", nearbyPlayerRadius), 
                 String.format("%+d", nearbyPlayerDamageBoost),
@@ -121,6 +121,11 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
+        
+        // 添加获取方式
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.how_to_obtain")
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
     
     @SubscribeEvent

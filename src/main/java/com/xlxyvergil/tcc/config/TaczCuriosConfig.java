@@ -38,7 +38,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionRadius;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionDamage;
-        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionEnabled;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseHealthCost;
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHealthCostReduction;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerDamageBoost;
@@ -177,9 +176,12 @@ public class TaczCuriosConfig {
         
         // 夏日沙滩配置
         public final ForgeConfigSpec.DoubleValue summerBeachHeavenFireMultiplier;
+        public final ForgeConfigSpec.ConfigValue<String> summerBeachObtainEntity;
+        public final ForgeConfigSpec.ConfigValue<String> summerBeachEvolutionEntity;
         
         // 梵天百兽配置
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
+        public final ForgeConfigSpec.ConfigValue<String> brahmaBeastsEvolutionEntity;
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
@@ -254,8 +256,8 @@ public class TaczCuriosConfig {
                     .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
                     .defineInRange("healthCost", -0.3, -1, 1);
             heavenFireJudgmentDamageConversionRatio = builder
-                    .comment("枪械伤害转换为虚数伤害后保留的比例 (默认: 0.1 = 保留10%，即90%转换为虚数伤害)")
-                    .defineInRange("damageConversionRatio", 0.1, 0, 1);
+                    .comment("伤害降低98%，并转换为虚数伤害")
+                    .defineInRange("damageConversionRatio", 0.05, 0, 1);
             heavenFireJudgmentGunTypes = builder
                     .comment("天火圣裁生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
                     .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
@@ -298,9 +300,6 @@ public class TaczCuriosConfig {
             heavenFireApocalypseExplosionDamage = builder
                     .comment("爆炸伤害加成 (默认: 10.0 = 1000%)")
                     .defineInRange("explosionDamage", 10.0, -1, 100);
-            heavenFireApocalypseExplosionEnabled = builder
-                    .comment("爆炸启用属性 (默认: 2.0)")
-                    .defineInRange("explosionEnabled", 2.0, -1, 100);
             heavenFireApocalypseHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -1.0 = -100%)")
                     .defineInRange("healthCost", -1.0, -1, 1);
@@ -308,11 +307,11 @@ public class TaczCuriosConfig {
                     .comment("装备梵天百兽时天火劫灭扣血比例的减少值 (默认: 0.6 = 从扣100%变为扣40%，即保留60%血量)")
                     .defineInRange("brahmaBeastsHealthCostReduction", 0.6, 0, 1);
             heavenFireApocalypseNearbyPlayerDamageBoost = builder
-                    .comment("附近玩家获得的伤害加成 (默认: 1.0 = 100%)")
+                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
             heavenFireApocalypseNearbyPlayerPotionAmplifier = builder
-                    .comment("附近玩家获得的 bullet_gundamage 药水等级 (TAA药水: 每级+1%伤害, 公式=(等级+1)%, 默认: 99 = 100%)")
-                    .defineInRange("nearbyPlayerPotionAmplifier", 99, 0, 999);
+                    .comment("附近玩家获得的药水效果等级 (0=1级, 默认: 0)")
+                    .defineInRange("nearbyPlayerPotionAmplifier", 0, 0, 999);
             heavenFireApocalypseNearbyPlayerDuration = builder
                     .comment("附近玩家获得伤害加成的持续时间(秒) (默认: 15)")
                     .defineInRange("nearbyPlayerDuration", 15, -1, 300);
@@ -320,8 +319,8 @@ public class TaczCuriosConfig {
                     .comment("影响附近玩家的范围 (默认: 32)")
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
             heavenFireApocalypseDamageConversionRatio = builder
-                    .comment("枪械伤害转换为虚数伤害后保留的比例 (默认: 0.3 = 保留30%，即70%转换为虚数伤害)")
-                    .defineInRange("damageConversionRatio", 0.3, 0, 1);
+                    .comment("伤害降低90%，并转换为虚数伤害")
+                    .defineInRange("damageConversionRatio", 0.1, 0, 1);
             heavenFireApocalypseGunTypes = builder
                     .comment("天火劫灭生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
                     .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
@@ -631,6 +630,12 @@ public class TaczCuriosConfig {
             summerBeachHeavenFireMultiplier = builder
                     .comment("夏日沙滩对天火饰品效果的增强系数 (默认: 2.0)")
                     .defineInRange("heavenFireMultiplier", 2.0, 1, 100);
+            summerBeachObtainEntity = builder
+                    .comment("夏日沙滩饰品获取所需击杀的实体命名空间 (默认: minecraft:wither)")
+                    .define("obtainEntity", "minecraft:wither");
+            summerBeachEvolutionEntity = builder
+                    .comment("夏日沙滩进化所需击杀的实体命名空间 (默认: minecraft:wither)")
+                    .define("evolutionEntity", "minecraft:wither");
             builder.pop();
             
             // 梵天百兽配置
@@ -638,6 +643,9 @@ public class TaczCuriosConfig {
             brahmaBeastsHeavenFireMultiplier = builder
                     .comment("梵天百兽对天火饰品效果的增强系数 (默认: 4.0)")
                     .defineInRange("heavenFireMultiplier", 4.0, 1, 100);
+            brahmaBeastsEvolutionEntity = builder
+                    .comment("梵天百兽进化所需击杀的实体命名空间 (默认: minecraft:ender_dragon)")
+                    .define("evolutionEntity", "minecraft:ender_dragon");
             builder.pop();
             
             // 救世配置
@@ -659,11 +667,11 @@ public class TaczCuriosConfig {
             // 无烬终焉配置
             builder.comment("无烬终焉饰品配置").push("endless");
             endlessDamageBoost = builder
-                    .comment("无烬终焉通用枪械伤害加成 (默认: 0.5 = 50%)")
-                    .defineInRange("damageBoost", 0.5, -1, 100);
+                    .comment("无烬终焉通用枪械伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
+                    .defineInRange("damageBoost", 10.0, -1, 100);
             endlessExplosionDamage = builder
-                    .comment("无烬终焉爆炸伤害加成 (默认: 0.5 = 50%)")
-                    .defineInRange("explosionDamage", 0.5, -1, 100);
+                    .comment("无烬终焉爆炸伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
+                    .defineInRange("explosionDamage", 10.0, -1, 100);
             builder.pop();
             
             // 士兵基础挂牌配置

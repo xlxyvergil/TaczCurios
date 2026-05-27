@@ -92,6 +92,7 @@ public class TaczCreativeTab {
                 
                 // 添加裂隙级饰品
                 output.accept(TaczItems.KIKAKU_ICHIJIN.get());
+                output.accept(TaczItems.HEAVEN_FIRE_APOCALYPSE_ENDLESS.get());
                 
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());

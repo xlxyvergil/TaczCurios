@@ -12,7 +12,10 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -97,6 +100,10 @@ public class HeavenFireJudgment extends BaseCurioItem {
         // 添加空行分隔
         tooltip.add(Component.literal(""));
         
+        // 限定枪械类型
+        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get());
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+        
         // 添加装备效果
         // 根据语言文件中的占位符顺序传递参数：
         // %1$s - damageBoost (通用枪械伤害加成)
@@ -113,12 +120,29 @@ public class HeavenFireJudgment extends BaseCurioItem {
                 String.format("%+.0f", bleedingDamagePerLevel), 
                 String.format("%d", bleedingDuration)));
         
+        // 伤害转换信息
+        double conversionPercent = (1 - TaczCuriosConfig.COMMON.heavenFireJudgmentDamageConversionRatio.get()) * 100;
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.damage_conversion",
+                String.format("%.0f", conversionPercent)));
+        
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
+        
+        // 添加获取方式
+        String entityNamespace = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
+        String entityName = entityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(entityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            entityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.how_to_obtain", entityName)
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
     
     /**

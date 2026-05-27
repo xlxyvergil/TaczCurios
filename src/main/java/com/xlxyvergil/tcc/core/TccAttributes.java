@@ -17,14 +17,14 @@ public class TccAttributes {
      */
     public static final RegistryObject<Attribute> IMAGINARY_DAMAGE = 
         ATTRIBUTES.register("imaginary_damage", 
-            () -> new RangedAttribute("tcc:imaginary_damage", 0.0D, 0.0D, 1000.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage", 0.0D, 0.0D, 1000.0D).setSyncable(true));
     
     /**
      * 虚数伤害抗性 - 按百分比抵消虚数伤害（1-100）
      */
     public static final RegistryObject<Attribute> IMAGINARY_DAMAGE_RESISTANCE = 
         ATTRIBUTES.register("imaginary_damage_resistance", 
-            () -> new RangedAttribute("tcc:imaginary_damage_resistance", 1.0D, 1.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 1.0D, 1.0D, 100.0D).setSyncable(true));
     
     public static void register(IEventBus modEventBus) {
         ATTRIBUTES.register(modEventBus);

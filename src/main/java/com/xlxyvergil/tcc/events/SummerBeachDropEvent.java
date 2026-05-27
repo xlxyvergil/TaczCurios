@@ -3,12 +3,14 @@ package com.xlxyvergil.tcc.events;
 import com.xlxyvergil.tcc.items.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.SummerBeach;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
-import com.xlxyvergil.tcc.items.Salvation;
-import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
 import com.xlxyvergil.tcc.registries.TaczItems;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.tacz.guns.api.event.common.EntityKillByGunEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -37,8 +39,14 @@ public class SummerBeachDropEvent {
             return;
         }
         
-        // 检查是否被凋零击杀
-        if (!(event.getSource().getEntity() instanceof WitherBoss)) {
+        // 检查是否被夏日沙滩进化所需实体击杀
+        Entity killer = event.getSource().getEntity();
+        if (killer == null) {
+            return;
+        }
+        String targetEntityKey = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
+        String killerKey = BuiltInRegistries.ENTITY_TYPE.getKey(killer.getType()).toString();
+        if (!targetEntityKey.equals(killerKey)) {
             return;
         }
         
@@ -81,66 +89,39 @@ public class SummerBeachDropEvent {
     }
     
     /**
-     * 监听实体死亡事件，当装备夏日沙滩的玩家击杀凋零时增加计数
+     * 监听 TACZ 枪械击杀事件，处理夏日沙滩/梵天百兽的击杀计数
      */
     @SubscribeEvent
-    public static void onEntityDeath(LivingDeathEvent event) {
-        // 检查是否是凋零死亡
-        if (!(event.getEntity() instanceof WitherBoss)) {
+    public static void onGunKill(EntityKillByGunEvent event) {
+        LivingEntity attacker = event.getAttacker();
+        if (!(attacker instanceof Player player)) {
             return;
         }
-        
-        // 获取击杀者
-        if (!(event.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player player)) {
-            return;
-        }
-        
-        // 只在服务端执行
         if (player.level().isClientSide) {
             return;
         }
-        
-        // 检查是否装备了夏日沙滩
-        if (SummerBeach.hasSummerBeachEquipped(player)) {
-            // 增加击杀计数
-            SummerBeach.incrementWitherKillCount(player);
-        }
-        
-        // 检查是否装备了梵天百兽
-        if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
-            // 增加击杀计数
-            BrahmaBeasts.incrementEnderDragonKillCount(player);
-        }
-    }
-    
-    /**
-     * 监听末影龙死亡事件，当玩家同时装备天火劫灭和夏日沙滩时，替换为梵天百兽
-     */
-    @SubscribeEvent
-    public static void onEnderDragonDeath(LivingDeathEvent event) {
-        // 检查是否是末影龙死亡
-        if (!(event.getEntity() instanceof EnderDragon)) {
+        Entity killed = event.getKilledEntity();
+        if (killed == null) {
             return;
         }
+        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+        String summerBeachTarget = TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get();
+        String brahmaBeastsTarget = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
         
-        // 获取击杀者
-        if (!(event.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player player)) {
-            return;
+        if (entityKey.equals(summerBeachTarget)) {
+            if (SummerBeach.hasSummerBeachEquipped(player)) {
+                SummerBeach.incrementWitherKillCount(player);
+            }
+            if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
+                BrahmaBeasts.incrementEnderDragonKillCount(player);
+            }
         }
-        
-        // 只在服务端执行
-        if (player.level().isClientSide) {
-            return;
+        if (entityKey.equals(brahmaBeastsTarget)) {
+            if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
+                BrahmaBeasts.incrementEnderDragonKillCount(player);
+            }
+            checkSalvationEvolution(player);
         }
-        
-        // 检查是否装备了梵天百兽
-        if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
-            // 增加击杀计数
-            BrahmaBeasts.incrementEnderDragonKillCount(player);
-        }
-        
-        // 检查是否满足救世+无烬终焉的获取条件
-        checkSalvationEvolution(player);
     }
     
     /**
@@ -208,4 +189,6 @@ public class SummerBeachDropEvent {
             }
         });
     }
+    
+
 }

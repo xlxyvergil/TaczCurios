@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "tcc:heaven_fire_bleeding",
+    "tcc:heaven_fire_apocalypse_buff",
+    "tcc:heaven_fire_apocalypse_delay",
+    "tcc:imaginary_bleeding"
+  ]
+}

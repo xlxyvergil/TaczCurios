@@ -1,11 +1,14 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccAttributes;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -89,8 +92,9 @@ public class Salvation extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
         
-        // 基础效果
-        tooltip.add(Component.translatable("item.tcc.salvation.effect", "+100")
+        // 基础效果（从配置读取）
+        double imaginaryResistance = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationImaginaryResistance.get();
+        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("+%.0f", imaginaryResistance))
             .withStyle(ChatFormatting.AQUA));
         
         // 常驻加成
@@ -106,6 +110,18 @@ public class Salvation extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot.3rd"));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
+        
+        // 添加获取方式
+        String entityNamespace = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
+        String entityName = entityNamespace;
+        try {
+            ResourceLocation rl = new ResourceLocation(entityNamespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            entityName = entityType.getDescription().getString();
+        } catch (Exception ignored) {}
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.salvation.how_to_obtain", entityName)
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
     
     @Override
