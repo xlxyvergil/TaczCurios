@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.integration;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.TaczCurios;
 import daripher.apothiccurios.ApothicCuriosMod;
 import net.minecraftforge.fml.ModList;
 
