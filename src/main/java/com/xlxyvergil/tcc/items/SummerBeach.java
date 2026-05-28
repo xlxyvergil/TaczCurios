@@ -33,7 +33,6 @@ public class SummerBeach extends BaseCurioItem {
     // NBT 标签键
     private static final String KILL_COUNTS_TAG = "KillCounts";
     private static final String CARRIED_RESISTANCE_TAG = "CarriedResistance";
-    private static final int BASE_RESISTANCE = 20;
     public static final int MAX_KILL_RESISTANCE = 20;
     
     public SummerBeach(Properties properties) {
@@ -57,11 +56,11 @@ public class SummerBeach extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        int baseResistance = TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
         int maxKillResistance = TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get();
         int resistanceFromKills = Math.min(getResistanceFromKills(livingEntity), maxKillResistance);
         int carriedResistance = getCarriedResistance(livingEntity);
-        int maxResistance = TaczCuriosConfig.COMMON.summerBeachMaxResistance.get();
-        double totalResistance = Math.min(BASE_RESISTANCE + carriedResistance + resistanceFromKills, maxResistance);
+        double totalResistance = Math.min(baseResistance + carriedResistance + resistanceFromKills, baseResistance + maxKillResistance);
         
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             totalResistance, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_summer_beach_resistance", AttributeModifier.Operation.ADDITION);
@@ -247,9 +246,8 @@ public class SummerBeach extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         
         // 装备效果
-        int maxResistance = TaczCuriosConfig.COMMON.summerBeachMaxResistance.get();
-        
         // 显示当前抗性构成
+        int baseResistance = TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
         if (tag != null) {
             int carried = tag.getInt(CARRIED_RESISTANCE_TAG);
             int fromKills = 0;
@@ -262,16 +260,12 @@ public class SummerBeach extends BaseCurioItem {
                 fromKills += kills * perKill;
             }
             fromKills = Math.min(fromKills, maxKillResistance);
-            int total = BASE_RESISTANCE + carried + fromKills;
+            int total = baseResistance + carried + fromKills;
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.summer_beach.effect", "+" + total)
+            tooltip.add(Component.translatable("item.tcc.summer_beach.effect", String.valueOf(total))
                 .withStyle(ChatFormatting.AQUA));
-            if (carried > 0) {
-                tooltip.add(Component.translatable("item.tcc.summer_beach.carried_resistance", carried));
-            }
-            tooltip.add(Component.translatable("item.tcc.summer_beach.kill_resistance", fromKills, maxKillResistance));
         } else {
-            tooltip.add(Component.translatable("item.tcc.summer_beach.effect", "+" + BASE_RESISTANCE + "~" + maxResistance)
+            tooltip.add(Component.translatable("item.tcc.summer_beach.effect", baseResistance + "~" + (baseResistance + TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get()))
                 .withStyle(ChatFormatting.AQUA));
         }
         
@@ -309,7 +303,7 @@ public class SummerBeach extends BaseCurioItem {
                 int resistancePerKill = Integer.parseInt(entry.get(1));
                 int kills = killCounts != null ? killCounts.getInt(entityKey) : 0;
                 String entityDisplay = getEntityDisplayName(entityKey);
-                tooltip.add(Component.translatable("item.tcc.summer_beach.resist_detail", entityDisplay, kills, resistancePerKill, kills * resistancePerKill)
+                tooltip.add(Component.translatable("item.tcc.summer_beach.resist_detail", entityDisplay, kills * resistancePerKill)
                     .withStyle(ChatFormatting.GRAY));
             }
         }

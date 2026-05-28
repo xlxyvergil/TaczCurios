@@ -30,10 +30,8 @@
   "item.tcc.summer_beach.kill_progress": "Kill %3$s: %1$d/%2$d (+%1$d imaginary resistance)",
   "item.tcc.summer_beach.bound": "Bound to: %1$s",
   "item.tcc.summer_beach.how_to_obtain": "§7§oObtained when killed by %1$s while wearing Heaven Fire Judgment (Bound); Evolves to Brahma Beasts when killing %2$s while wearing Heaven Fire Apocalypse",
-  "item.tcc.summer_beach.carried_resistance": "  §7Carried resistance: +%1$d",
   "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.summer_beach.kill_resistance": "  §7Kill resistance: +%1$d/%2$d",
-  "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d kills × %3$d = +%4$d",
+  "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d",
   
   "item.tcc.brahma_beasts": "§5Brahma Beasts",
   "item.tcc.brahma_beasts.effect": "%1$s imaginary damage resistance",
@@ -41,10 +39,8 @@
   "item.tcc.brahma_beasts.kill_progress": "Kill %3$s: %1$d/%2$d (+%1$d imaginary resistance)",
   "item.tcc.brahma_beasts.bound": "Bound to: %1$s",
   "item.tcc.brahma_beasts.how_to_obtain": "§7§oObtained by killing %1$s while wearing both Heaven Fire Apocalypse and Summer Beach; With Heaven Fire Apocalypse equipped, imaginary resistance >80 and 30 %1$s kills evolves to Salvation",
-  "item.tcc.brahma_beasts.carried_resistance": "  §7Carried resistance: +%1$d",
   "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.brahma_beasts.kill_resistance": "  §7Kill resistance: +%1$d/%2$d",
-  "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d kills × %3$d = +%4$d",
+  "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d",
   
   "item.tcc.salvation": "§4Salvation",
   "item.tcc.salvation.effect": "%1$s imaginary damage resistance",

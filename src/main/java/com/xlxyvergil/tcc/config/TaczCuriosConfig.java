@@ -179,21 +179,20 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.ConfigValue<String> summerBeachObtainEntity;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachEvolutionRequirements;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachResistanceEntities;
-        public final ForgeConfigSpec.IntValue summerBeachMaxResistance;
+        public final ForgeConfigSpec.IntValue summerBeachBaseResistance;
         public final ForgeConfigSpec.IntValue summerBeachMaxKillResistance;
         
         // 梵天百兽配置
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsEvolutionRequirements;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsResistanceEntities;
-        public final ForgeConfigSpec.IntValue brahmaBeastsMaxResistance;
+        public final ForgeConfigSpec.IntValue brahmaBeastsBaseResistance;
         public final ForgeConfigSpec.IntValue brahmaBeastsMaxKillResistance;
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
         public final ForgeConfigSpec.IntValue salvationResistanceLevel;
-        public final ForgeConfigSpec.DoubleValue salvationImaginaryResistance;
         
         // 无烬终焉配置
         public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
@@ -652,14 +651,13 @@ public class TaczCuriosConfig {
                     ));
             summerBeachResistanceEntities = builder
                     .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
-                            "默认: [[minecraft:wither, 1], [minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                            "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
-                            java.util.List.of("minecraft:wither", "1"),
-                            java.util.List.of("minecraft:ender_dragon", "1")
+                            java.util.List.of("minecraft:wither", "1")
                     ));
-            summerBeachMaxResistance = builder
-                    .comment("夏日沙滩虚数抗性总上限 (默认: 40，基础20 + 击杀加成最多20)")
-                    .defineInRange("maxResistance", 40, 20, 1000);
+            summerBeachBaseResistance = builder
+                    .comment("夏日沙滩虚数抗性基础值 (默认: 20)")
+                    .defineInRange("baseResistance", 20, 0, 1000);
             summerBeachMaxKillResistance = builder
                     .comment("夏日沙滩虚数抗性来自击杀的上限 (默认: 20)")
                     .defineInRange("maxKillResistance", 20, 0, 1000);
@@ -672,21 +670,19 @@ public class TaczCuriosConfig {
                     .defineInRange("heavenFireMultiplier", 4.0, 1, 100);
             brahmaBeastsEvolutionRequirements = builder
                     .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
-                            "默认: [[minecraft:wither, 20], [minecraft:ender_dragon, 30]]")
+                            "默认: [[minecraft:ender_dragon, 30]]")
                     .define("evolutionRequirements", java.util.List.of(
-                            java.util.List.of("minecraft:wither", "20"),
                             java.util.List.of("minecraft:ender_dragon", "30")
                     ));
             brahmaBeastsResistanceEntities = builder
                     .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
-                            "默认: [[minecraft:wither, 1], [minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                            "默认: [[minecraft:ender_dragon, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
-                            java.util.List.of("minecraft:wither", "1"),
                             java.util.List.of("minecraft:ender_dragon", "1")
                     ));
-            brahmaBeastsMaxResistance = builder
-                    .comment("梵天百兽虚数抗性总上限 (默认: 60，基础20 + 继承抗性0~20 + 击杀加成0~20)")
-                    .defineInRange("maxResistance", 60, 40, 1000);
+            brahmaBeastsBaseResistance = builder
+                    .comment("梵天百兽虚数抗性基础值 (默认: 20)")
+                    .defineInRange("baseResistance", 20, 0, 1000);
             brahmaBeastsMaxKillResistance = builder
                     .comment("梵天百兽虚数抗性来自击杀的上限 (默认: 20)")
                     .defineInRange("maxKillResistance", 20, 0, 1000);
@@ -703,9 +699,6 @@ public class TaczCuriosConfig {
             salvationResistanceLevel = builder
                     .comment("救世抗性提升等级 (默认: 2 = 抗性III)")
                     .defineInRange("resistanceLevel", 2, 0, 10);
-            salvationImaginaryResistance = builder
-                    .comment("救世虚数抗性 (默认: 100.0)")
-                    .defineInRange("imaginaryResistance", 100.0, 0, 1000);
             builder.pop();
             
             // 无烬终焉配置

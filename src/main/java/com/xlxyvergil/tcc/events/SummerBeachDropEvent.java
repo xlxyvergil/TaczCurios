@@ -6,9 +6,13 @@ import com.xlxyvergil.tcc.items.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.tacz.guns.api.event.common.EntityKillByGunEvent;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +29,9 @@ import java.util.List;
 public class SummerBeachDropEvent {
     
     private static final String SUMMER_BEACH_OBTAINED_TAG = "SummerBeachObtained";
+
+    // TACZ 子弹伤害 Tag，用于精确判断枪械击杀
+    private static final TagKey<DamageType> TACZ_BULLETS_TAG = TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullets"));
     
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
@@ -64,22 +71,30 @@ public class SummerBeachDropEvent {
         });
     }
     
+    /**
+     * 统一通过 LivingDeathEvent + tacz:bullets 伤害 Tag + 生效枪械类型处理所有 TACZ 枪械击杀。
+     * 覆盖正常实体、末影龙、mod boss 等所有场景。
+     */
     @SubscribeEvent
-    public static void onGunKill(EntityKillByGunEvent event) {
-        LivingEntity attacker = event.getAttacker();
-        if (!(attacker instanceof Player player)) return;
-        if (player.level().isClientSide) return;
-        
-        Entity killed = event.getKilledEntity();
-        if (killed == null) return;
-        
+    public static void onGunLivingDeath(LivingDeathEvent event) {
+        LivingEntity killed = event.getEntity();
+        if (killed.level().isClientSide) return;
+
+        // 必须为 TACZ 枪械伤害
+        if (!event.getSource().is(TACZ_BULLETS_TAG)) return;
+
+        Entity source = event.getSource().getEntity();
+        if (!(source instanceof Player player)) return;
+
+        // 根据当前装备的天火武器获取对应枪械类型配置
+        List<? extends String> gunTypes = getEquippedHeavenFireGunTypes(player);
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(player, gunTypes)) return;
+
         String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-        
-        // 夏日沙滩：分别处理进化计数和抗性计数
+
+        // 夏日沙滩：进化 + 抵抗计数
         if (SummerBeach.hasSummerBeachEquipped(player)) {
             boolean countedForEvolution = false;
-            
-            // 进化列表中的实体：按需求上限计数
             List<? extends List<String>> summerEvoReqs = TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get();
             for (List<String> req : summerEvoReqs) {
                 if (entityKey.equals(req.get(0))) {
@@ -88,14 +103,11 @@ public class SummerBeachDropEvent {
                     break;
                 }
             }
-            
-            // 抵抗列表中的实体：仅在总击杀抗性未达上限时计数
             if (!countedForEvolution) {
                 List<? extends List<String>> summerResistList = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
                 for (List<String> entry : summerResistList) {
                     if (entityKey.equals(entry.get(0))) {
-                        int currentResistance = SummerBeach.getResistanceFromKills(player);
-                        if (currentResistance < TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get()) {
+                        if (SummerBeach.getResistanceFromKills(player) < TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get()) {
                             SummerBeach.incrementEntityKillCount(player, entityKey, Integer.MAX_VALUE);
                         }
                         break;
@@ -103,11 +115,10 @@ public class SummerBeachDropEvent {
                 }
             }
         }
-        
-        // 梵天百兽：分别处理进化计数和抗性计数
+
+        // 梵天百兽：进化 + 抵抗计数
         if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
             boolean countedForEvolution = false;
-            
             List<? extends List<String>> brahmaEvoReqs = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements.get();
             for (List<String> req : brahmaEvoReqs) {
                 if (entityKey.equals(req.get(0))) {
@@ -116,13 +127,11 @@ public class SummerBeachDropEvent {
                     break;
                 }
             }
-            
             if (!countedForEvolution) {
                 List<? extends List<String>> brahmaResistList = TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get();
                 for (List<String> entry : brahmaResistList) {
                     if (entityKey.equals(entry.get(0))) {
-                        int currentResistance = BrahmaBeasts.getResistanceFromKills(player);
-                        if (currentResistance < TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get()) {
+                        if (BrahmaBeasts.getResistanceFromKills(player) < TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get()) {
                             BrahmaBeasts.incrementEntityKillCount(player, entityKey, Integer.MAX_VALUE);
                         }
                         break;
@@ -130,12 +139,12 @@ public class SummerBeachDropEvent {
                 }
             }
         }
-        
+
         // 检查进化
         checkSummerBeachEvolution(player);
         checkSalvationEvolution(player);
     }
-    
+
     /**
      * 夏日沙滩 → 梵天百兽
      * 条件：同时装备天火劫灭 + 夏日沙滩，且夏日沙滩的所有进化需求均已满足
@@ -152,15 +161,12 @@ public class SummerBeachDropEvent {
             for (int i = 0; i < stackHandler.getSlots(); i++) {
                 ItemStack oldStack = stackHandler.getStackInSlot(i);
                 if (oldStack.getItem() instanceof SummerBeach oldBeach) {
-                    // 计算夏日沙滩的击杀抗性（caps at 20），作为继承抗性传给梵天百兽
                     int carriedResistance = Math.min(SummerBeach.getResistanceFromKills(player), TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get());
                     
-                    // 创建梵天百兽，设置继承抗性并复制绑定信息
                     ItemStack newStack = new ItemStack(TaczItems.BRAHMA_BEASTS.get());
                     CompoundTag newTag = newStack.getOrCreateTag();
                     newTag.putInt("CarriedResistance", carriedResistance);
                     
-                    // 复制绑定信息
                     CompoundTag oldTag = oldStack.getTag();
                     if (oldTag != null) {
                         if (oldTag.getBoolean("IsBound")) {
@@ -170,7 +176,6 @@ public class SummerBeachDropEvent {
                         }
                     }
                     
-                    // 手动生命周期：卸旧→替换→装新
                     boolean hasRenderer = stacksHandler3rd.getRenders().size() > i && stacksHandler3rd.getRenders().get(i);
                     top.theillusivec4.curios.api.SlotContext slotContext = new top.theillusivec4.curios.api.SlotContext("tcc_3rd", player, i, false, hasRenderer);
                     oldBeach.onUnequip(slotContext, ItemStack.EMPTY, oldStack);
@@ -196,7 +201,6 @@ public class SummerBeachDropEvent {
         if (!BrahmaBeasts.areAllRequirementsMet(player)) return;
         
         CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
-            // 梵天百兽 → 救世
             var stacksHandler3rd = handler.getCurios().get("tcc_3rd");
             if (stacksHandler3rd != null) {
                 top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler stackHandler3rd = stacksHandler3rd.getStacks();
@@ -204,10 +208,25 @@ public class SummerBeachDropEvent {
                     ItemStack oldStack = stackHandler3rd.getStackInSlot(i);
                     if (oldStack.getItem() instanceof BrahmaBeasts oldBb) {
                         ItemStack newStack = new ItemStack(TaczItems.SALVATION.get());
-                        CompoundTag inheritedTag = oldStack.getTag();
-                        if (inheritedTag != null) {
-                            newStack.setTag(inheritedTag.copy());
+                        
+                        int bbBase = TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.get();
+                        int carriedFromSummer = BrahmaBeasts.getCarriedResistance(player);
+                        int fromKills = Math.min(BrahmaBeasts.getResistanceFromKills(player), 
+                            TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
+                        int brahmaTotal = Math.min(bbBase + carriedFromSummer + fromKills, 
+                            bbBase + TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
+                        
+                        CompoundTag newTag = newStack.getOrCreateTag();
+                        newTag.putInt("CarriedResistance", brahmaTotal);
+                        CompoundTag oldTag = oldStack.getTag();
+                        if (oldTag != null) {
+                            if (oldTag.getBoolean("IsBound")) {
+                                newTag.putBoolean("IsBound", true);
+                                newTag.putString("BoundPlayer", oldTag.getString("BoundPlayer"));
+                                newTag.putString("BoundPlayerName", oldTag.getString("BoundPlayerName"));
+                            }
                         }
+                        
                         boolean hasRenderer = stacksHandler3rd.getRenders().size() > i && stacksHandler3rd.getRenders().get(i);
                         top.theillusivec4.curios.api.SlotContext slotContext = new top.theillusivec4.curios.api.SlotContext("tcc_3rd", player, i, false, hasRenderer);
                         oldBb.onUnequip(slotContext, ItemStack.EMPTY, oldStack);
@@ -220,7 +239,6 @@ public class SummerBeachDropEvent {
                 }
             }
             
-            // 天火劫灭 → 无烬终焉
             var stacksHandlerSlot = handler.getCurios().get("tcc_slot");
             if (stacksHandlerSlot != null) {
                 top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler stackHandlerSlot = stacksHandlerSlot.getStacks();
@@ -245,5 +263,16 @@ public class SummerBeachDropEvent {
                 }
             }
         });
+    }
+
+    /**
+     * 获取玩家当前装备的天火武器（圣裁或劫灭）配置的枪械类型列表，均未装备返回 null
+     */
+    private static List<? extends String> getEquippedHeavenFireGunTypes(Player player) {
+        if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(player))
+            return TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get();
+        if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(player))
+            return TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get();
+        return List.of();
     }
 }

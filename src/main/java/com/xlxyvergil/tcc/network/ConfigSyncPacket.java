@@ -290,10 +290,10 @@ public class ConfigSyncPacket {
                 net.minecraftforge.common.ForgeConfigSpec.ConfigValue rawSb = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements;
                 rawSb.set(list);
             }
-            if (config.has("summerBeachMaxResistance"))
-                TaczCuriosConfig.COMMON.summerBeachMaxResistance.set(config.get("summerBeachMaxResistance").getAsInt());
             if (config.has("summerBeachMaxKillResistance"))
                 TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.set(config.get("summerBeachMaxKillResistance").getAsInt());
+            if (config.has("summerBeachBaseResistance"))
+                TaczCuriosConfig.COMMON.summerBeachBaseResistance.set(config.get("summerBeachBaseResistance").getAsInt());
             if (config.has("summerBeachResistanceEntities")) {
                 java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
                 JsonArray outerArr = config.getAsJsonArray("summerBeachResistanceEntities");
@@ -320,10 +320,10 @@ public class ConfigSyncPacket {
                 net.minecraftforge.common.ForgeConfigSpec.ConfigValue rawBb = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements;
                 rawBb.set(list);
             }
-            if (config.has("brahmaBeastsMaxResistance"))
-                TaczCuriosConfig.COMMON.brahmaBeastsMaxResistance.set(config.get("brahmaBeastsMaxResistance").getAsInt());
             if (config.has("brahmaBeastsMaxKillResistance"))
                 TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.set(config.get("brahmaBeastsMaxKillResistance").getAsInt());
+            if (config.has("brahmaBeastsBaseResistance"))
+                TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.set(config.get("brahmaBeastsBaseResistance").getAsInt());
             if (config.has("brahmaBeastsResistanceEntities")) {
                 java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
                 JsonArray outerArr = config.getAsJsonArray("brahmaBeastsResistanceEntities");
@@ -343,8 +343,6 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.salvationDamageReduction.set(config.get("salvationDamageReduction").getAsDouble());
             if (config.has("salvationResistanceLevel"))
                 TaczCuriosConfig.COMMON.salvationResistanceLevel.set(config.get("salvationResistanceLevel").getAsInt());
-            if (config.has("salvationImaginaryResistance"))
-                TaczCuriosConfig.COMMON.salvationImaginaryResistance.set(config.get("salvationImaginaryResistance").getAsDouble());
             
             // 无烬终焉配置
             if (config.has("endlessDamageBoost"))
@@ -617,8 +615,8 @@ public class ConfigSyncPacket {
             }
             config.add("summerBeachEvolutionRequirements", outerArr);
         }
-        config.addProperty("summerBeachMaxResistance", TaczCuriosConfig.COMMON.summerBeachMaxResistance.get());
         config.addProperty("summerBeachMaxKillResistance", TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get());
+        config.addProperty("summerBeachBaseResistance", TaczCuriosConfig.COMMON.summerBeachBaseResistance.get());
         {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get()) {
@@ -642,8 +640,8 @@ public class ConfigSyncPacket {
             }
             config.add("brahmaBeastsEvolutionRequirements", outerArr);
         }
-        config.addProperty("brahmaBeastsMaxResistance", TaczCuriosConfig.COMMON.brahmaBeastsMaxResistance.get());
         config.addProperty("brahmaBeastsMaxKillResistance", TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
+        config.addProperty("brahmaBeastsBaseResistance", TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.get());
         {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get()) {
@@ -659,7 +657,6 @@ public class ConfigSyncPacket {
         config.addProperty("salvationHeavenFireMultiplier", TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get());
         config.addProperty("salvationDamageReduction", TaczCuriosConfig.COMMON.salvationDamageReduction.get());
         config.addProperty("salvationResistanceLevel", TaczCuriosConfig.COMMON.salvationResistanceLevel.get());
-        config.addProperty("salvationImaginaryResistance", TaczCuriosConfig.COMMON.salvationImaginaryResistance.get());
         
         // 无烬终焉配置
         config.addProperty("endlessDamageBoost", TaczCuriosConfig.COMMON.endlessDamageBoost.get());

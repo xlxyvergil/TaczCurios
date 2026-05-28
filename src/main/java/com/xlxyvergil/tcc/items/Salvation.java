@@ -37,6 +37,8 @@ public class Salvation extends BaseCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789012");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("f6a7b8c9-d0e1-2345-f012-456789012345");
     
+    private static final String CARRIED_RESISTANCE_TAG = "CarriedResistance";
+    
     public Salvation(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
     }
@@ -58,8 +60,8 @@ public class Salvation extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        // 虚数抗性（可配置）
-        double imaginaryResistance = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationImaginaryResistance.get();
+        // 虚数抗性：从梵天百兽继承（读取CarriedResistance NBT）
+        double imaginaryResistance = getSalvationResistance(livingEntity);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
         
@@ -88,13 +90,36 @@ public class Salvation extends BaseCurioItem {
         livingEntity.removeEffect(net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE);
     }
     
+    /**
+     * 读取救世装备上的继承抗性值
+     */
+    private static double getSalvationResistance(LivingEntity entity) {
+        if (!(entity instanceof Player player)) return 0;
+        return CuriosApi.getCuriosInventory(player)
+            .map(handler -> {
+                var stacksHandler = handler.getCurios().get("tcc_3rd");
+                if (stacksHandler != null) {
+                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                        if (stack.getItem() instanceof Salvation) {
+                            CompoundTag tag = stack.getTag();
+                            return tag != null ? tag.getInt(CARRIED_RESISTANCE_TAG) : 0;
+                        }
+                    }
+                }
+                return 0;
+            })
+            .orElse(0);
+    }
+    
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
         
-        // 基础效果（从配置读取）
-        double imaginaryResistance = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationImaginaryResistance.get();
-        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("+%.0f", imaginaryResistance))
+        // 继承抗性（从NBT读取）
+        CompoundTag tag = stack.getTag();
+        double imaginaryResistance = tag != null ? tag.getInt(CARRIED_RESISTANCE_TAG) : 0;
+        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", imaginaryResistance))
             .withStyle(ChatFormatting.AQUA));
         
         // 常驻加成
