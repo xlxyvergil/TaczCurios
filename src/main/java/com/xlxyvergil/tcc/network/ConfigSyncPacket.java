@@ -281,6 +281,8 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.summerBeachObtainEntity.set(config.get("summerBeachObtainEntity").getAsString());
             if (config.has("summerBeachEvolutionEntity"))
                 TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.set(config.get("summerBeachEvolutionEntity").getAsString());
+            if (config.has("summerBeachEvolutionToBrahmaEntity"))
+                TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.set(config.get("summerBeachEvolutionToBrahmaEntity").getAsString());
             
             // 梵天百兽配置
             if (config.has("brahmaBeastsHeavenFireMultiplier"))
@@ -303,7 +305,19 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.endlessDamageBoost.set(config.get("endlessDamageBoost").getAsDouble());
             if (config.has("endlessExplosionDamage"))
                 TaczCuriosConfig.COMMON.endlessExplosionDamage.set(config.get("endlessExplosionDamage").getAsDouble());
-            
+            if (config.has("endlessNearbyPlayerDamageBoost"))
+                TaczCuriosConfig.COMMON.endlessNearbyPlayerDamageBoost.set(config.get("endlessNearbyPlayerDamageBoost").getAsDouble());
+            if (config.has("endlessNearbyPlayerDuration"))
+                TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.set(config.get("endlessNearbyPlayerDuration").getAsInt());
+            if (config.has("endlessNearbyPlayerRadius"))
+                TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.set(config.get("endlessNearbyPlayerRadius").getAsDouble());
+            if (config.has("endlessGunTypes")) {
+                java.util.List<String> list = new java.util.ArrayList<>();
+                JsonArray arr = config.getAsJsonArray("endlessGunTypes");
+                for (JsonElement e : arr) list.add(e.getAsString());
+                TaczCuriosConfig.COMMON.endlessGunTypes.set(list);
+            }
+
             // 弹匣增幅配置
             if (config.has("magazineBoostReloadSpeedBoost"))
                 TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.set(config.get("magazineBoostReloadSpeedBoost").getAsDouble());
@@ -548,6 +562,7 @@ public class ConfigSyncPacket {
         config.addProperty("summerBeachHeavenFireMultiplier", TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get());
         config.addProperty("summerBeachObtainEntity", TaczCuriosConfig.COMMON.summerBeachObtainEntity.get());
         config.addProperty("summerBeachEvolutionEntity", TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get());
+        config.addProperty("summerBeachEvolutionToBrahmaEntity", TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.get());
         
         // 梵天百兽配置
         config.addProperty("brahmaBeastsHeavenFireMultiplier", TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get());
@@ -562,6 +577,14 @@ public class ConfigSyncPacket {
         // 无烬终焉配置
         config.addProperty("endlessDamageBoost", TaczCuriosConfig.COMMON.endlessDamageBoost.get());
         config.addProperty("endlessExplosionDamage", TaczCuriosConfig.COMMON.endlessExplosionDamage.get());
+        config.addProperty("endlessNearbyPlayerDamageBoost", TaczCuriosConfig.COMMON.endlessNearbyPlayerDamageBoost.get());
+        config.addProperty("endlessNearbyPlayerDuration", TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get());
+        config.addProperty("endlessNearbyPlayerRadius", TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get());
+        {
+            JsonArray arr = new JsonArray();
+            for (String s : TaczCuriosConfig.COMMON.endlessGunTypes.get()) arr.add(s);
+            config.add("endlessGunTypes", arr);
+        }
         
         // 弹匣增幅配置
         config.addProperty("magazineBoostReloadSpeedBoost", TaczCuriosConfig.COMMON.magazineBoostReloadSpeedBoost.get());
