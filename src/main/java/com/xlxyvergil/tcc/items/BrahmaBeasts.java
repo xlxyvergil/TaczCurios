@@ -33,7 +33,6 @@ public class BrahmaBeasts extends BaseCurioItem {
     // NBT 标签键
     private static final String KILL_COUNT_TAG = "EnderDragonKillCount";
     private static final int MAX_BONUS = 20;  // 抗性封顶
-    private static final int MAX_KILLS = 30;  // 计数上限（进化用）
     
     public BrahmaBeasts(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -112,7 +111,8 @@ public class BrahmaBeasts extends BaseCurioItem {
                         if (stack.getItem() instanceof BrahmaBeasts) {
                             CompoundTag tag = stack.getOrCreateTag();
                             int currentCount = tag.getInt(KILL_COUNT_TAG);
-                            if (currentCount < MAX_KILLS) {
+                            int maxKills = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionKills.get();
+                            if (currentCount < maxKills) {
                                 tag.putInt(KILL_COUNT_TAG, currentCount + 1);
                             }
                             break;
@@ -169,8 +169,9 @@ public class BrahmaBeasts extends BaseCurioItem {
         
         // 添加击杀进度
         int killCount = tag != null ? tag.getInt(KILL_COUNT_TAG) : 0;
+        int maxKills = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionKills.get();
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.brahma_beasts.kill_progress", killCount, MAX_KILLS, entityName)
+        tooltip.add(Component.translatable("item.tcc.brahma_beasts.kill_progress", killCount, maxKills, entityName)
             .withStyle(ChatFormatting.GREEN));
         
         // 检查是否绑定

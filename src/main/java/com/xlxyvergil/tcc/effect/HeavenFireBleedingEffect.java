@@ -36,7 +36,7 @@ public class HeavenFireBleedingEffect extends MobEffect {
             public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
                 RenderSystem.setShaderTexture(0, ICON);
                 RenderSystem.enableBlend();
-                guiGraphics.blit(ICON, x, y, 0, 0, 18, 18);
+                guiGraphics.blit(ICON, x + 1, y + 1, 0, 0, 16, 16);
                 return true;
             }
 
@@ -45,7 +45,7 @@ public class HeavenFireBleedingEffect extends MobEffect {
                 RenderSystem.setShaderTexture(0, ICON);
                 RenderSystem.enableBlend();
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-                guiGraphics.blit(ICON, x, y, 0, 0, 18, 18);
+                guiGraphics.blit(ICON, x + 1, y + 1, 0, 0, 16, 16);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 return true;
             }

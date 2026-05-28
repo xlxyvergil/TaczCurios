@@ -63,7 +63,7 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.endlessGunTypes.get())) return;
         
         // 使用可配置的数值
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get();
@@ -100,15 +100,15 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 限定枪械类型
-        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get());
+        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.endlessGunTypes.get());
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
         
         // 使用无烬终焉自身的配置值（damageBoost和explosionDamage），无爆炸范围
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get() * 100;
         double explosionDamageBoost = TaczCuriosConfig.COMMON.endlessExplosionDamage.get() * 100;
-        double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
-        int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100);
-        int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
+        double nearbyPlayerRadius = TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get();
+        int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.endlessNearbyPlayerDamageBoost.get() * 100);
+        int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();
         
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.effect", 
                 String.format("%+.0f", damageBoost), 
@@ -139,7 +139,7 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
             return;
         }
 
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.endlessGunTypes.get())) return;
 
         // 100%转换为虚数伤害
         event.setDamageSource(com.tacz.guns.api.event.common.GunDamageSourcePart.NON_ARMOR_PIERCING,
@@ -161,12 +161,12 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
             return;
         }
 
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.endlessGunTypes.get())) return;
 
         // 无烬终焉：不扣血，直接施加BUFF给周围玩家
-        double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
+        double nearbyPlayerRadius = TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get();
         List<Player> nearbyPlayers = attacker.level().getEntitiesOfClass(Player.class, attacker.getBoundingBox().inflate(nearbyPlayerRadius));
-        int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
+        int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();
 
         for (Player nearbyPlayer : nearbyPlayers) {
             nearbyPlayer.addEffect(new MobEffectInstance(

@@ -106,6 +106,7 @@ public class SummerBeachDropEvent {
         }
         String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
         String summerBeachTarget = TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get();
+        String summerBeachToBrahmaTarget = TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.get();
         String brahmaBeastsTarget = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
         
         if (entityKey.equals(summerBeachTarget)) {
@@ -122,6 +123,45 @@ public class SummerBeachDropEvent {
             }
             checkSalvationEvolution(player);
         }
+        if (entityKey.equals(summerBeachToBrahmaTarget)) {
+            checkSummerBeachEvolution(player);
+        }
+    }
+    
+    /**
+     * 检查并执行夏日沙滩 → 梵天百兽的进化
+     * 条件：同时装备天火劫灭 + 夏日沙滩，击杀 summerBeachEvolutionToBrahmaEntity
+     */
+    private static void checkSummerBeachEvolution(net.minecraft.world.entity.player.Player player) {
+        // 1. 检查是否装备天火劫灭
+        if (!com.xlxyvergil.tcc.items.HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(player)) {
+            return;
+        }
+        
+        // 2. 检查是否装备夏日沙滩
+        if (!SummerBeach.hasSummerBeachEquipped(player)) {
+            return;
+        }
+        
+        // 满足条件，执行进化
+        CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+            var stacksHandler3rd = handler.getCurios().get("tcc_3rd");
+            if (stacksHandler3rd != null) {
+                for (int i = 0; i < stacksHandler3rd.getSlots(); i++) {
+                    ItemStack stack = stacksHandler3rd.getStacks().getStackInSlot(i);
+                    if (stack.getItem() instanceof SummerBeach) {
+                        // 创建梵天百兽并继承NBT
+                        ItemStack brahmaStack = new ItemStack(TaczItems.BRAHMA_BEASTS.get());
+                        CompoundTag inheritedTag = stack.getTag();
+                        if (inheritedTag != null) {
+                            brahmaStack.setTag(inheritedTag.copy());
+                        }
+                        stacksHandler3rd.getStacks().setStackInSlot(i, brahmaStack);
+                        break;
+                    }
+                }
+            }
+        });
     }
     
     /**

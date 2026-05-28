@@ -23,7 +23,7 @@ public class TccAttributeEvents {
 
         DamageSource source = event.getSource();
 
-        if (source.getMsgId() != null && source.getMsgId().equals("imaginary_damage")) {
+        if (source.getMsgId() != null && source.getMsgId().equals("tcc:imaginary_damage")) {
             double resistance = target.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             
             // 限制抗性值范围：最低1，最高100

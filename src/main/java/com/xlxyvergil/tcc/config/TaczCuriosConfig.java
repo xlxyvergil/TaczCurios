@@ -178,10 +178,13 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue summerBeachHeavenFireMultiplier;
         public final ForgeConfigSpec.ConfigValue<String> summerBeachObtainEntity;
         public final ForgeConfigSpec.ConfigValue<String> summerBeachEvolutionEntity;
+        public final ForgeConfigSpec.IntValue summerBeachEvolutionKills;
+        public final ForgeConfigSpec.ConfigValue<String> summerBeachEvolutionToBrahmaEntity;
         
         // 梵天百兽配置
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
         public final ForgeConfigSpec.ConfigValue<String> brahmaBeastsEvolutionEntity;
+        public final ForgeConfigSpec.IntValue brahmaBeastsEvolutionKills;
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
@@ -192,7 +195,11 @@ public class TaczCuriosConfig {
         // 无烬终焉配置
         public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
         public final ForgeConfigSpec.DoubleValue endlessExplosionDamage;
-        
+        public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerDamageBoost;
+        public final ForgeConfigSpec.IntValue endlessNearbyPlayerDuration;
+        public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> endlessGunTypes;
+
         // 士兵基础挂牌配置
         public final ForgeConfigSpec.DoubleValue soldierBasicTagDamageBoost;
         
@@ -636,6 +643,12 @@ public class TaczCuriosConfig {
             summerBeachEvolutionEntity = builder
                     .comment("夏日沙滩进化所需击杀的实体命名空间 (默认: minecraft:wither)")
                     .define("evolutionEntity", "minecraft:wither");
+            summerBeachEvolutionKills = builder
+                    .comment("夏日沙滩进化所需击杀数 (默认: 20)")
+                    .defineInRange("evolutionKills", 20, 1, Integer.MAX_VALUE);
+            summerBeachEvolutionToBrahmaEntity = builder
+                    .comment("夏日沙滩进化为梵天百兽所需击杀的实体命名空间 (默认: minecraft:ender_dragon)")
+                    .define("evolutionToBrahmaEntity", "minecraft:ender_dragon");
             builder.pop();
             
             // 梵天百兽配置
@@ -646,6 +659,9 @@ public class TaczCuriosConfig {
             brahmaBeastsEvolutionEntity = builder
                     .comment("梵天百兽进化所需击杀的实体命名空间 (默认: minecraft:ender_dragon)")
                     .define("evolutionEntity", "minecraft:ender_dragon");
+            brahmaBeastsEvolutionKills = builder
+                    .comment("梵天百兽进化所需击杀数 (默认: 20)")
+                    .defineInRange("evolutionKills", 20, 1, Integer.MAX_VALUE);
             builder.pop();
             
             // 救世配置
@@ -672,6 +688,18 @@ public class TaczCuriosConfig {
             endlessExplosionDamage = builder
                     .comment("无烬终焉爆炸伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
                     .defineInRange("explosionDamage", 10.0, -1, 100);
+            endlessNearbyPlayerDamageBoost = builder
+                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
+                    .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
+            endlessNearbyPlayerDuration = builder
+                    .comment("附近玩家获得伤害加成的持续时间(秒) (默认: 15)")
+                    .defineInRange("nearbyPlayerDuration", 15, -1, 300);
+            endlessNearbyPlayerRadius = builder
+                    .comment("影响附近玩家的范围 (默认: 32)")
+                    .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
+            endlessGunTypes = builder
+                    .comment("无烬终焉生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
+                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
             builder.pop();
             
             // 士兵基础挂牌配置

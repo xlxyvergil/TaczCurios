@@ -33,7 +33,6 @@ public class SummerBeach extends BaseCurioItem {
     // NBT 标签键
     private static final String KILL_COUNT_TAG = "WitherKillCount";
     private static final int MAX_BONUS = 20;  // 抗性加成封顶
-    private static final int MAX_KILLS = 30;  // 进化所需击杀数
     
     public SummerBeach(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -112,7 +111,8 @@ public class SummerBeach extends BaseCurioItem {
                         if (stack.getItem() instanceof SummerBeach) {
                             CompoundTag tag = stack.getOrCreateTag();
                             int currentCount = tag.getInt(KILL_COUNT_TAG);
-                            if (currentCount < MAX_KILLS) {
+                            int maxKills = TaczCuriosConfig.COMMON.summerBeachEvolutionKills.get();
+                            if (currentCount < maxKills) {
                                 tag.putInt(KILL_COUNT_TAG, currentCount + 1);
                             }
                             break;
@@ -169,8 +169,9 @@ public class SummerBeach extends BaseCurioItem {
         
         // 添加击杀进度
         int killCount = tag != null ? tag.getInt(KILL_COUNT_TAG) : 0;
+        int maxKills = TaczCuriosConfig.COMMON.summerBeachEvolutionKills.get();
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.kill_progress", killCount, MAX_KILLS, entityName)
+        tooltip.add(Component.translatable("item.tcc.summer_beach.kill_progress", killCount, maxKills, entityName)
             .withStyle(ChatFormatting.GREEN));
         
         // 检查是否绑定
@@ -196,7 +197,7 @@ public class SummerBeach extends BaseCurioItem {
             var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
             obtainEntityName = entityType.getDescription().getString();
         } catch (Exception ignored) {}
-        String brahmaBeastsEntityNamespace = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
+        String brahmaBeastsEntityNamespace = TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.get();
         String brahmaBeastsEntityName = brahmaBeastsEntityNamespace;
         try {
             ResourceLocation rl = new ResourceLocation(brahmaBeastsEntityNamespace);
