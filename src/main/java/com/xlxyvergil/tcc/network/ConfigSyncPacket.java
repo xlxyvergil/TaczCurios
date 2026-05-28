@@ -279,16 +279,62 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.set(config.get("summerBeachHeavenFireMultiplier").getAsDouble());
             if (config.has("summerBeachObtainEntity"))
                 TaczCuriosConfig.COMMON.summerBeachObtainEntity.set(config.get("summerBeachObtainEntity").getAsString());
-            if (config.has("summerBeachEvolutionEntity"))
-                TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.set(config.get("summerBeachEvolutionEntity").getAsString());
-            if (config.has("summerBeachEvolutionToBrahmaEntity"))
-                TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.set(config.get("summerBeachEvolutionToBrahmaEntity").getAsString());
+            if (config.has("summerBeachEvolutionRequirements")) {
+                java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
+                JsonArray outerArr = config.getAsJsonArray("summerBeachEvolutionRequirements");
+                for (JsonElement outerElem : outerArr) {
+                    JsonArray innerArr = outerElem.getAsJsonArray();
+                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                }
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                net.minecraftforge.common.ForgeConfigSpec.ConfigValue rawSb = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements;
+                rawSb.set(list);
+            }
+            if (config.has("summerBeachMaxResistance"))
+                TaczCuriosConfig.COMMON.summerBeachMaxResistance.set(config.get("summerBeachMaxResistance").getAsInt());
+            if (config.has("summerBeachMaxKillResistance"))
+                TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.set(config.get("summerBeachMaxKillResistance").getAsInt());
+            if (config.has("summerBeachResistanceEntities")) {
+                java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
+                JsonArray outerArr = config.getAsJsonArray("summerBeachResistanceEntities");
+                for (JsonElement outerElem : outerArr) {
+                    JsonArray innerArr = outerElem.getAsJsonArray();
+                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                }
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                net.minecraftforge.common.ForgeConfigSpec.ConfigValue raw = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.summerBeachResistanceEntities;
+                raw.set(list);
+            }
             
             // 梵天百兽配置
             if (config.has("brahmaBeastsHeavenFireMultiplier"))
                 TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.set(config.get("brahmaBeastsHeavenFireMultiplier").getAsDouble());
-            if (config.has("brahmaBeastsEvolutionEntity"))
-                TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.set(config.get("brahmaBeastsEvolutionEntity").getAsString());
+            if (config.has("brahmaBeastsEvolutionRequirements")) {
+                java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
+                JsonArray outerArr = config.getAsJsonArray("brahmaBeastsEvolutionRequirements");
+                for (JsonElement outerElem : outerArr) {
+                    JsonArray innerArr = outerElem.getAsJsonArray();
+                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                }
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                net.minecraftforge.common.ForgeConfigSpec.ConfigValue rawBb = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements;
+                rawBb.set(list);
+            }
+            if (config.has("brahmaBeastsMaxResistance"))
+                TaczCuriosConfig.COMMON.brahmaBeastsMaxResistance.set(config.get("brahmaBeastsMaxResistance").getAsInt());
+            if (config.has("brahmaBeastsMaxKillResistance"))
+                TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.set(config.get("brahmaBeastsMaxKillResistance").getAsInt());
+            if (config.has("brahmaBeastsResistanceEntities")) {
+                java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
+                JsonArray outerArr = config.getAsJsonArray("brahmaBeastsResistanceEntities");
+                for (JsonElement outerElem : outerArr) {
+                    JsonArray innerArr = outerElem.getAsJsonArray();
+                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                }
+                @SuppressWarnings({"unchecked", "rawtypes"})
+                net.minecraftforge.common.ForgeConfigSpec.ConfigValue raw = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities;
+                raw.set(list);
+            }
             
             // 救世配置
             if (config.has("salvationHeavenFireMultiplier"))
@@ -561,12 +607,53 @@ public class ConfigSyncPacket {
         // 夏日沙滩配置
         config.addProperty("summerBeachHeavenFireMultiplier", TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get());
         config.addProperty("summerBeachObtainEntity", TaczCuriosConfig.COMMON.summerBeachObtainEntity.get());
-        config.addProperty("summerBeachEvolutionEntity", TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get());
-        config.addProperty("summerBeachEvolutionToBrahmaEntity", TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.get());
+        {
+            JsonArray outerArr = new JsonArray();
+            for (java.util.List<String> inner : TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get()) {
+                JsonArray innerArr = new JsonArray();
+                innerArr.add(inner.get(0));
+                innerArr.add(inner.get(1));
+                outerArr.add(innerArr);
+            }
+            config.add("summerBeachEvolutionRequirements", outerArr);
+        }
+        config.addProperty("summerBeachMaxResistance", TaczCuriosConfig.COMMON.summerBeachMaxResistance.get());
+        config.addProperty("summerBeachMaxKillResistance", TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get());
+        {
+            JsonArray outerArr = new JsonArray();
+            for (java.util.List<String> inner : TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get()) {
+                JsonArray innerArr = new JsonArray();
+                innerArr.add(inner.get(0));
+                innerArr.add(inner.get(1));
+                outerArr.add(innerArr);
+            }
+            config.add("summerBeachResistanceEntities", outerArr);
+        }
         
         // 梵天百兽配置
         config.addProperty("brahmaBeastsHeavenFireMultiplier", TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get());
-        config.addProperty("brahmaBeastsEvolutionEntity", TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get());
+        {
+            JsonArray outerArr = new JsonArray();
+            for (java.util.List<String> inner : TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements.get()) {
+                JsonArray innerArr = new JsonArray();
+                innerArr.add(inner.get(0));
+                innerArr.add(inner.get(1));
+                outerArr.add(innerArr);
+            }
+            config.add("brahmaBeastsEvolutionRequirements", outerArr);
+        }
+        config.addProperty("brahmaBeastsMaxResistance", TaczCuriosConfig.COMMON.brahmaBeastsMaxResistance.get());
+        config.addProperty("brahmaBeastsMaxKillResistance", TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
+        {
+            JsonArray outerArr = new JsonArray();
+            for (java.util.List<String> inner : TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get()) {
+                JsonArray innerArr = new JsonArray();
+                innerArr.add(inner.get(0));
+                innerArr.add(inner.get(1));
+                outerArr.add(innerArr);
+            }
+            config.add("brahmaBeastsResistanceEntities", outerArr);
+        }
         
         // 救世配置
         config.addProperty("salvationHeavenFireMultiplier", TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get());

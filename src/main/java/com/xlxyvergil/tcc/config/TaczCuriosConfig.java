@@ -177,14 +177,17 @@ public class TaczCuriosConfig {
         // 夏日沙滩配置
         public final ForgeConfigSpec.DoubleValue summerBeachHeavenFireMultiplier;
         public final ForgeConfigSpec.ConfigValue<String> summerBeachObtainEntity;
-        public final ForgeConfigSpec.ConfigValue<String> summerBeachEvolutionEntity;
-        public final ForgeConfigSpec.IntValue summerBeachEvolutionKills;
-        public final ForgeConfigSpec.ConfigValue<String> summerBeachEvolutionToBrahmaEntity;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachEvolutionRequirements;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachResistanceEntities;
+        public final ForgeConfigSpec.IntValue summerBeachMaxResistance;
+        public final ForgeConfigSpec.IntValue summerBeachMaxKillResistance;
         
         // 梵天百兽配置
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
-        public final ForgeConfigSpec.ConfigValue<String> brahmaBeastsEvolutionEntity;
-        public final ForgeConfigSpec.IntValue brahmaBeastsEvolutionKills;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsEvolutionRequirements;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsResistanceEntities;
+        public final ForgeConfigSpec.IntValue brahmaBeastsMaxResistance;
+        public final ForgeConfigSpec.IntValue brahmaBeastsMaxKillResistance;
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
@@ -640,15 +643,26 @@ public class TaczCuriosConfig {
             summerBeachObtainEntity = builder
                     .comment("夏日沙滩饰品获取所需击杀的实体命名空间 (默认: minecraft:wither)")
                     .define("obtainEntity", "minecraft:wither");
-            summerBeachEvolutionEntity = builder
-                    .comment("夏日沙滩进化所需击杀的实体命名空间 (默认: minecraft:wither)")
-                    .define("evolutionEntity", "minecraft:wither");
-            summerBeachEvolutionKills = builder
-                    .comment("夏日沙滩进化所需击杀数 (默认: 20)")
-                    .defineInRange("evolutionKills", 20, 1, Integer.MAX_VALUE);
-            summerBeachEvolutionToBrahmaEntity = builder
-                    .comment("夏日沙滩进化为梵天百兽所需击杀的实体命名空间 (默认: minecraft:ender_dragon)")
-                    .define("evolutionToBrahmaEntity", "minecraft:ender_dragon");
+            summerBeachEvolutionRequirements = builder
+                    .comment("夏日沙滩进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                            "默认: [[minecraft:wither, 20], [minecraft:ender_dragon, 1]]")
+                    .define("evolutionRequirements", java.util.List.of(
+                            java.util.List.of("minecraft:wither", "20"),
+                            java.util.List.of("minecraft:ender_dragon", "1")
+                    ));
+            summerBeachResistanceEntities = builder
+                    .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
+                            "默认: [[minecraft:wither, 1], [minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                    .define("resistanceEntities", java.util.List.of(
+                            java.util.List.of("minecraft:wither", "1"),
+                            java.util.List.of("minecraft:ender_dragon", "1")
+                    ));
+            summerBeachMaxResistance = builder
+                    .comment("夏日沙滩虚数抗性总上限 (默认: 40，基础20 + 击杀加成最多20)")
+                    .defineInRange("maxResistance", 40, 20, 1000);
+            summerBeachMaxKillResistance = builder
+                    .comment("夏日沙滩虚数抗性来自击杀的上限 (默认: 20)")
+                    .defineInRange("maxKillResistance", 20, 0, 1000);
             builder.pop();
             
             // 梵天百兽配置
@@ -656,12 +670,26 @@ public class TaczCuriosConfig {
             brahmaBeastsHeavenFireMultiplier = builder
                     .comment("梵天百兽对天火饰品效果的增强系数 (默认: 4.0)")
                     .defineInRange("heavenFireMultiplier", 4.0, 1, 100);
-            brahmaBeastsEvolutionEntity = builder
-                    .comment("梵天百兽进化所需击杀的实体命名空间 (默认: minecraft:ender_dragon)")
-                    .define("evolutionEntity", "minecraft:ender_dragon");
-            brahmaBeastsEvolutionKills = builder
-                    .comment("梵天百兽进化所需击杀数 (默认: 20)")
-                    .defineInRange("evolutionKills", 20, 1, Integer.MAX_VALUE);
+            brahmaBeastsEvolutionRequirements = builder
+                    .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                            "默认: [[minecraft:wither, 20], [minecraft:ender_dragon, 30]]")
+                    .define("evolutionRequirements", java.util.List.of(
+                            java.util.List.of("minecraft:wither", "20"),
+                            java.util.List.of("minecraft:ender_dragon", "30")
+                    ));
+            brahmaBeastsResistanceEntities = builder
+                    .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
+                            "默认: [[minecraft:wither, 1], [minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                    .define("resistanceEntities", java.util.List.of(
+                            java.util.List.of("minecraft:wither", "1"),
+                            java.util.List.of("minecraft:ender_dragon", "1")
+                    ));
+            brahmaBeastsMaxResistance = builder
+                    .comment("梵天百兽虚数抗性总上限 (默认: 60，基础20 + 继承抗性0~20 + 击杀加成0~20)")
+                    .defineInRange("maxResistance", 60, 40, 1000);
+            brahmaBeastsMaxKillResistance = builder
+                    .comment("梵天百兽虚数抗性来自击杀的上限 (默认: 20)")
+                    .defineInRange("maxKillResistance", 20, 0, 1000);
             builder.pop();
             
             // 救世配置

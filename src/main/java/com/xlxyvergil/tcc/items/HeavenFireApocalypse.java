@@ -169,15 +169,8 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
         
         // 添加获取方式
-        String entityNamespace = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionEntity.get();
-        String entityName = entityNamespace;
-        try {
-            ResourceLocation rl = new ResourceLocation(entityNamespace);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            entityName = entityType.getDescription().getString();
-        } catch (Exception ignored) {}
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.how_to_obtain", entityName)
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.how_to_obtain")
             .withStyle(net.minecraft.ChatFormatting.GRAY, net.minecraft.ChatFormatting.ITALIC));
     }
     

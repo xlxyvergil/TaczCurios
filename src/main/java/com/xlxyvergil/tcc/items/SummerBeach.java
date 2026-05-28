@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 夏日沙滩 - 提供20点虚数抗性
+ * 夏日沙滩 - 提供基础20点虚数抗性，击杀配置列表中的实体获得额外抗性
  */
 public class SummerBeach extends BaseCurioItem {
     
@@ -31,8 +31,10 @@ public class SummerBeach extends BaseCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_MODIFIER_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
     
     // NBT 标签键
-    private static final String KILL_COUNT_TAG = "WitherKillCount";
-    private static final int MAX_BONUS = 20;  // 抗性加成封顶
+    private static final String KILL_COUNTS_TAG = "KillCounts";
+    private static final String CARRIED_RESISTANCE_TAG = "CarriedResistance";
+    private static final int BASE_RESISTANCE = 20;
+    public static final int MAX_KILL_RESISTANCE = 20;
     
     public SummerBeach(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -40,7 +42,7 @@ public class SummerBeach extends BaseCurioItem {
     
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return false;  // 不可附魔
+        return false;
     }
     
     @Override
@@ -50,15 +52,16 @@ public class SummerBeach extends BaseCurioItem {
     
     @Override
     public boolean hasCraftingRemainingItem(ItemStack stack) {
-        return false;  // 无合成残留
+        return false;
     }
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        // 基础20点虚数抗性 + 击杀凋零获得的额外抗性
-        int killCount = getWitherKillCount(livingEntity);
-        double bonusResistance = Math.min(killCount, MAX_BONUS);
-        double totalResistance = 20.0 + bonusResistance;
+        int maxKillResistance = TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get();
+        int resistanceFromKills = Math.min(getResistanceFromKills(livingEntity), maxKillResistance);
+        int carriedResistance = getCarriedResistance(livingEntity);
+        int maxResistance = TaczCuriosConfig.COMMON.summerBeachMaxResistance.get();
+        double totalResistance = Math.min(BASE_RESISTANCE + carriedResistance + resistanceFromKills, maxResistance);
         
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             totalResistance, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_summer_beach_resistance", AttributeModifier.Operation.ADDITION);
@@ -71,10 +74,67 @@ public class SummerBeach extends BaseCurioItem {
     }
     
     /**
-     * 获取该玩家装备的夏日沙滩的凋零击杀数
+     * 按抵抗实体列表加权计算击杀带来的虚数抗性
      */
-    public static int getWitherKillCount(LivingEntity entity) {
-        if (!(entity instanceof net.minecraft.world.entity.player.Player player)) {
+    public static int getResistanceFromKills(LivingEntity entity) {
+        if (!(entity instanceof Player player)) return 0;
+        List<? extends List<String>> resistanceEntities = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
+        
+        return CuriosApi.getCuriosInventory(player)
+            .map(handler -> {
+                var stacksHandler = handler.getCurios().get("tcc_3rd");
+                if (stacksHandler != null) {
+                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                        if (stack.getItem() instanceof SummerBeach) {
+                            CompoundTag tag = stack.getTag();
+                            if (tag != null) {
+                                CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
+                                int total = 0;
+                                for (List<String> entry : resistanceEntities) {
+                                    int kills = killCounts.getInt(entry.get(0));
+                                    int resistancePerKill = Integer.parseInt(entry.get(1));
+                                    total += kills * resistancePerKill;
+                                }
+                                return total;
+                            }
+                            return 0;
+                        }
+                    }
+                }
+                return 0;
+            })
+            .orElse(0);
+    }
+    
+    /**
+     * 获取从上一级进化继承的抗性值
+     */
+    public static int getCarriedResistance(LivingEntity entity) {
+        if (!(entity instanceof Player player)) return 0;
+        
+        return CuriosApi.getCuriosInventory(player)
+            .map(handler -> {
+                var stacksHandler = handler.getCurios().get("tcc_3rd");
+                if (stacksHandler != null) {
+                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                        if (stack.getItem() instanceof SummerBeach) {
+                            CompoundTag tag = stack.getTag();
+                            return tag != null ? tag.getInt(CARRIED_RESISTANCE_TAG) : 0;
+                        }
+                    }
+                }
+                return 0;
+            })
+            .orElse(0);
+    }
+    
+    /**
+     * 获取该玩家装备的夏日沙滩的所有实体总击杀数
+     */
+    public static int getTotalKills(LivingEntity entity) {
+        if (!(entity instanceof Player player)) {
             return 0;
         }
         
@@ -87,7 +147,12 @@ public class SummerBeach extends BaseCurioItem {
                         if (stack.getItem() instanceof SummerBeach) {
                             CompoundTag tag = stack.getTag();
                             if (tag != null) {
-                                return tag.getInt(KILL_COUNT_TAG);
+                                CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
+                                int total = 0;
+                                for (String key : killCounts.getAllKeys()) {
+                                    total += killCounts.getInt(key);
+                                }
+                                return total;
                             }
                             return 0;
                         }
@@ -99,21 +164,25 @@ public class SummerBeach extends BaseCurioItem {
     }
     
     /**
-     * 增加夏日沙滩的凋零击杀数
+     * 增加夏日沙滩的某个实体击杀数
      */
-    public static void incrementWitherKillCount(net.minecraft.world.entity.player.Player player) {
+    public static void incrementEntityKillCount(Player player, String entityKey, int maxCount) {
         CuriosApi.getCuriosInventory(player)
             .ifPresent(handler -> {
                 var stacksHandler = handler.getCurios().get("tcc_3rd");
                 if (stacksHandler != null) {
                     for (int i = 0; i < stacksHandler.getSlots(); i++) {
                         ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof SummerBeach) {
+                        if (stack.getItem() instanceof SummerBeach sb) {
                             CompoundTag tag = stack.getOrCreateTag();
-                            int currentCount = tag.getInt(KILL_COUNT_TAG);
-                            int maxKills = TaczCuriosConfig.COMMON.summerBeachEvolutionKills.get();
-                            if (currentCount < maxKills) {
-                                tag.putInt(KILL_COUNT_TAG, currentCount + 1);
+                            CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
+                            int currentCount = killCounts.getInt(entityKey);
+                            if (currentCount < maxCount) {
+                                killCounts.putInt(entityKey, currentCount + 1);
+                                tag.put(KILL_COUNTS_TAG, killCounts);
+                                // 立即刷新虚数抗性属性
+                                sb.removeEffects(player);
+                                sb.applyEffects(player);
                             }
                             break;
                         }
@@ -122,12 +191,45 @@ public class SummerBeach extends BaseCurioItem {
             });
     }
     
+    /**
+     * 检查是否满足所有进化需求
+     */
+    public static boolean areAllRequirementsMet(LivingEntity entity) {
+        if (!(entity instanceof Player player)) return false;
+        
+        List<? extends List<String>> requirements = TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get();
+        if (requirements.isEmpty()) return false;
+        
+        return CuriosApi.getCuriosInventory(player)
+            .map(handler -> {
+                var stacksHandler = handler.getCurios().get("tcc_3rd");
+                if (stacksHandler != null) {
+                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                        if (stack.getItem() instanceof SummerBeach) {
+                            CompoundTag tag = stack.getTag();
+                            if (tag == null) return false;
+                            CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
+                            for (List<String> req : requirements) {
+                                String reqEntity = req.get(0);
+                                int required = Integer.parseInt(req.get(1));
+                                if (killCounts.getInt(reqEntity) < required) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            })
+            .orElse(false);
+    }
+    
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否绑定
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
-            // 只有绑定的玩家才能装备
             String boundPlayerUUID = tag.getString("BoundPlayer");
             if (slotContext.entity() instanceof Player player) {
                 return player.getStringUUID().equals(boundPlayerUUID);
@@ -137,44 +239,82 @@ public class SummerBeach extends BaseCurioItem {
         return super.canEquip(slotContext, stack);
     }
     
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果
-        tooltip.add(Component.translatable("item.tcc.summer_beach.effect", "+20")
-            .withStyle(ChatFormatting.AQUA));
+        // NBT
+        CompoundTag tag = stack.getTag();
         
-        // 添加天火饰品增强效果
-        double multiplier = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get();
+        // 装备效果
+        int maxResistance = TaczCuriosConfig.COMMON.summerBeachMaxResistance.get();
+        
+        // 显示当前抗性构成
+        if (tag != null) {
+            int carried = tag.getInt(CARRIED_RESISTANCE_TAG);
+            int fromKills = 0;
+            int maxKillResistance = TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get();
+            List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
+            CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
+            for (List<String> entry : resistList) {
+                int kills = killCounts.getInt(entry.get(0));
+                int perKill = Integer.parseInt(entry.get(1));
+                fromKills += kills * perKill;
+            }
+            fromKills = Math.min(fromKills, maxKillResistance);
+            int total = BASE_RESISTANCE + carried + fromKills;
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("item.tcc.summer_beach.effect", "+" + total)
+                .withStyle(ChatFormatting.AQUA));
+            if (carried > 0) {
+                tooltip.add(Component.translatable("item.tcc.summer_beach.carried_resistance", carried));
+            }
+            tooltip.add(Component.translatable("item.tcc.summer_beach.kill_resistance", fromKills, maxKillResistance));
+        } else {
+            tooltip.add(Component.translatable("item.tcc.summer_beach.effect", "+" + BASE_RESISTANCE + "~" + maxResistance)
+                .withStyle(ChatFormatting.AQUA));
+        }
+        
+        // 天火增强
+        double multiplier = TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get();
         tooltip.add(Component.translatable("item.tcc.summer_beach.heaven_fire_boost", String.format("%.0f", multiplier * 100))
             .withStyle(ChatFormatting.GOLD));
         
-        // 获取 NBT 标签
-        CompoundTag tag = stack.getTag();
+        // 显示每个实体的击杀进度
+        List<? extends List<String>> requirements = TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get();
+        if (!requirements.isEmpty()) {
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("item.tcc.summer_beach.kill_progress_title")
+                .withStyle(ChatFormatting.GREEN));
+            CompoundTag killCounts = tag != null ? tag.getCompound(KILL_COUNTS_TAG) : null;
+            for (List<String> req : requirements) {
+                String reqEntity = req.get(0);
+                int required = Integer.parseInt(req.get(1));
+                int current = killCounts != null ? killCounts.getInt(reqEntity) : 0;
+                String entityDisplay = getEntityDisplayName(reqEntity);
+                tooltip.add(Component.translatable("item.tcc.summer_beach.evolution_progress", entityDisplay, current, required)
+                    .withStyle(current >= required ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+            }
+        }
         
-        // 获取进化目标实体显示名
-        String entityNamespace = TaczCuriosConfig.COMMON.summerBeachEvolutionEntity.get();
-        String entityName = entityNamespace;
-        try {
-            ResourceLocation rl = new ResourceLocation(entityNamespace);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            entityName = entityType.getDescription().getString();
-        } catch (Exception ignored) {}
+        // 显示抵抗实体列表（击杀增长抗性）
+        List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
+        if (!resistList.isEmpty()) {
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("item.tcc.summer_beach.resist_source_title")
+                .withStyle(ChatFormatting.AQUA));
+            CompoundTag killCounts = tag != null ? tag.getCompound(KILL_COUNTS_TAG) : null;
+            for (List<String> entry : resistList) {
+                String entityKey = entry.get(0);
+                int resistancePerKill = Integer.parseInt(entry.get(1));
+                int kills = killCounts != null ? killCounts.getInt(entityKey) : 0;
+                String entityDisplay = getEntityDisplayName(entityKey);
+                tooltip.add(Component.translatable("item.tcc.summer_beach.resist_detail", entityDisplay, kills, resistancePerKill, kills * resistancePerKill)
+                    .withStyle(ChatFormatting.GRAY));
+            }
+        }
         
-        // 添加击杀进度
-        int killCount = tag != null ? tag.getInt(KILL_COUNT_TAG) : 0;
-        int maxKills = TaczCuriosConfig.COMMON.summerBeachEvolutionKills.get();
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.kill_progress", killCount, maxKills, entityName)
-            .withStyle(ChatFormatting.GREEN));
-        
-        // 检查是否绑定
+        // 绑定信息
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));
@@ -182,31 +322,26 @@ public class SummerBeach extends BaseCurioItem {
                 .withStyle(ChatFormatting.RED));
         }
         
-        // 添加饰品槽位信息
+        // 槽位和稀有度
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot.3rd"));
-        
-        // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
         
-        // 添加获取方式
-        String obtainEntityNamespace = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
-        String obtainEntityName = obtainEntityNamespace;
-        try {
-            ResourceLocation rl = new ResourceLocation(obtainEntityNamespace);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            obtainEntityName = entityType.getDescription().getString();
-        } catch (Exception ignored) {}
-        String brahmaBeastsEntityNamespace = TaczCuriosConfig.COMMON.summerBeachEvolutionToBrahmaEntity.get();
-        String brahmaBeastsEntityName = brahmaBeastsEntityNamespace;
-        try {
-            ResourceLocation rl = new ResourceLocation(brahmaBeastsEntityNamespace);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            brahmaBeastsEntityName = entityType.getDescription().getString();
-        } catch (Exception ignored) {}
+        // 获取方式
+        String obtainEntityName = getEntityDisplayName(TaczCuriosConfig.COMMON.summerBeachObtainEntity.get());
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.how_to_obtain", obtainEntityName, brahmaBeastsEntityName)
+        tooltip.add(Component.translatable("item.tcc.summer_beach.how_to_obtain", obtainEntityName)
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+    }
+    
+    private static String getEntityDisplayName(String namespace) {
+        try {
+            ResourceLocation rl = new ResourceLocation(namespace);
+            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
+            return entityType.getDescription().getString();
+        } catch (Exception ignored) {
+            return namespace;
+        }
     }
     
     @Override
@@ -214,9 +349,6 @@ public class SummerBeach extends BaseCurioItem {
         applyEffects(livingEntity);
     }
     
-    /**
-     * 检查实体是否装备了夏日沙滩
-     */
     public static boolean hasSummerBeachEquipped(LivingEntity livingEntity) {
         return CuriosApi.getCuriosInventory(livingEntity)
             .map(handler -> {

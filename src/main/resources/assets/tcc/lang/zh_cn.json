@@ -31,22 +31,32 @@
   "item.tcc.summer_beach": "§f夏日沙滩",
   "item.tcc.summer_beach.effect": "%1$s虚数抗性",
   "item.tcc.summer_beach.heaven_fire_boost": "天火饰品伤害保留系数提高%1$s%%",
-  "item.tcc.summer_beach.kill_progress": "击杀 %3$s 进度: %1$d/%2$d (+%1$d虚数抗性)",
+  "item.tcc.summer_beach.kill_progress_title": "进化需求:",
+  "item.tcc.summer_beach.resist_source_title": "抗性来源:",
   "item.tcc.summer_beach.bound": "已绑定至：%1$s",
-  "item.tcc.summer_beach.how_to_obtain": "§7§o装备天火圣裁被%1$s击杀后获得（绑定）；同时装备天火劫灭时击杀%2$s进化为梵天百兽",
+  "item.tcc.summer_beach.how_to_obtain": "§7§o装备天火圣裁被%1$s击杀后获得（绑定）；同时装备天火劫灭且满足进化需求时进化为梵天百兽",
+  "item.tcc.summer_beach.carried_resistance": "  §7继承抗性: +%1$d",
+  "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
+  "item.tcc.summer_beach.kill_resistance": "  §7击杀抗性: +%1$d/%2$d",
+  "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d杀 × %3$d = +%4$d",
   
   "item.tcc.brahma_beasts": "§5梵天百兽",
   "item.tcc.brahma_beasts.effect": "%1$s虚数抗性",
   "item.tcc.brahma_beasts.heaven_fire_boost": "天火饰品伤害保留系数提高%1$s%%",
-  "item.tcc.brahma_beasts.kill_progress": "击杀 %3$s 进度: %1$d/%2$d (+%1$d虚数抗性)",
+  "item.tcc.brahma_beasts.kill_progress_title": "进化需求:",
+  "item.tcc.brahma_beasts.resist_source_title": "抗性来源:",
   "item.tcc.brahma_beasts.bound": "已绑定至：%1$s",
-  "item.tcc.brahma_beasts.how_to_obtain": "§7§o同时装备天火劫灭和夏日沙滩时击杀%1$s获得；虚数抗性>80且装备天火劫灭时击杀30次%1$s进化为救世",
+  "item.tcc.brahma_beasts.how_to_obtain": "§7§o同时装备天火劫灭和夏日沙滩且满足夏日沙滩进化需求时获得；虚数抗性>80且满足梵天百兽进化需求时进化为救世",
+  "item.tcc.brahma_beasts.carried_resistance": "  §7继承抗性: +%1$d",
+  "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
+  "item.tcc.brahma_beasts.kill_resistance": "  §7击杀抗性: +%1$d/%2$d",
+  "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d杀 × %3$d = +%4$d",
   
   "item.tcc.salvation": "§4救世",
   "item.tcc.salvation.effect": "%1$s虚数抗性",
   "item.tcc.salvation.passive_bonuses": "常驻: 抗性提升III, 免疫击退, 伤害降低30%",
   "item.tcc.salvation.heaven_fire_boost": "天火饰品伤害转换系数提高%1$s%%",
-  "item.tcc.salvation.how_to_obtain": "§7§o虚数抗性>80且装备梵天百兽+天火劫灭时击杀30次%1$s获得",
+  "item.tcc.salvation.how_to_obtain": "§7§o虚数抗性>80且装备梵天百兽+天火劫灭且满足梵天百兽进化需求时获得",
   
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
   "item.tcc.ural_wolf_tag.effect": "%1$s%%爆头倍率",
@@ -63,7 +73,7 @@
   
   "item.tcc.heaven_fire_apocalypse.damage_conversion": "伤害降低%1$s%%，并转换为虚数伤害",
   
-  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o装备天火圣裁触发天火流血，结算时虚数抗性≥40且未死亡则进化；同时装备梵天百兽，虚数抗性>80且击杀30次%1$s进化为无烬终焉",
+  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o装备天火圣裁触发天火流血，结算时虚数抗性≥40且未死亡则进化；同时装备梵天百兽，虚数抗性>80且满足进化需求时进化为无烬终焉",
   
   "item.tcc.heaven_fire_apocalypse_endless": "§4天火劫灭·无烬终焉",
   "item.tcc.heaven_fire_apocalypse_endless.effect": "常驻 %1$s%%通用枪械伤害 伤害转为虚数 %3$s%%爆炸伤害 无自损 为周围%4$s格内玩家+%5$s%%通用枪械伤害 持续%6$s秒 不可卸下 死亡不掉落",
@@ -323,5 +333,7 @@
   "death.attack.imaginary_damage.player": "%1$s在与%2$s战斗时被虚数吞噬了",
   
   "// 天火流血效果": "",
-  "effect.tcc.heaven_fire_bleeding": "天火流血"
+  "effect.tcc.heaven_fire_bleeding": "天火流血",
+  "effect.tcc.imaginary_bleeding": "虚数流血",
+  "effect.tcc.heaven_fire_apocalypse_delay": "延迟判定"
 }
