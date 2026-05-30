@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "tcc:imaginary_damage"
   ]

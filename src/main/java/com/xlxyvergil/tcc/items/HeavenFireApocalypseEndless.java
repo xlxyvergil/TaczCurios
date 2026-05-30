@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -107,7 +108,9 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get() * 100;
         double explosionDamageBoost = TaczCuriosConfig.COMMON.endlessExplosionDamage.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get();
-        int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.endlessNearbyPlayerDamageBoost.get() * 100);
+        double perLevelBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100;
+        int potionAmplifier = TaczCuriosConfig.COMMON.endlessNearbyPlayerPotionAmplifier.get();
+        int totalNearbyPlayerDamageBoost = (int)(perLevelBoost * (potionAmplifier + 1));
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();
         
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.effect", 
@@ -115,8 +118,15 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
                 "0", 
                 String.format("%+.0f", explosionDamageBoost),
                 String.format("%+.0f", nearbyPlayerRadius), 
-                String.format("%+d", nearbyPlayerDamageBoost),
+                String.format("%+d", totalNearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration)));
+        
+        // 虚数侵染上限 + 虚数崩解
+        int infectionMax = TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get();
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.inflection_max",
+                String.format("%d", infectionMax)));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.collapse_info")
+            .withStyle(ChatFormatting.DARK_PURPLE));
         
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
@@ -142,8 +152,10 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.endlessGunTypes.get())) return;
 
         // 100%转换为虚数伤害
-        event.setDamageSource(com.tacz.guns.api.event.common.GunDamageSourcePart.NON_ARMOR_PIERCING,
-            TccDamageSources.imaginaryDamage(attacker));
+        event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
+        event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
     }
     
     @SubscribeEvent
@@ -169,10 +181,11 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();
 
         for (Player nearbyPlayer : nearbyPlayers) {
+            int potionAmplifier = TaczCuriosConfig.COMMON.endlessNearbyPlayerPotionAmplifier.get();
             nearbyPlayer.addEffect(new MobEffectInstance(
                 TccMobEffects.HEAVEN_FIRE_APOCALYPSE_BUFF.get(),
                 nearbyPlayerDuration * 20,
-                0,
+                potionAmplifier,
                 false, false, true));
         }
     }

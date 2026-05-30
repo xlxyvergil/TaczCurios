@@ -1,18 +1,14 @@
 package com.xlxyvergil.tcc.events;
 
+import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.SummerBeach;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -29,9 +25,6 @@ import java.util.List;
 public class SummerBeachDropEvent {
     
     private static final String SUMMER_BEACH_OBTAINED_TAG = "SummerBeachObtained";
-
-    // TACZ 子弹伤害 Tag，用于精确判断枪械击杀
-    private static final TagKey<DamageType> TACZ_BULLETS_TAG = TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullets"));
     
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
@@ -71,24 +64,14 @@ public class SummerBeachDropEvent {
         });
     }
     
-    /**
-     * 统一通过 LivingDeathEvent + tacz:bullets 伤害 Tag + 生效枪械类型处理所有 TACZ 枪械击杀。
-     * 覆盖正常实体、末影龙、mod boss 等所有场景。
-     */
     @SubscribeEvent
     public static void onGunLivingDeath(LivingDeathEvent event) {
         LivingEntity killed = event.getEntity();
         if (killed.level().isClientSide) return;
 
-        // 必须为 TACZ 枪械伤害
-        if (!event.getSource().is(TACZ_BULLETS_TAG)) return;
-
-        Entity source = event.getSource().getEntity();
-        if (!(source instanceof Player player)) return;
-
-        // 根据当前装备的天火武器获取对应枪械类型配置
-        List<? extends String> gunTypes = getEquippedHeavenFireGunTypes(player);
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(player, gunTypes)) return;
+        // 虚数伤害 = 天火已装备 + 枪型已验证（onGunHurtPre），无需再校验
+        if (!event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
 
         String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
 
@@ -140,15 +123,10 @@ public class SummerBeachDropEvent {
             }
         }
 
-        // 检查进化
         checkSummerBeachEvolution(player);
         checkSalvationEvolution(player);
     }
 
-    /**
-     * 夏日沙滩 → 梵天百兽
-     * 条件：同时装备天火劫灭 + 夏日沙滩，且夏日沙滩的所有进化需求均已满足
-     */
     private static void checkSummerBeachEvolution(Player player) {
         if (!HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(player)) return;
         if (!SummerBeach.hasSummerBeachEquipped(player)) return;
@@ -189,9 +167,6 @@ public class SummerBeachDropEvent {
         });
     }
     
-    /**
-     * 梵天百兽 + 天火劫灭 → 救世 + 无烬终焉
-     */
     private static void checkSalvationEvolution(Player player) {
         double resistance = player.getAttributeValue(com.xlxyvergil.tcc.core.TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         if (resistance <= 80.0) return;
@@ -263,16 +238,5 @@ public class SummerBeachDropEvent {
                 }
             }
         });
-    }
-
-    /**
-     * 获取玩家当前装备的天火武器（圣裁或劫灭）配置的枪械类型列表，均未装备返回 null
-     */
-    private static List<? extends String> getEquippedHeavenFireGunTypes(Player player) {
-        if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(player))
-            return TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get();
-        if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(player))
-            return TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get();
-        return List.of();
     }
 }

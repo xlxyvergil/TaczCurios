@@ -37,6 +37,7 @@
   "item.tcc.summer_beach.how_to_obtain": "§7§o装备天火圣裁被%1$s击杀后获得（绑定）；同时装备天火劫灭且满足进化需求时进化为梵天百兽",
   "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d",
+  "item.tcc.summer_beach.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
   
   "item.tcc.brahma_beasts": "§5梵天百兽",
   "item.tcc.brahma_beasts.effect": "%1$s虚数抗性",
@@ -47,11 +48,13 @@
   "item.tcc.brahma_beasts.how_to_obtain": "§7§o同时装备天火劫灭和夏日沙滩且满足夏日沙滩进化需求时获得；虚数抗性>80且满足梵天百兽进化需求时进化为救世",
   "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d",
+  "item.tcc.brahma_beasts.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
   
   "item.tcc.salvation": "§4救世",
   "item.tcc.salvation.effect": "%1$s虚数抗性",
   "item.tcc.salvation.passive_bonuses": "常驻: 抗性提升III, 免疫击退, 伤害降低30%",
   "item.tcc.salvation.heaven_fire_boost": "天火饰品伤害转换系数提高%1$s%%",
+  "item.tcc.salvation.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
   "item.tcc.salvation.how_to_obtain": "§7§o虚数抗性>80且装备梵天百兽+天火劫灭且满足梵天百兽进化需求时获得",
   
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
@@ -63,6 +66,7 @@
   "item.tcc.heaven_fire_judgment.damage_conversion": "伤害降低%1$s%%，并转换为虚数伤害",
   
   "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§o被%1$s击杀后获得夏日沙滩（绑定）；流血结算时虚数抗性≥40且未死亡则进化为天火劫灭",
+  "item.tcc.heaven_fire_judgment.inflection_max": "§b虚数侵染上限: %1$s层",
   
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
   "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 %1$s%%通用枪械伤害 伤害转为虚数 %2$s爆炸范围 %3$s%%爆炸伤害 自损%4$s%%最大生命值 延迟5秒后流血 为周围%5$s格内玩家+%6$s%%通用枪械伤害 持续%7$s秒 不可卸下 死亡不掉落",
@@ -70,10 +74,14 @@
   "item.tcc.heaven_fire_apocalypse.damage_conversion": "伤害降低%1$s%%，并转换为虚数伤害",
   
   "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o装备天火圣裁触发天火流血，结算时虚数抗性≥40且未死亡则进化；同时装备梵天百兽，虚数抗性>80且满足进化需求时进化为无烬终焉",
+  "item.tcc.heaven_fire_apocalypse.inflection_max": "§b虚数侵染上限: %1$s层",
+  "item.tcc.heaven_fire_apocalypse.collapse_info": "§5虚数崩解: 0.5%%目标最大生命值/层/秒 (受虚数抗性减免, 1抗性=1减伤)",
   
   "item.tcc.heaven_fire_apocalypse_endless": "§4天火劫灭·无烬终焉",
   "item.tcc.heaven_fire_apocalypse_endless.effect": "常驻 %1$s%%通用枪械伤害 伤害转为虚数 %3$s%%爆炸伤害 无自损 为周围%4$s格内玩家+%5$s%%通用枪械伤害 持续%6$s秒 不可卸下 死亡不掉落",
   "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§o由天火劫灭进化而来",
+  "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§b虚数侵染上限: %1$s层",
+  "item.tcc.heaven_fire_apocalypse_endless.collapse_info": "§5虚数崩解: 0.5%%目标最大生命值/层/秒 (受虚数抗性减免, 1抗性=1减伤)",
   
   "item.tcc.burst_reload": "§9爆发装填",
   "item.tcc.burst_reload.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
@@ -330,6 +338,7 @@
   
   "// 天火流血效果": "",
   "effect.tcc.heaven_fire_bleeding": "天火流血",
-  "effect.tcc.imaginary_bleeding": "虚数流血",
+  "effect.tcc.imaginary_infection": "虚数侵染",
+  "effect.tcc.imaginary_collapse": "虚数崩解",
   "effect.tcc.heaven_fire_apocalypse_delay": "延迟判定"
 }

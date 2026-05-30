@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ForgeHooksMixin",
-    "LivingEntityAccessor"
+    "LivingEntityAccessor",
+    "PlayerAccessor"
   ],
-  "injectors": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
   "refmap": "tcc.refmap.json"
 }

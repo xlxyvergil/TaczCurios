@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccAttributes;
@@ -125,6 +126,11 @@ public class HeavenFireJudgment extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.damage_conversion",
                 String.format("%.0f", conversionPercent)));
         
+        // 虚数侵染上限
+        int infectionMax = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.inflection_max",
+                String.format("%d", infectionMax)));
+        
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
@@ -162,8 +168,10 @@ public class HeavenFireJudgment extends BaseCurioItem {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get())) return;
 
         // 转换为虚数伤害
-        event.setDamageSource(com.tacz.guns.api.event.common.GunDamageSourcePart.NON_ARMOR_PIERCING,
-            TccDamageSources.imaginaryDamage(attacker));
+        event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
+        event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
     }
     
     /**
@@ -268,7 +276,14 @@ public class HeavenFireJudgment extends BaseCurioItem {
      * 检查实体是否装备了天火圣裁
      */
     public static boolean hasHeavenFireJudgmentEquipped(LivingEntity livingEntity) {
-        // 使用Curios API检查实体是否装备了天火圣裁
+        return !findEquippedStack(livingEntity).isEmpty();
+    }
+    
+    /**
+     * 从天火饰品槽位中查找已装备的天火圣裁实例
+     * @return 已装备的 ItemStack，未装备返回 ItemStack.EMPTY
+     */
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CuriosApi.getCuriosInventory(livingEntity)
             .map(handler -> {
                 var stacksHandler = handler.getCurios().get("tcc_slot");
@@ -276,13 +291,13 @@ public class HeavenFireJudgment extends BaseCurioItem {
                     for (int i = 0; i < stacksHandler.getSlots(); i++) {
                         ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
                         if (stack.getItem() instanceof HeavenFireJudgment) {
-                            return true;
+                            return stack;
                         }
                     }
                 }
-                return false;
+                return ItemStack.EMPTY;
             })
-            .orElse(false);
+            .orElse(ItemStack.EMPTY);
     }
     
     /**
@@ -297,13 +312,14 @@ public class HeavenFireJudgment extends BaseCurioItem {
      * 血量变化回调 - 由 HeavenFireHealthListener 调用
      */
     public static void onHealthChanged(LivingEntity entity) {
-        if (!hasHeavenFireJudgmentEquipped(entity)) {
+        ItemStack equippedStack = findEquippedStack(entity);
+        if (equippedStack.isEmpty()) {
             return;
         }
         
         float healthPercentage = entity.getHealth() / entity.getMaxHealth();
         ItemStack mainHandItem = entity.getMainHandItem();
-        HeavenFireJudgment instance = new HeavenFireJudgment(new net.minecraft.world.item.Item.Properties());
+        HeavenFireJudgment instance = (HeavenFireJudgment) equippedStack.getItem();
         
         if (healthPercentage > 0.4) {
             // 血量 > 40% 时恢复属性

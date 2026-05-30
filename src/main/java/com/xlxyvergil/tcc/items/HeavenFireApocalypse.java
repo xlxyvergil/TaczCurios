@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -146,6 +147,8 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         double healthCost = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
         int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100);
+        int potionAmplifier = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get();
+        int totalNearbyPlayerDamageBoost = nearbyPlayerDamageBoost * (potionAmplifier + 1);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.effect", 
                 String.format("%+.0f", damageBoost), 
@@ -153,13 +156,20 @@ public class HeavenFireApocalypse extends BaseCurioItem {
                 String.format("%+.0f", explosionDamageBoost), 
                 String.format("%+.0f", healthCost),
                 String.format("%+.0f", nearbyPlayerRadius), 
-                String.format("%+d", nearbyPlayerDamageBoost),
+                String.format("%+d", totalNearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration)));
         
         // 伤害转换信息
         double conversionPercent = (1 - TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get()) * 100;
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.damage_conversion",
                 String.format("%.0f", conversionPercent)));
+        
+        // 虚数侵染上限 + 虚数崩解
+        int infectionMax = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
+                String.format("%d", infectionMax)));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.collapse_info")
+            .withStyle(ChatFormatting.DARK_PURPLE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -190,8 +200,10 @@ public class HeavenFireApocalypse extends BaseCurioItem {
 
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
 
-        event.setDamageSource(com.tacz.guns.api.event.common.GunDamageSourcePart.NON_ARMOR_PIERCING,
-            TccDamageSources.imaginaryDamage(attacker));
+        event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
+        event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
     }
     
     /**
@@ -244,14 +256,15 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         attacker.setHealth(newHealth);
         
-        // 施加延迟标记效果，6秒后在第5秒时自动施加天火流血
+        // 施加延迟标记效果，延迟后自动施加天火流血
+        int delayDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseDelayDuration.get();
         attacker.addEffect(new MobEffectInstance(
             TccMobEffects.HEAVEN_FIRE_APOCALYPSE_DELAY.get(),
-            120,  // 6秒(120tick)
+            delayDuration * 20,
             0,
             false,  // 不是药水
             false,  // 不显示粒子
-            false   // 不显示图标
+            true    // 显示图标
         ));
         
         // 获取配置中的影响范围
@@ -282,7 +295,14 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      * 检查生物是否装备了天火劫灭
      */
     public static boolean hasHeavenFireApocalypseEquipped(LivingEntity livingEntity) {
-        // 使用Curios API检查生物是否装备了天火劫灭
+        return !findEquippedStack(livingEntity).isEmpty();
+    }
+    
+    /**
+     * 从天火饰品槽位中查找已装备的天火劫灭实例
+     * @return 已装备的 ItemStack，未装备返回 ItemStack.EMPTY
+     */
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CuriosApi.getCuriosInventory(livingEntity)
             .map(handler -> {
                 var stacksHandler = handler.getCurios().get("tcc_slot");
@@ -290,13 +310,13 @@ public class HeavenFireApocalypse extends BaseCurioItem {
                     for (int i = 0; i < stacksHandler.getSlots(); i++) {
                         ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
                         if (stack.getItem() instanceof HeavenFireApocalypse) {
-                            return true;
+                            return stack;
                         }
                     }
                 }
-                return false;
+                return ItemStack.EMPTY;
             })
-            .orElse(false);
+            .orElse(ItemStack.EMPTY);
     }
     
     /**
@@ -311,13 +331,14 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      * 血量变化回调 - 由 HeavenFireHealthListener 调用
      */
     public static void onHealthChanged(LivingEntity entity) {
-        if (!hasHeavenFireApocalypseEquipped(entity)) {
+        ItemStack equippedStack = findEquippedStack(entity);
+        if (equippedStack.isEmpty()) {
             return;
         }
         
         float healthPercentage = entity.getHealth() / entity.getMaxHealth();
         ItemStack mainHandItem = entity.getMainHandItem();
-        HeavenFireApocalypse instance = new HeavenFireApocalypse(new net.minecraft.world.item.Item.Properties());
+        HeavenFireApocalypse instance = (HeavenFireApocalypse) equippedStack.getItem();
         
         if (healthPercentage >= 1.0) {
             // 满血时恢复属性

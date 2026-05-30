@@ -273,6 +273,13 @@ public class SummerBeach extends BaseCurioItem {
         double multiplier = TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get();
         tooltip.add(Component.translatable("item.tcc.summer_beach.heaven_fire_boost", String.format("%.0f", multiplier * 100))
             .withStyle(ChatFormatting.GOLD));
+
+        // EL 第四诅咒削弱（仅加载神秘遗物时显示）
+        if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
+            double curseReduction = TaczCuriosConfig.COMMON.summerBeachELCurseReduction.get();
+            tooltip.add(Component.translatable("item.tcc.summer_beach.el_curse_reduction", String.format("%.0f", curseReduction * 100))
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        }
         
         // 显示每个实体的击杀进度
         List<? extends List<String>> requirements = TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get();

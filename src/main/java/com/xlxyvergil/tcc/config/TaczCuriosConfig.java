@@ -28,11 +28,18 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
         public final ForgeConfigSpec.IntValue heavenFireBleedingMaxLevel;
         public final ForgeConfigSpec.IntValue heavenFireBleedingDuration;
+        public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
-        // 虚数流血效果配置
-        public final ForgeConfigSpec.DoubleValue imaginaryBleedingDamagePerLevel;
-        public final ForgeConfigSpec.IntValue imaginaryBleedingMaxLevel;
-        public final ForgeConfigSpec.IntValue imaginaryBleedingDuration;
+        // 虚数侵染效果配置
+        public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
+        public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
+        public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
+        
+        // 按饰品分级的虚数侵染上限
+        public final ForgeConfigSpec.IntValue judgmentImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
 
         // 天火劫灭配置
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
@@ -176,6 +183,7 @@ public class TaczCuriosConfig {
         
         // 夏日沙滩配置
         public final ForgeConfigSpec.DoubleValue summerBeachHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue summerBeachELCurseReduction;
         public final ForgeConfigSpec.ConfigValue<String> summerBeachObtainEntity;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachEvolutionRequirements;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachResistanceEntities;
@@ -184,6 +192,7 @@ public class TaczCuriosConfig {
         
         // 梵天百兽配置
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue brahmaBeastsELCurseReduction;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsEvolutionRequirements;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsResistanceEntities;
         public final ForgeConfigSpec.IntValue brahmaBeastsBaseResistance;
@@ -191,6 +200,7 @@ public class TaczCuriosConfig {
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue salvationELCurseReduction;
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
         public final ForgeConfigSpec.IntValue salvationResistanceLevel;
         
@@ -198,6 +208,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
         public final ForgeConfigSpec.DoubleValue endlessExplosionDamage;
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerDamageBoost;
+        public final ForgeConfigSpec.IntValue endlessNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue endlessNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> endlessGunTypes;
@@ -283,19 +294,38 @@ public class TaczCuriosConfig {
             heavenFireBleedingDuration = builder
                     .comment("流血效果持续时间(秒) (默认: 5)")
                     .defineInRange("duration", 5, 1, 60);
+            heavenFireApocalypseDelayDuration = builder
+                    .comment("天火劫灭扣血后延迟施加流血的时长(秒) (默认: 3, 最小: 1)")
+                    .defineInRange("delayDuration", 3, 1, 60);
             builder.pop();
             
-            // 虚数流血效果配置
-            builder.comment("虚数流血效果配置").push("imaginary_bleeding");
-            imaginaryBleedingDamagePerLevel = builder
-                    .comment("每级虚数流血效果造成的最大生命值比例伤害 (默认: -0.01 = -1% maxHP/级)")
-                    .defineInRange("damagePerLevel", -0.01, -1, 0);
-            imaginaryBleedingMaxLevel = builder
-                    .comment("虚数流血效果最大等级 (默认: 5)")
-                    .defineInRange("maxLevel", 5, 1, 10);
-            imaginaryBleedingDuration = builder
-                    .comment("虚数流血效果持续时间(秒) (默认: 10)")
-                    .defineInRange("duration", 10, 1, 60);
+            // 虚数侵染效果配置
+            builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤计算公式：最终伤害 = 伤害 × (1 + 层数 × ampPerLevel)）").push("imaginary_infection");
+            imaginaryInfectionAmpPerLevel = builder
+                    .comment("每层虚数侵染的增伤比例 (默认: 0.1 = 10%/层)")
+                    .defineInRange("ampPerLevel", 0.1, 0.01, 1.0);
+            imaginaryInfectionMaxLevel = builder
+                    .comment("虚数侵染效果最大等级上限 (默认: 99)")
+                    .defineInRange("maxLevel", 99, 1, 99);
+            imaginaryInfectionDuration = builder
+                    .comment("虚数侵染效果持续时间(秒) (默认: 15)")
+                    .defineInRange("duration", 15, 1, 300);
+            imaginaryInfectionResistanceReduction = builder
+                    .comment("虚数侵染降低的虚数抗性值 (默认: 10)")
+                    .defineInRange("resistanceReduction", 10.0, 0, 100);
+            builder.pop();
+            
+            // 按饰品分级的虚数侵染上限
+            builder.comment("按饰品分级的虚数侵染上限（当攻击者携带对应饰品时，目标虚数侵染不会超过此等级）").push("imaginary_infection_per_curio");
+            judgmentImaginaryInfectionMaxLevel = builder
+                    .comment("天火圣裁的虚数侵染上限 (默认: 3)")
+                    .defineInRange("judgmentMaxLevel", 3, 1, 99);
+            apocalypseImaginaryInfectionMaxLevel = builder
+                    .comment("天火劫灭的虚数侵染上限 (默认: 6)")
+                    .defineInRange("apocalypseMaxLevel", 6, 1, 99);
+            endlessImaginaryInfectionMaxLevel = builder
+                    .comment("劫灭无尽的虚数侵染上限 (默认: 9)")
+                    .defineInRange("endlessMaxLevel", 9, 1, 99);
             builder.pop();
             
             // 天火劫灭配置
@@ -639,6 +669,9 @@ public class TaczCuriosConfig {
             summerBeachHeavenFireMultiplier = builder
                     .comment("夏日沙滩对天火饰品效果的增强系数 (默认: 2.0)")
                     .defineInRange("heavenFireMultiplier", 2.0, 1, 100);
+            summerBeachELCurseReduction = builder
+                    .comment("夏日沙滩对第四诅咒效果的削弱比例 (默认: 0.25 = 抵消25%的诅咒效果)")
+                    .defineInRange("elCurseReduction", 0.25, 0, 1);
             summerBeachObtainEntity = builder
                     .comment("夏日沙滩饰品获取所需击杀的实体命名空间 (默认: minecraft:wither)")
                     .define("obtainEntity", "minecraft:wither");
@@ -668,6 +701,9 @@ public class TaczCuriosConfig {
             brahmaBeastsHeavenFireMultiplier = builder
                     .comment("梵天百兽对天火饰品效果的增强系数 (默认: 4.0)")
                     .defineInRange("heavenFireMultiplier", 4.0, 1, 100);
+            brahmaBeastsELCurseReduction = builder
+                    .comment("梵天百兽对第四诅咒效果的削弱比例 (默认: 0.5 = 抵消50%的诅咒效果)")
+                    .defineInRange("elCurseReduction", 0.5, 0, 1);
             brahmaBeastsEvolutionRequirements = builder
                     .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
                             "默认: [[minecraft:ender_dragon, 30]]")
@@ -693,6 +729,9 @@ public class TaczCuriosConfig {
             salvationHeavenFireMultiplier = builder
                     .comment("救世对天火饰品效果的增强系数 (默认: 6.0)")
                     .defineInRange("heavenFireMultiplier", 6.0, 1, 100);
+            salvationELCurseReduction = builder
+                    .comment("救世对第四诅咒效果的削弱比例 (默认: 1.0 = 完全免疫第四诅咒)")
+                    .defineInRange("elCurseReduction", 1.0, 0, 1);
             salvationDamageReduction = builder
                     .comment("救世伤害降低比例 (默认: 0.3 = 30%)")
                     .defineInRange("damageReduction", 0.3, 0, 1);
@@ -712,6 +751,9 @@ public class TaczCuriosConfig {
             endlessNearbyPlayerDamageBoost = builder
                     .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
+            endlessNearbyPlayerPotionAmplifier = builder
+                    .comment("附近玩家获得的药水效果等级 (0=1级, 默认: 2 = 3级 = 3×100%% = 300%%)")
+                    .defineInRange("nearbyPlayerPotionAmplifier", 2, 0, 999);
             endlessNearbyPlayerDuration = builder
                     .comment("附近玩家获得伤害加成的持续时间(秒) (默认: 15)")
                     .defineInRange("nearbyPlayerDuration", 15, -1, 300);

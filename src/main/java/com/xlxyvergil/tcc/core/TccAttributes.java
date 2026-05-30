@@ -20,11 +20,12 @@ public class TccAttributes {
             () -> new RangedAttribute("attribute.name.tcc.imaginary_damage", 0.0D, 0.0D, 1000.0D).setSyncable(true));
     
     /**
-     * 虚数伤害抗性 - 按百分比抵消虚数伤害（1-100）
+     * 虚数伤害抗性 - 范围 -100 到 +100，默认 0
+     * 正值降低虚数伤害，负值增加虚数伤害
      */
     public static final RegistryObject<Attribute> IMAGINARY_DAMAGE_RESISTANCE = 
         ATTRIBUTES.register("imaginary_damage_resistance", 
-            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 1.0D, 1.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 0.0D, -100.0D, 100.0D).setSyncable(true));
     
     public static void register(IEventBus modEventBus) {
         ATTRIBUTES.register(modEventBus);

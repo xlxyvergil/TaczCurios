@@ -201,6 +201,13 @@ public class BrahmaBeasts extends BaseCurioItem {
         double multiplier = TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get();
         tooltip.add(Component.translatable("item.tcc.brahma_beasts.heaven_fire_boost", String.format("%.0f", multiplier * 100))
             .withStyle(ChatFormatting.GOLD));
+
+        // EL 第四诅咒削弱（仅加载神秘遗物时显示）
+        if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
+            double curseReduction = TaczCuriosConfig.COMMON.brahmaBeastsELCurseReduction.get();
+            tooltip.add(Component.translatable("item.tcc.brahma_beasts.el_curse_reduction", String.format("%.0f", curseReduction * 100))
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        }
         
         List<? extends List<String>> requirements = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements.get();
         if (!requirements.isEmpty()) {
