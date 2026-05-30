@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -35,27 +35,25 @@ import java.util.List;
  * 最后扣除祭品全部血量
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class KikakuIchijin extends ItemBaseCurio {
+public class KikakuIchijin extends BaseCurioItem {
 
     public KikakuIchijin(Properties properties) {
         super(properties);
     }
 
     /**
-     * 检查是否可以装备到指定插槽
+     * 掎角一阵没有属性效果，只有事件触发逻辑
      */
     @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return slotContext.identifier().equals("tcc_slot");
+    protected void applyEffects(LivingEntity livingEntity) {
+        // 无属性效果
     }
 
-    /**
-     * 当物品在Curios插槽中时被右键点击
-     */
     @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
+    protected void removeEffects(LivingEntity livingEntity) {
+        // 无属性效果
     }
+
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
@@ -78,7 +76,7 @@ public class KikakuIchijin extends ItemBaseCurio {
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
 
         // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.mythic"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
     }
 
     /**

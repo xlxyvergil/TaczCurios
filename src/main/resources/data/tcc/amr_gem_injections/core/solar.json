@@ -1,0 +1,23 @@
+{
+  "gem": "apotheosis:core/solar",
+  "bonuses": [{
+    "type": "apotheosis:attribute",
+    "gem_class": {
+      "key": "tcc_slot",
+      "types": [
+        "curios:tcc_slot",
+        "curios:tcc_3rd"
+      ]
+    },
+    "attribute": "attributeslib:fire_damage",
+    "operation": "ADDITION",
+    "values": {
+      "common": 1.0,
+      "uncommon": 2.0,
+      "rare": 3.0,
+      "epic": 4.0,
+      "mythic": 5.0,
+      "ancient": 6.0
+    }
+  }]
+}

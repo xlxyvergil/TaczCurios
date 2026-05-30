@@ -2,18 +2,17 @@ package com.xlxyvergil.tcc.items;
 
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.UUID;
  * 腐败弹匣 - +66%弹匣容量，-33%装填速度
  * 效果：提升66%弹匣容量（加算），降低33%装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
-public class CorruptMagazine extends ItemBaseCurio {
+public class CorruptMagazine extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID MAGAZINE_UUID = UUID.fromString("5d489ba1-55da-4f3a-83ea-69096eb4cccb");
@@ -33,156 +32,35 @@ public class CorruptMagazine extends ItemBaseCurio {
     private static final String MAGAZINE_NAME = "tcc.corrupt_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.corrupt_magazine.reload_speed";
     
-
-    
     public CorruptMagazine(Properties properties) {
-        super(properties
-            .stacksTo(1)
-            .rarity(Rarity.RARE));
-    }
-    
-    /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给生物添加属性修改
-        applyCorruptMagazineEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除生物的属性修改
-        removeCorruptMagazineEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 检查是否可以装备到指定插槽
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        return slotContext.identifier().equals("tcc_slot");
-    }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点击
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
+        super(properties);
     }
     
     /**
      * 应用腐败弹匣效果
      * 提升弹匣容量（加算）并降低装填速度（加算）
      */
-    public void applyCorruptMagazineEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 弹匣容量属性（不带枪械类型）
-        var capacityAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-        
-        // 装填速度属性（不带枪械类型）
-        var reloadAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "reload_time")
-            )
-        );
-        
-        // 应用弹匣容量提升（加算）
-        if (capacityAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            capacityAttribute.removeModifier(MAGAZINE_UUID);
-            
-            // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-                // 获取配置中的弹匣容量加成值
-                double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get();
-                // 添加配置的弹匣容量加成（加算）
-                var magazineModifier = new AttributeModifier(
-                    MAGAZINE_UUID,
-                    MAGAZINE_NAME,
-                    magazineBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                capacityAttribute.addPermanentModifier(magazineModifier);
-            }
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
+        // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+            double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get();
+            double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadPenalty, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
-        
-        // 应用装填速度降低（加算）
-        if (reloadAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            reloadAttribute.removeModifier(RELOAD_UUID);
-            
-            // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-            if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-                // 获取配置中的装填速度降低值
-                double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
-                // 添加配置的装填速度降低（加算）
-                var reloadModifier = new AttributeModifier(
-                    RELOAD_UUID,
-                    RELOAD_NAME,
-                    reloadPenalty,
-                    AttributeModifier.Operation.ADDITION
-                );
-                reloadAttribute.addPermanentModifier(reloadModifier);
-            }
-        }
-        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
      * 移除腐败弹匣效果
      */
-    public void removeCorruptMagazineEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 弹匣容量属性（不带枪械类型）
-        var magazineAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-        
-        // 装填速度属性（不带枪械类型）
-        var reloadAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_time")
-            )
-        );
-        
-        // 移除弹匣容量加成
-        if (magazineAttribute != null) {
-            magazineAttribute.removeModifier(MAGAZINE_UUID);
-        }
-        
-        // 移除装填速度降低
-        if (reloadAttribute != null) {
-            reloadAttribute.removeModifier(RELOAD_UUID);
-        }
-    }
-    
-    /**
-     * 当玩家持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        applyCorruptMagazineEffects((LivingEntity) slotContext.entity());
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
     }
     
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -214,6 +92,6 @@ public class CorruptMagazine extends ItemBaseCurio {
      */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyCorruptMagazineEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }

@@ -1,18 +1,16 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,9 +18,9 @@ import java.util.UUID;
 
 /**
  * 串联弹匣Prime - 提升弹匣容量
- * 效果：提5%弹匣容量，仅对手枪生
+ * 效果：提升弹匣容量，仅对手枪生效
  */
-public class TandemMagazinePrime extends ItemBaseCurio {
+public class TandemMagazinePrime extends BaseCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("6f7eb1f1-c846-47cc-bbc7-73813bb57e30");
@@ -31,120 +29,20 @@ public class TandemMagazinePrime extends ItemBaseCurio {
     private static final String MAGAZINE_NAME = "tcc.tandem_magazine_prime.magazine_capacity";
 
     public TandemMagazinePrime(Properties properties) {
-        super(properties
-            .stacksTo(1)
-            .rarity(Rarity.EPIC));
+        super(properties);
     }
 
-    /**
-     * 当饰品被装备时调用
-     */
     @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-
-        // 给生物添加属性修改
-        applyTandemMagazinePrimeEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-
-        // 移除生物的属性修改
-        removeTandemMagazinePrimeEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 检查是否可以装备到指定插槽
-     * TandemMagazinePrime与TandemMagazine互斥，不能同时装
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        
-        // 检查是否已经装备了TandemMagazine
-        return !top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity())
-            .map(inv -> inv.findFirstCurio(
-                itemStack -> itemStack.getItem() instanceof TandemMagazine))
-            .orElse(java.util.Optional.empty()).isPresent();
-    }
-
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-
-    /**
-     * 应用串联弹匣Prime效果
-     * 提升弹匣容量
-     */
-    public void applyTandemMagazinePrimeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 弹匣容量属
-        var magazineAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-
-        // 移除已存在的修饰
-        if (magazineAttribute != null) {
-            magazineAttribute.removeModifier(MAGAZINE_UUID);
-        }
-
-        // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
+    protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            // 获取配置中的弹匣容量加成
             double magazineBoost = TaczCuriosConfig.COMMON.tandemMagazinePrimeCapacityBoost.get();
-            // 添加配置的弹匣容量加成（加算
-            if (magazineAttribute != null) {
-                var magazineModifier = new AttributeModifier(
-                    MAGAZINE_UUID,
-                    MAGAZINE_NAME,
-                    magazineBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                magazineAttribute.addPermanentModifier(magazineModifier);
-            }
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
 
-    /**
-     * 移除串联弹匣Prime效果
-     */
-    public void removeTandemMagazinePrimeEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 弹匣容量属
-        var magazineAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-
-        if (magazineAttribute != null) {
-            magazineAttribute.removeModifier(MAGAZINE_UUID);
-        }
-    }
-
-    /**
-     * 当生物持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_UUID);
     }
 
     /**
@@ -169,14 +67,11 @@ public class TandemMagazinePrime extends ItemBaseCurio {
         tooltip.add(Component.translatable("tcc.tooltip.slot"));
 
         // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
     }
 
-    /**
-     * 当生物切换武器时应用效果
-     */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyTandemMagazinePrimeEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }

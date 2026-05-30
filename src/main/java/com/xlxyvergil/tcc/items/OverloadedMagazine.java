@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -11,8 +13,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.resources.ResourceLocation;
-import top.theillusivec4.curios.api.SlotContext;
 
 
 import javax.annotation.Nullable;
@@ -23,7 +23,7 @@ import java.util.UUID;
  * 过载弹匣 - 提升弹匣容量，降低装填速度
  * 效果：提升弹匣容量（加算），降低装填速度（加算）
  */
-public class OverloadedMagazine extends ItemBaseCurio {
+public class OverloadedMagazine extends BaseCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("ac732131-54e3-4205-addf-96167a044710");
@@ -38,142 +38,27 @@ public class OverloadedMagazine extends ItemBaseCurio {
     }
 
     /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-
-        // 给生物添加属性修改
-        applyOverloadedMagazineEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-
-        // 移除生物的属性修改
-        removeOverloadedMagazineEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 检查是否可以装备到指定插槽
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        return slotContext.identifier().equals("tcc_slot");
-    }
-
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-
-    /**
      * 应用过载弹匣效果
      * 提升弹匣容量（加算）和降低装填速度（加算）
      */
-    public void applyOverloadedMagazineEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 获取弹匣容量属
-        var capacityAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-
-        // 移除已存在的修饰
-        if (capacityAttribute != null) {
-            capacityAttribute.removeModifier(MAGAZINE_CAPACITY_UUID);
-        }
-
-        // 获取装填速度属
-        var reloadAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "reload_time")
-            )
-        );
-
-        if (reloadAttribute != null) {
-            reloadAttribute.removeModifier(RELOAD_UUID);
-        }
-
-        // 检查生物是否持有霰弹枪，只有持有霰弹枪时才应用加成
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            // 获取配置中的弹匣容量加成值和装填速度减益
             double magazineCapacityBoost = TaczCuriosConfig.COMMON.overloadedMagazineCapacityBoost.get();
             double reloadDebuff = TaczCuriosConfig.COMMON.overloadedMagazineReloadSpeedReduction.get();
 
-            // 应用弹匣容量加成
-            if (capacityAttribute != null) {
-                // 添加配置中的弹匣容量加成（加算）
-                var magazineCapacityModifier = new AttributeModifier(
-                    MAGAZINE_CAPACITY_UUID,
-                    MAGAZINE_CAPACITY_NAME,
-                    magazineCapacityBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                capacityAttribute.addPermanentModifier(magazineCapacityModifier);
-            }
-
-            // 应用装填速度减益
-            if (reloadAttribute != null) {
-                // 添加配置中的装填速度减益（加算）
-                var reloadModifier = new AttributeModifier(
-                    RELOAD_UUID,
-                    RELOAD_NAME,
-                    reloadDebuff,
-                    AttributeModifier.Operation.ADDITION
-                );
-                reloadAttribute.addPermanentModifier(reloadModifier);
-            }
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineCapacityBoost, MAGAZINE_CAPACITY_UUID, MAGAZINE_CAPACITY_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadDebuff, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
 
     /**
      * 移除过载弹匣效果
      */
-    public void removeOverloadedMagazineEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-
-        // 获取弹匣容量属
-        var capacityAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "magazine_capacity")
-            )
-        );
-
-        if (capacityAttribute != null) {
-            capacityAttribute.removeModifier(MAGAZINE_CAPACITY_UUID);
-        }
-
-        // 获取装填速度属
-        var reloadAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new ResourceLocation("taa", "reload_time")
-            )
-        );
-
-        if (reloadAttribute != null) {
-            reloadAttribute.removeModifier(RELOAD_UUID);
-        }
-    }
-
-    /**
-     * 当生物持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_CAPACITY_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
     }
 
     /**
@@ -208,6 +93,6 @@ public class OverloadedMagazine extends ItemBaseCurio {
      */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyOverloadedMagazineEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }

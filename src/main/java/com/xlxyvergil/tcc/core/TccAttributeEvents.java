@@ -1,67 +1,221 @@
 package com.xlxyvergil.tcc.core;
 
+import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.event.common.GunDamageSourcePart;
+import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
+import com.aizistral.enigmaticlegacy.items.CursedRing;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
+import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
+import com.xlxyvergil.tcc.items.HeavenFireJudgment;
+import com.xlxyvergil.tcc.items.BrahmaBeasts;
+import com.xlxyvergil.tcc.items.Salvation;
+import com.xlxyvergil.tcc.items.SummerBeach;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import com.xlxyvergil.tcc.mixin.LivingEntityAccessor;
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
-    
-    /**
-     * ç›‘å¬æ‰€æœ‰æ”»å‡»äº‹ä»¶ï¼Œé™„åŠ è™šç©ºä¼¤å®³
-     * é€‚ç”¨äºï¼šè¿‘æˆ˜ã€TACZæªæ¢°ã€å…¶ä»–æ¨¡ç»„çš„è¿œç¨‹/é­”æ³•æ”»å‡»
-     */
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void voidDamageOnAttack(LivingAttackEvent e) {
-        if (e.getEntity().level().isClientSide || e.getEntity().isDeadOrDying()) return;
-        
-        // è·å–æ”»å‡»è€…ï¼ˆå¯èƒ½æ˜¯ç©å®¶ã€å®ä½“ã€æˆ–nullï¼‰
-        if (e.getSource().getEntity() instanceof LivingEntity attacker) {
-            // è¯»å–æ”»å‡»è€…çš„è™šç©ºä¼¤å®³å±æ€§å€¼
-            double voidDmg = attacker.getAttributeValue(TccAttributes.VOID_DAMAGE.get());
-            
-            if (voidDmg > 0.001) {
-                LivingEntity target = e.getEntity();
-                
-                // è¯»å–ç›®æ ‡çš„è™šç©ºä¼¤å®³æŠ—æ€§ï¼ˆç™¾åˆ†æ¯”ï¼‰
-                double resistance = target.getAttributeValue(TccAttributes.VOID_DAMAGE_RESISTANCE.get());
-                
-                // è®¡ç®—å®é™…ä¼¤å®³ï¼šåº”ç”¨æŠ—æ€§å‡å…
-                float damage = (float) (voidDmg * (1.0 - resistance / 100.0));
-                
-                // å¦‚æœæŠ—æ€§ 100%ï¼Œå®Œå…¨å…ç–«
-                if (damage <= 0) {
-                    return;
-                }
-                
-                // è™šç©ºä¼¤å®³ï¼šç›´æ¥æ‰£é™¤ç”Ÿå‘½å€¼ï¼Œä¸ç¢°å¸æ”¶å€¼
-                float newHealth = target.getHealth() - damage;
-                
-                // æ£€æŸ¥æ˜¯å¦ä¼šè‡´æ­»ï¼Œå¦‚æœæ˜¯åˆ™å°è¯•è§¦å‘ä¸æ­»å›¾è…¾
-                if (newHealth <= 0) {
-                    // è°ƒç”¨åŸç‰ˆä¸æ­»å›¾è…¾æ£€æŸ¥æœºåˆ¶
-                    boolean totemActivated = ((LivingEntityAccessor) target).callCheckTotemDeathProtection(e.getSource());
-                    
-                    if (!totemActivated) {
-                        // æ²¡æœ‰ä¸æ­»å›¾è…¾ï¼Œç›´æ¥æ­»äº¡
-                        target.setHealth(0);
-                        target.die(e.getSource());
-                        return;
-                    }
-                    // ä¸æ­»å›¾è…¾å·²æ¿€æ´»ï¼ŒcheckTotemDeathProtection ä¼šè‡ªåŠ¨è®¾ç½®ç”Ÿå‘½å€¼ä¸º 1
-                    return;
-                }
-                
-                // ä¸ä¼šè‡´æ­»ï¼Œç›´æ¥è®¾ç½®æ–°ç”Ÿå‘½å€¼
-                target.setHealth(newHealth);
-                
-                // è§¦å‘å—ä¼¤æ•ˆæœ
-                target.hurtMarked = true;
+
+    @SubscribeEvent
+    public static void applyImaginaryInfection(EntityHurtByGunEvent.Post event) {
+        if (event.getLogicalSide().isClient()) return;
+        var target = event.getHurtEntity();
+        if (!(target instanceof LivingEntity living) || living.isDeadOrDying()) return;
+
+        DamageSource source = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
+        if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
+        if (source.getEntity() == target) return;
+
+        // È·¶¨¹¥»÷ÕßµÄÊÎÆ·µÈ¼¶À´¾ö¶¨ĞéÊıÇÖÈ¾ÉÏÏŞ
+        var srcEntity = source.getEntity();
+        if (!(srcEntity instanceof LivingEntity attacker)) return;
+
+        int maxLevel;
+        boolean canApplyCollapse = false;
+        if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
+            maxLevel = TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get();
+            canApplyCollapse = true;
+        } else if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
+            maxLevel = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
+            canApplyCollapse = true;
+        } else if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
+            maxLevel = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();
+        } else {
+            return;
+        }
+
+        if (maxLevel <= 0) return;
+        int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
+
+        // Ê©¼ÓĞéÊıÇÖÈ¾£¨¿Éµş¼Ó£¬ÊÜÊÎÆ··Ö¼¶ÉÏÏŞÔ¼Êø£©
+        var imaginaryInfection = TccMobEffects.IMAGINARY_INFECTION.get();
+        MobEffectInstance existingEffect = living.getEffect(imaginaryInfection);
+        int newAmplifier = 0;
+        if (existingEffect != null) {
+            newAmplifier = Math.min(existingEffect.getAmplifier() + 1, maxLevel - 1);
+        }
+        var newInstance = new MobEffectInstance(
+            imaginaryInfection,
+            duration * 20,
+            newAmplifier,
+            false, false, true
+        );
+        // MineFargo Ä£Ê½£ºaddEffect ´¥·¢ÊÂ¼ş/ÊôĞÔ£¬forceAddEffect ±£Ö¤Ê±³¤Ë¢ĞÂ
+        living.addEffect(newInstance, attacker);
+        forceAddEffect(living, newInstance);
+
+        // ½öÌì»ğ½ÙÃğ/½ÙÃğÎŞ¾¡¿É´¥·¢ĞéÊı±À½â
+        // ×ÔÈ»ÏûÊ§Ç°ÎŞ·¨ÔÙ´ÎÊ©¼Ó£¬±ÜÃâÇ¹ĞµÁ¬Éäµ¼ÖÂ duration ±»·´¸´Ë¢ĞÂÎª 20 µÄ±¶Êı£¬
+        // ½ø¶øÊ¹ isDurationEffectTick(duration % 20 == 0) Æµ·±ÃüÖĞ£¬Ôì³ÉÒì³£¸ßÉËº¦¡£
+        if (canApplyCollapse) {
+            var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
+            if (!living.hasEffect(collapse)) {
+                var collapseInstance = new MobEffectInstance(
+                    collapse,
+                    duration * 20,
+                    0,
+                    false, false, true
+                );
+                living.addEffect(collapseInstance, attacker);
+                forceAddEffect(living, collapseInstance);
             }
         }
+    }
+
+    /**
+     * ÍêÈ«¸´¿Ì MineFargo MyGoUtil.addEffect Ä£Ê½£º
+     * - getActiveEffectsMap().put Ö±½Ó²Ù×÷ Map£¬²»´¥·¢ onEffectAdded/onEffectUpdated
+     * - ²» post MobEffectEvent.Added£¬±ÜÃâÈÎºÎÍâ²¿¼àÌıÆ÷¸ÉÈÅ
+     * - old.update(ins) ÔÚÔ­µØË¢ĞÂÊ±³¤/µÈ¼¶
+     */
+    private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
+        MobEffect effect = ins.getEffect();
+        MobEffectInstance old = e.getActiveEffectsMap().get(effect);
+        if (old == null) {
+            e.getActiveEffectsMap().put(effect, ins);
+            effect.addAttributeModifiers(e, e.getAttributes(), ins.getAmplifier());
+            // Í¬²½¿Í»§¶Ë£¨ÈÆ¹ı addEffect ÄÚ MobEffectEvent.Added£¬±ÜÃâ´¥·¢Íâ²¿¼àÌıÆ÷£©
+            e.onEffectAdded(ins, null);
+        } else {
+            int prevAmp = old.getAmplifier();
+            old.update(ins);
+            if (old.getAmplifier() != prevAmp) {
+                effect.addAttributeModifiers(e, e.getAttributes(), old.getAmplifier());
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
+        LivingEntity target = event.getEntity();
+        if (target.level().isClientSide || target.isDeadOrDying()) return;
+
+        DamageSource source = event.getSource();
+
+        if (source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) {
+            double resistance = target.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            // ¿¹ĞÔ·¶Î§ -100~100£¬ÕıÖµ°´°Ù·Ö±È¼õÉË£¬¸ºÖµ°´°Ù·Ö±ÈÔöÉË
+            resistance = Math.max(-100.0, Math.min(100.0, resistance));
+
+            float originalDamage = event.getAmount();
+            float damageAfterResistance = (float) (originalDamage * (1.0 - resistance / 100.0));
+
+            double ampPerLevel = TaczCuriosConfig.COMMON.imaginaryInfectionAmpPerLevel.get();
+            int infectionLevel = 0;
+            var infectionEffect = TccMobEffects.IMAGINARY_INFECTION.get();
+            if (infectionEffect != null) {
+                var effectInstance = target.getEffect(infectionEffect);
+                if (effectInstance != null) {
+                    infectionLevel = effectInstance.getAmplifier() + 1;
+                }
+            }
+            float finalDamage = (float) (damageAfterResistance * (1.0 + infectionLevel * ampPerLevel));
+
+            event.setAmount(finalDamage);
+        }
+    }
+
+    /**
+     * ĞéÊıÇÖÈ¾/ĞéÊı±À½â³ÖĞøÆÚ¼äÒÖÖÆÉúÃü»Ö¸´¡£
+     */
+    @SubscribeEvent
+    public static void onLivingHeal(LivingHealEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.hasEffect(TccMobEffects.IMAGINARY_INFECTION.get())
+                || entity.hasEffect(TccMobEffects.IMAGINARY_COLLAPSE.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    /**
+     * ×èÖ¹ tcc Ä£×éµÄĞ§¹û±»ÒÆ³ı£¨Forge ÊÂ¼şË«ÖØ±£ÏÕ£©¡£
+     * ÓÅÏÈ¼¶ HIGHEST È·±£×îÏÈ´¦Àí£¬ÔÚÆäËû¼àÌıÆ÷Ö®Ç°À¹½Ø¡£
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onEffectRemove(MobEffectEvent.Remove event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.isDeadOrDying()) return;
+        
+        MobEffect effect = event.getEffect();
+        if (effect == null) return;
+        
+        var key = ForgeRegistries.MOB_EFFECTS.getKey(effect);
+        if (key != null && key.getNamespace().equals("tcc")) {
+            MobEffectInstance instance = entity.getActiveEffectsMap().get(effect);
+            if (instance != null && instance.getDuration() > 0) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    /**
+     * EL µÚËÄ×çÖä²¹³¥£º¸ù¾İ×°±¸µÄÊÎÆ·µÈ¼¶£¬µİ¼õĞÔµÖÏûÆßÖäÖ®½ä¶Ô¹ÖÎï/EnderDragon µÄÉËº¦½µµÍĞ§¹û¡£
+     * ÓÅÏÈ¼¶ LOWEST È·±£ÔÚ EL µÄ LivingHurtEvent ´¦ÀíÆ÷Ö®ºóÖ´ĞĞ¡£
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingHurtELCurseCompensation(LivingHurtEvent event) {
+        if (!ModList.get().isLoaded("enigmaticlegacy")) return;
+        if (event.getEntity().level().isClientSide()) return;
+        // EL µÚËÄ×çÖä½ö¶Ô Monster ºÍ EnderDragon ÉúĞ§
+        if (!(event.getEntity() instanceof Monster || event.getEntity() instanceof EnderDragon)) return;
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
+        if (!SuperpositionHandler.isTheCursedOne(player)) return;
+
+        // °´ÊÎÆ·µÈ¼¶È·¶¨×çÖäÏ÷¼õ±ÈÀı£¨Í¨¹ıÅäÖÃÎÄ¼ş¿Éµ÷£©
+        double curseReduction;
+        if (Salvation.hasSalvationEquipped(player)) {
+            curseReduction = TaczCuriosConfig.COMMON.salvationELCurseReduction.get();
+        } else if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
+            curseReduction = TaczCuriosConfig.COMMON.brahmaBeastsELCurseReduction.get();
+        } else if (SummerBeach.hasSummerBeachEquipped(player)) {
+            curseReduction = TaczCuriosConfig.COMMON.summerBeachELCurseReduction.get();
+        } else {
+            return;
+        }
+
+        // modifier = EL ÒÑÓ¦ÓÃµÄÉËº¦±¶ÂÊ£¨Ä¬ÈÏ 0.5£©
+        double modifier = CursedRing.monsterDamageDebuff.getValue().asModifierInverted();
+        // effectiveModifier = modifier + reduction * (1 - modifier)
+        double effectiveModifier = modifier + curseReduction * (1.0 - modifier);
+        // compensation = effectiveModifier / modifier °ÑÉËº¦»Ö¸´µ½Ä¿±êË®Æ½
+        float compensation = (float) (effectiveModifier / modifier);
+        event.setAmount(event.getAmount() * compensation);
     }
 }

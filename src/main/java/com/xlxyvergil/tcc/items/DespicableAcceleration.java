@@ -1,15 +1,16 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -17,18 +18,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
-
 /**
  * 卑劣加速 - 提升射击速度，但降低通用伤害和全部7种特定枪械伤害
  * 效果：射击速度+X%，通用伤害-Y%，特定枪械伤害-Y%
  */
-public class DespicableAcceleration extends ItemBaseCurio {
+public class DespicableAcceleration extends BaseCurioItem {
     
     // 7种特定枪械伤害属性的UUID和配置
     private static final Map<String, UUID> DAMAGE_UUIDS = new HashMap<>();
     private static final Map<String, String> DAMAGE_NAMES = new HashMap<>();
-    private static final Map<String, String> DAMAGE_DISPLAY_NAMES = new HashMap<>();
     
     static {
         // 初始化7种特定枪械的UUID和名称
@@ -47,14 +45,6 @@ public class DespicableAcceleration extends ItemBaseCurio {
         DAMAGE_NAMES.put("smg", "tcc.despicable_acceleration.smg_damage");
         DAMAGE_NAMES.put("lmg", "tcc.despicable_acceleration.lmg_damage");
         DAMAGE_NAMES.put("launcher", "tcc.despicable_acceleration.launcher_damage");
-        
-        DAMAGE_DISPLAY_NAMES.put("pistol", "手枪");
-        DAMAGE_DISPLAY_NAMES.put("rifle", "步枪");
-        DAMAGE_DISPLAY_NAMES.put("shotgun", "霰弹枪");
-        DAMAGE_DISPLAY_NAMES.put("sniper", "狙击枪");
-        DAMAGE_DISPLAY_NAMES.put("smg", "冲锋枪");
-        DAMAGE_DISPLAY_NAMES.put("lmg", "轻机枪");
-        DAMAGE_DISPLAY_NAMES.put("launcher", "发射器");
     }
     
     // 射击速度和通用伤害的属性修饰符
@@ -70,108 +60,22 @@ public class DespicableAcceleration extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给生物添加射击速度和伤害属性修改
-        applyAccelerationEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除生物的射击速度和伤害属性修改
-        removeAccelerationEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点击
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
-    }
-    
-    /**
      * 应用加速效果
      * 提升射击速度，降低通用伤害和7种特定枪械伤害
      */
-    private void applyAccelerationEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 获取配置中的射击速度加成和伤害降低值
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
         double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get();
         double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get();
         
-        // 应用射击速度提升
-        var rpmAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "rounds_per_minute")
-            )
-        );
-        
-        if (rpmAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            rpmAttribute.removeModifier(FIRING_SPEED_UUID);
-            
-            // 添加配置中的射击速度加成
-            var firingSpeedModifier = new AttributeModifier(
-                FIRING_SPEED_UUID,
-                FIRING_SPEED_NAME,
-                firingSpeedBoost,
-                AttributeModifier.Operation.ADDITION
-            );
-            rpmAttribute.addPermanentModifier(firingSpeedModifier);
-        }
-        
-        // 应用通用伤害降低
-        var generalDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        if (generalDamageAttribute != null) {
-            // 检查是否已经存在相同的修饰符，如果存在则移除
-            generalDamageAttribute.removeModifier(GENERAL_DAMAGE_UUID);
-            
-            // 添加配置中的通用伤害降低
-            var generalDamageModifier = new AttributeModifier(
-                GENERAL_DAMAGE_UUID,
-                GENERAL_DAMAGE_NAME,
-                damageReduction,
-                AttributeModifier.Operation.ADDITION
-            );
-            generalDamageAttribute.addPermanentModifier(generalDamageModifier);
-        }
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, firingSpeedBoost, FIRING_SPEED_UUID, FIRING_SPEED_NAME, AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageReduction, GENERAL_DAMAGE_UUID, GENERAL_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
         
         // 应用7种特定枪械伤害降低
         for (String gunType : DAMAGE_UUIDS.keySet()) {
-            var specificDamageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_" + gunType)
-                )
-            );
-            
-            if (specificDamageAttribute != null) {
-                // 检查是否已经存在相同的修饰符，如果存在则移除
-                specificDamageAttribute.removeModifier(DAMAGE_UUIDS.get(gunType));
-                
-                // 添加配置中的特定枪械伤害降低
-                var specificDamageModifier = new AttributeModifier(
-                    DAMAGE_UUIDS.get(gunType),
-                    DAMAGE_NAMES.get(gunType),
-                    damageReduction,
-                    AttributeModifier.Operation.ADDITION
-                );
-                specificDamageAttribute.addPermanentModifier(specificDamageModifier);
+            var attribute = getAttributeByType(gunType);
+            if (attribute != null) {
+                AttributeHelper.applyModifier(livingEntity, attribute, damageReduction, DAMAGE_UUIDS.get(gunType), DAMAGE_NAMES.get(gunType), AttributeModifier.Operation.ADDITION);
             }
         }
     }
@@ -179,53 +83,36 @@ public class DespicableAcceleration extends ItemBaseCurio {
     /**
      * 移除加速效果
      */
-    private void removeAccelerationEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 移除射击速度加成
-        var firingSpeedAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "rounds_per_minute")
-            )
-        );
-        
-        if (firingSpeedAttribute != null) {
-            firingSpeedAttribute.removeModifier(FIRING_SPEED_UUID);
-        }
-        
-        // 移除通用伤害降低
-        var generalDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        if (generalDamageAttribute != null) {
-            generalDamageAttribute.removeModifier(GENERAL_DAMAGE_UUID);
-        }
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, FIRING_SPEED_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GENERAL_DAMAGE_UUID);
         
         // 移除7种特定枪械伤害降低
         for (String gunType : DAMAGE_UUIDS.keySet()) {
-            var specificDamageAttribute = attributes.getInstance(
-                net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                    new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_" + gunType)
-                )
-            );
-            
-            if (specificDamageAttribute != null) {
-                specificDamageAttribute.removeModifier(DAMAGE_UUIDS.get(gunType));
+            var attribute = getAttributeByType(gunType);
+            if (attribute != null) {
+                AttributeHelper.removeModifier(livingEntity, attribute, DAMAGE_UUIDS.get(gunType));
             }
         }
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 根据枪械类型获取对应的属性
      */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        applyAccelerationEffects((LivingEntity) slotContext.entity());
+    private net.minecraft.world.entity.ai.attributes.Attribute getAttributeByType(String gunType) {
+        return switch (gunType) {
+            case "pistol" -> AttributeHelper.BULLET_GUNDAMAGE_PISTOL;
+            case "rifle" -> AttributeHelper.BULLET_GUNDAMAGE_RIFLE;
+            case "shotgun" -> AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN;
+            case "sniper" -> AttributeHelper.BULLET_GUNDAMAGE_SNIPER;
+            case "smg" -> AttributeHelper.BULLET_GUNDAMAGE_SMG;
+            case "lmg" -> AttributeHelper.BULLET_GUNDAMAGE_LMG;
+            case "launcher" -> AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER;
+            default -> null;
+        };
     }
+    
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
@@ -255,17 +142,10 @@ public class DespicableAcceleration extends ItemBaseCurio {
     }
     
     /**
-     * 获取装备槽位
-     */
-    public String getSlot() {
-        return "tcc:tcc_slot";
-    }
-    
-    /**
      * 当生物切换武器时应用效果
      */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyAccelerationEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }

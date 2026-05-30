@@ -1,20 +1,17 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.handlers.CuriosItemEventHandler;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 
@@ -27,8 +24,8 @@ import java.util.UUID;
  * 效果：狙击枪伤害加成（乘算）
  * 与Chamber互斥
  */
-public class ChamberPrime extends ItemBaseCurio {
-
+public class ChamberPrime extends BaseCurioItem {
+    
     // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID DAMAGE_UUID = UUID.fromString("9ab0de22-87e4-4fa1-a539-cd50dfe7590c");
     
@@ -40,163 +37,46 @@ public class ChamberPrime extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调用
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给生物添加属性修改
-        LivingEntity livingEntity = (LivingEntity) slotContext.entity();
-        applyChamberPrimeEffect(livingEntity);
-        
-        // 如果是服务端玩家，通知更新缓存
-        if (livingEntity instanceof ServerPlayer serverPlayer) {
-            CuriosItemEventHandler.onCurioEquip(serverPlayer, stack);
-        }
-    }
-    
-    /**
-     * 当饰品被卸下时调用
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除生物的属性修改
-        LivingEntity livingEntity = (LivingEntity) slotContext.entity();
-        removeChamberPrimeEffect(livingEntity);
-        
-        // 如果是服务端玩家，通知更新缓存
-        if (livingEntity instanceof ServerPlayer serverPlayer) {
-            CuriosItemEventHandler.onCurioUnequip(serverPlayer, stack);
-        }
-    }
-    
-    /**
-     * 检查是否可以装备到指定插槽
-     * ChamberPrime与Chamber互斥，不能同时装备
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        if (!slotContext.identifier().equals("tcc_slot")) {
-            return false;
-        }
-        
-        // 检查生物是否已经装备了Chamber
-        ICuriosItemHandler curiosHandler = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(slotContext.entity()).orElse(null);
-        if (curiosHandler != null) {
-            ICurioStacksHandler tccSlotHandler = curiosHandler.getCurios().get("tcc_slot");
-            if (tccSlotHandler != null) {
-                for (int i = 0; i < tccSlotHandler.getSlots(); i++) {
-                    ItemStack equippedStack = tccSlotHandler.getStacks().getStackInSlot(i);
-                    if (equippedStack.getItem() instanceof Chamber) {
-                        return false; // 如果已经装备了Chamber，则不能装备ChamberPrime
-                    }
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点击
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-    
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyChamberPrimeEffect(livingEntity);
-    }
-    
-    /**
      * 应用膛室Prime效果
      * 提升狙击枪伤害（乘算）
      */
-    public void applyChamberPrimeEffect(LivingEntity livingEntity) {
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
         // 检查生物主手是否持有狙击枪且弹匣满弹药
         boolean shouldApply = GunTypeChecker.isHoldingSniper(livingEntity) && GunTypeChecker.isHoldingGunWithFullMagazine(livingEntity);
         
-        var attributes = livingEntity.getAttributes();
-        
-        // 获取狙击枪伤害属性
-        var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        // 移除已存在的修饰符
-        if (gunDamageAttribute != null) {
-            gunDamageAttribute.removeModifier(DAMAGE_UUID);
-        }
-        
-        // 根据条件决定是否应用效果
-        if (shouldApply && gunDamageAttribute != null) {
-            // 获取配置中的伤害加成值
+        if (shouldApply) {
             double damageBoost = TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get();
-            // 添加伤害加成（乘算）
-            var gunDamageModifier = new AttributeModifier(
-                DAMAGE_UUID,
-                DAMAGE_NAME,
-                damageBoost,
-                AttributeModifier.Operation.MULTIPLY_BASE
-            );
-            gunDamageAttribute.addPermanentModifier(gunDamageModifier);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            // 如果条件不满足，移除修饰符
+            AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, DAMAGE_UUID);
         }
         
         // 更新TACZ缓存
-        ItemStack mainHandItem = livingEntity.getMainHandItem();
-        if (mainHandItem.getItem() instanceof IGun) {
-            if (livingEntity instanceof ServerPlayer serverPlayer) {
-                AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
-            }
-        }
+        updateTaczCache(livingEntity);
     }
     
     /**
      * 移除膛室Prime效果
      */
-    public void removeChamberPrimeEffect(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 获取狙击枪伤害属性
-        var gunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage")
-            )
-        );
-        
-        if (gunDamageAttribute != null) {
-            gunDamageAttribute.removeModifier(DAMAGE_UUID);
-        }
-        
-        // 更新TACZ缓存
-        ItemStack mainHandItem = livingEntity.getMainHandItem();
-        if (mainHandItem.getItem() instanceof IGun) {
-            if (livingEntity instanceof ServerPlayer serverPlayer) {
-                AttachmentPropertyManager.postChangeEvent(serverPlayer, mainHandItem);
-            }
-        }
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, DAMAGE_UUID);
+        updateTaczCache(livingEntity);
     }
     
     /**
-     * 当玩家持有时，每tick更新效果
+     * 更新TACZ缓存
      */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        applyChamberPrimeEffect((LivingEntity) slotContext.entity());
+    private void updateTaczCache(LivingEntity livingEntity) {
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
+        if (mainHandItem.getItem() instanceof IGun) {
+            AttachmentPropertyManager.postChangeEvent(livingEntity, mainHandItem);
+        }
     }
-    
+
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

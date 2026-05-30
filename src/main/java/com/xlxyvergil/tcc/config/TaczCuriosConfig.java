@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.config;
 
+import java.util.List;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -19,18 +21,38 @@ public class TaczCuriosConfig {
         // 天火圣裁配置
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
-        public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthDrain;
-        public final ForgeConfigSpec.IntValue heavenFireJudgmentDrainDuration;
+        public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageConversionRatio;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> heavenFireJudgmentGunTypes;
         
+        // 天火流血效果配置（两个饰品共用）
+        public final ForgeConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
+        public final ForgeConfigSpec.IntValue heavenFireBleedingMaxLevel;
+        public final ForgeConfigSpec.IntValue heavenFireBleedingDuration;
+        public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
+        
+        // 虚数侵染效果配置
+        public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
+        public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
+        public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
+        
+        // 按饰品分级的虚数侵染上限
+        public final ForgeConfigSpec.IntValue judgmentImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
+
         // 天火劫灭配置
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionRadius;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionDamage;
-        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionEnabled;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseHealthCost;
+        public final ForgeConfigSpec.DoubleValue brahmaBeastsHealthCostReduction;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerDamageBoost;
+        public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerRadius;
+        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageConversionRatio;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> heavenFireApocalypseGunTypes;
         
         // 膛线配置
         public final ForgeConfigSpec.DoubleValue riflingDamageBoost;
@@ -159,6 +181,38 @@ public class TaczCuriosConfig {
         // 红-有-三配置
         public final ForgeConfigSpec.DoubleValue redMovementTagSpeedBoost;
         
+        // 夏日沙滩配置
+        public final ForgeConfigSpec.DoubleValue summerBeachHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue summerBeachELCurseReduction;
+        public final ForgeConfigSpec.ConfigValue<String> summerBeachObtainEntity;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachEvolutionRequirements;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> summerBeachResistanceEntities;
+        public final ForgeConfigSpec.IntValue summerBeachBaseResistance;
+        public final ForgeConfigSpec.IntValue summerBeachMaxKillResistance;
+        
+        // 梵天百兽配置
+        public final ForgeConfigSpec.DoubleValue brahmaBeastsHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue brahmaBeastsELCurseReduction;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsEvolutionRequirements;
+        public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsResistanceEntities;
+        public final ForgeConfigSpec.IntValue brahmaBeastsBaseResistance;
+        public final ForgeConfigSpec.IntValue brahmaBeastsMaxKillResistance;
+        
+        // 救世配置
+        public final ForgeConfigSpec.DoubleValue salvationHeavenFireMultiplier;
+        public final ForgeConfigSpec.DoubleValue salvationELCurseReduction;
+        public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
+        public final ForgeConfigSpec.IntValue salvationResistanceLevel;
+        
+        // 无烬终焉配置
+        public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
+        public final ForgeConfigSpec.DoubleValue endlessExplosionDamage;
+        public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerDamageBoost;
+        public final ForgeConfigSpec.IntValue endlessNearbyPlayerPotionAmplifier;
+        public final ForgeConfigSpec.IntValue endlessNearbyPlayerDuration;
+        public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> endlessGunTypes;
+
         // 士兵基础挂牌配置
         public final ForgeConfigSpec.DoubleValue soldierBasicTagDamageBoost;
         
@@ -207,6 +261,9 @@ public class TaczCuriosConfig {
         // Apotheosis集成配置
         public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
         
+        // 饰品互斥配置
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
+        
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
             
@@ -218,12 +275,57 @@ public class TaczCuriosConfig {
             heavenFireJudgmentHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
                     .defineInRange("healthCost", -0.3, -1, 1);
-            heavenFireJudgmentHealthDrain = builder
-                    .comment("每秒消耗的最大生命值比例 (默认: -0.05 = -5%)")
-                    .defineInRange("healthDrain", -0.05, -1, 1);
-            heavenFireJudgmentDrainDuration = builder
-                    .comment("生命值消耗持续时间(秒) (默认: 6)")
-                    .defineInRange("drainDuration", 6, -1, 300);
+            heavenFireJudgmentDamageConversionRatio = builder
+                    .comment("伤害降低98%，并转换为虚数伤害")
+                    .defineInRange("damageConversionRatio", 0.05, 0, 1);
+            heavenFireJudgmentGunTypes = builder
+                    .comment("天火圣裁生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
+                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
+            builder.pop();
+            
+            // 天火流血效果配置（两个饰品共用）
+            builder.comment("天火流血效果配置（两个饰品共用）").push("heaven_fire_bleeding");
+            heavenFireBleedingDamagePerLevel = builder
+                    .comment("每级流血效果造成的最大生命值比例伤害 (默认: -0.1 = -10% maxHP/级)")
+                    .defineInRange("damagePerLevel", -0.1, -1, 0);
+            heavenFireBleedingMaxLevel = builder
+                    .comment("流血效果最大等级 (默认: 5)")
+                    .defineInRange("maxLevel", 5, 1, 10);
+            heavenFireBleedingDuration = builder
+                    .comment("流血效果持续时间(秒) (默认: 5)")
+                    .defineInRange("duration", 5, 1, 60);
+            heavenFireApocalypseDelayDuration = builder
+                    .comment("天火劫灭扣血后延迟施加流血的时长(秒) (默认: 3, 最小: 1)")
+                    .defineInRange("delayDuration", 3, 1, 60);
+            builder.pop();
+            
+            // 虚数侵染效果配置
+            builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤计算公式：最终伤害 = 伤害 × (1 + 层数 × ampPerLevel)）").push("imaginary_infection");
+            imaginaryInfectionAmpPerLevel = builder
+                    .comment("每层虚数侵染的增伤比例 (默认: 0.1 = 10%/层)")
+                    .defineInRange("ampPerLevel", 0.1, 0.01, 1.0);
+            imaginaryInfectionMaxLevel = builder
+                    .comment("虚数侵染效果最大等级上限 (默认: 99)")
+                    .defineInRange("maxLevel", 99, 1, 99);
+            imaginaryInfectionDuration = builder
+                    .comment("虚数侵染效果持续时间(秒) (默认: 15)")
+                    .defineInRange("duration", 15, 1, 300);
+            imaginaryInfectionResistanceReduction = builder
+                    .comment("虚数侵染降低的虚数抗性值 (默认: 10)")
+                    .defineInRange("resistanceReduction", 10.0, 0, 100);
+            builder.pop();
+            
+            // 按饰品分级的虚数侵染上限
+            builder.comment("按饰品分级的虚数侵染上限（当攻击者携带对应饰品时，目标虚数侵染不会超过此等级）").push("imaginary_infection_per_curio");
+            judgmentImaginaryInfectionMaxLevel = builder
+                    .comment("天火圣裁的虚数侵染上限 (默认: 3)")
+                    .defineInRange("judgmentMaxLevel", 3, 1, 99);
+            apocalypseImaginaryInfectionMaxLevel = builder
+                    .comment("天火劫灭的虚数侵染上限 (默认: 6)")
+                    .defineInRange("apocalypseMaxLevel", 6, 1, 99);
+            endlessImaginaryInfectionMaxLevel = builder
+                    .comment("劫灭无尽的虚数侵染上限 (默认: 9)")
+                    .defineInRange("endlessMaxLevel", 9, 1, 99);
             builder.pop();
             
             // 天火劫灭配置
@@ -237,21 +339,30 @@ public class TaczCuriosConfig {
             heavenFireApocalypseExplosionDamage = builder
                     .comment("爆炸伤害加成 (默认: 10.0 = 1000%)")
                     .defineInRange("explosionDamage", 10.0, -1, 100);
-            heavenFireApocalypseExplosionEnabled = builder
-                    .comment("爆炸启用属性 (默认: 2.0)")
-                    .defineInRange("explosionEnabled", 2.0, -1, 100);
             heavenFireApocalypseHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -1.0 = -100%)")
                     .defineInRange("healthCost", -1.0, -1, 1);
+            brahmaBeastsHealthCostReduction = builder
+                    .comment("装备梵天百兽时天火劫灭扣血比例的减少值 (默认: 0.6 = 从扣100%变为扣40%，即保留60%血量)")
+                    .defineInRange("brahmaBeastsHealthCostReduction", 0.6, 0, 1);
             heavenFireApocalypseNearbyPlayerDamageBoost = builder
-                    .comment("附近玩家获得的伤害加成 (默认: 1.0 = 100%)")
+                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
+            heavenFireApocalypseNearbyPlayerPotionAmplifier = builder
+                    .comment("附近玩家获得的药水效果等级 (0=1级, 默认: 0)")
+                    .defineInRange("nearbyPlayerPotionAmplifier", 0, 0, 999);
             heavenFireApocalypseNearbyPlayerDuration = builder
                     .comment("附近玩家获得伤害加成的持续时间(秒) (默认: 15)")
                     .defineInRange("nearbyPlayerDuration", 15, -1, 300);
             heavenFireApocalypseNearbyPlayerRadius = builder
                     .comment("影响附近玩家的范围 (默认: 32)")
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
+            heavenFireApocalypseDamageConversionRatio = builder
+                    .comment("伤害降低90%，并转换为虚数伤害")
+                    .defineInRange("damageConversionRatio", 0.1, 0, 1);
+            heavenFireApocalypseGunTypes = builder
+                    .comment("天火劫灭生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
+                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
             builder.pop();
             
             // 膛线配置
@@ -553,6 +664,107 @@ public class TaczCuriosConfig {
                     .defineInRange("speedBoost", 1.5, -1, 100);
             builder.pop();
             
+            // 夏日沙滩配置
+            builder.comment("夏日沙滩饰品配置").push("summer_beach");
+            summerBeachHeavenFireMultiplier = builder
+                    .comment("夏日沙滩对天火饰品效果的增强系数 (默认: 2.0)")
+                    .defineInRange("heavenFireMultiplier", 2.0, 1, 100);
+            summerBeachELCurseReduction = builder
+                    .comment("夏日沙滩对第四诅咒效果的削弱比例 (默认: 0.25 = 抵消25%的诅咒效果)")
+                    .defineInRange("elCurseReduction", 0.25, 0, 1);
+            summerBeachObtainEntity = builder
+                    .comment("夏日沙滩饰品获取所需击杀的实体命名空间 (默认: minecraft:wither)")
+                    .define("obtainEntity", "minecraft:wither");
+            summerBeachEvolutionRequirements = builder
+                    .comment("夏日沙滩进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                            "默认: [[minecraft:wither, 20], [minecraft:ender_dragon, 1]]")
+                    .define("evolutionRequirements", java.util.List.of(
+                            java.util.List.of("minecraft:wither", "20"),
+                            java.util.List.of("minecraft:ender_dragon", "1")
+                    ));
+            summerBeachResistanceEntities = builder
+                    .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
+                            "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
+                    .define("resistanceEntities", java.util.List.of(
+                            java.util.List.of("minecraft:wither", "1")
+                    ));
+            summerBeachBaseResistance = builder
+                    .comment("夏日沙滩虚数抗性基础值 (默认: 20)")
+                    .defineInRange("baseResistance", 20, 0, 1000);
+            summerBeachMaxKillResistance = builder
+                    .comment("夏日沙滩虚数抗性来自击杀的上限 (默认: 20)")
+                    .defineInRange("maxKillResistance", 20, 0, 1000);
+            builder.pop();
+            
+            // 梵天百兽配置
+            builder.comment("梵天百兽饰品配置").push("brahma_beasts");
+            brahmaBeastsHeavenFireMultiplier = builder
+                    .comment("梵天百兽对天火饰品效果的增强系数 (默认: 4.0)")
+                    .defineInRange("heavenFireMultiplier", 4.0, 1, 100);
+            brahmaBeastsELCurseReduction = builder
+                    .comment("梵天百兽对第四诅咒效果的削弱比例 (默认: 0.5 = 抵消50%的诅咒效果)")
+                    .defineInRange("elCurseReduction", 0.5, 0, 1);
+            brahmaBeastsEvolutionRequirements = builder
+                    .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                            "默认: [[minecraft:ender_dragon, 30]]")
+                    .define("evolutionRequirements", java.util.List.of(
+                            java.util.List.of("minecraft:ender_dragon", "30")
+                    ));
+            brahmaBeastsResistanceEntities = builder
+                    .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
+                            "默认: [[minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                    .define("resistanceEntities", java.util.List.of(
+                            java.util.List.of("minecraft:ender_dragon", "1")
+                    ));
+            brahmaBeastsBaseResistance = builder
+                    .comment("梵天百兽虚数抗性基础值 (默认: 20)")
+                    .defineInRange("baseResistance", 20, 0, 1000);
+            brahmaBeastsMaxKillResistance = builder
+                    .comment("梵天百兽虚数抗性来自击杀的上限 (默认: 20)")
+                    .defineInRange("maxKillResistance", 20, 0, 1000);
+            builder.pop();
+            
+            // 救世配置
+            builder.comment("救世饰品配置").push("salvation");
+            salvationHeavenFireMultiplier = builder
+                    .comment("救世对天火饰品效果的增强系数 (默认: 6.0)")
+                    .defineInRange("heavenFireMultiplier", 6.0, 1, 100);
+            salvationELCurseReduction = builder
+                    .comment("救世对第四诅咒效果的削弱比例 (默认: 1.0 = 完全免疫第四诅咒)")
+                    .defineInRange("elCurseReduction", 1.0, 0, 1);
+            salvationDamageReduction = builder
+                    .comment("救世伤害降低比例 (默认: 0.3 = 30%)")
+                    .defineInRange("damageReduction", 0.3, 0, 1);
+            salvationResistanceLevel = builder
+                    .comment("救世抗性提升等级 (默认: 2 = 抗性III)")
+                    .defineInRange("resistanceLevel", 2, 0, 10);
+            builder.pop();
+            
+            // 无烬终焉配置
+            builder.comment("无烬终焉饰品配置").push("endless");
+            endlessDamageBoost = builder
+                    .comment("无烬终焉通用枪械伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
+                    .defineInRange("damageBoost", 10.0, -1, 100);
+            endlessExplosionDamage = builder
+                    .comment("无烬终焉爆炸伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
+                    .defineInRange("explosionDamage", 10.0, -1, 100);
+            endlessNearbyPlayerDamageBoost = builder
+                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
+                    .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
+            endlessNearbyPlayerPotionAmplifier = builder
+                    .comment("附近玩家获得的药水效果等级 (0=1级, 默认: 2 = 3级 = 3×100%% = 300%%)")
+                    .defineInRange("nearbyPlayerPotionAmplifier", 2, 0, 999);
+            endlessNearbyPlayerDuration = builder
+                    .comment("附近玩家获得伤害加成的持续时间(秒) (默认: 15)")
+                    .defineInRange("nearbyPlayerDuration", 15, -1, 300);
+            endlessNearbyPlayerRadius = builder
+                    .comment("影响附近玩家的范围 (默认: 32)")
+                    .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
+            endlessGunTypes = builder
+                    .comment("无烬终焉生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
+                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
+            builder.pop();
+            
             // 士兵基础挂牌配置
             builder.comment("士兵基础挂牌饰品配置").push("soldier_basic_tag");
             soldierBasicTagDamageBoost = builder
@@ -672,6 +884,29 @@ public class TaczCuriosConfig {
             enableApotheosisIntegration = builder
                     .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: false)")
                     .define("enableApotheosisIntegration", false);
+            builder.pop();
+            
+            // 饰品互斥配置
+            builder.comment("饰品互斥配置（格式：物品1,物品2 表示互斥）").push("curio_conflicts");
+            curioConflicts = builder
+                    .comment("互斥饰品组列表，每组用逗号分隔的物品注册名表示互斥关系")
+                    .defineList("conflictGroups", 
+                        List.of(
+                            "tcc:heaven_fire_judgment,tcc:heaven_fire_apocalypse",
+                            "tcc:soldier_basic_tag,tcc:soldier_specific_tag",
+                            "tcc:tactical_reload,tcc:tactical_reload_prime",
+                            "tcc:burst_reload,tcc:burst_reload_prime",
+                            "tcc:tandem_magazine,tcc:tandem_magazine_prime",
+                            "tcc:shotgun_expansion,tcc:shotgun_expansion_prime",
+                            "tcc:magazine_boost,tcc:magazine_boost_prime",
+                            "tcc:rifling,tcc:merged_rifling",
+                            "tcc:sword_wind,tcc:sword_wind_prime",
+                            "tcc:blaze_storm,tcc:blaze_storm_prime",
+                            "tcc:oppression_point,tcc:oppression_point_prime",
+                            "tcc:chamber,tcc:chamber_prime",
+                            "tcc:close_range_shot,tcc:close_combat_prime"
+                        ), 
+                        o -> o instanceof String);
             builder.pop();
             
             builder.pop();

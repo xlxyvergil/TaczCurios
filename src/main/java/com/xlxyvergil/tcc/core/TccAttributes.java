@@ -13,18 +13,19 @@ public class TccAttributes {
         DeferredRegister.create(Registries.ATTRIBUTE, "tcc");
     
     /**
-     * 虚空伤害属性 - 攻击时附加的虚空伤害值
+     * 虚数伤害属性 - 攻击时附加的虚数伤害值
      */
-    public static final RegistryObject<Attribute> VOID_DAMAGE = 
-        ATTRIBUTES.register("void_damage", 
-            () -> new RangedAttribute("tcc:void_damage", 0.0D, 0.0D, 1000.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> IMAGINARY_DAMAGE = 
+        ATTRIBUTES.register("imaginary_damage", 
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage", 0.0D, 0.0D, 1000.0D).setSyncable(true));
     
     /**
-     * 虚空伤害抗性 - 按百分比抵消虚空伤害（0-100）
+     * 虚数伤害抗性 - 范围 -100 到 +100，默认 0
+     * 正值降低虚数伤害，负值增加虚数伤害
      */
-    public static final RegistryObject<Attribute> VOID_DAMAGE_RESISTANCE = 
-        ATTRIBUTES.register("void_damage_resistance", 
-            () -> new RangedAttribute("tcc:void_damage_resistance", 0.0D, 0.0D, 100.0D).setSyncable(true));
+    public static final RegistryObject<Attribute> IMAGINARY_DAMAGE_RESISTANCE = 
+        ATTRIBUTES.register("imaginary_damage_resistance", 
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 0.0D, -100.0D, 100.0D).setSyncable(true));
     
     public static void register(IEventBus modEventBus) {
         ATTRIBUTES.register(modEventBus);

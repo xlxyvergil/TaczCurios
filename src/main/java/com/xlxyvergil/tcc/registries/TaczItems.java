@@ -52,6 +52,10 @@ import com.xlxyvergil.tcc.items.TandemMagazinePrime;
 import com.xlxyvergil.tcc.items.ShotgunExpansion;
 import com.xlxyvergil.tcc.items.MagazineBoost;
 import com.xlxyvergil.tcc.items.TandemMagazine;
+import com.xlxyvergil.tcc.items.SummerBeach;
+import com.xlxyvergil.tcc.items.BrahmaBeasts;
+import com.xlxyvergil.tcc.items.Salvation;
+import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -88,6 +92,30 @@ public class TaczItems {
         () -> new RedMovementTag(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON)));
+    
+    // 夏日沙滩 - 提供20点虚数抗性
+    public static final RegistryObject<Item> SUMMER_BEACH = ITEMS.register("summer_beach", 
+        () -> new SummerBeach(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // 梵天百兽 - 提供40点虚数抗性，增强天火饰品效果
+    public static final RegistryObject<Item> BRAHMA_BEASTS = ITEMS.register("brahma_beasts", 
+        () -> new BrahmaBeasts(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 救世 - 裂隙级饰品
+    public static final RegistryObject<Item> SALVATION = ITEMS.register("salvation", 
+        () -> new Salvation(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // 天火劫灭·无烬终焉 - 裂隙级
+    public static final RegistryObject<Item> HEAVEN_FIRE_APOCALYPSE_ENDLESS = ITEMS.register("heaven_fire_apocalypse_endless", 
+        () -> new HeavenFireApocalypseEndless(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
     
     // 乌拉尔银狼 - 提供150%爆头倍率加成
     public static final RegistryObject<Item> URAL_WOLF_TAG = ITEMS.register("ural_wolf_tag", 

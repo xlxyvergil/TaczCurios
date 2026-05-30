@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -10,7 +12,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 
 import javax.annotation.Nullable;
@@ -21,7 +22,7 @@ import java.util.UUID;
  * 恶性扩- 提升165%霰弹枪伤害，提高55%不精准度
  * 效果：提65%霰弹枪伤害（加算），提高55%不精准度（加算）
  */
-public class MalignantSpread extends ItemBaseCurio {
+public class MalignantSpread extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("5bfabff0-b8df-48cd-9ecb-95027aafbf69");
@@ -37,141 +38,29 @@ public class MalignantSpread extends ItemBaseCurio {
     }
     
     /**
-     * 当饰品被装备时调
-     */
-    @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        super.onEquip(slotContext, prevStack, stack);
-        
-        // 给实体添加属性修改
-        applyMalignantSpreadEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 当饰品被卸下时调
-     */
-    @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        
-        // 移除实体的属性修改
-        removeMalignantSpreadEffects((LivingEntity) slotContext.entity());
-    }
-    
-    /**
-     * 检查是否可以装备到指定插槽
-     */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 检查是否装备在TCC饰品槽位
-        return slotContext.identifier().equals("tcc_slot");
-    }
-    
-    /**
-     * 当物品在Curios插槽中时被右键点
-     */
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return canEquip(slotContext, stack);
-    }
-    
-    /**
      * 应用恶性扩散效     * 提升霰弹枪伤害（加算）和不精准度（乘算）
      */
-    public void applyMalignantSpreadEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 获取霰弹枪伤害属
-        var shotgunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_shotgun")
-            )
-        );
-        
-        // 移除已存在的修饰
-        if (shotgunDamageAttribute != null) {
-            shotgunDamageAttribute.removeModifier(DAMAGE_UUID);
-        }
-        
-        // 从配置文件获取霰弹枪伤害加成值和不精准度
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
         double damageBoost = TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get();
         double inaccuracyBoost = TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get();
         
-        // 直接应用霰弹枪伤害加成，无需检查是否手持霰弹枪
-        if (shotgunDamageAttribute != null) {
-            // 添加配置的霰弹枪伤害加成（加算）
-            var shotgunDamageModifier = new AttributeModifier(
-                DAMAGE_UUID,
-                DAMAGE_NAME,
-                damageBoost,
-                AttributeModifier.Operation.ADDITION
-            );
-            shotgunDamageAttribute.addPermanentModifier(shotgunDamageModifier);
-        }
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
         
-        // 应用不精准度提升（加算）
-        var inaccuracyAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
-            )
-        );
-        
-        if (inaccuracyAttribute != null) {
-            // 移除已存在的修饰
-            inaccuracyAttribute.removeModifier(INACCURACY_UUID);
-            
-            // 检查实体是否持有霰弹枪，只有持有霰弹枪时才应用不精准度加成
-            if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-                // 添加配置的不精准度加成（乘算
-                var inaccuracyModifier = new AttributeModifier(
-                    INACCURACY_UUID,
-                    INACCURACY_NAME,
-                    inaccuracyBoost,
-                    AttributeModifier.Operation.ADDITION
-                );
-                inaccuracyAttribute.addPermanentModifier(inaccuracyModifier);
-            }
+        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.INACCURACY, inaccuracyBoost, INACCURACY_UUID, INACCURACY_NAME, AttributeModifier.Operation.ADDITION);
         }
-        // 不再主动调用缓存更新，由mod自主检测属性变更后触发
     }
     
     /**
      * 移除恶性扩散效     */
-    public void removeMalignantSpreadEffects(LivingEntity livingEntity) {
-        var attributes = livingEntity.getAttributes();
-        
-        // 获取霰弹枪伤害属
-        var shotgunDamageAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "bullet_gundamage_shotgun")
-            )
-        );
-        
-        if (shotgunDamageAttribute != null) {
-            shotgunDamageAttribute.removeModifier(DAMAGE_UUID);
-        }
-        
-        // 移除不精准度加成
-        var inaccuracyAttribute = attributes.getInstance(
-            net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getValue(
-                new net.minecraft.resources.ResourceLocation("taa", "inaccuracy")
-            )
-        );
-        
-        if (inaccuracyAttribute != null) {
-            inaccuracyAttribute.removeModifier(INACCURACY_UUID);
-        }
-    }
-    
-    /**
-     * 当玩家持有时，每tick更新效果
-     */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, DAMAGE_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.INACCURACY, INACCURACY_UUID);
     }
     
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
@@ -203,7 +92,6 @@ public class MalignantSpread extends ItemBaseCurio {
      */
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyMalignantSpreadEffects(livingEntity);
+        applyEffects(livingEntity);
     }
 }
-

@@ -1,0 +1,21 @@
+{
+  "gem": "apotheosis:overworld/earth",
+  "bonuses": [{
+    "type": "apotheosis:attribute",
+    "gem_class": {
+      "key": "tcc_slot",
+      "types": [
+        "curios:tcc_slot",
+        "curios:tcc_3rd"
+      ]
+    },
+    "attribute": "minecraft:generic.max_health",
+    "operation": "ADDITION",
+    "values": {
+      "rare": 2,
+      "epic": 4,
+      "mythic": 6,
+      "ancient": 8
+    }
+  }]
+}

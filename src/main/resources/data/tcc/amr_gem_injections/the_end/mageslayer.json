@@ -1,0 +1,23 @@
+{
+  "gem": "apotheosis:the_end/mageslayer",
+  "bonuses": [{
+    "type": "apotheosis:attribute",
+    "gem_class": {
+      "key": "tcc_slot",
+      "types": [
+        "curios:tcc_slot",
+        "curios:tcc_3rd"
+      ]
+    },
+    "attribute": "attributeslib:magic_resist",
+    "operation": "ADDITION",
+    "values": {
+      "common": 0.01,
+      "uncommon": 0.02,
+      "rare": 0.03,
+      "epic": 0.04,
+      "mythic": 0.05,
+      "ancient": 0.06
+    }
+  }]
+}

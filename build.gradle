@@ -54,7 +54,7 @@ minecraft {
     // However, it must be at "META-INF/accesstransformer.cfg" in the final mod jar to be loaded by Forge.
     // This default location is a best practice to automatically put the file in the right place in the final jar.
     // See https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/ for more information.
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -155,16 +155,22 @@ dependencies {
 
     // Curios API dependency from Modrinth (1.20.1 compatible)
     implementation fg.deobf("maven.modrinth:curios:5.14.1+1.20.1")
-    // TaczAttributeAdd dependency from Modrinth (1.2.0-hotfix)
-    implementation fg.deobf("maven.modrinth:taczattributeadd:1.2.0-hotfix")
+    // TaczAttributeAdd dependency (本地 1.3.3)
+    implementation fg.deobf(files("libs/taa-1.3.3+1.20.1.jar"))
     // TACZ dependency from Modrinth (1.1.7-hotfix)
     implementation fg.deobf("maven.modrinth:timeless-and-classics-zero:1.1.7-hotfix")
     // Touhou Little Maid (optional dependency, compile only)
     compileOnly fg.deobf("maven.modrinth:touhou-little-maid:1.1.14")
     // Apotheosis dependencies for affix support (optional, compile only)
+    // Apothic-Curios 依赖 Apotheosis，但我们需要直接访问 AffixInstance 等 API
     compileOnly fg.deobf("curse.maven:apotheosis-313970:6461960")
     compileOnly fg.deobf("curse.maven:placebo-283644:6274231")
-    compileOnly fg.deobf("curse.maven:apothic-attributes-898963:5634071")
+    // Apothic-Curios for Curios-Apotheosis integration (optional, compile only)
+    compileOnly fg.deobf("curse.maven:apothic-curios-950712:6624706")
+    // Apothic-Attributes as runtime dependency for mob effects
+    implementation fg.deobf("curse.maven:apothic-attributes-898963:5634071")
+    // Enigmatic Legacy (optional, compile only)
+    compileOnly fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
 
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

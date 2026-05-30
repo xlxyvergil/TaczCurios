@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.xlxyvergil.tcc.TaczCurios;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -65,26 +63,15 @@ public class RiftSilver extends Item {
                 // 查找一个合适的TCC物品
                 ItemStack selectedStack = null;
                 for (ItemStack lootStack : loot) {
-                    TaczCurios.LOGGER.info("RiftSilver obtained item: {} with description ID: {} and count: {}", 
-                        lootStack.getItem().toString(), lootStack.getItem().getDescriptionId(), lootStack.getCount());
-                    
                     // 检查是否为TCC模组物品且物品有效
                     if (lootStack.getItem().getDescriptionId().contains("tcc") && !lootStack.isEmpty()) {
                         selectedStack = lootStack.copy();
-                        TaczCurios.LOGGER.info("RiftSilver selected item: {} with description ID: {} and count: {}", 
-                            selectedStack.getItem().toString(), selectedStack.getItem().getDescriptionId(), selectedStack.getCount());
                         break;
-                    } else {
-                        TaczCurios.LOGGER.info("RiftSilver item does not match criteria or is empty: {}", 
-                            lootStack.getItem().getDescriptionId());
                     }
                 }
                 
                 // 只有在找到合适物品时才消耗裂隙碎银
                 if (selectedStack != null && !selectedStack.isEmpty()) {
-                    TaczCurios.LOGGER.info("RiftSilver final selected item: {} with description ID: {} and count: {}", 
-                        selectedStack.getItem().toString(), selectedStack.getItem().getDescriptionId(), selectedStack.getCount());
-                    
                     // 直接将物品添加到玩家背包
                     player.getInventory().placeItemBackInInventory(selectedStack);
                     
@@ -93,16 +80,9 @@ public class RiftSilver extends Item {
                         stack.shrink(1);
                     }
                     
-                    TaczCurios.LOGGER.info("RiftSilver successfully added item to inventory: {}", selectedStack.getItem().getDescriptionId());
                     return InteractionResultHolder.sidedSuccess(stack, world.isClientSide());
-                } else {
-                    // 没有找到合适的物品
-                    TaczCurios.LOGGER.warn("RiftSilver did not find any suitable items from loot table");
                 }
-            } else {
-                // 战利品表为空
-                TaczCurios.LOGGER.error("RiftSilver loot table is null");
-            }
+            } 
         }
         
         // 无法获取物品或在客户端，返回pass

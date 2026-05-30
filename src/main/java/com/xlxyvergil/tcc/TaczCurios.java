@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc;
 
-import com.mojang.logging.LogUtils;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.handlers.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.handlers.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
@@ -10,23 +10,18 @@ import com.xlxyvergil.tcc.network.TccNetwork;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import com.xlxyvergil.tcc.core.TccAttributes;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import org.slf4j.Logger;
 
 @Mod(TaczCurios.MODID)
 public class TaczCurios
 {
     public static final String MODID = "tcc";
-    // 直接引用slf4j日志记录器
-    public static final Logger LOGGER = LogUtils.getLogger();
 
-    public TaczCurios()
+    public TaczCurios() throws ClassNotFoundException
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -40,12 +35,15 @@ public class TaczCurios
         TaczPoiTypes.POI_TYPES.register(modEventBus);
         TaczVillagers.PROFESSIONS.register(modEventBus);
         TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
 
         
         MinecraftForge.EVENT_BUS.register(this);
         // 注册战利品表事件处理器
         MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
+        // 注册天火流血结算事件处理器
+        MinecraftForge.EVENT_BUS.register(new HeavenFireSettlementHandler());
         
         // 注册配置文件
         TaczCuriosConfig.registerConfigs();
@@ -58,31 +56,21 @@ public class TaczCurios
         
         // 安全地注册客户端事件处理器
         registerClientEventsSafely();
+        
+        // 必须在构造函数中初始化 Apotheosis 集成，确保在词缀数据加载前完成注册
+        ApothicCuriosIntegration.init();
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             TaczVillagers.registerTrades();
-            // 检查是否启用了Apotheosis集成，然后初始化 Apotheosis 神化属性集成
-            if (com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.enableApotheosisIntegration.get()) {
-                ApothicCuriosIntegration.init();
-            }
         });
     }
     
-    private void registerClientEventsSafely() {
+    private void registerClientEventsSafely() throws ClassNotFoundException {
         // 仅在客户端环境中注册客户端事件处理器
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
-            try {
-                // 尝试注册客户端事件，如果在服务器上会因为缺少客户端类而失败
-                Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-            } catch (ClassNotFoundException e) {
-                // 在服务器环境中忽略，因为客户端类不可用
-                LOGGER.info("未找到ClientEventHandler，正在专用服务器上运行");
-            } catch (Exception e) {
-                // 其他异常也忽略
-                LOGGER.info("注册ClientEventHandler失败: " + e.getMessage());
-            }
+            Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
         }
     }
     
@@ -95,7 +83,6 @@ public class TaczCurios
                 player.connection.connection,
                 net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT
             );
-            LOGGER.info("已发送配置同步到玩家: " + event.getEntity().getName().getString());
         }
     }
 }

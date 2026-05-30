@@ -3,7 +3,7 @@
   "values": [
     "tcc:heavy_caliber_tag",
     "tcc:ural_wolf_tag",
-    "tcc:heaven_fire_judgment",
+    "tcc:summer_beach",
     "tcc:alloy_drill",
     "tcc:blaze_storm",
     "tcc:evil_accuracy",
@@ -18,6 +18,7 @@
     "tcc:sustained_fire",
     "tcc:infected_magazine",
     "tcc:deadly_surge",
-    "tcc:bullet_spread"
+    "tcc:bullet_spread",
+    "tcc:despicable_acceleration"
   ]
 }

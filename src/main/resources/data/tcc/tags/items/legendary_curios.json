@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "tcc:heaven_fire_judgment",
+    "tcc:careful_heart",
+    "tcc:chamber_prime",
+    "tcc:blaze_storm_prime",
+    "tcc:ripping_prime",
+    "tcc:close_combat_prime",
+    "tcc:soldier_specific_tag",
+    "tcc:merged_rifling",
+    "tcc:brahma_beasts",
+    "tcc:oppression_point_prime",
+    "tcc:sword_wind_prime",
+    "tcc:burst_reload_prime",
+    "tcc:tactical_reload_prime",
+    "tcc:shotgun_expansion_prime",
+    "tcc:magazine_boost_prime",
+    "tcc:tandem_magazine_prime"
+  ]
+}
