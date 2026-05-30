@@ -1,4 +1,10 @@
 {
-    "java.compile.nullAnalysis.mode": "disabled",
-    "git.ignoreLimitWarning": true
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.gradle.enabled": true,
+    "java.import.gradle.arguments": "",
+    "java.autobuild.enabled": true,
+    "terminal.integrated.detectLocale": "on",
+    "files.autoGuessEncoding": false,
+    "files.encoding": "gb2312"
 }
