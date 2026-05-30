@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.core;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
-import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
 import com.aizistral.enigmaticlegacy.items.CursedRing;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -35,15 +33,15 @@ public class TccAttributeEvents {
 
     @SubscribeEvent
     public static void applyImaginaryInfection(EntityHurtByGunEvent.Post event) {
-        if (event.getLogicalSide().isClient()) return;
-        var target = event.getHurtEntity();
-        if (!(target instanceof LivingEntity living) || living.isDeadOrDying()) return;
+        // 虚数侵染/崩解的施加已移至 imaginaryDamageOnAttack (LivingHurtEvent)，
+        // 利用 LivingHurtEvent 仅在伤害 > 0 时触发的特性，天然避免对无敌实体误施 buff。
+    }
 
-        DamageSource source = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
-        if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
-        if (source.getEntity() == target) return;
-
-        // 确定攻击者的饰品等级来决定虚数侵染上限
+    /**
+     * 施加虚数侵染/虚数崩解 buff。调用侧需保证伤害真实命中（LivingHurtEvent）。
+     */
+    private static void applyImaginaryBuffs(LivingEntity living, DamageSource source) {
+        if (source.getEntity() == living) return;
         var srcEntity = source.getEntity();
         if (!(srcEntity instanceof LivingEntity attacker)) return;
 
@@ -82,8 +80,6 @@ public class TccAttributeEvents {
         forceAddEffect(living, newInstance);
 
         // 仅天火劫灭/劫灭无尽可触发虚数崩解
-        // 自然消失前无法再次施加，避免枪械连射导致 duration 被反复刷新为 20 的倍数，
-        // 进而使 isDurationEffectTick(duration % 20 == 0) 频繁命中，造成异常高伤害。
         if (canApplyCollapse) {
             var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
             if (!living.hasEffect(collapse)) {
@@ -149,6 +145,9 @@ public class TccAttributeEvents {
             float finalDamage = (float) (damageAfterResistance * (1.0 + infectionLevel * ampPerLevel));
 
             event.setAmount(finalDamage);
+
+            // 伤害 > 0 保证，在此施加虚数侵染/崩解，避免对无敌实体误施 buff
+            applyImaginaryBuffs(target, source);
         }
     }
 

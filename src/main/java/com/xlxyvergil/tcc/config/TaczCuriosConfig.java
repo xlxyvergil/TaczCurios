@@ -673,20 +673,24 @@ public class TaczCuriosConfig {
                     .comment("夏日沙滩对第四诅咒效果的削弱比例 (默认: 0.25 = 抵消25%的诅咒效果)")
                     .defineInRange("elCurseReduction", 0.25, 0, 1);
             summerBeachObtainEntity = builder
-                    .comment("夏日沙滩饰品获取所需击杀的实体命名空间 (默认: minecraft:wither)")
-                    .define("obtainEntity", "minecraft:wither");
+                    .comment("夏日沙滩饰品获取所需击杀的实体 (默认: minecraft:ender_dragon)",
+                            "支持NBT条件格式: \"minecraft:ender_dragon[apoth.boss=true]\"")
+                    .define("obtainEntity", "minecraft:ender_dragon");
             summerBeachEvolutionRequirements = builder
-                    .comment("夏日沙滩进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
-                            "默认: [[minecraft:wither, 20], [minecraft:ender_dragon, 1]]")
+                    .comment("夏日沙滩进化需求列表，格式: [[实体, 击杀数, NBT条件(可选)], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                            "实体格式: 例如 \"minecraft:ender_dragon\" 匹配所有末影龙",
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"20\", \"apoth.boss=true\"] 仅匹配Apotheosis Boss末影龙",
+                            "NBT条件支持多条件逗号分隔: \"apoth.boss=true,apoth.rarity=apotheosis:mythic\"",
+                            "默认: [[minecraft:ender_dragon, 20]]")
                     .define("evolutionRequirements", java.util.List.of(
-                            java.util.List.of("minecraft:wither", "20"),
-                            java.util.List.of("minecraft:ender_dragon", "1")
+                            java.util.List.of("minecraft:ender_dragon", "20")
                     ));
             summerBeachResistanceEntities = builder
-                    .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
-                            "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
+                    .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值, NBT条件(可选)], ...]，击杀实体获得对应抗性",
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"1\", \"apoth.boss=true\"]",
+                            "默认: [[minecraft:ender_dragon, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
-                            java.util.List.of("minecraft:wither", "1")
+                            java.util.List.of("minecraft:ender_dragon", "1")
                     ));
             summerBeachBaseResistance = builder
                     .comment("夏日沙滩虚数抗性基础值 (默认: 20)")
@@ -705,13 +709,15 @@ public class TaczCuriosConfig {
                     .comment("梵天百兽对第四诅咒效果的削弱比例 (默认: 0.5 = 抵消50%的诅咒效果)")
                     .defineInRange("elCurseReduction", 0.5, 0, 1);
             brahmaBeastsEvolutionRequirements = builder
-                    .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                    .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数, NBT条件(可选)], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"30\", \"apoth.boss=true\"]",
                             "默认: [[minecraft:ender_dragon, 30]]")
                     .define("evolutionRequirements", java.util.List.of(
                             java.util.List.of("minecraft:ender_dragon", "30")
                     ));
             brahmaBeastsResistanceEntities = builder
-                    .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值], ...]，击杀实体获得对应抗性",
+                    .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值, NBT条件(可选)], ...]，击杀实体获得对应抗性",
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"1\", \"apoth.boss=true\"]",
                             "默认: [[minecraft:ender_dragon, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
                             java.util.List.of("minecraft:ender_dragon", "1")

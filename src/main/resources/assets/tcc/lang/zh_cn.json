@@ -34,7 +34,7 @@
   "item.tcc.summer_beach.kill_progress_title": "进化需求:",
   "item.tcc.summer_beach.resist_source_title": "抗性来源:",
   "item.tcc.summer_beach.bound": "已绑定至：%1$s",
-  "item.tcc.summer_beach.how_to_obtain": "§7§o装备天火圣裁被%1$s击杀后获得（绑定）；同时装备天火劫灭且满足进化需求时进化为梵天百兽",
+  "item.tcc.summer_beach.how_to_obtain": "§7§o同时装备天火劫灭且满足进化需求时进化为梵天百兽",
   "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d",
   "item.tcc.summer_beach.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
@@ -45,7 +45,7 @@
   "item.tcc.brahma_beasts.kill_progress_title": "进化需求:",
   "item.tcc.brahma_beasts.resist_source_title": "抗性来源:",
   "item.tcc.brahma_beasts.bound": "已绑定至：%1$s",
-  "item.tcc.brahma_beasts.how_to_obtain": "§7§o同时装备天火劫灭和夏日沙滩且满足夏日沙滩进化需求时获得；虚数抗性>80且满足梵天百兽进化需求时进化为救世",
+  "item.tcc.brahma_beasts.how_to_obtain": "§7§o虚数抗性>80且满足梵天百兽进化需求时进化为救世",
   "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d",
   "item.tcc.brahma_beasts.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
@@ -73,7 +73,7 @@
   
   "item.tcc.heaven_fire_apocalypse.damage_conversion": "伤害降低%1$s%%，并转换为虚数伤害",
   
-  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o装备天火圣裁触发天火流血，结算时虚数抗性≥40且未死亡则进化；同时装备梵天百兽，虚数抗性>80且满足进化需求时进化为无烬终焉",
+  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o同时装备梵天百兽，虚数抗性>80且满足进化需求时进化为无烬终焉",
   "item.tcc.heaven_fire_apocalypse.inflection_max": "§b虚数侵染上限: %1$s层",
   "item.tcc.heaven_fire_apocalypse.collapse_info": "§5虚数崩解: 0.5%%目标最大生命值/层/秒 (受虚数抗性减免, 1抗性=1减伤)",
   

@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -34,10 +35,13 @@ public class SummerBeachDropEvent {
         Entity killer = event.getSource().getEntity();
         if (killer == null) return;
         
-        String targetEntityKey = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
+        String targetConfig = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
+        String baseEntityId = getBaseEntityId(targetConfig);
+        String nbtFilter = extractNbtFilter(targetConfig);
         String killerKey = BuiltInRegistries.ENTITY_TYPE.getKey(killer.getType()).toString();
-        if (!targetEntityKey.equals(killerKey)) return;
-        
+        if (!baseEntityId.equals(killerKey)) return;
+        if (killer instanceof LivingEntity livingKiller && !matchesNbtFilter(livingKiller, nbtFilter)) return;
+
         if (!HeavenFireJudgment.hasHeavenFireJudgmentEquipped(player)) return;
         
         CompoundTag playerData = player.getPersistentData();
@@ -80,8 +84,11 @@ public class SummerBeachDropEvent {
             boolean countedForEvolution = false;
             List<? extends List<String>> summerEvoReqs = TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get();
             for (List<String> req : summerEvoReqs) {
-                if (entityKey.equals(req.get(0))) {
-                    SummerBeach.incrementEntityKillCount(player, entityKey, Integer.parseInt(req.get(1)));
+                String reqEntity = req.get(0);
+                String nbtFilter = req.size() > 2 ? req.get(2) : null;
+                if (entityKey.equals(reqEntity) && matchesNbtFilter(killed, nbtFilter)) {
+                    String matchKey = getMatchKey(entityKey, nbtFilter);
+                    SummerBeach.incrementEntityKillCount(player, matchKey, Integer.parseInt(req.get(1)));
                     countedForEvolution = true;
                     break;
                 }
@@ -89,9 +96,12 @@ public class SummerBeachDropEvent {
             if (!countedForEvolution) {
                 List<? extends List<String>> summerResistList = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
                 for (List<String> entry : summerResistList) {
-                    if (entityKey.equals(entry.get(0))) {
+                    String resistEntity = entry.get(0);
+                    String nbtFilter = entry.size() > 2 ? entry.get(2) : null;
+                    if (entityKey.equals(resistEntity) && matchesNbtFilter(killed, nbtFilter)) {
                         if (SummerBeach.getResistanceFromKills(player) < TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get()) {
-                            SummerBeach.incrementEntityKillCount(player, entityKey, Integer.MAX_VALUE);
+                            String matchKey = getMatchKey(entityKey, nbtFilter);
+                            SummerBeach.incrementEntityKillCount(player, matchKey, Integer.MAX_VALUE);
                         }
                         break;
                     }
@@ -104,8 +114,11 @@ public class SummerBeachDropEvent {
             boolean countedForEvolution = false;
             List<? extends List<String>> brahmaEvoReqs = TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements.get();
             for (List<String> req : brahmaEvoReqs) {
-                if (entityKey.equals(req.get(0))) {
-                    BrahmaBeasts.incrementEntityKillCount(player, entityKey, Integer.parseInt(req.get(1)));
+                String reqEntity = req.get(0);
+                String nbtFilter = req.size() > 2 ? req.get(2) : null;
+                if (entityKey.equals(reqEntity) && matchesNbtFilter(killed, nbtFilter)) {
+                    String matchKey = getMatchKey(entityKey, nbtFilter);
+                    BrahmaBeasts.incrementEntityKillCount(player, matchKey, Integer.parseInt(req.get(1)));
                     countedForEvolution = true;
                     break;
                 }
@@ -113,9 +126,12 @@ public class SummerBeachDropEvent {
             if (!countedForEvolution) {
                 List<? extends List<String>> brahmaResistList = TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get();
                 for (List<String> entry : brahmaResistList) {
-                    if (entityKey.equals(entry.get(0))) {
+                    String resistEntity = entry.get(0);
+                    String nbtFilter = entry.size() > 2 ? entry.get(2) : null;
+                    if (entityKey.equals(resistEntity) && matchesNbtFilter(killed, nbtFilter)) {
                         if (BrahmaBeasts.getResistanceFromKills(player) < TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get()) {
-                            BrahmaBeasts.incrementEntityKillCount(player, entityKey, Integer.MAX_VALUE);
+                            String matchKey = getMatchKey(entityKey, nbtFilter);
+                            BrahmaBeasts.incrementEntityKillCount(player, matchKey, Integer.MAX_VALUE);
                         }
                         break;
                     }
@@ -238,5 +254,62 @@ public class SummerBeachDropEvent {
                 }
             }
         });
+    }
+
+    // ==================== NBT 条件匹配工具方法 ====================
+
+    /**
+     * 检查实体是否满足 NBT 条件过滤。
+     * @param entity 被杀实体
+     * @param nbtFilter NBT 条件字符串，如 "apoth.boss=true" 或 "apoth.boss=true,apoth.rarity=apotheosis:mythic"
+     *                  null 或空字符串表示无条件通过
+     * @return true 如果满足所有条件
+     */
+    public static boolean matchesNbtFilter(LivingEntity entity, @Nullable String nbtFilter) {
+        if (nbtFilter == null || nbtFilter.isEmpty()) return true;
+        CompoundTag data = entity.getPersistentData();
+        String[] conditions = nbtFilter.split(",");
+        for (String condition : conditions) {
+            String[] kv = condition.split("=", 2);
+            if (kv.length != 2) continue;
+            String key = kv[0].trim();
+            String expectedValue = kv[1].trim();
+            if (!data.contains(key)) return false;
+            if ("true".equals(expectedValue)) {
+                if (!data.getBoolean(key)) return false;
+            } else if ("false".equals(expectedValue)) {
+                if (data.getBoolean(key)) return false;
+            } else {
+                if (!expectedValue.equals(data.getString(key))) return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 生成复合匹配键。
+     * 无 NBT 条件时直接返回实体 ID；有条件时返回 "entityId[nbtFilter]"。
+     */
+    public static String getMatchKey(String entityId, @Nullable String nbtFilter) {
+        if (nbtFilter == null || nbtFilter.isEmpty()) return entityId;
+        return entityId + "[" + nbtFilter + "]";
+    }
+
+    /**
+     * 从复合键中提取基础实体 ID。
+     * e.g. "minecraft:wither[apoth.boss=true]" → "minecraft:wither"
+     */
+    public static String getBaseEntityId(String key) {
+        int bracketIdx = key.indexOf('[');
+        return bracketIdx > 0 ? key.substring(0, bracketIdx) : key;
+    }
+
+    /**
+     * 从复合键中提取 NBT 过滤条件。
+     * e.g. "minecraft:wither[apoth.boss=true]" → "apoth.boss=true"
+     */
+    public static String extractNbtFilter(String key) {
+        int bracketIdx = key.indexOf('[');
+        return bracketIdx > 0 ? key.substring(bracketIdx + 1, key.length() - 1) : "";
     }
 }

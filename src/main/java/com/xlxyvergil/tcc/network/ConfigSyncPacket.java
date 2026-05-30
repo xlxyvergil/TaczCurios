@@ -295,11 +295,15 @@ public class ConfigSyncPacket {
                 JsonArray outerArr = config.getAsJsonArray("summerBeachEvolutionRequirements");
                 for (JsonElement outerElem : outerArr) {
                     JsonArray innerArr = outerElem.getAsJsonArray();
-                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                    java.util.List<String> innerList = new java.util.ArrayList<>();
+                    for (int i = 0; i < innerArr.size(); i++) {
+                        innerList.add(innerArr.get(i).getAsString());
+                    }
+                    list.add(innerList);
                 }
                 @SuppressWarnings({"unchecked", "rawtypes"})
-                net.minecraftforge.common.ForgeConfigSpec.ConfigValue rawSb = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements;
-                rawSb.set(list);
+                net.minecraftforge.common.ForgeConfigSpec.ConfigValue raw = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements;
+                raw.set(list);
             }
             if (config.has("summerBeachMaxKillResistance"))
                 TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.set(config.get("summerBeachMaxKillResistance").getAsInt());
@@ -310,7 +314,11 @@ public class ConfigSyncPacket {
                 JsonArray outerArr = config.getAsJsonArray("summerBeachResistanceEntities");
                 for (JsonElement outerElem : outerArr) {
                     JsonArray innerArr = outerElem.getAsJsonArray();
-                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                    java.util.List<String> innerList = new java.util.ArrayList<>();
+                    for (int i = 0; i < innerArr.size(); i++) {
+                        innerList.add(innerArr.get(i).getAsString());
+                    }
+                    list.add(innerList);
                 }
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 net.minecraftforge.common.ForgeConfigSpec.ConfigValue raw = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.summerBeachResistanceEntities;
@@ -327,7 +335,11 @@ public class ConfigSyncPacket {
                 JsonArray outerArr = config.getAsJsonArray("brahmaBeastsEvolutionRequirements");
                 for (JsonElement outerElem : outerArr) {
                     JsonArray innerArr = outerElem.getAsJsonArray();
-                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                    java.util.List<String> innerList = new java.util.ArrayList<>();
+                    for (int i = 0; i < innerArr.size(); i++) {
+                        innerList.add(innerArr.get(i).getAsString());
+                    }
+                    list.add(innerList);
                 }
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 net.minecraftforge.common.ForgeConfigSpec.ConfigValue rawBb = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements;
@@ -342,7 +354,11 @@ public class ConfigSyncPacket {
                 JsonArray outerArr = config.getAsJsonArray("brahmaBeastsResistanceEntities");
                 for (JsonElement outerElem : outerArr) {
                     JsonArray innerArr = outerElem.getAsJsonArray();
-                    list.add(java.util.List.of(innerArr.get(0).getAsString(), innerArr.get(1).getAsString()));
+                    java.util.List<String> innerList = new java.util.ArrayList<>();
+                    for (int i = 0; i < innerArr.size(); i++) {
+                        innerList.add(innerArr.get(i).getAsString());
+                    }
+                    list.add(innerList);
                 }
                 @SuppressWarnings({"unchecked", "rawtypes"})
                 net.minecraftforge.common.ForgeConfigSpec.ConfigValue raw = (net.minecraftforge.common.ForgeConfigSpec.ConfigValue) TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities;
@@ -632,8 +648,7 @@ public class ConfigSyncPacket {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.summerBeachEvolutionRequirements.get()) {
                 JsonArray innerArr = new JsonArray();
-                innerArr.add(inner.get(0));
-                innerArr.add(inner.get(1));
+                for (String s : inner) innerArr.add(s);
                 outerArr.add(innerArr);
             }
             config.add("summerBeachEvolutionRequirements", outerArr);
@@ -644,8 +659,7 @@ public class ConfigSyncPacket {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get()) {
                 JsonArray innerArr = new JsonArray();
-                innerArr.add(inner.get(0));
-                innerArr.add(inner.get(1));
+                for (String s : inner) innerArr.add(s);
                 outerArr.add(innerArr);
             }
             config.add("summerBeachResistanceEntities", outerArr);
@@ -658,8 +672,7 @@ public class ConfigSyncPacket {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.brahmaBeastsEvolutionRequirements.get()) {
                 JsonArray innerArr = new JsonArray();
-                innerArr.add(inner.get(0));
-                innerArr.add(inner.get(1));
+                for (String s : inner) innerArr.add(s);
                 outerArr.add(innerArr);
             }
             config.add("brahmaBeastsEvolutionRequirements", outerArr);
@@ -670,8 +683,7 @@ public class ConfigSyncPacket {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get()) {
                 JsonArray innerArr = new JsonArray();
-                innerArr.add(inner.get(0));
-                innerArr.add(inner.get(1));
+                for (String s : inner) innerArr.add(s);
                 outerArr.add(innerArr);
             }
             config.add("brahmaBeastsResistanceEntities", outerArr);

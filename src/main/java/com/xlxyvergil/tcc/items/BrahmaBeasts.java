@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccAttributes;
+import com.xlxyvergil.tcc.events.SummerBeachDropEvent;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.ChatFormatting;
@@ -142,8 +143,10 @@ public class BrahmaBeasts extends BaseCurioItem {
                             CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
                             for (List<String> req : requirements) {
                                 String reqEntity = req.get(0);
+                                String nbtFilter = req.size() > 2 ? req.get(2) : null;
+                                String matchKey = SummerBeachDropEvent.getMatchKey(reqEntity, nbtFilter);
                                 int required = Integer.parseInt(req.get(1));
-                                if (killCounts.getInt(reqEntity) < required) {
+                                if (killCounts.getInt(matchKey) < required) {
                                     return false;
                                 }
                             }
@@ -184,7 +187,10 @@ public class BrahmaBeasts extends BaseCurioItem {
             List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get();
             CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
             for (List<String> entry : resistList) {
-                int kills = killCounts.getInt(entry.get(0));
+                String entityKey = entry.get(0);
+                String nbtFilter = entry.size() > 2 ? entry.get(2) : null;
+                String matchKey = SummerBeachDropEvent.getMatchKey(entityKey, nbtFilter);
+                int kills = killCounts.getInt(matchKey);
                 int perKill = Integer.parseInt(entry.get(1));
                 fromKills += kills * perKill;
             }
@@ -217,9 +223,11 @@ public class BrahmaBeasts extends BaseCurioItem {
             CompoundTag killCounts = tag != null ? tag.getCompound(KILL_COUNTS_TAG) : null;
             for (List<String> req : requirements) {
                 String reqEntity = req.get(0);
+                String nbtFilter = req.size() > 2 ? req.get(2) : null;
+                String matchKey = SummerBeachDropEvent.getMatchKey(reqEntity, nbtFilter);
                 int required = Integer.parseInt(req.get(1));
-                int current = killCounts != null ? killCounts.getInt(reqEntity) : 0;
-                String entityDisplay = getEntityDisplayName(reqEntity);
+                int current = killCounts != null ? killCounts.getInt(matchKey) : 0;
+                String entityDisplay = getEntityDisplayName(matchKey);
                 tooltip.add(Component.translatable("item.tcc.brahma_beasts.evolution_progress", entityDisplay, current, required)
                     .withStyle(current >= required ? ChatFormatting.GREEN : ChatFormatting.GRAY));
             }
@@ -234,9 +242,11 @@ public class BrahmaBeasts extends BaseCurioItem {
             CompoundTag killCounts = tag != null ? tag.getCompound(KILL_COUNTS_TAG) : null;
             for (List<String> entry : resistList) {
                 String entityKey = entry.get(0);
+                String nbtFilter = entry.size() > 2 ? entry.get(2) : null;
+                String matchKey = SummerBeachDropEvent.getMatchKey(entityKey, nbtFilter);
                 int resistancePerKill = Integer.parseInt(entry.get(1));
-                int kills = killCounts != null ? killCounts.getInt(entityKey) : 0;
-                String entityDisplay = getEntityDisplayName(entityKey);
+                int kills = killCounts != null ? killCounts.getInt(matchKey) : 0;
+                String entityDisplay = getEntityDisplayName(matchKey);
                 tooltip.add(Component.translatable("item.tcc.brahma_beasts.resist_detail", entityDisplay, kills * resistancePerKill)
                     .withStyle(ChatFormatting.GRAY));
             }
@@ -259,10 +269,16 @@ public class BrahmaBeasts extends BaseCurioItem {
     }
     
     private static String getEntityDisplayName(String namespace) {
+        // 处理复合键如 "minecraft:wither[apoth.boss=true]"
+        String baseId = SummerBeachDropEvent.getBaseEntityId(namespace);
+        String nbtSuffix = "";
+        if (!baseId.equals(namespace)) {
+            nbtSuffix = " " + namespace.substring(baseId.length());
+        }
         try {
-            ResourceLocation rl = new ResourceLocation(namespace);
+            ResourceLocation rl = new ResourceLocation(baseId);
             var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            return entityType.getDescription().getString();
+            return entityType.getDescription().getString() + nbtSuffix;
         } catch (Exception ignored) {
             return namespace;
         }
@@ -287,7 +303,10 @@ public class BrahmaBeasts extends BaseCurioItem {
                                 CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
                                 int total = 0;
                                 for (List<String> entry : resistanceEntities) {
-                                    int kills = killCounts.getInt(entry.get(0));
+                                    String entityId = entry.get(0);
+                                    String nbtFilter = entry.size() > 2 ? entry.get(2) : null;
+                                    String matchKey = SummerBeachDropEvent.getMatchKey(entityId, nbtFilter);
+                                    int kills = killCounts.getInt(matchKey);
                                     int resistancePerKill = Integer.parseInt(entry.get(1));
                                     total += kills * resistancePerKill;
                                 }
