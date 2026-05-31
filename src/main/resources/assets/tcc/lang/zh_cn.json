@@ -338,6 +338,7 @@
   "effect.tcc.heaven_fire_bleeding": "天火流血",
   "effect.tcc.imaginary_infection": "虚数侵染",
   "effect.tcc.imaginary_collapse": "虚数崩解",
+  "effect.tcc.erosion": "侵蚀",
   "effect.tcc.heaven_fire_apocalypse_delay": "延迟判定",
   
   "// 新增33个饰品": "",
@@ -371,8 +372,10 @@
   "item.tcc.dismemberment.effect": "%1$s%%近战暴击伤害",
   "item.tcc.sacrifice_oppression": "§d牺牲压迫点",
   "item.tcc.sacrifice_oppression.effect": "%1$s%%近战伤害",
+  "item.tcc.sacrifice_oppression.set_bonus": "套装：同时装备牺牲斩铁时，效果额外提升%1$s%%",
   "item.tcc.sacrifice_steel": "§d牺牲斩铁",
   "item.tcc.sacrifice_steel.effect": "%1$s%%近战暴击几率",
+  "item.tcc.sacrifice_steel.set_bonus": "套装：同时装备牺牲压迫点时，效果额外提升%1$s%%",
   "item.tcc.argon_scope": "§6氩晶瞄具",
   "item.tcc.argon_scope.effect": "爆头触发：%1$s%%基础+每级%2$s%%步枪暴击几率，持续%3$s秒",
   "item.tcc.gilded_argon_scope": "§d镀层氩晶瞄具",
@@ -404,7 +407,5 @@
   "item.tcc.gilded_marksman": "§d镀层准确射手",
   "item.tcc.gilded_marksman.effect": "手持手枪时，每负面效果种数+%1$s%%伤害（乘算）",
   "item.tcc.condition_overload": "§6异况超量",
-  "item.tcc.condition_overload.effect": "近战时，目标每负面效果种数+%1$s%%伤害（乘算）",
-  "item.tcc.sacrifice_set_bonus": "§d牺牲套装组合",
-  "item.tcc.sacrifice_set_bonus.effect": "同时装备牺牲压迫点+牺牲斩铁各提升%1$s%%"
+  "item.tcc.condition_overload.effect": "近战时，目标每负面效果种数+%1$s%%伤害（乘算）"
 }

@@ -1,16 +1,19 @@
-package com.xlxyvergil.tcc.core;
+package com.xlxyvergil.tcc.event;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
 import com.aizistral.enigmaticlegacy.items.CursedRing;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
 import com.xlxyvergil.tcc.items.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.Salvation;
 import com.xlxyvergil.tcc.items.SummerBeach;
+import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -27,6 +30,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import top.theillusivec4.curios.api.CuriosApi;
 
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -94,8 +98,35 @@ public class TccAttributeEvents {
                 );
                 living.addEffect(collapseInstance, attacker);
                 forceAddEffect(living, collapseInstance);
+
+                // 检查攻击者是否装备负面增伤饰品（镀层步枪才能/通晓霰弹枪/准确射手/异况超量）
+                if (attackerHasHarmfulCurio(attacker)) {
+                    var erosion = TccMobEffects.EROSION.get();
+                    var erosionInstance = new MobEffectInstance(
+                        erosion,
+                        duration * 20,
+                        0,
+                        false, false, true
+                    );
+                    living.addEffect(erosionInstance, attacker);
+                    forceAddEffect(living, erosionInstance);
+                }
             }
         }
+    }
+
+    /**
+     * 检查攻击者是否装备了负面效果种数增伤饰品。
+     */
+    private static boolean attackerHasHarmfulCurio(LivingEntity attacker) {
+        if (!(attacker instanceof Player)) return false;
+        return CuriosApi.getCuriosInventory(attacker).resolve()
+            .map(inv -> 
+                inv.findFirstCurio(TaczItems.GILDED_RIFLE_APTITUDE.get()).isPresent() ||
+                inv.findFirstCurio(TaczItems.GILDED_SHOTGUN_SAVVY.get()).isPresent() ||
+                inv.findFirstCurio(TaczItems.GILDED_MARKSMAN.get()).isPresent() ||
+                inv.findFirstCurio(TaczItems.CONDITION_OVERLOAD.get()).isPresent()
+            ).orElse(false);
     }
 
     /**

@@ -1,6 +1,4 @@
-package com.xlxyvergil.tcc.handlers;
-
-import com.xlxyvergil.tcc.event.HeavenFireBleedingSettlementEvent;
+package com.xlxyvergil.tcc.event;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

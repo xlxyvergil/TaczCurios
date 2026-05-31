@@ -39,7 +39,7 @@ public class ForgeHooksMixin {
             LogUtils.getLogger().debug("Force dispatching LootTableLoadEvent for " + name + "...");
 
             // 创建临时事件处理器来处理战利品表加载
-            com.xlxyvergil.tcc.handlers.TccEventHandler handler = new com.xlxyvergil.tcc.handlers.TccEventHandler();
+            com.xlxyvergil.tcc.event.TccEventHandler handler = new com.xlxyvergil.tcc.event.TccEventHandler();
             LootTableLoadEvent event = new LootTableLoadEvent(name, returnedTable);
             handler.onLootTablesLoaded(event);
 

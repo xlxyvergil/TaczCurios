@@ -408,11 +408,6 @@
         {
           "type": "minecraft:item",
           "weight": 1,
-          "name": "tcc:sacrifice_set_bonus"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
           "name": "tcc:kikaku_ichijin"
         }
       ]

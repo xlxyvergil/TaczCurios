@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.effect.HeavenFireApocalypseBuffEffect;
 import com.xlxyvergil.tcc.effect.HeavenFireApocalypseDelayEffect;
 import com.xlxyvergil.tcc.effect.HeavenFireBleedingEffect;
+import com.xlxyvergil.tcc.effect.ErosionEffect;
 import com.xlxyvergil.tcc.effect.ImaginaryCollapseEffect;
 import com.xlxyvergil.tcc.effect.ImaginaryInfectionEffect;
 import com.xlxyvergil.tcc.effect.ArgonScopeEffect;
@@ -53,6 +54,13 @@ public class TccMobEffects {
     public static final RegistryObject<MobEffect> IMAGINARY_COLLAPSE = MOB_EFFECTS.register(
             "imaginary_collapse",
             ImaginaryCollapseEffect::new);
+    
+    /**
+     * 侵蚀 - 负面增伤饰品命中目标时的标记效果
+     */
+    public static final RegistryObject<MobEffect> EROSION = MOB_EFFECTS.register(
+            "erosion",
+            ErosionEffect::new);
     
     /**
      * 天火劫灭延迟标记 - 用于在扣血后延迟施加流血效果

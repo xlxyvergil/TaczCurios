@@ -1,4 +1,4 @@
-package com.xlxyvergil.tcc.handlers;
+package com.xlxyvergil.tcc.event;
 
 import com.tacz.guns.api.event.common.GunDrawEvent;
 import com.xlxyvergil.tcc.items.ItemBaseCurio;

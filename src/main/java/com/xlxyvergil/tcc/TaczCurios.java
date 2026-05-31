@@ -1,14 +1,14 @@
 package com.xlxyvergil.tcc;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.handlers.HeavenFireSettlementHandler;
-import com.xlxyvergil.tcc.handlers.TccEventHandler;
+import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
+import com.xlxyvergil.tcc.event.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
 import com.xlxyvergil.tcc.network.TccNetwork;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
-import com.xlxyvergil.tcc.core.TccAttributes;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;

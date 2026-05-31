@@ -88,7 +88,6 @@ import com.xlxyvergil.tcc.items.GildedRifleAptitude;
 import com.xlxyvergil.tcc.items.GildedShotgunSavvy;
 import com.xlxyvergil.tcc.items.GildedMarksman;
 import com.xlxyvergil.tcc.items.ConditionOverload;
-import com.xlxyvergil.tcc.items.SacrificeSetBonus;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -632,9 +631,4 @@ public class TaczItems {
             .stacksTo(1)
             .rarity(Rarity.RARE)));
 
-    // M-07 牺牲套装组合 - 近战，牺牲压迫点+牺牲斩铁各提升25%
-    public static final RegistryObject<Item> SACRIFICE_SET_BONUS = ITEMS.register("sacrifice_set_bonus",
-        () -> new SacrificeSetBonus(new Item.Properties()
-            .stacksTo(1)
-            .rarity(Rarity.EPIC)));
 }

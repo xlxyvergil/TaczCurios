@@ -15,6 +15,7 @@ import java.util.List;
  * 虚数崩解 - 虚数侵染的流血效果。
  * 伤害公式: 目标最大血量 × percentPerLevel × 侵染等级 × (1 + min(debuff数, maxDebuff) × percentPerDebuff)
  * 仅可由天火劫灭/无烬终焉触发。
+ * 负面效果数量增益仅在目标同时带有侵蚀效果时生效。
  */
 public class ImaginaryCollapseEffect extends MobEffect {
 
@@ -25,15 +26,6 @@ public class ImaginaryCollapseEffect extends MobEffect {
     @Override
     public List<ItemStack> getCurativeItems() {
         return new ArrayList<>();
-    }
-
-    /**
-     * 返回true以绕过Goety Apostle等boss的负面效果拦截。
-     * Apostle的addEffect()仅允许isBeneficial()=true的效果。
-     */
-    @Override
-    public boolean isBeneficial() {
-        return true;
     }
 
     @Override
@@ -47,20 +39,22 @@ public class ImaginaryCollapseEffect extends MobEffect {
         }
         if (infectionLevel <= 0) return;
 
-        // 统计目标身上的负面效果数量
-        int debuffCount = 0;
-        for (MobEffectInstance instance : entity.getActiveEffects()) {
-            if (instance.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
-                debuffCount++;
-            }
-        }
-
         double percentPerLevel = TaczCuriosConfig.COMMON.collapsePercentPerLevel.get();
-        int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
-        double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
+        double debuffMultiplier = 1.0;
 
-        int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
-        double debuffMultiplier = 1.0 + effectiveDebuffs * percentPerDebuff;
+        // 仅当目标带有侵蚀效果时，才统计负面效果数量增益
+        if (entity.hasEffect(TccMobEffects.EROSION.get())) {
+            int debuffCount = 0;
+            for (MobEffectInstance instance : entity.getActiveEffects()) {
+                if (instance.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
+                    debuffCount++;
+                }
+            }
+            int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
+            double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
+            int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
+            debuffMultiplier = 1.0 + effectiveDebuffs * percentPerDebuff;
+        }
 
         float finalDamage = (float) (entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier);
 

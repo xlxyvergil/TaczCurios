@@ -83,7 +83,6 @@
     "tcc:gilded_rifle_aptitude",
     "tcc:gilded_shotgun_savvy",
     "tcc:gilded_marksman",
-    "tcc:condition_overload",
-    "tcc:sacrifice_set_bonus"
+    "tcc:condition_overload"
   ]
 }

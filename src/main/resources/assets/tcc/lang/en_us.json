@@ -333,7 +333,9 @@
   
   "// Heaven Fire Bleeding Effect": "",
   "effect.tcc.heaven_fire_bleeding": "Heaven Fire Bleeding",
-  "effect.tcc.imaginary_bleeding": "Imaginary Bleeding",
+  "effect.tcc.imaginary_infection": "Imaginary Infection",
+  "effect.tcc.imaginary_collapse": "Imaginary Collapse",
+  "effect.tcc.erosion": "Erosion",
   "effect.tcc.heaven_fire_apocalypse_delay": "Heaven Fire Apocalypse Delay",
   
   "// 33 New Curios": "",
@@ -367,8 +369,10 @@
   "item.tcc.dismemberment.effect": "%1$s%% Melee Crit Damage",
   "item.tcc.sacrifice_oppression": "§dSacrifice Oppression",
   "item.tcc.sacrifice_oppression.effect": "%1$s%% Melee Damage",
+  "item.tcc.sacrifice_oppression.set_bonus": "Set: When Sacrifice Steel is also equipped, +%1$s%% extra",
   "item.tcc.sacrifice_steel": "§dSacrifice Steel",
   "item.tcc.sacrifice_steel.effect": "%1$s%% Melee Crit Chance",
+  "item.tcc.sacrifice_steel.set_bonus": "Set: When Sacrifice Oppression is also equipped, +%1$s%% extra",
   "item.tcc.argon_scope": "§6Argon Scope",
   "item.tcc.argon_scope.effect": "On Headshot: %1$s%% base + %2$s%% per level Rifle Crit Chance for %3$ss",
   "item.tcc.gilded_argon_scope": "§dGilded Argon Scope",
@@ -400,7 +404,5 @@
   "item.tcc.gilded_marksman": "§dGilded Marksman",
   "item.tcc.gilded_marksman.effect": "With Pistol: +%1$s%% damage per harmful effect type (multiplicative)",
   "item.tcc.condition_overload": "§6Condition Overload",
-  "item.tcc.condition_overload.effect": "Melee: +%1$s%% damage per harmful effect type on target (multiplicative)",
-  "item.tcc.sacrifice_set_bonus": "§dSacrifice Set Bonus",
-  "item.tcc.sacrifice_set_bonus.effect": "Sacrifice Oppression + Sacrifice Steel each +%1$s%%"
+  "item.tcc.condition_overload.effect": "Melee: +%1$s%% damage per harmful effect type on target (multiplicative)"
 }

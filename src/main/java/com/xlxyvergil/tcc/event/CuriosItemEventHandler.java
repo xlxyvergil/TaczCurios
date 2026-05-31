@@ -1,4 +1,4 @@
-package com.xlxyvergil.tcc.handlers;
+package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;

@@ -131,7 +131,6 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.GILDED_SHOTGUN_SAVVY.get());    // S-07 镀层通晓霰弹枪
                 output.accept(TaczItems.GILDED_MARKSMAN.get());         // P-09 镀层准确射手
                 output.accept(TaczItems.CONDITION_OVERLOAD.get());      // M-06 异况超量
-                output.accept(TaczItems.SACRIFICE_SET_BONUS.get());     // M-07 牺牲套装组合
 
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());

@@ -1,4 +1,4 @@
-package com.xlxyvergil.tcc.events;
+package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.HeavenFireJudgment;
@@ -184,7 +184,7 @@ public class SummerBeachDropEvent {
     }
     
     private static void checkSalvationEvolution(Player player) {
-        double resistance = player.getAttributeValue(com.xlxyvergil.tcc.core.TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double resistance = player.getAttributeValue(com.xlxyvergil.tcc.attribute.TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         if (resistance <= 80.0) return;
         
         if (!BrahmaBeasts.hasBrahmaBeastsEquipped(player)) return;

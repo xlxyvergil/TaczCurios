@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.effect;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccAttributes;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,15 +35,6 @@ public class ImaginaryInfectionEffect extends MobEffect {
     @Override
     public List<ItemStack> getCurativeItems() {
         return new ArrayList<>();
-    }
-
-    /**
-     * 返回true以绕过Goety Apostle等boss的负面效果拦截。
-     * Apostle的addEffect()只允许isBeneficial()=true的效果。
-     */
-    @Override
-    public boolean isBeneficial() {
-        return true;
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccAttributes;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.HeavenFireBleedingSettlementEvent;
 import com.xlxyvergil.tcc.registries.TaczItems;

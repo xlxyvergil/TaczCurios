@@ -1,8 +1,8 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccAttributes;
-import com.xlxyvergil.tcc.events.SummerBeachDropEvent;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.event.SummerBeachDropEvent;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.ChatFormatting;

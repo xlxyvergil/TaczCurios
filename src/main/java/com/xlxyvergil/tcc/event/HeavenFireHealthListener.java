@@ -1,7 +1,7 @@
-package com.xlxyvergil.tcc.events;
+package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccAttributes;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
