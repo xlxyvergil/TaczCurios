@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "tcc:item/summer_beach",
-    "layer1": "tcc:item/border_common"
+    "layer1": "tcc:item/border_rare"
   }
 }

@@ -89,7 +89,7 @@
   "item.tcc.split_chamber": "§6分裂膛室",
   "item.tcc.split_chamber.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹头数量",
   
-  "item.tcc.despicable_acceleration": "§f卑劣加速",
+  "item.tcc.despicable_acceleration": "§6卑劣加速",
   "item.tcc.despicable_acceleration.effect": "%1$s%%射击速度，%2$s%%通用伤害和全部步枪、狙击枪、冲锋枪、机枪、重型武器、手枪、霰弹枪伤害",
   
   "item.tcc.merged_rifling": "§f并合膛线",
@@ -140,7 +140,7 @@
   "item.tcc.malignant_spread": "§6恶性扩散",
   "item.tcc.malignant_spread.effect": "%1$s%%霰弹枪伤害，%2$s%%扩散程度",
   
-  "item.tcc.chamber": "§b蓄力装填",
+  "item.tcc.chamber": "§6蓄力装填",
   "item.tcc.chamber.effect": "满弹匣狙击枪时%1$s%%伤害，无法与膛室Prime同时装备",
   
   "item.tcc.chamber_prime": "§f膛室Prime",
@@ -153,7 +153,7 @@
   "item.tcc.rift_silver.effect": "右键使用可随机获得一个饰品",
   "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。",
 
-  "item.tcc.tactical_reload": "§9战术上膛",
+  "item.tcc.tactical_reload": "§b战术上膛",
   "item.tcc.tactical_reload.effect": "%1$s%%霰弹枪装填时间",
 
   "item.tcc.overloaded_magazine": "§6过载弹匣",

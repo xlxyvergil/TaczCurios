@@ -242,7 +242,7 @@ public class BrahmaBeasts extends BaseCurioItem {
                 int kills = killCounts != null ? killCounts.getInt(matchKey) : 0;
                 String entityDisplay = getEntityDisplayName(matchKey);
                 tooltip.add(Component.translatable("item.tcc.brahma_beasts.resist_detail", entityDisplay, kills * resistancePerKill)
-                    .withStyle(ChatFormatting.GRAY));
+                    .withStyle(ChatFormatting.GOLD));
             }
         }
         

@@ -133,7 +133,7 @@ public class TaczItems {
     public static final RegistryObject<Item> SUMMER_BEACH = ITEMS.register("summer_beach", 
         () -> new SummerBeach(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.COMMON)));
+            .rarity(Rarity.RARE)));
     
     // 梵天百兽 - 提供40点虚数抗性，增强天火饰品效果
     public static final RegistryObject<Item> BRAHMA_BEASTS = ITEMS.register("brahma_beasts", 

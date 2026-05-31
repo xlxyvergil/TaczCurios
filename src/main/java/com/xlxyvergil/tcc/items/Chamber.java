@@ -92,7 +92,7 @@ public class Chamber extends BaseCurioItem {
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.chamberSniperDamageBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.chamber.effect", String.format("%+.0f", damageBoost))
-            .withStyle(ChatFormatting.AQUA));
+            .withStyle(ChatFormatting.GOLD));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

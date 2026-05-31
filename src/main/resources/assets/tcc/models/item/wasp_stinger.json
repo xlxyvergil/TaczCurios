@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "tcc:item/wasp_stinger",
-    "layer1": "tcc:item/border_rare"
+    "layer1": "tcc:item/border_uncommon"
   }
 }
