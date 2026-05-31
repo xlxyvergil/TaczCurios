@@ -26,7 +26,6 @@
   
   "item.tcc.summer_beach": "§fSummer Beach",
   "item.tcc.summer_beach.effect": "%1$s imaginary damage resistance",
-  "item.tcc.summer_beach.heaven_fire_boost": "Heaven Fire items damage retention increased by %1$s%%",
   "item.tcc.summer_beach.kill_progress": "Kill %3$s: %1$d/%2$d (+%1$d imaginary resistance)",
   "item.tcc.summer_beach.bound": "Bound to: %1$s",
   "item.tcc.summer_beach.how_to_obtain": "§7§oEvolves to Brahma Beasts when killing evolution targets while wearing Heaven Fire Apocalypse",
@@ -35,7 +34,6 @@
   
   "item.tcc.brahma_beasts": "§5Brahma Beasts",
   "item.tcc.brahma_beasts.effect": "%1$s imaginary damage resistance",
-  "item.tcc.brahma_beasts.heaven_fire_boost": "Heaven Fire items damage retention increased by %1$s%%",
   "item.tcc.brahma_beasts.kill_progress": "Kill %3$s: %1$d/%2$d (+%1$d imaginary resistance)",
   "item.tcc.brahma_beasts.bound": "Bound to: %1$s",
   "item.tcc.brahma_beasts.how_to_obtain": "§7§oImaginary resistance >80 and meet Brahma Beasts evolution requirements to evolve to Salvation",
@@ -45,7 +43,6 @@
   "item.tcc.salvation": "§4Salvation",
   "item.tcc.salvation.effect": "%1$s imaginary damage resistance",
   "item.tcc.salvation.passive_bonuses": "Passive: Resistance III, Knockback Immunity, -30% Damage",
-  "item.tcc.salvation.heaven_fire_boost": "Heaven Fire items damage conversion increased by %1$s%%",
   "item.tcc.salvation.how_to_obtain": "§7§oObtained when imaginary resistance >80 with Brahma Beasts + Heaven Fire Apocalypse after 30 %1$s kills",
   
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
@@ -54,20 +51,25 @@
   "item.tcc.heaven_fire_judgment": "§fHeaven Fire Judgment",
   "item.tcc.heaven_fire_judgment.effect": "%1$s%% universal firearm damage Damage converted to Imaginary %2$s%% current health Apply bleeding: %3$s%% max health/level for %4$s seconds Disabled below 40%% health Can evolve to Heaven Fire Apocalypse on bleeding settlement",
   
-  "item.tcc.heaven_fire_judgment.damage_conversion": "Damage reduced by %1$s%%, converted to Imaginary",
+  "item.tcc.heaven_fire_judgment.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base + %3$s%% resistance)",
   
   "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§oWhen killed by %1$s, obtain Summer Beach (Bound); Evolves to Heaven Fire Apocalypse when bleeding settles with ≥40 imaginary resistance and alive",
   
   "item.tcc.heaven_fire_apocalypse": "§dHeaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health %1$s%% universal firearm damage Damage converted to Imaginary %2$s explosion range %3$s%% explosion damage Lose %4$s%% max health Bleeding after 5s delay %6$s%% universal firearm damage to players within %5$s blocks for %7$s seconds Cannot unequip Kept on death",
+  "item.tcc.heaven_fire_apocalypse.inflection_max": "§bImaginary Infection cap: %1$s stacks",
+  "item.tcc.heaven_fire_apocalypse.collapse_info": "§5Imaginary Collapse: %1$s%% max HP × infection level × (1 + debuffs(up to %3$s) × %2$s%%)/sec",
   
-  "item.tcc.heaven_fire_apocalypse.damage_conversion": "Damage reduced by %1$s%%, converted to Imaginary",
+  "item.tcc.heaven_fire_apocalypse.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base + %3$s%% resistance)",
   
   "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§oWith Brahma Beasts equipped, imaginary resistance >80 and meet evolution requirements to evolve to Endless",
   
   "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
   "item.tcc.heaven_fire_apocalypse_endless.effect": "Permanent %1$s%% universal firearm damage Damage converted to Imaginary %3$s%% explosion damage No health cost %5$s%% universal firearm damage to players within %4$s blocks for %6$s seconds Cannot unequip Kept on death",
   "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§oEvolved from Heaven Fire Apocalypse",
+  "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§bImaginary Infection cap: %1$s stacks",
+  "item.tcc.heaven_fire_apocalypse_endless.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base + %3$s%% resistance)",
+  "item.tcc.heaven_fire_apocalypse_endless.collapse_info": "§5Imaginary Collapse: %1$s%% max HP × infection level × (1 + debuffs(up to %3$s) × %2$s%%)/sec",
   
   "item.tcc.burst_reload": "§9Burst Reload",
   "item.tcc.burst_reload.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",

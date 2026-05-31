@@ -94,6 +94,45 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.KIKAKU_ICHIJIN.get());
                 output.accept(TaczItems.HEAVEN_FIRE_APOCALYPSE_ENDLESS.get());
                 
+                // 添加Phase 2 新增饰品 (16个常驻属性饰品)
+                output.accept(TaczItems.CRITICAL_DELAY.get());       // G-01 关键延迟
+                output.accept(TaczItems.LETHAL_CRIT.get());           // R-01 致命一击
+                output.accept(TaczItems.WEAKNESS_SENSE.get());        // R-02 弱点感应
+                output.accept(TaczItems.DESTRUCTION.get());           // S-01 破灭
+                output.accept(TaczItems.DESTRUCTION_PRIME.get());     // S-02 破灭Prime
+                output.accept(TaczItems.THUNDER_BARREL.get());        // S-03 雷筒
+                output.accept(TaczItems.THUNDER_BARREL_PRIME.get());  // S-04 雷筒Prime
+                output.accept(TaczItems.WEAKNESS_MASTERY.get());      // P-01 弱点专精
+                output.accept(TaczItems.WEAKNESS_MASTERY_PRIME.get());// P-02 弱点专精Prime
+                output.accept(TaczItems.HOLLOW_POINT.get());          // P-03 空尖弹
+                output.accept(TaczItems.PISTOL_MASTERY.get());        // P-04 手枪精通
+                output.accept(TaczItems.PISTOL_MASTERY_PRIME.get());  // P-05 手枪精通Prime
+                output.accept(TaczItems.STEEL_SLASH.get());           // M-01 斩铁
+                output.accept(TaczItems.DISMEMBERMENT.get());         // M-02 肢解
+                output.accept(TaczItems.SACRIFICE_OPPRESSION.get());  // M-03 牺牲压迫点
+                output.accept(TaczItems.SACRIFICE_STEEL.get());       // M-04 牺牲斩铁
+
+                // 添加Phase 3 新增饰品 (12个Buff触发饰品)
+                output.accept(TaczItems.ARGON_SCOPE.get());              // R-03 氩晶瞄具
+                output.accept(TaczItems.GILDED_ARGON_SCOPE.get());       // R-04 镀层氩晶瞄具
+                output.accept(TaczItems.SHARP_BULLET.get());             // R-05 尖刃弹头
+                output.accept(TaczItems.GILDED_SPLIT_CHAMBER.get());     // R-07 镀层分裂膛室
+                output.accept(TaczItems.LASER_SCOPE.get());              // S-05 雷射瞄具
+                output.accept(TaczItems.FRAGMENT_SHOT.get());            // S-06 破片射击
+                output.accept(TaczItems.GILDED_INFERNAL_CHAMBER.get());  // S-08 镀层地狱弹膛
+                output.accept(TaczItems.HYDRAULIC_CROSSHAIR.get());      // P-06 液压准心
+                output.accept(TaczItems.GILDED_HYDRAULIC_CROSSHAIR.get());// P-07 镀层液压准心
+                output.accept(TaczItems.SHARP_AMMO.get());               // P-08 尖锐子弹
+                output.accept(TaczItems.GILDED_BULLET_SPREAD.get());     // P-10 镀层弹头扩散
+                output.accept(TaczItems.GILDED_STEEL_SLASH.get());       // M-05 镀层斩铁
+
+                // 添加Phase 4 新增饰品 (5个特殊饰品)
+                output.accept(TaczItems.GILDED_RIFLE_APTITUDE.get());   // R-06 镀层步枪才能
+                output.accept(TaczItems.GILDED_SHOTGUN_SAVVY.get());    // S-07 镀层通晓霰弹枪
+                output.accept(TaczItems.GILDED_MARKSMAN.get());         // P-09 镀层准确射手
+                output.accept(TaczItems.CONDITION_OVERLOAD.get());      // M-06 异况超量
+                output.accept(TaczItems.SACRIFICE_SET_BONUS.get());     // M-07 牺牲套装组合
+
                 // 添加材料物品
                 output.accept(TaczItems.CORE_FUSION.get());
                 output.accept(TaczItems.RIFT_SILVER.get());

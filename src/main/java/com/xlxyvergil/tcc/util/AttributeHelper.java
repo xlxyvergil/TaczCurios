@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.taa.attribute.EntityAttributeRegistry;
+import dev.shadowsoffire.attributeslib.api.ALObjects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -36,6 +37,14 @@ public class AttributeHelper {
     
     /** 方块交互范围 */
     public static final Attribute BLOCK_REACH = ForgeMod.BLOCK_REACH.get();
+    
+    // ========== Apothic-Attributes 暴击属性 ==========
+    
+    /** 暴击几率 (PercentBasedAttribute, base=0.05, range=[0,10]) */
+    public static final Attribute CRIT_CHANCE = ALObjects.Attributes.CRIT_CHANCE.get();
+    
+    /** 暴击伤害 (PercentBasedAttribute, base=1.5, range=[1,100]) */
+    public static final Attribute CRIT_DAMAGE = ALObjects.Attributes.CRIT_DAMAGE.get();
     
     // ========== TAA 枪械属性 ==========
     

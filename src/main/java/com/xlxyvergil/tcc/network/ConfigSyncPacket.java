@@ -284,8 +284,6 @@ public class ConfigSyncPacket {
                 TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.set(config.get("redMovementTagSpeedBoost").getAsDouble());
             
             // 夏日沙滩配置
-            if (config.has("summerBeachHeavenFireMultiplier"))
-                TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.set(config.get("summerBeachHeavenFireMultiplier").getAsDouble());
             if (config.has("summerBeachELCurseReduction"))
                 TaczCuriosConfig.COMMON.summerBeachELCurseReduction.set(config.get("summerBeachELCurseReduction").getAsDouble());
             if (config.has("summerBeachObtainEntity"))
@@ -326,8 +324,6 @@ public class ConfigSyncPacket {
             }
             
             // 梵天百兽配置
-            if (config.has("brahmaBeastsHeavenFireMultiplier"))
-                TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.set(config.get("brahmaBeastsHeavenFireMultiplier").getAsDouble());
             if (config.has("brahmaBeastsELCurseReduction"))
                 TaczCuriosConfig.COMMON.brahmaBeastsELCurseReduction.set(config.get("brahmaBeastsELCurseReduction").getAsDouble());
             if (config.has("brahmaBeastsEvolutionRequirements")) {
@@ -366,8 +362,6 @@ public class ConfigSyncPacket {
             }
             
             // 救世配置
-            if (config.has("salvationHeavenFireMultiplier"))
-                TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.set(config.get("salvationHeavenFireMultiplier").getAsDouble());
             if (config.has("salvationELCurseReduction"))
                 TaczCuriosConfig.COMMON.salvationELCurseReduction.set(config.get("salvationELCurseReduction").getAsDouble());
             if (config.has("salvationDamageReduction"))
@@ -469,7 +463,82 @@ public class ConfigSyncPacket {
                 JsonArray arr = config.getAsJsonArray("curioConflicts");
                 for (JsonElement e : arr) conflicts.add(e.getAsString());
                 TaczCuriosConfig.COMMON.curioConflicts.set(conflicts);
-        }
+            }
+            
+            // ========== 新增33个饰品配置同步 ==========
+            if (config.has("criticalDelayCritChanceBoost")) TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.set(config.get("criticalDelayCritChanceBoost").getAsDouble());
+            if (config.has("criticalDelayFireRateReduction")) TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.set(config.get("criticalDelayFireRateReduction").getAsDouble());
+            if (config.has("lethalCritCritChance")) TaczCuriosConfig.COMMON.lethalCritCritChance.set(config.get("lethalCritCritChance").getAsDouble());
+            if (config.has("weaknessSenseCritDamage")) TaczCuriosConfig.COMMON.weaknessSenseCritDamage.set(config.get("weaknessSenseCritDamage").getAsDouble());
+            if (config.has("argonScopeBaseCritChance")) TaczCuriosConfig.COMMON.argonScopeBaseCritChance.set(config.get("argonScopeBaseCritChance").getAsDouble());
+            if (config.has("argonScopeCritChancePerLevel")) TaczCuriosConfig.COMMON.argonScopeCritChancePerLevel.set(config.get("argonScopeCritChancePerLevel").getAsDouble());
+            if (config.has("argonScopeDuration")) TaczCuriosConfig.COMMON.argonScopeDuration.set(config.get("argonScopeDuration").getAsInt());
+            if (config.has("gildedArgonScopeBaseCritChance")) TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.set(config.get("gildedArgonScopeBaseCritChance").getAsDouble());
+            if (config.has("gildedArgonScopeCritChancePerLevel")) TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.set(config.get("gildedArgonScopeCritChancePerLevel").getAsDouble());
+            if (config.has("gildedArgonScopeHeadshotKillExtra")) TaczCuriosConfig.COMMON.gildedArgonScopeHeadshotKillExtra.set(config.get("gildedArgonScopeHeadshotKillExtra").getAsDouble());
+            if (config.has("gildedArgonScopeDuration")) TaczCuriosConfig.COMMON.gildedArgonScopeDuration.set(config.get("gildedArgonScopeDuration").getAsInt());
+            if (config.has("gildedArgonScopeMaxStacks")) TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.set(config.get("gildedArgonScopeMaxStacks").getAsInt());
+            if (config.has("sharpBulletBaseCritDamage")) TaczCuriosConfig.COMMON.sharpBulletBaseCritDamage.set(config.get("sharpBulletBaseCritDamage").getAsDouble());
+            if (config.has("sharpBulletCritDamagePerLevel")) TaczCuriosConfig.COMMON.sharpBulletCritDamagePerLevel.set(config.get("sharpBulletCritDamagePerLevel").getAsDouble());
+            if (config.has("sharpBulletDuration")) TaczCuriosConfig.COMMON.sharpBulletDuration.set(config.get("sharpBulletDuration").getAsInt());
+            if (config.has("gildedRifleAptitudePerHarmful")) TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.set(config.get("gildedRifleAptitudePerHarmful").getAsDouble());
+            if (config.has("gildedRifleAptitudeDuration")) TaczCuriosConfig.COMMON.gildedRifleAptitudeDuration.set(config.get("gildedRifleAptitudeDuration").getAsInt());
+            if (config.has("gildedRifleAptitudeMaxStacks")) TaczCuriosConfig.COMMON.gildedRifleAptitudeMaxStacks.set(config.get("gildedRifleAptitudeMaxStacks").getAsInt());
+            if (config.has("gildedSplitChamberBulletCountBase")) TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.set(config.get("gildedSplitChamberBulletCountBase").getAsDouble());
+            if (config.has("gildedSplitChamberBulletCountPerLevel")) TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.set(config.get("gildedSplitChamberBulletCountPerLevel").getAsDouble());
+            if (config.has("gildedSplitChamberDuration")) TaczCuriosConfig.COMMON.gildedSplitChamberDuration.set(config.get("gildedSplitChamberDuration").getAsInt());
+            if (config.has("gildedSplitChamberMaxStacks")) TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.set(config.get("gildedSplitChamberMaxStacks").getAsInt());
+            if (config.has("destructionCritDamage")) TaczCuriosConfig.COMMON.destructionCritDamage.set(config.get("destructionCritDamage").getAsDouble());
+            if (config.has("destructionPrimeCritDamage")) TaczCuriosConfig.COMMON.destructionPrimeCritDamage.set(config.get("destructionPrimeCritDamage").getAsDouble());
+            if (config.has("thunderBarrelCritChance")) TaczCuriosConfig.COMMON.thunderBarrelCritChance.set(config.get("thunderBarrelCritChance").getAsDouble());
+            if (config.has("thunderBarrelPrimeCritChance")) TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.set(config.get("thunderBarrelPrimeCritChance").getAsDouble());
+            if (config.has("laserScopeBaseCritChance")) TaczCuriosConfig.COMMON.laserScopeBaseCritChance.set(config.get("laserScopeBaseCritChance").getAsDouble());
+            if (config.has("laserScopeCritChancePerLevel")) TaczCuriosConfig.COMMON.laserScopeCritChancePerLevel.set(config.get("laserScopeCritChancePerLevel").getAsDouble());
+            if (config.has("laserScopeDuration")) TaczCuriosConfig.COMMON.laserScopeDuration.set(config.get("laserScopeDuration").getAsInt());
+            if (config.has("fragmentShotBaseCritDamage")) TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.set(config.get("fragmentShotBaseCritDamage").getAsDouble());
+            if (config.has("fragmentShotCritDamagePerLevel")) TaczCuriosConfig.COMMON.fragmentShotCritDamagePerLevel.set(config.get("fragmentShotCritDamagePerLevel").getAsDouble());
+            if (config.has("fragmentShotDuration")) TaczCuriosConfig.COMMON.fragmentShotDuration.set(config.get("fragmentShotDuration").getAsInt());
+            if (config.has("gildedShotgunSavvyPerHarmful")) TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.set(config.get("gildedShotgunSavvyPerHarmful").getAsDouble());
+            if (config.has("gildedShotgunSavvyDuration")) TaczCuriosConfig.COMMON.gildedShotgunSavvyDuration.set(config.get("gildedShotgunSavvyDuration").getAsInt());
+            if (config.has("gildedShotgunSavvyMaxStacks")) TaczCuriosConfig.COMMON.gildedShotgunSavvyMaxStacks.set(config.get("gildedShotgunSavvyMaxStacks").getAsInt());
+            if (config.has("gildedInfernalChamberBulletCountBase")) TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.set(config.get("gildedInfernalChamberBulletCountBase").getAsDouble());
+            if (config.has("gildedInfernalChamberBulletCountPerLevel")) TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.set(config.get("gildedInfernalChamberBulletCountPerLevel").getAsDouble());
+            if (config.has("gildedInfernalChamberDuration")) TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.set(config.get("gildedInfernalChamberDuration").getAsInt());
+            if (config.has("gildedInfernalChamberMaxStacks")) TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.set(config.get("gildedInfernalChamberMaxStacks").getAsInt());
+            if (config.has("weaknessMasteryCritDamage")) TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.set(config.get("weaknessMasteryCritDamage").getAsDouble());
+            if (config.has("weaknessMasteryPrimeCritDamage")) TaczCuriosConfig.COMMON.weaknessMasteryPrimeCritDamage.set(config.get("weaknessMasteryPrimeCritDamage").getAsDouble());
+            if (config.has("hollowPointCritDamage")) TaczCuriosConfig.COMMON.hollowPointCritDamage.set(config.get("hollowPointCritDamage").getAsDouble());
+            if (config.has("hollowPointPistolDamageReduction")) TaczCuriosConfig.COMMON.hollowPointPistolDamageReduction.set(config.get("hollowPointPistolDamageReduction").getAsDouble());
+            if (config.has("pistolMasteryCritChance")) TaczCuriosConfig.COMMON.pistolMasteryCritChance.set(config.get("pistolMasteryCritChance").getAsDouble());
+            if (config.has("pistolMasteryPrimeCritChance")) TaczCuriosConfig.COMMON.pistolMasteryPrimeCritChance.set(config.get("pistolMasteryPrimeCritChance").getAsDouble());
+            if (config.has("hydraulicCrosshairBaseCritChance")) TaczCuriosConfig.COMMON.hydraulicCrosshairBaseCritChance.set(config.get("hydraulicCrosshairBaseCritChance").getAsDouble());
+            if (config.has("hydraulicCrosshairCritChancePerLevel")) TaczCuriosConfig.COMMON.hydraulicCrosshairCritChancePerLevel.set(config.get("hydraulicCrosshairCritChancePerLevel").getAsDouble());
+            if (config.has("hydraulicCrosshairDuration")) TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.set(config.get("hydraulicCrosshairDuration").getAsInt());
+            if (config.has("gildedHydraulicCrosshairBaseCritChance")) TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.set(config.get("gildedHydraulicCrosshairBaseCritChance").getAsDouble());
+            if (config.has("gildedHydraulicCrosshairCritChancePerLevel")) TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.set(config.get("gildedHydraulicCrosshairCritChancePerLevel").getAsDouble());
+            if (config.has("gildedHydraulicCrosshairHeadshotKillExtra")) TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.set(config.get("gildedHydraulicCrosshairHeadshotKillExtra").getAsDouble());
+            if (config.has("gildedHydraulicCrosshairDuration")) TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.set(config.get("gildedHydraulicCrosshairDuration").getAsInt());
+            if (config.has("gildedHydraulicCrosshairMaxStacks")) TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.set(config.get("gildedHydraulicCrosshairMaxStacks").getAsInt());
+            if (config.has("sharpAmmoBaseCritDamage")) TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.set(config.get("sharpAmmoBaseCritDamage").getAsDouble());
+            if (config.has("sharpAmmoCritDamagePerLevel")) TaczCuriosConfig.COMMON.sharpAmmoCritDamagePerLevel.set(config.get("sharpAmmoCritDamagePerLevel").getAsDouble());
+            if (config.has("sharpAmmoDuration")) TaczCuriosConfig.COMMON.sharpAmmoDuration.set(config.get("sharpAmmoDuration").getAsInt());
+            if (config.has("gildedMarksmanPerHarmful")) TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.set(config.get("gildedMarksmanPerHarmful").getAsDouble());
+            if (config.has("gildedMarksmanDuration")) TaczCuriosConfig.COMMON.gildedMarksmanDuration.set(config.get("gildedMarksmanDuration").getAsInt());
+            if (config.has("gildedMarksmanMaxStacks")) TaczCuriosConfig.COMMON.gildedMarksmanMaxStacks.set(config.get("gildedMarksmanMaxStacks").getAsInt());
+            if (config.has("gildedBulletSpreadBulletCountBase")) TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.set(config.get("gildedBulletSpreadBulletCountBase").getAsDouble());
+            if (config.has("gildedBulletSpreadBulletCountPerLevel")) TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.set(config.get("gildedBulletSpreadBulletCountPerLevel").getAsDouble());
+            if (config.has("gildedBulletSpreadDuration")) TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.set(config.get("gildedBulletSpreadDuration").getAsInt());
+            if (config.has("gildedBulletSpreadMaxStacks")) TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.set(config.get("gildedBulletSpreadMaxStacks").getAsInt());
+            if (config.has("steelSlashCritChance")) TaczCuriosConfig.COMMON.steelSlashCritChance.set(config.get("steelSlashCritChance").getAsDouble());
+            if (config.has("dismembermentCritDamage")) TaczCuriosConfig.COMMON.dismembermentCritDamage.set(config.get("dismembermentCritDamage").getAsDouble());
+            if (config.has("sacrificeOppressionMeleeDamage")) TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.set(config.get("sacrificeOppressionMeleeDamage").getAsDouble());
+            if (config.has("sacrificeSteelCritChance")) TaczCuriosConfig.COMMON.sacrificeSteelCritChance.set(config.get("sacrificeSteelCritChance").getAsDouble());
+            if (config.has("gildedSteelSlashCritChanceBase")) TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.set(config.get("gildedSteelSlashCritChanceBase").getAsDouble());
+            if (config.has("gildedSteelSlashCritDamagePerLevel")) TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.set(config.get("gildedSteelSlashCritDamagePerLevel").getAsDouble());
+            if (config.has("gildedSteelSlashDuration")) TaczCuriosConfig.COMMON.gildedSteelSlashDuration.set(config.get("gildedSteelSlashDuration").getAsInt());
+            if (config.has("gildedSteelSlashMaxStacks")) TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.set(config.get("gildedSteelSlashMaxStacks").getAsInt());
+            if (config.has("conditionOverloadPerHarmful")) TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.set(config.get("conditionOverloadPerHarmful").getAsDouble());
+            if (config.has("sacrificeSetBonus")) TaczCuriosConfig.COMMON.sacrificeSetBonus.set(config.get("sacrificeSetBonus").getAsDouble());
     }
 
     public static ConfigSyncPacket fromServer() {
@@ -641,7 +710,6 @@ public class ConfigSyncPacket {
         config.addProperty("redMovementTagSpeedBoost", TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get());
         
         // 夏日沙滩配置
-        config.addProperty("summerBeachHeavenFireMultiplier", TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get());
         config.addProperty("summerBeachELCurseReduction", TaczCuriosConfig.COMMON.summerBeachELCurseReduction.get());
         config.addProperty("summerBeachObtainEntity", TaczCuriosConfig.COMMON.summerBeachObtainEntity.get());
         {
@@ -666,7 +734,6 @@ public class ConfigSyncPacket {
         }
         
         // 梵天百兽配置
-        config.addProperty("brahmaBeastsHeavenFireMultiplier", TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get());
         config.addProperty("brahmaBeastsELCurseReduction", TaczCuriosConfig.COMMON.brahmaBeastsELCurseReduction.get());
         {
             JsonArray outerArr = new JsonArray();
@@ -690,7 +757,6 @@ public class ConfigSyncPacket {
         }
         
         // 救世配置
-        config.addProperty("salvationHeavenFireMultiplier", TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get());
         config.addProperty("salvationELCurseReduction", TaczCuriosConfig.COMMON.salvationELCurseReduction.get());
         config.addProperty("salvationDamageReduction", TaczCuriosConfig.COMMON.salvationDamageReduction.get());
         config.addProperty("salvationResistanceLevel", TaczCuriosConfig.COMMON.salvationResistanceLevel.get());
@@ -763,6 +829,81 @@ public class ConfigSyncPacket {
             for (String s : TaczCuriosConfig.COMMON.curioConflicts.get()) arr.add(s);
             config.add("curioConflicts", arr);
         }
+        
+        // ========== 新增33个饰品配置同步 ==========
+        config.addProperty("criticalDelayCritChanceBoost", TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get());
+        config.addProperty("criticalDelayFireRateReduction", TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get());
+        config.addProperty("lethalCritCritChance", TaczCuriosConfig.COMMON.lethalCritCritChance.get());
+        config.addProperty("weaknessSenseCritDamage", TaczCuriosConfig.COMMON.weaknessSenseCritDamage.get());
+        config.addProperty("argonScopeBaseCritChance", TaczCuriosConfig.COMMON.argonScopeBaseCritChance.get());
+        config.addProperty("argonScopeCritChancePerLevel", TaczCuriosConfig.COMMON.argonScopeCritChancePerLevel.get());
+        config.addProperty("argonScopeDuration", TaczCuriosConfig.COMMON.argonScopeDuration.get());
+        config.addProperty("gildedArgonScopeBaseCritChance", TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get());
+        config.addProperty("gildedArgonScopeCritChancePerLevel", TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.get());
+        config.addProperty("gildedArgonScopeHeadshotKillExtra", TaczCuriosConfig.COMMON.gildedArgonScopeHeadshotKillExtra.get());
+        config.addProperty("gildedArgonScopeDuration", TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
+        config.addProperty("gildedArgonScopeMaxStacks", TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get());
+        config.addProperty("sharpBulletBaseCritDamage", TaczCuriosConfig.COMMON.sharpBulletBaseCritDamage.get());
+        config.addProperty("sharpBulletCritDamagePerLevel", TaczCuriosConfig.COMMON.sharpBulletCritDamagePerLevel.get());
+        config.addProperty("sharpBulletDuration", TaczCuriosConfig.COMMON.sharpBulletDuration.get());
+        config.addProperty("gildedRifleAptitudePerHarmful", TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get());
+        config.addProperty("gildedRifleAptitudeDuration", TaczCuriosConfig.COMMON.gildedRifleAptitudeDuration.get());
+        config.addProperty("gildedRifleAptitudeMaxStacks", TaczCuriosConfig.COMMON.gildedRifleAptitudeMaxStacks.get());
+        config.addProperty("gildedSplitChamberBulletCountBase", TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get());
+        config.addProperty("gildedSplitChamberBulletCountPerLevel", TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get());
+        config.addProperty("gildedSplitChamberDuration", TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get());
+        config.addProperty("gildedSplitChamberMaxStacks", TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get());
+        config.addProperty("destructionCritDamage", TaczCuriosConfig.COMMON.destructionCritDamage.get());
+        config.addProperty("destructionPrimeCritDamage", TaczCuriosConfig.COMMON.destructionPrimeCritDamage.get());
+        config.addProperty("thunderBarrelCritChance", TaczCuriosConfig.COMMON.thunderBarrelCritChance.get());
+        config.addProperty("thunderBarrelPrimeCritChance", TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get());
+        config.addProperty("laserScopeBaseCritChance", TaczCuriosConfig.COMMON.laserScopeBaseCritChance.get());
+        config.addProperty("laserScopeCritChancePerLevel", TaczCuriosConfig.COMMON.laserScopeCritChancePerLevel.get());
+        config.addProperty("laserScopeDuration", TaczCuriosConfig.COMMON.laserScopeDuration.get());
+        config.addProperty("fragmentShotBaseCritDamage", TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get());
+        config.addProperty("fragmentShotCritDamagePerLevel", TaczCuriosConfig.COMMON.fragmentShotCritDamagePerLevel.get());
+        config.addProperty("fragmentShotDuration", TaczCuriosConfig.COMMON.fragmentShotDuration.get());
+        config.addProperty("gildedShotgunSavvyPerHarmful", TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get());
+        config.addProperty("gildedShotgunSavvyDuration", TaczCuriosConfig.COMMON.gildedShotgunSavvyDuration.get());
+        config.addProperty("gildedShotgunSavvyMaxStacks", TaczCuriosConfig.COMMON.gildedShotgunSavvyMaxStacks.get());
+        config.addProperty("gildedInfernalChamberBulletCountBase", TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get());
+        config.addProperty("gildedInfernalChamberBulletCountPerLevel", TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get());
+        config.addProperty("gildedInfernalChamberDuration", TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get());
+        config.addProperty("gildedInfernalChamberMaxStacks", TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get());
+        config.addProperty("weaknessMasteryCritDamage", TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get());
+        config.addProperty("weaknessMasteryPrimeCritDamage", TaczCuriosConfig.COMMON.weaknessMasteryPrimeCritDamage.get());
+        config.addProperty("hollowPointCritDamage", TaczCuriosConfig.COMMON.hollowPointCritDamage.get());
+        config.addProperty("hollowPointPistolDamageReduction", TaczCuriosConfig.COMMON.hollowPointPistolDamageReduction.get());
+        config.addProperty("pistolMasteryCritChance", TaczCuriosConfig.COMMON.pistolMasteryCritChance.get());
+        config.addProperty("pistolMasteryPrimeCritChance", TaczCuriosConfig.COMMON.pistolMasteryPrimeCritChance.get());
+        config.addProperty("hydraulicCrosshairBaseCritChance", TaczCuriosConfig.COMMON.hydraulicCrosshairBaseCritChance.get());
+        config.addProperty("hydraulicCrosshairCritChancePerLevel", TaczCuriosConfig.COMMON.hydraulicCrosshairCritChancePerLevel.get());
+        config.addProperty("hydraulicCrosshairDuration", TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get());
+        config.addProperty("gildedHydraulicCrosshairBaseCritChance", TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get());
+        config.addProperty("gildedHydraulicCrosshairCritChancePerLevel", TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get());
+        config.addProperty("gildedHydraulicCrosshairHeadshotKillExtra", TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.get());
+        config.addProperty("gildedHydraulicCrosshairDuration", TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
+        config.addProperty("gildedHydraulicCrosshairMaxStacks", TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get());
+        config.addProperty("sharpAmmoBaseCritDamage", TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.get());
+        config.addProperty("sharpAmmoCritDamagePerLevel", TaczCuriosConfig.COMMON.sharpAmmoCritDamagePerLevel.get());
+        config.addProperty("sharpAmmoDuration", TaczCuriosConfig.COMMON.sharpAmmoDuration.get());
+        config.addProperty("gildedMarksmanPerHarmful", TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get());
+        config.addProperty("gildedMarksmanDuration", TaczCuriosConfig.COMMON.gildedMarksmanDuration.get());
+        config.addProperty("gildedMarksmanMaxStacks", TaczCuriosConfig.COMMON.gildedMarksmanMaxStacks.get());
+        config.addProperty("gildedBulletSpreadBulletCountBase", TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get());
+        config.addProperty("gildedBulletSpreadBulletCountPerLevel", TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get());
+        config.addProperty("gildedBulletSpreadDuration", TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get());
+        config.addProperty("gildedBulletSpreadMaxStacks", TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get());
+        config.addProperty("steelSlashCritChance", TaczCuriosConfig.COMMON.steelSlashCritChance.get());
+        config.addProperty("dismembermentCritDamage", TaczCuriosConfig.COMMON.dismembermentCritDamage.get());
+        config.addProperty("sacrificeOppressionMeleeDamage", TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get());
+        config.addProperty("sacrificeSteelCritChance", TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get());
+        config.addProperty("gildedSteelSlashCritChanceBase", TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get());
+        config.addProperty("gildedSteelSlashCritDamagePerLevel", TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get());
+        config.addProperty("gildedSteelSlashDuration", TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get());
+        config.addProperty("gildedSteelSlashMaxStacks", TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get());
+        config.addProperty("conditionOverloadPerHarmful", TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get());
+        config.addProperty("sacrificeSetBonus", TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
         
         return new ConfigSyncPacket(GSON.toJson(config));
     }

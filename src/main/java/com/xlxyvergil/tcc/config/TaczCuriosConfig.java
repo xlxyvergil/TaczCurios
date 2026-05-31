@@ -263,6 +263,93 @@ public class TaczCuriosConfig {
         
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
+
+        // 虚数抗性每点提高的伤害保留比例
+        public final ForgeConfigSpec.DoubleValue imaginaryDamageResistanceBonusPerPoint;
+
+        // 虚数崩解配置
+        public final ForgeConfigSpec.DoubleValue collapsePercentPerLevel;
+        public final ForgeConfigSpec.DoubleValue collapsePercentPerDebuff;
+        public final ForgeConfigSpec.IntValue collapseMaxDebuffCount;
+
+        // 无烬终焉伤害转换比例
+        public final ForgeConfigSpec.DoubleValue endlessDamageConversionRatio;
+
+        // ========== 新增33个饰品配置字段(G/R/S/P/M) ==========
+        public final ForgeConfigSpec.DoubleValue criticalDelayCritChanceBoost;
+        public final ForgeConfigSpec.DoubleValue criticalDelayFireRateReduction;
+        public final ForgeConfigSpec.DoubleValue lethalCritCritChance;
+        public final ForgeConfigSpec.DoubleValue weaknessSenseCritDamage;
+        public final ForgeConfigSpec.DoubleValue argonScopeBaseCritChance;
+        public final ForgeConfigSpec.DoubleValue argonScopeCritChancePerLevel;
+        public final ForgeConfigSpec.IntValue argonScopeDuration;
+        public final ForgeConfigSpec.DoubleValue gildedArgonScopeBaseCritChance;
+        public final ForgeConfigSpec.DoubleValue gildedArgonScopeCritChancePerLevel;
+        public final ForgeConfigSpec.DoubleValue gildedArgonScopeHeadshotKillExtra;
+        public final ForgeConfigSpec.IntValue gildedArgonScopeDuration;
+        public final ForgeConfigSpec.IntValue gildedArgonScopeMaxStacks;
+        public final ForgeConfigSpec.DoubleValue sharpBulletBaseCritDamage;
+        public final ForgeConfigSpec.DoubleValue sharpBulletCritDamagePerLevel;
+        public final ForgeConfigSpec.IntValue sharpBulletDuration;
+        public final ForgeConfigSpec.DoubleValue gildedRifleAptitudePerHarmful;
+        public final ForgeConfigSpec.IntValue gildedRifleAptitudeDuration;
+        public final ForgeConfigSpec.IntValue gildedRifleAptitudeMaxStacks;
+        public final ForgeConfigSpec.DoubleValue gildedSplitChamberBulletCountBase;
+        public final ForgeConfigSpec.DoubleValue gildedSplitChamberBulletCountPerLevel;
+        public final ForgeConfigSpec.IntValue gildedSplitChamberDuration;
+        public final ForgeConfigSpec.IntValue gildedSplitChamberMaxStacks;
+        public final ForgeConfigSpec.DoubleValue destructionCritDamage;
+        public final ForgeConfigSpec.DoubleValue destructionPrimeCritDamage;
+        public final ForgeConfigSpec.DoubleValue thunderBarrelCritChance;
+        public final ForgeConfigSpec.DoubleValue thunderBarrelPrimeCritChance;
+        public final ForgeConfigSpec.DoubleValue laserScopeBaseCritChance;
+        public final ForgeConfigSpec.DoubleValue laserScopeCritChancePerLevel;
+        public final ForgeConfigSpec.IntValue laserScopeDuration;
+        public final ForgeConfigSpec.DoubleValue fragmentShotBaseCritDamage;
+        public final ForgeConfigSpec.DoubleValue fragmentShotCritDamagePerLevel;
+        public final ForgeConfigSpec.IntValue fragmentShotDuration;
+        public final ForgeConfigSpec.DoubleValue gildedShotgunSavvyPerHarmful;
+        public final ForgeConfigSpec.IntValue gildedShotgunSavvyDuration;
+        public final ForgeConfigSpec.IntValue gildedShotgunSavvyMaxStacks;
+        public final ForgeConfigSpec.DoubleValue gildedInfernalChamberBulletCountBase;
+        public final ForgeConfigSpec.DoubleValue gildedInfernalChamberBulletCountPerLevel;
+        public final ForgeConfigSpec.IntValue gildedInfernalChamberDuration;
+        public final ForgeConfigSpec.IntValue gildedInfernalChamberMaxStacks;
+        public final ForgeConfigSpec.DoubleValue weaknessMasteryCritDamage;
+        public final ForgeConfigSpec.DoubleValue weaknessMasteryPrimeCritDamage;
+        public final ForgeConfigSpec.DoubleValue hollowPointCritDamage;
+        public final ForgeConfigSpec.DoubleValue hollowPointPistolDamageReduction;
+        public final ForgeConfigSpec.DoubleValue pistolMasteryCritChance;
+        public final ForgeConfigSpec.DoubleValue pistolMasteryPrimeCritChance;
+        public final ForgeConfigSpec.DoubleValue hydraulicCrosshairBaseCritChance;
+        public final ForgeConfigSpec.DoubleValue hydraulicCrosshairCritChancePerLevel;
+        public final ForgeConfigSpec.IntValue hydraulicCrosshairDuration;
+        public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairBaseCritChance;
+        public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairCritChancePerLevel;
+        public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairHeadshotKillExtra;
+        public final ForgeConfigSpec.IntValue gildedHydraulicCrosshairDuration;
+        public final ForgeConfigSpec.IntValue gildedHydraulicCrosshairMaxStacks;
+        public final ForgeConfigSpec.DoubleValue sharpAmmoBaseCritDamage;
+        public final ForgeConfigSpec.DoubleValue sharpAmmoCritDamagePerLevel;
+        public final ForgeConfigSpec.IntValue sharpAmmoDuration;
+        public final ForgeConfigSpec.DoubleValue gildedMarksmanPerHarmful;
+        public final ForgeConfigSpec.IntValue gildedMarksmanDuration;
+        public final ForgeConfigSpec.IntValue gildedMarksmanMaxStacks;
+        public final ForgeConfigSpec.DoubleValue gildedBulletSpreadBulletCountBase;
+        public final ForgeConfigSpec.DoubleValue gildedBulletSpreadBulletCountPerLevel;
+        public final ForgeConfigSpec.IntValue gildedBulletSpreadDuration;
+        public final ForgeConfigSpec.IntValue gildedBulletSpreadMaxStacks;
+        public final ForgeConfigSpec.DoubleValue steelSlashCritChance;
+        public final ForgeConfigSpec.DoubleValue dismembermentCritDamage;
+        public final ForgeConfigSpec.DoubleValue sacrificeOppressionMeleeDamage;
+        public final ForgeConfigSpec.DoubleValue sacrificeSteelCritChance;
+        public final ForgeConfigSpec.DoubleValue gildedSteelSlashCritChanceBase;
+        public final ForgeConfigSpec.DoubleValue gildedSteelSlashCritDamagePerLevel;
+        public final ForgeConfigSpec.IntValue gildedSteelSlashDuration;
+        public final ForgeConfigSpec.IntValue gildedSteelSlashMaxStacks;
+        public final ForgeConfigSpec.DoubleValue conditionOverloadPerHarmful;
+        public final ForgeConfigSpec.DoubleValue sacrificeSetBonus;
+
         
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
@@ -313,8 +400,25 @@ public class TaczCuriosConfig {
             imaginaryInfectionResistanceReduction = builder
                     .comment("虚数侵染降低的虚数抗性值 (默认: 10)")
                     .defineInRange("resistanceReduction", 10.0, 0, 100);
+            imaginaryDamageResistanceBonusPerPoint = builder
+                    .comment("每点虚数抗性提高的伤害保留比例 (默认: 0.02 = 2%/点)")
+                    .defineInRange("damageResistanceBonusPerPoint", 0.02, 0, 1);
             builder.pop();
             
+
+            // 虚数崩解配置
+            builder.comment("虚数崩解配置（虚数崩解基于虚数侵染层数和负面效果种数造成额外伤害）").push("imaginary_collapse");
+            collapsePercentPerLevel = builder
+                    .comment("每层虚数侵染的崩解增伤比例 (默认: 0.05 = 5%/层)")
+                    .defineInRange("percentPerLevel", 0.05, 0, 1);
+            collapsePercentPerDebuff = builder
+                    .comment("每种负面效果的崩解增伤比例 (默认: 0.1 = 10%/种)")
+                    .defineInRange("percentPerDebuff", 0.1, 0, 1);
+            collapseMaxDebuffCount = builder
+                    .comment("崩解计入的负面效果种数上限 (默认: 5)")
+                    .defineInRange("maxDebuffCount", 5, 1, 20);
+            builder.pop();
+
             // 按饰品分级的虚数侵染上限
             builder.comment("按饰品分级的虚数侵染上限（当攻击者携带对应饰品时，目标虚数侵染不会超过此等级）").push("imaginary_infection_per_curio");
             judgmentImaginaryInfectionMaxLevel = builder
@@ -422,7 +526,216 @@ public class TaczCuriosConfig {
                     .defineInRange("explosionEnabled", 2.0, -1, 100);
             builder.pop();
             
-            // 烈焰风暴配置
+
+
+            // ========== 新增33个饰品配置段 ==========
+            
+            // G-01 关键延迟
+            builder.comment("关键延迟饰品配置").push("critical_delay");
+            criticalDelayCritChanceBoost = builder.comment("暴击几率加成 (默认: 2.0)").defineInRange("critChanceBoost", 2.0, -1, 100);
+            criticalDelayFireRateReduction = builder.comment("射速降低 (默认: -0.2)").defineInRange("fireRateReduction", -0.2, -1, 0);
+            builder.pop();
+            
+            // R-01 致命一击
+            builder.comment("致命一击饰品配置").push("lethal_crit");
+            lethalCritCritChance = builder.comment("暴击几率加成 (默认: 1.5)").defineInRange("critChance", 1.5, -1, 100);
+            builder.pop();
+            
+            // R-02 弱点感应
+            builder.comment("弱点感应饰品配置").push("weakness_sense");
+            weaknessSenseCritDamage = builder.comment("暴击伤害加成 (默认: 1.2)").defineInRange("critDamage", 1.2, -1, 100);
+            builder.pop();
+            
+            // R-03 氩晶瞄具
+            builder.comment("氩晶瞄具饰品配置").push("argon_scope");
+            argonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 1.35, -1, 100);
+            argonScopeCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.5)").defineInRange("critChancePerLevel", 0.5, -1, 100);
+            argonScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
+            builder.pop();
+            
+            // R-04 镀层氩晶瞄具
+            builder.comment("镀层氩晶瞄具饰品配置").push("gilded_argon_scope");
+            gildedArgonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
+            gildedArgonScopeCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.4)").defineInRange("critChancePerLevel", 0.4, -1, 100);
+            gildedArgonScopeHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (默认: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
+            gildedArgonScopeDuration = builder.comment("Buff持续时间(秒) (默认: 12)").defineInRange("duration", 12, 1, 300);
+            gildedArgonScopeMaxStacks = builder.comment("最大叠加层数 (默认: 5)").defineInRange("maxStacks", 5, 1, 20);
+            builder.pop();
+            
+            // R-05 尖刃弹头
+            builder.comment("尖刃弹头饰品配置").push("sharp_bullet");
+            sharpBulletBaseCritDamage = builder.comment("基础暴击伤害 (默认: 1.2)").defineInRange("baseCritDamage", 1.2, -1, 100);
+            sharpBulletCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.6)").defineInRange("critDamagePerLevel", 0.6, -1, 100);
+            sharpBulletDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
+            builder.pop();
+            
+            // R-06 镀层步枪才能
+            builder.comment("镀层步枪才能饰品配置").push("gilded_rifle_aptitude");
+            gildedRifleAptitudePerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
+            gildedRifleAptitudeDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedRifleAptitudeMaxStacks = builder.comment("最大叠加层数 (默认: 2)").defineInRange("maxStacks", 2, 1, 20);
+            builder.pop();
+            
+            // R-07 镀层分裂膛室
+            builder.comment("镀层分裂膛室饰品配置").push("gilded_split_chamber");
+            gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (默认: 0.8)").defineInRange("bulletCountBase", 0.8, -1, 100);
+            gildedSplitChamberBulletCountPerLevel = builder.comment("Buff每级额外弹头数量 (默认: 0.3)").defineInRange("bulletCountPerLevel", 0.3, -1, 100);
+            gildedSplitChamberDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedSplitChamberMaxStacks = builder.comment("最大叠加层数 (默认: 5)").defineInRange("maxStacks", 5, 1, 20);
+            builder.pop();
+            
+            // S-01 破灭
+            builder.comment("破灭饰品配置").push("destruction");
+            destructionCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
+            builder.pop();
+            
+            // S-02 破灭Prime
+            builder.comment("破灭Prime饰品配置").push("destruction_prime");
+            destructionPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 1.1, -1, 100);
+            builder.pop();
+            
+            // S-03 雷筒
+            builder.comment("雷筒饰品配置").push("thunder_barrel");
+            thunderBarrelCritChance = builder.comment("暴击几率加成 (默认: 0.9)").defineInRange("critChance", 0.9, -1, 100);
+            builder.pop();
+            
+            // S-04 雷筒Prime
+            builder.comment("雷筒Prime饰品配置").push("thunder_barrel_prime");
+            thunderBarrelPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.65)").defineInRange("critChance", 1.65, -1, 100);
+            builder.pop();
+            
+            // S-05 雷射瞄具
+            builder.comment("雷射瞄具饰品配置").push("laser_scope");
+            laserScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
+            laserScopeCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.4)").defineInRange("critChancePerLevel", 0.4, -1, 100);
+            laserScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
+            builder.pop();
+            
+            // S-06 破片射击
+            builder.comment("破片射击饰品配置").push("fragment_shot");
+            fragmentShotBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.99)").defineInRange("baseCritDamage", 0.99, -1, 100);
+            fragmentShotCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.3)").defineInRange("critDamagePerLevel", 0.3, -1, 100);
+            fragmentShotDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
+            builder.pop();
+            
+            // S-07 镀层通晓霰弹枪
+            builder.comment("镀层通晓霰弹枪饰品配置").push("gilded_shotgun_savvy");
+            gildedShotgunSavvyPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
+            gildedShotgunSavvyDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedShotgunSavvyMaxStacks = builder.comment("最大叠加层数 (默认: 2)").defineInRange("maxStacks", 2, 1, 20);
+            builder.pop();
+            
+            // S-08 镀层地狱弹膛
+            builder.comment("镀层地狱弹膛饰品配置").push("gilded_infernal_chamber");
+            gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (默认: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
+            gildedInfernalChamberBulletCountPerLevel = builder.comment("Buff每级额外弹头数量 (默认: 0.3)").defineInRange("bulletCountPerLevel", 0.3, -1, 100);
+            gildedInfernalChamberDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedInfernalChamberMaxStacks = builder.comment("最大叠加层数 (默认: 5)").defineInRange("maxStacks", 5, 1, 20);
+            builder.pop();
+            
+            // P-01 弱点专精
+            builder.comment("弱点专精饰品配置").push("weakness_mastery");
+            weaknessMasteryCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
+            builder.pop();
+            
+            // P-02 弱点专精Prime
+            builder.comment("弱点专精Prime饰品配置").push("weakness_mastery_prime");
+            weaknessMasteryPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 1.1, -1, 100);
+            builder.pop();
+            
+            // P-03 空尖弹
+            builder.comment("空尖弹饰品配置").push("hollow_point");
+            hollowPointCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
+            hollowPointPistolDamageReduction = builder.comment("手枪伤害降低 (默认: -0.15)").defineInRange("pistolDamageReduction", -0.15, -1, 0);
+            builder.pop();
+            
+            // P-04 手枪精通
+            builder.comment("手枪精通饰品配置").push("pistol_mastery");
+            pistolMasteryCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 1.2, -1, 100);
+            builder.pop();
+            
+            // P-05 手枪精通Prime
+            builder.comment("手枪精通Prime饰品配置").push("pistol_mastery_prime");
+            pistolMasteryPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.87)").defineInRange("critChance", 1.87, -1, 100);
+            builder.pop();
+            
+            // P-06 液压准心
+            builder.comment("液压准心饰品配置").push("hydraulic_crosshair");
+            hydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 1.35, -1, 100);
+            hydraulicCrosshairCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.45)").defineInRange("critChancePerLevel", 0.45, -1, 100);
+            hydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
+            builder.pop();
+            
+            // P-07 镀层液压准心
+            builder.comment("镀层液压准心饰品配置").push("gilded_hydraulic_crosshair");
+            gildedHydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
+            gildedHydraulicCrosshairCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.4)").defineInRange("critChancePerLevel", 0.4, -1, 100);
+            gildedHydraulicCrosshairHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (默认: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
+            gildedHydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 12)").defineInRange("duration", 12, 1, 300);
+            gildedHydraulicCrosshairMaxStacks = builder.comment("最大叠加层数 (默认: 5)").defineInRange("maxStacks", 5, 1, 20);
+            builder.pop();
+            
+            // P-08 尖锐子弹
+            builder.comment("尖锐子弹饰品配置").push("sharp_ammo");
+            sharpAmmoBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.75)").defineInRange("baseCritDamage", 0.75, -1, 100);
+            sharpAmmoCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.25)").defineInRange("critDamagePerLevel", 0.25, -1, 100);
+            sharpAmmoDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
+            builder.pop();
+            
+            // P-09 镀层准确射手
+            builder.comment("镀层准确射手饰品配置").push("gilded_marksman");
+            gildedMarksmanPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
+            gildedMarksmanDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedMarksmanMaxStacks = builder.comment("最大叠加层数 (默认: 3)").defineInRange("maxStacks", 3, 1, 20);
+            builder.pop();
+            
+            // P-10 镀层弹头扩散
+            builder.comment("镀层弹头扩散饰品配置").push("gilded_bullet_spread");
+            gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (默认: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
+            gildedBulletSpreadBulletCountPerLevel = builder.comment("Buff每级额外弹头数量 (默认: 0.3)").defineInRange("bulletCountPerLevel", 0.3, -1, 100);
+            gildedBulletSpreadDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedBulletSpreadMaxStacks = builder.comment("最大叠加层数 (默认: 4)").defineInRange("maxStacks", 4, 1, 20);
+            builder.pop();
+            
+            // M-01 斩铁
+            builder.comment("斩铁饰品配置").push("steel_slash");
+            steelSlashCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 1.2, -1, 100);
+            builder.pop();
+            
+            // M-02 肢解
+            builder.comment("肢解饰品配置").push("dismemberment");
+            dismembermentCritDamage = builder.comment("暴击伤害加成 (默认: 0.9)").defineInRange("critDamage", 0.9, -1, 100);
+            builder.pop();
+            
+            // M-03 牺牲压迫点
+            builder.comment("牺牲压迫点饰品配置").push("sacrifice_oppression");
+            sacrificeOppressionMeleeDamage = builder.comment("近战伤害加成 (默认: 1.1)").defineInRange("meleeDamage", 1.1, -1, 100);
+            builder.pop();
+            
+            // M-04 牺牲斩铁
+            builder.comment("牺牲斩铁饰品配置").push("sacrifice_steel");
+            sacrificeSteelCritChance = builder.comment("暴击几率加成 (默认: 2.2)").defineInRange("critChance", 2.2, -1, 100);
+            builder.pop();
+            
+            // M-05 镀层斩铁
+            builder.comment("镀层斩铁饰品配置").push("gilded_steel_slash");
+            gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (默认: 1.1)").defineInRange("critChanceBase", 1.1, -1, 100);
+            gildedSteelSlashCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.3)").defineInRange("critDamagePerLevel", 0.3, -1, 100);
+            gildedSteelSlashDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
+            gildedSteelSlashMaxStacks = builder.comment("最大叠加层数 (默认: 4)").defineInRange("maxStacks", 4, 1, 20);
+            builder.pop();
+            
+            // M-06 异况超量
+            builder.comment("异况超量饰品配置").push("condition_overload");
+            conditionOverloadPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.8)").defineInRange("perHarmful", 0.8, -1, 100);
+            builder.pop();
+            
+            // M-07 牺牲套装组合
+            builder.comment("牺牲套装组合配置").push("sacrifice_set");
+            sacrificeSetBonus = builder.comment("套装加成倍率 (默认: 1.25)").defineInRange("setBonus", 1.25, -1, 100);
+            builder.pop();
+
+            // 虚数崩解配置
         builder.comment("烈焰风暴饰品配置").push("blaze_storm");
         blazeStormExplosionRadiusBoost = builder
                 .comment("爆炸范围加成 (默认: 0.24 = 24%)")
@@ -769,6 +1082,9 @@ public class TaczCuriosConfig {
             endlessGunTypes = builder
                     .comment("无烬终焉生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
                     .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
+            endlessDamageConversionRatio = builder
+                    .comment("无烬终焉伤害转换比例：受到的伤害乘以此值后转为虚数伤害 (默认: 0.02 = 2%)")
+                    .defineInRange("damageConversionRatio", 0.02, 0, 1);
             builder.pop();
             
             // 士兵基础挂牌配置

@@ -56,6 +56,39 @@ import com.xlxyvergil.tcc.items.SummerBeach;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.Salvation;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
+import com.xlxyvergil.tcc.items.CriticalDelay;
+import com.xlxyvergil.tcc.items.LethalCrit;
+import com.xlxyvergil.tcc.items.WeaknessSense;
+import com.xlxyvergil.tcc.items.Destruction;
+import com.xlxyvergil.tcc.items.DestructionPrime;
+import com.xlxyvergil.tcc.items.ThunderBarrel;
+import com.xlxyvergil.tcc.items.ThunderBarrelPrime;
+import com.xlxyvergil.tcc.items.WeaknessMastery;
+import com.xlxyvergil.tcc.items.WeaknessMasteryPrime;
+import com.xlxyvergil.tcc.items.HollowPoint;
+import com.xlxyvergil.tcc.items.PistolMastery;
+import com.xlxyvergil.tcc.items.PistolMasteryPrime;
+import com.xlxyvergil.tcc.items.SteelSlash;
+import com.xlxyvergil.tcc.items.Dismemberment;
+import com.xlxyvergil.tcc.items.SacrificeOppression;
+import com.xlxyvergil.tcc.items.SacrificeSteel;
+import com.xlxyvergil.tcc.items.ArgonScope;
+import com.xlxyvergil.tcc.items.GildedArgonScope;
+import com.xlxyvergil.tcc.items.SharpBullet;
+import com.xlxyvergil.tcc.items.GildedSplitChamber;
+import com.xlxyvergil.tcc.items.LaserScope;
+import com.xlxyvergil.tcc.items.FragmentShot;
+import com.xlxyvergil.tcc.items.GildedInfernalChamber;
+import com.xlxyvergil.tcc.items.HydraulicCrosshair;
+import com.xlxyvergil.tcc.items.GildedHydraulicCrosshair;
+import com.xlxyvergil.tcc.items.SharpAmmo;
+import com.xlxyvergil.tcc.items.GildedBulletSpread;
+import com.xlxyvergil.tcc.items.GildedSteelSlash;
+import com.xlxyvergil.tcc.items.GildedRifleAptitude;
+import com.xlxyvergil.tcc.items.GildedShotgunSavvy;
+import com.xlxyvergil.tcc.items.GildedMarksman;
+import com.xlxyvergil.tcc.items.ConditionOverload;
+import com.xlxyvergil.tcc.items.SacrificeSetBonus;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -398,6 +431,210 @@ public class TaczItems {
     // 掎角一阵 - 裂隙级饰品
     public static final RegistryObject<Item> KIKAKU_ICHIJIN = ITEMS.register("kikaku_ichijin", 
         () -> new KikakuIchijin(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // ========== Phase 2: 16个新增常驻属性饰品 ==========
+    
+    // G-01 关键延迟 - 枪械通用，暴击几率+200%，射速-20%
+    public static final RegistryObject<Item> CRITICAL_DELAY = ITEMS.register("critical_delay",
+        () -> new CriticalDelay(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // R-01 致命一击 - 步枪类，暴击几率+150%
+    public static final RegistryObject<Item> LETHAL_CRIT = ITEMS.register("lethal_crit",
+        () -> new LethalCrit(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // R-02 弱点感应 - 步枪类，暴击伤害+120%
+    public static final RegistryObject<Item> WEAKNESS_SENSE = ITEMS.register("weakness_sense",
+        () -> new WeaknessSense(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // S-01 破灭 - 霰弹枪，暴击伤害+60%
+    public static final RegistryObject<Item> DESTRUCTION = ITEMS.register("destruction",
+        () -> new Destruction(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // S-02 破灭Prime - 霰弹枪，暴击伤害+110%
+    public static final RegistryObject<Item> DESTRUCTION_PRIME = ITEMS.register("destruction_prime",
+        () -> new DestructionPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // S-03 雷筒 - 霰弹枪，暴击几率+90%
+    public static final RegistryObject<Item> THUNDER_BARREL = ITEMS.register("thunder_barrel",
+        () -> new ThunderBarrel(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // S-04 雷筒Prime - 霰弹枪，暴击几率+165%
+    public static final RegistryObject<Item> THUNDER_BARREL_PRIME = ITEMS.register("thunder_barrel_prime",
+        () -> new ThunderBarrelPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // P-01 弱点专精 - 手枪，暴击伤害+60%
+    public static final RegistryObject<Item> WEAKNESS_MASTERY = ITEMS.register("weakness_mastery",
+        () -> new WeaknessMastery(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+    
+    // P-02 弱点专精Prime - 手枪，暴击伤害+110%
+    public static final RegistryObject<Item> WEAKNESS_MASTERY_PRIME = ITEMS.register("weakness_mastery_prime",
+        () -> new WeaknessMasteryPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // P-03 空尖弹 - 手枪，暴击伤害+60%，手枪伤害-15%
+    public static final RegistryObject<Item> HOLLOW_POINT = ITEMS.register("hollow_point",
+        () -> new HollowPoint(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+    
+    // P-04 手枪精通 - 手枪，暴击几率+120%
+    public static final RegistryObject<Item> PISTOL_MASTERY = ITEMS.register("pistol_mastery",
+        () -> new PistolMastery(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // P-05 手枪精通Prime - 手枪，暴击几率+187%
+    public static final RegistryObject<Item> PISTOL_MASTERY_PRIME = ITEMS.register("pistol_mastery_prime",
+        () -> new PistolMasteryPrime(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // M-01 斩铁 - 近战，暴击几率+120%
+    public static final RegistryObject<Item> STEEL_SLASH = ITEMS.register("steel_slash",
+        () -> new SteelSlash(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // M-02 肢解 - 近战，暴击伤害+90%
+    public static final RegistryObject<Item> DISMEMBERMENT = ITEMS.register("dismemberment",
+        () -> new Dismemberment(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+    
+    // M-03 牺牲压迫点 - 近战，近战伤害+110%
+    public static final RegistryObject<Item> SACRIFICE_OPPRESSION = ITEMS.register("sacrifice_oppression",
+        () -> new SacrificeOppression(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+    
+    // M-04 牺牲斩铁 - 近战，暴击几率+220%
+    public static final RegistryObject<Item> SACRIFICE_STEEL = ITEMS.register("sacrifice_steel",
+        () -> new SacrificeSteel(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // ========== Phase 3: 12个Buff触发饰品 ==========
+
+    // R-03 氩晶瞄具 - 步枪，爆头触发Buff
+    public static final RegistryObject<Item> ARGON_SCOPE = ITEMS.register("argon_scope",
+        () -> new ArgonScope(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // R-04 镀层氩晶瞄具 - 步枪，爆头/击杀触发Buff（叠加5层）
+    public static final RegistryObject<Item> GILDED_ARGON_SCOPE = ITEMS.register("gilded_argon_scope",
+        () -> new GildedArgonScope(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // R-05 尖刃弹头 - 步枪，击杀触发Buff
+    public static final RegistryObject<Item> SHARP_BULLET = ITEMS.register("sharp_bullet",
+        () -> new SharpBullet(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+
+    // R-07 镀层分裂膛室 - 步枪，击杀触发Buff（叠加5层）
+    public static final RegistryObject<Item> GILDED_SPLIT_CHAMBER = ITEMS.register("gilded_split_chamber",
+        () -> new GildedSplitChamber(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // S-05 雷射瞄具 - 霰弹枪，爆头触发Buff
+    public static final RegistryObject<Item> LASER_SCOPE = ITEMS.register("laser_scope",
+        () -> new LaserScope(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+
+    // S-06 破片射击 - 霰弹枪，击杀触发Buff
+    public static final RegistryObject<Item> FRAGMENT_SHOT = ITEMS.register("fragment_shot",
+        () -> new FragmentShot(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+
+    // S-08 镀层地狱弹膛 - 霰弹枪，击杀触发Buff（叠加5层）
+    public static final RegistryObject<Item> GILDED_INFERNAL_CHAMBER = ITEMS.register("gilded_infernal_chamber",
+        () -> new GildedInfernalChamber(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // P-06 液压准心 - 手枪，爆头触发Buff
+    public static final RegistryObject<Item> HYDRAULIC_CROSSHAIR = ITEMS.register("hydraulic_crosshair",
+        () -> new HydraulicCrosshair(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.COMMON)));
+
+    // P-07 镀层液压准心 - 手枪，爆头/击杀触发Buff（叠加5层）
+    public static final RegistryObject<Item> GILDED_HYDRAULIC_CROSSHAIR = ITEMS.register("gilded_hydraulic_crosshair",
+        () -> new GildedHydraulicCrosshair(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // P-08 尖锐子弹 - 手枪，击杀触发Buff
+    public static final RegistryObject<Item> SHARP_AMMO = ITEMS.register("sharp_ammo",
+        () -> new SharpAmmo(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.UNCOMMON)));
+
+    // P-10 镀层弹头扩散 - 手枪，击杀触发Buff（叠加4层）
+    public static final RegistryObject<Item> GILDED_BULLET_SPREAD = ITEMS.register("gilded_bullet_spread",
+        () -> new GildedBulletSpread(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // M-05 镀层斩铁 - 近战，击杀触发Buff（叠加4层）
+    public static final RegistryObject<Item> GILDED_STEEL_SLASH = ITEMS.register("gilded_steel_slash",
+        () -> new GildedSteelSlash(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // ========== Phase 4: 5个特殊饰品 ==========
+
+    // R-06 镀层步枪才能 - 步枪，击杀触发Buff（有害效果乘算，2层）
+    public static final RegistryObject<Item> GILDED_RIFLE_APTITUDE = ITEMS.register("gilded_rifle_aptitude",
+        () -> new GildedRifleAptitude(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // S-07 镀层通晓霰弹枪 - 霰弹，击杀触发Buff（有害效果乘算，2层）
+    public static final RegistryObject<Item> GILDED_SHOTGUN_SAVVY = ITEMS.register("gilded_shotgun_savvy",
+        () -> new GildedShotgunSavvy(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // P-09 镀层准确射手 - 手枪，击杀触发Buff（有害效果乘算，3层）
+    public static final RegistryObject<Item> GILDED_MARKSMAN = ITEMS.register("gilded_marksman",
+        () -> new GildedMarksman(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // M-06 异况超量 - 近战，目标负面效果种数增伤
+    public static final RegistryObject<Item> CONDITION_OVERLOAD = ITEMS.register("condition_overload",
+        () -> new ConditionOverload(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // M-07 牺牲套装组合 - 近战，牺牲压迫点+牺牲斩铁各提升25%
+    public static final RegistryObject<Item> SACRIFICE_SET_BONUS = ITEMS.register("sacrifice_set_bonus",
+        () -> new SacrificeSetBonus(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC)));
 }

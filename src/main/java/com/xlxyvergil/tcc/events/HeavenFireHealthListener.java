@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.events;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -50,29 +51,18 @@ public class HeavenFireHealthListener {
                     damageConversionRatio = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get();
                     hasHeavenFireItem = true;
                 }
-                // 检查天火劫灭·无烬终焉（已经是100%虚数伤害）
+                // 检查天火劫灭·无烬终焉
                 else if (com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
-                    damageConversionRatio = 1.0;  // 100%转换
+                    damageConversionRatio = TaczCuriosConfig.COMMON.endlessDamageConversionRatio.get();
                     hasHeavenFireItem = true;
                 }
                 
-                // 应用伤害降低（类似七咒之戒的方案）
+                // 应用伤害降低
                 if (hasHeavenFireItem) {
-                    // 检查是否装备了救世，如果是则提高保留系数（优先级最高）
-                    if (com.xlxyvergil.tcc.items.Salvation.hasSalvationEquipped(attacker)) {
-                        double multiplier = TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get();
-                        damageConversionRatio *= multiplier;
-                    }
-                    // 检查是否装备了夏日沙滩
-                    else if (com.xlxyvergil.tcc.items.SummerBeach.hasSummerBeachEquipped(attacker)) {
-                        double multiplier = TaczCuriosConfig.COMMON.summerBeachHeavenFireMultiplier.get();
-                        damageConversionRatio *= multiplier;
-                    }
-                    // 检查是否装备了梵天百兽
-                    else if (com.xlxyvergil.tcc.items.BrahmaBeasts.hasBrahmaBeastsEquipped(attacker)) {
-                        double multiplier = TaczCuriosConfig.COMMON.brahmaBeastsHeavenFireMultiplier.get();
-                        damageConversionRatio *= multiplier;
-                    }
+                    // 根据攻击者的虚数抗性提升保留系数
+                    double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                    double resistanceBonusPerPoint = TaczCuriosConfig.COMMON.imaginaryDamageResistanceBonusPerPoint.get();
+                    damageConversionRatio += resistance * resistanceBonusPerPoint;
                     
                     float originalDamage = event.getAmount();
                     float reducedDamage = originalDamage * (float)damageConversionRatio;

@@ -1,6 +1,6 @@
 package com.xlxyvergil.tcc.effect;
 
-import com.xlxyvergil.tcc.core.TccAttributes;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -13,8 +13,7 @@ import java.util.List;
 
 /**
  * 虚数崩解 - 虚数侵染的流血效果。
- * 每tick对目标造成 0.5%最大生命值 × 虚数侵染等级 的伤害，
- * 虚数抗性以 1:1 的比例降低此伤害。
+ * 伤害公式: 目标最大血量 × percentPerLevel × 侵染等级 × (1 + min(debuff数, maxDebuff) × percentPerDebuff)
  * 仅可由天火劫灭/无烬终焉触发。
  */
 public class ImaginaryCollapseEffect extends MobEffect {
@@ -48,16 +47,24 @@ public class ImaginaryCollapseEffect extends MobEffect {
         }
         if (infectionLevel <= 0) return;
 
-        float baseDamage = entity.getMaxHealth() * 0.005F;
-        float scaledDamage = baseDamage * infectionLevel;
+        // 统计目标身上的负面效果数量
+        int debuffCount = 0;
+        for (MobEffectInstance instance : entity.getActiveEffects()) {
+            if (instance.getEffect().getCategory() == MobEffectCategory.HARMFUL) {
+                debuffCount++;
+            }
+        }
 
-        double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        float finalDamage = Math.max(0, scaledDamage - (float) resistance);
+        double percentPerLevel = TaczCuriosConfig.COMMON.collapsePercentPerLevel.get();
+        int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
+        double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
+
+        int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
+        double debuffMultiplier = 1.0 + effectiveDebuffs * percentPerDebuff;
+
+        float finalDamage = (float) (entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier);
 
         if (finalDamage > 0) {
-            // 直接扣除生命值，绕过 hurt() 方法。
-            // hurt() 无法对 Apostle 等具有自定义无敌机制（moddedInvul）的实体造成伤害。
-            // 死亡由 LivingEntity.aiStep() 中 getHealth() <= 0 的检查处理。
             entity.setHealth(Math.max(0, entity.getHealth() - finalDamage));
         }
     }

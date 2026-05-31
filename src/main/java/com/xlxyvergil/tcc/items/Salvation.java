@@ -126,11 +126,6 @@ public class Salvation extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses")
             .withStyle(ChatFormatting.GREEN));
         
-        // 天火增强
-        double multiplier = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationHeavenFireMultiplier.get();
-        tooltip.add(Component.translatable("item.tcc.salvation.heaven_fire_boost", String.format("%.0f", multiplier * 100))
-            .withStyle(ChatFormatting.GOLD));
-
         // EL 第四诅咒削弱（仅加载神秘遗物时显示）
         if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
             double curseReduction = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationELCurseReduction.get();
