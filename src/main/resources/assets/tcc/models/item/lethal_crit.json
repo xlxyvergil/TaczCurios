@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/lethal_crit"
+    "layer0": "tcc:item/lethal_crit",
+    "layer1": "tcc:item/border_common"
   }
 }

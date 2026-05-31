@@ -59,9 +59,9 @@ public class LaserScope extends BaseCurioItem {
         int duration = TaczCuriosConfig.COMMON.laserScopeDuration.get();
         tooltip.add(Component.translatable("item.tcc.laser_scope.effect",
                 String.format("%+.0f", baseCrit), String.format("%+.0f", buffCrit), duration)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.AQUA));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
 

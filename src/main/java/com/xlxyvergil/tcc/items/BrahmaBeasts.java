@@ -56,11 +56,10 @@ public class BrahmaBeasts extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        int baseResistance = TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.get();
         int maxKillResistance = TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get();
         int resistanceFromKills = Math.min(getResistanceFromKills(livingEntity), maxKillResistance);
         int carriedResistance = getCarriedResistance(livingEntity);
-        double totalResistance = Math.min(baseResistance + carriedResistance + resistanceFromKills, baseResistance + maxKillResistance);
+        double totalResistance = carriedResistance + resistanceFromKills;
         
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             totalResistance, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_brahma_beasts_resistance", AttributeModifier.Operation.ADDITION);
@@ -179,11 +178,10 @@ public class BrahmaBeasts extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         
         // 显示当前抗性构成
-        int baseResistance = TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.get();
+        int maxKillResistance = TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get();
         if (tag != null) {
             int carried = tag.getInt(CARRIED_RESISTANCE_TAG);
             int fromKills = 0;
-            int maxKillResistance = TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get();
             List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get();
             CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
             for (List<String> entry : resistList) {
@@ -195,12 +193,12 @@ public class BrahmaBeasts extends BaseCurioItem {
                 fromKills += kills * perKill;
             }
             fromKills = Math.min(fromKills, maxKillResistance);
-            int total = baseResistance + carried + fromKills;
+            int total = carried + fromKills;
             tooltip.add(Component.literal(""));
             tooltip.add(Component.translatable("item.tcc.brahma_beasts.effect", String.valueOf(total))
                 .withStyle(ChatFormatting.AQUA));
         } else {
-            tooltip.add(Component.translatable("item.tcc.brahma_beasts.effect", baseResistance + "~" + (baseResistance + TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get()))
+            tooltip.add(Component.translatable("item.tcc.brahma_beasts.effect", "0~" + TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get())
                 .withStyle(ChatFormatting.AQUA));
         }
         
@@ -233,7 +231,7 @@ public class BrahmaBeasts extends BaseCurioItem {
         List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get();
         if (!resistList.isEmpty()) {
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.brahma_beasts.resist_source_title")
+            tooltip.add(Component.translatable("item.tcc.brahma_beasts.resist_source_title", String.valueOf(maxKillResistance))
                 .withStyle(ChatFormatting.AQUA));
             CompoundTag killCounts = tag != null ? tag.getCompound(KILL_COUNTS_TAG) : null;
             for (List<String> entry : resistList) {
@@ -256,8 +254,8 @@ public class BrahmaBeasts extends BaseCurioItem {
         }
         
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot.3rd"));
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.legendary"));
+ 
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
         
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.brahma_beasts.how_to_obtain")

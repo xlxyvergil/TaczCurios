@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/steel_slash"
+    "layer0": "tcc:item/steel_slash",
+    "layer1": "tcc:item/border_common"
   }
 }

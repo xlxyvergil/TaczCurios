@@ -39,9 +39,9 @@ public class GildedRifleAptitude extends BaseCurioItem {
         double perHarmful = TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get() * 100;
         tooltip.add(Component.translatable("item.tcc.gilded_rifle_aptitude.effect",
                 String.format("%+.0f", perHarmful))
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

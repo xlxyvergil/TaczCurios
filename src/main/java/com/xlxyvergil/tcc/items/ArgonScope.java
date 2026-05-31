@@ -61,7 +61,7 @@ public class ArgonScope extends BaseCurioItem {
                 String.format("%+.0f", baseCrit), String.format("%+.0f", buffCrit), duration)
             .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 

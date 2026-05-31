@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/alloy_drill"
+    "layer0": "tcc:item/alloy_drill",
+    "layer1": "tcc:item/border_rare"
   }
 }

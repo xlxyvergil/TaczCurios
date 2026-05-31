@@ -31,8 +31,7 @@ public class MagazineBoostPrime extends BaseCurioItem {
 
     public MagazineBoostPrime(Properties properties) {
         super(properties
-            .stacksTo(1)
-            .rarity(Rarity.EPIC));
+            .stacksTo(1));
     }
 
     /**
@@ -75,7 +74,7 @@ public class MagazineBoostPrime extends BaseCurioItem {
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
 
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));

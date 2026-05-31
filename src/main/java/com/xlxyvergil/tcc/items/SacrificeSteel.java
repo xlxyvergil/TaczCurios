@@ -91,7 +91,7 @@ public class SacrificeSteel extends BaseCurioItem {
         double critChanceBoost = TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get() * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_steel.effect",
                 String.format("%+.0f", critChanceBoost))
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
 
         // 套装提示
         double setBonusPct = (TaczCuriosConfig.COMMON.sacrificeSetBonus.get() - 1.0) * 100;
@@ -100,7 +100,7 @@ public class SacrificeSteel extends BaseCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

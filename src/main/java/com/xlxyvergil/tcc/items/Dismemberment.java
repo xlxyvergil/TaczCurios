@@ -66,10 +66,10 @@ public class Dismemberment extends BaseCurioItem {
         double critDamageBoost = TaczCuriosConfig.COMMON.dismembermentCritDamage.get() * 100;
         tooltip.add(Component.translatable("item.tcc.dismemberment.effect",
                 String.format("%+.0f", critDamageBoost))
-            .withStyle(ChatFormatting.AQUA));
+            .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 

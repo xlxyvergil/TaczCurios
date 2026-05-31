@@ -25,8 +25,7 @@ public class RiftSilver extends Item {
     
     public RiftSilver(Properties properties) {
         super(properties
-            .stacksTo(64)
-            .rarity(Rarity.EPIC));
+            .stacksTo(64));
     }
 
     /**

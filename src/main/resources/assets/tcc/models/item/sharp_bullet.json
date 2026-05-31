@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/sharp_bullet"
+    "layer0": "tcc:item/sharp_bullet",
+    "layer1": "tcc:item/border_uncommon"
   }
 }

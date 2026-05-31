@@ -31,8 +31,7 @@ public class MagazineBoost extends BaseCurioItem {
 
     public MagazineBoost(Properties properties) {
         super(properties
-            .stacksTo(1)
-            .rarity(Rarity.COMMON));
+            .stacksTo(1));
     }
 
     /**
@@ -76,7 +75,7 @@ public class MagazineBoost extends BaseCurioItem {
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
 
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));

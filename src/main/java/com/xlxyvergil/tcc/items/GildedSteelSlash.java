@@ -66,9 +66,9 @@ public class GildedSteelSlash extends BaseCurioItem {
         int maxStacks = TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_steel_slash.effect",
                 String.format("%+.0f", baseCritChance), String.format("%+.0f", buffCritDmg), duration, maxStacks)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

@@ -91,7 +91,7 @@ public class SacrificeOppression extends BaseCurioItem {
         double meleeDamageBoost = TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get() * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.effect",
                 String.format("%+.0f", meleeDamageBoost))
-            .withStyle(ChatFormatting.BLUE));
+            .withStyle(ChatFormatting.WHITE));
 
         // 套装提示
         double setBonusPct = (TaczCuriosConfig.COMMON.sacrificeSetBonus.get() - 1.0) * 100;
@@ -100,7 +100,7 @@ public class SacrificeOppression extends BaseCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

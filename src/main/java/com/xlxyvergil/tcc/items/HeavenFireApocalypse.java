@@ -182,16 +182,10 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         int infectionMax = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
                 String.format("%d", infectionMax)));
-        double collapsePct = TaczCuriosConfig.COMMON.collapsePercentPerLevel.get() * 100;
-        double debuffPct = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get() * 100;
-        int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.collapse_info",
-                String.format("%.1f", collapsePct), String.format("%.0f", debuffPct), String.valueOf(maxDebuff))
-            .withStyle(ChatFormatting.DARK_PURPLE));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));

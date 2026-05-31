@@ -254,10 +254,10 @@ public class SummerBeach extends BaseCurioItem {
         // 装备效果
         // 显示当前抗性构成
         int baseResistance = TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
+        int maxKillResistance = TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get();
         if (tag != null) {
             int carried = tag.getInt(CARRIED_RESISTANCE_TAG);
             int fromKills = 0;
-            int maxKillResistance = TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get();
             List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
             CompoundTag killCounts = tag.getCompound(KILL_COUNTS_TAG);
             for (List<String> entry : resistList) {
@@ -308,7 +308,7 @@ public class SummerBeach extends BaseCurioItem {
         List<? extends List<String>> resistList = TaczCuriosConfig.COMMON.summerBeachResistanceEntities.get();
         if (!resistList.isEmpty()) {
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.summer_beach.resist_source_title")
+            tooltip.add(Component.translatable("item.tcc.summer_beach.resist_source_title", String.valueOf(maxKillResistance))
                 .withStyle(ChatFormatting.AQUA));
             CompoundTag killCounts = tag != null ? tag.getCompound(KILL_COUNTS_TAG) : null;
             for (List<String> entry : resistList) {
@@ -333,7 +333,7 @@ public class SummerBeach extends BaseCurioItem {
         
         // 槽位和稀有度
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot.3rd"));
+ 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
         
         // 下级进化方式

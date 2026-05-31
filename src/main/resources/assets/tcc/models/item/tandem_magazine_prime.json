@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/tandem_magazine_prime"
+    "layer0": "tcc:item/tandem_magazine_prime",
+    "layer1": "tcc:item/border_epic"
   }
 }

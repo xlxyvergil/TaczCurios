@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/gilded_rifle_aptitude"
+    "layer0": "tcc:item/gilded_rifle_aptitude",
+    "layer1": "tcc:item/border_gilded"
   }
 }

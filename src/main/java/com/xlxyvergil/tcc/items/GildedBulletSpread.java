@@ -60,9 +60,9 @@ public class GildedBulletSpread extends BaseCurioItem {
         int maxStacks = TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_bullet_spread.effect",
                 String.format("%+.0f", baseBulletCount), String.format("%+.0f", buffBulletCount), duration, maxStacks)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

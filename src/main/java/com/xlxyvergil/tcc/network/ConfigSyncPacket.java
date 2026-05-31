@@ -343,8 +343,6 @@ public class ConfigSyncPacket {
             }
             if (config.has("brahmaBeastsMaxKillResistance"))
                 TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.set(config.get("brahmaBeastsMaxKillResistance").getAsInt());
-            if (config.has("brahmaBeastsBaseResistance"))
-                TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.set(config.get("brahmaBeastsBaseResistance").getAsInt());
             if (config.has("brahmaBeastsResistanceEntities")) {
                 java.util.List<java.util.List<String>> list = new java.util.ArrayList<>();
                 JsonArray outerArr = config.getAsJsonArray("brahmaBeastsResistanceEntities");
@@ -745,7 +743,6 @@ public class ConfigSyncPacket {
             config.add("brahmaBeastsEvolutionRequirements", outerArr);
         }
         config.addProperty("brahmaBeastsMaxKillResistance", TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
-        config.addProperty("brahmaBeastsBaseResistance", TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.get());
         {
             JsonArray outerArr = new JsonArray();
             for (java.util.List<String> inner : TaczCuriosConfig.COMMON.brahmaBeastsResistanceEntities.get()) {

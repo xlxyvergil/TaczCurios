@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/magazine_boost"
+    "layer0": "tcc:item/magazine_boost",
+    "layer1": "tcc:item/border_common"
   }
 }

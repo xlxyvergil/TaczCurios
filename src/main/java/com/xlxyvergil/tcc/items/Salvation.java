@@ -123,7 +123,7 @@ public class Salvation extends BaseCurioItem {
             .withStyle(ChatFormatting.AQUA));
         
         // 常驻加成
-        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses")
+        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100))
             .withStyle(ChatFormatting.GREEN));
         
         // EL 第四诅咒削弱（仅加载神秘遗物时显示）
@@ -135,7 +135,7 @@ public class Salvation extends BaseCurioItem {
         
         // 槽位和稀有度
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot.3rd"));
+ 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
         
         // 添加获取方式

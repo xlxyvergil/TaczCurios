@@ -59,9 +59,9 @@ public class SharpBullet extends BaseCurioItem {
         int duration = TaczCuriosConfig.COMMON.sharpBulletDuration.get();
         tooltip.add(Component.translatable("item.tcc.sharp_bullet.effect",
                 String.format("%+.0f", baseCritDmg), String.format("%+.0f", buffCritDmg), duration)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.AQUA));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
 

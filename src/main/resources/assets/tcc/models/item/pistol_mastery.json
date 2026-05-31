@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/pistol_mastery"
+    "layer0": "tcc:item/pistol_mastery",
+    "layer1": "tcc:item/border_common"
   }
 }

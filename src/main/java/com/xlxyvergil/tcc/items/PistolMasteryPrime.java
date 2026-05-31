@@ -60,10 +60,10 @@ public class PistolMasteryPrime extends BaseCurioItem {
         double critChanceBoost = TaczCuriosConfig.COMMON.pistolMasteryPrimeCritChance.get() * 100;
         tooltip.add(Component.translatable("item.tcc.pistol_mastery_prime.effect",
                 String.format("%+.0f", critChanceBoost))
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

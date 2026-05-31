@@ -59,9 +59,9 @@ public class HydraulicCrosshair extends BaseCurioItem {
         int duration = TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get();
         tooltip.add(Component.translatable("item.tcc.hydraulic_crosshair.effect",
                 String.format("%+.0f", baseCrit), String.format("%+.0f", buffCrit), duration)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 

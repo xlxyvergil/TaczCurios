@@ -61,9 +61,9 @@ public class GildedArgonScope extends BaseCurioItem {
         int maxStacks = TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_argon_scope.effect",
                 String.format("%+.0f", baseCrit), String.format("%+.0f", buffCrit), String.format("%+.0f", extraCrit), duration, maxStacks)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

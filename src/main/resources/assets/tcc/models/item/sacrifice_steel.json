@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/sacrifice_steel"
+    "layer0": "tcc:item/sacrifice_steel",
+    "layer1": "tcc:item/border_epic"
   }
 }

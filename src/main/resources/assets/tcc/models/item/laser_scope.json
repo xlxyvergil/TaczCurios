@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/laser_scope"
+    "layer0": "tcc:item/laser_scope",
+    "layer1": "tcc:item/border_uncommon"
   }
 }

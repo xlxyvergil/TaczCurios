@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/chamber"
+    "layer0": "tcc:item/chamber",
+    "layer1": "tcc:item/border_rare"
   }
 }

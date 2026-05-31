@@ -60,10 +60,10 @@ public class LethalCrit extends BaseCurioItem {
         double critChanceBoost = TaczCuriosConfig.COMMON.lethalCritCritChance.get() * 100;
         tooltip.add(Component.translatable("item.tcc.lethal_crit.effect",
                 String.format("%+.0f", critChanceBoost))
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 

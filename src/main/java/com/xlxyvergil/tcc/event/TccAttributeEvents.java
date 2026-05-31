@@ -57,7 +57,6 @@ public class TccAttributeEvents {
             canApplyCollapse = true;
         } else if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
             maxLevel = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
-            canApplyCollapse = true;
         } else if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
             maxLevel = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();
         } else {

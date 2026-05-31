@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/gilded_split_chamber"
+    "layer0": "tcc:item/gilded_split_chamber",
+    "layer1": "tcc:item/border_gilded"
   }
 }

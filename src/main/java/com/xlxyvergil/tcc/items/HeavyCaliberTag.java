@@ -102,7 +102,7 @@ public class HeavyCaliberTag extends BaseCurioItem {
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));

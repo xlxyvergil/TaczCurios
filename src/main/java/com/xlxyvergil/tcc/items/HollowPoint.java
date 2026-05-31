@@ -67,10 +67,10 @@ public class HollowPoint extends BaseCurioItem {
         double pistolDamageReduction = TaczCuriosConfig.COMMON.hollowPointPistolDamageReduction.get() * 100;
         tooltip.add(Component.translatable("item.tcc.hollow_point.effect",
                 String.format("%+.0f", critDamageBoost), String.format("%+.0f", pistolDamageReduction))
-            .withStyle(ChatFormatting.AQUA));
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 

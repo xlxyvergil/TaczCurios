@@ -59,9 +59,9 @@ public class FragmentShot extends BaseCurioItem {
         int duration = TaczCuriosConfig.COMMON.fragmentShotDuration.get();
         tooltip.add(Component.translatable("item.tcc.fragment_shot.effect",
                 String.format("%+.0f", baseCritDmg), String.format("%+.0f", buffCritDmg), duration)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 

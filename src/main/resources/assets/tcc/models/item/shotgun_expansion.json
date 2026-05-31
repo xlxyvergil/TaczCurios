@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/shotgun_expansion"
+    "layer0": "tcc:item/shotgun_expansion",
+    "layer1": "tcc:item/border_common"
   }
 }

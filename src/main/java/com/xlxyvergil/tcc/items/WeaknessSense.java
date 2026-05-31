@@ -60,10 +60,10 @@ public class WeaknessSense extends BaseCurioItem {
         double critDamageBoost = TaczCuriosConfig.COMMON.weaknessSenseCritDamage.get() * 100;
         tooltip.add(Component.translatable("item.tcc.weakness_sense.effect",
                 String.format("%+.0f", critDamageBoost))
-            .withStyle(ChatFormatting.AQUA));
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 

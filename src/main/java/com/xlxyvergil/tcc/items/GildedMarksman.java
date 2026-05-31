@@ -39,9 +39,9 @@ public class GildedMarksman extends BaseCurioItem {
         double perHarmful = TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get() * 100;
         tooltip.add(Component.translatable("item.tcc.gilded_marksman.effect",
                 String.format("%+.0f", perHarmful))
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

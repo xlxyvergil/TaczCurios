@@ -60,10 +60,10 @@ public class WeaknessMasteryPrime extends BaseCurioItem {
         double critDamageBoost = TaczCuriosConfig.COMMON.weaknessMasteryPrimeCritDamage.get() * 100;
         tooltip.add(Component.translatable("item.tcc.weakness_mastery_prime.effect",
                 String.format("%+.0f", critDamageBoost))
-            .withStyle(ChatFormatting.AQUA));
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

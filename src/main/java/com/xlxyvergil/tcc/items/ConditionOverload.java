@@ -52,9 +52,9 @@ public class ConditionOverload extends BaseCurioItem {
         double perHarmful = TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get() * 100;
         tooltip.add(Component.translatable("item.tcc.condition_overload.effect",
                 String.format("%+.0f", perHarmful))
-            .withStyle(ChatFormatting.BLUE));
+            .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 

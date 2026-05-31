@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/oppression_point_prime"
+    "layer0": "tcc:item/oppression_point_prime",
+    "layer1": "tcc:item/border_epic"
   }
 }

@@ -155,7 +155,7 @@ public class SummerBeachDropEvent {
             for (int i = 0; i < stackHandler.getSlots(); i++) {
                 ItemStack oldStack = stackHandler.getStackInSlot(i);
                 if (oldStack.getItem() instanceof SummerBeach oldBeach) {
-                    int carriedResistance = Math.min(SummerBeach.getResistanceFromKills(player), TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get());
+                    int carriedResistance = TaczCuriosConfig.COMMON.summerBeachBaseResistance.get() + Math.min(SummerBeach.getResistanceFromKills(player), TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get());
                     
                     ItemStack newStack = new ItemStack(TaczItems.BRAHMA_BEASTS.get());
                     CompoundTag newTag = newStack.getOrCreateTag();
@@ -200,12 +200,10 @@ public class SummerBeachDropEvent {
                     if (oldStack.getItem() instanceof BrahmaBeasts oldBb) {
                         ItemStack newStack = new ItemStack(TaczItems.SALVATION.get());
                         
-                        int bbBase = TaczCuriosConfig.COMMON.brahmaBeastsBaseResistance.get();
                         int carriedFromSummer = BrahmaBeasts.getCarriedResistance(player);
                         int fromKills = Math.min(BrahmaBeasts.getResistanceFromKills(player), 
                             TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
-                        int brahmaTotal = Math.min(bbBase + carriedFromSummer + fromKills, 
-                            bbBase + TaczCuriosConfig.COMMON.brahmaBeastsMaxKillResistance.get());
+                        int brahmaTotal = carriedFromSummer + fromKills;
                         
                         CompoundTag newTag = newStack.getOrCreateTag();
                         newTag.putInt("CarriedResistance", brahmaTotal);

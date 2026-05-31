@@ -193,7 +193,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue brahmaBeastsELCurseReduction;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsEvolutionRequirements;
         public final ForgeConfigSpec.ConfigValue<? extends List<? extends List<String>>> brahmaBeastsResistanceEntities;
-        public final ForgeConfigSpec.IntValue brahmaBeastsBaseResistance;
         public final ForgeConfigSpec.IntValue brahmaBeastsMaxKillResistance;
         
         // 救世配置
@@ -360,7 +359,7 @@ public class TaczCuriosConfig {
                     .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
                     .defineInRange("healthCost", -0.3, -1, 1);
             heavenFireJudgmentDamageConversionRatio = builder
-                    .comment("伤害降低98%，并转换为虚数伤害")
+                    .comment("伤害降低99%，并转换为虚数伤害")
                     .defineInRange("damageConversionRatio", 0.01, 0, 1);
             heavenFireJudgmentGunTypes = builder
                     .comment("天火圣裁生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
@@ -986,18 +985,18 @@ public class TaczCuriosConfig {
             summerBeachEvolutionRequirements = builder
                     .comment("夏日沙滩进化需求列表，格式: [[实体, 击杀数, NBT条件(可选)], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
                             "实体格式: 例如 \"minecraft:ender_dragon\" 匹配所有末影龙",
-                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"20\", \"apoth.boss=true\"] 仅匹配Apotheosis Boss末影龙",
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"1\", \"apoth.boss=true\"] 仅匹配Apotheosis Boss末影龙",
                             "NBT条件支持多条件逗号分隔: \"apoth.boss=true,apoth.rarity=apotheosis:mythic\"",
-                            "默认: [[minecraft:ender_dragon, 20]]")
+                            "默认: [[minecraft:ender_dragon, 1]]")
                     .define("evolutionRequirements", java.util.List.of(
-                            java.util.List.of("minecraft:ender_dragon", "20")
+                            java.util.List.of("minecraft:ender_dragon", "1")
                     ));
             summerBeachResistanceEntities = builder
                     .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值, NBT条件(可选)], ...]，击杀实体获得对应抗性",
-                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"1\", \"apoth.boss=true\"]",
-                            "默认: [[minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:wither\", \"1\", \"apoth.boss=true\"]",
+                            "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
-                            java.util.List.of("minecraft:ender_dragon", "1")
+                            java.util.List.of("minecraft:wither", "1")
                     ));
             summerBeachBaseResistance = builder
                     .comment("夏日沙滩虚数抗性基础值 (默认: 20)")
@@ -1014,21 +1013,18 @@ public class TaczCuriosConfig {
                     .defineInRange("elCurseReduction", 0.5, 0, 1);
             brahmaBeastsEvolutionRequirements = builder
                     .comment("梵天百兽进化需求列表，格式: [[实体, 击杀数, NBT条件(可选)], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
-                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"30\", \"apoth.boss=true\"]",
-                            "默认: [[minecraft:ender_dragon, 30]]")
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"1\", \"apoth.boss=true\"]",
+                            "默认: [[minecraft:ender_dragon, 1]]")
                     .define("evolutionRequirements", java.util.List.of(
-                            java.util.List.of("minecraft:ender_dragon", "30")
+                            java.util.List.of("minecraft:ender_dragon", "2")
                     ));
             brahmaBeastsResistanceEntities = builder
                     .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值, NBT条件(可选)], ...]，击杀实体获得对应抗性",
-                            "添加第3个元素可指定NBT条件，如 [\"minecraft:ender_dragon\", \"1\", \"apoth.boss=true\"]",
-                            "默认: [[minecraft:ender_dragon, 1]]，最多20点来自击杀")
+                            "添加第3个元素可指定NBT条件，如 [\"minecraft:wither\", \"1\", \"apoth.boss=true\"]",
+                            "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
-                            java.util.List.of("minecraft:ender_dragon", "1")
+                            java.util.List.of("minecraft:ender_dragon", "20")
                     ));
-            brahmaBeastsBaseResistance = builder
-                    .comment("梵天百兽虚数抗性基础值 (默认: 20)")
-                    .defineInRange("baseResistance", 20, 0, 1000);
             brahmaBeastsMaxKillResistance = builder
                     .comment("梵天百兽虚数抗性来自击杀的上限 (默认: 20)")
                     .defineInRange("maxKillResistance", 20, 0, 1000);

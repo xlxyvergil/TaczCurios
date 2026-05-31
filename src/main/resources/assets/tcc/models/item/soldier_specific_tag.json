@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/soldier_specific_tag"
+    "layer0": "tcc:item/soldier_specific_tag",
+    "layer1": "tcc:item/border_uncommon"
   }
 }

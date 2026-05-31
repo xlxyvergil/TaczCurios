@@ -89,6 +89,7 @@ import com.xlxyvergil.tcc.items.GildedShotgunSavvy;
 import com.xlxyvergil.tcc.items.GildedMarksman;
 import com.xlxyvergil.tcc.items.ConditionOverload;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -100,6 +101,9 @@ import net.minecraftforge.registries.RegistryObject;
  */
 public class TaczItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "tcc");
+
+    /** 裂隙级稀有度 */
+    public static final Rarity RIFT = Rarity.create("tcc_rift", ChatFormatting.LIGHT_PURPLE);
     
     // 士兵基础挂牌 - 提供50%所有枪械基础伤害加成
     public static final RegistryObject<Item> SOLDIER_BASIC_TAG = ITEMS.register("soldier_basic_tag", 
@@ -141,13 +145,13 @@ public class TaczItems {
     public static final RegistryObject<Item> SALVATION = ITEMS.register("salvation", 
         () -> new Salvation(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC)));
+            .rarity(RIFT)));
     
     // 天火劫灭·无烬终焉 - 裂隙级
     public static final RegistryObject<Item> HEAVEN_FIRE_APOCALYPSE_ENDLESS = ITEMS.register("heaven_fire_apocalypse_endless", 
         () -> new HeavenFireApocalypseEndless(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC)));
+            .rarity(RIFT)));
     
     // 乌拉尔银狼 - 提供150%爆头倍率加成
     public static final RegistryObject<Item> URAL_WOLF_TAG = ITEMS.register("ural_wolf_tag", 
@@ -165,7 +169,7 @@ public class TaczItems {
     public static final RegistryObject<Item> HEAVEN_FIRE_APOCALYPSE = ITEMS.register("heaven_fire_apocalypse", 
         () -> new HeavenFireApocalypse(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC)));
+            .rarity(RIFT)));
     
     // 卑劣加速 - 提升90%射击速度，但降低15%通用伤害和全部特定枪械伤害
     public static final RegistryObject<Item> DESPICABLE_ACCELERATION = ITEMS.register("despicable_acceleration", 
@@ -431,7 +435,7 @@ public class TaczItems {
     public static final RegistryObject<Item> KIKAKU_ICHIJIN = ITEMS.register("kikaku_ichijin", 
         () -> new KikakuIchijin(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC)));
+            .rarity(RIFT)));
     
     // ========== Phase 2: 16个新增常驻属性饰品 ==========
     

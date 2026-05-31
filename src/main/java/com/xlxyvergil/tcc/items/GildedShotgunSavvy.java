@@ -39,9 +39,9 @@ public class GildedShotgunSavvy extends BaseCurioItem {
         double perHarmful = TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get() * 100;
         tooltip.add(Component.translatable("item.tcc.gilded_shotgun_savvy.effect",
                 String.format("%+.0f", perHarmful))
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 

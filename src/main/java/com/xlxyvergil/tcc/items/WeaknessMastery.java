@@ -63,7 +63,7 @@ public class WeaknessMastery extends BaseCurioItem {
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
 

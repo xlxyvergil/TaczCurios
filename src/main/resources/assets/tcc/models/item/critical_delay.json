@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/critical_delay"
+    "layer0": "tcc:item/critical_delay",
+    "layer1": "tcc:item/border_rare"
   }
 }

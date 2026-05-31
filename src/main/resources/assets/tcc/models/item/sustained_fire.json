@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/sustained_fire"
+    "layer0": "tcc:item/sustained_fire",
+    "layer1": "tcc:item/border_common"
   }
 }

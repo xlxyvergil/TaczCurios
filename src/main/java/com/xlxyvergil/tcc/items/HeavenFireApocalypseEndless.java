@@ -147,12 +147,14 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         double collapsePct = TaczCuriosConfig.COMMON.collapsePercentPerLevel.get() * 100;
         double debuffPct = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get() * 100;
         int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
+        double maxCollapsePct = collapsePct * infectionMax * (1 + maxDebuff * debuffPct / 100);
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.collapse_info",
-                String.format("%.1f", collapsePct), String.format("%.0f", debuffPct), String.valueOf(maxDebuff))
+                String.format("%.1f", collapsePct), String.format("%.0f", debuffPct), String.valueOf(maxDebuff),
+                String.format("%.1f", maxCollapsePct))
             .withStyle(ChatFormatting.DARK_PURPLE));
         
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.slot"));
+        
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
         
         // 添加获取方式

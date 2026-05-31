@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/heavy_firepower"
+    "layer0": "tcc:item/heavy_firepower",
+    "layer1": "tcc:item/border_rare"
   }
 }

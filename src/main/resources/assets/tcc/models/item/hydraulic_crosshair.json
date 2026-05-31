@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/hydraulic_crosshair"
+    "layer0": "tcc:item/hydraulic_crosshair",
+    "layer1": "tcc:item/border_common"
   }
 }
