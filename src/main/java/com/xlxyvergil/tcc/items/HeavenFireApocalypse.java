@@ -4,7 +4,6 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -12,13 +11,8 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.network.chat.Component;
@@ -161,22 +155,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
                 String.format("%+d", totalNearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration)));
         
-        // 伤害转换信息 - 根据玩家当前虚数抗性动态计算
-        double baseRetentionPct = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get() * 100;
-        double bonusPerPoint = TaczCuriosConfig.COMMON.imaginaryDamageResistanceBonusPerPoint.get() * 100;
-        double totalRetentionPct = baseRetentionPct;
-        double resistanceBonusPct = 0;
-        Player player = Minecraft.getInstance().player;
-        if (player != null) {
-            double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            resistanceBonusPct = resistance * bonusPerPoint;
-            totalRetentionPct = baseRetentionPct + resistanceBonusPct;
-            totalRetentionPct = Math.max(0, totalRetentionPct);
-        }
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.damage_conversion",
-                String.format("%.0f", totalRetentionPct),
-                String.format("%.0f", baseRetentionPct),
-                String.format("%.0f", resistanceBonusPct)));
+        // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
         
         // 虚数侵染上限 + 虚数崩解
         int infectionMax = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();

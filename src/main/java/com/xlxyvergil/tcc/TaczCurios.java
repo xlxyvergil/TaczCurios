@@ -6,11 +6,9 @@ import com.xlxyvergil.tcc.event.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
-import com.xlxyvergil.tcc.network.TccNetwork;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -48,12 +46,6 @@ public class TaczCurios
         // 注册配置文件
         TaczCuriosConfig.registerConfigs();
         
-        // 注册网络包
-        TccNetwork.register();
-        
-        // 注册玩家登录事件
-        MinecraftForge.EVENT_BUS.addListener(this::onPlayerLogin);
-        
         // 安全地注册客户端事件处理器
         registerClientEventsSafely();
         
@@ -71,18 +63,6 @@ public class TaczCurios
         // 仅在客户端环境中注册客户端事件处理器
         if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-        }
-    }
-    
-    private void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        // 在玩家登录时发送配置同步包
-        if (!event.getEntity().level().isClientSide) {
-            net.minecraft.server.level.ServerPlayer player = (net.minecraft.server.level.ServerPlayer) event.getEntity();
-            TccNetwork.INSTANCE.sendTo(
-                com.xlxyvergil.tcc.network.ConfigSyncPacket.fromServer(),
-                player.connection.connection,
-                net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT
-            );
         }
     }
 }

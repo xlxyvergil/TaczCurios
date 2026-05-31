@@ -14,7 +14,6 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -123,22 +121,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
                 String.format("%+.0f", bleedingDamagePerLevel), 
                 String.format("%d", bleedingDuration)));
         
-        // 伤害转换信息 - 根据玩家当前虚数抗性动态计算
-        double baseRetentionPct = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageConversionRatio.get() * 100;
-        double bonusPerPoint = TaczCuriosConfig.COMMON.imaginaryDamageResistanceBonusPerPoint.get() * 100;
-        double totalRetentionPct = baseRetentionPct;
-        double resistanceBonusPct = 0;
-        Player player = Minecraft.getInstance().player;
-        if (player != null) {
-            double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            resistanceBonusPct = resistance * bonusPerPoint;
-            totalRetentionPct = baseRetentionPct + resistanceBonusPct;
-            totalRetentionPct = Math.max(0, totalRetentionPct);
-        }
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.damage_conversion",
-                String.format("%.0f", totalRetentionPct),
-                String.format("%.0f", baseRetentionPct),
-                String.format("%.0f", resistanceBonusPct)));
+        // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
         
         // 虚数侵染上限
         int infectionMax = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();

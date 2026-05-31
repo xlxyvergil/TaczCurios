@@ -979,9 +979,9 @@ public class TaczCuriosConfig {
                     .comment("夏日沙滩对第四诅咒效果的削弱比例 (默认: 0.25 = 抵消25%的诅咒效果)")
                     .defineInRange("elCurseReduction", 0.25, 0, 1);
             summerBeachObtainEntity = builder
-                    .comment("夏日沙滩饰品获取所需击杀的实体 (默认: minecraft:ender_dragon)",
-                            "支持NBT条件格式: \"minecraft:ender_dragon[apoth.boss=true]\"")
-                    .define("obtainEntity", "minecraft:ender_dragon");
+                    .comment("夏日沙滩饰品获取（被谁击杀） (默认: minecraft:wither)",
+                            "支持NBT条件格式: \"minecraft:wither[apoth.boss=true]\"")
+                    .define("obtainEntity", "minecraft:wither");
             summerBeachEvolutionRequirements = builder
                     .comment("夏日沙滩进化需求列表，格式: [[实体, 击杀数, NBT条件(可选)], ...]，击杀所有列表中的实体并达到要求数量后触发进化",
                             "实体格式: 例如 \"minecraft:ender_dragon\" 匹配所有末影龙",
@@ -990,14 +990,14 @@ public class TaczCuriosConfig {
                             "默认: [[minecraft:ender_dragon, 1]]")
                     .define("evolutionRequirements", java.util.List.of(
                             java.util.List.of("minecraft:ender_dragon", "1")
-                    ));
+                    ), o -> o instanceof java.util.List);
             summerBeachResistanceEntities = builder
                     .comment("夏日沙滩虚数抗性提升实体列表，格式: [[实体, 每只抗性值, NBT条件(可选)], ...]，击杀实体获得对应抗性",
                             "添加第3个元素可指定NBT条件，如 [\"minecraft:wither\", \"1\", \"apoth.boss=true\"]",
                             "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
                             java.util.List.of("minecraft:wither", "1")
-                    ));
+                    ), o -> o instanceof java.util.List);
             summerBeachBaseResistance = builder
                     .comment("夏日沙滩虚数抗性基础值 (默认: 20)")
                     .defineInRange("baseResistance", 20, 0, 1000);
@@ -1017,14 +1017,14 @@ public class TaczCuriosConfig {
                             "默认: [[minecraft:ender_dragon, 1]]")
                     .define("evolutionRequirements", java.util.List.of(
                             java.util.List.of("minecraft:ender_dragon", "2")
-                    ));
+                    ), o -> o instanceof java.util.List);
             brahmaBeastsResistanceEntities = builder
                     .comment("梵天百兽虚数抗性提升实体列表，格式: [[实体, 每只抗性值, NBT条件(可选)], ...]，击杀实体获得对应抗性",
                             "添加第3个元素可指定NBT条件，如 [\"minecraft:wither\", \"1\", \"apoth.boss=true\"]",
                             "默认: [[minecraft:wither, 1]]，最多20点来自击杀")
                     .define("resistanceEntities", java.util.List.of(
                             java.util.List.of("minecraft:ender_dragon", "20")
-                    ));
+                    ), o -> o instanceof java.util.List);
             brahmaBeastsMaxKillResistance = builder
                     .comment("梵天百兽虚数抗性来自击杀的上限 (默认: 20)")
                     .defineInRange("maxKillResistance", 20, 0, 1000);
@@ -1083,6 +1083,9 @@ public class TaczCuriosConfig {
             magazineBoostReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.3 = -30%)")
                     .defineInRange("reloadSpeedBoost",-0.3, -1, 100);
+            magazineBoostCapacityBoost = builder
+                    .comment("弹匣容量加成 (默认: 0.3 = 30%)")
+                    .defineInRange("capacityBoost", 0.3, -1, 100);
             builder.pop();
             
             // 士兵特定挂牌配置
@@ -1151,13 +1154,7 @@ public class TaczCuriosConfig {
                     .defineInRange("capacityBoost", 0.6, -1, 100);
             builder.pop();
             
-            // 弹匣增幅配置
-            builder.comment("弹匣增幅饰品配置").push("magazine_boost");
-            magazineBoostCapacityBoost = builder
-                    .comment("弹匣容量加成 (默认: 0.3 = 30%)")
-                    .defineInRange("capacityBoost", 0.3, -1, 100);
-            builder.pop();
-            
+
             // 串联弹匣配置
             builder.comment("串联弹匣饰品配置").push("tandem_magazine");
             tandemMagazineCapacityBoost = builder

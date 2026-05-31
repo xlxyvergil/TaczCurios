@@ -334,7 +334,7 @@ public class SummerBeach extends BaseCurioItem {
         // 槽位和稀有度
         tooltip.add(Component.literal(""));
  
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
         
         // 下级进化方式
         tooltip.add(Component.literal(""));
