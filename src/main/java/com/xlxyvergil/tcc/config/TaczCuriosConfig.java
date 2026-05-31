@@ -1210,7 +1210,18 @@ public class TaczCuriosConfig {
                             "tcc:blaze_storm,tcc:blaze_storm_prime",
                             "tcc:oppression_point,tcc:oppression_point_prime",
                             "tcc:chamber,tcc:chamber_prime",
-                            "tcc:close_range_shot,tcc:close_combat_prime"
+                            "tcc:close_range_shot,tcc:close_combat_prime",
+                            "tcc:lethal_crit,tcc:critical_delay",
+                            "tcc:thunder_barrel,tcc:thunder_barrel_prime,tcc:critical_delay",
+                            "tcc:pistol_mastery,tcc:pistol_mastery_prime,tcc:critical_delay",
+                            "tcc:argon_scope,tcc:gilded_argon_scope",
+                            "tcc:destruction,tcc:destruction_prime",
+                            "tcc:weakness_mastery,tcc:weakness_mastery_prime",
+                            "tcc:hydraulic_crosshair,tcc:gilded_hydraulic_crosshair",
+                            "tcc:steel_slash,tcc:sacrifice_steel,tcc:gilded_steel_slash",
+                            "tcc:gilded_split_chamber,tcc:split_chamber",
+                            "tcc:gilded_infernal_chamber,tcc:infernal_chamber",
+                            "tcc:gilded_bullet_spread,tcc:bullet_spread"
                         ), 
                         o -> o instanceof String);
             builder.pop();
