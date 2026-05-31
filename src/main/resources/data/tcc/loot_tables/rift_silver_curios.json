@@ -247,6 +247,171 @@
         },
         {
           "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:lethal_crit"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:thunder_barrel"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:pistol_mastery"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:steel_slash"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:dismemberment"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:fragment_shot"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4200,
+          "name": "tcc:hydraulic_crosshair"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:weakness_mastery"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:sharp_bullet"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:laser_scope"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1150,
+          "name": "tcc:sharp_ammo"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:critical_delay"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:weakness_sense"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:destruction"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:hollow_point"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:argon_scope"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 79,
+          "name": "tcc:condition_overload"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:destruction_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:thunder_barrel_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:weakness_mastery_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:pistol_mastery_prime"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:sacrifice_oppression"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:sacrifice_steel"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_argon_scope"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_split_chamber"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_infernal_chamber"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_hydraulic_crosshair"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_bullet_spread"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_steel_slash"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_rifle_aptitude"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_shotgun_savvy"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:gilded_marksman"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "tcc:sacrifice_set_bonus"
+        },
+        {
+          "type": "minecraft:item",
           "weight": 1,
           "name": "tcc:kikaku_ichijin"
         }
