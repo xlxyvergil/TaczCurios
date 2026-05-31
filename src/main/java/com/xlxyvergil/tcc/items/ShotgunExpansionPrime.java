@@ -60,7 +60,7 @@ public class ShotgunExpansionPrime extends BaseCurioItem {
         // 添加装备效果
         double magazineBoost = TaczCuriosConfig.COMMON.shotgunExpansionPrimeCapacityBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.shotgun_expansion_prime.effect", String.format("%+.0f", magazineBoost))
-            .withStyle(ChatFormatting.DARK_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

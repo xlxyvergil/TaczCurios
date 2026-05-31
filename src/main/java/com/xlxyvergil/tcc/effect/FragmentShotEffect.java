@@ -12,13 +12,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public class FragmentShotEffect extends MobEffect {
     public FragmentShotEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
-        double perLevelValue = TaczCuriosConfig.COMMON.fragmentShotCritDamagePerLevel.get();
+        double baseValue = TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            "c1d2e3f4-6102-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "c1d2e3f4-6102-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override
     public double getAttributeModifierValue(int amplifier, AttributeModifier modifier) {
-        return (amplifier + 1) * TaczCuriosConfig.COMMON.fragmentShotCritDamagePerLevel.get();
+        return (amplifier + 1) * TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get();
     }
 }

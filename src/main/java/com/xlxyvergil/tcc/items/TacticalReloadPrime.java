@@ -60,7 +60,7 @@ public class TacticalReloadPrime extends BaseCurioItem {
         // 添加装备效果
         double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadPrimeReloadSpeedBoost.get() * 100;
         tooltip.add(Component.translatable("item.tcc.tactical_reload_prime.effect", String.format("%+.0f", reloadBoost))
-            .withStyle(ChatFormatting.DARK_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
 
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));

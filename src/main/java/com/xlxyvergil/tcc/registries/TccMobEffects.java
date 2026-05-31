@@ -19,6 +19,8 @@ import com.xlxyvergil.tcc.effect.GildedSteelSlashEffect;
 import com.xlxyvergil.tcc.effect.GildedSplitChamberEffect;
 import com.xlxyvergil.tcc.effect.GildedInfernalChamberEffect;
 import com.xlxyvergil.tcc.effect.GildedBulletSpreadEffect;
+import com.xlxyvergil.tcc.effect.GildedArgonScopeKillEffect;
+import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairKillEffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
@@ -118,5 +120,15 @@ public class TccMobEffects {
     public static final RegistryObject<MobEffect> GILDED_BULLET_SPREAD = MOB_EFFECTS.register(
             "gilded_bullet_spread",
             GildedBulletSpreadEffect::new);
+
+    // ========== Phase 3.5: 镀层饰品爆头击杀Buff（叠层） ==========
+
+    public static final RegistryObject<MobEffect> GILDED_ARGON_SCOPE_KILL = MOB_EFFECTS.register(
+            "gilded_argon_scope_kill",
+            GildedArgonScopeKillEffect::new);
+
+    public static final RegistryObject<MobEffect> GILDED_HYDRAULIC_CROSSHAIR_KILL = MOB_EFFECTS.register(
+            "gilded_hydraulic_crosshair_kill",
+            GildedHydraulicCrosshairKillEffect::new);
 
 }

@@ -1,30 +1,25 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 /**
- * 镀层液压准心 - 手枪饰品（爆头/爆头击杀触发Buff）
- * 基础：暴击几率+120%，爆头→Buff A / 爆头击杀→Buff B，可叠加5层（12s）
+ * 镀层液压准心 - 手枪饰品（爆头/爆头击杀触发不同Buff）
+ * 爆头→+120%暴击几率Buff（12s，不叠加）
+ * 爆头击杀→+40%/层暴击几率Buff（12s，最多5层）
  */
 public class GildedHydraulicCrosshair extends BaseCurioItem {
-
-    private static final UUID BASE_CRIT_UUID = UUID.fromString("b1c2d3e4-7005-4000-8000-000000000001");
-    private static final String BASE_CRIT_NAME = "tcc.gilded_hydraulic_crosshair.base_crit";
 
     public GildedHydraulicCrosshair(Properties properties) {
         super(properties);
@@ -32,17 +27,12 @@ public class GildedHydraulicCrosshair extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double baseCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get();
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, baseCrit, BASE_CRIT_UUID, BASE_CRIT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        } else {
-            AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, BASE_CRIT_UUID);
-        }
+        // 不再有装备常驻效果，+120%由爆头Buff提供
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, BASE_CRIT_UUID);
+        // 不再有装备常驻效果需要清理
     }
 
     @Override

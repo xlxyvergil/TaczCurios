@@ -12,13 +12,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public class SharpAmmoEffect extends MobEffect {
     public SharpAmmoEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
-        double perLevelValue = TaczCuriosConfig.COMMON.sharpAmmoCritDamagePerLevel.get();
+        double baseValue = TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            "c1d2e3f4-6103-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "c1d2e3f4-6103-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override
     public double getAttributeModifierValue(int amplifier, AttributeModifier modifier) {
-        return (amplifier + 1) * TaczCuriosConfig.COMMON.sharpAmmoCritDamagePerLevel.get();
+        return (amplifier + 1) * TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.get();
     }
 }

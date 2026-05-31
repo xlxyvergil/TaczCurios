@@ -63,11 +63,10 @@ public class CurioCombatEventHandler {
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.ARGON_SCOPE.get())) {
             applyNonStackingBuff(player, TccMobEffects.ARGON_SCOPE.get(), TaczCuriosConfig.COMMON.argonScopeDuration.get());
         }
-        // R-04 镀层氩晶瞄具
+        // R-04 镀层氩晶瞄具：爆头→nonStacking(爆头buff)
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_ARGON_SCOPE.get())) {
-            applyStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
-                TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get(),
-                TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get());
+            applyNonStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
+                TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
         }
         // S-05 雷射瞄具
         if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TaczItems.LASER_SCOPE.get())) {
@@ -77,11 +76,10 @@ public class CurioCombatEventHandler {
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.HYDRAULIC_CROSSHAIR.get())) {
             applyNonStackingBuff(player, TccMobEffects.HYDRAULIC_CROSSHAIR.get(), TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get());
         }
-        // P-07 镀层液压准心
+        // P-07 镀层液压准心：爆头→nonStacking(爆头buff)
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
-            applyStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
-                TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get(),
-                TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get());
+            applyNonStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
+                TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
         }
     }
 
@@ -94,15 +92,15 @@ public class CurioCombatEventHandler {
         if (!(killer instanceof Player player)) return;
         if (player.level().isClientSide) return;
 
-        // R-04 镀层氩晶瞄具: 爆头击杀额外层数
+        // R-04 镀层氩晶瞄具: 爆头击杀→stacking(击杀buff)
         if (event.isHeadShot() && GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_ARGON_SCOPE.get())) {
-            applyStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
+            applyStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get());
         }
-        // P-07 镀层液压准心: 爆头击杀额外层数
+        // P-07 镀层液压准心: 爆头击杀→stacking(击杀buff)
         if (event.isHeadShot() && GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
-            applyStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
+            applyStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get());
         }

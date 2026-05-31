@@ -272,10 +272,10 @@ public class SummerBeach extends BaseCurioItem {
             int total = baseResistance + carried + fromKills;
             tooltip.add(Component.literal(""));
             tooltip.add(Component.translatable("item.tcc.summer_beach.effect", String.valueOf(total))
-                .withStyle(ChatFormatting.AQUA));
+                .withStyle(ChatFormatting.BLUE));
         } else {
             tooltip.add(Component.translatable("item.tcc.summer_beach.effect", baseResistance + "~" + (baseResistance + TaczCuriosConfig.COMMON.summerBeachMaxKillResistance.get()))
-                .withStyle(ChatFormatting.AQUA));
+                .withStyle(ChatFormatting.BLUE));
         }
         
         // EL 第四诅咒削弱（仅加载神秘遗物时显示）
@@ -334,7 +334,7 @@ public class SummerBeach extends BaseCurioItem {
         // 槽位和稀有度
         tooltip.add(Component.literal(""));
  
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
         
         // 下级进化方式
         tooltip.add(Component.literal(""));
