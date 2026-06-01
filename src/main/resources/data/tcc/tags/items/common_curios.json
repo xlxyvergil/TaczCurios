@@ -8,6 +8,13 @@
     "tcc:sword_wind",
     "tcc:shotgun_expansion",
     "tcc:tandem_magazine",
-    "tcc:burst_reload"
+    "tcc:burst_reload",
+    "tcc:lethal_crit",
+    "tcc:thunder_barrel",
+    "tcc:pistol_mastery",
+    "tcc:steel_slash",
+    "tcc:dismemberment",
+    "tcc:fragment_shot",
+    "tcc:hydraulic_crosshair"
   ]
 }

@@ -19,6 +19,12 @@
     "tcc:infected_magazine",
     "tcc:deadly_surge",
     "tcc:bullet_spread",
-    "tcc:despicable_acceleration"
+    "tcc:despicable_acceleration",
+    "tcc:critical_delay",
+    "tcc:weakness_sense",
+    "tcc:destruction",
+    "tcc:hollow_point",
+    "tcc:argon_scope",
+    "tcc:condition_overload"
   ]
 }

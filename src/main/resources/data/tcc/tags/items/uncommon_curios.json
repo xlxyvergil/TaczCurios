@@ -7,6 +7,10 @@
     "tcc:rifling",
     "tcc:close_range_shot",
     "tcc:wasp_stinger",
-    "tcc:tactical_reload"
+    "tcc:tactical_reload",
+    "tcc:weakness_mastery",
+    "tcc:sharp_bullet",
+    "tcc:laser_scope",
+    "tcc:sharp_ammo"
   ]
 }
