@@ -16,7 +16,7 @@ public class TaczBlocks {
 
     // 注册Teshin工作台方块，使用与泥土相同的属性
     public static final RegistryObject<Block> TESHIN_WORKBENCH = BLOCKS.register("teshin_workbench", 
-        () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIRT).strength(0.5F)));
+        () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIRT).strength(0.5F).lightLevel(state -> 8)));
     
     // 为方块注册物品
     public static final RegistryObject<Item> TESHIN_WORKBENCH_ITEM = ITEMS.register("teshin_workbench", 
