@@ -373,7 +373,7 @@
   "item.tcc.gilded_bullet_spread": "§fGilded Bullet Spread",
   "item.tcc.gilded_bullet_spread.effect": "+%1$s%% Pistol Bullet Count, +%2$s%% per kill, up to %4$s stacks, %3$ss",
   "item.tcc.gilded_steel_slash": "§fGilded Steel Slash",
-  "item.tcc.gilded_steel_slash.effect": "On Kill: %1$s%% base %2$s%% per level Melee Crit Damage, max %4$s stacks, %3$ss",
+  "item.tcc.gilded_steel_slash.effect": "%1$s%% Crit Chance base , On Kill:%2$s%% per level Melee Crit Damage, max %4$s stacks, %3$ss",
   "item.tcc.gilded_rifle_aptitude": "§fGilded Rifle Aptitude",
   "item.tcc.gilded_rifle_aptitude.effect": "With Rifle: %1$s%% damage per harmful effect type (multiplicative)",
   "item.tcc.gilded_shotgun_savvy": "§fGilded Shotgun Savvy",
