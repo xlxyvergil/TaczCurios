@@ -2,12 +2,14 @@ package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.taa.attribute.EntityAttributeRegistry;
 import dev.shadowsoffire.attributeslib.api.ALObjects;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.UUID;
 
@@ -155,6 +157,17 @@ public class AttributeHelper {
     public static final Attribute BULLET_GUNDAMAGE_SMG = EntityAttributeRegistry.BULLET_GUNDAMAGE_SMG.get();
     public static final Attribute BULLET_GUNDAMAGE_LMG = EntityAttributeRegistry.BULLET_GUNDAMAGE_LMG.get();
     public static final Attribute BULLET_GUNDAMAGE_LAUNCHER = EntityAttributeRegistry.BULLET_GUNDAMAGE_LAUNCHER.get();
+
+    public static Attribute resolveAttribute(String attributeId) {
+        if (attributeId == null || attributeId.isBlank()) {
+            return null;
+        }
+        try {
+            return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(attributeId));
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
     
     /**
      * 获取属性实例的辅助方法

@@ -1,0 +1,158 @@
+{
+  "rules": {
+    "tcc_player_death_grant_tcc_summer_beach": {
+      "enabled": true,
+      "trigger": "living_death",
+      "playerKilled": true,
+      "type": "grant",
+      "killer": {
+        "key": "minecraft:wither"
+      },
+      "requirements": {
+        "equippedCurios": [
+          "tcc:heaven_fire_judgment"
+        ]
+      },
+      "grant": {
+        "item": "tcc:summer_beach",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "oncePerPlayer": true,
+        "bindToPlayer": true
+      }
+    },
+    "tcc_summer_beach_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:summer_beach",
+      "damageSourceTags": [
+        "tcc:imaginary_damage"
+      ],
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 1.0
+        }
+      ]
+    },
+    "tcc_brahma_beasts_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:brahma_beasts",
+      "damageSourceTags": [
+        "tcc:imaginary_damage"
+      ],
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:ender_dragon"
+          },
+          "value": 20.0
+        }
+      ]
+    },
+    "tcc_salvation_imaginary_resistance_cap": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:salvation",
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": []
+    },
+    "tcc_summer_beach_to_tcc_brahma_beasts": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "evolve",
+      "item": "tcc:summer_beach",
+      "to": "tcc:brahma_beasts",
+      "damageSourceTags": [
+        "tcc:imaginary_damage"
+      ],
+      "requirements": {
+        "equippedCurios": [
+          "tcc:heaven_fire_apocalypse"
+        ],
+        "kills": [
+          {
+            "entity": {
+              "key": "minecraft:ender_dragon"
+            },
+            "count": 1
+          }
+        ]
+      },
+      "excludeNbtKeys": []
+    },
+    "tcc_brahma_beasts_to_tcc_salvation": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "evolve",
+      "item": "tcc:brahma_beasts",
+      "to": "tcc:salvation",
+      "damageSourceTags": [
+        "tcc:imaginary_damage"
+      ],
+      "requirementsRef": [
+        {
+          "item": "tcc:heaven_fire_apocalypse",
+          "to": "tcc:heaven_fire_apocalypse_endless"
+        }
+      ],
+      "requirements": {
+        "equippedCurios": [
+          "tcc:heaven_fire_apocalypse"
+        ],
+        "kills": [
+          {
+            "entity": {
+              "key": "minecraft:ender_dragon"
+            },
+            "count": 2
+          }
+        ],
+        "attributes": [
+          {
+            "attribute": "tcc:imaginary_damage_resistance",
+            "comparator": "gt",
+            "value": 80.0
+          }
+        ]
+      },
+      "excludeNbtKeys": []
+    },
+    "tcc_heaven_fire_judgment_to_tcc_heaven_fire_apocalypse": {
+      "enabled": true,
+      "trigger": "bleeding_settlement",
+      "type": "evolve",
+      "item": "tcc:heaven_fire_judgment",
+      "to": "tcc:heaven_fire_apocalypse",
+      "requirements": {
+        "attributes": [
+          {
+            "attribute": "tcc:imaginary_damage_resistance",
+            "comparator": "gte",
+            "value": 40.0
+          }
+        ]
+      },
+      "excludeNbtKeys": []
+    }
+  }
+}

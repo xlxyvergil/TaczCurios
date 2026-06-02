@@ -4,6 +4,7 @@ import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -92,20 +92,7 @@ public class KikakuIchijin extends BaseCurioItem {
         }
 
         // 检查攻击者是否装备了掎角一阵
-        boolean hasKikakuIchijin = CuriosApi.getCuriosInventory(attacker)
-            .map(handler -> {
-                var stacksHandler = handler.getCurios().get("tcc_slot");
-                if (stacksHandler != null) {
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof KikakuIchijin) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            })
-            .orElse(false);
+        boolean hasKikakuIchijin = !CurioSearchHelper.findFirstEquippedStack(attacker, stack -> stack.getItem() instanceof KikakuIchijin).isEmpty();
 
         if (!hasKikakuIchijin) {
             return;

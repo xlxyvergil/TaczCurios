@@ -6,11 +6,14 @@ import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.evolution.EvolutionExecutor;
+import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.event.HeavenFireBleedingSettlementEvent;
 import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
@@ -26,7 +29,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
@@ -42,7 +44,6 @@ import java.util.UUID;
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireJudgment extends BaseCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("daa1ac19-3221-43ba-b951-788015e19255");
     
@@ -136,16 +137,35 @@ public class HeavenFireJudgment extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
         
         // 添加获取方式
-        String entityNamespace = TaczCuriosConfig.COMMON.summerBeachObtainEntity.get();
+        String entityName = resolveSummerBeachGrantKillerName();
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.how_to_obtain", entityName)
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+    }
+
+    private static String resolveSummerBeachGrantKillerName() {
+        EvolutionRegistry.Rule rule = EvolutionRegistry.getRulesByTriggerOrEmpty("living_death").stream()
+            .filter(r -> r.enabled)
+            .filter(r -> r.playerKilled)
+            .filter(r -> r.type == EvolutionRegistry.RuleType.GRANT)
+            .filter(r -> r.grant != null && "tcc:summer_beach".equals(r.grant.item))
+            .filter(r -> r.requirements.equippedCurios.contains("tcc:heaven_fire_judgment"))
+            .findFirst()
+            .orElse(null);
+
+        String entityNamespace = rule != null && rule.killer != null ? rule.killer.key : null;
+        if (entityNamespace == null || entityNamespace.isBlank()) {
+            return "未知";
+        }
+
         String entityName = entityNamespace;
         try {
             ResourceLocation rl = new ResourceLocation(entityNamespace);
             var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
             entityName = entityType.getDescription().getString();
-        } catch (Exception ignored) {}
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.how_to_obtain", entityName)
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        } catch (Exception ignored) {
+        }
+        return entityName;
     }
     
     /**
@@ -232,41 +252,35 @@ public class HeavenFireJudgment extends BaseCurioItem {
         LivingEntity entity = event.getEntity();
         if (event.isDead()) return;
         if (!hasHeavenFireJudgmentEquipped(entity)) return;
+        EvolutionRegistry.Rule rule = resolveEvolutionRule();
+        if (rule != null && rule.enabled == false) return;
 
         // 虚数抗性 >= 40
         double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        if (resistance < 40.0) return;
-
-        // 将天火圣裁替换为天火劫灭（参照 CuriosEventHandler 的 setStackInSlot + 手动生命周期）
-        CuriosApi.getCuriosInventory(entity).ifPresent(handler -> {
-            var stacksHandler = handler.getCurios().get("tcc_slot");
-            if (stacksHandler == null) return;
-            top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler stackHandler = stacksHandler.getStacks();
-            for (int i = 0; i < stackHandler.getSlots(); i++) {
-                ItemStack oldStack = stackHandler.getStackInSlot(i);
-                if (oldStack.getItem() instanceof HeavenFireJudgment judgment) {
-                    // 1. 拷贝NBT到新饰品
-                    ItemStack newStack = new ItemStack(TaczItems.HEAVEN_FIRE_APOCALYPSE.get());
-                    if (oldStack.hasTag()) {
-                        newStack.setTag(oldStack.getTag().copy());
-                    }
-                    // 2. 构造SlotContext
-                    boolean hasRenderer = stacksHandler.getRenders().size() > i && stacksHandler.getRenders().get(i);
-                    SlotContext slotContext = new SlotContext("tcc_slot", entity, i, false, hasRenderer);
-                    // 3. 手动卸下旧饰品（清理属性）
-                    judgment.onUnequip(slotContext, ItemStack.EMPTY, oldStack);
-                    // 4. 替换为天火劫灭
-                    stackHandler.setStackInSlot(i, newStack);
-                    // 5. 手动装备新饰品（应用属性）
-                    if (newStack.getItem() instanceof HeavenFireApocalypse apocalypse) {
-                        apocalypse.onEquip(slotContext, oldStack, newStack);
-                    }
-                    // 6. 更新TACZ缓存
-                    AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
+        double threshold = 40.0;
+        if (rule != null) {
+            for (EvolutionRegistry.AttributeRequirement req : rule.requirements.attributes) {
+                if ("tcc:imaginary_damage_resistance".equals(req.attribute)) {
+                    threshold = req.value;
                     break;
                 }
             }
-        });
+        }
+        if (resistance < threshold) return;
+
+        EvolutionExecutor.evolve(entity,
+                stack -> stack.getItem() instanceof HeavenFireJudgment,
+                () -> new ItemStack(TaczItems.HEAVEN_FIRE_APOCALYPSE.get()),
+                EvolutionExecutor.NbtMode.COPY_ALL, List.of(), null, true);
+    }
+
+    private static EvolutionRegistry.Rule resolveEvolutionRule() {
+        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.EVOLVE, "tcc:heaven_fire_judgment")) {
+            if ("bleeding_settlement".equals(rule.trigger) && "tcc:heaven_fire_apocalypse".equals(rule.to)) {
+                return rule;
+            }
+        }
+        return null;
     }
     
     /**
@@ -281,20 +295,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
      * @return 已装备的 ItemStack，未装备返回 ItemStack.EMPTY
      */
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
-        return CuriosApi.getCuriosInventory(livingEntity)
-            .map(handler -> {
-                var stacksHandler = handler.getCurios().get("tcc_slot");
-                if (stacksHandler != null) {
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof HeavenFireJudgment) {
-                            return stack;
-                        }
-                    }
-                }
-                return ItemStack.EMPTY;
-            })
-            .orElse(ItemStack.EMPTY);
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireJudgment);
     }
     
     /**

@@ -8,6 +8,7 @@ import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
@@ -23,7 +24,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -199,20 +199,7 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
     }
     
     public static boolean hasHeavenFireApocalypseEndlessEquipped(LivingEntity livingEntity) {
-        return CuriosApi.getCuriosInventory(livingEntity)
-            .map(handler -> {
-                var stacksHandler = handler.getCurios().get("tcc_slot");
-                if (stacksHandler != null) {
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof HeavenFireApocalypseEndless) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            })
-            .orElse(false);
+        return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireApocalypseEndless).isEmpty();
     }
     
     @Override

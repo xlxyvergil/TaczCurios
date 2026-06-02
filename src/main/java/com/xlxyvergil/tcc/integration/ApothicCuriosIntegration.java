@@ -35,6 +35,7 @@ public class ApothicCuriosIntegration {
         
         ApothicCuriosMod.registerCurioLootCategory("curios:tcc_slot");
         ApothicCuriosMod.registerCurioLootCategory("curios:tcc_3rd");
+        ApothicCuriosMod.registerCurioLootCategory("curios:tcc_tdk");
         initialized = true;
     }
     

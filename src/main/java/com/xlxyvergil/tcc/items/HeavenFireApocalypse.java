@@ -8,12 +8,12 @@ import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -294,20 +294,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      * @return 已装备的 ItemStack，未装备返回 ItemStack.EMPTY
      */
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
-        return CuriosApi.getCuriosInventory(livingEntity)
-            .map(handler -> {
-                var stacksHandler = handler.getCurios().get("tcc_slot");
-                if (stacksHandler != null) {
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof HeavenFireApocalypse) {
-                            return stack;
-                        }
-                    }
-                }
-                return ItemStack.EMPTY;
-            })
-            .orElse(ItemStack.EMPTY);
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireApocalypse);
     }
     
     /**

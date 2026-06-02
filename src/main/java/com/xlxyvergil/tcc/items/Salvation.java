@@ -2,13 +2,13 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -32,12 +31,9 @@ import java.util.UUID;
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Salvation extends BaseCurioItem {
-    
     // 属性修饰符UUID
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789012");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("f6a7b8c9-d0e1-2345-f012-456789012345");
-    
-    private static final String CARRIED_RESISTANCE_TAG = "CarriedResistance";
     
     public Salvation(Properties properties) {
         super(properties.stacksTo(1).fireResistant());
@@ -60,7 +56,6 @@ public class Salvation extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        // 虚数抗性：从梵天百兽继承（读取CarriedResistance NBT）
         double imaginaryResistance = getSalvationResistance(livingEntity);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
@@ -94,22 +89,12 @@ public class Salvation extends BaseCurioItem {
      * 读取救世装备上的继承抗性值
      */
     private static double getSalvationResistance(LivingEntity entity) {
-        if (!(entity instanceof Player player)) return 0;
-        return CuriosApi.getCuriosInventory(player)
-            .map(handler -> {
-                var stacksHandler = handler.getCurios().get("tcc_3rd");
-                if (stacksHandler != null) {
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof Salvation) {
-                            CompoundTag tag = stack.getTag();
-                            return tag != null ? tag.getInt(CARRIED_RESISTANCE_TAG) : 0;
-                        }
-                    }
-                }
-                return 0;
-            })
-            .orElse(0);
+        ItemStack stack = findEquippedStack(entity);
+        if (stack.isEmpty()) {
+            return 0;
+        }
+        CompoundTag tag = stack.getTag();
+        return getBaseResistance() + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
     }
     
     @Override
@@ -118,8 +103,9 @@ public class Salvation extends BaseCurioItem {
         
         // 继承抗性（从NBT读取）
         CompoundTag tag = stack.getTag();
-        double imaginaryResistance = tag != null ? tag.getInt(CARRIED_RESISTANCE_TAG) : 0;
-        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", imaginaryResistance))
+        double baseValue = getBaseResistance();
+        double progressValue = tag != null ? getExtraResistanceFromProgress(tag) : 0.0;
+        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", baseValue + progressValue))
             .withStyle(ChatFormatting.AQUA));
         
         // 常驻加成
@@ -186,19 +172,35 @@ public class Salvation extends BaseCurioItem {
      * 检查实体是否装备了救世
      */
     public static boolean hasSalvationEquipped(LivingEntity livingEntity) {
-        return CuriosApi.getCuriosInventory(livingEntity)
-            .map(handler -> {
-                var stacksHandler = handler.getCurios().get("tcc_3rd");
-                if (stacksHandler != null) {
-                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
-                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (stack.getItem() instanceof Salvation) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            })
-            .orElse(false);
+        return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof Salvation).isEmpty();
+    }
+
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof Salvation);
+    }
+
+    private static int getBaseResistance() {
+        return TaczCuriosConfig.COMMON.salvationBaseResistance.get();
+    }
+
+    private static double getExtraResistanceFromProgress(CompoundTag tag) {
+        String nbtKey = null;
+        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:salvation")) {
+            EvolutionRegistry.Progress progress = rule.progress;
+            if (progress == null) {
+                continue;
+            }
+            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
+                continue;
+            }
+            if (progress.operation != AttributeModifier.Operation.ADDITION) {
+                continue;
+            }
+            nbtKey = progress.nbtKey;
+        }
+        if (nbtKey == null) {
+            return 0.0;
+        }
+        return tag.getDouble(nbtKey);
     }
 }

@@ -2,9 +2,15 @@ package com.xlxyvergil.tcc.util;
 
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.items.ItemBaseCurio;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.util.LazyOptional;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
@@ -59,6 +65,7 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         super.onEquip(slotContext, prevStack, stack);
         
         LivingEntity entity = slotContext.entity();
+        ensureCapCounters(stack);
         applyEffects(entity);
         // 更新TACZ枪械属性缓存，让属性变化立即生效（支持玩家、女仆等所有LivingEntity）
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
@@ -82,9 +89,9 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        // 只检查槽位类型（支持 tcc_slot 和 tcc_3rd）
         String slotId = slotContext.identifier();
-        if (!slotId.equals("tcc_slot") && !slotId.equals("tcc_3rd")) {
+        TagKey<Item> slotTag = TagKey.create(Registries.ITEM, new ResourceLocation("curios", slotId));
+        if (!stack.is(slotTag)) {
             return false;
         }
         
@@ -128,6 +135,12 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
         return canEquip(slotContext, stack);
     }
+
+    public final void refreshEffects(LivingEntity entity) {
+        removeEffects(entity);
+        applyEffects(entity);
+        AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
+    }
     
     /**
      * 应用效果（子类实现）
@@ -138,4 +151,25 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
      * 移除效果（子类实现）
      */
     protected abstract void removeEffects(LivingEntity entity);
+
+    private static void ensureCapCounters(ItemStack stack) {
+        if (stack.isEmpty()) {
+            return;
+        }
+        ResourceLocation key = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem());
+        if (key == null) {
+            return;
+        }
+        String itemId = key.toString();
+        CompoundTag tag = stack.getOrCreateTag();
+        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, itemId)) {
+            EvolutionRegistry.Progress progress = rule.progress;
+            if (progress == null || progress.capCounterKey == null || progress.capCounterKey.isBlank()) {
+                continue;
+            }
+            if (!tag.contains(progress.capCounterKey)) {
+                tag.putDouble(progress.capCounterKey, 0.0);
+            }
+        }
+    }
 }

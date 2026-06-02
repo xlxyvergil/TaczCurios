@@ -6,7 +6,8 @@
       "key": "tcc_slot",
       "types": [
         "curios:tcc_slot",
-        "curios:tcc_3rd"
+        "curios:tcc_3rd",
+        "curios:tcc_tdk"
       ]
     },
     "attribute": "attributeslib:fire_damage",
