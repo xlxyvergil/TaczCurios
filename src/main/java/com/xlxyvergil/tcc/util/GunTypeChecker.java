@@ -177,6 +177,20 @@ public class GunTypeChecker {
         return isHoldingValidGunType(livingEntity, new HashSet<>(gunTypes));
     }
 
+    public static boolean matchesGunTypes(ResourceLocation gunId, List<? extends String> gunTypes) {
+        if (gunId == null) {
+            return false;
+        }
+        if (gunTypes == null || gunTypes.isEmpty()) {
+            return true;
+        }
+        Set<String> validTypes = new HashSet<>(gunTypes);
+        return TimelessAPI.getCommonGunIndex(gunId)
+            .map(CommonGunIndex::getType)
+            .map(validTypes::contains)
+            .orElse(false);
+    }
+
     public static List<Attribute> getDamageAttributesForGunTypes(List<? extends String> gunTypes) {
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(AttributeHelper.BULLET_GUNDAMAGE);

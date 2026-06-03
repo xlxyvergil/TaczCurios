@@ -73,14 +73,20 @@
     },
     "tcc_grant_seven_thunders_thunder_seen": {
       "enabled": true,
-      "trigger": "living_death",
-      "type": "grant",
+      "trigger": "gun_kill",
+      "type": "evolve",
+      "item": "tcc:seven_thunders",
+      "to": "tcc:seven_thunders_thunder_seen",
+      "bindToPlayer": true,
       "requirements": {
         "equippedCurios": [
           "tcc:raven"
         ],
         "requiredEffects": [
           "minecraft:invisibility"
+        ],
+        "holdingGunTypes": [
+          "sniper"
         ],
         "kills": [
           {
@@ -91,21 +97,18 @@
           }
         ]
       },
-      "grant": {
-        "item": "tcc:seven_thunders_thunder_seen",
-        "overflowMode": "INVENTORY_THEN_DROP",
-        "oncePerPlayer": true,
-        "bindToPlayer": false
-      }
+      "excludeNbtKeys": []
     },
     "tcc_summer_beach_gain_imaginary_resistance": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:summer_beach",
-      "damageSourceTags": [
-        "tcc:imaginary_damage"
-      ],
+      "requirements": {
+        "holdingGunTypes": [
+          "pistol"
+        ]
+      },
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
@@ -122,12 +125,14 @@
     },
     "tcc_brahma_beasts_gain_imaginary_resistance": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:brahma_beasts",
-      "damageSourceTags": [
-        "tcc:imaginary_damage"
-      ],
+      "requirements": {
+        "holdingGunTypes": [
+          "pistol"
+        ]
+      },
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
@@ -156,7 +161,7 @@
     },
     "tcc_xiora_gain_imaginary_resistance": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:xiora",
       "progress": {
@@ -175,7 +180,7 @@
     },
     "tcc_raven_gain_imaginary_resistance": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:raven",
       "progress": {
@@ -194,7 +199,7 @@
     },
     "tcc_island_boom_raven_gain_imaginary_resistance": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:island_boom_raven",
       "progress": {
@@ -213,11 +218,18 @@
     },
     "tcc_xiora_to_tcc_raven": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "evolve",
       "item": "tcc:xiora",
       "to": "tcc:raven",
+      "bindToPlayer": true,
       "requirements": {
+        "requiredEffects": [
+          "minecraft:invisibility"
+        ],
+        "holdingGunTypes": [
+          "sniper"
+        ],
         "kills": [
           {
             "entity": {
@@ -231,10 +243,11 @@
     },
     "tcc_raven_to_tcc_island_boom_raven": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "evolve",
       "item": "tcc:raven",
       "to": "tcc:island_boom_raven",
+      "bindToPlayer": true,
       "requirementsRef": [
         {
           "item": "tcc:seven_thunders_thunder_seen",
@@ -244,6 +257,9 @@
       "requirements": {
         "equippedCurios": [
           "tcc:seven_thunders_thunder_seen"
+        ],
+        "holdingGunTypes": [
+          "sniper"
         ],
         "minDistance": 100.0,
         "kills": [
@@ -266,16 +282,16 @@
     },
     "tcc_summer_beach_to_tcc_brahma_beasts": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "evolve",
       "item": "tcc:summer_beach",
       "to": "tcc:brahma_beasts",
-      "damageSourceTags": [
-        "tcc:imaginary_damage"
-      ],
       "requirements": {
         "equippedCurios": [
           "tcc:heaven_fire_apocalypse"
+        ],
+        "holdingGunTypes": [
+          "pistol"
         ],
         "kills": [
           {
@@ -290,13 +306,10 @@
     },
     "tcc_brahma_beasts_to_tcc_salvation": {
       "enabled": true,
-      "trigger": "living_death",
+      "trigger": "gun_kill",
       "type": "evolve",
       "item": "tcc:brahma_beasts",
       "to": "tcc:salvation",
-      "damageSourceTags": [
-        "tcc:imaginary_damage"
-      ],
       "requirementsRef": [
         {
           "item": "tcc:heaven_fire_apocalypse",
@@ -306,6 +319,9 @@
       "requirements": {
         "equippedCurios": [
           "tcc:heaven_fire_apocalypse"
+        ],
+        "holdingGunTypes": [
+          "pistol"
         ],
         "kills": [
           {

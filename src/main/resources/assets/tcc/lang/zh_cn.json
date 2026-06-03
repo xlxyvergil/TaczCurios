@@ -64,6 +64,57 @@
   "item.tcc.seven_thunders": "§6涤罪七雷",
   "item.tcc.seven_thunders_thunder_seen": "§6涤罪七雷·雷鸣见",
   "item.tcc.judgement_key": "§f裁决之键",
+
+  "item.tcc.seven_thunders.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害",
+  "item.tcc.seven_thunders.how_to_obtain": "§7§o通过TACZ爆头击杀任意30个实体获得（仅一次）；持有渡鸦且隐身状态下，用狙击枪击杀末影龙进化为涤罪七雷·雷鸣见",
+
+  "item.tcc.xiora.kill_progress_title": "进化需求:",
+  "item.tcc.xiora.resist_source_title": "抗性来源（最高%1$s）：",
+  "item.tcc.xiora.evolution_progress": "  %1$s: %2$d/%3$d",
+  "item.tcc.xiora.resist_detail": "  %1$s: %2$d",
+
+  "item.tcc.xiora.effect": "护甲%1$s%% 移速%2$s%%",
+  "item.tcc.xiora.resistance": "%1$s虚数抗性",
+  "item.tcc.xiora.how_to_obtain": "§7§o持有涤罪七雷且隐身状态下，用狙击枪爆头击杀任意10个实体获得（仅一次）；隐身状态下用狙击枪击杀末影龙进化为渡鸦",
+
+  "item.tcc.raven.kill_progress_title": "进化需求:",
+  "item.tcc.raven.resist_source_title": "抗性来源（最高%1$s）：",
+  "item.tcc.raven.evolution_progress": "  %1$s: %2$d/%3$d",
+  "item.tcc.raven.resist_detail": "  %1$s: %2$d",
+  "item.tcc.raven.bound": "已绑定至：%1$s",
+  "item.tcc.raven.evolution_distance": "  最小距离: %1$s格",
+  "item.tcc.raven.evolution_equipped": "  需同时装备:",
+  "item.tcc.raven.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
+
+  "item.tcc.raven.effect": "护甲%1$s%% 移速%2$s%% 每%3$s秒获得%4$s秒隐身",
+  "item.tcc.raven.resistance": "%1$s虚数抗性",
+  "item.tcc.raven.how_to_obtain": "§7§o由希奥拉进化而来（隐身状态下用狙击枪击杀末影龙）；持有雷鸣见且虚数抗性>60并在100格外用狙击枪击杀末影龙时进化为小岛爆爆鸦，同时雷鸣见进化为裁决之键",
+
+  "item.tcc.seven_thunders_thunder_seen.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害 爆头时%4$s%%概率转为虚数伤害并额外造成目标%5$s%%最大生命值虚数伤害",
+  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§o装备涤罪七雷并持有渡鸦且隐身状态下，用狙击枪击杀末影龙进化为雷鸣见",
+  "item.tcc.seven_thunders_thunder_seen.evolution_title": "进化需求:",
+  "item.tcc.seven_thunders_thunder_seen.evolution_distance": "  最小距离: %1$s格",
+  "item.tcc.seven_thunders_thunder_seen.evolution_equipped": "  需同时装备:",
+  "item.tcc.seven_thunders_thunder_seen.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
+  "item.tcc.seven_thunders_thunder_seen.evolution_kill": "  击杀%1$s x%2$d",
+  "item.tcc.seven_thunders_thunder_seen.bound": "已绑定至：%1$s",
+
+  "item.tcc.judgement_key.effect": "%1$s%%暴击几率 %2$s%%暴击伤害 伤害转为虚数 爆头时50%%几率额外造成一次100%%真实伤害",
+  "item.tcc.judgement_key.how_to_obtain": "§7§o由涤罪七雷·雷鸣见进化而来",
+  "item.tcc.judgement_key.evolution_title": "进化需求:",
+  "item.tcc.judgement_key.evolution_distance": "  最小距离: %1$s格",
+  "item.tcc.judgement_key.evolution_equipped": "  需同时装备:",
+  "item.tcc.judgement_key.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
+  "item.tcc.judgement_key.evolution_kill": "  击杀%1$s x%2$d",
+  "item.tcc.judgement_key.bound": "已绑定至：%1$s",
+
+  "item.tcc.island_boom_raven.resist_source_title": "抗性来源（最高%1$s）：",
+  "item.tcc.island_boom_raven.resist_detail": "  %1$s: %2$d",
+  "item.tcc.island_boom_raven.bound": "已绑定至：%1$s",
+
+  "item.tcc.island_boom_raven.effect": "护甲%1$s%% 移速%2$s%% 生命恢复II 虚数伤害提升%3$s%% 每%4$s秒获得%5$s秒隐身",
+  "item.tcc.island_boom_raven.resistance": "%1$s虚数抗性",
+  "item.tcc.island_boom_raven.how_to_obtain": "§7§o由渡鸦进化而来",
   
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
   "item.tcc.ural_wolf_tag.effect": "%1$s%%爆头倍率",
@@ -72,6 +123,9 @@
   "item.tcc.heaven_fire_judgment.effect": "%1$s%%通用枪械伤害 伤害转为虚数 %2$s%%当前生命值 施加流血：%3$s%%最大生命值/级 持续%4$s秒 血量低于40%%时无效 流血结算可进化为天火劫灭",
   
   "item.tcc.heaven_fire_judgment.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
+
+  "advancement.tcc.my_island.title": "我的小岛",
+  "advancement.tcc.my_island.description": "通过TACZ爆头击杀任意30个实体",
   
   "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§o被%1$s击杀后获得夏日沙滩（绑定）；流血结算时虚数抗性≥40且未死亡则进化为天火劫灭",
   "item.tcc.heaven_fire_judgment.inflection_max": "§b虚数侵染上限: %1$s层",

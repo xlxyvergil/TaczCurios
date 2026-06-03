@@ -191,6 +191,7 @@ public final class EvolutionRegistry {
         boolean playerKilled = json.playerKilled != null && json.playerKilled;
         String item = normalize(json.item);
         String to = normalize(json.to);
+        boolean bindToPlayer = json.bindToPlayer != null && json.bindToPlayer;
         Requirements req = toRequirements(json.requirements);
         Progress progress = toProgress(json.progress);
         List<KillGain> killGains = toKillGains(json.kills);
@@ -199,7 +200,7 @@ public final class EvolutionRegistry {
         List<LinkedEvolve> linked = toLinkedEvolves(json.requirementsRef);
         List<String> damageSourceTags = toStringList(json.damageSourceTags);
         List<String> excludeKeys = json.excludeNbtKeys == null ? Collections.emptyList() : List.copyOf(json.excludeNbtKeys);
-        return new Rule(ruleId, type, enabled, trigger, playerKilled, item, to, req, killGains, progress, linked, grant, killer, damageSourceTags, excludeKeys);
+        return new Rule(ruleId, type, enabled, trigger, playerKilled, item, to, bindToPlayer, req, killGains, progress, linked, grant, killer, damageSourceTags, excludeKeys);
     }
 
     private static List<String> toStringList(List<String> json) {
@@ -445,6 +446,7 @@ public final class EvolutionRegistry {
         public final boolean playerKilled;
         public final String item;
         public final String to;
+        public final boolean bindToPlayer;
         public final Requirements requirements;
         public final List<KillGain> kills;
         public final Progress progress;
@@ -454,7 +456,7 @@ public final class EvolutionRegistry {
         public final List<String> damageSourceTags;
         public final List<String> excludeNbtKeys;
 
-        public Rule(String ruleId, RuleType type, boolean enabled, String trigger, boolean playerKilled, String item, String to,
+        public Rule(String ruleId, RuleType type, boolean enabled, String trigger, boolean playerKilled, String item, String to, boolean bindToPlayer,
                     Requirements requirements, List<KillGain> kills, Progress progress, List<LinkedEvolve> requirementsRef,
                     Grant grant, EntityRef killer, List<String> damageSourceTags, List<String> excludeNbtKeys) {
             this.ruleId = Objects.requireNonNull(ruleId);
@@ -464,6 +466,7 @@ public final class EvolutionRegistry {
             this.playerKilled = playerKilled;
             this.item = item;
             this.to = to;
+            this.bindToPlayer = bindToPlayer;
             this.requirements = Objects.requireNonNull(requirements);
             this.kills = Objects.requireNonNull(kills);
             this.progress = progress;
@@ -592,6 +595,7 @@ public final class EvolutionRegistry {
         String type;
         String item;
         String to;
+        Boolean bindToPlayer;
         List<LinkedEvolveJson> requirementsRef;
         GrantJson grant;
         EntityRefJson killer;

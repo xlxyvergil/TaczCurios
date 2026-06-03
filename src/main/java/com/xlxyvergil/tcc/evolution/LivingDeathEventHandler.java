@@ -291,7 +291,7 @@ public final class LivingDeathEventHandler {
         CurioGrantHelper.give(player, stack, rule.grant.overflowMode);
     }
 
-    private static void bindToPlayer(ItemStack stack, Player player) {
+    static void bindToPlayer(ItemStack stack, Player player) {
         CompoundTag tag = stack.getOrCreateTag();
         tag.putString("BoundPlayer", player.getStringUUID());
         tag.putString("BoundPlayerName", player.getName().getString());
@@ -315,7 +315,12 @@ public final class LivingDeathEventHandler {
 
         return EvolutionExecutor.evolve(player, stack -> rule.item.equals(itemId(stack)),
                 () -> new ItemStack(toItem),
-                EvolutionExecutor.NbtMode.COPY_ALL, rule.excludeNbtKeys, (oldStack, newStack) -> resetCapCountersForItem(rule.to, newStack), false);
+                EvolutionExecutor.NbtMode.COPY_ALL, rule.excludeNbtKeys, (oldStack, newStack) -> {
+                    resetCapCountersForItem(rule.to, newStack);
+                    if (rule.bindToPlayer) {
+                        bindToPlayer(newStack, player);
+                    }
+                }, false);
     }
 
     private static void tryLinkedEvolve(Player player, EvolutionRegistry.LinkedEvolve linked) {

@@ -34,6 +34,9 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.SUMMER_BEACH.get());
                 output.accept(TaczItems.BRAHMA_BEASTS.get());
                 output.accept(TaczItems.SALVATION.get());
+                output.accept(TaczItems.XIORA.get());
+                output.accept(TaczItems.RAVEN.get());
+                output.accept(TaczItems.ISLAND_BOOM_RAVEN.get());
                 output.accept(TaczItems.URAL_WOLF_TAG.get());
                 output.accept(TaczItems.ALLOY_DRILL.get());
                 output.accept(TaczItems.CAREFUL_HEART.get());
@@ -41,6 +44,9 @@ public class TaczCreativeTab {
                 output.accept(TaczItems.DESPICABLE_ACCELERATION.get());
                 output.accept(TaczItems.HEAVEN_FIRE_APOCALYPSE.get());
                 output.accept(TaczItems.HEAVEN_FIRE_JUDGMENT.get());
+                output.accept(TaczItems.SEVEN_THUNDERS.get());
+                output.accept(TaczItems.SEVEN_THUNDERS_THUNDER_SEEN.get());
+                output.accept(TaczItems.JUDGEMENT_KEY.get());
                 // 新增的饰品
                 output.accept(TaczItems.BLAZE_STORM.get());
                 output.accept(TaczItems.BLAZE_STORM_PRIME.get());

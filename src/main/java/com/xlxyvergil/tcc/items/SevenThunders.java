@@ -3,9 +3,16 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 public class SevenThunders extends BaseCurioItem {
@@ -42,5 +49,29 @@ public class SevenThunders extends BaseCurioItem {
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
         applyEffects(livingEntity);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
+        String gunTypes = GunTypeChecker.formatGunTypes(List.of("sniper"));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+
+        tooltip.add(Component.translatable("item.tcc.seven_thunders.effect",
+                String.format("%+.0f", 200.0),
+                String.format("%+.0f", 20.0),
+                String.format("%+.0f", 50.0))
+            .withStyle(ChatFormatting.AQUA));
+
+        tooltip.add(Component.literal(""));
+
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
+
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.seven_thunders.how_to_obtain")
+            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 }
