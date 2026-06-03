@@ -2,12 +2,16 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public final class LivingDeathGrantRuleMatcher {
     private LivingDeathGrantRuleMatcher() {
@@ -68,6 +72,36 @@ public final class LivingDeathGrantRuleMatcher {
             }
         }
 
+        if (!rule.requirements.requiredEffects.isEmpty()) {
+            for (String effectId : rule.requirements.requiredEffects) {
+                MobEffect effect;
+                try {
+                    effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectId));
+                } catch (Exception e) {
+                    return false;
+                }
+                if (effect == null || !player.hasEffect(effect)) {
+                    return false;
+                }
+            }
+        }
+
+        if (!rule.requirements.holdingGunTypes.isEmpty()) {
+            if (!GunTypeChecker.isHoldingConfiguredGunTypes(player, rule.requirements.holdingGunTypes)) {
+                return false;
+            }
+        }
+
+        if (rule.requirements.minDistance != null && !rule.playerKilled) {
+            if (killed == null) {
+                return false;
+            }
+            double min = rule.requirements.minDistance;
+            if (player.distanceToSqr(killed) < min * min) {
+                return false;
+            }
+        }
+
         if (rule.playerKilled) {
             if (!matchesKiller(rule, otherEntity)) {
                 return false;
@@ -107,7 +141,7 @@ public final class LivingDeathGrantRuleMatcher {
             if (req == null || req.entity == null) {
                 continue;
             }
-            if (!killedKey.equals(req.entity.key)) {
+            if (!"*".equals(req.entity.key) && !killedKey.equals(req.entity.key)) {
                 continue;
             }
             if (EntityConditionHelper.matchesNbtFilters(killed, req.entity.nbt)) {

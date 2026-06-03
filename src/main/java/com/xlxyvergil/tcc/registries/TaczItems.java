@@ -88,6 +88,12 @@ import com.xlxyvergil.tcc.items.GildedRifleAptitude;
 import com.xlxyvergil.tcc.items.GildedShotgunSavvy;
 import com.xlxyvergil.tcc.items.GildedMarksman;
 import com.xlxyvergil.tcc.items.ConditionOverload;
+import com.xlxyvergil.tcc.items.IslandBoomRaven;
+import com.xlxyvergil.tcc.items.JudgementKey;
+import com.xlxyvergil.tcc.items.Raven;
+import com.xlxyvergil.tcc.items.SevenThunders;
+import com.xlxyvergil.tcc.items.SevenThundersThunderSeen;
+import com.xlxyvergil.tcc.items.Xiora;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
@@ -146,12 +152,42 @@ public class TaczItems {
         () -> new Salvation(new Item.Properties()
             .stacksTo(1)
             .rarity(RIFT)));
+
+    public static final RegistryObject<Item> XIORA = ITEMS.register("xiora",
+        () -> new Xiora(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    public static final RegistryObject<Item> RAVEN = ITEMS.register("raven",
+        () -> new Raven(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> ISLAND_BOOM_RAVEN = ITEMS.register("island_boom_raven",
+        () -> new IslandBoomRaven(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
     
     // 天火劫灭·无烬终焉 - 裂隙级
     public static final RegistryObject<Item> HEAVEN_FIRE_APOCALYPSE_ENDLESS = ITEMS.register("heaven_fire_apocalypse_endless", 
         () -> new HeavenFireApocalypseEndless(new Item.Properties()
             .stacksTo(1)
             .rarity(RIFT)));
+
+    public static final RegistryObject<Item> SEVEN_THUNDERS = ITEMS.register("seven_thunders",
+        () -> new SevenThunders(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    public static final RegistryObject<Item> SEVEN_THUNDERS_THUNDER_SEEN = ITEMS.register("seven_thunders_thunder_seen",
+        () -> new SevenThundersThunderSeen(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    public static final RegistryObject<Item> JUDGEMENT_KEY = ITEMS.register("judgement_key",
+        () -> new JudgementKey(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
     
     // 乌拉尔银狼 - 提供150%爆头倍率加成
     public static final RegistryObject<Item> URAL_WOLF_TAG = ITEMS.register("ural_wolf_tag", 

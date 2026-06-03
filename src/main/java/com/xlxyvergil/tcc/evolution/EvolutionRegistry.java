@@ -218,7 +218,8 @@ public final class EvolutionRegistry {
 
     private static Requirements toRequirements(RequirementsJson json) {
         if (json == null) {
-            return new Requirements(Collections.emptyList(), Collections.emptyList(), Collections.emptyList());
+            return new Requirements(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyList(), null);
         }
         List<KillRequirement> kills = new ArrayList<>();
         if (json.kills != null) {
@@ -251,7 +252,34 @@ public final class EvolutionRegistry {
                 }
             }
         }
-        return new Requirements(List.copyOf(kills), List.copyOf(attrs), List.copyOf(equippedCurios));
+
+        List<String> requiredEffects = new ArrayList<>();
+        if (json.requiredEffects != null) {
+            for (String id : json.requiredEffects) {
+                String v = normalize(id);
+                if (v != null) {
+                    requiredEffects.add(v);
+                }
+            }
+        }
+
+        List<String> holdingGunTypes = new ArrayList<>();
+        if (json.holdingGunTypes != null) {
+            for (String id : json.holdingGunTypes) {
+                String v = normalize(id);
+                if (v != null) {
+                    holdingGunTypes.add(v);
+                }
+            }
+        }
+
+        Double minDistance = json.minDistance;
+        if (minDistance != null && minDistance <= 0) {
+            minDistance = null;
+        }
+
+        return new Requirements(List.copyOf(kills), List.copyOf(attrs), List.copyOf(equippedCurios),
+            List.copyOf(requiredEffects), List.copyOf(holdingGunTypes), minDistance);
     }
 
     private static List<KillGain> toKillGains(List<KillGainJson> json) {
@@ -457,11 +485,18 @@ public final class EvolutionRegistry {
         public final List<KillRequirement> kills;
         public final List<AttributeRequirement> attributes;
         public final List<String> equippedCurios;
+        public final List<String> requiredEffects;
+        public final List<String> holdingGunTypes;
+        public final Double minDistance;
 
-        public Requirements(List<KillRequirement> kills, List<AttributeRequirement> attributes, List<String> equippedCurios) {
+        public Requirements(List<KillRequirement> kills, List<AttributeRequirement> attributes, List<String> equippedCurios,
+                            List<String> requiredEffects, List<String> holdingGunTypes, Double minDistance) {
             this.kills = Objects.requireNonNull(kills);
             this.attributes = Objects.requireNonNull(attributes);
             this.equippedCurios = Objects.requireNonNull(equippedCurios);
+            this.requiredEffects = Objects.requireNonNull(requiredEffects);
+            this.holdingGunTypes = Objects.requireNonNull(holdingGunTypes);
+            this.minDistance = minDistance;
         }
     }
 
@@ -571,6 +606,9 @@ public final class EvolutionRegistry {
         List<KillRequirementJson> kills;
         List<AttributeRequirementJson> attributes;
         List<String> equippedCurios;
+        List<String> requiredEffects;
+        List<String> holdingGunTypes;
+        Double minDistance;
     }
 
     private static final class KillRequirementJson {

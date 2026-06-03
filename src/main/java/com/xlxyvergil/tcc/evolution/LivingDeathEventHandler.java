@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioGrantHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.EvolutionNbtKeys;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +71,7 @@ public final class LivingDeathEventHandler {
         if (!ignoreEnabled && !rule.enabled) {
             return false;
         }
-        boolean evolved = tryEvolve(player, rule);
+        boolean evolved = tryEvolve(player, null, rule);
         if (evolved) {
             for (EvolutionRegistry.LinkedEvolve linked : rule.requirementsRef) {
                 tryLinkedEvolve(player, linked);
@@ -155,6 +157,9 @@ public final class LivingDeathEventHandler {
                 boolean changed = false;
                 for (EvolutionRegistry.KillRequirement req : rule.requirements.kills) {
                     if (killedKey.equals(req.entity.key) && EntityConditionHelper.matchesNbtFilters(killed, req.entity.nbt)) {
+                    if (!passesExtraRequirements(player, killed, rule.requirements)) {
+                        continue;
+                    }
                         String matchKey = EntityConditionHelper.getMatchKey(killedKey, req.entity.nbt);
                         changed |= incrementKillCount(tracked, matchKey, req.count);
                     }
@@ -164,7 +169,7 @@ public final class LivingDeathEventHandler {
                     curio.refreshEffects(player);
                 }
 
-                if (tryEvolve(player, rule)) {
+            if (tryEvolve(player, killed, rule)) {
                     for (EvolutionRegistry.LinkedEvolve linked : rule.requirementsRef) {
                         tryLinkedEvolve(player, linked);
                     }
@@ -185,6 +190,9 @@ public final class LivingDeathEventHandler {
                 boolean changed = false;
                 for (EvolutionRegistry.KillGain k : rule.kills) {
                     if (killedKey.equals(k.entity.key) && EntityConditionHelper.matchesNbtFilters(killed, k.entity.nbt)) {
+                        if (!passesExtraRequirements(player, killed, rule.requirements)) {
+                            continue;
+                        }
                         changed |= incrementProgress(tracked, rule.progress.nbtKey, rule.progress.capCounterKey, rule.progress.cap, k.value);
                     }
                 }
@@ -202,6 +210,39 @@ public final class LivingDeathEventHandler {
                 executeGrant(player, rule);
             }
         }
+    }
+
+    static boolean passesExtraRequirements(Player player, LivingEntity killed, EvolutionRegistry.Requirements req) {
+        if (!req.requiredEffects.isEmpty()) {
+            for (String effectId : req.requiredEffects) {
+                MobEffect effect;
+                try {
+                    effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectId));
+                } catch (Exception e) {
+                    return false;
+                }
+                if (effect == null || !player.hasEffect(effect)) {
+                    return false;
+                }
+            }
+        }
+
+        if (!req.holdingGunTypes.isEmpty()) {
+            if (!GunTypeChecker.isHoldingConfiguredGunTypes(player, req.holdingGunTypes)) {
+                return false;
+            }
+        }
+
+        if (req.minDistance != null) {
+            if (killed == null) {
+                return false;
+            }
+            double min = req.minDistance;
+            if (player.distanceToSqr(killed) < min * min) {
+                return false;
+            }
+        }
+        return true;
     }
 
     static boolean matchesDamageSource(EvolutionRegistry.Rule rule, DamageSource source) {
@@ -225,7 +266,7 @@ public final class LivingDeathEventHandler {
         return true;
     }
 
-    private static void executeGrant(Player player, EvolutionRegistry.Rule rule) {
+    static void executeGrant(Player player, EvolutionRegistry.Rule rule) {
         if (rule.grant == null) {
             return;
         }
@@ -257,13 +298,13 @@ public final class LivingDeathEventHandler {
         tag.putBoolean("IsBound", true);
     }
 
-    private static boolean tryEvolve(Player player, EvolutionRegistry.Rule rule) {
+    private static boolean tryEvolve(Player player, LivingEntity killed, EvolutionRegistry.Rule rule) {
         ItemStack tracked = findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
         if (tracked.isEmpty()) {
             return false;
         }
 
-        if (!LivingDeathEvolutionRuleMatcher.matches(player, tracked, rule)) {
+        if (!LivingDeathEvolutionRuleMatcher.matches(player, tracked, killed, rule)) {
             return false;
         }
 

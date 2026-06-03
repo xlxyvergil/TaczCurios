@@ -20,6 +20,84 @@
         "bindToPlayer": true
       }
     },
+    "tcc_grant_seven_thunders": {
+      "enabled": true,
+      "trigger": "gun_headshot_kill",
+      "type": "grant",
+      "requirements": {
+        "kills": [
+          {
+            "entity": {
+              "key": "*"
+            },
+            "count": 30
+          }
+        ]
+      },
+      "grant": {
+        "item": "tcc:seven_thunders",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "oncePerPlayer": true,
+        "bindToPlayer": false
+      }
+    },
+    "tcc_grant_xiora": {
+      "enabled": true,
+      "trigger": "gun_headshot_kill",
+      "type": "grant",
+      "requirements": {
+        "equippedCurios": [
+          "tcc:seven_thunders"
+        ],
+        "requiredEffects": [
+          "minecraft:invisibility"
+        ],
+        "holdingGunTypes": [
+          "sniper"
+        ],
+        "kills": [
+          {
+            "entity": {
+              "key": "*"
+            },
+            "count": 10
+          }
+        ]
+      },
+      "grant": {
+        "item": "tcc:xiora",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "oncePerPlayer": true,
+        "bindToPlayer": false
+      }
+    },
+    "tcc_grant_seven_thunders_thunder_seen": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "grant",
+      "requirements": {
+        "equippedCurios": [
+          "tcc:raven"
+        ],
+        "requiredEffects": [
+          "minecraft:invisibility"
+        ],
+        "kills": [
+          {
+            "entity": {
+              "key": "minecraft:ender_dragon"
+            },
+            "count": 1
+          }
+        ]
+      },
+      "grant": {
+        "item": "tcc:seven_thunders_thunder_seen",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "oncePerPlayer": true,
+        "bindToPlayer": false
+      }
+    },
     "tcc_summer_beach_gain_imaginary_resistance": {
       "enabled": true,
       "trigger": "living_death",
@@ -75,6 +153,116 @@
         "cap": 20.0
       },
       "kills": []
+    },
+    "tcc_xiora_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:xiora",
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 1.0
+        }
+      ]
+    },
+    "tcc_raven_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:raven",
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 1.0
+        }
+      ]
+    },
+    "tcc_island_boom_raven_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:island_boom_raven",
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 1.0
+        }
+      ]
+    },
+    "tcc_xiora_to_tcc_raven": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "evolve",
+      "item": "tcc:xiora",
+      "to": "tcc:raven",
+      "requirements": {
+        "kills": [
+          {
+            "entity": {
+              "key": "minecraft:ender_dragon"
+            },
+            "count": 1
+          }
+        ]
+      },
+      "excludeNbtKeys": []
+    },
+    "tcc_raven_to_tcc_island_boom_raven": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "evolve",
+      "item": "tcc:raven",
+      "to": "tcc:island_boom_raven",
+      "requirementsRef": [
+        {
+          "item": "tcc:seven_thunders_thunder_seen",
+          "to": "tcc:judgement_key"
+        }
+      ],
+      "requirements": {
+        "equippedCurios": [
+          "tcc:seven_thunders_thunder_seen"
+        ],
+        "minDistance": 100.0,
+        "kills": [
+          {
+            "entity": {
+              "key": "minecraft:ender_dragon"
+            },
+            "count": 1
+          }
+        ],
+        "attributes": [
+          {
+            "attribute": "tcc:imaginary_damage_resistance",
+            "comparator": "gt",
+            "value": 60.0
+          }
+        ]
+      },
+      "excludeNbtKeys": []
     },
     "tcc_summer_beach_to_tcc_brahma_beasts": {
       "enabled": true,

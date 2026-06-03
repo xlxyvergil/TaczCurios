@@ -11,6 +11,7 @@ import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
 import com.xlxyvergil.tcc.items.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
+import com.xlxyvergil.tcc.items.IslandBoomRaven;
 import com.xlxyvergil.tcc.items.Salvation;
 import com.xlxyvergil.tcc.items.SummerBeach;
 import com.xlxyvergil.tcc.registries.TaczItems;
@@ -175,7 +176,13 @@ public class TccAttributeEvents {
                     infectionLevel = effectInstance.getAmplifier() + 1;
                 }
             }
-            float finalDamage = (float) (damageAfterResistance * (1.0 + infectionLevel * ampPerLevel));
+            double attackerBonus = 1.0;
+            if (source.getEntity() instanceof LivingEntity attacker && IslandBoomRaven.hasEquipped(attacker)) {
+                double attackerRes = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                attackerBonus = 1.0 + attackerRes / 100.0;
+            }
+
+            float finalDamage = (float) (damageAfterResistance * (1.0 + infectionLevel * ampPerLevel) * attackerBonus);
 
             event.setAmount(finalDamage);
         }

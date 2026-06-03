@@ -7,8 +7,8 @@
   "curios.identifier.tcc_3rd": "Fire Moth",
   "curios.modifiers.tcc_3rd": "Fire Moth Attributes:",
 
-  "curios.identifier.tcc_tdk": "TDK",
-  "curios.modifiers.tcc_tdk": "TDK Attributes:",
+  "curios.identifier.tcc_tdk": "Divine Key",
+  "curios.modifiers.tcc_tdk": "Divine Key Attributes:",
   
   "block.tcc.teshin_workbench": "Teshin Workbench",
   
@@ -236,7 +236,7 @@
   "// Apotheosis Category Plural": "",
   "text.apotheosis.category.curios:tcc_slot.plural": "TCC Curios",
   "text.apotheosis.category.curios:tcc_3rd.plural": "Fire Moth",
-  "text.apotheosis.category.curios:tcc_tdk.plural": "TDK",
+  "text.apotheosis.category.curios:tcc_tdk.plural": "Divine Keys",
 
   "// Apotheosis Affixes - Critical Attributes": "",
   "affix.tcc:tcc_slot/attribute/critical_chance": "Easy Crit", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "Wide Open Heart",

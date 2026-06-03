@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
+import com.xlxyvergil.tcc.util.EvolutionNbtKeys;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
@@ -107,6 +108,11 @@ public final class EvolutionExecutor {
             }
             if (nbtMutator != null) {
                 nbtMutator.accept(oldStack, newStack);
+            }
+
+            CompoundTag tag = newStack.getTag();
+            if (tag != null) {
+                tag.remove(EvolutionNbtKeys.KILL_COUNTS);
             }
 
             boolean hasRenderer = stacksHandler.getRenders().size() > i && stacksHandler.getRenders().get(i);

@@ -7,8 +7,8 @@
   "curios.identifier.tcc_3rd": "逐火之蛾",
   "curios.modifiers.tcc_3rd": "逐火之蛾属性：",
 
-  "curios.identifier.tcc_tdk": "天火",
-  "curios.modifiers.tcc_tdk": "天火属性：",
+  "curios.identifier.tcc_tdk": "神之键",
+  "curios.modifiers.tcc_tdk": "神之键属性：",
   
   "// TAA属性本地化覆盖": "",
   "attribute.name.taa.explosion_knockbacknew": "爆炸击退",
@@ -56,6 +56,14 @@
   "item.tcc.salvation.passive_bonuses": "常驻: 抗性提升III, 免疫击退, 受到的伤害降低%1$s%%",
   "item.tcc.salvation.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
   "item.tcc.salvation.how_to_obtain": "§7§o虚数抗性>80且装备梵天百兽+天火劫灭且满足梵天百兽进化需求时获得",
+
+  "item.tcc.xiora": "§f希奥拉",
+  "item.tcc.raven": "§f渡鸦",
+  "item.tcc.island_boom_raven": "§f小岛爆爆鸦",
+
+  "item.tcc.seven_thunders": "§6涤罪七雷",
+  "item.tcc.seven_thunders_thunder_seen": "§6涤罪七雷·雷鸣见",
+  "item.tcc.judgement_key": "§f裁决之键",
   
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
   "item.tcc.ural_wolf_tag.effect": "%1$s%%爆头倍率",
@@ -235,7 +243,7 @@
   "gem_class.tcc_slot": "TCC饰品",
   "text.apotheosis.category.curios:tcc_slot.plural": "TCC饰品",
   "text.apotheosis.category.curios:tcc_3rd.plural": "逐火之蛾",
-  "text.apotheosis.category.curios:tcc_tdk.plural": "天火",
+  "text.apotheosis.category.curios:tcc_tdk.plural": "神之键",
   "// Apotheosis词缀 - 暴击属性": "",
   "affix.tcc:tcc_slot/attribute/critical_chance": "易暴击", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "心胸大开",
   "affix.tcc:tcc_slot/attribute/critical_damage": "打得疼", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "致命武力",

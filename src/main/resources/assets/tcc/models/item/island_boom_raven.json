@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tcc:item/island_boom_raven",
+    "layer1": "tcc:item/border_epic"
+  }
+}
