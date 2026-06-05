@@ -15,7 +15,7 @@ import java.util.List;
 public class ErosionEffect extends MobEffect {
 
     public ErosionEffect() {
-        super(MobEffectCategory.HARMFUL, 0x6A0DAD);
+        super(MobEffectCategory.NEUTRAL, 0x6A0DAD);
     }
 
     @Override

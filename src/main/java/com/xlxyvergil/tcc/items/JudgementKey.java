@@ -3,8 +3,10 @@ package com.xlxyvergil.tcc.items;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -19,11 +21,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
@@ -40,7 +44,8 @@ public class JudgementKey extends BaseCurioItem {
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("2a1e47bd-1b05-44cf-9a2c-ea6c0612b47c");
 
     private static final String PROC_KEY = "tcc_judgement_key_set_proc";
-    private static final String PROC_USED_KEY = "tcc_judgement_key_set_proc_used";
+    private static final String PROC_DAMAGE_KEY = "tcc_judgement_key_set_damage";
+    private static final String PROC_DAMAGE_AFTER_HEADSHOT_KEY = "tcc_judgement_key_set_damage_after_headshot";
 
     public JudgementKey(Properties properties) {
         super(properties);
@@ -119,42 +124,65 @@ public class JudgementKey extends BaseCurioItem {
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
+        // 始终转换为虚数伤害（触发虚数侵染 + 虚数抗性计算）
         event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
             TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
         event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
             TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
 
         if (!event.isHeadShot()) return;
-        if (attacker.getRandom().nextFloat() >= 0.5f) return;
 
+        // 始终记录伤害数据，Post 事件独立掷 setHealth 和崩解几率
         if (event.getBullet() != null) {
             event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
-            event.getBullet().getPersistentData().putBoolean(PROC_USED_KEY, false);
+            float damage = event.getBaseAmount();
+            event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_KEY, damage);
+            float damageAfterHeadshot = damage * event.getHeadshotMultiplier();
+            event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY, damageAfterHeadshot);
         }
     }
 
-    @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity target = event.getEntity();
-        if (target.level().isClientSide || target.isDeadOrDying()) return;
-
-        DamageSource source = event.getSource();
-        if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
-        if (!(source.getEntity() instanceof LivingEntity attacker)) return;
-        if (!hasEquipped(attacker)) return;
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null || !hasEquipped(attacker)) return;
+        if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
-        Entity bullet = source.getDirectEntity();
+        Entity bullet = event.getBullet();
         if (bullet == null) return;
 
         var data = bullet.getPersistentData();
-        if (!data.getBoolean(PROC_KEY) || data.getBoolean(PROC_USED_KEY)) return;
+        if (!data.getBoolean(PROC_KEY)) return;
 
-        float extra = event.getAmount();
-        if (extra > 0) {
-            target.setHealth(Math.max(0, target.getHealth() - extra));
+        float damageAfterHeadshot = data.getFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY);
+
+        Entity hurtEntity = event.getHurtEntity();
+        if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
+        if (targetLiving.isDeadOrDying()) return;
+
+        // 1. 独立掷 setHealth 直接真伤
+        double setHealthProc = TaczCuriosConfig.COMMON.judgementProcChance.get();
+        if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
+            double directPercent = TaczCuriosConfig.COMMON.judgementDirectDamagePercent.get();
+            float directDamage = (float) (damageAfterHeadshot * directPercent);
+            targetLiving.setHealth(Math.max(0, targetLiving.getHealth() - directDamage));
         }
-        data.putBoolean(PROC_USED_KEY, true);
+
+        // 2. 独立掷虚数崩解
+        double collapseProc = TaczCuriosConfig.COMMON.judgementCollapseProcChance.get();
+        var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
+        if (!targetLiving.hasEffect(collapse) && attacker.getRandom().nextDouble() < collapseProc) {
+            int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
+            var collapseInstance = new MobEffectInstance(
+                collapse,
+                duration * 20,
+                0,
+                false, false, true
+            );
+            targetLiving.addEffect(collapseInstance, attacker);
+            forceAddEffect(targetLiving, collapseInstance);
+        }
     }
 
     @Override
@@ -226,16 +254,23 @@ public class JudgementKey extends BaseCurioItem {
         }
     }
 
-    private static String getItemDisplayName(String itemId) {
-        try {
-            ResourceLocation rl = new ResourceLocation(itemId);
-            var item = BuiltInRegistries.ITEM.get(rl);
-            if (item == null) {
-                return itemId;
+    /**
+     * 与崩解完全一致的 forceAddEffect 模式：
+     * 直接操作 activeEffectsMap，绕过 MobEffectEvent.Added，确保效果不被外部监听器干扰。
+     */
+    private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
+        MobEffect effect = ins.getEffect();
+        MobEffectInstance old = e.getActiveEffectsMap().get(effect);
+        if (old == null) {
+            e.getActiveEffectsMap().put(effect, ins);
+            effect.addAttributeModifiers(e, e.getAttributes(), ins.getAmplifier());
+            e.onEffectAdded(ins, null);
+        } else {
+            int prevAmp = old.getAmplifier();
+            old.update(ins);
+            if (old.getAmplifier() != prevAmp) {
+                effect.addAttributeModifiers(e, e.getAttributes(), old.getAmplifier());
             }
-            return item.getDescription().getString();
-        } catch (Exception ignored) {
-            return itemId;
         }
     }
 }

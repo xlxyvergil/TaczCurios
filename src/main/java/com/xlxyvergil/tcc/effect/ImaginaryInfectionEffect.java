@@ -21,7 +21,7 @@ public class ImaginaryInfectionEffect extends MobEffect {
     private static final UUID RESISTANCE_REDUCTION_UUID = UUID.fromString("d7e8f9a0-b1c2-3d4e-5f67-89abcdef0123");
 
     public ImaginaryInfectionEffect() {
-        super(MobEffectCategory.HARMFUL, 0x8B0000);
+        super(MobEffectCategory.NEUTRAL, 0x8B0000);
         double reduction = TaczCuriosConfig.COMMON.imaginaryInfectionResistanceReduction.get();
         this.addAttributeModifier(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             RESISTANCE_REDUCTION_UUID.toString(),

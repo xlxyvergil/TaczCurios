@@ -93,7 +93,7 @@
   "item.tcc.seven_thunders_thunder_seen.evolution_kill": "  Kill %1$s x%2$d",
   "item.tcc.seven_thunders_thunder_seen.bound": "Bound to: %1$s",
 
-  "item.tcc.judgement_key.effect": "%1$s%% crit chance %2$s%% crit damage Damage converted to Imaginary On headshot: 50%% chance to deal an extra 100%% true damage hit",
+  "item.tcc.judgement_key.effect": "%1$s%% crit chance %2$s%% crit damage Damage converted to Imaginary On headshot: deals extra true damage (converts to bleeding if immune) Bleeding inherits Collapse bonuses",
   "item.tcc.judgement_key.how_to_obtain": "§7§oEvolved from Seven Thunders: Thunder Seen",
   "item.tcc.judgement_key.evolution_title": "Evolution Requirements:",
   "item.tcc.judgement_key.evolution_distance": "  Min distance: %1$s blocks",

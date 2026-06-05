@@ -7,9 +7,7 @@ import com.aizistral.enigmaticlegacy.items.CursedRing;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
-import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
-import com.xlxyvergil.tcc.items.HeavenFireJudgment;
+import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.IslandBoomRaven;
 import com.xlxyvergil.tcc.items.Salvation;
@@ -47,24 +45,14 @@ public class TccAttributeEvents {
         if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (source.getEntity() == target) return;
 
-        // 确定攻击者的饰品等级来决定虚数侵染上限
         var srcEntity = source.getEntity();
         if (!(srcEntity instanceof LivingEntity attacker)) return;
 
-        int maxLevel;
-        boolean canApplyCollapse = false;
-        if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
-            maxLevel = TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get();
-            canApplyCollapse = true;
-        } else if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
-            maxLevel = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
-        } else if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
-            maxLevel = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();
-        } else {
-            return;
-        }
-
-        if (maxLevel <= 0) return;
+        // 通过工具类获取侵染配置（新增饰品只需修改 ImaginaryInfectionHelper）
+        var info = ImaginaryInfectionHelper.resolve(attacker);
+        if (!info.isValid()) return;
+        int maxLevel = info.maxLevel();
+        boolean canApplyCollapse = info.canApplyCollapse();
         int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
 
         // 施加虚数侵染（可叠加，受饰品分级上限约束）

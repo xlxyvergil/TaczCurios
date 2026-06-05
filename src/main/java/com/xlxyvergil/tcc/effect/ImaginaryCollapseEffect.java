@@ -20,7 +20,7 @@ import java.util.List;
 public class ImaginaryCollapseEffect extends MobEffect {
 
     public ImaginaryCollapseEffect() {
-        super(MobEffectCategory.HARMFUL, 0x4B0082);
+        super(MobEffectCategory.NEUTRAL, 0x4B0082);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ImaginaryCollapseEffect extends MobEffect {
             int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
             double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
             int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
-            debuffMultiplier = 1.0 + effectiveDebuffs * percentPerDebuff;
+            debuffMultiplier = 1.0 + (1.0 + effectiveDebuffs) * percentPerDebuff;
         }
 
         float finalDamage = (float) (entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier);

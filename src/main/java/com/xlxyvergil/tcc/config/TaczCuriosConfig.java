@@ -37,9 +37,15 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
         
         // 按饰品分级的虚数侵染上限
+        public final ForgeConfigSpec.IntValue judgementKeyImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue judgmentImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
+
+        // 裁决之键配置
+        public final ForgeConfigSpec.DoubleValue judgementProcChance;
+        public final ForgeConfigSpec.DoubleValue judgementDirectDamagePercent;
+        public final ForgeConfigSpec.DoubleValue judgementCollapseProcChance;
 
         // 天火劫灭配置
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
@@ -412,6 +418,9 @@ public class TaczCuriosConfig {
 
             // 按饰品分级的虚数侵染上限
             builder.comment("按饰品分级的虚数侵染上限（当攻击者携带对应饰品时，目标虚数侵染不会超过此等级）").push("imaginary_infection_per_curio");
+            judgementKeyImaginaryInfectionMaxLevel = builder
+                    .comment("裁决之键的虚数侵染上限 (默认: 9)")
+                    .defineInRange("judgementKeyMaxLevel", 9, 1, 99);
             judgmentImaginaryInfectionMaxLevel = builder
                     .comment("天火圣裁的虚数侵染上限 (默认: 3)")
                     .defineInRange("judgmentMaxLevel", 3, 1, 99);
@@ -421,6 +430,19 @@ public class TaczCuriosConfig {
             endlessImaginaryInfectionMaxLevel = builder
                     .comment("劫灭无尽的虚数侵染上限 (默认: 9)")
                     .defineInRange("endlessMaxLevel", 9, 1, 99);
+            builder.pop();
+            
+            // 裁决之键配置
+            builder.comment("裁决之键饰品配置").push("judgement_key");
+            judgementProcChance = builder
+                    .comment("爆头时触发额外伤害的几率 (默认: 0.5 = 50%)")
+                    .defineInRange("procChance", 0.5, 0, 1);
+            judgementDirectDamagePercent = builder
+                    .comment("直接真实伤害的比例（对无限伤实体） (默认: 1.0 = 100%)")
+                    .defineInRange("directDamagePercent", 1.0, 0, 100);
+            judgementCollapseProcChance = builder
+                    .comment("爆头时触发虚数崩解效果的几率 (默认: 0.5 = 50%)")
+                    .defineInRange("collapseProcChance", 0.5, 0, 1);
             builder.pop();
             
             // 天火劫灭配置
