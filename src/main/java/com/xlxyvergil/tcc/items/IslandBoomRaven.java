@@ -12,8 +12,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -106,6 +109,13 @@ public class IslandBoomRaven extends BaseCurioItem {
 
         if (entity.tickCount % 200 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 600, 0, false, false, true));
+
+            if (ModList.get().isLoaded("irons_spellbooks")) {
+                MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
+                if (trueInvis != null) {
+                    entity.addEffect(new MobEffectInstance(trueInvis, 600, 0, false, false, true));
+                }
+            }
         }
 
         MobEffectInstance regen = entity.getEffect(MobEffects.REGENERATION);

@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
@@ -33,23 +32,13 @@ public abstract class LivingEntityAccessor {
     }
 
     /**
-     * 拦截 removeEffect 方法内部对 removeEffectNoUpdate 的调用
-     */
-    @Redirect(method = "removeEffect(Lnet/minecraft/world/effect/MobEffect;)Z", 
-              at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;removeEffectNoUpdate(Lnet/minecraft/world/effect/MobEffect;)V"))
-    private void tcc$redirectRemoveEffect(LivingEntity instance, MobEffect effect) {
-        if (!tcc$isOurEffect(effect)) {
-            instance.removeEffectNoUpdate(effect);
-        }
-    }
-
-    /**
-     * 直接拦截 removeEffectNoUpdate 方法
+     * 直接拦截 removeEffectNoUpdate 方法（返回值 MobEffectInstance，非 void）
      */
     @Inject(method = "removeEffectNoUpdate", at = @At("HEAD"), cancellable = true, require = 1)
-    private void tcc$preventRemoveEffectNoUpdate(MobEffect effect, CallbackInfo ci) {
+    private void tcc$preventRemoveEffectNoUpdate(MobEffect effect, CallbackInfoReturnable<MobEffectInstance> cir) {
         if (tcc$isOurEffect(effect)) {
-            ci.cancel();
+            cir.setReturnValue(null);
+            cir.cancel();
         }
     }
 

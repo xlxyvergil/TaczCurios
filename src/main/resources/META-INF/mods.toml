@@ -63,3 +63,10 @@ mandatory=true
 versionRange="*"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.tcc]]
+modId="irons_spellbooks"
+mandatory=false
+versionRange="*"
+ordering="AFTER"
+side="BOTH"

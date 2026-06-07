@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ForgeHooksMixin",
-    "LivingEntityAccessor",
-    "PlayerAccessor"
+    "LivingEntityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
