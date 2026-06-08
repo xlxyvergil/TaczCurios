@@ -151,9 +151,21 @@ public final class LivingDeathGrantRuleMatcher {
         return false;
     }
 
-    private static boolean passesOncePerPlayerTag(Player player, EvolutionRegistry.Rule rule) {
+    static boolean passesOncePerPlayerTag(Player player, EvolutionRegistry.Rule rule) {
         String key = oncePerPlayerKey(rule);
-        return key == null || !player.getPersistentData().getBoolean(key);
+        if (key == null) {
+            return true;
+        }
+        // Quick check: persistent data (in-memory, same tick)
+        if (player.getPersistentData().getBoolean(key)) {
+            return false;
+        }
+        // Reliable check: SavedData (persists across sessions)
+        GrantHistoryData history = GrantHistoryData.get(player.getServer());
+        if (history == null) {
+            return true;
+        }
+        return !history.hasReceived(rule.ruleId, player.getUUID());
     }
 
     static String oncePerPlayerKey(EvolutionRegistry.Rule rule) {

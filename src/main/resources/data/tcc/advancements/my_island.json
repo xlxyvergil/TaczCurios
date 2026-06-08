@@ -14,7 +14,7 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "minecraft:adventure/root",
+  "parent": "tcc:tcc_root",
   "criteria": {
     "step_1": {
       "trigger": "minecraft:impossible"

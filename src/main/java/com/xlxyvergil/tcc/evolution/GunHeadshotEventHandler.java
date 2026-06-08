@@ -30,6 +30,10 @@ public final class GunHeadshotEventHandler {
     private static final int MY_ISLAND_STEPS = 30;
     private static final String MY_ISLAND_STEP_PREFIX = "step_";
 
+    private static final ResourceLocation XIORA_MISSION_ADVANCEMENT_ID = new ResourceLocation("tcc", "xiora_mission");
+    private static final int XIORA_MISSION_STEPS = 10;
+    private static final String XIORA_MISSION_STEP_PREFIX = "step_";
+
     private static final String LAST_HEADSHOT_ATTACKER_KEY = "tcc_last_headshot_attacker";
     private static final String LAST_HEADSHOT_TIME_KEY = "tcc_last_headshot_time";
     private static final String LAST_PROCESSED_KILL_UUID_KEY = "tcc_last_processed_headshot_kill_uuid";
@@ -141,6 +145,7 @@ public final class GunHeadshotEventHandler {
                     continue;
                 }
                 if (applyAndCheckCounters(player, other, rule)) {
+                    progressRuleAdvancement(player, rule);
                     LivingDeathEventHandler.executeGrant(player, rule);
                 }
             }
@@ -157,6 +162,32 @@ public final class GunHeadshotEventHandler {
         }
         for (int i = 1; i <= MY_ISLAND_STEPS; i++) {
             String criterion = MY_ISLAND_STEP_PREFIX + i;
+            if (serverPlayer.getAdvancements().award(adv, criterion)) {
+                return;
+            }
+        }
+    }
+
+    private static void progressRuleAdvancement(Player player, EvolutionRegistry.Rule rule) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+        ResourceLocation advId;
+        int maxSteps;
+        String stepPrefix;
+        if ("tcc_grant_xiora".equals(rule.ruleId)) {
+            advId = XIORA_MISSION_ADVANCEMENT_ID;
+            maxSteps = XIORA_MISSION_STEPS;
+            stepPrefix = XIORA_MISSION_STEP_PREFIX;
+        } else {
+            return;
+        }
+        Advancement adv = serverPlayer.server.getAdvancements().getAdvancement(advId);
+        if (adv == null) {
+            return;
+        }
+        for (int i = 1; i <= maxSteps; i++) {
+            String criterion = stepPrefix + i;
             if (serverPlayer.getAdvancements().award(adv, criterion)) {
                 return;
             }
@@ -234,15 +265,7 @@ public final class GunHeadshotEventHandler {
     }
 
     private static boolean passesOncePerPlayerTag(Player player, EvolutionRegistry.Rule rule) {
-        String key = oncePerPlayerKey(rule);
-        return key == null || !player.getPersistentData().getBoolean(key);
-    }
-
-    private static String oncePerPlayerKey(EvolutionRegistry.Rule rule) {
-        if (rule == null || rule.grant == null) {
-            return null;
-        }
-        return rule.grant.oncePerPlayer ? rule.ruleId : null;
+        return LivingDeathGrantRuleMatcher.passesOncePerPlayerTag(player, rule);
     }
 
     private static boolean compare(double current, String comparator, double expected) {

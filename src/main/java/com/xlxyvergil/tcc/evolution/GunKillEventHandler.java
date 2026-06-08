@@ -116,8 +116,7 @@ public final class GunKillEventHandler {
             }
         }
 
-        String onceTag = rule.grant.oncePerPlayer ? rule.ruleId : null;
-        if (onceTag != null && !onceTag.isBlank() && player.getPersistentData().getBoolean(onceTag)) {
+        if (!LivingDeathGrantRuleMatcher.passesOncePerPlayerTag(player, rule)) {
             return false;
         }
 

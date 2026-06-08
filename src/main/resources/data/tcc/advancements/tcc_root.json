@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:soldier_basic_tag"
+    },
+    "title": {
+      "translate": "advancement.tcc.tcc_root.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.tcc_root.description"
+    },
+    "frame": "task",
+    "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

@@ -109,8 +109,14 @@
   "item.tcc.island_boom_raven.resistance": "%1$s imaginary damage resistance",
   "item.tcc.island_boom_raven.how_to_obtain": "§7§oEvolved from Raven",
 
+  "advancement.tcc.tcc_root.title": "TACZ Curios",
+  "advancement.tcc.tcc_root.description": "The journey of Seven Thunders",
+
   "advancement.tcc.my_island.title": "My Island",
   "advancement.tcc.my_island.description": "Land 30 TACZ headshot kills",
+
+  "advancement.tcc.xiora_mission.title": "Night Raid",
+  "advancement.tcc.xiora_mission.description": "Land 10 sniper headshot kills while holding Seven Thunders and being invisible",
   
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",

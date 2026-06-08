@@ -281,14 +281,23 @@ public final class LivingDeathEventHandler {
             if (data.getBoolean(onceTag)) {
                 return;
             }
-            data.putBoolean(onceTag, true);
         }
 
         ItemStack stack = new ItemStack(item);
         if (rule.grant.bindToPlayer) {
             bindToPlayer(stack, player);
         }
-        CurioGrantHelper.give(player, stack, rule.grant.overflowMode);
+        boolean given = CurioGrantHelper.give(player, stack, rule.grant.overflowMode);
+
+        if (given && onceTag != null && !onceTag.isBlank()) {
+            // Mark in persistent data for fast same-session check
+            player.getPersistentData().putBoolean(onceTag, true);
+            // Mark in SavedData for reliable cross-session persistence
+            GrantHistoryData history = GrantHistoryData.get(player.getServer());
+            if (history != null) {
+                history.markReceived(rule.ruleId, player.getUUID());
+            }
+        }
     }
 
     static void bindToPlayer(ItemStack stack, Player player) {

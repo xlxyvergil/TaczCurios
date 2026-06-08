@@ -124,8 +124,14 @@
   
   "item.tcc.heaven_fire_judgment.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
 
+  "advancement.tcc.tcc_root.title": "TACZ饰品",
+  "advancement.tcc.tcc_root.description": "涤罪七雷的进化之路",
+
   "advancement.tcc.my_island.title": "我的小岛",
   "advancement.tcc.my_island.description": "通过TACZ爆头击杀任意30个实体",
+
+  "advancement.tcc.xiora_mission.title": "夜袭强敌",
+  "advancement.tcc.xiora_mission.description": "持有涤罪七雷并处于隐身状态下，使用狙击枪爆头击杀任意10个实体",
   
   "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§o被%1$s击杀后获得夏日沙滩（绑定）；流血结算时虚数抗性≥40且未死亡则进化为天火劫灭",
   "item.tcc.heaven_fire_judgment.inflection_max": "§b虚数侵染上限: %1$s层",
