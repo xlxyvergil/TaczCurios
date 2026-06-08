@@ -365,6 +365,7 @@
   "effect.tcc.imaginary_collapse": "虚数崩解",
   "effect.tcc.erosion": "侵蚀",
   "effect.tcc.heaven_fire_apocalypse_delay": "延迟判定",
+  "effect.tcc.heaven_fire_apocalypse_buff": "天火强化",
   
   "// Buff触发效果显示名": "",
   "effect.tcc.argon_scope": "氩晶瞄具",
