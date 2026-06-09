@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:raven"
+    },
+    "title": {
+      "translate": "advancement.tcc.xiora_to_raven.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.xiora_to_raven.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:xiora_mission",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

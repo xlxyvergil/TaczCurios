@@ -2,17 +2,11 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
-import com.xlxyvergil.tcc.util.AttributeHelper;
-import com.xlxyvergil.tcc.util.EntityConditionHelper;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,22 +19,12 @@ public final class GunHeadshotEventHandler {
     public static final String TRIGGER_GUN_HEADSHOT_HIT = "gun_headshot_hit";
     public static final String TRIGGER_GUN_HEADSHOT_KILL = "gun_headshot_kill";
 
-    private static final String COUNTER_PREFIX = "tcc_rule_counter_";
-    private static final ResourceLocation MY_ISLAND_ADVANCEMENT_ID = new ResourceLocation("tcc", "my_island");
-    private static final int MY_ISLAND_STEPS = 30;
-    private static final String MY_ISLAND_STEP_PREFIX = "step_";
-
-    private static final ResourceLocation XIORA_MISSION_ADVANCEMENT_ID = new ResourceLocation("tcc", "xiora_mission");
-    private static final int XIORA_MISSION_STEPS = 10;
-    private static final String XIORA_MISSION_STEP_PREFIX = "step_";
-
     private static final String LAST_HEADSHOT_ATTACKER_KEY = "tcc_last_headshot_attacker";
     private static final String LAST_HEADSHOT_TIME_KEY = "tcc_last_headshot_time";
     private static final String LAST_PROCESSED_KILL_UUID_KEY = "tcc_last_processed_headshot_kill_uuid";
     private static final String LAST_PROCESSED_KILL_TIME_KEY = "tcc_last_processed_headshot_kill_time";
 
-    private GunHeadshotEventHandler() {
-    }
+    private GunHeadshotEventHandler() {}
 
     @SubscribeEvent
     public static void onGunHeadshotHit(EntityHurtByGunEvent.Pre event) {
@@ -56,7 +40,7 @@ public final class GunHeadshotEventHandler {
             tag.putLong(LAST_HEADSHOT_TIME_KEY, player.level().getGameTime());
         }
 
-        handleTrigger(player, hurt, null, TRIGGER_GUN_HEADSHOT_HIT, false);
+        handleTrigger(player, hurt, null, TRIGGER_GUN_HEADSHOT_HIT);
     }
 
     @SubscribeEvent
@@ -66,62 +50,45 @@ public final class GunHeadshotEventHandler {
         if (player.level().isClientSide) return;
 
         LivingEntity killed = resolveKilled(event);
-        if (killed == null) {
-            return;
-        }
+        if (killed == null) return;
+
         if (event.isHeadShot()) {
-            triggerHeadshotKill(player, killed, null);
+            triggerHeadshotKill(player, killed, null, event.getGunId());
             return;
         }
         CompoundTag tag = killed.getPersistentData();
-        if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) {
-            return;
-        }
+        if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) return;
         long lastHeadshotTime = tag.getLong(LAST_HEADSHOT_TIME_KEY);
-        long now = player.level().getGameTime();
-        if (now - lastHeadshotTime > 2) {
-            return;
-        }
-        triggerHeadshotKill(player, killed, null);
+        if (player.level().getGameTime() - lastHeadshotTime > 2) return;
+        triggerHeadshotKill(player, killed, null, event.getGunId());
     }
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity killed = event.getEntity();
-        if (killed.level().isClientSide) {
-            return;
-        }
+        if (killed.level().isClientSide) return;
         Entity sourceEntity = event.getSource().getEntity();
-        if (!(sourceEntity instanceof Player player)) {
-            return;
-        }
+        if (!(sourceEntity instanceof Player player)) return;
 
         CompoundTag tag = killed.getPersistentData();
-        if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) {
-            return;
-        }
-        long lastHeadshotTime = tag.getLong(LAST_HEADSHOT_TIME_KEY);
-        long now = player.level().getGameTime();
-        if (now - lastHeadshotTime > 2) {
-            return;
-        }
+        if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) return;
+        if (player.level().getGameTime() - tag.getLong(LAST_HEADSHOT_TIME_KEY) > 2) return;
 
-        triggerHeadshotKill(player, killed, event.getSource());
+        triggerHeadshotKill(player, killed, event.getSource(), null);
     }
 
-    private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source) {
-        if (alreadyProcessedKill(player, killed)) {
-            return;
-        }
-        progressMyIslandAdvancement(player);
-        handleTrigger(player, killed, source, TRIGGER_GUN_HEADSHOT_KILL, true);
+    private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source,
+                                             net.minecraft.resources.ResourceLocation gunId) {
+        if (alreadyProcessedKill(player, killed)) return;
+        handleTrigger(player, killed, gunId, TRIGGER_GUN_HEADSHOT_KILL);
     }
 
     private static boolean alreadyProcessedKill(Player player, LivingEntity killed) {
         CompoundTag data = player.getPersistentData();
         String uuid = killed.getStringUUID();
         long now = player.level().getGameTime();
-        if (uuid.equals(data.getString(LAST_PROCESSED_KILL_UUID_KEY)) && data.getLong(LAST_PROCESSED_KILL_TIME_KEY) == now) {
+        if (uuid.equals(data.getString(LAST_PROCESSED_KILL_UUID_KEY))
+                && data.getLong(LAST_PROCESSED_KILL_TIME_KEY) == now) {
             return true;
         }
         data.putString(LAST_PROCESSED_KILL_UUID_KEY, uuid);
@@ -129,155 +96,30 @@ public final class GunHeadshotEventHandler {
         return false;
     }
 
-    private static void handleTrigger(Player player, LivingEntity other, DamageSource source, String trigger, boolean allowCounters) {
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTriggerOrEmpty(trigger)) {
-            if (!rule.enabled) continue;
-            if (rule.playerKilled) continue;
-            if (!LivingDeathEventHandler.matchesDamageSource(rule, source)) continue;
-            if (!matchesCommonRequirements(player, other, rule)) continue;
+    /**
+     * Achievement-driven handler:
+     * For each achievement with this trigger, check conditions,
+     * award a criterion, and execute reward on completion.
+     */
+    private static void handleTrigger(Player player, LivingEntity other,
+                                       net.minecraft.resources.ResourceLocation gunId, String trigger) {
+        ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
+        if (serverPlayer == null) return;
 
-            if (rule.type == EvolutionRegistry.RuleType.GRANT) {
-                if (!passesOncePerPlayerTag(player, rule)) {
-                    continue;
-                }
-                if (!allowCounters || rule.requirements.kills.isEmpty()) {
-                    LivingDeathEventHandler.executeGrant(player, rule);
-                    continue;
-                }
-                if (applyAndCheckCounters(player, other, rule)) {
-                    progressRuleAdvancement(player, rule);
-                    LivingDeathEventHandler.executeGrant(player, rule);
-                }
-            }
-        }
-    }
+        for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(trigger)) {
+            // Check prerequisites
+            if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
 
-    private static void progressMyIslandAdvancement(Player player) {
-        if (!(player instanceof ServerPlayer serverPlayer)) {
-            return;
-        }
-        Advancement adv = serverPlayer.server.getAdvancements().getAdvancement(MY_ISLAND_ADVANCEMENT_ID);
-        if (adv == null) {
-            return;
-        }
-        for (int i = 1; i <= MY_ISLAND_STEPS; i++) {
-            String criterion = MY_ISLAND_STEP_PREFIX + i;
-            if (serverPlayer.getAdvancements().award(adv, criterion)) {
-                return;
-            }
-        }
-    }
+            // Already completed?
+            if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
 
-    private static void progressRuleAdvancement(Player player, EvolutionRegistry.Rule rule) {
-        if (!(player instanceof ServerPlayer serverPlayer)) {
-            return;
-        }
-        ResourceLocation advId;
-        int maxSteps;
-        String stepPrefix;
-        if ("tcc_grant_xiora".equals(rule.ruleId)) {
-            advId = XIORA_MISSION_ADVANCEMENT_ID;
-            maxSteps = XIORA_MISSION_STEPS;
-            stepPrefix = XIORA_MISSION_STEP_PREFIX;
-        } else {
-            return;
-        }
-        Advancement adv = serverPlayer.server.getAdvancements().getAdvancement(advId);
-        if (adv == null) {
-            return;
-        }
-        for (int i = 1; i <= maxSteps; i++) {
-            String criterion = stepPrefix + i;
-            if (serverPlayer.getAdvancements().award(adv, criterion)) {
-                return;
-            }
-        }
-    }
+            // Check kill conditions
+            if (!AchievementConditionMatcher.matchesKillConditions(player, other, gunId, def)) continue;
 
-    private static boolean matchesCommonRequirements(Player player, LivingEntity other, EvolutionRegistry.Rule rule) {
-        if (rule.grant == null) {
-            return false;
+            // Award criterion
+            RuleAdvancementMapping.awardNextCriterion(
+                    serverPlayer, def.id(), def.criteriaCount());
         }
-
-        if (rule.item != null && !rule.item.isBlank()) {
-            if (!LivingDeathEventHandler.hasEquipped(player, rule.item)) {
-                return false;
-            }
-        }
-
-        for (String requiredCurio : rule.requirements.equippedCurios) {
-            if (!LivingDeathEventHandler.hasEquipped(player, requiredCurio)) {
-                return false;
-            }
-        }
-
-        if (!LivingDeathEventHandler.passesExtraRequirements(player, other, rule.requirements)) {
-            return false;
-        }
-
-        for (EvolutionRegistry.AttributeRequirement req : rule.requirements.attributes) {
-            Attribute attr = AttributeHelper.resolveAttribute(req.attribute);
-            if (attr == null) {
-                return false;
-            }
-            double value = player.getAttributeValue(attr);
-            if (!compare(value, req.comparator, req.value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private static boolean applyAndCheckCounters(Player player, LivingEntity killed, EvolutionRegistry.Rule rule) {
-        CompoundTag data = player.getPersistentData();
-        for (EvolutionRegistry.KillRequirement req : rule.requirements.kills) {
-            if (req == null || req.entity == null) continue;
-            if (!matchesKilled(req, killed)) continue;
-            String matchKey = "*".equals(req.entity.key) ? "*" : EntityConditionHelper.getMatchKey(req.entity.key, req.entity.nbt);
-            String key = COUNTER_PREFIX + rule.ruleId + "_" + matchKey;
-            data.putInt(key, data.getInt(key) + 1);
-        }
-
-        for (EvolutionRegistry.KillRequirement req : rule.requirements.kills) {
-            if (req == null || req.entity == null) continue;
-            String matchKey = "*".equals(req.entity.key) ? "*" : EntityConditionHelper.getMatchKey(req.entity.key, req.entity.nbt);
-            String key = COUNTER_PREFIX + rule.ruleId + "_" + matchKey;
-            if (data.getInt(key) < req.count) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean matchesKilled(EvolutionRegistry.KillRequirement req, LivingEntity killed) {
-        if ("*".equals(req.entity.key)) {
-            return true;
-        }
-        if (killed == null) {
-            return false;
-        }
-        String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-        if (!killedKey.equals(req.entity.key)) {
-            return false;
-        }
-        return EntityConditionHelper.matchesNbtFilters(killed, req.entity.nbt);
-    }
-
-    private static boolean passesOncePerPlayerTag(Player player, EvolutionRegistry.Rule rule) {
-        return LivingDeathGrantRuleMatcher.passesOncePerPlayerTag(player, rule);
-    }
-
-    private static boolean compare(double current, String comparator, double expected) {
-        return switch (comparator) {
-            case "gt" -> current > expected;
-            case "gte" -> current >= expected;
-            case "lt" -> current < expected;
-            case "lte" -> current <= expected;
-            case "eq" -> Double.compare(current, expected) == 0;
-            case "ne" -> Double.compare(current, expected) != 0;
-            default -> current >= expected;
-        };
     }
 
     private static LivingEntity resolveKilled(EntityKillByGunEvent event) {

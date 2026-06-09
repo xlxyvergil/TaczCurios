@@ -15,7 +15,6 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -27,22 +26,6 @@ public final class EvolutionExecutor {
     public enum NbtMode {
         COPY_ALL,
         KEEP_NEW
-    }
-
-    public static boolean evolve(LivingEntity entity, String slotId, Predicate<ItemStack> fromMatcher, Supplier<ItemStack> toStackSupplier,
-                                 NbtMode nbtMode, Collection<String> excludeNbtKeys,
-                                 BiConsumer<ItemStack, ItemStack> nbtMutator, boolean postTaczChangeEvent) {
-        Objects.requireNonNull(entity, "entity");
-        Objects.requireNonNull(slotId, "slotId");
-        Objects.requireNonNull(fromMatcher, "fromMatcher");
-        Objects.requireNonNull(toStackSupplier, "toStackSupplier");
-        Objects.requireNonNull(nbtMode, "nbtMode");
-
-        Collection<String> excludes = excludeNbtKeys == null ? Collections.emptyList() : excludeNbtKeys;
-
-        LazyOptional<ICuriosItemHandler> invOpt = CuriosApi.getCuriosInventory(entity);
-        return invOpt.map(inv -> evolve(inv, entity, slotId, fromMatcher, toStackSupplier, nbtMode, excludes, nbtMutator, postTaczChangeEvent))
-                .orElse(false);
     }
 
     public static boolean evolve(LivingEntity entity, Predicate<ItemStack> fromMatcher, Supplier<ItemStack> toStackSupplier,
@@ -58,16 +41,6 @@ public final class EvolutionExecutor {
         LazyOptional<ICuriosItemHandler> invOpt = CuriosApi.getCuriosInventory(entity);
         return invOpt.map(inv -> evolve(inv, entity, fromMatcher, toStackSupplier, nbtMode, excludes, nbtMutator, postTaczChangeEvent))
                 .orElse(false);
-    }
-
-    private static boolean evolve(ICuriosItemHandler inv, LivingEntity entity, String slotId, Predicate<ItemStack> fromMatcher,
-                                  Supplier<ItemStack> toStackSupplier, NbtMode nbtMode, Collection<String> excludeNbtKeys,
-                                  BiConsumer<ItemStack, ItemStack> nbtMutator, boolean postTaczChangeEvent) {
-        Optional<ICurioStacksHandler> stacksHandlerOpt = inv.getStacksHandler(slotId);
-        if (stacksHandlerOpt.isEmpty()) {
-            return false;
-        }
-        return evolve(stacksHandlerOpt.get(), entity, slotId, fromMatcher, toStackSupplier, nbtMode, excludeNbtKeys, nbtMutator, postTaczChangeEvent);
     }
 
     private static boolean evolve(ICuriosItemHandler inv, LivingEntity entity, Predicate<ItemStack> fromMatcher,

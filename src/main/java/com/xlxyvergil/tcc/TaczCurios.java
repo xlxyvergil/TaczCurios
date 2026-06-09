@@ -8,6 +8,7 @@ import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
 import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -58,6 +59,7 @@ public class TaczCurios
         event.enqueueWork(() -> {
             TaczVillagers.registerTrades();
             EvolutionRegistry.loadOnce();
+            AchievementDefinitions.loadOnce();
         });
     }
     

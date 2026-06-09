@@ -113,10 +113,37 @@
   "advancement.tcc.tcc_root.description": "The journey of Seven Thunders",
 
   "advancement.tcc.my_island.title": "My Island",
-  "advancement.tcc.my_island.description": "Land 30 TACZ headshot kills",
+  "advancement.tcc.my_island.description": "Land TACZ headshot kills on any entity",
 
   "advancement.tcc.xiora_mission.title": "Night Raid",
-  "advancement.tcc.xiora_mission.description": "Land 10 sniper headshot kills while holding Seven Thunders and being invisible",
+  "advancement.tcc.xiora_mission.description": "Land sniper headshot kills while invisible and holding Seven Thunders",
+
+  "advancement.tcc.thunder_seen.title": "Thunder Seen",
+  "advancement.tcc.thunder_seen.description": "Land sniper headshot kills while holding Seven Thunders",
+
+  "advancement.tcc.xiora_to_raven.title": "Night Raven",
+  "advancement.tcc.xiora_to_raven.description": "Kill the Ender Dragon with a sniper while holding Xiora and being invisible",
+
+  "advancement.tcc.raven_to_island.title": "Seven Thunders Calling",
+  "advancement.tcc.raven_to_island.description": "Kill the Ender Dragon with a sniper from 100m+ while holding Night Raven & Thunder Seen with >60 imaginary resistance",
+
+  "advancement.tcc.summer_beach_grant.title": "Summer Beach",
+  "advancement.tcc.summer_beach_grant.description": "Die to a Wither while holding Heaven Fire Judgment",
+
+  "advancement.tcc.summer_to_brahma.title": "Evolution: Brahma Beasts",
+  "advancement.tcc.summer_to_brahma.description": "Kill the Ender Dragon with a pistol while holding Summer Beach and Heaven Fire Apocalypse",
+
+  "advancement.tcc.brahma_to_salvation.title": "Evolution: Salvation",
+  "advancement.tcc.brahma_to_salvation.description": "Kill the Ender Dragon 2 times with a pistol while holding Brahma Beasts & Heaven Fire Apocalypse with >80 imaginary resistance",
+
+  "advancement.tcc.judgment_to_apocalypse.title": "Evolution: Heaven Fire Apocalypse",
+  "advancement.tcc.judgment_to_apocalypse.description": "Survive bleeding settlement with ≥40 imaginary resistance while holding Heaven Fire Judgment",
+
+  "advancement.tcc.judgement_key.title": "Judgement Key",
+  "advancement.tcc.judgement_key.description": "Obtain the Judgement Key",
+
+  "advancement.tcc.heaven_fire_apocalypse_endless.title": "Apocalypse Endless",
+  "advancement.tcc.heaven_fire_apocalypse_endless.description": "Obtain Heaven Fire Apocalypse Endless",
   
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",
