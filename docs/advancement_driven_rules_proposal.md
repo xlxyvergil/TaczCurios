@@ -234,15 +234,18 @@ if (evolved) {
 | `tcc_grant_seven_thunders_thunder_seen` | EVOLVE | `thunder_seen` | 1 |
 | `tcc_xiora_to_tcc_raven` | EVOLVE | `xiora_to_raven` | 1 |
 | `tcc_raven_to_tcc_island_boom_raven` | EVOLVE | `raven_to_island` | 1 |
+| `tcc_raven_to_tcc_island_boom_raven` (linked) | AUTO | `judgement_key` | 1 |
 | `tcc_heaven_fire_judgment_to_tcc_heaven_fire_apocalypse` | EVOLVE | `judgment_to_apocalypse` | 1 |
 | `tcc_summer_beach_to_tcc_brahma_beasts` | EVOLVE | `summer_to_brahma` | 1 |
 | `tcc_brahma_beasts_to_tcc_salvation` | EVOLVE | `brahma_to_salvation` | 1 |
+| `tcc_brahma_beasts_to_tcc_salvation` (linked) | AUTO | `heaven_fire_apocalypse_endless` | 1 |
 | `tcc_player_death_grant_tcc_summer_beach` | GRANT | `summer_beach_grant` | 1 |
 | 所有 ATTRIBUTE 规则 | ATTRIBUTE | 不改造 | — |
 
 ### 不改的部分
 
 - **ATTRIBUTE 规则**：渐进取值，非一次性触发，不适合成就
+- **`tcc_root`**：根节点，`minecraft:tick` 自动触发，纯结构节点，不属于改造范围
 - **扣除物品的逻辑**：已有 `piercingSetBonus`、EL 诅咒补偿等，不受影响
 
 ### 实施步骤

@@ -30,6 +30,7 @@ public final class RuleAdvancementMapping {
      * @return true if the achievement is now fully complete
      */
     public static boolean awardNextCriterion(ServerPlayer player, String achievementId, int criteriaCount) {
+        if (criteriaCount <= 0) return false;
         if (player.server == null) return false;
         ResourceLocation id = new ResourceLocation(achievementId);
         Advancement adv = player.server.getAdvancements().getAdvancement(id);
@@ -44,6 +45,7 @@ public final class RuleAdvancementMapping {
 
     /** Award all criteria at once (for single-step grants). */
     public static void awardAll(ServerPlayer player, String achievementId, int criteriaCount) {
+        if (criteriaCount <= 0) return;
         if (player.server == null) return;
         ResourceLocation id = new ResourceLocation(achievementId);
         Advancement adv = player.server.getAdvancements().getAdvancement(id);
@@ -70,6 +72,6 @@ public final class RuleAdvancementMapping {
             var cp = progress.getCriterion("step_" + i);
             if (cp == null || !cp.isDone()) return i;
         }
-        return maxSteps;
+        return Math.max(1, maxSteps);
     }
 }

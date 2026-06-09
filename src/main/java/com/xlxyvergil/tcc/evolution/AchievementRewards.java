@@ -57,6 +57,7 @@ public final class AchievementRewards {
         // Execute linked evolves
         if (ok && reward.linkedEvolves() != null) {
             for (AchievementDefinitions.LinkedEvolveRef linked : reward.linkedEvolves()) {
+                if (linked.to() == null || linked.item() == null) continue;
                 Item linkedTo = ForgeRegistries.ITEMS.getValue(new ResourceLocation(linked.to()));
                 if (linkedTo == null) continue;
                 EvolutionExecutor.evolve(player,

@@ -252,6 +252,9 @@ public class HeavenFireJudgment extends BaseCurioItem {
         // Already evolved?
         if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) return;
 
+        // Check prerequisites
+        if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) return;
+
         // Check conditions (attributes, etc.)
         if (def.conditions() != null && def.conditions().attributes() != null) {
             double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());

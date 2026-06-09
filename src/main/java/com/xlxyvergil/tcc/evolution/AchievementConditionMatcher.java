@@ -2,8 +2,10 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  * the requirements for advancing an achievement's progress.
  */
 public final class AchievementConditionMatcher {
+    private static final Logger LOGGER = LogUtils.getLogger();
     private AchievementConditionMatcher() {}
 
     /**
@@ -43,7 +46,8 @@ public final class AchievementConditionMatcher {
         }
 
         // Check gun type
-        if (c.holdingGunTypes() != null && !c.holdingGunTypes().isEmpty() && gunId != null) {
+        if (c.holdingGunTypes() != null && !c.holdingGunTypes().isEmpty()) {
+            if (gunId == null) return false;
             if (!GunTypeChecker.matchesGunTypes(gunId, c.holdingGunTypes())) return false;
         }
 
@@ -95,7 +99,8 @@ public final class AchievementConditionMatcher {
         }
 
         // Check killer entity type
-        if (c.killer() != null && otherEntity != null) {
+        if (c.killer() != null) {
+            if (otherEntity == null) return false;
             String killerKey = BuiltInRegistries.ENTITY_TYPE.getKey(otherEntity.getType()).toString();
             if (!c.killer().equals(killerKey)) return false;
         }
@@ -121,7 +126,10 @@ public final class AchievementConditionMatcher {
             case "lte" -> current <= expected;
             case "eq" -> Double.compare(current, expected) == 0;
             case "ne" -> Double.compare(current, expected) != 0;
-            default -> current >= expected;
+            default -> {
+                LOGGER.warn("Unknown attribute comparator '{}' — returning false", comparator);
+                yield false;
+            }
         };
     }
 }

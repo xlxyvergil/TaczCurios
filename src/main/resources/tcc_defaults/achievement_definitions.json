@@ -284,8 +284,8 @@
           "en_us": "Evolution: Salvation"
         },
         "description": {
-          "zh_cn": "持有梵天百兽和天火劫灭，虚数抗性>80，手枪击杀{entity}（%d/2）",
-          "en_us": "Kill {entity} 2 times with a pistol while holding Brahma Beasts & Heaven Fire Apocalypse with >80 imaginary resistance (%d/2)"
+          "zh_cn": "持有梵天百兽和天火劫灭，虚数抗性>80，手枪击杀{entity}",
+          "en_us": "Kill {entity} with a pistol while holding Brahma Beasts & Heaven Fire Apocalypse with >80 imaginary resistance"
         },
         "icon": "tcc:salvation",
         "frame": "challenge",
@@ -293,7 +293,7 @@
       },
       "parent": "tcc:summer_to_brahma",
       "trigger": "gun_kill",
-      "criteria_count": 2,
+      "criteria_count": 1,
       "conditions": {
         "equippedCurios": ["tcc:brahma_beasts", "tcc:heaven_fire_apocalypse"],
         "holdingGunTypes": ["pistol"],

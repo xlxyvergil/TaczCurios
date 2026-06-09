@@ -38,6 +38,7 @@ public final class AchievementDefinitions {
     private static final String DEFAULT_RESOURCE = "/tcc_defaults/achievement_definitions.json";
 
     private static volatile boolean loaded;
+    private static volatile boolean loadAttempted;
     private static final Map<String, AchievementDef> ACHIEVEMENTS = new LinkedHashMap<>();
     private static final Map<String, List<AchievementDef>> BY_TRIGGER = new HashMap<>();
 
@@ -68,23 +69,27 @@ public final class AchievementDefinitions {
     // ===== Loading =====
 
     public static void loadOnce() {
-        if (loaded) return;
+        if (loadAttempted) return;
         synchronized (AchievementDefinitions.class) {
-            if (loaded) return;
+            if (loadAttempted) return;
             Path file = FMLPaths.CONFIGDIR.get().resolve("tcc").resolve(FILE_NAME);
             try { Files.createDirectories(file.getParent()); } catch (IOException e) {
                 LOGGER.error("Failed to create config directory for achievement definitions", e);
+                loadAttempted = true;
                 return;
             }
             if (!ensureDefaults(file)) {
                 LOGGER.error("Failed to ensure default achievement_definitions.json exists");
+                loadAttempted = true;
                 return;
             }
             if (!readAll(file)) {
                 LOGGER.error("Failed to load achievement definitions — no achievements will be processed");
+                loadAttempted = true;
                 return;
             }
             loaded = true;
+            loadAttempted = true;
         }
     }
 
