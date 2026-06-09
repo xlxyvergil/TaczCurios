@@ -128,10 +128,37 @@
   "advancement.tcc.tcc_root.description": "涤罪七雷的进化之路",
 
   "advancement.tcc.my_island.title": "我的小岛",
-  "advancement.tcc.my_island.description": "通过TACZ爆头击杀任意30个实体",
+  "advancement.tcc.my_island.description": "通过TACZ爆头击杀任意实体",
 
   "advancement.tcc.xiora_mission.title": "夜袭强敌",
-  "advancement.tcc.xiora_mission.description": "持有涤罪七雷并处于隐身状态下，使用狙击枪爆头击杀任意10个实体",
+  "advancement.tcc.xiora_mission.description": "持有涤罪七雷，隐身状态下狙击爆头击杀任意实体",
+
+  "advancement.tcc.thunder_seen.title": "雷光初现",
+  "advancement.tcc.thunder_seen.description": "持有涤罪七雷，使用狙击枪爆头击杀任意实体",
+
+  "advancement.tcc.xiora_to_raven.title": "夜袭渡鸦",
+  "advancement.tcc.xiora_to_raven.description": "持有希奥拉，隐身状态下狙击击杀末影龙",
+
+  "advancement.tcc.raven_to_island.title": "七雷召唤",
+  "advancement.tcc.raven_to_island.description": "持有夜袭渡鸦和雷光初现，虚数抗性>60，100格外狙击击杀末影龙",
+
+  "advancement.tcc.summer_beach_grant.title": "夏日沙滩",
+  "advancement.tcc.summer_beach_grant.description": "持有天火圣裁，被凋零击杀",
+
+  "advancement.tcc.summer_to_brahma.title": "进化：梵天百兽",
+  "advancement.tcc.summer_to_brahma.description": "持有夏日沙滩和天火劫灭，使用手枪击杀末影龙",
+
+  "advancement.tcc.brahma_to_salvation.title": "进化：救赎",
+  "advancement.tcc.brahma_to_salvation.description": "持有梵天百兽和天火劫灭，虚数抗性>80，手枪击杀末影龙（2次）",
+
+  "advancement.tcc.judgment_to_apocalypse.title": "进化：天火劫灭",
+  "advancement.tcc.judgment_to_apocalypse.description": "持有天火圣裁，虚数抗性≥40且流血结算未死亡",
+
+  "advancement.tcc.judgement_key.title": "裁决",
+  "advancement.tcc.judgement_key.description": "获得裁决之键",
+
+  "advancement.tcc.heaven_fire_apocalypse_endless.title": "劫灭无尽",
+  "advancement.tcc.heaven_fire_apocalypse_endless.description": "获得劫灭无尽",
   
   "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§o被%1$s击杀后获得夏日沙滩（绑定）；流血结算时虚数抗性≥40且未死亡则进化为天火劫灭",
   "item.tcc.heaven_fire_judgment.inflection_max": "§b虚数侵染上限: %1$s层",

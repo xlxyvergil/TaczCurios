@@ -25,16 +25,21 @@ public final class EvolutionScriptApi {
         LivingDeathEventHandler.triggerLivingDeath(player, killed, otherEntity, source, playerKilled, true);
     }
 
-    public static boolean tryEvolve(Player player, String ruleId) {
-        return LivingDeathEventHandler.tryEvolveRule(player, ruleId, true);
+    public static boolean tryEvolve(Player player, String achievementId) {
+        var def = AchievementDefinitions.get(achievementId).orElse(null);
+        if (def == null || def.reward() == null || !def.reward().isEvolve()) return false;
+        if (!(player instanceof net.minecraft.server.level.ServerPlayer sp)) return false;
+        if (RuleAdvancementMapping.isAdvancementDone(sp, def.id())) return false;
+        if (!RuleAdvancementMapping.arePrerequisitesMet(sp, def)) return false;
+        return RuleAdvancementMapping.awardNextCriterion(sp, def.id(), def.criteriaCount());
     }
 
     public static boolean applyAttribute(Player player, LivingEntity killed, DamageSource source, String ruleId) {
         return LivingDeathEventHandler.applyAttributeRule(player, killed, source, ruleId, true);
     }
 
-    public static boolean tryGrant(Player player, Entity otherEntity, DamageSource source, String ruleId) {
-        return LivingDeathEventHandler.tryGrantRule(player, otherEntity, source, ruleId, true);
+    public static boolean tryGrant(Player player, Entity otherEntity, DamageSource source, String achievementId) {
+        return LivingDeathEventHandler.tryGrantRule(player, otherEntity, source, achievementId);
     }
 
     public static boolean evolveCurio(LivingEntity entity, String fromItemId, String toItemId, List<String> excludeNbtKeys) {

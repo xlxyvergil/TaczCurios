@@ -1,20 +1,20 @@
 {
   "display": {
     "icon": {
-      "item": "tcc:xiora"
+      "item": "tcc:seven_thunders_thunder_seen"
     },
     "title": {
-      "translate": "advancement.tcc.xiora_mission.title"
+      "translate": "advancement.tcc.thunder_seen.title"
     },
     "description": {
-      "translate": "advancement.tcc.xiora_mission.description"
+      "translate": "advancement.tcc.thunder_seen.description"
     },
-    "frame": "goal",
+    "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
-    "hidden": false
+    "hidden": true
   },
-  "parent": "tcc:my_island",
+  "parent": "tcc:xiora_mission",
   "criteria": {
     "step_1": { "trigger": "minecraft:impossible" },
     "step_2": { "trigger": "minecraft:impossible" },

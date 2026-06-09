@@ -1,0 +1,339 @@
+{
+  "achievements": {
+    "tcc:my_island": {
+      "display": {
+        "title": {
+          "zh_cn": "我的小岛",
+          "en_us": "My Island"
+        },
+        "description": {
+          "zh_cn": "通过TACZ爆头击杀{entity}（%d/%d）",
+          "en_us": "Land TACZ headshot kills on {entity} (%d/%d)"
+        },
+        "icon": "tcc:seven_thunders",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_headshot_kill",
+      "criteria_count": 30,
+      "conditions": {
+        "kills": [{ "entity": "*" }]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:seven_thunders",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:xiora_mission": {
+      "display": {
+        "title": {
+          "zh_cn": "夜袭强敌",
+          "en_us": "Night Raid"
+        },
+        "description": {
+          "zh_cn": "持有涤罪七雷，隐身状态下狙击爆头击杀{entity}（%d/%d）",
+          "en_us": "Land sniper headshot kills on {entity} while invisible and holding Seven Thunders (%d/%d)"
+        },
+        "icon": "tcc:xiora",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:my_island",
+      "trigger": "gun_headshot_kill",
+      "criteria_count": 10,
+      "conditions": {
+        "equippedCurios": ["tcc:seven_thunders"],
+        "requiredEffects": ["minecraft:invisibility"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [{ "entity": "*" }]
+      },
+      "prerequisites": ["tcc:my_island"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:xiora",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:thunder_seen": {
+      "display": {
+        "title": {
+          "zh_cn": "雷光初现",
+          "en_us": "Thunder Seen"
+        },
+        "description": {
+          "zh_cn": "持有涤罪七雷，使用狙击枪爆头击杀{entity}（%d/%d）",
+          "en_us": "Land sniper headshot kills on {entity} while holding Seven Thunders (%d/%d)"
+        },
+        "icon": "tcc:seven_thunders_thunder_seen",
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_mission",
+      "trigger": "gun_headshot_kill",
+      "criteria_count": 10,
+      "conditions": {
+        "equippedCurios": ["tcc:seven_thunders"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [{ "entity": "*" }]
+      },
+      "prerequisites": ["tcc:xiora_mission"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:seven_thunders",
+        "to": "tcc:seven_thunders_thunder_seen",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:xiora_to_raven": {
+      "display": {
+        "title": {
+          "zh_cn": "夜袭渡鸦",
+          "en_us": "Night Raven"
+        },
+        "description": {
+          "zh_cn": "持有希奥拉，隐身状态下狙击击杀{entity}",
+          "en_us": "Kill {entity} with a sniper while holding Xiora and being invisible"
+        },
+        "icon": "tcc:raven",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_mission",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:xiora"],
+        "requiredEffects": ["minecraft:invisibility"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [{ "entity": "minecraft:ender_dragon" }]
+      },
+      "prerequisites": ["tcc:xiora_mission"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:xiora",
+        "to": "tcc:raven",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:raven_to_island": {
+      "display": {
+        "title": {
+          "zh_cn": "七雷召唤",
+          "en_us": "Seven Thunders Calling"
+        },
+        "description": {
+          "zh_cn": "持有夜袭渡鸦和雷光初现，虚数抗性>60，100格外狙击击杀{entity}",
+          "en_us": "Kill {entity} with a sniper from 100m+ while holding Night Raven & Thunder Seen with >60 imaginary resistance"
+        },
+        "icon": "tcc:island_boom_raven",
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_to_raven",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:raven", "tcc:seven_thunders_thunder_seen"],
+        "holdingGunTypes": ["sniper"],
+        "minDistance": 100.0,
+        "kills": [{ "entity": "minecraft:ender_dragon" }],
+        "attributes": [
+          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
+        ]
+      },
+      "prerequisites": ["tcc:xiora_to_raven", "tcc:thunder_seen"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:raven",
+        "to": "tcc:island_boom_raven",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:seven_thunders_thunder_seen", "to": "tcc:judgement_key" }
+        ],
+        "autoAchievements": ["tcc:judgement_key"]
+      }
+    },
+
+    "tcc:judgement_key": {
+      "display": {
+        "title": {
+          "zh_cn": "裁决",
+          "en_us": "Judgement Key"
+        },
+        "description": {
+          "zh_cn": "获得裁决之键",
+          "en_us": "Obtain the Judgement Key"
+        },
+        "icon": "tcc:judgement_key",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_to_raven",
+      "trigger": "auto",
+      "criteria_count": 1,
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:summer_beach_grant": {
+      "display": {
+        "title": {
+          "zh_cn": "夏日沙滩",
+          "en_us": "Summer Beach"
+        },
+        "description": {
+          "zh_cn": "持有天火圣裁，被{killer}击杀",
+          "en_us": "Die to {killer} while holding Heaven Fire Judgment"
+        },
+        "icon": "tcc:summer_beach",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "living_death",
+      "playerKilled": true,
+      "criteria_count": 1,
+      "conditions": {
+        "killer": "minecraft:wither",
+        "equippedCurios": ["tcc:heaven_fire_judgment"]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:summer_beach",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:judgment_to_apocalypse": {
+      "display": {
+        "title": {
+          "zh_cn": "进化：天火劫灭",
+          "en_us": "Evolution: Heaven Fire Apocalypse"
+        },
+        "description": {
+          "zh_cn": "持有天火圣裁，虚数抗性≥40且流血结算未死亡",
+          "en_us": "Survive bleeding settlement with ≥40 imaginary resistance while holding Heaven Fire Judgment"
+        },
+        "icon": "tcc:heaven_fire_apocalypse",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:summer_beach_grant",
+      "trigger": "bleeding_settlement",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:heaven_fire_judgment"],
+        "attributes": [
+          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gte", "value": 40.0 }
+        ]
+      },
+      "prerequisites": ["tcc:summer_beach_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:heaven_fire_judgment",
+        "to": "tcc:heaven_fire_apocalypse"
+      }
+    },
+
+    "tcc:summer_to_brahma": {
+      "display": {
+        "title": {
+          "zh_cn": "进化：梵天百兽",
+          "en_us": "Evolution: Brahma Beasts"
+        },
+        "description": {
+          "zh_cn": "持有夏日沙滩和天火劫灭，使用手枪击杀{entity}",
+          "en_us": "Kill {entity} with a pistol while holding Summer Beach and Heaven Fire Apocalypse"
+        },
+        "icon": "tcc:brahma_beasts",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:judgment_to_apocalypse",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:summer_beach", "tcc:heaven_fire_apocalypse"],
+        "holdingGunTypes": ["pistol"],
+        "kills": [{ "entity": "minecraft:ender_dragon" }]
+      },
+      "prerequisites": ["tcc:summer_beach_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:summer_beach",
+        "to": "tcc:brahma_beasts"
+      }
+    },
+
+    "tcc:brahma_to_salvation": {
+      "display": {
+        "title": {
+          "zh_cn": "进化：救赎",
+          "en_us": "Evolution: Salvation"
+        },
+        "description": {
+          "zh_cn": "持有梵天百兽和天火劫灭，虚数抗性>80，手枪击杀{entity}",
+          "en_us": "Kill {entity} with a pistol while holding Brahma Beasts & Heaven Fire Apocalypse with >80 imaginary resistance"
+        },
+        "icon": "tcc:salvation",
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:summer_to_brahma",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:brahma_beasts", "tcc:heaven_fire_apocalypse"],
+        "holdingGunTypes": ["pistol"],
+        "kills": [{ "entity": "minecraft:ender_dragon" }],
+        "attributes": [
+          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 80.0 }
+        ]
+      },
+      "prerequisites": ["tcc:summer_to_brahma"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:brahma_beasts",
+        "to": "tcc:salvation",
+        "linkedEvolves": [
+          { "item": "tcc:heaven_fire_apocalypse", "to": "tcc:heaven_fire_apocalypse_endless" }
+        ],
+        "autoAchievements": ["tcc:heaven_fire_apocalypse_endless"]
+      }
+    },
+
+    "tcc:heaven_fire_apocalypse_endless": {
+      "display": {
+        "title": {
+          "zh_cn": "劫灭无尽",
+          "en_us": "Apocalypse Endless"
+        },
+        "description": {
+          "zh_cn": "获得劫灭无尽",
+          "en_us": "Obtain Heaven Fire Apocalypse Endless"
+        },
+        "icon": "tcc:heaven_fire_apocalypse_endless",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:summer_to_brahma",
+      "trigger": "auto",
+      "criteria_count": 1,
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    }
+  }
+}

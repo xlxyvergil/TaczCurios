@@ -6,10 +6,9 @@ import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.evolution.EvolutionExecutor;
-import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
+import com.xlxyvergil.tcc.evolution.RuleAdvancementMapping;
 import com.xlxyvergil.tcc.event.HeavenFireBleedingSettlementEvent;
-import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -21,6 +20,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -144,23 +144,13 @@ public class HeavenFireJudgment extends BaseCurioItem {
     }
 
     private static String resolveSummerBeachGrantKillerName() {
-        EvolutionRegistry.Rule rule = EvolutionRegistry.getRulesByTriggerOrEmpty("living_death").stream()
-            .filter(r -> r.enabled)
-            .filter(r -> r.playerKilled)
-            .filter(r -> r.type == EvolutionRegistry.RuleType.GRANT)
-            .filter(r -> r.grant != null && "tcc:summer_beach".equals(r.grant.item))
-            .filter(r -> r.requirements.equippedCurios.contains("tcc:heaven_fire_judgment"))
-            .findFirst()
-            .orElse(null);
-
-        String entityNamespace = rule != null && rule.killer != null ? rule.killer.key : null;
-        if (entityNamespace == null || entityNamespace.isBlank()) {
-            return "未知";
-        }
-
-        String entityName = entityNamespace;
+        AchievementDefinitions.AchievementDef def =
+                AchievementDefinitions.get("tcc:summer_beach_grant").orElse(null);
+        if (def == null || def.conditions() == null || def.conditions().killer() == null) return "未知";
+        String killerKey = def.conditions().killer();
+        String entityName = killerKey;
         try {
-            ResourceLocation rl = new ResourceLocation(entityNamespace);
+            ResourceLocation rl = new ResourceLocation(killerKey);
             var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
             entityName = entityType.getDescription().getString();
         } catch (Exception ignored) {
@@ -246,41 +236,47 @@ public class HeavenFireJudgment extends BaseCurioItem {
     
     /**
      * 监听天火流血结算事件：虚数抗性≥40且未死亡时，天火圣裁进化为天火劫灭。
+     * Now driven by achievement_definitions.json (tcc:judgment_to_apocalypse).
      */
     @SubscribeEvent
     public static void onBleedingSettlement(HeavenFireBleedingSettlementEvent event) {
         LivingEntity entity = event.getEntity();
         if (event.isDead()) return;
+        if (!(entity instanceof ServerPlayer serverPlayer)) return;
         if (!hasHeavenFireJudgmentEquipped(entity)) return;
-        EvolutionRegistry.Rule rule = resolveEvolutionRule();
-        if (rule != null && rule.enabled == false) return;
 
-        // 虚数抗性 >= 40
-        double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double threshold = 40.0;
-        if (rule != null) {
-            for (EvolutionRegistry.AttributeRequirement req : rule.requirements.attributes) {
-                if ("tcc:imaginary_damage_resistance".equals(req.attribute)) {
-                    threshold = req.value;
+        AchievementDefinitions.AchievementDef def =
+                AchievementDefinitions.get("tcc:judgment_to_apocalypse").orElse(null);
+        if (def == null) return;
+
+        // Already evolved?
+        if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) return;
+
+        // Check prerequisites
+        if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) return;
+
+        // Check conditions (attributes, etc.)
+        if (def.conditions() != null && def.conditions().attributes() != null) {
+            double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            for (AchievementDefinitions.AttributeCondition ac : def.conditions().attributes()) {
+                if ("tcc:imaginary_damage_resistance".equals(ac.attribute())) {
+                    boolean ok = switch (ac.comparator()) {
+                        case "lt" -> resistance < ac.value();
+                        case "lte" -> resistance <= ac.value();
+                        case "eq" -> Double.compare(resistance, ac.value()) == 0;
+                        case "ne" -> Double.compare(resistance, ac.value()) != 0;
+                        case "gt" -> resistance > ac.value();
+                        default -> resistance >= ac.value();
+                    };
+                    if (!ok) return;
                     break;
                 }
             }
         }
-        if (resistance < threshold) return;
 
-        EvolutionExecutor.evolve(entity,
-                stack -> stack.getItem() instanceof HeavenFireJudgment,
-                () -> new ItemStack(TaczItems.HEAVEN_FIRE_APOCALYPSE.get()),
-                EvolutionExecutor.NbtMode.COPY_ALL, List.of(), null, true);
-    }
-
-    private static EvolutionRegistry.Rule resolveEvolutionRule() {
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.EVOLVE, "tcc:heaven_fire_judgment")) {
-            if ("bleeding_settlement".equals(rule.trigger) && "tcc:heaven_fire_apocalypse".equals(rule.to)) {
-                return rule;
-            }
-        }
-        return null;
+        // Award achievement
+        RuleAdvancementMapping.awardNextCriterion(
+                serverPlayer, def.id(), def.criteriaCount());
     }
     
     /**

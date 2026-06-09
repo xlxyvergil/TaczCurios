@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:judgement_key"
+    },
+    "title": {
+      "translate": "advancement.tcc.judgement_key.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.judgement_key.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "tcc:xiora_to_raven",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}
