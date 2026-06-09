@@ -43,7 +43,7 @@
         "frame": "goal",
         "hidden": false
       },
-      "parent": "tcc:tcc_root",
+      "parent": "tcc:my_island",
       "trigger": "gun_headshot_kill",
       "criteria_count": 10,
       "conditions": {
