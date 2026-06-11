@@ -257,6 +257,12 @@ public class TaczCuriosConfig {
         
         // Apotheosis集成配置
         public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
+
+        // 裁决真实伤害模式：true=setHealth直接扣血，false=hurt正常伤害
+        public final ForgeConfigSpec.BooleanValue judgementUseSetHealth;
+
+        // 崩解真实伤害模式：true=setHealth直接扣血，false=hurt正常伤害
+        public final ForgeConfigSpec.BooleanValue collapseUseSetHealth;
         
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
@@ -414,6 +420,9 @@ public class TaczCuriosConfig {
             collapseMaxDebuffCount = builder
                     .comment("崩解计入的负面效果种数上限 (默认: 5)")
                     .defineInRange("maxDebuffCount", 5, 1, 20);
+            collapseUseSetHealth = builder
+                    .comment("崩解是否使用setHealth直接扣血。true=setHealth（无视护甲/保护），false=hurt正常伤害")
+                    .define("useSetHealth", true);
             builder.pop();
 
             // 按饰品分级的虚数侵染上限
@@ -443,6 +452,9 @@ public class TaczCuriosConfig {
             judgementCollapseProcChance = builder
                     .comment("爆头时触发虚数崩解效果的几率 (默认: 0.5 = 50%)")
                     .defineInRange("collapseProcChance", 0.5, 0, 1);
+            judgementUseSetHealth = builder
+                    .comment("裁决是否使用setHealth直接扣血。true=setHealth（无视护甲/保护），false=hurt正常伤害")
+                    .define("useSetHealth", false);
             builder.pop();
             
             // 天火劫灭配置

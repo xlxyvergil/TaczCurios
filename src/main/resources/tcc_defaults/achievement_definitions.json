@@ -1,6 +1,7 @@
 {
   "achievements": {
     "tcc:my_island": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "我的小岛",
@@ -18,7 +19,9 @@
       "trigger": "gun_headshot_kill",
       "criteria_count": 30,
       "conditions": {
-        "kills": [{ "entity": "*" }]
+        "kills": [
+          { "entity": "*", "value": 1 }
+        ]
       },
       "prerequisites": [],
       "reward": {
@@ -30,6 +33,7 @@
     },
 
     "tcc:xiora_mission": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "夜袭强敌",
@@ -50,7 +54,9 @@
         "equippedCurios": ["tcc:seven_thunders"],
         "requiredEffects": ["minecraft:invisibility"],
         "holdingGunTypes": ["sniper"],
-        "kills": [{ "entity": "*" }]
+        "kills": [
+          { "entity": "*", "value": 1 }
+        ]
       },
       "prerequisites": ["tcc:my_island"],
       "reward": {
@@ -62,6 +68,7 @@
     },
 
     "tcc:thunder_seen": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "雷光初现",
@@ -81,7 +88,9 @@
       "conditions": {
         "equippedCurios": ["tcc:seven_thunders"],
         "holdingGunTypes": ["sniper"],
-        "kills": [{ "entity": "*" }]
+        "kills": [
+          { "entity": "*", "value": 1 }
+        ]
       },
       "prerequisites": ["tcc:xiora_mission"],
       "reward": {
@@ -93,6 +102,7 @@
     },
 
     "tcc:xiora_to_raven": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "夜袭渡鸦",
@@ -113,7 +123,9 @@
         "equippedCurios": ["tcc:xiora"],
         "requiredEffects": ["minecraft:invisibility"],
         "holdingGunTypes": ["sniper"],
-        "kills": [{ "entity": "minecraft:ender_dragon" }]
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ]
       },
       "prerequisites": ["tcc:xiora_mission"],
       "reward": {
@@ -125,6 +137,7 @@
     },
 
     "tcc:raven_to_island": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "七雷召唤",
@@ -145,7 +158,9 @@
         "equippedCurios": ["tcc:raven", "tcc:seven_thunders_thunder_seen"],
         "holdingGunTypes": ["sniper"],
         "minDistance": 100.0,
-        "kills": [{ "entity": "minecraft:ender_dragon" }],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ],
         "attributes": [
           { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
         ]
@@ -164,6 +179,7 @@
     },
 
     "tcc:judgement_key": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "裁决",
@@ -186,6 +202,7 @@
     },
 
     "tcc:summer_beach_grant": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "夏日沙滩",
@@ -217,6 +234,7 @@
     },
 
     "tcc:judgment_to_apocalypse": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "进化：天火劫灭",
@@ -248,6 +266,7 @@
     },
 
     "tcc:summer_to_brahma": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "进化：梵天百兽",
@@ -267,7 +286,9 @@
       "conditions": {
         "equippedCurios": ["tcc:summer_beach", "tcc:heaven_fire_apocalypse"],
         "holdingGunTypes": ["pistol"],
-        "kills": [{ "entity": "minecraft:ender_dragon" }]
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ]
       },
       "prerequisites": ["tcc:summer_beach_grant"],
       "reward": {
@@ -278,6 +299,7 @@
     },
 
     "tcc:brahma_to_salvation": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "进化：救赎",
@@ -297,7 +319,9 @@
       "conditions": {
         "equippedCurios": ["tcc:brahma_beasts", "tcc:heaven_fire_apocalypse"],
         "holdingGunTypes": ["pistol"],
-        "kills": [{ "entity": "minecraft:ender_dragon" }],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ],
         "attributes": [
           { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 80.0 }
         ]
@@ -315,6 +339,7 @@
     },
 
     "tcc:heaven_fire_apocalypse_endless": {
+      "enabled": true,
       "display": {
         "title": {
           "zh_cn": "劫灭无尽",

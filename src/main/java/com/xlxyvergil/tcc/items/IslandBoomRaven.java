@@ -118,6 +118,12 @@ public class IslandBoomRaven extends BaseCurioItem {
             }
         }
 
+        // 攻击后5秒（100 ticks）破除隐身
+        int lastHurtTs = entity.getLastHurtMobTimestamp();
+        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == 100) {
+            entity.removeEffect(MobEffects.INVISIBILITY);
+        }
+
         MobEffectInstance regen = entity.getEffect(MobEffects.REGENERATION);
         if (regen == null || regen.getAmplifier() < 1 || regen.getDuration() < 40) {
             entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 120, 1, false, false, true));

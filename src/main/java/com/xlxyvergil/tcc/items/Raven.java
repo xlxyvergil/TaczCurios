@@ -106,15 +106,25 @@ public class Raven extends BaseCurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
-        if (entity.tickCount % 200 != 0) return;
-        entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 600, 0, false, false, true));
 
-        // 如果加载了铁魔法，同时施加真实隐身（完全阻止怪物追踪）
-        if (ModList.get().isLoaded("irons_spellbooks")) {
-            MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
-            if (trueInvis != null) {
-                entity.addEffect(new MobEffectInstance(trueInvis, 600, 0, false, false, true));
+        // 每10秒重新施加隐身（持续刷新）
+        if (entity.tickCount % 200 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 600, 0, false, false, true));
+
+            // 如果加载了铁魔法，同时施加真实隐身（完全阻止怪物追踪）
+            if (ModList.get().isLoaded("irons_spellbooks")) {
+                MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
+                if (trueInvis != null) {
+                    entity.addEffect(new MobEffectInstance(trueInvis, 600, 0, false, false, true));
+                }
             }
+        }
+
+        // 攻击后5秒（100 ticks）破除隐身
+        // lastHurtMobTimestamp 在实体攻击时自动更新，>0 表示至少攻击过一次
+        int lastHurtTs = entity.getLastHurtMobTimestamp();
+        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == 100) {
+            entity.removeEffect(MobEffects.INVISIBILITY);
         }
     }
 

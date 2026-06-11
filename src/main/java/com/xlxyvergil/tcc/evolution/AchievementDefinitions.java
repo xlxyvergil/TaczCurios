@@ -165,7 +165,8 @@ public final class AchievementDefinitions {
         @SerializedName("criteria_count") int criteriaCount,
         AchievementConditions conditions,
         List<String> prerequisites,
-        Reward reward
+        Reward reward,
+        @SerializedName("enabled") Boolean enabled
     ) {
         /** Construct with explicit id (key from JSON map) */
         AchievementDef(String explicitId, AchievementDef fromJson) {
@@ -178,9 +179,13 @@ public final class AchievementDefinitions {
                 fromJson.criteriaCount,
                 fromJson.conditions,
                 fromJson.prerequisites,
-                fromJson.reward
+                fromJson.reward,
+                fromJson.enabled
             );
         }
+
+        /** @return 该成就是否启用，默认为 true */
+        public boolean isEnabled() { return enabled == null || enabled; }
 
         public boolean isPlayerKilled() { return playerKilled != null && playerKilled; }
         public ResourceLocation idRL() { return new ResourceLocation(id); }
@@ -252,8 +257,13 @@ public final class AchievementDefinitions {
     ) {}
 
     public record KillCondition(
-        String entity
-    ) {}
+        String entity,
+        List<String> nbt,
+        int value
+    ) {
+        /** @return 该击杀条件贡献的进度步骤数，默认为 1 */
+        public int value() { return value > 0 ? value : 1; }
+    }
 
     public record AttributeCondition(
         String attribute,

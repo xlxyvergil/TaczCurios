@@ -166,7 +166,12 @@ public class JudgementKey extends BaseCurioItem {
         if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
             double directPercent = TaczCuriosConfig.COMMON.judgementDirectDamagePercent.get();
             float directDamage = (float) (damageAfterHeadshot * directPercent);
-            targetLiving.setHealth(Math.max(0, targetLiving.getHealth() - directDamage));
+            boolean useSetHealth = TaczCuriosConfig.COMMON.judgementUseSetHealth.get();
+            if (useSetHealth) {
+                targetLiving.setHealth(Math.max(1, targetLiving.getHealth() - directDamage));
+            } else {
+                targetLiving.hurt(TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), directDamage);
+            }
         }
 
         // 2. 独立掷虚数崩解

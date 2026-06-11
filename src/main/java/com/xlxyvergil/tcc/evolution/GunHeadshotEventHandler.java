@@ -21,8 +21,6 @@ public final class GunHeadshotEventHandler {
 
     private static final String LAST_HEADSHOT_ATTACKER_KEY = "tcc_last_headshot_attacker";
     private static final String LAST_HEADSHOT_TIME_KEY = "tcc_last_headshot_time";
-    private static final String LAST_PROCESSED_KILL_UUID_KEY = "tcc_last_processed_headshot_kill_uuid";
-    private static final String LAST_PROCESSED_KILL_TIME_KEY = "tcc_last_processed_headshot_kill_time";
 
     private GunHeadshotEventHandler() {}
 
@@ -79,21 +77,7 @@ public final class GunHeadshotEventHandler {
 
     private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source,
                                              net.minecraft.resources.ResourceLocation gunId) {
-        if (alreadyProcessedKill(player, killed)) return;
         handleTrigger(player, killed, gunId, TRIGGER_GUN_HEADSHOT_KILL);
-    }
-
-    private static boolean alreadyProcessedKill(Player player, LivingEntity killed) {
-        CompoundTag data = player.getPersistentData();
-        String uuid = killed.getStringUUID();
-        long now = player.level().getGameTime();
-        if (uuid.equals(data.getString(LAST_PROCESSED_KILL_UUID_KEY))
-                && data.getLong(LAST_PROCESSED_KILL_TIME_KEY) == now) {
-            return true;
-        }
-        data.putString(LAST_PROCESSED_KILL_UUID_KEY, uuid);
-        data.putLong(LAST_PROCESSED_KILL_TIME_KEY, now);
-        return false;
     }
 
     /**
@@ -103,10 +87,15 @@ public final class GunHeadshotEventHandler {
      */
     private static void handleTrigger(Player player, LivingEntity other,
                                        net.minecraft.resources.ResourceLocation gunId, String trigger) {
+        // gun_headshot_kill 必须是枪械击杀，没有 gunId 说明不是枪杀，直接跳过
+        if (TRIGGER_GUN_HEADSHOT_KILL.equals(trigger) && gunId == null) return;
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
         if (serverPlayer == null) return;
 
         for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(trigger)) {
+            // Skip disabled achievements
+            if (!def.isEnabled()) continue;
+
             // Check prerequisites
             if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
 
@@ -116,9 +105,12 @@ public final class GunHeadshotEventHandler {
             // Check kill conditions
             if (!AchievementConditionMatcher.matchesKillConditions(player, other, gunId, def)) continue;
 
-            // Award criterion
-            RuleAdvancementMapping.awardNextCriterion(
-                    serverPlayer, def.id(), def.criteriaCount());
+            // Award criterion(s) based on kill value
+            var matchedKill = AchievementConditionMatcher.findMatchingKillCondition(
+                    other, def.conditions());
+            int killValue = matchedKill.map(AchievementDefinitions.KillCondition::value).orElse(1);
+            RuleAdvancementMapping.awardSteps(
+                    serverPlayer, def.id(), def.criteriaCount(), killValue);
         }
     }
 

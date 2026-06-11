@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,6 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Optional;
 
 /**
  * Matches achievement conditions against in-game events.
@@ -57,17 +60,9 @@ public final class AchievementConditionMatcher {
             if (player.distanceToSqr(killed) < min * min) return false;
         }
 
-        // Check kill entity type
+        // Check kill entity type (with NBT)
         if (c.kills() != null && !c.kills().isEmpty() && killed != null) {
-            String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-            boolean matched = false;
-            for (AchievementDefinitions.KillCondition kc : c.kills()) {
-                if ("*".equals(kc.entity()) || killedKey.equals(kc.entity())) {
-                    matched = true;
-                    break;
-                }
-            }
-            if (!matched) return false;
+            if (findMatchingKillCondition(killed, c).isEmpty()) return false;
         }
 
         // Check attributes
@@ -131,5 +126,28 @@ public final class AchievementConditionMatcher {
                 yield false;
             }
         };
+    }
+
+    /**
+     * 在成就的击杀条件列表中查找匹配的 {@link KillCondition}。
+     * 同时检查实体类型和 NBT 标签。
+     * @return 匹配到的 KillCondition；若未匹配则返回 {@link Optional#empty()}
+     */
+    public static Optional<AchievementDefinitions.KillCondition> findMatchingKillCondition(
+            LivingEntity killed, AchievementDefinitions.AchievementConditions conditions) {
+        if (killed == null || conditions == null || conditions.kills() == null || conditions.kills().isEmpty()) {
+            return Optional.empty();
+        }
+        String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+        for (AchievementDefinitions.KillCondition kc : conditions.kills()) {
+            if (!"*".equals(kc.entity()) && !killedKey.equals(kc.entity())) {
+                continue;
+            }
+            if (!EntityConditionHelper.matchesNbtFilters(killed, kc.nbt())) {
+                continue;
+            }
+            return Optional.of(kc);
+        }
+        return Optional.empty();
     }
 }

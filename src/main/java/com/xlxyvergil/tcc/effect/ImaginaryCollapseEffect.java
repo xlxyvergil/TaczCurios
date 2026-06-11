@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.effect;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -59,7 +60,12 @@ public class ImaginaryCollapseEffect extends MobEffect {
         float finalDamage = (float) (entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier);
 
         if (finalDamage > 0) {
-            entity.setHealth(Math.max(0, entity.getHealth() - finalDamage));
+            boolean useSetHealth = TaczCuriosConfig.COMMON.collapseUseSetHealth.get();
+            if (useSetHealth) {
+                entity.setHealth(Math.max(0, entity.getHealth() - finalDamage));
+            } else {
+                entity.hurt(TccDamageSources.imaginaryDamage(entity.level(), null), finalDamage);
+            }
         }
     }
 

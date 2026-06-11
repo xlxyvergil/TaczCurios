@@ -46,6 +46,9 @@ public final class GunKillEventHandler {
                 // Only handle grant and evolve types
                 if (def.reward() == null) continue;
 
+                // Skip disabled achievements
+                if (!def.isEnabled()) continue;
+
                 // Check prerequisites
                 if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
 
@@ -55,9 +58,12 @@ public final class GunKillEventHandler {
                 // Check conditions
                 if (!AchievementConditionMatcher.matchesKillConditions(player, killed, gunId, def)) continue;
 
-                // Award criterion
-                RuleAdvancementMapping.awardNextCriterion(
-                        serverPlayer, def.id(), def.criteriaCount());
+                // Award criterion(s) based on kill value
+                var matchedKill = AchievementConditionMatcher.findMatchingKillCondition(
+                        killed, def.conditions());
+                int killValue = matchedKill.map(AchievementDefinitions.KillCondition::value).orElse(1);
+                RuleAdvancementMapping.awardSteps(
+                        serverPlayer, def.id(), def.criteriaCount(), killValue);
             }
         }
 

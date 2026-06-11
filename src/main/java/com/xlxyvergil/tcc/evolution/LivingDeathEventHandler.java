@@ -117,6 +117,9 @@ public final class LivingDeathEventHandler {
                 if (def.reward() == null) continue;
                 if (def.isPlayerKilled() != playerKilled) continue;
 
+                // Skip disabled achievements
+                if (!def.isEnabled()) continue;
+
                 if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
                 if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
                 if (!AchievementConditionMatcher.matchesDeathConditions(player, killed, otherEntity, def)) continue;

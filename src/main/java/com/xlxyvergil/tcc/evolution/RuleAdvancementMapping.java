@@ -58,6 +58,26 @@ public final class RuleAdvancementMapping {
         }
     }
 
+    /**
+     * Award multiple criteria steps based on the kill value.
+     * @param steps 此次击杀应推进的步骤数（来自 KillCondition.value）
+     */
+    public static void awardSteps(ServerPlayer player, String achievementId, int criteriaCount, int steps) {
+        if (steps <= 0 || criteriaCount <= 0) return;
+        if (player.server == null) return;
+        ResourceLocation id = new ResourceLocation(achievementId);
+        Advancement adv = player.server.getAdvancements().getAdvancement(id);
+        if (adv == null) return;
+        var progress = player.getAdvancements().getOrStartProgress(adv);
+        if (progress.isDone()) return;
+
+        int start = nextUndone(progress, criteriaCount);
+        int end = Math.min(start + steps - 1, criteriaCount);
+        for (int i = start; i <= end; i++) {
+            player.getAdvancements().award(adv, "step_" + i);
+        }
+    }
+
     /** Check if ALL prerequisites for an achievement are complete. */
     public static boolean arePrerequisitesMet(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (def.prerequisites() == null || def.prerequisites().isEmpty()) return true;
