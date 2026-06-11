@@ -5,6 +5,7 @@ import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -166,12 +167,7 @@ public class JudgementKey extends BaseCurioItem {
         if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
             double directPercent = TaczCuriosConfig.COMMON.judgementDirectDamagePercent.get();
             float directDamage = (float) (damageAfterHeadshot * directPercent);
-            boolean useSetHealth = TaczCuriosConfig.COMMON.judgementUseSetHealth.get();
-            if (useSetHealth) {
-                targetLiving.setHealth(Math.max(1, targetLiving.getHealth() - directDamage));
-            } else {
-                targetLiving.hurt(TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), directDamage);
-            }
+            TccAttributeEvents.applyImaginaryDamage(targetLiving, TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), directDamage);
         }
 
         // 2. 独立掷虚数崩解

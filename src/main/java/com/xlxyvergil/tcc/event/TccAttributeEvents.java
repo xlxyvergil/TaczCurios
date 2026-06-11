@@ -21,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -34,6 +35,33 @@ import top.theillusivec4.curios.api.CuriosApi;
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
+
+    /**
+     * ThreadLocal 传递虚数伤害意图值。
+     * 调用 hurt() 前设置，在 LivingDamageEvent LOWEST 中读回后清除。
+     */
+    private static final ThreadLocal<Float> INTENDED_DAMAGE = new ThreadLocal<>();
+
+    /** 在调用 hurt() 之前存入意图伤害值 */
+    public static void setIntendedDamage(float damage) {
+        INTENDED_DAMAGE.set(damage);
+    }
+
+    /** LivingDamageEvent 处理器调用，读取并清除意图伤害值 */
+    public static Float takeIntendedDamage() {
+        Float d = INTENDED_DAMAGE.get();
+        INTENDED_DAMAGE.remove();
+        return d;
+    }
+
+    /**
+     * 统一入口：应用虚数伤害。
+     */
+    public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
+        if (intendedDamage <= 0) return false;
+        setIntendedDamage(intendedDamage);
+        return target.hurt(source, intendedDamage);
+    }
 
     @SubscribeEvent
     public static void applyImaginaryInfection(EntityHurtByGunEvent.Post event) {
@@ -241,5 +269,17 @@ public class TccAttributeEvents {
         // compensation = effectiveModifier / modifier 把伤害恢复到目标水平
         float compensation = (float) (effectiveModifier / modifier);
         event.setAmount(event.getAmount() * compensation);
+    }
+
+    /**
+     * LOWEST 优先级 — LivingDamageEvent 在所有减伤之后触发。
+     * 读回 ThreadLocal 中的意图伤害值，覆盖各 mod 减伤。
+     * setAmount() 之后就是 setHealth()，确保最终扣血为意图值。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void enforceImaginaryDamage(LivingDamageEvent event) {
+        Float intended = takeIntendedDamage();
+        if (intended == null) return;
+        event.setAmount(intended);
     }
 }
