@@ -14,7 +14,6 @@ import com.xlxyvergil.tcc.items.Salvation;
 import com.xlxyvergil.tcc.items.SummerBeach;
 import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
-import com.mojang.logging.LogUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,18 +26,16 @@ import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.slf4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     /**
      * 实体 → 意图伤害 映射。applyImaginaryDamage 存入，Mixin 在 hurt() 内消费。
@@ -72,8 +69,6 @@ public class TccAttributeEvents {
         boolean hurtResult = target.hurt(source, intendedDamage);
 
         float postHealth = target.getHealth();
-        LOGGER.info("[TCC-APPLY] target={}, intended={}, preHealth={}, postHealth={}, hurtResult={}",
-            target.getName().getString(), intendedDamage, preHealth, postHealth, hurtResult);
 
         // 清理：如果 mixin 没消费（比如 hurt 被 cancel），手动清除
         takeIntendedDamage(target);
@@ -114,9 +109,9 @@ public class TccAttributeEvents {
             newAmplifier,
             false, false, true
         );
-        // MineFargo 模式：addEffect 触发事件/属性，forceAddEffect 保证时长刷新
-        living.addEffect(newInstance, attacker);
+        // forceAddEffect 写 Map，addEffect 负责网络同步（Applicable 事件由 HIGHEST 监听器放行）
         forceAddEffect(living, newInstance);
+        living.addEffect(newInstance, attacker);
 
         // 仅天火劫灭/劫灭无尽可触发虚数崩解
         // 自然消失前无法再次施加，避免枪械连射导致 duration 被反复刷新为 20 的倍数，
@@ -130,8 +125,8 @@ public class TccAttributeEvents {
                     0,
                     false, false, true
                 );
-                living.addEffect(collapseInstance, attacker);
                 forceAddEffect(living, collapseInstance);
+                living.addEffect(collapseInstance, attacker);
 
                 // 检查攻击者是否装备负面增伤饰品（镀层步枪才能/通晓霰弹枪/准确射手/异况超量）
                 if (attackerHasHarmfulCurio(attacker)) {
@@ -142,8 +137,8 @@ public class TccAttributeEvents {
                         0,
                         false, false, true
                     );
-                    living.addEffect(erosionInstance, attacker);
                     forceAddEffect(living, erosionInstance);
+                    living.addEffect(erosionInstance, attacker);
                 }
             }
         }
@@ -231,6 +226,20 @@ public class TccAttributeEvents {
         if (entity.hasEffect(TccMobEffects.IMAGINARY_INFECTION.get())
                 || entity.hasEffect(TccMobEffects.IMAGINARY_COLLAPSE.get())) {
             event.setCanceled(true);
+        }
+    }
+
+    /**
+     * 阻止虚空珍珠等拦截至 tcc 效果的添加。
+     * 优先级 LOWEST，在 EnigmaticEventHandler.onApplyPotion(Applicable) 之后执行，
+     * 对 tcc 效果用 ALLOW 覆盖其 DENY（Forge setResult 最后调用者胜出）。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onEffectApplicable(MobEffectEvent.Applicable event) {
+        if (event.getResult() == Result.ALLOW) return;
+        var key = ForgeRegistries.MOB_EFFECTS.getKey(event.getEffectInstance().getEffect());
+        if (key != null && key.getNamespace().equals("tcc")) {
+            event.setResult(Result.ALLOW);
         }
     }
 
