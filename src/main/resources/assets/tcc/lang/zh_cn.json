@@ -59,11 +59,11 @@
 
   "item.tcc.xiora": "§f希奥拉",
   "item.tcc.raven": "§f渡鸦",
-  "item.tcc.island_boom_raven": "§f小岛爆爆鸦",
+  "item.tcc.island_boom_raven": "§4小岛爆爆鸦",
 
   "item.tcc.seven_thunders": "§6涤罪七雷",
   "item.tcc.seven_thunders_thunder_seen": "§6涤罪七雷·雷鸣见",
-  "item.tcc.judgement_key": "§f裁决之键",
+  "item.tcc.judgement_key": "§4裁决之键",
 
   "item.tcc.seven_thunders.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害",
   "item.tcc.seven_thunders.how_to_obtain": "§7§o通过TACZ爆头击杀任意30个实体获得（仅一次）；持有渡鸦且隐身状态下，用狙击枪击杀末影龙进化为涤罪七雷·雷鸣见",

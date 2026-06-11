@@ -55,11 +55,11 @@
 
   "item.tcc.xiora": "§fXiora",
   "item.tcc.raven": "§fRaven",
-  "item.tcc.island_boom_raven": "§fIsland Boom Raven",
+  "item.tcc.island_boom_raven": "§4Island Boom Raven",
 
   "item.tcc.seven_thunders": "§6Seven Thunders",
   "item.tcc.seven_thunders_thunder_seen": "§6Seven Thunders: Thunder Seen",
-  "item.tcc.judgement_key": "§fJudgement Key",
+  "item.tcc.judgement_key": "§4Judgement Key",
 
   "item.tcc.seven_thunders.effect": "%1$s%% headshot multiplier %2$s%% crit chance %3$s%% crit damage",
   "item.tcc.seven_thunders.how_to_obtain": "§7§oObtain by landing 30 TACZ headshot kills (once only); With Raven equipped and while invisible, kill the Ender Dragon with a sniper to evolve into Seven Thunders: Thunder Seen",

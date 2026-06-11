@@ -245,7 +245,7 @@ public class IslandBoomRaven extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.how_to_obtain")

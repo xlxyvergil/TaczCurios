@@ -166,7 +166,7 @@ public class TaczItems {
     public static final RegistryObject<Item> ISLAND_BOOM_RAVEN = ITEMS.register("island_boom_raven",
         () -> new IslandBoomRaven(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC)));
+            .rarity(RIFT)));
     
     // 天火劫灭·无烬终焉 - 裂隙级
     public static final RegistryObject<Item> HEAVEN_FIRE_APOCALYPSE_ENDLESS = ITEMS.register("heaven_fire_apocalypse_endless", 
@@ -187,7 +187,7 @@ public class TaczItems {
     public static final RegistryObject<Item> JUDGEMENT_KEY = ITEMS.register("judgement_key",
         () -> new JudgementKey(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC)));
+            .rarity(RIFT)));
     
     // 乌拉尔银狼 - 提供150%爆头倍率加成
     public static final RegistryObject<Item> URAL_WOLF_TAG = ITEMS.register("ural_wolf_tag", 
