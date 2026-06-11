@@ -14,6 +14,7 @@ import com.xlxyvergil.tcc.items.Salvation;
 import com.xlxyvergil.tcc.items.SummerBeach;
 import com.xlxyvergil.tcc.registries.TaczItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
+import com.mojang.logging.LogUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,7 +22,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
@@ -30,37 +31,54 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     /**
-     * ThreadLocal 传递虚数伤害意图值。
-     * 调用 hurt() 前设置，在 LivingDamageEvent LOWEST 中读回后清除。
+     * 实体 → 意图伤害 映射。applyImaginaryDamage 存入，Mixin 在 hurt() 内消费。
      */
-    private static final ThreadLocal<Float> INTENDED_DAMAGE = new ThreadLocal<>();
+    private static final java.util.concurrent.ConcurrentHashMap<LivingEntity, Float> INTENDED_DAMAGE
+        = new java.util.concurrent.ConcurrentHashMap<>();
 
-    /** 在调用 hurt() 之前存入意图伤害值 */
-    public static void setIntendedDamage(float damage) {
-        INTENDED_DAMAGE.set(damage);
+    public static void setIntendedDamage(LivingEntity entity, float damage) {
+        INTENDED_DAMAGE.put(entity, damage);
     }
-
-    /** LivingDamageEvent 处理器调用，读取并清除意图伤害值 */
-    public static Float takeIntendedDamage() {
-        Float d = INTENDED_DAMAGE.get();
-        INTENDED_DAMAGE.remove();
-        return d;
+    public static Float takeIntendedDamage(LivingEntity entity) {
+        return INTENDED_DAMAGE.remove(entity);
+    }
+    public static Float peekIntendedDamage(LivingEntity entity) {
+        return INTENDED_DAMAGE.get(entity);
     }
 
     /**
      * 统一入口：应用虚数伤害。
+     * 意图值存入 map，Mixin 在 actuallyHurt() 末尾拦截 setHealth 调用，
+     * 替换为 setHealth( preHealth - intended )。
+     * hurt() 的标准死亡检查 → LivingDeathEvent → die() → 掉落。
      */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
-        setIntendedDamage(intendedDamage);
-        return target.hurt(source, intendedDamage);
+
+        target.invulnerableTime = 0;
+
+        float preHealth = target.getHealth();
+        setIntendedDamage(target, intendedDamage);
+        boolean hurtResult = target.hurt(source, intendedDamage);
+
+        float postHealth = target.getHealth();
+        LOGGER.info("[TCC-APPLY] target={}, intended={}, preHealth={}, postHealth={}, hurtResult={}",
+            target.getName().getString(), intendedDamage, preHealth, postHealth, hurtResult);
+
+        // 清理：如果 mixin 没消费（比如 hurt 被 cancel），手动清除
+        takeIntendedDamage(target);
+
+        return hurtResult;
     }
 
     @SubscribeEvent
@@ -271,15 +289,4 @@ public class TccAttributeEvents {
         event.setAmount(event.getAmount() * compensation);
     }
 
-    /**
-     * LOWEST 优先级 — LivingDamageEvent 在所有减伤之后触发。
-     * 读回 ThreadLocal 中的意图伤害值，覆盖各 mod 减伤。
-     * setAmount() 之后就是 setHealth()，确保最终扣血为意图值。
-     */
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void enforceImaginaryDamage(LivingDamageEvent event) {
-        Float intended = takeIntendedDamage();
-        if (intended == null) return;
-        event.setAmount(intended);
-    }
 }

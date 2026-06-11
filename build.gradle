@@ -174,9 +174,21 @@ dependencies {
     // Iron's Spells 'n Spellbooks (optional, for true_invisibility effect)
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
 
+    // Mixin annotation processor for refmap generation
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // MixinExtras for @WrapOperation (从 Maven Central 拉取，非 JitPack)
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3"))
+    compileOnly("io.github.llamalad7:mixinextras-forge:0.5.3")
+
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+}
+
+mixin {
+    add sourceSets.main, 'tcc.refmap.json'
+    config 'tcc.mixins.json'
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
