@@ -284,7 +284,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue lethalCritCritChance;
         public final ForgeConfigSpec.DoubleValue weaknessSenseCritDamage;
         public final ForgeConfigSpec.DoubleValue argonScopeBaseCritChance;
-        public final ForgeConfigSpec.DoubleValue argonScopeCritChancePerLevel;
         public final ForgeConfigSpec.IntValue argonScopeDuration;
         public final ForgeConfigSpec.DoubleValue gildedArgonScopeBaseCritChance;
         public final ForgeConfigSpec.DoubleValue gildedArgonScopeCritChancePerLevel;
@@ -292,7 +291,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue gildedArgonScopeDuration;
         public final ForgeConfigSpec.IntValue gildedArgonScopeMaxStacks;
         public final ForgeConfigSpec.DoubleValue sharpBulletBaseCritDamage;
-        public final ForgeConfigSpec.DoubleValue sharpBulletCritDamagePerLevel;
         public final ForgeConfigSpec.IntValue sharpBulletDuration;
         public final ForgeConfigSpec.DoubleValue gildedRifleAptitudePerHarmful;
         public final ForgeConfigSpec.IntValue gildedRifleAptitudeDuration;
@@ -306,10 +304,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue thunderBarrelCritChance;
         public final ForgeConfigSpec.DoubleValue thunderBarrelPrimeCritChance;
         public final ForgeConfigSpec.DoubleValue laserScopeBaseCritChance;
-        public final ForgeConfigSpec.DoubleValue laserScopeCritChancePerLevel;
         public final ForgeConfigSpec.IntValue laserScopeDuration;
         public final ForgeConfigSpec.DoubleValue fragmentShotBaseCritDamage;
-        public final ForgeConfigSpec.DoubleValue fragmentShotCritDamagePerLevel;
         public final ForgeConfigSpec.IntValue fragmentShotDuration;
         public final ForgeConfigSpec.DoubleValue gildedShotgunSavvyPerHarmful;
         public final ForgeConfigSpec.IntValue gildedShotgunSavvyDuration;
@@ -325,7 +321,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue pistolMasteryCritChance;
         public final ForgeConfigSpec.DoubleValue pistolMasteryPrimeCritChance;
         public final ForgeConfigSpec.DoubleValue hydraulicCrosshairBaseCritChance;
-        public final ForgeConfigSpec.DoubleValue hydraulicCrosshairCritChancePerLevel;
         public final ForgeConfigSpec.IntValue hydraulicCrosshairDuration;
         public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairBaseCritChance;
         public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairCritChancePerLevel;
@@ -333,7 +328,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue gildedHydraulicCrosshairDuration;
         public final ForgeConfigSpec.IntValue gildedHydraulicCrosshairMaxStacks;
         public final ForgeConfigSpec.DoubleValue sharpAmmoBaseCritDamage;
-        public final ForgeConfigSpec.DoubleValue sharpAmmoCritDamagePerLevel;
         public final ForgeConfigSpec.IntValue sharpAmmoDuration;
         public final ForgeConfigSpec.DoubleValue gildedMarksmanPerHarmful;
         public final ForgeConfigSpec.IntValue gildedMarksmanDuration;
@@ -574,7 +568,6 @@ public class TaczCuriosConfig {
             // R-03 氩晶瞄具
             builder.comment("氩晶瞄具饰品配置").push("argon_scope");
             argonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 1.35, -1, 100);
-            argonScopeCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.5)").defineInRange("critChancePerLevel", 0.5, -1, 100);
             argonScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -590,7 +583,6 @@ public class TaczCuriosConfig {
             // R-05 尖刃弹头
             builder.comment("尖刃弹头饰品配置").push("sharp_bullet");
             sharpBulletBaseCritDamage = builder.comment("基础暴击伤害 (默认: 1.2)").defineInRange("baseCritDamage", 1.2, -1, 100);
-            sharpBulletCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.6)").defineInRange("critDamagePerLevel", 0.6, -1, 100);
             sharpBulletDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -632,14 +624,12 @@ public class TaczCuriosConfig {
             // S-05 雷射瞄具
             builder.comment("雷射瞄具饰品配置").push("laser_scope");
             laserScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
-            laserScopeCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.4)").defineInRange("critChancePerLevel", 0.4, -1, 100);
             laserScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // S-06 破片射击
             builder.comment("破片射击饰品配置").push("fragment_shot");
             fragmentShotBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.99)").defineInRange("baseCritDamage", 0.99, -1, 100);
-            fragmentShotCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.3)").defineInRange("critDamagePerLevel", 0.3, -1, 100);
             fragmentShotDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -687,7 +677,6 @@ public class TaczCuriosConfig {
             // P-06 液压准心
             builder.comment("液压准心饰品配置").push("hydraulic_crosshair");
             hydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 1.35, -1, 100);
-            hydraulicCrosshairCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.45)").defineInRange("critChancePerLevel", 0.45, -1, 100);
             hydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -703,7 +692,6 @@ public class TaczCuriosConfig {
             // P-08 尖锐子弹
             builder.comment("尖锐子弹饰品配置").push("sharp_ammo");
             sharpAmmoBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.75)").defineInRange("baseCritDamage", 0.75, -1, 100);
-            sharpAmmoCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.25)").defineInRange("critDamagePerLevel", 0.25, -1, 100);
             sharpAmmoDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
