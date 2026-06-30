@@ -6,6 +6,7 @@ import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
 import com.aizistral.enigmaticlegacy.items.CursedRing;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.items.BrahmaBeasts;
@@ -37,9 +38,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
 
-    /**
-     * 实体 → 意图伤害 映射。applyImaginaryDamage 存入，Mixin 在 hurt() 内消费。
-     */
     private static final java.util.concurrent.ConcurrentHashMap<LivingEntity, Float> INTENDED_DAMAGE
         = new java.util.concurrent.ConcurrentHashMap<>();
 
@@ -53,27 +51,23 @@ public class TccAttributeEvents {
         return INTENDED_DAMAGE.get(entity);
     }
 
-    /**
-     * 统一入口：应用虚数伤害。
-     * 意图值存入 map，Mixin 在 actuallyHurt() 末尾拦截 setHealth 调用，
-     * 替换为 setHealth( preHealth - intended )。
-     * hurt() 的标准死亡检查 → LivingDeathEvent → die() → 掉落。
-     */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
 
         target.invulnerableTime = 0;
 
-        float preHealth = target.getHealth();
+        // 亚波伦直伤路径：不经过 hurt() 以避免 RevelationFix 的限伤拦截
+        if (ApollyonCompat.isRevelationFixApostle(target)) {
+            ApollyonCompat.applyDirectDamage(target, intendedDamage);
+            return true;
+        }
+
         setIntendedDamage(target, intendedDamage);
-        boolean hurtResult = target.hurt(source, intendedDamage);
-
-        float postHealth = target.getHealth();
-
-        // 清理：如果 mixin 没消费（比如 hurt 被 cancel），手动清除
-        takeIntendedDamage(target);
-
-        return hurtResult;
+        try {
+            return target.hurt(source, intendedDamage);
+        } finally {
+            takeIntendedDamage(target);
+        }
     }
 
     @SubscribeEvent

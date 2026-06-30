@@ -99,7 +99,7 @@
   "item.tcc.seven_thunders_thunder_seen.evolution_kill": "  击杀%1$s x%2$d",
   "item.tcc.seven_thunders_thunder_seen.bound": "已绑定至：%1$s",
 
-  "item.tcc.judgement_key.effect": "%1$s%%暴击几率 %2$s%%暴击伤害 伤害转为虚数 爆头时造成一次额外真实伤害（免疫秒杀者转为流血） 流血继承崩解增伤",
+  "item.tcc.judgement_key.effect": "%1$s%%暴击几率 %2$s%%暴击伤害 伤害转为虚数 爆头时有几率造成一次额外虚数伤害 流血继承崩解增伤",
   "item.tcc.judgement_key.how_to_obtain": "§7§o由涤罪七雷·雷鸣见进化而来",
   "item.tcc.judgement_key.evolution_title": "进化需求:",
   "item.tcc.judgement_key.evolution_distance": "  最小距离: %1$s格",

@@ -261,9 +261,6 @@ public class TaczCuriosConfig {
         // 裁决真实伤害模式：true=setHealth直接扣血，false=hurt正常伤害
         public final ForgeConfigSpec.BooleanValue judgementUseSetHealth;
 
-        // 崩解真实伤害模式：true=setHealth直接扣血，false=hurt正常伤害
-        public final ForgeConfigSpec.BooleanValue collapseUseSetHealth;
-        
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
@@ -406,17 +403,14 @@ public class TaczCuriosConfig {
             // 虚数崩解配置
             builder.comment("虚数崩解配置（虚数崩解基于虚数侵染层数和负面效果种数造成额外伤害）").push("imaginary_collapse");
             collapsePercentPerLevel = builder
-                    .comment("每层虚数侵染的崩解增伤比例 (默认: 0.05 = 5%/层)")
-                    .defineInRange("percentPerLevel", 0.05, 0, 1);
+                    .comment("每层虚数侵染的崩解增伤比例 (默认: 0.01 = 1%/层)")
+                    .defineInRange("percentPerLevel", 0.01, 0, 1);
             collapsePercentPerDebuff = builder
                     .comment("每种负面效果的崩解增伤比例 (默认: 0.1 = 10%/种)")
                     .defineInRange("percentPerDebuff", 0.1, 0, 1);
             collapseMaxDebuffCount = builder
                     .comment("崩解计入的负面效果种数上限 (默认: 5)")
                     .defineInRange("maxDebuffCount", 5, 1, 20);
-            collapseUseSetHealth = builder
-                    .comment("崩解是否使用setHealth直接扣血。true=setHealth（无视护甲/保护），false=hurt正常伤害")
-                    .define("useSetHealth", true);
             builder.pop();
 
             // 按饰品分级的虚数侵染上限
@@ -438,14 +432,14 @@ public class TaczCuriosConfig {
             // 裁决之键配置
             builder.comment("裁决之键饰品配置").push("judgement_key");
             judgementProcChance = builder
-                    .comment("爆头时触发额外伤害的几率 (默认: 0.5 = 50%)")
-                    .defineInRange("procChance", 0.5, 0, 1);
+                    .comment("爆头时触发额外伤害的几率 (默认: 0.1 = 10%)")
+                    .defineInRange("procChance", 0.1, 0, 1);
             judgementDirectDamagePercent = builder
-                    .comment("直接真实伤害的比例（对无限伤实体） (默认: 1.0 = 100%)")
-                    .defineInRange("directDamagePercent", 1.0, 0, 100);
+                    .comment("直接真实伤害的比例（对无限伤实体） (默认: 0.3 = 30%)")
+                    .defineInRange("directDamagePercent", 0.3, 0, 1);
             judgementCollapseProcChance = builder
                     .comment("爆头时触发虚数崩解效果的几率 (默认: 0.5 = 50%)")
-                    .defineInRange("collapseProcChance", 0.5, 0, 1);
+                    .defineInRange("collapseProcChance", 0.1, 0, 1);
             judgementUseSetHealth = builder
                     .comment("裁决是否使用setHealth直接扣血。true=setHealth（无视护甲/保护），false=hurt正常伤害")
                     .define("useSetHealth", false);

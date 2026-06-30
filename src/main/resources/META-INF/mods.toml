@@ -10,7 +10,7 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="tcc"
-version="1.2.2"
+version="1.2.3"
 displayName="TaczCurios"
 authors="xlxyvergil"
 description="A Minecraft 1.20.1 jewelry mod that adds various accessories with special effects. Dependencies: Curios API and TaczAttributeAdd."
@@ -66,6 +66,20 @@ side="BOTH"
 
 [[dependencies.tcc]]
 modId="irons_spellbooks"
+mandatory=false
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.tcc]]
+modId="goetyrevelation"
+mandatory=false
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.tcc]]
+modId="revelationfix"
 mandatory=false
 versionRange="*"
 ordering="AFTER"
