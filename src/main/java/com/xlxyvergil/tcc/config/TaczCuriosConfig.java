@@ -187,19 +187,20 @@ public class TaczCuriosConfig {
         // 红-有-三配置
         public final ForgeConfigSpec.DoubleValue redMovementTagSpeedBoost;
         
+        // 希奥拉配置
+        public final ForgeConfigSpec.IntValue xioraBaseResistance;
+        
         // 夏日沙滩配置
         public final ForgeConfigSpec.DoubleValue summerBeachELCurseReduction;
         public final ForgeConfigSpec.IntValue summerBeachBaseResistance;
         
         // 梵天百兽配置
         public final ForgeConfigSpec.DoubleValue brahmaBeastsELCurseReduction;
-        public final ForgeConfigSpec.IntValue brahmaBeastsBaseResistance;
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationELCurseReduction;
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
         public final ForgeConfigSpec.IntValue salvationResistanceLevel;
-        public final ForgeConfigSpec.IntValue salvationBaseResistance;
         
         // 无烬终焉配置
         public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
@@ -258,8 +259,7 @@ public class TaczCuriosConfig {
         // Apotheosis集成配置
         public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
 
-        // 裁决真实伤害模式：true=setHealth直接扣血，false=hurt正常伤害
-        public final ForgeConfigSpec.BooleanValue judgementUseSetHealth;
+
 
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
@@ -440,9 +440,6 @@ public class TaczCuriosConfig {
             judgementCollapseProcChance = builder
                     .comment("爆头时触发虚数崩解效果的几率 (默认: 0.5 = 50%)")
                     .defineInRange("collapseProcChance", 0.1, 0, 1);
-            judgementUseSetHealth = builder
-                    .comment("裁决是否使用setHealth直接扣血。true=setHealth（无视护甲/保护），false=hurt正常伤害")
-                    .define("useSetHealth", false);
             builder.pop();
             
             // 天火劫灭配置
@@ -984,14 +981,21 @@ public class TaczCuriosConfig {
                     .defineInRange("speedBoost", 1.5, -1, 100);
             builder.pop();
             
+            // 希奥拉配置
+            builder.comment("希奥拉饰品配置").push("xiora");
+            xioraBaseResistance = builder
+                    .comment("希奥拉虚数抗性基础值 (默认: 21)")
+                    .defineInRange("baseResistance", 21, 0, 1000);
+            builder.pop();
+            
             // 夏日沙滩配置
             builder.comment("夏日沙滩饰品配置").push("summer_beach");
             summerBeachELCurseReduction = builder
                     .comment("夏日沙滩对第四诅咒效果的削弱比例 (默认: 0.25 = 抵消25%的诅咒效果)")
                     .defineInRange("elCurseReduction", 0.25, 0, 1);
             summerBeachBaseResistance = builder
-                    .comment("夏日沙滩虚数抗性基础值 (默认: 20)")
-                    .defineInRange("baseResistance", 20, 0, 1000);
+                    .comment("夏日沙滩虚数抗性基础值 (默认: 41)")
+                    .defineInRange("baseResistance", 41, 0, 1000);
             builder.pop();
             
             // 梵天百兽配置
@@ -999,9 +1003,6 @@ public class TaczCuriosConfig {
             brahmaBeastsELCurseReduction = builder
                     .comment("梵天百兽对第四诅咒效果的削弱比例 (默认: 0.5 = 抵消50%的诅咒效果)")
                     .defineInRange("elCurseReduction", 0.5, 0, 1);
-            brahmaBeastsBaseResistance = builder
-                    .comment("梵天百兽虚数抗性基础值 (默认: 20)")
-                    .defineInRange("baseResistance", 20, 0, 1000);
             builder.pop();
             
             // 救世配置
@@ -1015,9 +1016,6 @@ public class TaczCuriosConfig {
             salvationResistanceLevel = builder
                     .comment("救世抗性提升等级 (默认: 2 = 抗性III)")
                     .defineInRange("resistanceLevel", 2, 0, 10);
-            salvationBaseResistance = builder
-                    .comment("救世虚数抗性基础值 (默认: 20)")
-                    .defineInRange("baseResistance", 20, 0, 1000);
             builder.pop();
             
             // 无烬终焉配置
@@ -1162,8 +1160,8 @@ public class TaczCuriosConfig {
             // Apotheosis集成配置
             builder.comment("Apotheosis神化属性集成配置").push("apotheosis_integration");
             enableApotheosisIntegration = builder
-                    .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: false)")
-                    .define("enableApotheosisIntegration", false);
+                    .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: true)")
+                    .define("enableApotheosisIntegration", true);
             builder.pop();
             
             // 饰品互斥配置

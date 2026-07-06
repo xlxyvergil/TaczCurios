@@ -2,7 +2,7 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -10,7 +10,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +21,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
@@ -61,15 +65,15 @@ public class Salvation extends BaseCurioItem {
             imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
         
         // 常驻抗性提升（可配置，通过效果实现）
-        livingEntity.removeEffect(net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE);
-        livingEntity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-            net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        livingEntity.addEffect(new MobEffectInstance(
+            MobEffects.DAMAGE_RESISTANCE,
             300,  // 15秒，tick会刷新
             2,    // 等级2 = 抗性提升III（等级从0开始）
             false, false, true));
         
         // 免疫击退（knockback_resistance = 1.0）
-        AttributeHelper.applyModifier(livingEntity, net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE, 
+        AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
             1.0, KNOCKBACK_RESISTANCE_UUID, "tcc_salvation_knockback_immunity", AttributeModifier.Operation.ADDITION);
         
         // 注意：伤害降低通过 HeavenFireHealthListener 中的 LivingHurtEvent 实现（可配置）
@@ -79,10 +83,10 @@ public class Salvation extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             IMAGINARY_RESISTANCE_UUID);
-        AttributeHelper.removeModifier(livingEntity, net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE, 
+        AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
             KNOCKBACK_RESISTANCE_UUID);
         // 移除抗性提升效果
-        livingEntity.removeEffect(net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE);
+        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
     }
     
     /**
@@ -94,7 +98,7 @@ public class Salvation extends BaseCurioItem {
             return 0;
         }
         CompoundTag tag = stack.getTag();
-        return getBaseResistance() + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
+        return ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
     }
     
     @Override
@@ -104,17 +108,17 @@ public class Salvation extends BaseCurioItem {
         // 继承抗性（从NBT读取）
         CompoundTag tag = stack.getTag();
         double baseValue = getBaseResistance();
-        double progressValue = tag != null ? getExtraResistanceFromProgress(tag) : 0.0;
+        double progressValue = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", baseValue + progressValue))
             .withStyle(ChatFormatting.AQUA));
         
         // 常驻加成
-        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100))
+        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100))
             .withStyle(ChatFormatting.GREEN));
         
         // EL 第四诅咒削弱（仅加载神秘遗物时显示）
-        if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
-            double curseReduction = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationELCurseReduction.get();
+        if (ModList.get().isLoaded("enigmaticlegacy")) {
+            double curseReduction = TaczCuriosConfig.COMMON.salvationELCurseReduction.get();
             tooltip.add(Component.translatable("item.tcc.salvation.el_curse_reduction", String.format("%.0f", curseReduction * 100))
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
@@ -146,10 +150,10 @@ public class Salvation extends BaseCurioItem {
         
         // 每15秒刷新一次抗性提升
         if (event.player.tickCount % 280 == 0) {
-            int level = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationResistanceLevel.get();
-            event.player.removeEffect(net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE);
-            event.player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                net.minecraft.world.effect.MobEffects.DAMAGE_RESISTANCE,
+            int level = TaczCuriosConfig.COMMON.salvationResistanceLevel.get();
+            event.player.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+            event.player.addEffect(new MobEffectInstance(
+                MobEffects.DAMAGE_RESISTANCE,
                 300, level, false, false, true));
         }
     }
@@ -180,27 +184,7 @@ public class Salvation extends BaseCurioItem {
     }
 
     private static int getBaseResistance() {
-        return TaczCuriosConfig.COMMON.salvationBaseResistance.get();
+        return TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
     }
 
-    private static double getExtraResistanceFromProgress(CompoundTag tag) {
-        String nbtKey = null;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:salvation")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            nbtKey = progress.nbtKey;
-        }
-        if (nbtKey == null) {
-            return 0.0;
-        }
-        return tag.getDouble(nbtKey);
     }
-}

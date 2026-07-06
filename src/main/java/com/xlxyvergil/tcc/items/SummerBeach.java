@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -57,7 +58,7 @@ public class SummerBeach extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
-        double total = getBaseResistance() + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             total, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_summer_beach_resistance", AttributeModifier.Operation.ADDITION);
     }
@@ -88,8 +89,8 @@ public class SummerBeach extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         
         double baseValue = getBaseResistance();
-        double maxProgress = getMaxExtraResistanceFromProgressRules();
-        double total = baseValue + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
+        double maxProgress = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:summer_beach");
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.summer_beach.effect", String.format("%.0f", total))
             .withStyle(ChatFormatting.BLUE));
@@ -206,42 +207,4 @@ public class SummerBeach extends BaseCurioItem {
         return TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
     }
 
-    private static double getMaxExtraResistanceFromProgressRules() {
-        double cap = 0.0;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:summer_beach")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            cap = Math.max(cap, progress.cap);
-        }
-        return cap;
     }
-
-    private static double getExtraResistanceFromProgress(CompoundTag tag) {
-        String nbtKey = null;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:summer_beach")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            nbtKey = progress.nbtKey;
-        }
-        if (nbtKey == null) {
-            return 0.0;
-        }
-        return tag.getDouble(nbtKey);
-    }
-}

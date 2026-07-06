@@ -21,6 +21,7 @@ public final class GunHeadshotEventHandler {
 
     private static final String LAST_HEADSHOT_ATTACKER_KEY = "tcc_last_headshot_attacker";
     private static final String LAST_HEADSHOT_TIME_KEY = "tcc_last_headshot_time";
+    private static final String LAST_HEADSHOT_GUN_ID_KEY = "tcc_last_headshot_gun_id";
 
     private GunHeadshotEventHandler() {}
 
@@ -36,9 +37,10 @@ public final class GunHeadshotEventHandler {
             CompoundTag tag = hurt.getPersistentData();
             tag.putString(LAST_HEADSHOT_ATTACKER_KEY, player.getStringUUID());
             tag.putLong(LAST_HEADSHOT_TIME_KEY, player.level().getGameTime());
+            tag.putString(LAST_HEADSHOT_GUN_ID_KEY, event.getGunId() != null ? event.getGunId().toString() : "");
         }
 
-        handleTrigger(player, hurt, null, TRIGGER_GUN_HEADSHOT_HIT);
+        handleTrigger(player, hurt, event.getGunId(), TRIGGER_GUN_HEADSHOT_HIT);
     }
 
     @SubscribeEvent
@@ -72,7 +74,17 @@ public final class GunHeadshotEventHandler {
         if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) return;
         if (player.level().getGameTime() - tag.getLong(LAST_HEADSHOT_TIME_KEY) > 2) return;
 
-        triggerHeadshotKill(player, killed, event.getSource(), null);
+        net.minecraft.resources.ResourceLocation gunId = null;
+        String gunIdStr = tag.getString(LAST_HEADSHOT_GUN_ID_KEY);
+        if (gunIdStr != null && !gunIdStr.isBlank()) {
+            try {
+                gunId = new net.minecraft.resources.ResourceLocation(gunIdStr);
+            } catch (Exception ignored) {
+                gunId = null;
+            }
+        }
+
+        triggerHeadshotKill(player, killed, event.getSource(), gunId);
     }
 
     private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source,

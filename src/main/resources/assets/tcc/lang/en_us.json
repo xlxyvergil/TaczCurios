@@ -51,7 +51,7 @@
   "item.tcc.salvation.effect": "%1$s imaginary damage resistance",
   "item.tcc.salvation.passive_bonuses": "Passive: Resistance III, Knockback Immunity, Damage taken -%1$s%%",
   "item.tcc.salvation.el_curse_reduction": "§dFourth Curse reduced by %1$s%%",
-  "item.tcc.salvation.how_to_obtain": "§7§oObtained when imaginary resistance >80 with Brahma Beasts + Heaven Fire Apocalypse after 30 %1$s kills",
+  "item.tcc.salvation.how_to_obtain": "§7§oObtained when imaginary resistance >80 with Brahma Beasts + Heaven Fire Apocalypse and meet evolution requirements",
 
   "item.tcc.xiora": "§fXiora",
   "item.tcc.raven": "§fRaven",
@@ -62,7 +62,7 @@
   "item.tcc.judgement_key": "§4Judgement Key",
 
   "item.tcc.seven_thunders.effect": "%1$s%% headshot multiplier %2$s%% crit chance %3$s%% crit damage",
-  "item.tcc.seven_thunders.how_to_obtain": "§7§oObtain by landing 30 TACZ headshot kills (once only); With Raven equipped and while invisible, kill the Ender Dragon with a sniper to evolve into Seven Thunders: Thunder Seen",
+  "item.tcc.seven_thunders.how_to_obtain": "§7§oObtain by landing 30 TACZ headshot kills (once only); With Seven Thunders equipped, land 10 sniper headshot kills on any entity to evolve into Seven Thunders: Thunder Seen",
 
   "item.tcc.xiora.kill_progress_title": "Evolution Requirements:",
   "item.tcc.xiora.resist_source_title": "Resistance Source (max %1$s):",
@@ -85,7 +85,7 @@
   "item.tcc.raven.how_to_obtain": "§7§oEvolved from Xiora (while invisible, kill the Ender Dragon with a sniper); With Thunder Seen held, imaginary resistance >60, and kill the Ender Dragon with a sniper from 100+ blocks to evolve into Island Boom Raven, and Thunder Seen evolves into Judgement Key",
 
   "item.tcc.seven_thunders_thunder_seen.effect": "%1$s%% headshot multiplier %2$s%% crit chance %3$s%% crit damage On headshot: %4$s%% chance to convert damage to Imaginary and deal extra %5$s%% target max HP as Imaginary damage",
-  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§oWith Seven Thunders equipped, Raven equipped, and while invisible, kill the Ender Dragon with a sniper to evolve into Thunder Seen",
+  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§oWith Seven Thunders equipped, land 10 sniper headshot kills on any entity to evolve into Thunder Seen",
   "item.tcc.seven_thunders_thunder_seen.evolution_title": "Evolution Requirements:",
   "item.tcc.seven_thunders_thunder_seen.evolution_distance": "  Min distance: %1$s blocks",
   "item.tcc.seven_thunders_thunder_seen.evolution_equipped": "  Must also equip:",
@@ -110,7 +110,7 @@
   "item.tcc.island_boom_raven.how_to_obtain": "§7§oEvolved from Raven",
 
   "advancement.tcc.tcc_root.title": "TACZ Curios",
-  "advancement.tcc.tcc_root.description": "The journey of Seven Thunders",
+  "advancement.tcc.tcc_root.description": "The Twelve Herrschers",
 
   "advancement.tcc.my_island.title": "My Island",
   "advancement.tcc.my_island.description": "Land TACZ headshot kills on any entity",
@@ -164,7 +164,7 @@
   "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§oWith Brahma Beasts equipped, imaginary resistance >80 and meet evolution requirements to evolve to Endless",
   
   "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
-  "item.tcc.heaven_fire_apocalypse_endless.effect": "Permanent %1$s%% universal firearm damage Damage converted to Imaginary %3$s%% explosion damage No health cost %5$s%% universal firearm damage to players within %4$s blocks for %6$s seconds Cannot unequip Kept on death",
+  "item.tcc.heaven_fire_apocalypse_endless.effect": "Permanent %1$s%% universal firearm damage Damage converted to Imaginary %3$s%% explosion damage Provides Heaven Fire Boost III to players within %4$s blocks for %6$s seconds Cannot unequip Kept on death",
   "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§oEvolved from Heaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§bImaginary Infection cap: %1$s stacks",
   "item.tcc.heaven_fire_apocalypse_endless.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base %3$s%% resistance)",
@@ -391,7 +391,7 @@
   "effect.tcc.imaginary_collapse": "Imaginary Collapse",
   "effect.tcc.erosion": "Erosion",
   "effect.tcc.heaven_fire_apocalypse_delay": "Heaven Fire Apocalypse Delay",
-  "effect.tcc.heaven_fire_apocalypse_buff": "Heaven Fire Apocalypse Buff",
+  "effect.tcc.heaven_fire_apocalypse_buff": "Heaven Fire Boost",
   
   "effect.tcc.argon_scope": "Argon Scope",
   "effect.tcc.gilded_argon_scope": "Gilded Argon Scope",

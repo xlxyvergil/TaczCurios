@@ -66,7 +66,7 @@
   "item.tcc.judgement_key": "§4裁决之键",
 
   "item.tcc.seven_thunders.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害",
-  "item.tcc.seven_thunders.how_to_obtain": "§7§o通过TACZ爆头击杀任意30个实体获得（仅一次）；持有渡鸦且隐身状态下，用狙击枪击杀末影龙进化为涤罪七雷·雷鸣见",
+  "item.tcc.seven_thunders.how_to_obtain": "§7§o通过TACZ爆头击杀任意30个实体获得（仅一次）；持有涤罪七雷，使用狙击枪爆头击杀任意实体10次进化为涤罪七雷·雷鸣见",
 
   "item.tcc.xiora.kill_progress_title": "进化需求:",
   "item.tcc.xiora.resist_source_title": "抗性来源（最高%1$s）：",
@@ -91,7 +91,7 @@
   "item.tcc.raven.how_to_obtain": "§7§o由希奥拉进化而来（隐身状态下用狙击枪击杀末影龙）；持有雷鸣见且虚数抗性>60并在100格外用狙击枪击杀末影龙时进化为小岛爆爆鸦，同时雷鸣见进化为裁决之键",
 
   "item.tcc.seven_thunders_thunder_seen.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害 爆头时%4$s%%概率转为虚数伤害并额外造成目标%5$s%%最大生命值虚数伤害",
-  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§o装备涤罪七雷并持有渡鸦且隐身状态下，用狙击枪击杀末影龙进化为雷鸣见",
+  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§o持有涤罪七雷，使用狙击枪爆头击杀任意实体10次进化为雷鸣见",
   "item.tcc.seven_thunders_thunder_seen.evolution_title": "进化需求:",
   "item.tcc.seven_thunders_thunder_seen.evolution_distance": "  最小距离: %1$s格",
   "item.tcc.seven_thunders_thunder_seen.evolution_equipped": "  需同时装备:",
@@ -125,7 +125,7 @@
   "item.tcc.heaven_fire_judgment.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
 
   "advancement.tcc.tcc_root.title": "TACZ饰品",
-  "advancement.tcc.tcc_root.description": "涤罪七雷的进化之路",
+  "advancement.tcc.tcc_root.description": "十二英桀",
 
   "advancement.tcc.my_island.title": "我的小岛",
   "advancement.tcc.my_island.description": "通过TACZ爆头击杀任意实体",
@@ -172,7 +172,7 @@
   "item.tcc.heaven_fire_apocalypse.inflection_max": "§b虚数侵染上限: %1$s层",
   
   "item.tcc.heaven_fire_apocalypse_endless": "§4天火劫灭·无烬终焉",
-  "item.tcc.heaven_fire_apocalypse_endless.effect": "常驻 %1$s%%通用枪械伤害 伤害转为虚数 %3$s%%爆炸伤害 无自损 为周围%4$s格内玩家%5$s%%通用枪械伤害 持续%6$s秒 不可卸下 死亡不掉落",
+  "item.tcc.heaven_fire_apocalypse_endless.effect": "%1$s%%通用枪械伤害 伤害转为虚数 %3$s%%爆炸伤害 为周围%4$s格内玩家提供 天火强化Ⅲ 持续%6$s秒 不可卸下 死亡不掉落",
   "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§o由天火劫灭进化而来",
   "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§b虚数侵染上限: %1$s层",
   "item.tcc.heaven_fire_apocalypse_endless.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",

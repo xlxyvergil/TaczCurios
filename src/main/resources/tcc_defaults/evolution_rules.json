@@ -48,18 +48,7 @@
         }
       ]
     },
-    "tcc_salvation_imaginary_resistance_cap": {
-      "enabled": true,
-      "trigger": "living_death",
-      "type": "attribute",
-      "item": "tcc:salvation",
-      "progress": {
-        "attribute": "tcc:imaginary_damage_resistance",
-        "operation": "ADDITION",
-        "cap": 20.0
-      },
-      "kills": []
-    },
+    
     "tcc_xiora_gain_imaginary_resistance": {
       "enabled": true,
       "trigger": "gun_kill",
@@ -84,25 +73,6 @@
       "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:raven",
-      "progress": {
-        "attribute": "tcc:imaginary_damage_resistance",
-        "operation": "ADDITION",
-        "cap": 20.0
-      },
-      "kills": [
-        {
-          "entity": {
-            "key": "minecraft:wither"
-          },
-          "value": 1.0
-        }
-      ]
-    },
-    "tcc_island_boom_raven_gain_imaginary_resistance": {
-      "enabled": true,
-      "trigger": "gun_kill",
-      "type": "attribute",
-      "item": "tcc:island_boom_raven",
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",

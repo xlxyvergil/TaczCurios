@@ -1,7 +1,9 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -37,7 +39,7 @@ public class Xiora extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
-        double total = 10.0 + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, -0.2, ARMOR_UUID,
             "tcc.xiora.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -67,44 +69,7 @@ public class Xiora extends BaseCurioItem {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof Xiora);
     }
 
-    private static double getExtraResistanceFromProgress(CompoundTag tag) {
-        String nbtKey = null;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:xiora")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            nbtKey = progress.nbtKey;
-        }
-        if (nbtKey == null) {
-            return 0.0;
-        }
-        return tag.getDouble(nbtKey);
-    }
-
-    private static double getMaxExtraResistanceFromProgressRules() {
-        double cap = 0.0;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:xiora")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            cap = Math.max(cap, progress.cap);
-        }
-        return cap;
-    }
+    
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -113,9 +78,9 @@ public class Xiora extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         CompoundTag tag = stack.getTag();
-        double extra = tag != null ? getExtraResistanceFromProgress(tag) : 0.0;
-        double cap = getMaxExtraResistanceFromProgressRules();
-        double total = 10.0 + extra;
+        double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        double cap = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:xiora");
+        double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
 
         tooltip.add(Component.translatable("item.tcc.xiora.effect",
                 String.format("%+.0f", -20.0),

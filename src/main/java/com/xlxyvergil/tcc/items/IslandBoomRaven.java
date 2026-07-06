@@ -1,13 +1,12 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -27,9 +26,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class IslandBoomRaven extends BaseCurioItem {
@@ -59,7 +56,7 @@ public class IslandBoomRaven extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
-        double total = 10.0 + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, -0.4, ARMOR_UUID,
             "tcc.island_boom_raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -143,44 +140,7 @@ public class IslandBoomRaven extends BaseCurioItem {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof IslandBoomRaven);
     }
 
-    private static double getExtraResistanceFromProgress(CompoundTag tag) {
-        String nbtKey = null;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:island_boom_raven")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            nbtKey = progress.nbtKey;
-        }
-        if (nbtKey == null) {
-            return 0.0;
-        }
-        return tag.getDouble(nbtKey);
-    }
-
-    private static double getMaxExtraResistanceFromProgressRules() {
-        double cap = 0.0;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:island_boom_raven")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            cap = Math.max(cap, progress.cap);
-        }
-        return cap;
-    }
+    
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -189,9 +149,7 @@ public class IslandBoomRaven extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         CompoundTag tag = stack.getTag();
-        double extra = tag != null ? getExtraResistanceFromProgress(tag) : 0.0;
-        double cap = getMaxExtraResistanceFromProgressRules();
-        double total = 10.0 + extra;
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.effect",
                 String.format("%+.0f", -40.0),
@@ -203,38 +161,6 @@ public class IslandBoomRaven extends BaseCurioItem {
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.AQUA));
-
-        Map<String, Double> sources = new LinkedHashMap<>();
-        Map<String, EvolutionRegistry.EntityRef> sourceEntities = new LinkedHashMap<>();
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:island_boom_raven")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            for (EvolutionRegistry.KillGain k : rule.kills) {
-                String key = EntityConditionHelper.getMatchKey(k.entity.key, k.entity.nbt);
-                sources.merge(key, k.value, Double::sum);
-                sourceEntities.putIfAbsent(key, k.entity);
-            }
-        }
-
-        if (cap > 0 && !sources.isEmpty()) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.island_boom_raven.resist_source_title", String.format("%.0f", cap))
-                .withStyle(ChatFormatting.AQUA));
-            for (var entry : sources.entrySet()) {
-                EvolutionRegistry.EntityRef entity = sourceEntities.get(entry.getKey());
-                String display = entity != null ? getEntityDisplayName(entity) : entry.getKey();
-                tooltip.add(Component.translatable("item.tcc.island_boom_raven.resist_detail", display, (int) Math.round(entry.getValue()))
-                    .withStyle(ChatFormatting.GRAY));
-            }
-        }
 
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
@@ -252,14 +178,4 @@ public class IslandBoomRaven extends BaseCurioItem {
             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
-    private static String getEntityDisplayName(EvolutionRegistry.EntityRef entity) {
-        try {
-            ResourceLocation rl = new ResourceLocation(entity.key);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            String suffix = entity.name == null || entity.name.isBlank() ? "" : " " + entity.name;
-            return entityType.getDescription().getString() + suffix;
-        } catch (Exception ignored) {
-            return entity.key;
-        }
     }
-}

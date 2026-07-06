@@ -1,7 +1,9 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -59,7 +61,7 @@ public class Raven extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
-        double total = 10.0 + (tag != null ? getExtraResistanceFromProgress(tag) : 0.0);
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, -0.4, ARMOR_UUID,
             "tcc.raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -141,44 +143,7 @@ public class Raven extends BaseCurioItem {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof Raven);
     }
 
-    private static double getExtraResistanceFromProgress(CompoundTag tag) {
-        String nbtKey = null;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:raven")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            nbtKey = progress.nbtKey;
-        }
-        if (nbtKey == null) {
-            return 0.0;
-        }
-        return tag.getDouble(nbtKey);
-    }
-
-    private static double getMaxExtraResistanceFromProgressRules() {
-        double cap = 0.0;
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:raven")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            cap = Math.max(cap, progress.cap);
-        }
-        return cap;
-    }
+    
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -187,9 +152,9 @@ public class Raven extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         CompoundTag tag = stack.getTag();
-        double extra = tag != null ? getExtraResistanceFromProgress(tag) : 0.0;
-        double cap = getMaxExtraResistanceFromProgressRules();
-        double total = 10.0 + extra;
+        double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        double cap = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:raven");
+        double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
 
         tooltip.add(Component.translatable("item.tcc.raven.effect",
                 String.format("%+.0f", -40.0),
@@ -281,19 +246,6 @@ public class Raven extends BaseCurioItem {
             return entityType.getDescription().getString() + suffix;
         } catch (Exception ignored) {
             return entity.key;
-        }
-    }
-
-    private static String getItemDisplayName(String itemId) {
-        try {
-            ResourceLocation rl = new ResourceLocation(itemId);
-            var item = BuiltInRegistries.ITEM.get(rl);
-            if (item == null) {
-                return itemId;
-            }
-            return item.getDescription().getString();
-        } catch (Exception ignored) {
-            return itemId;
         }
     }
 }
