@@ -1097,8 +1097,8 @@ public class TaczCuriosConfig {
             // 战术上膛Prime配置
             builder.comment("战术上膛Prime饰品配置").push("tactical_reload_prime");
             tacticalReloadPrimeReloadSpeedBoost = builder
-                    .comment("装填时间加成 (默认: -0.99 = -100%)")
-                    .defineInRange("reloadSpeedBoost", -0.99, -1, 100);
+                    .comment("装填时间加成 (默认: -0.9 = -90%)")
+                    .defineInRange("reloadSpeedBoost", -0.9, -1, 100);
             builder.pop();
             
             // 霰弹扩充Prime配置
