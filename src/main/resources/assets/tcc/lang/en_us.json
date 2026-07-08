@@ -375,6 +375,9 @@
   "affix.tcc:tcc_slot/attribute/lmg_damage": "Strong LMG", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "Suppression Master",
   "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover",
 
+  "// Apotheosis Affixes - Imaginary Damage Resistance": "",
+  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance": "Imaginary Shield", "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance.suffix": "Void Ward",
+
   "// Imaginary Damage Attribute": "",
   "attribute.name.tcc.imaginary_damage": "Imaginary Damage",
   "attribute.name.tcc.imaginary_damage.desc": "Bonus imaginary damage on attack, bypasses armor and magic resistance",

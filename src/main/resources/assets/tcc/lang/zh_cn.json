@@ -376,6 +376,9 @@
   "affix.tcc:tcc_slot/attribute/lmg_damage": "机枪强", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "火力压制大师",
   "affix.tcc:tcc_slot/attribute/launcher_damage": "重武强", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "重火力爱好者",
 
+  "// Apotheosis词缀 - 虚数伤害抗性": "",
+  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance": "虚数护盾", "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance.suffix": "虚空庇护",
+
   "// 虚数伤害属性": "",
   "attribute.name.tcc.imaginary_damage": "虚数伤害",
   "attribute.name.tcc.imaginary_damage.desc": "攻击时附加虚数伤害，绕过护甲和魔法减免",
