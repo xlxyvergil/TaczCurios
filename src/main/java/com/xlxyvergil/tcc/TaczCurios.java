@@ -6,7 +6,6 @@ import com.xlxyvergil.tcc.event.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TaczVillagers;
 import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
-import com.xlxyvergil.tcc.integration.ApothicCuriosIntegration;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
@@ -14,7 +13,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.resources.ResourceLocation;
+import top.theillusivec4.curios.api.SlotTypeMessage;
+import net.minecraftforge.fml.InterModComms;
 
 @Mod(TaczCurios.MODID)
 public class TaczCurios
@@ -27,6 +30,7 @@ public class TaczCurios
 
         // 注册commonSetup方法用于模组加载
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::intermodStuff);
 
         // 注册Deferred Register
         TaczItems.ITEMS.register(modEventBus);
@@ -51,8 +55,6 @@ public class TaczCurios
         // 安全地注册客户端事件处理器
         registerClientEventsSafely();
         
-        // 必须在构造函数中初始化 Apotheosis 集成，确保在词缀数据加载前完成注册
-        ApothicCuriosIntegration.init();
     }
     
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -61,6 +63,24 @@ public class TaczCurios
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
         });
+    }
+
+    private void intermodStuff(InterModEnqueueEvent event) {
+        registerCurioType("tcc_slot", 8, false, new ResourceLocation(MODID, "slot/tcc_slot"));
+        registerCurioType("tcc_3rd", 1, false, new ResourceLocation(MODID, "slot/tcc_3rd"));
+        registerCurioType("tcc_tdk", 1, false, new ResourceLocation(MODID, "slot/tcc_tdk"));
+    }
+
+    private void registerCurioType(final String identifier, final int slots, final boolean isHidden, final ResourceLocation icon) {
+        final SlotTypeMessage.Builder message = new SlotTypeMessage.Builder(identifier);
+        message.size(slots);
+        if (isHidden) {
+            message.hide();
+        }
+        if (icon != null) {
+            message.icon(icon);
+        }
+        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> message.build());
     }
     
     private void registerClientEventsSafely() throws ClassNotFoundException {

@@ -4,13 +4,10 @@ import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.items.ItemBaseCurio;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.common.util.LazyOptional;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
@@ -89,13 +86,11 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        String slotId = slotContext.identifier();
-        TagKey<Item> slotTag = TagKey.create(Registries.ITEM, new ResourceLocation("curios", slotId));
-        if (!stack.is(slotTag)) {
+        if (!super.canEquip(slotContext, stack)) {
             return false;
         }
         
-        // 检查是否已装备互斥饰品
+        String slotId = slotContext.identifier();
         LivingEntity entity = (LivingEntity) slotContext.entity();
         String currentRegName = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem()).toString();
         Set<String> conflictNames = CONFLICT_MAP.getOrDefault(currentRegName, new HashSet<>());
