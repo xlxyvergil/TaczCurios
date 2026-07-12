@@ -2,7 +2,7 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.registries.TaczItems;
+import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
@@ -60,24 +60,24 @@ public class CurioCombatEventHandler {
         if (player.level().isClientSide) return;
 
         // R-03 氩晶瞄具
-        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.ARGON_SCOPE.get())) {
+        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.ARGON_SCOPE.get())) {
             applyNonStackingBuff(player, TccMobEffects.ARGON_SCOPE.get(), TaczCuriosConfig.COMMON.argonScopeDuration.get());
         }
         // R-04 镀层氩晶瞄具：爆头→nonStacking(爆头buff)
-        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_ARGON_SCOPE.get())) {
+        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_ARGON_SCOPE.get())) {
             applyNonStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
         }
         // S-05 雷射瞄具
-        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TaczItems.LASER_SCOPE.get())) {
+        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.LASER_SCOPE.get())) {
             applyNonStackingBuff(player, TccMobEffects.LASER_SCOPE.get(), TaczCuriosConfig.COMMON.laserScopeDuration.get());
         }
         // P-06 液压准心
-        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.HYDRAULIC_CROSSHAIR.get())) {
+        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.HYDRAULIC_CROSSHAIR.get())) {
             applyNonStackingBuff(player, TccMobEffects.HYDRAULIC_CROSSHAIR.get(), TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get());
         }
         // P-07 镀层液压准心：爆头→nonStacking(爆头buff)
-        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
+        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
             applyNonStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
         }
@@ -93,63 +93,63 @@ public class CurioCombatEventHandler {
         if (player.level().isClientSide) return;
 
         if (event.isHeadShot()) {
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.ARGON_SCOPE.get())) {
+            if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.ARGON_SCOPE.get())) {
                 applyNonStackingBuff(player, TccMobEffects.ARGON_SCOPE.get(), TaczCuriosConfig.COMMON.argonScopeDuration.get());
             }
-            if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_ARGON_SCOPE.get())) {
+            if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_ARGON_SCOPE.get())) {
                 applyNonStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
                     TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
             }
-            if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TaczItems.LASER_SCOPE.get())) {
+            if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.LASER_SCOPE.get())) {
                 applyNonStackingBuff(player, TccMobEffects.LASER_SCOPE.get(), TaczCuriosConfig.COMMON.laserScopeDuration.get());
             }
-            if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.HYDRAULIC_CROSSHAIR.get())) {
+            if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.HYDRAULIC_CROSSHAIR.get())) {
                 applyNonStackingBuff(player, TccMobEffects.HYDRAULIC_CROSSHAIR.get(), TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get());
             }
-            if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
+            if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
                 applyNonStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
                     TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
             }
         }
 
         // R-04 镀层氩晶瞄具: 爆头击杀→stacking(击杀buff)
-        if (event.isHeadShot() && GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_ARGON_SCOPE.get())) {
+        if (event.isHeadShot() && GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_ARGON_SCOPE.get())) {
             applyStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get());
         }
         // P-07 镀层液压准心: 爆头击杀→stacking(击杀buff)
-        if (event.isHeadShot() && GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
+        if (event.isHeadShot() && GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR.get())) {
             applyStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get());
         }
         // R-05 尖刃弹头
-        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.SHARP_BULLET.get())) {
+        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.SHARP_BULLET.get())) {
             applyNonStackingBuff(player, TccMobEffects.SHARP_BULLET.get(), TaczCuriosConfig.COMMON.sharpBulletDuration.get());
         }
         // R-07 镀层分裂膛室
-        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_SPLIT_CHAMBER.get())) {
+        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_SPLIT_CHAMBER.get())) {
             applyStackingBuff(player, TccMobEffects.GILDED_SPLIT_CHAMBER.get(),
                 TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get(),
                 TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get());
         }
         // S-06 破片射击
-        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TaczItems.FRAGMENT_SHOT.get())) {
+        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.FRAGMENT_SHOT.get())) {
             applyNonStackingBuff(player, TccMobEffects.FRAGMENT_SHOT.get(), TaczCuriosConfig.COMMON.fragmentShotDuration.get());
         }
         // S-08 镀层地狱弹膛
-        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TaczItems.GILDED_INFERNAL_CHAMBER.get())) {
+        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.GILDED_INFERNAL_CHAMBER.get())) {
             applyStackingBuff(player, TccMobEffects.GILDED_INFERNAL_CHAMBER.get(),
                 TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get(),
                 TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get());
         }
         // P-08 尖锐子弹
-        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.SHARP_AMMO.get())) {
+        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.SHARP_AMMO.get())) {
             applyNonStackingBuff(player, TccMobEffects.SHARP_AMMO.get(), TaczCuriosConfig.COMMON.sharpAmmoDuration.get());
         }
         // P-10 镀层弹头扩散
-        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_BULLET_SPREAD.get())) {
+        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_BULLET_SPREAD.get())) {
             applyStackingBuff(player, TccMobEffects.GILDED_BULLET_SPREAD.get(),
                 TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get(),
                 TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get());
@@ -164,7 +164,7 @@ public class CurioCombatEventHandler {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         if (player.level().isClientSide) return;
         // M-05 镀层斩铁
-        if (isHoldingMeleeWeapon(player) && hasCurio(player, TaczItems.GILDED_STEEL_SLASH.get())) {
+        if (isHoldingMeleeWeapon(player) && hasCurio(player, TccItems.GILDED_STEEL_SLASH.get())) {
             applyStackingBuff(player, TccMobEffects.GILDED_STEEL_SLASH.get(),
                 TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get(),
                 TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get());
@@ -189,28 +189,28 @@ public class CurioCombatEventHandler {
         if (harmfulCount == 0) return;
 
         // R-06 镀层步枪才能: 手持步枪时，每负面效果直接乘算
-        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TaczItems.GILDED_RIFLE_APTITUDE.get())) {
+        if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_RIFLE_APTITUDE.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get();
             double multiplier = 1.0 + harmfulCount * perHarmful;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // S-07 镀层通晓霰弹枪: 手持霰弹枪时，每负面效果直接乘算
-        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TaczItems.GILDED_SHOTGUN_SAVVY.get())) {
+        if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.GILDED_SHOTGUN_SAVVY.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get();
             double multiplier = 1.0 + harmfulCount * perHarmful;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // P-09 镀层准确射手: 手持手枪时，每负面效果直接乘算
-        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TaczItems.GILDED_MARKSMAN.get())) {
+        if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_MARKSMAN.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get();
             double multiplier = 1.0 + harmfulCount * perHarmful;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // M-06 异况超量: 手持近战时，每负面效果直接乘算（始终生效）
-        if (isHoldingMeleeWeapon(player) && hasCurio(player, TaczItems.CONDITION_OVERLOAD.get())) {
+        if (isHoldingMeleeWeapon(player) && hasCurio(player, TccItems.CONDITION_OVERLOAD.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get();
             double multiplier = 1.0 + harmfulCount * perHarmful;
             event.setAmount(event.getAmount() * (float)multiplier);

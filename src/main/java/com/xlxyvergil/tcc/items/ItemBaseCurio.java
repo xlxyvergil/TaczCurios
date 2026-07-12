@@ -1,6 +1,10 @@
 package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.api.items.IBindable;
+import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
+
+import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
+
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

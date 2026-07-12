@@ -9,11 +9,11 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
-import com.xlxyvergil.tcc.items.BrahmaBeasts;
-import com.xlxyvergil.tcc.items.IslandBoomRaven;
-import com.xlxyvergil.tcc.items.Salvation;
-import com.xlxyvergil.tcc.items.SummerBeach;
-import com.xlxyvergil.tcc.registries.TaczItems;
+import com.xlxyvergil.tcc.items.curios.BrahmaBeasts;
+import com.xlxyvergil.tcc.items.curios.IslandBoomRaven;
+import com.xlxyvergil.tcc.items.curios.Salvation;
+import com.xlxyvergil.tcc.items.curios.SummerBeach;
+import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
@@ -145,10 +145,10 @@ public class TccAttributeEvents {
         if (!(attacker instanceof Player)) return false;
         return CuriosApi.getCuriosInventory(attacker).resolve()
             .map(inv -> 
-                inv.findFirstCurio(TaczItems.GILDED_RIFLE_APTITUDE.get()).isPresent() ||
-                inv.findFirstCurio(TaczItems.GILDED_SHOTGUN_SAVVY.get()).isPresent() ||
-                inv.findFirstCurio(TaczItems.GILDED_MARKSMAN.get()).isPresent() ||
-                inv.findFirstCurio(TaczItems.CONDITION_OVERLOAD.get()).isPresent()
+                inv.findFirstCurio(TccItems.GILDED_RIFLE_APTITUDE.get()).isPresent() ||
+                inv.findFirstCurio(TccItems.GILDED_SHOTGUN_SAVVY.get()).isPresent() ||
+                inv.findFirstCurio(TccItems.GILDED_MARKSMAN.get()).isPresent() ||
+                inv.findFirstCurio(TccItems.CONDITION_OVERLOAD.get()).isPresent()
             ).orElse(false);
     }
 

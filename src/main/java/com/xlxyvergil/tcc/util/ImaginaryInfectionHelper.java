@@ -1,10 +1,10 @@
 package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.items.HeavenFireApocalypse;
-import com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless;
-import com.xlxyvergil.tcc.items.HeavenFireJudgment;
-import com.xlxyvergil.tcc.items.JudgementKey;
+import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
+import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
+import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
+import com.xlxyvergil.tcc.items.curios.JudgementKey;
 import net.minecraft.world.entity.LivingEntity;
 
 /**

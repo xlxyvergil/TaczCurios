@@ -5,8 +5,8 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.event.TccEventHandler;
 import com.xlxyvergil.tcc.registries.*;
-import com.xlxyvergil.tcc.villagers.TaczVillagers;
-import com.xlxyvergil.tcc.creativetab.TaczCreativeTab;
+import com.xlxyvergil.tcc.villagers.TccVillagers;
+import com.xlxyvergil.tcc.creativetab.TccCreativeTab;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
@@ -39,12 +39,12 @@ public class TaczCurios
             e.register(CurioAdaptationCapability.Handler.class));
 
         // 注册Deferred Register
-        TaczItems.ITEMS.register(modEventBus);
-        TaczBlocks.BLOCKS.register(modEventBus);
-        TaczBlocks.ITEMS.register(modEventBus);
-        TaczPoiTypes.POI_TYPES.register(modEventBus);
-        TaczVillagers.PROFESSIONS.register(modEventBus);
-        TaczCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
+        TccItems.ITEMS.register(modEventBus);
+        TccBlocks.BLOCKS.register(modEventBus);
+        TccBlocks.ITEMS.register(modEventBus);
+        TccPoiTypes.POI_TYPES.register(modEventBus);
+        TccVillagers.PROFESSIONS.register(modEventBus);
+        TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
 
@@ -65,7 +65,7 @@ public class TaczCurios
     
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            TaczVillagers.registerTrades();
+            TccVillagers.registerTrades();
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
         });

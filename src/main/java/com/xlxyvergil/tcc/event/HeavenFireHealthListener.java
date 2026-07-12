@@ -3,6 +3,11 @@ package com.xlxyvergil.tcc.event;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
+import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
+import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
+import com.xlxyvergil.tcc.items.curios.Salvation;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -27,8 +32,8 @@ public class HeavenFireHealthListener {
         }
         
         // 检查受害者是否装备了救世，如果是则降低受到的伤害（可配置）
-        if (com.xlxyvergil.tcc.items.Salvation.hasSalvationEquipped(target)) {
-            double damageReduction = com.xlxyvergil.tcc.config.TaczCuriosConfig.COMMON.salvationDamageReduction.get();
+        if (Salvation.hasSalvationEquipped(target)) {
+            double damageReduction = TaczCuriosConfig.COMMON.salvationDamageReduction.get();
             float originalDamage = event.getAmount();
             float reducedDamage = originalDamage * (float)(1.0 - damageReduction);
             event.setAmount(reducedDamage);
@@ -42,17 +47,17 @@ public class HeavenFireHealthListener {
                 boolean hasHeavenFireItem = false;
                 
                 // 检查天火圣裁
-                if (com.xlxyvergil.tcc.items.HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
+                if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
                     damageConversionRatio = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageConversionRatio.get();
                     hasHeavenFireItem = true;
                 }
                 // 检查天火劫灭
-                else if (com.xlxyvergil.tcc.items.HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
+                else if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
                     damageConversionRatio = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get();
                     hasHeavenFireItem = true;
                 }
                 // 检查天火劫灭·无烬终焉
-                else if (com.xlxyvergil.tcc.items.HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
+                else if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
                     damageConversionRatio = TaczCuriosConfig.COMMON.endlessDamageConversionRatio.get();
                     hasHeavenFireItem = true;
                 }
@@ -72,8 +77,8 @@ public class HeavenFireHealthListener {
         }
         
         // 通知饰品类处理血量变化
-        com.xlxyvergil.tcc.items.HeavenFireApocalypse.onHealthChanged(target);
-        com.xlxyvergil.tcc.items.HeavenFireJudgment.onHealthChanged(target);
+        HeavenFireApocalypse.onHealthChanged(target);
+        HeavenFireJudgment.onHealthChanged(target);
     }
     
     /**
@@ -87,7 +92,7 @@ public class HeavenFireHealthListener {
         }
         
         // 通知饰品类处理血量变化
-        com.xlxyvergil.tcc.items.HeavenFireApocalypse.onHealthChanged(entity);
-        com.xlxyvergil.tcc.items.HeavenFireJudgment.onHealthChanged(entity);
+        HeavenFireApocalypse.onHealthChanged(entity);
+        HeavenFireJudgment.onHealthChanged(entity);
     }
 }
