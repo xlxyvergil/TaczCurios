@@ -141,6 +141,7 @@ public class TccCreativeTab {
                 // 添加材料物品
                 output.accept(TccItems.CORE_FUSION.get());
                 output.accept(TccItems.RIFT_SILVER.get());
+                output.accept(TccItems.COLLAPSE_CRYSTAL.get());
                 // 添加工作方块
                 output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM.get());
             })
