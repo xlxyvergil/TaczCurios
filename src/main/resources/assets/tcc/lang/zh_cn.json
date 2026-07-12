@@ -479,5 +479,8 @@
   "item.tcc.gilded_marksman": "§f镀层准确射手",
   "item.tcc.gilded_marksman.effect": "手持手枪时，每负面效果种数%1$s%%伤害（乘算）",
   "item.tcc.condition_overload": "§6异况超量",
-  "item.tcc.condition_overload.effect": "近战时，目标每负面效果种数%1$s%%伤害（乘算）"
+  "item.tcc.condition_overload.effect": "近战时，目标每负面效果种数%1$s%%伤害（乘算）",
+
+  "item.tcc.collapse_crystal": "§d崩坏结晶",
+  "item.tcc.collapse_crystal.usage": "§7放在背包中，尝试取下逐火之蛾或神之键槽位的饰品时消耗一个"
 }

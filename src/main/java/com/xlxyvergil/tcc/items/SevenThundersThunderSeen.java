@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -63,11 +64,14 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingSniper(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, 2.0, HEADSHOT_MULTIPLIER_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER,
+                TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get(), HEADSHOT_MULTIPLIER_UUID,
                 "tcc.seven_thunders_thunder_seen.headshot_multiplier", AttributeModifier.Operation.ADDITION);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, 0.5, CRIT_CHANCE_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
+                TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritChance.get(), CRIT_CHANCE_UUID,
                 "tcc.seven_thunders_thunder_seen.crit_chance", AttributeModifier.Operation.MULTIPLY_BASE);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, 1.0, CRIT_DAMAGE_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
+                TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritDamage.get(), CRIT_DAMAGE_UUID,
                 "tcc.seven_thunders_thunder_seen.crit_damage", AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             removeEffects(livingEntity);
@@ -95,11 +99,8 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
     }
 
     @Override
-    public boolean canUnequip(SlotContext context, ItemStack stack) {
-        if (context.entity() instanceof Player player && player.isCreative()) {
-            return super.canUnequip(context, stack);
-        }
-        return false;
+    protected boolean isBoundItem() {
+        return true;
     }
 
     @Override
@@ -122,16 +123,17 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
         if (attacker == null || !hasEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
-        if (!event.isHeadShot()) return;
 
-        if (attacker.getRandom().nextFloat() >= 0.5f) return;
-
+        // 伤害完全转为虚数伤害（狙击枪命中即转换，不限制爆头）
         event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
             TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
         event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
             TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
 
-        if (event.getBullet() != null) {
+        // 爆头时概率触发额外虚数伤害
+        if (event.isHeadShot()
+            && attacker.getRandom().nextFloat() < TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()
+            && event.getBullet() != null) {
             event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
             event.getBullet().getPersistentData().putBoolean(PROC_USED_KEY, false);
         }
@@ -154,7 +156,7 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
         var data = bullet.getPersistentData();
         if (!data.getBoolean(PROC_KEY) || data.getBoolean(PROC_USED_KEY)) return;
 
-        float extra = target.getMaxHealth() * 0.2f;
+        float extra = target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get().floatValue();
         if (extra > 0) {
             target.setHealth(Math.max(0, target.getHealth() - extra));
         }
@@ -171,11 +173,11 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.effect",
-                String.format("%+.0f", 200.0),
-                String.format("%+.0f", 50.0),
-                String.format("%+.0f", 100.0),
-                String.format("%.0f", 50.0),
-                String.format("%.0f", 20.0))
+                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritChance.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritDamage.get() * 100),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get() * 100),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 100))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc;
 
+import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.event.TccEventHandler;
@@ -10,6 +11,7 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,6 +33,10 @@ public class TaczCurios
         // 注册commonSetup方法用于模组加载
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::intermodStuff);
+
+        // 注册 Capability
+        modEventBus.addListener((RegisterCapabilitiesEvent e) ->
+            e.register(CurioAdaptationCapability.Handler.class));
 
         // 注册Deferred Register
         TaczItems.ITEMS.register(modEventBus);

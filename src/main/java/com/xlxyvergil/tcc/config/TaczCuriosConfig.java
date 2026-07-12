@@ -46,6 +46,20 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue judgementProcChance;
         public final ForgeConfigSpec.DoubleValue judgementDirectDamagePercent;
         public final ForgeConfigSpec.DoubleValue judgementCollapseProcChance;
+        public final ForgeConfigSpec.DoubleValue judgementKeyCritChance;
+        public final ForgeConfigSpec.DoubleValue judgementKeyCritDamage;
+
+        // 涤罪七雷配置
+        public final ForgeConfigSpec.DoubleValue sevenThundersHeadshotMultiplier;
+        public final ForgeConfigSpec.DoubleValue sevenThundersCritChance;
+        public final ForgeConfigSpec.DoubleValue sevenThundersCritDamage;
+
+        // 雷鸣见（涤罪七雷·雷见）配置
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenHeadshotMultiplier;
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenCritChance;
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenCritDamage;
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenProcChance;
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenExtraHpDamage;
 
         // 天火劫灭配置
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
@@ -189,6 +203,25 @@ public class TaczCuriosConfig {
         
         // 希奥拉配置
         public final ForgeConfigSpec.IntValue xioraBaseResistance;
+        public final ForgeConfigSpec.DoubleValue xioraArmorMultiplier;
+        public final ForgeConfigSpec.DoubleValue xioraSpeedMultiplier;
+
+        // 夜袭渡鸦配置
+        public final ForgeConfigSpec.DoubleValue ravenArmorMultiplier;
+        public final ForgeConfigSpec.DoubleValue ravenSpeedMultiplier;
+        public final ForgeConfigSpec.IntValue ravenInvisRefreshInterval;
+        public final ForgeConfigSpec.IntValue ravenInvisDuration;
+        public final ForgeConfigSpec.IntValue ravenInvisBreakDelay;
+
+        // 岛爆渡鸦配置
+        public final ForgeConfigSpec.DoubleValue islandBoomRavenArmorMultiplier;
+        public final ForgeConfigSpec.DoubleValue islandBoomRavenSpeedMultiplier;
+        public final ForgeConfigSpec.IntValue islandBoomRavenInvisRefreshInterval;
+        public final ForgeConfigSpec.IntValue islandBoomRavenInvisDuration;
+        public final ForgeConfigSpec.IntValue islandBoomRavenInvisBreakDelay;
+        public final ForgeConfigSpec.IntValue islandBoomRavenRegenAmplifier;
+        public final ForgeConfigSpec.IntValue islandBoomRavenRegenRefreshThreshold;
+        public final ForgeConfigSpec.IntValue islandBoomRavenRegenDuration;
         
         // 夏日沙滩配置
         public final ForgeConfigSpec.DoubleValue summerBeachELCurseReduction;
@@ -440,6 +473,44 @@ public class TaczCuriosConfig {
             judgementCollapseProcChance = builder
                     .comment("爆头时触发虚数崩解效果的几率 (默认: 0.5 = 50%)")
                     .defineInRange("collapseProcChance", 0.1, 0, 1);
+            judgementKeyCritChance = builder
+                    .comment("暴击几率加成 (默认: 1.0 = +100%)")
+                    .defineInRange("critChance", 1.0, -1, 100);
+            judgementKeyCritDamage = builder
+                    .comment("暴击伤害加成 (默认: 1.5 = +150%)")
+                    .defineInRange("critDamage", 1.5, -1, 100);
+            builder.pop();
+
+            // 涤罪七雷配置
+            builder.comment("涤罪七雷饰品配置").push("seven_thunders");
+            sevenThundersHeadshotMultiplier = builder
+                    .comment("爆头倍率加成 (默认: 2.0 = +200%)")
+                    .defineInRange("headshotMultiplier", 2.0, -1, 100);
+            sevenThundersCritChance = builder
+                    .comment("暴击几率加成 (默认: 0.2 = +20%)")
+                    .defineInRange("critChance", 0.2, -1, 100);
+            sevenThundersCritDamage = builder
+                    .comment("暴击伤害加成 (默认: 0.5 = +50%)")
+                    .defineInRange("critDamage", 0.5, -1, 100);
+            builder.pop();
+
+            // 雷鸣见配置
+            builder.comment("雷鸣见（涤罪七雷·雷见）饰品配置").push("seven_thunders_thunder_seen");
+            sevenThundersThunderSeenHeadshotMultiplier = builder
+                    .comment("爆头倍率加成 (默认: 2.0 = +200%)")
+                    .defineInRange("headshotMultiplier", 2.0, -1, 100);
+            sevenThundersThunderSeenCritChance = builder
+                    .comment("暴击几率加成 (默认: 0.5 = +50%)")
+                    .defineInRange("critChance", 0.5, -1, 100);
+            sevenThundersThunderSeenCritDamage = builder
+                    .comment("暴击伤害加成 (默认: 1.0 = +100%)")
+                    .defineInRange("critDamage", 1.0, -1, 100);
+            sevenThundersThunderSeenProcChance = builder
+                    .comment("爆头时触发额外伤害的几率 (默认: 0.3 = 30%)")
+                    .defineInRange("procChance", 0.3, 0, 1);
+            sevenThundersThunderSeenExtraHpDamage = builder
+                    .comment("触发时造成目标最大生命值的比例 (默认: 0.05 = 5%)")
+                    .defineInRange("extraHpDamage", 0.05, 0, 1);
             builder.pop();
             
             // 天火劫灭配置
@@ -986,6 +1057,59 @@ public class TaczCuriosConfig {
             xioraBaseResistance = builder
                     .comment("希奥拉虚数抗性基础值 (默认: 21)")
                     .defineInRange("baseResistance", 21, 0, 1000);
+            xioraArmorMultiplier = builder
+                    .comment("护甲乘数 (默认: -0.2 = 护甲降低20%)")
+                    .defineInRange("armorMultiplier", -0.2, -1, 100);
+            xioraSpeedMultiplier = builder
+                    .comment("移速乘数 (默认: 0.5 = +50%)")
+                    .defineInRange("speedMultiplier", 0.5, -1, 100);
+            builder.pop();
+
+            // 夜袭渡鸦配置
+            builder.comment("夜袭渡鸦饰品配置").push("raven");
+            ravenArmorMultiplier = builder
+                    .comment("护甲乘数 (默认: -0.4 = 护甲降低40%)")
+                    .defineInRange("armorMultiplier", -0.4, -1, 100);
+            ravenSpeedMultiplier = builder
+                    .comment("移速乘数 (默认: 1.0 = +100%)")
+                    .defineInRange("speedMultiplier", 1.0, -1, 100);
+            ravenInvisRefreshInterval = builder
+                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒)")
+                    .defineInRange("invisRefreshInterval", 200, 1, 12000);
+            ravenInvisDuration = builder
+                    .comment("隐身效果持续时间 (tick, 默认: 600 = 30秒)")
+                    .defineInRange("invisDuration", 600, 1, 12000);
+            ravenInvisBreakDelay = builder
+                    .comment("攻击后隐身破除延迟 (tick, 默认: 100 = 5秒)")
+                    .defineInRange("invisBreakDelay", 100, 0, 12000);
+            builder.pop();
+
+            // 岛爆渡鸦配置
+            builder.comment("岛爆渡鸦饰品配置").push("island_boom_raven");
+            islandBoomRavenArmorMultiplier = builder
+                    .comment("护甲乘数 (默认: -0.4 = 护甲降低40%)")
+                    .defineInRange("armorMultiplier", -0.4, -1, 100);
+            islandBoomRavenSpeedMultiplier = builder
+                    .comment("移速乘数 (默认: 1.0 = +100%)")
+                    .defineInRange("speedMultiplier", 1.0, -1, 100);
+            islandBoomRavenInvisRefreshInterval = builder
+                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒)")
+                    .defineInRange("invisRefreshInterval", 200, 1, 12000);
+            islandBoomRavenInvisDuration = builder
+                    .comment("隐身效果持续时间 (tick, 默认: 600 = 30秒)")
+                    .defineInRange("invisDuration", 600, 1, 12000);
+            islandBoomRavenInvisBreakDelay = builder
+                    .comment("攻击后隐身破除延迟 (tick, 默认: 100 = 5秒)")
+                    .defineInRange("invisBreakDelay", 100, 0, 12000);
+            islandBoomRavenRegenAmplifier = builder
+                    .comment("生命恢复等级 (默认: 1 = 再生 II)")
+                    .defineInRange("regenAmplifier", 1, 0, 10);
+            islandBoomRavenRegenRefreshThreshold = builder
+                    .comment("生命恢复刷新阈值 (tick, 低于此时长重新施加, 默认: 40 = 2秒)")
+                    .defineInRange("regenRefreshThreshold", 40, 1, 12000);
+            islandBoomRavenRegenDuration = builder
+                    .comment("生命恢复持续时间 (tick, 默认: 120 = 6秒)")
+                    .defineInRange("regenDuration", 120, 1, 12000);
             builder.pop();
             
             // 夏日沙滩配置

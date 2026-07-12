@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -28,11 +29,14 @@ public class SevenThunders extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingSniper(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, 2.0, HEADSHOT_MULTIPLIER_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER,
+                TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get(), HEADSHOT_MULTIPLIER_UUID,
                 "tcc.seven_thunders.headshot_multiplier", AttributeModifier.Operation.ADDITION);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, 0.2, CRIT_CHANCE_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
+                TaczCuriosConfig.COMMON.sevenThundersCritChance.get(), CRIT_CHANCE_UUID,
                 "tcc.seven_thunders.crit_chance", AttributeModifier.Operation.MULTIPLY_BASE);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, 0.5, CRIT_DAMAGE_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
+                TaczCuriosConfig.COMMON.sevenThundersCritDamage.get(), CRIT_DAMAGE_UUID,
                 "tcc.seven_thunders.crit_damage", AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             removeEffects(livingEntity);
@@ -61,9 +65,9 @@ public class SevenThunders extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.seven_thunders.effect",
-                String.format("%+.0f", 200.0),
-                String.format("%+.0f", 20.0),
-                String.format("%+.0f", 50.0))
+                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

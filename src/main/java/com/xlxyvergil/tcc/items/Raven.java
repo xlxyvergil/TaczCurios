@@ -63,9 +63,9 @@ public class Raven extends BaseCurioItem {
         CompoundTag tag = equipped.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, -0.4, ARMOR_UUID,
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.ravenArmorMultiplier.get(), ARMOR_UUID,
             "tcc.raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, 1.0, MOVE_SPEED_UUID,
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get(), MOVE_SPEED_UUID,
             "tcc.raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
             "tcc.raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
@@ -92,11 +92,8 @@ public class Raven extends BaseCurioItem {
     }
 
     @Override
-    public boolean canUnequip(SlotContext context, ItemStack stack) {
-        if (context.entity() instanceof Player player && player.isCreative()) {
-            return super.canUnequip(context, stack);
-        }
-        return false;
+    protected boolean isBoundItem() {
+        return true;
     }
 
     @Override
@@ -109,23 +106,24 @@ public class Raven extends BaseCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        // 每10秒重新施加隐身（持续刷新）
-        if (entity.tickCount % 200 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 600, 0, false, false, true));
+        // 每N秒重新施加隐身（持续刷新）
+        if (entity.tickCount % TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() == 0) {
+            int duration = TaczCuriosConfig.COMMON.ravenInvisDuration.get();
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, duration, 0, false, false, true));
 
             // 如果加载了铁魔法，同时施加真实隐身（完全阻止怪物追踪）
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
                 if (trueInvis != null) {
-                    entity.addEffect(new MobEffectInstance(trueInvis, 600, 0, false, false, true));
+                    entity.addEffect(new MobEffectInstance(trueInvis, duration, 0, false, false, true));
                 }
             }
         }
 
-        // 攻击后5秒（100 ticks）破除隐身
-        // lastHurtMobTimestamp 在实体攻击时自动更新，>0 表示至少攻击过一次
+        // 攻击后N秒破除隐身
         int lastHurtTs = entity.getLastHurtMobTimestamp();
-        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == 100) {
+        int breakDelay = TaczCuriosConfig.COMMON.ravenInvisBreakDelay.get();
+        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == breakDelay) {
             entity.removeEffect(MobEffects.INVISIBILITY);
         }
     }
@@ -157,10 +155,10 @@ public class Raven extends BaseCurioItem {
         double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
 
         tooltip.add(Component.translatable("item.tcc.raven.effect",
-                String.format("%+.0f", -40.0),
-                String.format("%+.0f", 100.0),
-                String.format("%d", 10),
-                String.format("%d", 30))
+                String.format("%+.0f", TaczCuriosConfig.COMMON.ravenArmorMultiplier.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get() * 100),
+                String.format("%.1f", TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() / 20.0),
+                String.format("%.1f", TaczCuriosConfig.COMMON.ravenInvisDuration.get() / 20.0))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.translatable("item.tcc.raven.resistance", String.format("%.0f", total))

@@ -68,9 +68,11 @@ public class JudgementKey extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingSniper(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, 1.0, CRIT_CHANCE_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
+                TaczCuriosConfig.COMMON.judgementKeyCritChance.get(), CRIT_CHANCE_UUID,
                 "tcc.judgement_key.crit_chance", AttributeModifier.Operation.MULTIPLY_BASE);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, 1.5, CRIT_DAMAGE_UUID,
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
+                TaczCuriosConfig.COMMON.judgementKeyCritDamage.get(), CRIT_DAMAGE_UUID,
                 "tcc.judgement_key.crit_damage", AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             removeEffects(livingEntity);
@@ -97,11 +99,8 @@ public class JudgementKey extends BaseCurioItem {
     }
 
     @Override
-    public boolean canUnequip(SlotContext context, ItemStack stack) {
-        if (context.entity() instanceof Player player && player.isCreative()) {
-            return super.canUnequip(context, stack);
-        }
-        return false;
+    protected boolean isBoundItem() {
+        return true;
     }
 
     @Override
@@ -196,8 +195,8 @@ public class JudgementKey extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.judgement_key.effect",
-                String.format("%+.0f", 100.0),
-                String.format("%+.0f", 150.0))
+                String.format("%+.0f", TaczCuriosConfig.COMMON.judgementKeyCritChance.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.judgementKeyCritDamage.get() * 100))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

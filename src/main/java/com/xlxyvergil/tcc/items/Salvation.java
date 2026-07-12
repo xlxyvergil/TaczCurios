@@ -159,11 +159,8 @@ public class Salvation extends BaseCurioItem {
     }
     
     @Override
-    public boolean canUnequip(SlotContext context, ItemStack stack) {
-        // 仅创造模式可卸下
-        if (context.entity() instanceof Player player && player.isCreative())
-            return super.canUnequip(context, stack);
-        return false;
+    protected boolean isBoundItem() {
+        return true;
     }
 
     @Override

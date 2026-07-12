@@ -1,18 +1,17 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.EffectCacheHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Optional;
 
@@ -40,11 +39,12 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check required effects
+        // Check required effects（统一使用伤害前缓存的 Buff 快照）
         if (c.requiredEffects() != null) {
             for (String effectId : c.requiredEffects()) {
-                MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectId));
-                if (effect == null || !player.hasEffect(effect)) return false;
+                if (killed == null || !EffectCacheHelper.hadEffectCached(killed, player.getStringUUID(), effectId)) {
+                    return false;
+                }
             }
         }
 

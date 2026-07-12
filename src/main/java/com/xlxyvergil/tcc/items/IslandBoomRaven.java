@@ -58,9 +58,9 @@ public class IslandBoomRaven extends BaseCurioItem {
         CompoundTag tag = equipped.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, -0.4, ARMOR_UUID,
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get(), ARMOR_UUID,
             "tcc.island_boom_raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, 1.0, MOVE_SPEED_UUID,
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get(), MOVE_SPEED_UUID,
             "tcc.island_boom_raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
             "tcc.island_boom_raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
@@ -87,11 +87,8 @@ public class IslandBoomRaven extends BaseCurioItem {
     }
 
     @Override
-    public boolean canUnequip(SlotContext context, ItemStack stack) {
-        if (context.entity() instanceof Player player && player.isCreative()) {
-            return super.canUnequip(context, stack);
-        }
-        return false;
+    protected boolean isBoundItem() {
+        return true;
     }
 
     @Override
@@ -104,26 +101,31 @@ public class IslandBoomRaven extends BaseCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        if (entity.tickCount % 200 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 600, 0, false, false, true));
+        if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {
+            int duration = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get();
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, duration, 0, false, false, true));
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
                 if (trueInvis != null) {
-                    entity.addEffect(new MobEffectInstance(trueInvis, 600, 0, false, false, true));
+                    entity.addEffect(new MobEffectInstance(trueInvis, duration, 0, false, false, true));
                 }
             }
         }
 
-        // 攻击后5秒（100 ticks）破除隐身
+        // 攻击后N秒破除隐身
         int lastHurtTs = entity.getLastHurtMobTimestamp();
-        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == 100) {
+        int breakDelay = TaczCuriosConfig.COMMON.islandBoomRavenInvisBreakDelay.get();
+        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == breakDelay) {
             entity.removeEffect(MobEffects.INVISIBILITY);
         }
 
         MobEffectInstance regen = entity.getEffect(MobEffects.REGENERATION);
-        if (regen == null || regen.getAmplifier() < 1 || regen.getDuration() < 40) {
-            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 120, 1, false, false, true));
+        if (regen == null || regen.getAmplifier() < TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get()
+            || regen.getDuration() < TaczCuriosConfig.COMMON.islandBoomRavenRegenRefreshThreshold.get()) {
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION,
+                TaczCuriosConfig.COMMON.islandBoomRavenRegenDuration.get(),
+                TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get(), false, false, true));
         }
     }
 
@@ -152,11 +154,11 @@ public class IslandBoomRaven extends BaseCurioItem {
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.effect",
-                String.format("%+.0f", -40.0),
-                String.format("%+.0f", 100.0),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get() * 100),
                 String.format("%.0f", total),
-                String.format("%d", 10),
-                String.format("%d", 30))
+                String.format("%.1f", TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() / 20.0),
+                String.format("%.1f", TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.resistance", String.format("%.0f", total))

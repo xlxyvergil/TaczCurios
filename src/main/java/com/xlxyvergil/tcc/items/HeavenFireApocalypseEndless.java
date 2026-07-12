@@ -56,10 +56,8 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
     }
     
     @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        super.onUnequip(slotContext, newStack, stack);
-        LivingEntity entity = (LivingEntity) slotContext.entity();
-        removeEffects(entity);
+    protected boolean isBoundItem() {
+        return true;
     }
     
     @Override
@@ -82,13 +80,6 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
     }
     
-    @Override
-    public boolean canUnequip(SlotContext context, ItemStack stack) {
-        if (context.entity() instanceof Player player && player.isCreative())
-            return super.canUnequip(context, stack);
-        return false;
-    }
-
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;

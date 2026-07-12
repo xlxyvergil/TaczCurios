@@ -94,6 +94,7 @@ import com.xlxyvergil.tcc.items.Raven;
 import com.xlxyvergil.tcc.items.SevenThunders;
 import com.xlxyvergil.tcc.items.SevenThundersThunderSeen;
 import com.xlxyvergil.tcc.items.Xiora;
+import com.xlxyvergil.tcc.items.CollapseCrystal;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
@@ -670,5 +671,10 @@ public class TaczItems {
         () -> new ConditionOverload(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE)));
+
+    // 崩坏结晶 - 用于卸下3rd和tdk槽位的饰品
+    public static final RegistryObject<Item> COLLAPSE_CRYSTAL = ITEMS.register("collapse_crystal",
+        () -> new CollapseCrystal(new Item.Properties()
+            .stacksTo(64)));
 
 }

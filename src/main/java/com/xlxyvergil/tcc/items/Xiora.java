@@ -41,9 +41,9 @@ public class Xiora extends BaseCurioItem {
         CompoundTag tag = equipped.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, -0.2, ARMOR_UUID,
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.xioraArmorMultiplier.get(), ARMOR_UUID,
             "tcc.xiora.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, 0.5, MOVE_SPEED_UUID,
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.xioraSpeedMultiplier.get(), MOVE_SPEED_UUID,
             "tcc.xiora.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
             "tcc.xiora.imaginary_resistance", AttributeModifier.Operation.ADDITION);
@@ -83,8 +83,8 @@ public class Xiora extends BaseCurioItem {
         double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
 
         tooltip.add(Component.translatable("item.tcc.xiora.effect",
-                String.format("%+.0f", -20.0),
-                String.format("%+.0f", 50.0))
+                String.format("%+.0f", TaczCuriosConfig.COMMON.xioraArmorMultiplier.get() * 100),
+                String.format("%+.0f", TaczCuriosConfig.COMMON.xioraSpeedMultiplier.get() * 100))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.translatable("item.tcc.xiora.resistance", String.format("%.0f", total))

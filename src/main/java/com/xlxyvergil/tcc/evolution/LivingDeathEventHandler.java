@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.EffectCacheHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -154,6 +154,8 @@ public final class LivingDeathEventHandler {
                 curio.refreshEffects(player);
             }
         }
+
+        EffectCacheHelper.clearTarget(killed);
     }
 
     // ===== Utility methods (public/shared) =====
@@ -184,8 +186,9 @@ public final class LivingDeathEventHandler {
     static boolean passesExtraRequirements(Player player, LivingEntity killed, EvolutionRegistry.Requirements req) {
         if (!req.requiredEffects.isEmpty()) {
             for (String effectId : req.requiredEffects) {
-                MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation(effectId));
-                if (effect == null || !player.hasEffect(effect)) return false;
+                if (killed == null || !EffectCacheHelper.hadEffectCached(killed, player.getStringUUID(), effectId)) {
+                    return false;
+                }
             }
         }
         if (!req.holdingGunTypes.isEmpty()) {
