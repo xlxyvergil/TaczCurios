@@ -185,8 +185,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.effect",
-                String.format("%.0f", TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get() * 100),
-                String.format("%.1f", TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get() * 100))
+                String.format("%.0f", TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get() * 100))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));
@@ -196,7 +195,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.bound", boundPlayerName)
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
                 .withStyle(ChatFormatting.RED));
         }
     }

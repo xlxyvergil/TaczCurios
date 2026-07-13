@@ -141,7 +141,7 @@ public class DominanceKey extends BaseCurioItem {
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.dominance_key.bound", boundPlayerName)
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
                 .withStyle(ChatFormatting.RED));
         }
     }

@@ -135,7 +135,7 @@ public class Tianhui extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.tianhui.effect",
                 TaczCuriosConfig.COMMON.tianhuiImaginaryResistance.get(),
                 TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100,
-                TaczCuriosConfig.COMMON.tianhuiResistanceScale.get() * 100,
+                (1.0 - TaczCuriosConfig.COMMON.tianhuiImaginaryResistance.get() * TaczCuriosConfig.COMMON.tianhuiResistanceScale.get()) * 100,
                 TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100)
             .withStyle(ChatFormatting.GOLD));
 
@@ -147,7 +147,7 @@ public class Tianhui extends BaseCurioItem {
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.tianhui.bound", boundPlayerName)
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
                 .withStyle(ChatFormatting.RED));
         }
     }

@@ -188,7 +188,7 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.bound", boundPlayerName)
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
                 .withStyle(ChatFormatting.RED));
         }
 

@@ -35,7 +35,6 @@
   "item.tcc.summer_beach.effect": "%1$s虚数抗性",
   "item.tcc.summer_beach.kill_progress_title": "进化需求:",
   "item.tcc.summer_beach.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.summer_beach.bound": "已绑定至：%1$s",
   "item.tcc.summer_beach.how_to_obtain": "§7§o同时装备天火劫灭且满足进化需求时进化为无烬之剑",
   "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d",
@@ -45,7 +44,6 @@
   "item.tcc.brahma_beasts.effect": "%1$s虚数抗性",
   "item.tcc.brahma_beasts.kill_progress_title": "进化需求:",
   "item.tcc.brahma_beasts.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.brahma_beasts.bound": "已绑定至：%1$s",
   "item.tcc.brahma_beasts.how_to_obtain": "§7§o虚数抗性>80且满足无烬之剑进化需求时进化为救世",
   "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d",
@@ -81,7 +79,6 @@
   "item.tcc.raven.resist_source_title": "抗性来源（最高%1$s）：",
   "item.tcc.raven.evolution_progress": "  %1$s: %2$d/%3$d",
   "item.tcc.raven.resist_detail": "  %1$s: %2$d",
-  "item.tcc.raven.bound": "已绑定至：%1$s",
   "item.tcc.raven.evolution_distance": "  最小距离: %1$s格",
   "item.tcc.raven.evolution_equipped": "  需同时装备:",
   "item.tcc.raven.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
@@ -97,7 +94,6 @@
   "item.tcc.seven_thunders_thunder_seen.evolution_equipped": "  需同时装备:",
   "item.tcc.seven_thunders_thunder_seen.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
   "item.tcc.seven_thunders_thunder_seen.evolution_kill": "  击杀%1$s x%2$d",
-  "item.tcc.seven_thunders_thunder_seen.bound": "已绑定至：%1$s",
 
   "item.tcc.judgement_key.effect": "%1$s%%暴击几率 %2$s%%暴击伤害 伤害转为虚数 爆头时有几率造成一次额外虚数伤害 流血继承崩解增伤",
   "item.tcc.judgement_key.how_to_obtain": "§7§o由涤罪七雷·雷鸣见进化而来",
@@ -106,11 +102,9 @@
   "item.tcc.judgement_key.evolution_equipped": "  需同时装备:",
   "item.tcc.judgement_key.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
   "item.tcc.judgement_key.evolution_kill": "  击杀%1$s x%2$d",
-  "item.tcc.judgement_key.bound": "已绑定至：%1$s",
 
   "item.tcc.island_boom_raven.resist_source_title": "抗性来源（最高%1$s）：",
   "item.tcc.island_boom_raven.resist_detail": "  %1$s: %2$d",
-  "item.tcc.island_boom_raven.bound": "已绑定至：%1$s",
 
   "item.tcc.island_boom_raven.effect": "护甲%1$s%% 移速%2$s%% 生命恢复II 虚数伤害提升%3$s%% 每%4$s秒获得%5$s秒隐身",
   "item.tcc.island_boom_raven.resistance": "%1$s虚数抗性",
@@ -486,98 +480,75 @@
   "// 逐火之蛾/神之键 新饰品": "",
   "item.tcc.griseo": "§6格蕾修",
   "item.tcc.griseo.effect": "受伤后进入%1$stick受伤冷却",
-  "item.tcc.griseo.bound": "已绑定至：%1$s",
 
   "item.tcc.qianjie_yicheng": "§6千界一乘",
-  "item.tcc.qianjie_yicheng.effect": "+%1$s 幸运值",
-  "item.tcc.qianjie_yicheng.bound": "已绑定至：%1$s",
+  "item.tcc.qianjie_yicheng.effect": "%1$s 幸运值",
 
   "item.tcc.huishi_zhijuan": "§f绘世之卷",
   "item.tcc.huishi_zhijuan.effect": "受伤后进入受伤冷却：基础%1$stick，每2点幸运+1tick，上限%2$stick",
-  "item.tcc.huishi_zhijuan.bound": "已绑定至：%1$s",
 
   "item.tcc.yongjie_zhijian": "§f永劫之键",
-  "item.tcc.yongjie_zhijian.effect": "+%1$s 幸运值，每点幸运+%2$s%%暴击率和+%3$s%%暴击伤害（加算）",
-  "item.tcc.yongjie_zhijian.bound": "已绑定至：%1$s",
+  "item.tcc.yongjie_zhijian.effect": "%1$s 幸运值，每点幸运%2$s%%暴击率和%3$s%%暴击伤害（加算）",
 
   "item.tcc.fanxing": "§4繁星",
-  "item.tcc.fanxing.effect": "受伤后进入受伤冷却：基础%1$stick，每2点幸运+1tick，上限%2$stick。+%3$.0f虚数抗性，每点虚数抗性提供%4$.0f幸运值",
-  "item.tcc.fanxing.bound": "已绑定至：%1$s",
+  "item.tcc.fanxing.effect": "受伤后进入受伤冷却：基础%1$stick，每2点幸运1tick，上限%2$stick。%3$.0f虚数抗性，每点虚数抗性提供%4$.0f幸运值",
 
   "item.tcc.shijie_fanyan": "§4千界一乘·视界反演",
-  "item.tcc.shijie_fanyan.effect": "+%1$s 幸运值，每点幸运+%2$s%%暴击率和+%3$s%%暴击伤害（加算），每10点幸运+1%%虚数崩解触发概率（基础%4$s%%），攻击必定触发侵染，枪械伤害全部变为虚数伤害",
-  "item.tcc.shijie_fanyan.bound": "已绑定至：%1$s",
+  "item.tcc.shijie_fanyan.effect": "%1$s 幸运值，每点幸运%2$s%%暴击率和%3$s%%暴击伤害（加算），每10点幸运1%%虚数崩解触发概率（基础%4$s%%），攻击必定触发侵染，枪械伤害全部变为虚数伤害",
 
   "// 重型武器系列饰品": "",
   "item.tcc.vill_v": "§6维尔薇",
-  "item.tcc.vill_v.effect": "血量低于%1$s%%时触发黄心等级%2$s，间隔%3$ss",
-  "item.tcc.vill_v.bound": "已绑定至：%1$s",
+  "item.tcc.vill_v.effect": "血量低于%1$s%%时触发伤害吸收等级%2$s，间隔%3$ss",
 
   "item.tcc.xukong_wancang": "§6虚空万藏",
   "item.tcc.xukong_wancang.effect": "攻击触发额外%1$.0f点虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药",
-  "item.tcc.xukong_wancang.bound": "已绑定至：%1$s",
 
   "item.tcc.yuxi_zhixia": "§f愚戏之匣",
-  "item.tcc.yuxi_zhixia.effect": "血量低于%1$s%%时触发黄心等级%2$s，间隔%3$ss",
-  "item.tcc.yuxi_zhixia.bound": "已绑定至：%1$s",
+  "item.tcc.yuxi_zhixia.effect": "血量低于%1$s%%时触发伤害吸收等级%2$s，间隔%3$ss",
 
   "item.tcc.qishi_zhijian": "§f启示之键",
   "item.tcc.qishi_zhijian.effect": "攻击触发额外%1$.0f点虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药",
-  "item.tcc.qishi_zhijian.bound": "已绑定至：%1$s",
 
   "item.tcc.luoxuan": "§4螺旋",
-  "item.tcc.luoxuan.effect": "+%1$.0f虚数抗性。每隔%2$ss施加一次黄心等级%3$s",
-  "item.tcc.luoxuan.bound": "已绑定至：%1$s",
+  "item.tcc.luoxuan.effect": "%1$.0f虚数抗性。每隔%2$ss施加一次伤害吸收等级%3$s",
 
   "item.tcc.xukong_wancang_yzth": "§4虚空万藏·雨众天华",
   "item.tcc.xukong_wancang_yzth.effect": "攻击触发额外%1$.0f+攻击力*(虚数抗性/100)的虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药。枪械伤害转换为虚数伤害，攻击必定触发侵染",
-  "item.tcc.xukong_wancang_yzth.bound": "已绑定至：%1$s",
 
   "item.tcc.kalpas": "§6千劫",
-  "item.tcc.kalpas.effect": "+%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss",
-  "item.tcc.kalpas.bound": "已绑定至：%1$s",
+  "item.tcc.kalpas.effect": "%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss",
 
   "item.tcc.imer": "§6伊默尔",
   "item.tcc.imer.effect": "最大生命值每点提升%1$.0f%%攻击力",
-  "item.tcc.imer.bound": "已绑定至：%1$s",
 
   "item.tcc.huajie_zhiyan": "§5坏劫之焱",
-  "item.tcc.huajie_zhiyan.effect": "+%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss。每点虚数抗性+%5$.0f最大生命值",
-  "item.tcc.huajie_zhiyan.bound": "已绑定至：%1$s",
+  "item.tcc.huajie_zhiyan.effect": "%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss。每点虚数抗性+%5$.0f最大生命值",
 
   "item.tcc.dominance_key": "§5支配之键",
   "item.tcc.dominance_key.effect": "最大生命值每点提升%1$.0f%%攻击力。造成伤害时附加攻击力*%2$.0f%%虚数伤害",
-  "item.tcc.dominance_key.bound": "已绑定至：%1$s",
 
   "item.tcc.aomie": "§4鏖灭",
-  "item.tcc.aomie.effect": "+%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss。每点虚数抗性+%5$.0f最大生命值",
-  "item.tcc.aomie.bound": "已绑定至：%1$s",
+  "item.tcc.aomie.effect": "%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss。每点虚数抗性%5$.0f最大生命值",
 
   "item.tcc.meta_morph": "§4Meta-Morph",
-  "item.tcc.meta_morph.effect": "最大生命值每点提升%1$.0f%%攻击力。造成伤害时附加攻击力虚数伤害。每点虚数抗性+%2$.2f生命偷取",
-  "item.tcc.meta_morph.bound": "已绑定至：%1$s",
+  "item.tcc.meta_morph.effect": "最大生命值每点提升%1$.0f%%攻击力。造成伤害时附加攻击力虚数伤害。每点虚数抗性%2$.2f生命偷取",
 
   "item.tcc.su": "§6苏",
-  "item.tcc.su.effect": "+%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
-  "item.tcc.su.bound": "已绑定至：%1$s",
+  "item.tcc.su.effect": "%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
 
   "item.tcc.wanwu_xiumian": "§6万物休眠",
   "item.tcc.wanwu_xiumian.effect": "超量治疗%1$.0f%%，每秒恢复%2$.0f%%弹药",
-  "item.tcc.wanwu_xiumian.bound": "已绑定至：%1$s",
 
   "item.tcc.juezhe": "§5觉者",
-  "item.tcc.juezhe.effect": "+%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
-  "item.tcc.juezhe.bound": "已绑定至：%1$s",
+  "item.tcc.juezhe.effect": "%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
 
   "item.tcc.tingzhi_zhijian": "§5停滞之键",
-  "item.tcc.tingzhi_zhijian.effect": "超量治疗%1$.0f%%，每秒恢复(10+虚数抗性/200)%%弹药",
-  "item.tcc.tingzhi_zhijian.bound": "已绑定至：%1$s",
+  "item.tcc.tingzhi_zhijian.effect": "超量治疗%1$.0f%%，弹药恢复基础%2$.0f%%加虚数抗性折算",
 
   "item.tcc.tianhui": "§4天慧",
-  "item.tcc.tianhui.effect": "+%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害限制为(1-虚数抗性/100)，最低%4$.0f%%",
-  "item.tcc.tianhui.bound": "已绑定至：%1$s",
+  "item.tcc.tianhui.effect": "虚数抗性%1$.0f，最大生命值%2$.0f%%，伤害限制%3$.0f%%，最低%4$.0f%%",
 
   "item.tcc.yinguo_zhuanlun": "§4因果转轮",
-  "item.tcc.yinguo_zhuanlun.effect": "超量治疗%1$.0f%%，每秒恢复虚数抗性/100%%弹药，枪械伤害转虚数伤害，额外虚数伤害=虚数抗性",
-  "item.tcc.yinguo_zhuanlun.bound": "已绑定至：%1$s"
+  "item.tcc.yinguo_zhuanlun.effect": "超量治疗%1$.0f%%，每秒恢复虚数抗性等值弹药，附加虚数抗性等量虚数伤害",
+  "tcc.tooltip.bound": "已绑定至：%1$s"
 }
