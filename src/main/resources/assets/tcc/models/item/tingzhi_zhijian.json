@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/tingzhi_zhijian"
+    "layer0": "tcc:item/tingzhi_zhijian",
+    "layer1": "tcc:item/border_epic"
   }
 }

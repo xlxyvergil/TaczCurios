@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.mixin.DamageResistanceMixin;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -70,7 +70,7 @@ public class Su extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
-        DamageResistanceMixin.clearDamageCap(livingEntity);
+        DamageResistanceHelper.clearDamageCap(livingEntity);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Su extends BaseCurioItem {
         if (entity.level().isClientSide()) return;
 
         float cap = event.getAmount() * TaczCuriosConfig.COMMON.suDamageTakenFactor.get().floatValue();
-        DamageResistanceMixin.setDamageCap(entity, cap);
+        DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
     @Override

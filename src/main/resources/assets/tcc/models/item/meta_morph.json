@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tcc:item/yinguo_zhuanlun",
+    "layer0": "tcc:item/meta_morph",
     "layer1": "tcc:item/border_rift"
   }
 }
