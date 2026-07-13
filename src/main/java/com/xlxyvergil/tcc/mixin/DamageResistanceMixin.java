@@ -64,6 +64,7 @@ public abstract class DamageResistanceMixin {
      * @param entity        目标实体（玩家）
      * @param cooldownTicks 冷却 tick 数（如 30 = 1.5秒）
      */
+    @Unique
     public static void setDamageCooldown(LivingEntity entity, int cooldownTicks) {
         if (entity == null || cooldownTicks <= 0) return;
         COOLDOWN_MAP.put(entity.getUUID(), cooldownTicks);
@@ -78,6 +79,7 @@ public abstract class DamageResistanceMixin {
      * @param entity    目标实体（玩家）
      * @param maxDamage 单次受伤上限（如 20.0 = 10颗心）
      */
+    @Unique
     public static void setDamageCap(LivingEntity entity, float maxDamage) {
         if (entity == null || maxDamage <= 0) return;
         DAMAGE_CAP_MAP.put(entity.getUUID(), maxDamage);
@@ -86,6 +88,7 @@ public abstract class DamageResistanceMixin {
     /**
      * 移除受伤冷却状态。饰品卸下时调用。
      */
+    @Unique
     public static void clearDamageCooldown(LivingEntity entity) {
         if (entity != null) {
             COOLDOWN_MAP.remove(entity.getUUID());
@@ -95,6 +98,7 @@ public abstract class DamageResistanceMixin {
     /**
      * 移除受伤上限状态。饰品卸下时调用。
      */
+    @Unique
     public static void clearDamageCap(LivingEntity entity) {
         if (entity != null) {
             DAMAGE_CAP_MAP.remove(entity.getUUID());
@@ -104,6 +108,7 @@ public abstract class DamageResistanceMixin {
     /**
      * 移除所有减伤状态。
      */
+    @Unique
     public static void clearAll(LivingEntity entity) {
         if (entity != null) {
             UUID id = entity.getUUID();

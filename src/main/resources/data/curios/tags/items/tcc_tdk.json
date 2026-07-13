@@ -1,11 +1,23 @@
 {
   "replace": false,
   "values": [
+    "tcc:dominance_key",
     "tcc:heaven_fire_judgment",
     "tcc:heaven_fire_apocalypse",
     "tcc:heaven_fire_apocalypse_endless",
+    "tcc:imer",
     "tcc:seven_thunders",
     "tcc:seven_thunders_thunder_seen",
-    "tcc:judgement_key"
+    "tcc:judgement_key",
+    "tcc:meta_morph",
+    "tcc:qianjie_yicheng",
+    "tcc:yongjie_zhijian",
+    "tcc:shijie_fanyan",
+    "tcc:tingzhi_zhijian",
+    "tcc:wanwu_xiumian",
+    "tcc:xukong_wancang",
+    "tcc:qishi_zhijian",
+    "tcc:xukong_wancang_yzth",
+    "tcc:yinguo_zhuanlun"
   ]
 }

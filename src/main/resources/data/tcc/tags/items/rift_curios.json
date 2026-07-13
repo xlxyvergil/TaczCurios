@@ -1,9 +1,17 @@
 {
   "replace": false,
   "values": [
+    "tcc:aomie",
     "tcc:heaven_fire_apocalypse",
     "tcc:kikaku_ichijin",
     "tcc:salvation",
-    "tcc:heaven_fire_apocalypse_endless"
+    "tcc:heaven_fire_apocalypse_endless",
+    "tcc:fanxing",
+    "tcc:shijie_fanyan",
+    "tcc:tianhui",
+    "tcc:luoxuan",
+    "tcc:meta_morph",
+    "tcc:xukong_wancang_yzth",
+    "tcc:yinguo_zhuanlun"
   ]
 }

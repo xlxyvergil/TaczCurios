@@ -205,8 +205,8 @@
       "enabled": true,
       "display": {
         "title": {
-          "zh_cn": "夏日沙滩",
-          "en_us": "Summer Beach"
+          "zh_cn": "凯文",
+          "en_us": "Kevin"
         },
         "description": {
           "zh_cn": "持有天火圣裁，被{killer}击杀",
@@ -269,12 +269,12 @@
       "enabled": true,
       "display": {
         "title": {
-          "zh_cn": "进化：梵天百兽",
-          "en_us": "Evolution: Brahma Beasts"
+          "zh_cn": "进化：无烬之剑",
+          "en_us": "Evolution: Inexhaustible Sword"
         },
         "description": {
-          "zh_cn": "持有夏日沙滩和天火劫灭，使用手枪击杀{entity}",
-          "en_us": "Kill {entity} with a pistol while holding Summer Beach and Heaven Fire Apocalypse"
+          "zh_cn": "持有凯文和天火劫灭，使用手枪击杀{entity}",
+          "en_us": "Kill {entity} with a pistol while holding Kevin and Heaven Fire Apocalypse"
         },
         "icon": "tcc:brahma_beasts",
         "frame": "goal",
@@ -306,8 +306,8 @@
           "en_us": "Evolution: Salvation"
         },
         "description": {
-          "zh_cn": "持有梵天百兽和天火劫灭，虚数抗性>80，手枪击杀{entity}",
-          "en_us": "Kill {entity} with a pistol while holding Brahma Beasts & Heaven Fire Apocalypse with >80 imaginary resistance"
+          "zh_cn": "持有无烬之剑和天火劫灭，虚数抗性>80，手枪击杀{entity}",
+          "en_us": "Kill {entity} with a pistol while holding Inexhaustible Sword & Heaven Fire Apocalypse with >80 imaginary resistance"
         },
         "icon": "tcc:salvation",
         "frame": "challenge",

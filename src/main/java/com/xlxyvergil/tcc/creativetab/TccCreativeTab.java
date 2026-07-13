@@ -142,6 +142,39 @@ public class TccCreativeTab {
                 output.accept(TccItems.CORE_FUSION.get());
                 output.accept(TccItems.RIFT_SILVER.get());
                 output.accept(TccItems.COLLAPSE_CRYSTAL.get());
+
+                // 添加格蕾修 新饰品
+                output.accept(TccItems.GRISEO.get());
+                output.accept(TccItems.QIANJIE_YICHENG.get());
+                output.accept(TccItems.HUISHI_ZHIJUAN.get());
+                output.accept(TccItems.YONGJIE_ZHIJIAN.get());
+                output.accept(TccItems.FANXING.get());
+                output.accept(TccItems.SHIJIE_FANYAN.get());
+
+                // 添加v2v系列
+                output.accept(TccItems.VILL_V.get());
+                output.accept(TccItems.XUKONG_WANCANG.get());
+                output.accept(TccItems.YUXI_ZHIXIA.get());
+                output.accept(TccItems.QISHI_ZHIJIAN.get());
+                output.accept(TccItems.LUOXUAN.get());
+                output.accept(TccItems.XUKONG_WANCANG_YZTH.get());
+
+                // 添加千劫/伊默尔系列饰品
+                output.accept(TccItems.KALPAS.get());
+                output.accept(TccItems.IMER.get());
+                output.accept(TccItems.HUAJIE_ZHIYAN.get());
+                output.accept(TccItems.DOMINANCE_KEY.get());
+                output.accept(TccItems.AOMIE.get());
+                output.accept(TccItems.META_MORPH.get());
+
+                // 添加苏系列饰品
+                output.accept(TccItems.SU.get());
+                output.accept(TccItems.WANWU_XIUMIAN.get());
+                output.accept(TccItems.JUEZHE.get());
+                output.accept(TccItems.TINGZHI_ZHIJIAN.get());
+                output.accept(TccItems.TIANHUI.get());
+                output.accept(TccItems.YINGUO_ZHUANLUN.get());
+
                 // 添加工作方块
                 output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM.get());
             })

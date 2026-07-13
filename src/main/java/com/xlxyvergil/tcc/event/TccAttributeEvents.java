@@ -15,10 +15,12 @@ import com.xlxyvergil.tcc.items.curios.Salvation;
 import com.xlxyvergil.tcc.items.curios.SummerBeach;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -135,6 +137,44 @@ public class TccAttributeEvents {
                     living.addEffect(erosionInstance, attacker);
                 }
             }
+        }
+    }
+
+    /**
+     * 处理 Pathway A 虚数伤害的 overheal。
+     * 当子弹为 DamageSource 直接实体时，Apothic 的 getDirectEntity() instanceof LivingEntity 检查不通过，
+     * 无法原生触发 overheal。此处通过 TACZ Post 事件补足。
+     */
+    @SubscribeEvent
+    public static void onGunOverheal(EntityHurtByGunEvent.Post event) {
+        if (event.getLogicalSide().isClient()) return;
+
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null) return;
+
+        DamageSource source = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
+        if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
+        // Pathway B 的攻击者已是直接实体，Apothic 原生可处理，跳过避免 double trigger
+        if (source.getDirectEntity() instanceof LivingEntity) return;
+
+        Attribute overhealAttr = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "overheal"));
+        if (overhealAttr == null) return;
+        float overheal = (float) attacker.getAttributeValue(overhealAttr);
+        if (overheal <= 0) return;
+
+        float damage = event.getBaseAmount();
+        if (event.isHeadShot()) damage *= event.getHeadshotMultiplier();
+
+        // Apothic 用 min(damage, targetHealth) 防止溢出伤害转化为护盾
+        // Post 事件中目标已承伤，取 min(damage, maxHealth) 作为保守估计
+        if (!(event.getHurtEntity() instanceof LivingEntity target)) return;
+        float effectiveDamage = Math.min(damage, target.getMaxHealth());
+
+        float maxOverheal = attacker.getMaxHealth() * 0.5F;
+        if (attacker.getAbsorptionAmount() < maxOverheal) {
+            attacker.setAbsorptionAmount(
+                Math.min(maxOverheal, attacker.getAbsorptionAmount() + effectiveDamage * overheal)
+            );
         }
     }
 

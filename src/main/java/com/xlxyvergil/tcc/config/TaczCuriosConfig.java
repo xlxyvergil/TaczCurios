@@ -304,6 +304,131 @@ public class TaczCuriosConfig {
 
 
 
+        // ========== 逐火之蛾/神之键 新饰品配置 ==========
+
+        // 格蕾修配置
+        public final ForgeConfigSpec.IntValue griseoHurtCooldownTicks;
+
+        // 千界一乘配置
+        public final ForgeConfigSpec.IntValue qianjieYichengLuck;
+
+        // 绘世之卷配置
+        public final ForgeConfigSpec.IntValue huishiZhijuanBaseCooldown;
+        public final ForgeConfigSpec.IntValue huishiZhijuanLuckPerTick;
+        public final ForgeConfigSpec.IntValue huishiZhijuanMaxCooldown;
+
+        // 永劫之键配置
+        public final ForgeConfigSpec.IntValue yongjieZhijianLuck;
+        public final ForgeConfigSpec.DoubleValue yongjieZhijianCritChancePerLuck;
+        public final ForgeConfigSpec.DoubleValue yongjieZhijianCritDamagePerLuck;
+
+        // 繁星配置
+        public final ForgeConfigSpec.IntValue fanxingBaseCooldown;
+        public final ForgeConfigSpec.IntValue fanxingLuckPerTick;
+        public final ForgeConfigSpec.IntValue fanxingMaxCooldown;
+        public final ForgeConfigSpec.DoubleValue fanxingImaginaryResistance;
+        public final ForgeConfigSpec.DoubleValue fanxingLuckPerResistance;
+
+        // 视界反演配置
+        public final ForgeConfigSpec.IntValue shijieFanyanLuck;
+        public final ForgeConfigSpec.DoubleValue shijieFanyanCritChancePerLuck;
+        public final ForgeConfigSpec.DoubleValue shijieFanyanCritDamagePerLuck;
+        public final ForgeConfigSpec.DoubleValue shijieFanyanCollapseBaseChance;
+        public final ForgeConfigSpec.DoubleValue shijieFanyanCollapsePerLuck;
+
+        // ========== 重型武器系列饰品配置 ==========
+
+        // 维尔薇配置
+        public final ForgeConfigSpec.DoubleValue villVTriggerHpRatio;
+        public final ForgeConfigSpec.IntValue villVAbsorptionLevel;
+        public final ForgeConfigSpec.DoubleValue villVAbsorptionDuration;
+        public final ForgeConfigSpec.DoubleValue villVCooldownSeconds;
+
+        // 虚空万藏配置
+        public final ForgeConfigSpec.DoubleValue xukongWancangImaginaryDamage;
+        public final ForgeConfigSpec.DoubleValue xukongWancangAmmoRegenPercent;
+
+        // 愚戏之匣配置
+        public final ForgeConfigSpec.DoubleValue yuxiZhixiaTriggerHpRatio;
+        public final ForgeConfigSpec.IntValue yuxiZhixiaAbsorptionLevel;
+        public final ForgeConfigSpec.DoubleValue yuxiZhixiaAbsorptionDuration;
+        public final ForgeConfigSpec.DoubleValue yuxiZhixiaCooldownSeconds;
+
+        // 启示之键配置
+        public final ForgeConfigSpec.DoubleValue qishiZhijianImaginaryDamage;
+        public final ForgeConfigSpec.DoubleValue qishiZhijianAmmoRegenPercent;
+
+        // 螺旋配置
+        public final ForgeConfigSpec.IntValue luoxuanAbsorptionInterval;
+        public final ForgeConfigSpec.IntValue luoxuanAbsorptionLevel;
+        public final ForgeConfigSpec.IntValue luoxuanAbsorptionDuration;
+        public final ForgeConfigSpec.DoubleValue luoxuanImaginaryResistance;
+
+        // 虚空万藏·雨众天华配置
+        public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamage;
+        public final ForgeConfigSpec.DoubleValue xukongWancangYZTHAmmoRegenPercent;
+        public final ForgeConfigSpec.IntValue xukongWancangYZTHInfectionDuration;
+
+        // 千劫配置
+        public final ForgeConfigSpec.DoubleValue kalpasImaginaryResistance;
+        public final ForgeConfigSpec.IntValue kalpasMaxSlots;
+        public final ForgeConfigSpec.DoubleValue kalpasAdaptFactor;
+        public final ForgeConfigSpec.IntValue kalpasDecaySeconds;
+
+        // 伊默尔配置
+        public final ForgeConfigSpec.DoubleValue imerAttackPerHealth;
+
+        // 坏劫之焱配置
+        public final ForgeConfigSpec.DoubleValue huajieZhiyanImaginaryResistance;
+        public final ForgeConfigSpec.IntValue huajieZhiyanMaxSlots;
+        public final ForgeConfigSpec.DoubleValue huajieZhiyanAdaptFactor;
+        public final ForgeConfigSpec.IntValue huajieZhiyanDecaySeconds;
+        public final ForgeConfigSpec.DoubleValue huajieZhiyanHealthPerResistance;
+
+        // 支配之键配置
+        public final ForgeConfigSpec.DoubleValue dominanceKeyAttackPerHealth;
+        public final ForgeConfigSpec.DoubleValue dominanceKeyImaginaryDamageScale;
+
+        // 鏖灭配置
+        public final ForgeConfigSpec.DoubleValue aoMieImaginaryResistance;
+        public final ForgeConfigSpec.IntValue aoMieMaxSlots;
+        public final ForgeConfigSpec.DoubleValue aoMieAdaptFactor;
+        public final ForgeConfigSpec.IntValue aoMieDecaySeconds;
+        public final ForgeConfigSpec.DoubleValue aoMieHealthPerResistance;
+
+        // Meta-Morph配置
+        public final ForgeConfigSpec.DoubleValue metaMorphAttackPerHealth;
+        public final ForgeConfigSpec.DoubleValue metaMorphLifeStealPerResistance;
+
+        // 苏配置
+        public final ForgeConfigSpec.DoubleValue suImaginaryResistance;
+        public final ForgeConfigSpec.DoubleValue suMaxHealthReduction;
+        public final ForgeConfigSpec.DoubleValue suDamageTakenFactor;
+
+        // 万物休眠配置
+        public final ForgeConfigSpec.DoubleValue wanwuXiumianOverheal;
+        public final ForgeConfigSpec.DoubleValue wanwuXiumianAmmoRegenPercent;
+
+        // 觉者配置
+        public final ForgeConfigSpec.DoubleValue juezheImaginaryResistance;
+        public final ForgeConfigSpec.DoubleValue juezheMaxHealthReduction;
+        public final ForgeConfigSpec.DoubleValue juezheDamageTakenFactor;
+
+        // 停滞之键配置
+        public final ForgeConfigSpec.DoubleValue tingzhiZhijianOverheal;
+        public final ForgeConfigSpec.DoubleValue tingzhiZhijianAmmoBasePercent;
+        public final ForgeConfigSpec.DoubleValue tingzhiZhijianAmmoResistanceScale;
+
+        // 天慧配置
+        public final ForgeConfigSpec.DoubleValue tianhuiImaginaryResistance;
+        public final ForgeConfigSpec.DoubleValue tianhuiMaxHealthReduction;
+        public final ForgeConfigSpec.DoubleValue tianhuiResistanceScale;
+        public final ForgeConfigSpec.DoubleValue tianhuiMinDamageFactor;
+
+        // 因果转轮配置
+        public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
+        public final ForgeConfigSpec.DoubleValue yinguoZhuanlunAmmoResistanceScale;
+
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
@@ -1312,6 +1437,321 @@ public class TaczCuriosConfig {
             curioAbsorptionCooldown = builder
                     .comment("吸收效果冷却(秒) (默认: 180)")
                     .defineInRange("cooldown", 180.0, 0, 2147483647);
+            builder.pop();
+
+            // 格蕾修配置
+            builder.comment("格蕾修饰品配置").push("griseo");
+            griseoHurtCooldownTicks = builder
+                    .comment("受伤冷却基础冷却(tick) (默认: 10 = 0.5秒)")
+                    .defineInRange("hurtCooldownTicks", 10, 1, 12000);
+            builder.pop();
+
+            // 千界一乘配置
+            builder.comment("千界一乘饰品配置").push("qianjie_yicheng");
+            qianjieYichengLuck = builder
+                    .comment("幸运值加成 (默认: 20)")
+                    .defineInRange("luck", 20, 0, 1000);
+            builder.pop();
+
+            // 绘世之卷配置
+            builder.comment("绘世之卷饰品配置").push("huishi_zhijuan");
+            huishiZhijuanBaseCooldown = builder
+                    .comment("受伤冷却基础冷却(tick) (默认: 10)")
+                    .defineInRange("baseCooldown", 10, 1, 12000);
+            huishiZhijuanLuckPerTick = builder
+                    .comment("每2点幸运值增加的冷却(tick) (默认: 1)")
+                    .defineInRange("luckPerTick", 1, 0, 100);
+            huishiZhijuanMaxCooldown = builder
+                    .comment("受伤冷却上限(tick) (默认: 40)")
+                    .defineInRange("maxCooldown", 40, 1, 12000);
+            builder.pop();
+
+            // 永劫之键配置
+            builder.comment("永劫之键饰品配置").push("yongjie_zhijian");
+            yongjieZhijianLuck = builder
+                    .comment("幸运值加成 (默认: 20)")
+                    .defineInRange("luck", 20, 0, 1000);
+            yongjieZhijianCritChancePerLuck = builder
+                    .comment("每点幸运值增加的暴击率(add) (默认: 0.01)")
+                    .defineInRange("critChancePerLuck", 0.01, 0, 100);
+            yongjieZhijianCritDamagePerLuck = builder
+                    .comment("每点幸运值增加的暴击伤害(add) (默认: 0.02)")
+                    .defineInRange("critDamagePerLuck", 0.02, 0, 100);
+            builder.pop();
+
+            // 繁星配置
+            builder.comment("繁星饰品配置").push("fanxing");
+            fanxingBaseCooldown = builder
+                    .comment("受伤冷却基础冷却(tick) (默认: 20)")
+                    .defineInRange("baseCooldown", 20, 1, 12000);
+            fanxingLuckPerTick = builder
+                    .comment("每2点幸运值增加的冷却(tick) (默认: 1)")
+                    .defineInRange("luckPerTick", 1, 0, 100);
+            fanxingMaxCooldown = builder
+                    .comment("受伤冷却上限(tick) (默认: 120)")
+                    .defineInRange("maxCooldown", 120, 1, 12000);
+            fanxingImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
+            fanxingLuckPerResistance = builder
+                    .comment("每点虚数抗性提供的幸运值 (默认: 1.0)")
+                    .defineInRange("luckPerResistance", 1.0, 0.0, 100.0);
+            builder.pop();
+
+            // 视界反演配置
+            builder.comment("视界反演饰品配置").push("shijie_fanyan");
+            shijieFanyanLuck = builder
+                    .comment("幸运值加成 (默认: 40)")
+                    .defineInRange("luck", 40, 0, 1000);
+            shijieFanyanCritChancePerLuck = builder
+                    .comment("每点幸运值增加的暴击率(add) (默认: 0.01)")
+                    .defineInRange("critChancePerLuck", 0.01, 0, 100);
+            shijieFanyanCritDamagePerLuck = builder
+                    .comment("每点幸运值增加的暴击伤害(add) (默认: 0.02)")
+                    .defineInRange("critDamagePerLuck", 0.02, 0, 100);
+            shijieFanyanCollapseBaseChance = builder
+                    .comment("虚数崩解基础触发概率 (默认: 0.05 = 5%)")
+                    .defineInRange("collapseBaseChance", 0.05, 0, 1);
+            shijieFanyanCollapsePerLuck = builder
+                    .comment("每10点幸运值增加的崩解触发概率 (默认: 0.01 = 1%)")
+                    .defineInRange("collapsePerLuck", 0.01, 0, 1);
+            builder.pop();
+
+            // 维尔薇配置
+            builder.comment("维尔薇饰品配置").push("vill_v");
+            villVTriggerHpRatio = builder
+                    .comment("触发吸收效果的血量阈值 (默认: 0.2 = 20%)")
+                    .defineInRange("triggerHpRatio", 0.2, 0, 1);
+            villVAbsorptionLevel = builder
+                    .comment("吸收效果等级 (默认: 1 = ABSORPTION I)")
+                    .defineInRange("absorptionLevel", 1, 1, 255);
+            villVAbsorptionDuration = builder
+                    .comment("吸收效果持续时间(秒) (默认: 60)")
+                    .defineInRange("absorptionDuration", 60.0, 1, 3600);
+            villVCooldownSeconds = builder
+                    .comment("吸收触发冷却时间(秒) (默认: 60)")
+                    .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            builder.pop();
+
+            // 虚空万藏配置
+            builder.comment("虚空万藏饰品配置").push("xukong_wancang");
+            xukongWancangImaginaryDamage = builder
+                    .comment("攻击触发额外虚数伤害 (默认: 10.0)")
+                    .defineInRange("imaginaryDamage", 10.0, 0, 10000);
+            xukongWancangAmmoRegenPercent = builder
+                    .comment("每秒弹药恢复比例 (默认: 0.05 = 5%)")
+                    .defineInRange("ammoRegenPercent", 0.05, 0, 1);
+            builder.pop();
+
+            // 愚戏之匣配置
+            builder.comment("愚戏之匣饰品配置").push("yuxi_zhixia");
+            yuxiZhixiaTriggerHpRatio = builder
+                    .comment("触发吸收效果的血量阈值 (默认: 0.3 = 30%)")
+                    .defineInRange("triggerHpRatio", 0.3, 0, 1);
+            yuxiZhixiaAbsorptionLevel = builder
+                    .comment("吸收效果等级 (默认: 2 = ABSORPTION II)")
+                    .defineInRange("absorptionLevel", 2, 1, 255);
+            yuxiZhixiaAbsorptionDuration = builder
+                    .comment("吸收效果持续时间(秒) (默认: 60)")
+                    .defineInRange("absorptionDuration", 60.0, 1, 3600);
+            yuxiZhixiaCooldownSeconds = builder
+                    .comment("吸收触发冷却时间(秒) (默认: 60)")
+                    .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            builder.pop();
+
+            // 启示之键配置
+            builder.comment("启示之键饰品配置").push("qishi_zhijian");
+            qishiZhijianImaginaryDamage = builder
+                    .comment("攻击触发额外虚数伤害 (默认: 20.0)")
+                    .defineInRange("imaginaryDamage", 20.0, 0, 10000);
+            qishiZhijianAmmoRegenPercent = builder
+                    .comment("每秒弹药恢复比例 (默认: 0.1 = 10%)")
+                    .defineInRange("ammoRegenPercent", 0.1, 0, 1);
+            builder.pop();
+
+            // 螺旋配置
+            builder.comment("螺旋饰品配置").push("luoxuan");
+            luoxuanAbsorptionInterval = builder
+                    .comment("吸收效果施加间隔(秒) (默认: 30)")
+                    .defineInRange("absorptionInterval", 30, 1, 3600);
+            luoxuanAbsorptionLevel = builder
+                    .comment("吸收效果等级 (默认: 3 = ABSORPTION III)")
+                    .defineInRange("absorptionLevel", 3, 1, 255);
+            luoxuanAbsorptionDuration = builder
+                    .comment("吸收效果持续时间(秒) (默认: 30)")
+                    .defineInRange("absorptionDuration", 30, 1, 3600);
+            luoxuanImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
+            builder.pop();
+
+            // 虚空万藏·雨众天华配置
+            builder.comment("虚空万藏·雨众天华饰品配置").push("xukong_wancang_yzth");
+            xukongWancangYZTHImaginaryDamage = builder
+                    .comment("基础额外虚数伤害 (默认: 20.0)")
+                    .defineInRange("imaginaryDamage", 20.0, 0, 10000);
+            xukongWancangYZTHAmmoRegenPercent = builder
+                    .comment("每秒弹药恢复比例 (默认: 0.2 = 20%)")
+                    .defineInRange("ammoRegenPercent", 0.2, 0, 1);
+            xukongWancangYZTHInfectionDuration = builder
+                    .comment("侵染效果持续时间(秒) (默认: 10)")
+                    .defineInRange("infectionDuration", 10, 1, 3600);
+            builder.pop();
+
+            // 千劫配置
+            builder.comment("千劫饰品配置").push("kalpas");
+            kalpasImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
+            kalpasMaxSlots = builder
+                    .comment("适应最大槽位 (默认: 3)")
+                    .defineInRange("maxSlots", 3, 1, 100);
+            kalpasAdaptFactor = builder
+                    .comment("适应减免系数 (默认: 0.8)")
+                    .defineInRange("adaptFactor", 0.8, 0.0, 1.0);
+            kalpasDecaySeconds = builder
+                    .comment("适应衰减时间(秒) (默认: 20)")
+                    .defineInRange("decaySeconds", 20, 1, 3600);
+            builder.pop();
+
+            // 伊默尔配置
+            builder.comment("伊默尔饰品配置").push("imer");
+            imerAttackPerHealth = builder
+                    .comment("每点最大生命值提升的攻击力 (默认: 0.05 = 5%)")
+                    .defineInRange("attackPerHealth", 0.05, 0.0, 10.0);
+            builder.pop();
+
+            // 坏劫之焱配置
+            builder.comment("坏劫之焱饰品配置").push("huajie_zhiyan");
+            huajieZhiyanImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
+            huajieZhiyanMaxSlots = builder
+                    .comment("适应最大槽位 (默认: 4)")
+                    .defineInRange("maxSlots", 4, 1, 100);
+            huajieZhiyanAdaptFactor = builder
+                    .comment("适应减免系数 (默认: 0.7)")
+                    .defineInRange("adaptFactor", 0.7, 0.0, 1.0);
+            huajieZhiyanDecaySeconds = builder
+                    .comment("适应衰减时间(秒) (默认: 20)")
+                    .defineInRange("decaySeconds", 20, 1, 3600);
+            huajieZhiyanHealthPerResistance = builder
+                    .comment("每点虚数抗性提升的最大生命值 (默认: 3.0)")
+                    .defineInRange("healthPerResistance", 3.0, 0.0, 1000.0);
+            builder.pop();
+
+            // 支配之键配置
+            builder.comment("支配之键饰品配置").push("dominance_key");
+            dominanceKeyAttackPerHealth = builder
+                    .comment("每点最大生命值提升的攻击力 (默认: 0.05 = 5%)")
+                    .defineInRange("attackPerHealth", 0.05, 0.0, 10.0);
+            dominanceKeyImaginaryDamageScale = builder
+                    .comment("攻击力转虚数伤害比例 (默认: 0.3 = 30%)")
+                    .defineInRange("imaginaryDamageScale", 0.3, 0.0, 10.0);
+            builder.pop();
+
+            // 鏖灭配置
+            builder.comment("鏖灭饰品配置").push("aomie");
+            aoMieImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
+            aoMieMaxSlots = builder
+                    .comment("适应最大槽位 (默认: 6)")
+                    .defineInRange("maxSlots", 6, 1, 100);
+            aoMieAdaptFactor = builder
+                    .comment("适应减免系数 (默认: 0.5)")
+                    .defineInRange("adaptFactor", 0.5, 0.0, 1.0);
+            aoMieDecaySeconds = builder
+                    .comment("适应衰减时间(秒) (默认: 20)")
+                    .defineInRange("decaySeconds", 20, 1, 3600);
+            aoMieHealthPerResistance = builder
+                    .comment("每点虚数抗性提升的最大生命值 (默认: 4.0)")
+                    .defineInRange("healthPerResistance", 4.0, 0.0, 1000.0);
+            builder.pop();
+
+            // Meta-Morph配置
+            builder.comment("Meta-Morph饰品配置").push("meta_morph");
+            metaMorphAttackPerHealth = builder
+                    .comment("每点最大生命值提升的攻击力 (默认: 0.05 = 5%)")
+                    .defineInRange("attackPerHealth", 0.05, 0.0, 10.0);
+            metaMorphLifeStealPerResistance = builder
+                    .comment("每点虚数抗性提供的生命偷取 (默认: 0.01)")
+                    .defineInRange("lifeStealPerResistance", 0.01, 0.0, 1.0);
+            builder.pop();
+
+            // 苏配置
+            builder.comment("苏饰品配置").push("su");
+            suImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 31.0)")
+                    .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
+            suMaxHealthReduction = builder
+                    .comment("最大生命值减少比例 (默认: -0.3)")
+                    .defineInRange("maxHealthReduction", -0.3, -1.0, 0.0);
+            suDamageTakenFactor = builder
+                    .comment("受到伤害乘算因子 (默认: 0.9 = 减少10%)")
+                    .defineInRange("damageTakenFactor", 0.9, 0.0, 1.0);
+            builder.pop();
+
+            // 万物休眠配置
+            builder.comment("万物休眠饰品配置").push("wanwu_xiumian");
+            wanwuXiumianOverheal = builder
+                    .comment("超量治疗值 (默认: 0.3)")
+                    .defineInRange("overheal", 0.3, 0.0, 10.0);
+            wanwuXiumianAmmoRegenPercent = builder
+                    .comment("每秒弹药恢复百分比 (默认: 0.05 = 5%)")
+                    .defineInRange("ammoRegenPercent", 0.05, 0.0, 1.0);
+            builder.pop();
+
+            // 觉者配置
+            builder.comment("觉者饰品配置").push("juezhe");
+            juezheImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 31.0)")
+                    .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
+            juezheMaxHealthReduction = builder
+                    .comment("最大生命值减少比例 (默认: -0.4)")
+                    .defineInRange("maxHealthReduction", -0.4, -1.0, 0.0);
+            juezheDamageTakenFactor = builder
+                    .comment("受到伤害乘算因子 (默认: 0.7 = 减少30%)")
+                    .defineInRange("damageTakenFactor", 0.7, 0.0, 1.0);
+            builder.pop();
+
+            // 停滞之键配置
+            builder.comment("停滞之键饰品配置").push("tingzhi_zhijian");
+            tingzhiZhijianOverheal = builder
+                    .comment("超量治疗值 (默认: 0.5)")
+                    .defineInRange("overheal", 0.5, 0.0, 10.0);
+            tingzhiZhijianAmmoBasePercent = builder
+                    .comment("基础弹药恢复百分比 (默认: 0.1 = 10%)")
+                    .defineInRange("ammoBasePercent", 0.1, 0.0, 1.0);
+            tingzhiZhijianAmmoResistanceScale = builder
+                    .comment("虚数抗性弹药恢复缩放 (默认: 0.005 = 1/200)")
+                    .defineInRange("ammoResistanceScale", 0.005, 0.0, 1.0);
+            builder.pop();
+
+            // 天慧配置
+            builder.comment("天慧饰品配置").push("tianhui");
+            tianhuiImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 31.0)")
+                    .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
+            tianhuiMaxHealthReduction = builder
+                    .comment("最大生命值减少比例 (默认: -0.5)")
+                    .defineInRange("maxHealthReduction", -0.5, -1.0, 0.0);
+            tianhuiResistanceScale = builder
+                    .comment("虚数抗性对伤害减免的缩放 (默认: 0.01)")
+                    .defineInRange("resistanceScale", 0.01, 0.0, 1.0);
+            tianhuiMinDamageFactor = builder
+                    .comment("最低伤害乘算因子 (默认: 0.01 = 1%)")
+                    .defineInRange("minDamageFactor", 0.01, 0.0, 1.0);
+            builder.pop();
+
+            // 因果转轮配置
+            builder.comment("因果转轮饰品配置").push("yinguo_zhuanlun");
+            yinguoZhuanlunOverheal = builder
+                    .comment("超量治疗值 (默认: 1.0)")
+                    .defineInRange("overheal", 1.0, 0.0, 10.0);
+            yinguoZhuanlunAmmoResistanceScale = builder
+                    .comment("虚数抗性弹药恢复缩放 (默认: 0.01 = 1/100)")
+                    .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
             builder.pop();
 
             // 饰品互斥配置

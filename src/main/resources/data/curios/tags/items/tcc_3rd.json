@@ -1,11 +1,23 @@
 {
   "replace": false,
   "values": [
+    "tcc:aomie",
     "tcc:summer_beach",
+    "tcc:tianhui",
     "tcc:brahma_beasts",
     "tcc:salvation",
+    "tcc:su",
     "tcc:xiora",
     "tcc:raven",
-    "tcc:island_boom_raven"
+    "tcc:island_boom_raven",
+    "tcc:juezhe",
+    "tcc:griseo",
+    "tcc:huajie_zhiyan",
+    "tcc:huishi_zhijuan",
+    "tcc:fanxing",
+    "tcc:vill_v",
+    "tcc:yuxi_zhixia",
+    "tcc:kalpas",
+    "tcc:luoxuan"
   ]
 }

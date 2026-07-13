@@ -1,0 +1,142 @@
+package com.xlxyvergil.tcc.items.curios;
+
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.UUID;
+
+public class Luoxuan extends BaseCurioItem {
+
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("f2a3b4c5-d6e7-8901-bcde-f12345678902");
+
+    public Luoxuan(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        super.onEquip(slotContext, prevStack, stack);
+        if (slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("IsBound")) {
+                tag.putBoolean("IsBound", true);
+                tag.putString("BoundPlayer", player.getStringUUID());
+                tag.putString("BoundPlayerName", player.getGameProfile().getName());
+            }
+        }
+    }
+
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
+        if (GunTypeChecker.isHoldingHeavyWeapon(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                TaczCuriosConfig.COMMON.luoxuanImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+                "tcc.luoxuan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        } else {
+            removeEffects(livingEntity);
+        }
+    }
+
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerUUID = tag.getString("BoundPlayer");
+            if (slotContext.entity() instanceof Player player) {
+                return player.getStringUUID().equals(boundPlayerUUID);
+            }
+            return false;
+        }
+        return super.canEquip(slotContext, stack);
+    }
+
+    @Override
+    protected boolean isBoundItem() {
+        return true;
+    }
+
+    @Override
+    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+        return DropRule.ALWAYS_KEEP;
+    }
+
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+            stack -> stack.getItem() instanceof Luoxuan).isEmpty();
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide()) return;
+        if (!(entity instanceof Player player)) return;
+        if (!GunTypeChecker.isHoldingHeavyWeapon(player)) return;
+
+        int interval = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get() * 20;
+        if (player.tickCount % interval != 0) return;
+
+        int level = TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get();
+        int duration = TaczCuriosConfig.COMMON.luoxuanAbsorptionDuration.get() * 20;
+        int amplifier = level - 1;
+
+        MobEffectInstance existing = player.getEffect(MobEffects.ABSORPTION);
+        if (existing == null || existing.getAmplifier() < amplifier
+            || existing.getDuration() < duration / 2) {
+            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, amplifier,
+                false, false, true));
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
+        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+
+        tooltip.add(Component.translatable("item.tcc.luoxuan.effect",
+                TaczCuriosConfig.COMMON.luoxuanImaginaryResistance.get(),
+                TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get(),
+                TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get())
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("item.tcc.luoxuan.bound", boundPlayerName)
+                .withStyle(ChatFormatting.RED));
+        }
+    }
+}

@@ -15,6 +15,7 @@
     "tcc:depleted_reload",
     "tcc:overloaded_magazine",
     "tcc:infernal_chamber",
+    "tcc:kalpas",
     "tcc:sustained_fire",
     "tcc:infected_magazine",
     "tcc:deadly_surge",
@@ -24,7 +25,14 @@
     "tcc:weakness_sense",
     "tcc:destruction",
     "tcc:hollow_point",
+    "tcc:imer",
     "tcc:argon_scope",
-    "tcc:condition_overload"
+    "tcc:condition_overload",
+    "tcc:griseo",
+    "tcc:qianjie_yicheng",
+    "tcc:su",
+    "tcc:vill_v",
+    "tcc:wanwu_xiumian",
+    "tcc:xukong_wancang"
   ]
 }

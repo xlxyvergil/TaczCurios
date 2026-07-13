@@ -1,0 +1,158 @@
+package com.xlxyvergil.tcc.items.curios;
+
+import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.item.IGun;
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class XukongWancang extends BaseCurioItem {
+
+    public XukongWancang(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        super.onEquip(slotContext, prevStack, stack);
+        if (slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("IsBound")) {
+                tag.putBoolean("IsBound", true);
+                tag.putString("BoundPlayer", player.getStringUUID());
+                tag.putString("BoundPlayerName", player.getGameProfile().getName());
+            }
+        }
+    }
+
+    @Override
+    protected void applyEffects(LivingEntity livingEntity) {
+    }
+
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerUUID = tag.getString("BoundPlayer");
+            if (slotContext.entity() instanceof Player player) {
+                return player.getStringUUID().equals(boundPlayerUUID);
+            }
+            return false;
+        }
+        return super.canEquip(slotContext, stack);
+    }
+
+    @Override
+    protected boolean isBoundItem() {
+        return true;
+    }
+
+    @Override
+    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+        return DropRule.ALWAYS_KEEP;
+    }
+
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+            stack -> stack.getItem() instanceof XukongWancang).isEmpty();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null || !isEquipped(attacker)) return;
+        if (!GunTypeChecker.isHoldingHeavyWeapon(attacker)) return;
+        if (!(attacker.level() instanceof ServerLevel)) return;
+
+        Entity hurtEntity = event.getHurtEntity();
+        if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
+        if (targetLiving.isDeadOrDying()) return;
+
+        TccAttributeEvents.applyImaginaryDamage(
+            targetLiving,
+            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker),
+            TaczCuriosConfig.COMMON.xukongWancangImaginaryDamage.get().floatValue()
+        );
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (!(entity instanceof Player player)) return;
+        if (player.level().isClientSide()) return;
+
+        // 每秒恢复一次弹药
+        if (player.tickCount % 20 != 0) return;
+        if (!GunTypeChecker.isHoldingHeavyWeapon(player)) return;
+
+        ItemStack held = player.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(held);
+        if (iGun == null) return;
+
+        int currentAmmo = iGun.getCurrentAmmoCount(held);
+        int maxAmmo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held))
+            .map(index -> index.getGunData().getAmmoAmount()).orElse(0);
+        if (maxAmmo <= 0 || currentAmmo >= maxAmmo) return;
+
+        int regenAmmo = (int) Math.max(1, Math.round(maxAmmo * (double) TaczCuriosConfig.COMMON.xukongWancangAmmoRegenPercent.get()));
+        int newAmmo = Math.min(currentAmmo + regenAmmo, maxAmmo);
+
+        CompoundTag tag = held.getOrCreateTag();
+        tag.putInt("AmmoCount", newAmmo);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
+        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+
+        tooltip.add(Component.translatable("item.tcc.xukong_wancang.effect",
+                TaczCuriosConfig.COMMON.xukongWancangImaginaryDamage.get(),
+                String.format("%.0f", TaczCuriosConfig.COMMON.xukongWancangAmmoRegenPercent.get() * 100))
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("item.tcc.xukong_wancang.bound", boundPlayerName)
+                .withStyle(ChatFormatting.RED));
+        }
+    }
+}

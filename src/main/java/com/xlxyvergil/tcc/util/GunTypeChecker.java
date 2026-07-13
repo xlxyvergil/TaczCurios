@@ -25,6 +25,9 @@ public class GunTypeChecker {
     public static final Set<String> SHOTGUN_GUN_TYPES = Set.of("shotgun");
     public static final Set<String> PISTOL_GUN_TYPES = Set.of("pistol");
     public static final Set<String> SNIPER_GUN_TYPES = Set.of("sniper");
+    public static final Set<String> RIFLE_GUN_TYPES = Set.of("rifle");
+    public static final Set<String> HEAVY_WEAPON_TYPES = Set.of("rpg", "mg");
+    public static final Set<String> ALL_GUN_TYPES = Set.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
     
     private static final Map<String, String> GUN_TYPE_DISPLAY_NAMES = Map.of(
         "pistol", "手枪",
@@ -36,6 +39,15 @@ public class GunTypeChecker {
         "rpg", "发射器"
     );
     
+    /**
+     * 检查生物是否持有步枪
+     * @param livingEntity 生物实体
+     * @return 如果生物持有步枪返回true，否则返回false
+     */
+    public static boolean isHoldingRifle(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, RIFLE_GUN_TYPES);
+    }
+
     /**
      * 将枪械类型列表格式化为可读的显示字符串
      */
@@ -100,6 +112,24 @@ public class GunTypeChecker {
      */
     public static boolean isHoldingSniper(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, SNIPER_GUN_TYPES);
+    }
+
+    /**
+     * 检查生物是否持有重型武器（发射器、机枪）
+     * @param livingEntity 生物实体
+     * @return 如果生物持有重型武器返回true，否则返回false
+     */
+    public static boolean isHoldingHeavyWeapon(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, HEAVY_WEAPON_TYPES);
+    }
+
+    /**
+     * 检查生物是否持有任意枪械
+     * @param livingEntity 生物实体
+     * @return 如果生物持有任意枪械返回true，否则返回false
+     */
+    public static boolean isHoldingAnyGun(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, ALL_GUN_TYPES);
     }
     
     /**

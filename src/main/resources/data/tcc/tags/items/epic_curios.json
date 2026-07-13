@@ -18,7 +18,9 @@
     "tcc:magazine_boost_prime",
     "tcc:tandem_magazine_prime",
     "tcc:destruction_prime",
+    "tcc:dominance_key",
     "tcc:thunder_barrel_prime",
+    "tcc:tingzhi_zhijian",
     "tcc:weakness_mastery_prime",
     "tcc:pistol_mastery_prime",
     "tcc:sacrifice_oppression",
@@ -31,6 +33,12 @@
     "tcc:gilded_steel_slash",
     "tcc:gilded_rifle_aptitude",
     "tcc:gilded_shotgun_savvy",
-    "tcc:gilded_marksman"
+    "tcc:gilded_marksman",
+    "tcc:huajie_zhiyan",
+    "tcc:huishi_zhijuan",
+    "tcc:juezhe",
+    "tcc:yongjie_zhijian",
+    "tcc:yuxi_zhixia",
+    "tcc:qishi_zhijian"
   ]
 }

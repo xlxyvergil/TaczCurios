@@ -16,7 +16,6 @@
 | `attributeslib:draw_speed` | 远程武器蓄力速度 |
 | `attributeslib:experience_gained` | 破坏方块和击杀生物获得经验的乘数 |
 | `attributeslib:fire_damage` | 近战附加火焰魔法伤害，点燃敌人 |
-| `attributeslib:ghost_health` | 虚假生命（未实现） |
 | `attributeslib:healing_received` | 所有治疗效果的乘数 |
 | `attributeslib:life_steal` | 将造成伤害的百分比转化为自身治疗 |
 | `attributeslib:mining_speed` | 挖掘速度乘数 |

@@ -48,10 +48,11 @@ import com.xlxyvergil.tcc.items.curios.BurstReloadPrime;
 import com.xlxyvergil.tcc.items.curios.TacticalReloadPrime;
 import com.xlxyvergil.tcc.items.curios.ShotgunExpansionPrime;
 import com.xlxyvergil.tcc.items.curios.MagazineBoostPrime;
+import com.xlxyvergil.tcc.items.curios.MagazineBoost;
 import com.xlxyvergil.tcc.items.curios.TandemMagazinePrime;
 import com.xlxyvergil.tcc.items.curios.ShotgunExpansion;
-import com.xlxyvergil.tcc.items.curios.MagazineBoost;
 import com.xlxyvergil.tcc.items.curios.TandemMagazine;
+import com.xlxyvergil.tcc.items.curios.Su;
 import com.xlxyvergil.tcc.items.curios.SummerBeach;
 import com.xlxyvergil.tcc.items.curios.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.curios.Salvation;
@@ -87,9 +88,33 @@ import com.xlxyvergil.tcc.items.curios.GildedSteelSlash;
 import com.xlxyvergil.tcc.items.curios.GildedRifleAptitude;
 import com.xlxyvergil.tcc.items.curios.GildedShotgunSavvy;
 import com.xlxyvergil.tcc.items.curios.GildedMarksman;
+import com.xlxyvergil.tcc.items.curios.CorruptMagazine;
 import com.xlxyvergil.tcc.items.curios.ConditionOverload;
+import com.xlxyvergil.tcc.items.curios.AoMie;
+import com.xlxyvergil.tcc.items.curios.DominanceKey;
+import com.xlxyvergil.tcc.items.curios.Fanxing;
+import com.xlxyvergil.tcc.items.curios.Griseo;
+import com.xlxyvergil.tcc.items.curios.HuajieZhiyan;
+import com.xlxyvergil.tcc.items.curios.HuishiZhijuan;
 import com.xlxyvergil.tcc.items.curios.IslandBoomRaven;
+import com.xlxyvergil.tcc.items.curios.Imer;
 import com.xlxyvergil.tcc.items.curios.JudgementKey;
+import com.xlxyvergil.tcc.items.curios.Juezhe;
+import com.xlxyvergil.tcc.items.curios.Kalpas;
+import com.xlxyvergil.tcc.items.curios.Tianhui;
+import com.xlxyvergil.tcc.items.curios.TingzhiZhijian;
+import com.xlxyvergil.tcc.items.curios.Luoxuan;
+import com.xlxyvergil.tcc.items.curios.MetaMorph;
+import com.xlxyvergil.tcc.items.curios.QianjieYicheng;
+import com.xlxyvergil.tcc.items.curios.QishiZhijian;
+import com.xlxyvergil.tcc.items.curios.ShijieFanyan;
+import com.xlxyvergil.tcc.items.curios.VillV;
+import com.xlxyvergil.tcc.items.curios.WanwuXiumian;
+import com.xlxyvergil.tcc.items.curios.XukongWancang;
+import com.xlxyvergil.tcc.items.curios.XukongWancangYZTH;
+import com.xlxyvergil.tcc.items.curios.YinguoZhuanlun;
+import com.xlxyvergil.tcc.items.curios.YongjieZhijian;
+import com.xlxyvergil.tcc.items.curios.YuxiZhixia;
 import com.xlxyvergil.tcc.items.curios.Raven;
 import com.xlxyvergil.tcc.items.curios.SevenThunders;
 import com.xlxyvergil.tcc.items.curios.SevenThundersThunderSeen;
@@ -676,5 +701,157 @@ public class TccItems {
     public static final RegistryObject<Item> COLLAPSE_CRYSTAL = ITEMS.register("collapse_crystal",
         () -> new CollapseCrystal(new Item.Properties()
             .stacksTo(64)));
+
+    // ========== 逐火之蛾/神之键 新饰品 ==========
+
+    // 格蕾修 - 3rd槽位，稀有级，受伤冷却基础10tick，全部枪械类型
+    public static final RegistryObject<Item> GRISEO = ITEMS.register("griseo",
+        () -> new Griseo(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 千界一乘 - tdk槽位，稀有级，+20幸运值，全部枪械类型
+    public static final RegistryObject<Item> QIANJIE_YICHENG = ITEMS.register("qianjie_yicheng",
+        () -> new QianjieYicheng(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 绘世之卷 - 3rd槽位，传说级，受伤冷却基础10tick+幸运缩放上限40tick，全部枪械类型
+    public static final RegistryObject<Item> HUISHI_ZHIJUAN = ITEMS.register("huishi_zhijuan",
+        () -> new HuishiZhijuan(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 永劫之键 - tdk槽位，传说级，+20幸运+幸运缩放暴击，全部枪械类型
+    public static final RegistryObject<Item> YONGJIE_ZHIJIAN = ITEMS.register("yongjie_zhijian",
+        () -> new YongjieZhijian(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 繁星 - 3rd槽位，裂隙级，受伤冷却基础20tick+幸运缩放上限120tick，全部枪械类型
+    public static final RegistryObject<Item> FANXING = ITEMS.register("fanxing",
+        () -> new Fanxing(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // 视界反演 - tdk槽位，裂隙级，+40幸运+暴击+虚数崩解+侵染+虚数伤害转换，全部枪械类型
+    public static final RegistryObject<Item> SHIJIE_FANYAN = ITEMS.register("shijie_fanyan",
+        () -> new ShijieFanyan(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // ========== 重型武器系列饰品 ==========
+
+    // 维尔薇 - 3rd槽位，稀有级，HP<20%黄心Lv1 60s冷却，重型武器
+    public static final RegistryObject<Item> VILL_V = ITEMS.register("vill_v",
+        () -> new VillV(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 虚空万藏 - tdk槽位，稀有级，+10虚数伤害+5%/s弹药恢复，重型武器
+    public static final RegistryObject<Item> XUKONG_WANCANG = ITEMS.register("xukong_wancang",
+        () -> new XukongWancang(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 愚戏之匣 - 3rd槽位，传说级，HP<30%黄心Lv2 60s冷却，重型武器
+    public static final RegistryObject<Item> YUXI_ZHIXIA = ITEMS.register("yuxi_zhixia",
+        () -> new YuxiZhixia(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 启示之键 - tdk槽位，传说级，+20虚数伤害+10%/s弹药恢复，重型武器
+    public static final RegistryObject<Item> QISHI_ZHIJIAN = ITEMS.register("qishi_zhijian",
+        () -> new QishiZhijian(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 螺旋 - 3rd槽位，裂隙级，每30s黄心Lv3，重型武器
+    public static final RegistryObject<Item> LUOXUAN = ITEMS.register("luoxuan",
+        () -> new Luoxuan(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // 虚空万藏·雨众天华 - tdk槽位，裂隙级，+20+atk*0.1虚数伤害+20%/s弹药恢复+虚数转换+必定侵染，重型武器
+    public static final RegistryObject<Item> XUKONG_WANCANG_YZTH = ITEMS.register("xukong_wancang_yzth",
+        () -> new XukongWancangYZTH(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // ========== 千劫/伊默尔系列饰品 ==========
+
+    // 千劫 - 3rd槽位，稀有级，+21虚数抗性+适应3/0.8/20s，全部枪械类型
+    public static final RegistryObject<Item> KALPAS = ITEMS.register("kalpas",
+        () -> new Kalpas(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 伊默尔 - tdk槽位，稀有级，最大生命值→攻击力，全部枪械类型
+    public static final RegistryObject<Item> IMER = ITEMS.register("imer",
+        () -> new Imer(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 坏劫之焱 - 3rd槽位，传说级，+21虚数抗性+适应4/0.7/20s+抗性→生命值，全部枪械类型
+    public static final RegistryObject<Item> HUAJIE_ZHIYAN = ITEMS.register("huajie_zhiyan",
+        () -> new HuajieZhiyan(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 支配之键 - tdk槽位，传说级，最大生命值→攻击力+atk*0.3虚数伤害，全部枪械类型
+    public static final RegistryObject<Item> DOMINANCE_KEY = ITEMS.register("dominance_key",
+        () -> new DominanceKey(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 鏖灭 - 3rd槽位，裂隙级，+21虚数抗性+适应6/0.5/20s+抗性→生命值，全部枪械类型
+    public static final RegistryObject<Item> AOMIE = ITEMS.register("aomie",
+        () -> new AoMie(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // Meta-Morph - tdk槽位，裂隙级，最大生命值→攻击力+atk虚数伤害+抗性→生命偷取，全部枪械类型
+    public static final RegistryObject<Item> META_MORPH = ITEMS.register("meta_morph",
+        () -> new MetaMorph(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // ========== 苏系列饰品 ==========
+
+    // 苏 - 3rd槽位，稀有级，+31虚数抗性-30%HP-dmg10%减伤，步枪
+    public static final RegistryObject<Item> SU = ITEMS.register("su",
+        () -> new Su(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 万物休眠 - tdk槽位，稀有级，overheal0.3+5%/s弹药，步枪
+    public static final RegistryObject<Item> WANWU_XIUMIAN = ITEMS.register("wanwu_xiumian",
+        () -> new WanwuXiumian(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.RARE)));
+
+    // 觉者 - 3rd槽位，传说级，+31虚数抗性-40%HP-dmg30%减伤，步枪
+    public static final RegistryObject<Item> JUEZHE = ITEMS.register("juezhe",
+        () -> new Juezhe(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 停滞之键 - tdk槽位，传说级，overheal0.5+弹药(10+res/200)%，步枪
+    public static final RegistryObject<Item> TINGZHI_ZHIJIAN = ITEMS.register("tingzhi_zhijian",
+        () -> new TingzhiZhijian(new Item.Properties()
+            .stacksTo(1)
+            .rarity(Rarity.EPIC)));
+
+    // 天慧 - 3rd槽位，裂隙级，+31虚数抗性-50%HP-dmg(0.7-res/100)减伤，步枪
+    public static final RegistryObject<Item> TIANHUI = ITEMS.register("tianhui",
+        () -> new Tianhui(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
+
+    // 因果转轮 - tdk槽位，裂隙级，overheal1+弹药res/100%+虚数伤害，步枪
+    public static final RegistryObject<Item> YINGUO_ZHUANLUN = ITEMS.register("yinguo_zhuanlun",
+        () -> new YinguoZhuanlun(new Item.Properties()
+            .stacksTo(1)
+            .rarity(RIFT)));
 
 }
