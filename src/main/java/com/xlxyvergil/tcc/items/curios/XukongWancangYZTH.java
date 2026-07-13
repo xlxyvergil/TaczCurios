@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.api.item.IGun;
@@ -9,6 +8,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
+import com.xlxyvergil.tcc.util.AmmoRegenHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -122,8 +122,8 @@ public class XukongWancangYZTH extends BaseCurioItem {
         // 额外虚数伤害：20 + attack_damage * (虚数抗性 / 100)
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        float imaginaryBonus = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
-            + (float) (attackDamage * (imaginaryResistance / 100.0));
+        float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
+            + (float) Math.round(attackDamage * (imaginaryResistance / 100.0) * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
             attacker,
             TccDamageSources.imaginaryDamage(attacker.level(), attacker),
@@ -162,16 +162,8 @@ public class XukongWancangYZTH extends BaseCurioItem {
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        int currentAmmo = iGun.getCurrentAmmoCount(held);
-        int maxAmmo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held))
-            .map(index -> index.getGunData().getAmmoAmount()).orElse(0);
-        if (maxAmmo <= 0 || currentAmmo >= maxAmmo) return;
-
-        int regenAmmo = (int) Math.max(1, Math.round(maxAmmo * (double) TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get()));
-        int newAmmo = Math.min(currentAmmo + regenAmmo, maxAmmo);
-
-        CompoundTag tag = held.getOrCreateTag();
-        tag.putInt("AmmoCount", newAmmo);
+        AmmoRegenHelper.regenAmmo(player, held, iGun,
+            (double) TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get());
     }
 
     @Override

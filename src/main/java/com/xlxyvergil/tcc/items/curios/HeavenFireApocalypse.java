@@ -223,7 +223,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         // 计算剩余血量比例
         double remainingHealthRatio = 1.0 - clampedHealthCost;
-        float newHealth = (float) (attacker.getMaxHealth() * remainingHealthRatio);
+        float newHealth = (float) ((float) Math.round(attacker.getMaxHealth() * remainingHealthRatio * 100.0) / 100.0);
         
         // 确保至少有1点血量
         if (newHealth < 1.0f) {

@@ -59,7 +59,7 @@ public class DominanceKey extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get();
+            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get() * 100.0) / 100.0;
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
                 "tcc.dominance_key.attack_damage", AttributeModifier.Operation.ADDITION);
@@ -118,7 +118,7 @@ public class DominanceKey extends BaseCurioItem {
         if (targetLiving.isDeadOrDying()) return;
 
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float imaginaryBonus = (float) (attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get());
+        float imaginaryBonus = (float) (Math.round(attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get() * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(attacker.level(), attacker),
@@ -146,8 +146,8 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
             }
         }
         tooltip.add(Component.translatable("item.tcc.dominance_key.effect",
-                attackFromHealth,
-                imaginaryDamage)
+                String.format("%.2f", attackFromHealth),
+                String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));

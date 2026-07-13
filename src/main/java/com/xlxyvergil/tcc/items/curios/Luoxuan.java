@@ -124,7 +124,7 @@ public class Luoxuan extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.luoxuan.effect",
-                TaczCuriosConfig.COMMON.villVImaginaryResistance.get(),
+                String.format("%.2f", TaczCuriosConfig.COMMON.villVImaginaryResistance.get()),
                 TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get(),
                 TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get())
             .withStyle(ChatFormatting.RED));

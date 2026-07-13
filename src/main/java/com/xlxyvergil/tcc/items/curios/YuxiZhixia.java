@@ -115,7 +115,7 @@ public class YuxiZhixia extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("item.tcc.yuxi_zhixia.effect.stat",
-                TaczCuriosConfig.COMMON.villVImaginaryResistance.get())
+                String.format("%.2f", TaczCuriosConfig.COMMON.villVImaginaryResistance.get()))
             .withStyle(ChatFormatting.YELLOW));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));

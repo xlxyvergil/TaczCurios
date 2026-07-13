@@ -44,14 +44,10 @@ public class QianjieYicheng extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            int luck = TaczCuriosConfig.COMMON.qianjieYichengLuck.get();
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
-                luck, LUCK_UUID,
-                "tcc.qianjie_yicheng.luck", AttributeModifier.Operation.ADDITION);
-        } else {
-            removeEffects(livingEntity);
-        }
+        int luck = TaczCuriosConfig.COMMON.qianjieYichengLuck.get();
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
+            luck, LUCK_UUID,
+            "tcc.qianjie_yicheng.luck", AttributeModifier.Operation.ADDITION);
     }
 
     @Override

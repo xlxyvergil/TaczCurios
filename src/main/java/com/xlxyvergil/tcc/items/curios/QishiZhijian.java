@@ -1,12 +1,12 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.item.IGun;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.util.AmmoRegenHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -118,16 +118,8 @@ public class QishiZhijian extends BaseCurioItem {
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        int currentAmmo = iGun.getCurrentAmmoCount(held);
-        int maxAmmo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held))
-            .map(index -> index.getGunData().getAmmoAmount()).orElse(0);
-        if (maxAmmo <= 0 || currentAmmo >= maxAmmo) return;
-
-        int regenAmmo = (int) Math.max(1, Math.round(maxAmmo * (double) TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get()));
-        int newAmmo = Math.min(currentAmmo + regenAmmo, maxAmmo);
-
-        CompoundTag tag = held.getOrCreateTag();
-        tag.putInt("AmmoCount", newAmmo);
+        AmmoRegenHelper.regenAmmo(player, held, iGun,
+            (double) TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get());
     }
 
     @Override
@@ -140,7 +132,7 @@ public class QishiZhijian extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.qishi_zhijian.effect",
-                TaczCuriosConfig.COMMON.qishiZhijianImaginaryDamage.get(),
+                String.format("%.2f", TaczCuriosConfig.COMMON.qishiZhijianImaginaryDamage.get()),
                 String.format("%.0f", TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get() * 100))
             .withStyle(ChatFormatting.WHITE));
 

@@ -136,7 +136,7 @@ public class HuishiZhijuan extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("item.tcc.huishi_zhijuan.effect.stat",
-                TaczCuriosConfig.COMMON.griseoImaginaryResistance.get())
+                String.format("%.2f", TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()))
             .withStyle(ChatFormatting.YELLOW));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));

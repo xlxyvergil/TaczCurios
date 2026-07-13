@@ -59,7 +59,7 @@ public class HuajieZhiyan extends BaseCurioItem {
             "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double healthBoost = totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get();
+        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get() * 100.0) / 100.0;
         AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
             healthBoost, MAX_HEALTH_UUID,
             "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
@@ -145,11 +145,11 @@ public class HuajieZhiyan extends BaseCurioItem {
             }
         }
         tooltip.add(Component.translatable("item.tcc.huajie_zhiyan.effect",
-                TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(),
+                String.format("%.2f", TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()),
                 TaczCuriosConfig.COMMON.huajieZhiyanMaxSlots.get(),
-                TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get() * 100,
+                String.format("%.2f", TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get() * 100),
                 TaczCuriosConfig.COMMON.huajieZhiyanDecaySeconds.get(),
-                healthFromResistance)
+                String.format("%.2f", healthFromResistance))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));

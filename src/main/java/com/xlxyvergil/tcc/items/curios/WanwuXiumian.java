@@ -1,8 +1,8 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.item.IGun;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AmmoRegenHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -72,16 +72,8 @@ public class WanwuXiumian extends BaseCurioItem {
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        int currentAmmo = iGun.getCurrentAmmoCount(held);
-        int maxAmmo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held))
-            .map(index -> index.getGunData().getAmmoAmount()).orElse(0);
-        if (maxAmmo <= 0 || currentAmmo >= maxAmmo) return;
-
-        double percent = TaczCuriosConfig.COMMON.wanwuXiumianAmmoRegenPercent.get();
-        int regenAmmo = (int) Math.max(1, Math.round(maxAmmo * percent));
-        int newAmmo = Math.min(currentAmmo + regenAmmo, maxAmmo);
-        CompoundTag tag = held.getOrCreateTag();
-        tag.putInt("AmmoCount", newAmmo);
+        AmmoRegenHelper.regenAmmo(player, held, iGun,
+            TaczCuriosConfig.COMMON.wanwuXiumianAmmoRegenPercent.get());
     }
 
     @Override

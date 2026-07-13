@@ -59,7 +59,7 @@ public class AoMie extends BaseCurioItem {
             "tcc.aomie.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double healthBoost = totalResistance * TaczCuriosConfig.COMMON.aoMieHealthPerResistance.get();
+        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.aoMieHealthPerResistance.get() * 100.0) / 100.0;
         AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
             healthBoost, MAX_HEALTH_UUID,
             "tcc.aomie.max_health", AttributeModifier.Operation.ADDITION);
@@ -145,11 +145,11 @@ public class AoMie extends BaseCurioItem {
             }
         }
         tooltip.add(Component.translatable("item.tcc.aomie.effect",
-                TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(),
+                String.format("%.2f", TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()),
                 TaczCuriosConfig.COMMON.aoMieMaxSlots.get(),
-                TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100,
+                String.format("%.2f", TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100),
                 TaczCuriosConfig.COMMON.aoMieDecaySeconds.get(),
-                healthFromResistance)
+                String.format("%.2f", healthFromResistance))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

@@ -156,7 +156,7 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
         var data = bullet.getPersistentData();
         if (!data.getBoolean(PROC_KEY) || data.getBoolean(PROC_USED_KEY)) return;
 
-        float extra = target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get().floatValue();
+        float extra = (float) ((float) Math.round(target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 100.0) / 100.0);
         if (extra > 0) {
             target.setHealth(Math.max(0, target.getHealth() - extra));
         }

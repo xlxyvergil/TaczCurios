@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.api.item.IGun;
@@ -9,6 +8,7 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.util.AmmoRegenHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -86,18 +86,11 @@ public class YinguoZhuanlun extends BaseCurioItem {
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        int currentAmmo = iGun.getCurrentAmmoCount(held);
-        int maxAmmo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held))
-            .map(index -> index.getGunData().getAmmoAmount()).orElse(0);
-        if (maxAmmo <= 0 || currentAmmo >= maxAmmo) return;
-
         double totalResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double resistanceScale = TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get();
-        double percent = totalResistance * resistanceScale;
-        int regenAmmo = (int) Math.max(1, Math.round(maxAmmo * percent));
-        int newAmmo = Math.min(currentAmmo + regenAmmo, maxAmmo);
-        CompoundTag tag = held.getOrCreateTag();
-        tag.putInt("AmmoCount", newAmmo);
+        double percent = Math.round(totalResistance * resistanceScale * 100.0) / 100.0;
+
+        AmmoRegenHelper.regenAmmo(player, held, iGun, percent);
     }
 
     @Override

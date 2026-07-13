@@ -1,0 +1,35 @@
+新增18个饰品 - 纹理图片清单
+================================
+每个需要一张 .png 放到 assets/tcc/textures/item/ 目录下
+
+第一批：格蕾修系列（全部枪械）
+  griseo.png              格蕾修
+  qianjie_yicheng.png     千界一乘
+  huishi_zhijuan.png      绘世之卷
+  yongjie_zhijian.png     永劫之键
+  fanxing.png             繁星
+  shijie_fanyan.png       千界一乘·视界反演
+
+第二批：维尔薇系列（重型武器：rpg, mg）
+  vill_v.png              维尔薇
+  xukong_wancang.png      虚空万藏
+  yuxi_zhixia.png         愚戏之匣
+  qishi_zhijian.png       启示之键
+  luoxuan.png             螺旋
+  xukong_wancang_yzth.png 虚空万藏·雨众天华
+
+第三批：千劫系列
+  kalpas.png              千劫
+  imer.png                伊默尔
+  huajie_zhiyan.png       坏劫之焱
+  dominance_key.png       支配之键
+  aomie.png               鏖灭
+  meta_morph.png          Meta-Morph
+
+第四批：苏系列（步枪：rifle）
+  su.png                  苏
+  wanwu_xiumian.png       万物休眠
+  juezhe.png              觉者
+  tingzhi_zhijian.png     停滞之键
+  tianhui.png            天慧
+  yinguo_zhuanlun.png     因果转轮

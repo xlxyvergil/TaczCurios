@@ -116,7 +116,7 @@ public class Tianhui extends BaseCurioItem {
         double resistanceScale = TaczCuriosConfig.COMMON.tianhuiResistanceScale.get();
         double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();
 
-        double factor = baseFactor - (totalImaginaryResistance * resistanceScale);
+        double factor = Math.round((baseFactor - (totalImaginaryResistance * resistanceScale)) * 100.0) / 100.0;
         if (factor < minFactor) {
             factor = minFactor;
         }
@@ -144,9 +144,9 @@ public class Tianhui extends BaseCurioItem {
         }
         tooltip.add(Component.translatable("item.tcc.tianhui.effect",
                 (int)resistance,
-                TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100,
+                String.format("%.2f", TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100),
                 (int)computedDamageLimit,
-                TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100)
+                String.format("%.2f", TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -61,13 +61,13 @@ public class MetaMorph extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get();
+            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get() * 100.0) / 100.0;
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
                 "tcc.meta_morph.attack_damage", AttributeModifier.Operation.ADDITION);
 
             double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            double lifeSteal = totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
+            double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 100.0) / 100.0;
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
                 lifeSteal, LIFE_STEAL_UUID,
                 "tcc.meta_morph.life_steal", AttributeModifier.Operation.ADDITION);
@@ -127,7 +127,7 @@ public class MetaMorph extends BaseCurioItem {
         if (targetLiving.isDeadOrDying()) return;
 
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float imaginaryBonus = (float) attackDamage;
+        float imaginaryBonus = (float) (Math.round(attackDamage * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(attacker.level(), attacker),
@@ -157,9 +157,9 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
             }
         }
         tooltip.add(Component.translatable("item.tcc.meta_morph.effect",
-                attackFromHealth,
-                lifeStealFromResistance,
-                imaginaryDamage)
+                String.format("%.2f", attackFromHealth),
+                String.format("%.2f", lifeStealFromResistance),
+                String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

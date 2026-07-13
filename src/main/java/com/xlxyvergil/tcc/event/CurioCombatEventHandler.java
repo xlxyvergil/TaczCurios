@@ -191,28 +191,28 @@ public class CurioCombatEventHandler {
         // R-06 镀层步枪才能: 手持步枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_RIFLE_APTITUDE.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get();
-            double multiplier = 1.0 + harmfulCount * perHarmful;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // S-07 镀层通晓霰弹枪: 手持霰弹枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.GILDED_SHOTGUN_SAVVY.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get();
-            double multiplier = 1.0 + harmfulCount * perHarmful;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // P-09 镀层准确射手: 手持手枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_MARKSMAN.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get();
-            double multiplier = 1.0 + harmfulCount * perHarmful;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // M-06 异况超量: 手持近战时，每负面效果直接乘算（始终生效）
         if (isHoldingMeleeWeapon(player) && hasCurio(player, TccItems.CONDITION_OVERLOAD.get())) {
             double perHarmful = TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get();
-            double multiplier = 1.0 + harmfulCount * perHarmful;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
     }

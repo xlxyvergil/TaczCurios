@@ -124,9 +124,9 @@ public class Juezhe extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.juezhe.effect",
-                TaczCuriosConfig.COMMON.suImaginaryResistance.get(),
-                TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100,
-                TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100)
+                String.format("%.2f", TaczCuriosConfig.COMMON.suImaginaryResistance.get()),
+                String.format("%.2f", TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100),
+                String.format("%.2f", TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));

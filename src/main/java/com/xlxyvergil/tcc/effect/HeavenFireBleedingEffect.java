@@ -22,7 +22,7 @@ public class HeavenFireBleedingEffect extends MobEffect {
         if (entity.level().isClientSide) return;
         double damagePerLevel = -TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.get();
         float maxHealth = entity.getMaxHealth();
-        float damage = (float) (maxHealth * damagePerLevel * (amplifier + 1));
+        float damage = (float) ((float) Math.round(maxHealth * damagePerLevel * (amplifier + 1) * 100.0) / 100.0);
         entity.hurt(TccDamageSources.imaginaryDamage(entity.level(), entity.getLastAttacker()), damage);
     }
 

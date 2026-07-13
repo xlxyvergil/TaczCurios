@@ -124,9 +124,9 @@ public class Su extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.su.effect",
-                TaczCuriosConfig.COMMON.suImaginaryResistance.get(),
-                TaczCuriosConfig.COMMON.suMaxHealthReduction.get() * 100,
-                TaczCuriosConfig.COMMON.suDamageTakenFactor.get() * 100)
+                String.format("%.2f", TaczCuriosConfig.COMMON.suImaginaryResistance.get()),
+                String.format("%.2f", TaczCuriosConfig.COMMON.suMaxHealthReduction.get() * 100),
+                String.format("%.2f", TaczCuriosConfig.COMMON.suDamageTakenFactor.get() * 100))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

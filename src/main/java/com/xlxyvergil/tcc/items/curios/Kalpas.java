@@ -121,9 +121,9 @@ public class Kalpas extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
         tooltip.add(Component.translatable("item.tcc.kalpas.effect",
-                TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(),
+                String.format("%.2f", TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()),
                 TaczCuriosConfig.COMMON.kalpasMaxSlots.get(),
-                TaczCuriosConfig.COMMON.kalpasAdaptFactor.get() * 100,
+                String.format("%.2f", TaczCuriosConfig.COMMON.kalpasAdaptFactor.get() * 100),
                 TaczCuriosConfig.COMMON.kalpasDecaySeconds.get())
             .withStyle(ChatFormatting.GOLD));
 
