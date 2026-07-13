@@ -1748,8 +1748,8 @@ public class TaczCuriosConfig {
                     .comment("虚数抗性对伤害减免的缩放 (默认: 0.01)")
                     .defineInRange("resistanceScale", 0.01, 0.0, 1.0);
             tianhuiMinDamageFactor = builder
-                    .comment("最低伤害乘算因子 (默认: 0.01 = 1%)")
-                    .defineInRange("minDamageFactor", 0.01, 0.0, 1.0);
+                    .comment("最低伤害乘算因子 (默认: 0.1 = 10%)")
+                    .defineInRange("minDamageFactor", 0.1, 0.0, 1.0);
             builder.pop();
 
             // 因果转轮配置
