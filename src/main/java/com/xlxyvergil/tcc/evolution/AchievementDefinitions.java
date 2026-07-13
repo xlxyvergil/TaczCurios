@@ -253,8 +253,16 @@ public final class AchievementDefinitions {
         List<String> holdingGunTypes,
         @SerializedName("minDistance") Double minDistance,
         List<AttributeCondition> attributes,
-        String killer
-    ) {}
+        String killer,
+        // --- stat_polling ---
+        String stat,
+        @SerializedName("statThreshold") int statThreshold,
+        // --- biome_visit ---
+        String biome
+    ) {
+        /** stat 阈值，若 JSON 未设置则默认 1 */
+        public int statThreshold() { return statThreshold > 0 ? statThreshold : 1; }
+    }
 
     public record KillCondition(
         String entity,

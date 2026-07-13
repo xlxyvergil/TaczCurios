@@ -17,34 +17,33 @@ import java.util.concurrent.ConcurrentHashMap;
  * 玩家减伤 Mixin，在 {@link LivingEntity#setHealth(float)} 层面使用
  * {@link ModifyVariable} 修改传入的 health 参数，不会被任何事件层绕过。
  *
- * <p>提供两个独立机制，由不同饰品按需调用：
+ * <p>提供三个独立机制，由不同饰品按需调用：
  * <ul>
- *   <li>{@link #setDamageCooldown(LivingEntity, int)} — 受伤冷却，冷却期间所有伤害归零</li>
+ *   <li>{@link #setDamageCooldown(LivingEntity, int)} — 受伤冷却，受击后 N tick 内所有伤害归零</li>
  *   <li>{@link #setDamageCap(LivingEntity, float)} — 单次受伤上限，限制每次受伤最大值</li>
+ *   <li>{@link #triggerHitCooldownIfEquipped(LivingEntity, Item, int)} — 受击触发冷却（装备检查+冷却一站式）</li>
  * </ul>
  *
- * <p>两种机制可同时生效。冷却优先于上限：冷却生效时，伤害直接归零，上限不参与计算。
+ * <p>所有机制均采用<strong>受击触发式</strong>（参考 GoetyRevelation / RevelationFix 的 Apostle 减伤模式），
+ * 饰品类无需在 {@code curioTick} 中每 tick 调用，只需在 {@code LivingHurtEvent} 中调用一次即可。
  *
  * <h3>饰品使用示例</h3>
  * <pre>{@code
- * // 冷却型饰品：每 tick 刷新冷却值（例如 30 tick）
- * public void curioTick(SlotContext slotContext, ItemStack stack) {
- *     DamageResistanceMixin.setDamageCooldown(slotContext.entity(), 30);
+ * // 模式一：独立 LivingHurtEvent 监听器（推荐）
+ * @SubscribeEvent
+ * public static void onLivingHurt(LivingHurtEvent event) {
+ *     LivingEntity entity = event.getEntity();
+ *     // 冷却型：受击后 30 tick 内伤害归零
+ *     DamageResistanceMixin.setDamageCooldown(entity, 30);
+ *     // 限伤型：单次受伤不超过 20.0
+ *     DamageResistanceMixin.setDamageCap(entity, 20.0F);
  * }
  *
- * public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
- *     DamageResistanceMixin.clearDamageCooldown(slotContext.entity());
- * }
- *
- * // 限伤型饰品：每 tick 刷新上限值（例如 20.0）
- * public void curioTick(SlotContext slotContext, ItemStack stack) {
- *     DamageResistanceMixin.setDamageCap(slotContext.entity(), 20.0F);
- * }
- *
- * public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
- *     DamageResistanceMixin.clearDamageCap(slotContext.entity());
- * }
+ * // 模式二：在饰品类 curioTick 中调用（也支持，但不如受击式高效）
+ * // 最终建议统一在 LivingHurtEvent 中处理
  * }</pre>
+ *
+ * <p>冷却由 {@code tick()} Mixin 自动递减，降至 0 自动移除，无需手动清理。
  */
 @Mixin(value = LivingEntity.class, priority = 2000)
 public abstract class DamageResistanceMixin {
@@ -57,11 +56,13 @@ public abstract class DamageResistanceMixin {
     // ==================== 饰品调用的公开方法 ====================
 
     /**
-     * 设置受伤冷却。冷却期间所有血量下降都会被拦截归零。
-     * 由饰品在 {@code curioTick} 中每 tick 调用以维持冷却状态。
+     * 设置受伤冷却（受击触发式）。
+     * <p>调用后，该实体在 {@code cooldownTicks} 内受到的所有血量下降都会被拦截归零。
+     * 冷却由 tick() Mixin 自动递减，归零后自动移除，无需手动清理。
+     * <p>典型用法：在 {@code LivingHurtEvent} 中调用一次，受击后给一段无敌窗口。
      *
      * @param entity        目标实体（玩家）
-     * @param cooldownTicks 冷却 tick 数
+     * @param cooldownTicks 冷却 tick 数（如 30 = 1.5秒）
      */
     public static void setDamageCooldown(LivingEntity entity, int cooldownTicks) {
         if (entity == null || cooldownTicks <= 0) return;
@@ -69,11 +70,13 @@ public abstract class DamageResistanceMixin {
     }
 
     /**
-     * 设置单次受伤上限。玩家每次受到的血量下降不会超过此值。
-     * 由饰品在 {@code curioTick} 中每 tick 调用以维持上限状态。
+     * 设置单次受伤上限（受击触发式）。
+     * <p>调用后，该实体每次血量下降不会超过 {@code maxDamage}。
+     * 需在 {@code LivingHurtEvent} 或 {@code curioTick} 中持续调用以维持上限，
+     * 或在卸下饰品时调用 {@link #clearDamageCap} 清除。
      *
      * @param entity    目标实体（玩家）
-     * @param maxDamage 单次受伤上限
+     * @param maxDamage 单次受伤上限（如 20.0 = 10颗心）
      */
     public static void setDamageCap(LivingEntity entity, float maxDamage) {
         if (entity == null || maxDamage <= 0) return;

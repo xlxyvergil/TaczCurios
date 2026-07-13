@@ -244,6 +244,16 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> endlessGunTypes;
 
+        // ==== 吸收饰品通用配置 ====
+        /** 吸收饰品触发血量阈值 (0~1, 默认 0.25 = 25%) */
+        public final ForgeConfigSpec.DoubleValue curioAbsorptionTriggerHp;
+        /** 吸收效果等级 (默认 4 = ABSORPTION IV) */
+        public final ForgeConfigSpec.IntValue curioAbsorptionLevel;
+        /** 吸收效果持续时间(秒) (默认 60) */
+        public final ForgeConfigSpec.DoubleValue curioAbsorptionDuration;
+        /** 吸收效果冷却(秒) (默认 180) */
+        public final ForgeConfigSpec.DoubleValue curioAbsorptionCooldown;
+
         // 士兵基础挂牌配置
         public final ForgeConfigSpec.DoubleValue soldierBasicTagDamageBoost;
         
@@ -1288,6 +1298,22 @@ public class TaczCuriosConfig {
                     .define("enableApotheosisIntegration", true);
             builder.pop();
             
+            // ==== 吸收饰品通用配置 ====
+            builder.comment("吸收饰品通用配置（低血量触发黄心）").push("curio_absorption");
+            curioAbsorptionTriggerHp = builder
+                    .comment("触发血量阈值 (0~1, 默认: 0.25 = 25%)")
+                    .defineInRange("triggerHp", 0.25, 0, 1);
+            curioAbsorptionLevel = builder
+                    .comment("吸收效果等级 (默认: 4 = ABSORPTION IV)")
+                    .defineInRange("absorptionLevel", 4, 1, 255);
+            curioAbsorptionDuration = builder
+                    .comment("吸收效果持续时间(秒) (默认: 60)")
+                    .defineInRange("absorptionDuration", 60.0, 1, 2147483647);
+            curioAbsorptionCooldown = builder
+                    .comment("吸收效果冷却(秒) (默认: 180)")
+                    .defineInRange("cooldown", 180.0, 0, 2147483647);
+            builder.pop();
+
             // 饰品互斥配置
             builder.comment("饰品互斥配置（格式：物品1,物品2 表示互斥）").push("curio_conflicts");
             curioConflicts = builder

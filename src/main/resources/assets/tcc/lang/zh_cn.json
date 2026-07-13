@@ -413,7 +413,6 @@
   "effect.tcc.gilded_bullet_spread": "镀层弹头扩散",
   "effect.tcc.gilded_steel_slash": "镀层斩铁",
   
-  "// 新增33个饰品": "",
   "item.tcc.critical_delay": "§6关键延迟",
   "item.tcc.critical_delay.effect": "暴击几率%1$s%%，射速%2$s%%",
   "item.tcc.lethal_crit": "§9致命一击",
