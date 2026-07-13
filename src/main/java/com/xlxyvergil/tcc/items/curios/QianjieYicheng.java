@@ -1,14 +1,15 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.LuckHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -18,8 +19,11 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 public class QianjieYicheng extends BaseCurioItem {
+
+    private static final UUID LUCK_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567801");
 
     public QianjieYicheng(Properties properties) {
         super(properties);
@@ -41,7 +45,10 @@ public class QianjieYicheng extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            LuckHelper.addLuck(livingEntity, TaczCuriosConfig.COMMON.qianjieYichengLuck.get());
+            int luck = TaczCuriosConfig.COMMON.qianjieYichengLuck.get();
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
+                luck, LUCK_UUID,
+                "tcc.qianjie_yicheng.luck", AttributeModifier.Operation.ADDITION);
         } else {
             removeEffects(livingEntity);
         }
@@ -49,7 +56,12 @@ public class QianjieYicheng extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        LuckHelper.addLuck(livingEntity, -TaczCuriosConfig.COMMON.qianjieYichengLuck.get());
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_UUID);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override

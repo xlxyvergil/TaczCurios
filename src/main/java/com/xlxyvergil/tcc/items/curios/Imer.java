@@ -47,7 +47,7 @@ public class Imer extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
             double attackBonus = maxHealth * TaczCuriosConfig.COMMON.imerAttackPerHealth.get();
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
@@ -61,6 +61,11 @@ public class Imer extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override
@@ -92,8 +97,7 @@ public class Imer extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String gunTypes = GunTypeChecker.formatGunTypes(GunTypeChecker.ALL_GUN_TYPES.stream().toList());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
         tooltip.add(Component.translatable("item.tcc.imer.effect",
                 TaczCuriosConfig.COMMON.imerAttackPerHealth.get() * 100)

@@ -11,14 +11,13 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -41,18 +39,9 @@ public class MetaMorph extends BaseCurioItem {
 
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-1234567893");
     private static final UUID LIFE_STEAL_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-def4-567890abcdef");
-    private static final Attribute LIFE_STEAL = resolveLifeSteal();
 
     public MetaMorph(Properties properties) {
         super(properties);
-    }
-
-    private static Attribute resolveLifeSteal() {
-        try {
-            return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "life_steal"));
-        } catch (Exception ignored) {
-            return null;
-        }
     }
 
     @Override
@@ -70,7 +59,7 @@ public class MetaMorph extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
             double attackBonus = maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get();
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
@@ -79,11 +68,9 @@ public class MetaMorph extends BaseCurioItem {
 
             double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             double lifeSteal = totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
-            if (LIFE_STEAL != null) {
-                AttributeHelper.applyModifier(livingEntity, LIFE_STEAL,
-                    lifeSteal, LIFE_STEAL_UUID,
-                    "tcc.meta_morph.life_steal", AttributeModifier.Operation.ADDITION);
-            }
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
+                lifeSteal, LIFE_STEAL_UUID,
+                "tcc.meta_morph.life_steal", AttributeModifier.Operation.ADDITION);
         } else {
             removeEffects(livingEntity);
         }
@@ -92,9 +79,12 @@ public class MetaMorph extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
-        if (LIFE_STEAL != null) {
-            AttributeHelper.removeModifier(livingEntity, LIFE_STEAL, LIFE_STEAL_UUID);
-        }
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.LIFE_STEAL, LIFE_STEAL_UUID);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override
@@ -129,7 +119,7 @@ public class MetaMorph extends BaseCurioItem {
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
         if (attacker == null || !isEquipped(attacker)) return;
-        if (!GunTypeChecker.isHoldingAnyGun(attacker)) return;
+        if (!GunTypeChecker.isHoldingMeleeWeapon(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
 
         Entity hurtEntity = event.getHurtEntity();
@@ -151,12 +141,25 @@ public class MetaMorph extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String gunTypes = GunTypeChecker.formatGunTypes(GunTypeChecker.ALL_GUN_TYPES.stream().toList());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
+        double attackFromHealth = 0;
+        double lifeStealFromResistance = 0;
+        double imaginaryDamage = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
+                attackFromHealth = maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get();
+                double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                lifeStealFromResistance = resistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
+                imaginaryDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.meta_morph.effect",
-                TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get() * 100,
-                TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get())
+                attackFromHealth,
+                lifeStealFromResistance,
+                imaginaryDamage)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

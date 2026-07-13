@@ -308,6 +308,7 @@ public class TaczCuriosConfig {
 
         // 格蕾修配置
         public final ForgeConfigSpec.IntValue griseoHurtCooldownTicks;
+        public final ForgeConfigSpec.DoubleValue griseoImaginaryResistance;
 
         // 千界一乘配置
         public final ForgeConfigSpec.IntValue qianjieYichengLuck;
@@ -343,6 +344,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue villVAbsorptionLevel;
         public final ForgeConfigSpec.DoubleValue villVAbsorptionDuration;
         public final ForgeConfigSpec.DoubleValue villVCooldownSeconds;
+        public final ForgeConfigSpec.DoubleValue villVImaginaryResistance;
 
         // 虚空万藏配置
         public final ForgeConfigSpec.DoubleValue xukongWancangImaginaryDamage;
@@ -1444,6 +1446,9 @@ public class TaczCuriosConfig {
             griseoHurtCooldownTicks = builder
                     .comment("受伤冷却基础冷却(tick) (默认: 10 = 0.5秒)")
                     .defineInRange("hurtCooldownTicks", 10, 1, 12000);
+            griseoImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
             // 千界一乘配置
@@ -1531,6 +1536,9 @@ public class TaczCuriosConfig {
             villVCooldownSeconds = builder
                     .comment("吸收触发冷却时间(秒) (默认: 60)")
                     .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            villVImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
             // 虚空万藏配置
@@ -1607,7 +1615,7 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 3)")
                     .defineInRange("maxSlots", 3, 1, 100);
             kalpasAdaptFactor = builder
-                    .comment("适应减免系数 (默认: 0.8)")
+                    .comment("适应系数 (默认: 0.8)")
                     .defineInRange("adaptFactor", 0.8, 0.0, 1.0);
             kalpasDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")
@@ -1630,7 +1638,7 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 4)")
                     .defineInRange("maxSlots", 4, 1, 100);
             huajieZhiyanAdaptFactor = builder
-                    .comment("适应减免系数 (默认: 0.7)")
+                    .comment("适应系数 (默认: 0.7)")
                     .defineInRange("adaptFactor", 0.7, 0.0, 1.0);
             huajieZhiyanDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")

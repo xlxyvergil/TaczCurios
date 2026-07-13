@@ -11,8 +11,8 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.LuckHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -41,6 +41,7 @@ public class ShijieFanyan extends BaseCurioItem {
 
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("d94e7f8a-2c5d-6a84-d0f7-5e9c2f8b1a4d");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("e05f8a9b-3d6e-7b95-e1f8-6a0d3f9c2b5e");
+    private static final UUID LUCK_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789003");
 
     private static final String INFECTION_KEY = "tcc_shijie_fanyan_infection";
 
@@ -59,13 +60,15 @@ public class ShijieFanyan extends BaseCurioItem {
                 tag.putString("BoundPlayerName", player.getGameProfile().getName());
             }
         }
-        LuckHelper.addLuck(slotContext.entity(), TaczCuriosConfig.COMMON.shijieFanyanLuck.get());
+        AttributeHelper.applyModifier(slotContext.entity(), AttributeHelper.LUCK,
+            TaczCuriosConfig.COMMON.shijieFanyanLuck.get(), LUCK_UUID,
+            "tcc.shijie_fanyan.luck", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            int luck = LuckHelper.getLuck(livingEntity);
+            int luck = (int) livingEntity.getAttributeValue(AttributeHelper.LUCK);
             double critChance = luck * TaczCuriosConfig.COMMON.shijieFanyanCritChancePerLuck.get();
             double critDamage = luck * TaczCuriosConfig.COMMON.shijieFanyanCritDamagePerLuck.get();
 
@@ -89,7 +92,7 @@ public class ShijieFanyan extends BaseCurioItem {
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
-        LuckHelper.addLuck(slotContext.entity(), -TaczCuriosConfig.COMMON.shijieFanyanLuck.get());
+        AttributeHelper.removeModifier(slotContext.entity(), AttributeHelper.LUCK, LUCK_UUID);
     }
 
     @Override
@@ -108,6 +111,16 @@ public class ShijieFanyan extends BaseCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        applyEffects(slotContext.entity());
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override
@@ -165,9 +178,9 @@ public class ShijieFanyan extends BaseCurioItem {
         forceAddEffect(targetLiving, infectionInstance);
 
         // 虚数崩解触发概率：基础5% + 每10点幸运值+1%
-        int luck = LuckHelper.getLuck(attacker);
+        int luck = (int) attacker.getAttributeValue(AttributeHelper.LUCK);
         double collapseChance = TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()
-            + (luck / 10) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get();
+            + (luck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get();
         var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
         if (!targetLiving.hasEffect(collapse) && attacker.getRandom().nextDouble() < collapseChance) {
             int collapseDuration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
@@ -191,11 +204,25 @@ public class ShijieFanyan extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        int luck = 0;
+        double critChance = 0;
+        double critDamage = 0;
+        double collapseChance = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+                critChance = luck * TaczCuriosConfig.COMMON.shijieFanyanCritChancePerLuck.get() * 100;
+                critDamage = luck * TaczCuriosConfig.COMMON.shijieFanyanCritDamagePerLuck.get() * 100;
+                collapseChance = (TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()
+                    + (luck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get()) * 100;
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.shijie_fanyan.effect",
-                TaczCuriosConfig.COMMON.shijieFanyanLuck.get(),
-                String.format("%.0f", TaczCuriosConfig.COMMON.shijieFanyanCritChancePerLuck.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.shijieFanyanCritDamagePerLuck.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get() * 100))
+                luck,
+                String.format("%.0f", critChance),
+                String.format("%.0f", critDamage),
+                String.format("%.1f", collapseChance))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

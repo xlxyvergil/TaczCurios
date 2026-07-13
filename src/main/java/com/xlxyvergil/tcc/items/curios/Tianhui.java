@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -54,16 +55,12 @@ public class Tianhui extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingRifle(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                TaczCuriosConfig.COMMON.tianhuiImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
-                "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
-            AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
-                TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get(), MAX_HEALTH_UUID,
-                "tcc.tianhui.max_health", AttributeModifier.Operation.MULTIPLY_BASE);
-        } else {
-            removeEffects(livingEntity);
-        }
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            TaczCuriosConfig.COMMON.suImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
+            TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get(), MAX_HEALTH_UUID,
+            "tcc.tianhui.max_health", AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override
@@ -71,6 +68,11 @@ public class Tianhui extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override
@@ -129,13 +131,21 @@ public class Tianhui extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
-
+        double resistance = TaczCuriosConfig.COMMON.suImaginaryResistance.get();
+        double computedDamageLimit = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                double actualResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                double factor = 1.0 - (actualResistance * TaczCuriosConfig.COMMON.tianhuiResistanceScale.get());
+                double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();
+                computedDamageLimit = Math.max(minFactor, factor) * 100;
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.tianhui.effect",
-                TaczCuriosConfig.COMMON.tianhuiImaginaryResistance.get(),
+                (int)resistance,
                 TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100,
-                (1.0 - TaczCuriosConfig.COMMON.tianhuiImaginaryResistance.get() * TaczCuriosConfig.COMMON.tianhuiResistanceScale.get()) * 100,
+                (int)computedDamageLimit,
                 TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100)
             .withStyle(ChatFormatting.GOLD));
 

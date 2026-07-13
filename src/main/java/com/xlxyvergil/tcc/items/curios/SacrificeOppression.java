@@ -4,13 +4,12 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -37,11 +36,6 @@ public class SacrificeOppression extends BaseCurioItem {
         super(properties);
     }
 
-    private static boolean isHoldingMeleeWeapon(LivingEntity entity) {
-        return !entity.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND)
-            .get(Attributes.ATTACK_DAMAGE).isEmpty();
-    }
-
     /**
      * 检测是否同时装备了牺牲斩铁（Curios API）
      */
@@ -53,20 +47,15 @@ public class SacrificeOppression extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (isHoldingMeleeWeapon(livingEntity)) {
-            double meleeDamageBoost = TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get();
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        double meleeDamageBoost = TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get();
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
-            // 套装效果：同时装备牺牲斩铁时，额外 +25%
-            if (hasSacrificeSteel(livingEntity)) {
-                double setBonus = TaczCuriosConfig.COMMON.sacrificeSetBonus.get();
-                double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
-                AttributeHelper.applyModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-            } else {
-                AttributeHelper.removeModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, SET_BONUS_UUID);
-            }
+        // 套装效果：同时装备牺牲斩铁时，额外 +25%
+        if (hasSacrificeSteel(livingEntity)) {
+            double setBonus = TaczCuriosConfig.COMMON.sacrificeSetBonus.get();
+            double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
-            AttributeHelper.removeModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, MELEE_DAMAGE_UUID);
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, SET_BONUS_UUID);
         }
     }

@@ -9,12 +9,14 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -81,6 +83,12 @@ public class Xiora extends BaseCurioItem {
         double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         double cap = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:xiora");
         double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && hasEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
 
         tooltip.add(Component.translatable("item.tcc.xiora.effect",
                 String.format("%+.0f", TaczCuriosConfig.COMMON.xioraArmorMultiplier.get() * 100),

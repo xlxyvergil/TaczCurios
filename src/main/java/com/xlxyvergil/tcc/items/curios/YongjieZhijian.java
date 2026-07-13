@@ -4,8 +4,8 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.LuckHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,6 +26,7 @@ public class YongjieZhijian extends BaseCurioItem {
 
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a81d5c7e-9b3f-4e62-b8d5-3c7a1f6e8d2b");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("c92e6f8d-1a4b-5f73-c9e6-4d8b2f7a0e3c");
+    private static final UUID LUCK_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678902");
 
     public YongjieZhijian(Properties properties) {
         super(properties);
@@ -42,13 +43,15 @@ public class YongjieZhijian extends BaseCurioItem {
                 tag.putString("BoundPlayerName", player.getGameProfile().getName());
             }
         }
-        LuckHelper.addLuck(slotContext.entity(), TaczCuriosConfig.COMMON.yongjieZhijianLuck.get());
+        AttributeHelper.applyModifier(slotContext.entity(), AttributeHelper.LUCK,
+            TaczCuriosConfig.COMMON.yongjieZhijianLuck.get(), LUCK_UUID,
+            "tcc.yongjie_zhijian.luck", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            int luck = LuckHelper.getLuck(livingEntity);
+            int luck = (int) livingEntity.getAttributeValue(AttributeHelper.LUCK);
             double critChance = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get();
             double critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get();
 
@@ -72,7 +75,7 @@ public class YongjieZhijian extends BaseCurioItem {
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         super.onUnequip(slotContext, newStack, stack);
-        LuckHelper.addLuck(slotContext.entity(), -TaczCuriosConfig.COMMON.yongjieZhijianLuck.get());
+        AttributeHelper.removeModifier(slotContext.entity(), AttributeHelper.LUCK, LUCK_UUID);
     }
 
     @Override
@@ -94,6 +97,16 @@ public class YongjieZhijian extends BaseCurioItem {
     }
 
     @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        applyEffects(slotContext.entity());
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
+    }
+
+    @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
     }
@@ -107,10 +120,21 @@ public class YongjieZhijian extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        int luck = 0;
+        double critChance = 0;
+        double critDamage = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+                critChance = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100;
+                critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100;
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.yongjie_zhijian.effect",
-                TaczCuriosConfig.COMMON.yongjieZhijianLuck.get(),
-                String.format("%.0f", TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100))
+                luck,
+                String.format("%.0f", critChance),
+                String.format("%.0f", critDamage))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

@@ -15,9 +15,12 @@ import com.xlxyvergil.taa.context.ShooterContext;
 import com.xlxyvergil.taa.modifier.AmmoCountModifier;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ToolActions;
 
 public class GunTypeChecker {
     // 定义支持的枪械类型集合
@@ -130,6 +133,24 @@ public class GunTypeChecker {
      */
     public static boolean isHoldingAnyGun(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, ALL_GUN_TYPES);
+    }
+
+    /**
+     * 检查生物是否持有近战武器（参考 Apotheosis LootCategory.SWORD 的判断逻辑）。
+     * 满足以下任一条件即视为近战武器：
+     * 1. 物品可以执行 {@code ToolActions.SWORD_DIG}（剑类行为）
+     * 2. 物品在主手有基础 ATTACK_DAMAGE 属性且值大于 0
+     *
+     * @param livingEntity 生物实体
+     * @return 如果生物持有近战武器返回 true，否则返回 false
+     */
+    public static boolean isHoldingMeleeWeapon(LivingEntity livingEntity) {
+        ItemStack mainHand = livingEntity.getMainHandItem();
+        if (mainHand.isEmpty()) return false;
+        return mainHand.canPerformAction(ToolActions.SWORD_DIG)
+            || mainHand.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, mainHand)
+                .get(Attributes.ATTACK_DAMAGE).stream()
+                .anyMatch(m -> m.getAmount() > 0);
     }
     
     /**

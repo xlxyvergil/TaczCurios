@@ -10,6 +10,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.EvolutionNbtKeys;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -89,6 +90,12 @@ public class BrahmaBeasts extends BaseCurioItem {
         double baseValue = getBaseResistance();
         double maxProgress = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:brahma_beasts");
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && hasBrahmaBeastsEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.brahma_beasts.effect", String.format("%.0f", total))
             .withStyle(ChatFormatting.AQUA));

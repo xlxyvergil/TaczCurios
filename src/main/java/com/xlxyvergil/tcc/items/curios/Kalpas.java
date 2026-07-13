@@ -50,11 +50,11 @@ public class Kalpas extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
-                "tcc.kalpas.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            "tcc.kalpas.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
                     h.register(ADAPT_ID,
@@ -65,7 +65,7 @@ public class Kalpas extends BaseCurioItem {
                 livingEntity.getPersistentData().putBoolean(ADAPT_REGISTERED_KEY, true);
             }
         } else {
-            removeEffects(livingEntity);
+            unregisterAdaptation(livingEntity);
         }
     }
 
@@ -73,6 +73,11 @@ public class Kalpas extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         unregisterAdaptation(livingEntity);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     private void unregisterAdaptation(LivingEntity livingEntity) {
@@ -113,8 +118,7 @@ public class Kalpas extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String gunTypes = GunTypeChecker.formatGunTypes(GunTypeChecker.ALL_GUN_TYPES.stream().toList());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
         tooltip.add(Component.translatable("item.tcc.kalpas.effect",
                 TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(),

@@ -8,18 +8,16 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -30,16 +28,6 @@ import java.util.UUID;
 public class TingzhiZhijian extends BaseCurioItem {
 
     private static final UUID OVERHEAL_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f1234567891");
-
-    private static final Attribute OVERHEAL = resolveOverheal();
-
-    private static Attribute resolveOverheal() {
-        try {
-            return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "overheal"));
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
 
     public TingzhiZhijian(Properties properties) {
         super(properties);
@@ -60,8 +48,8 @@ public class TingzhiZhijian extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (OVERHEAL != null && GunTypeChecker.isHoldingRifle(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, OVERHEAL,
+        if (GunTypeChecker.isHoldingRifle(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.OVERHEAL,
                 TaczCuriosConfig.COMMON.tingzhiZhijianOverheal.get(), OVERHEAL_UUID,
                 "tcc.tingzhi_zhijian.overheal", AttributeModifier.Operation.ADDITION);
         } else {
@@ -71,9 +59,7 @@ public class TingzhiZhijian extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        if (OVERHEAL != null) {
-            AttributeHelper.removeModifier(livingEntity, OVERHEAL, OVERHEAL_UUID);
-        }
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.OVERHEAL, OVERHEAL_UUID);
     }
 
     @Override
@@ -140,9 +126,20 @@ public class TingzhiZhijian extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        double resistance = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        double basePercent = TaczCuriosConfig.COMMON.tingzhiZhijianAmmoBasePercent.get();
+        double scalePercent = resistance * TaczCuriosConfig.COMMON.tingzhiZhijianAmmoResistanceScale.get();
+        double totalPercent = (basePercent + scalePercent) * 100;
+
         tooltip.add(Component.translatable("item.tcc.tingzhi_zhijian.effect",
                 String.format("%.0f", TaczCuriosConfig.COMMON.tingzhiZhijianOverheal.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.tingzhiZhijianAmmoBasePercent.get() * 100))
+                String.format("%.1f", totalPercent))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

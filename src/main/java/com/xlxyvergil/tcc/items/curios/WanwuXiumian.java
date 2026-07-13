@@ -9,16 +9,13 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -29,16 +26,6 @@ import java.util.UUID;
 public class WanwuXiumian extends BaseCurioItem {
 
     private static final UUID OVERHEAL_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
-
-    private static final Attribute OVERHEAL = resolveOverheal();
-
-    private static Attribute resolveOverheal() {
-        try {
-            return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "overheal"));
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
 
     public WanwuXiumian(Properties properties) {
         super(properties);
@@ -59,8 +46,8 @@ public class WanwuXiumian extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (OVERHEAL != null && GunTypeChecker.isHoldingRifle(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, OVERHEAL,
+        if (GunTypeChecker.isHoldingRifle(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.OVERHEAL,
                 TaczCuriosConfig.COMMON.wanwuXiumianOverheal.get(), OVERHEAL_UUID,
                 "tcc.wanwu_xiumian.overheal", AttributeModifier.Operation.ADDITION);
         } else {
@@ -70,9 +57,7 @@ public class WanwuXiumian extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        if (OVERHEAL != null) {
-            AttributeHelper.removeModifier(livingEntity, OVERHEAL, OVERHEAL_UUID);
-        }
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.OVERHEAL, OVERHEAL_UUID);
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
@@ -153,6 +154,12 @@ public class Raven extends BaseCurioItem {
         double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         double cap = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:raven");
         double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && hasEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
 
         tooltip.add(Component.translatable("item.tcc.raven.effect",
                 String.format("%+.0f", TaczCuriosConfig.COMMON.ravenArmorMultiplier.get() * 100),

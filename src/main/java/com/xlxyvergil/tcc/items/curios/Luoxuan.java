@@ -49,18 +49,19 @@ public class Luoxuan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingHeavyWeapon(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                TaczCuriosConfig.COMMON.luoxuanImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
-                "tcc.luoxuan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
-        } else {
-            removeEffects(livingEntity);
-        }
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            TaczCuriosConfig.COMMON.villVImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            "tcc.luoxuan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class Luoxuan extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.luoxuan.effect",
-                TaczCuriosConfig.COMMON.luoxuanImaginaryResistance.get(),
+                TaczCuriosConfig.COMMON.villVImaginaryResistance.get(),
                 TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get(),
                 TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get())
             .withStyle(ChatFormatting.RED));

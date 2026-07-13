@@ -1,16 +1,19 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.LuckHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -24,11 +27,13 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HuishiZhijuan extends BaseCurioItem {
 
     private static final String COOLDOWN_KEY = TaczCurios.MODID + ":huishi_hurt_cooldown";
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("a7b8c9d0-e1f2-3456-abcd-ef0123456789");
 
     public HuishiZhijuan(Properties properties) {
         super(properties);
@@ -49,10 +54,14 @@ public class HuishiZhijuan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            TaczCuriosConfig.COMMON.griseoImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            "tcc.huishi_zhijuan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
     }
 
     @Override
@@ -94,7 +103,7 @@ public class HuishiZhijuan extends BaseCurioItem {
         if (cooldown > 0) {
             event.setCanceled(true);
         } else {
-            int luck = LuckHelper.getLuck(player);
+            int luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
             int cooldownTicks = TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get()
                 + (luck / 2) * TaczCuriosConfig.COMMON.huishiZhijuanLuckPerTick.get();
             int maxCooldown = TaczCuriosConfig.COMMON.huishiZhijuanMaxCooldown.get();
@@ -126,12 +135,23 @@ public class HuishiZhijuan extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
+        tooltip.add(Component.translatable("item.tcc.huishi_zhijuan.effect.stat",
+                TaczCuriosConfig.COMMON.griseoImaginaryResistance.get())
+            .withStyle(ChatFormatting.YELLOW));
+
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        int computedCooldown = TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get();
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                int luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+                computedCooldown = getCooldownTicks(luck);
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.huishi_zhijuan.effect",
-                TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get(),
-                TaczCuriosConfig.COMMON.huishiZhijuanMaxCooldown.get())
+                computedCooldown)
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

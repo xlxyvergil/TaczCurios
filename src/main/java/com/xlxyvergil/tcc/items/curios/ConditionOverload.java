@@ -2,12 +2,11 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -23,11 +22,6 @@ public class ConditionOverload extends BaseCurioItem {
 
     public ConditionOverload(Properties properties) {
         super(properties);
-    }
-
-    private static boolean isHoldingMeleeWeapon(LivingEntity entity) {
-        return !entity.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND)
-            .get(Attributes.ATTACK_DAMAGE).isEmpty();
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -56,7 +57,7 @@ public class DominanceKey extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
             double attackBonus = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get();
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
@@ -70,6 +71,11 @@ public class DominanceKey extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override
@@ -104,7 +110,7 @@ public class DominanceKey extends BaseCurioItem {
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
         if (attacker == null || !isEquipped(attacker)) return;
-        if (!GunTypeChecker.isHoldingAnyGun(attacker)) return;
+        if (!GunTypeChecker.isHoldingMeleeWeapon(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
 
         Entity hurtEntity = event.getHurtEntity();
@@ -126,12 +132,22 @@ public class DominanceKey extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String gunTypes = GunTypeChecker.formatGunTypes(GunTypeChecker.ALL_GUN_TYPES.stream().toList());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
+        double attackFromHealth = 0;
+        double imaginaryDamage = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
+                attackFromHealth = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get();
+                double attackDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                imaginaryDamage = attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get();
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.dominance_key.effect",
-                TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get() * 100,
-                TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get() * 100)
+                attackFromHealth,
+                imaginaryDamage)
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));

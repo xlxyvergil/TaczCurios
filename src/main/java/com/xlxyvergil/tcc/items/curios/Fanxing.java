@@ -7,8 +7,8 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.LuckHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,6 +34,7 @@ public class Fanxing extends BaseCurioItem {
 
     private static final String COOLDOWN_KEY = TaczCurios.MODID + ":fanxing_hurt_cooldown";
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("e1f2a3b4-c5d6-7890-abcd-ef1234567801");
+    private static final UUID LUCK_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-defa-123456789004");
 
     public Fanxing(Properties properties) {
         super(properties);
@@ -54,25 +55,35 @@ public class Fanxing extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            double resistance = TaczCuriosConfig.COMMON.fanxingImaginaryResistance.get();
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                resistance, IMAGINARY_RESISTANCE_UUID,
-                "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            resistance, IMAGINARY_RESISTANCE_UUID,
+            "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
-            // 每点虚数抗性提供幸运值（基于 total 虚数抗性）
-            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            int luckFromResistance = (int) (totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get());
-            LuckHelper.setFanxingLuck(livingEntity, luckFromResistance);
-        } else {
-            removeEffects(livingEntity);
-        }
+        double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        int luckFromResistance = (int) (totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get());
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
+            luckFromResistance, LUCK_UUID,
+            "tcc.fanxing.luck", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
-        LuckHelper.clearFanxingLuck(livingEntity);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_UUID);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity != null) {
+            applyEffects(entity);
+        }
     }
 
     @Override
@@ -114,7 +125,7 @@ public class Fanxing extends BaseCurioItem {
         if (cooldown > 0) {
             event.setCanceled(true);
         } else {
-            int luck = LuckHelper.getLuck(player);
+            int luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
             int cooldownTicks = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get()
                 + (luck / 2) * TaczCuriosConfig.COMMON.fanxingLuckPerTick.get();
             int maxCooldown = TaczCuriosConfig.COMMON.fanxingMaxCooldown.get();
@@ -142,11 +153,25 @@ public class Fanxing extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        double resistance = 0;
+        int computedLuck = 0;
+        int computedCooldown = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get();
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                int luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+                computedLuck = (int)(resistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get());
+                computedCooldown = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get()
+                    + (luck / 2) * TaczCuriosConfig.COMMON.fanxingLuckPerTick.get();
+                int max = TaczCuriosConfig.COMMON.fanxingMaxCooldown.get();
+                if (computedCooldown > max) computedCooldown = max;
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.fanxing.effect",
-                TaczCuriosConfig.COMMON.fanxingBaseCooldown.get(),
-                TaczCuriosConfig.COMMON.fanxingMaxCooldown.get(),
-                TaczCuriosConfig.COMMON.fanxingImaginaryResistance.get(),
-                TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get())
+                computedCooldown,
+                (int)resistance,
+                computedLuck)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

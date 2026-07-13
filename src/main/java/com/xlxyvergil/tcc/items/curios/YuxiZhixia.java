@@ -1,9 +1,11 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.CurioAbsorptionEventHandler;
 import com.xlxyvergil.tcc.registries.TccItems;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -12,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -24,9 +27,12 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YuxiZhixia extends BaseCurioItem {
+
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("b8c9d0e1-f2a3-4567-bcde-f01234567890");
 
     public YuxiZhixia(Properties properties) {
         super(properties);
@@ -47,10 +53,14 @@ public class YuxiZhixia extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            TaczCuriosConfig.COMMON.villVImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            "tcc.yuxi_zhixia.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
     }
 
     @Override
@@ -103,6 +113,10 @@ public class YuxiZhixia extends BaseCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+        tooltip.add(Component.translatable("item.tcc.yuxi_zhixia.effect.stat",
+                TaczCuriosConfig.COMMON.villVImaginaryResistance.get())
+            .withStyle(ChatFormatting.YELLOW));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));

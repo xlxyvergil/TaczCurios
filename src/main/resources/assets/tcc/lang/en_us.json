@@ -307,6 +307,7 @@
   "tcc.tooltip.slot": "§7Equipment Slot: §aTACZ Curio Slot",
   "tcc.tooltip.slot.3rd": "§7Equipment Slot: §aTCC 3rd Curio Slot",
   "tcc.tooltip.restricted_gun_types": "§7Restricted to: %s",
+  "tcc.tooltip.restricted_melee": "§7Restricted to: Melee",
   "tcc.tooltip.rarity.common": "§7Rarity: §9Common",
   "tcc.tooltip.rarity.uncommon": "§7Rarity: §bUncommon",
   "tcc.tooltip.rarity.rare": "§7Rarity: §6Rare",
@@ -481,16 +482,17 @@
   "item.tcc.qianjie_yicheng.effect": "+%1$s Luck",
 
   "item.tcc.huishi_zhijuan": "§fScroll of Painting",
-  "item.tcc.huishi_zhijuan.effect": "Hurt cooldown: base %1$s ticks, +1 tick per 2 luck, max %2$s ticks",
+  "item.tcc.huishi_zhijuan.effect": "Enter %1$s ticks hurt cooldown after taking damage",
+  "item.tcc.huishi_zhijuan.effect.stat": "%1$.0f Imaginary Resistance",
 
   "item.tcc.yongjie_zhijian": "§fEternal Calamity Key",
-  "item.tcc.yongjie_zhijian.effect": "+%1$s Luck, per luck +%2$s%% crit rate and +%3$s%% crit damage (add)",
+  "item.tcc.yongjie_zhijian.effect": "+%1$d Luck, currently granting +%2$s%% crit rate and +%3$s%% crit damage",
 
   "item.tcc.fanxing": "§4Starry Sky",
-  "item.tcc.fanxing.effect": "Hurt cooldown: base %1$s ticks, +1 tick per 2 luck, max %2$s ticks. +%3$.0f imaginary resistance, +%4$.0f luck per resistance point",
+  "item.tcc.fanxing.effect": "Enter %1$s ticks hurt cooldown after taking damage. Currently %2$d imaginary resistance, granting %3$d luck",
 
   "item.tcc.shijie_fanyan": "§4First Key of Worlds - Horizon Inversion",
-  "item.tcc.shijie_fanyan.effect": "+%1$s Luck, per luck +%2$s%% crit rate and +%3$s%% crit damage (add), per 10 luck +1%% imaginary collapse trigger rate (base %4$s%%), always inflict infection on hit, all gun damage becomes imaginary damage",
+  "item.tcc.shijie_fanyan.effect": "+%1$d Luck, currently granting +%2$s%% crit rate and +%3$s%% crit damage, imaginary collapse trigger rate %4$s%%, always inflict infection on hit, all gun damage becomes imaginary damage",
 
   "// Heavy Weapon Series Curios": "",
   "item.tcc.vill_v": "§6Vill-V",
@@ -501,6 +503,7 @@
 
   "item.tcc.yuxi_zhixia": "§fBox of Fools",
   "item.tcc.yuxi_zhixia.effect": "Grants Absorption Lv.%2$s when HP < %1$s%%, %3$ss cooldown",
+  "item.tcc.yuxi_zhixia.effect.stat": "%1$.0f Imaginary Resistance",
 
   "item.tcc.qishi_zhijian": "§fKey of Revelation",
   "item.tcc.qishi_zhijian.effect": "Attacks deal +%1$.0f imaginary damage. Restore %2$s%% ammo per second, min 1 ammo",
@@ -509,25 +512,25 @@
   "item.tcc.luoxuan.effect": "+%1$.0f imaginary resistance. Applies Absorption Lv.%3$s every %2$ss",
 
   "item.tcc.xukong_wancang_yzth": "§4Void Archives - Amrita Ruin",
-  "item.tcc.xukong_wancang_yzth.effect": "Attacks deal +%1$.0f + ATK*(Imaginary Resistance/100) imaginary damage. Restore %2$s%% ammo per second, min 1 ammo. Gun damage becomes imaginary, always inflict infection",
+  "item.tcc.xukong_wancang_yzth.effect": "Attacks deal about %2$s imaginary damage. Restore %1$s%% ammo per second, min 1 ammo. Gun damage becomes imaginary, always inflict infection",
 
   "item.tcc.kalpas": "§6Kalpas",
-  "item.tcc.kalpas.effect": "+%1$.0f imaginary resistance. When hit: Adaptation maxSlots=%2$s, dmg reduction=%3$.0f%%, decay=%4$ss",
+  "item.tcc.kalpas.effect": "+%1$.0f imaginary resistance. Adapts to %2$s damage types when hit, %3$.0f%% reduction, decays in %4$ss",
 
   "item.tcc.imer": "§6Imer",
   "item.tcc.imer.effect": "Max HP increases ATTACK_DAMAGE by %1$.0f%% per point",
 
   "item.tcc.huajie_zhiyan": "§5Blazing Calamity",
-  "item.tcc.huajie_zhiyan.effect": "+%1$.0f imaginary resistance. When hit: Adaptation maxSlots=%2$s, dmg reduction=%3$.0f%%, decay=%4$ss. Each resistance gives +%5$.0f max HP",
+  "item.tcc.huajie_zhiyan.effect": "+%1$.0f imaginary resistance. Adapts to %2$s damage types when hit, %3$.0f%% reduction, decays in %4$ss. Imaginary resistance gives ~+%5$.0f max HP",
 
   "item.tcc.dominance_key": "§5Key of Dominance",
-  "item.tcc.dominance_key.effect": "Max HP increases ATTACK_DAMAGE by %1$.0f%% per point. Attacks deal +ATK*%2$.0f%% imaginary damage",
+  "item.tcc.dominance_key.effect": "Max HP gives ~+%1$.0f ATTACK_DAMAGE. Attacks deal ~%2$.0f imaginary damage",
 
   "item.tcc.aomie": "§4Annihilation",
-  "item.tcc.aomie.effect": "+%1$.0f imaginary resistance. When hit: Adaptation maxSlots=%2$s, dmg reduction=%3$.0f%%, decay=%4$ss. Each resistance gives +%5$.0f max HP",
+  "item.tcc.aomie.effect": "+%1$.0f imaginary resistance. Adapts to %2$s damage types when hit, %3$.0f%% reduction, decays in %4$ss. Imaginary resistance gives ~%5$.0f max HP",
 
   "item.tcc.meta_morph": "§4Meta-Morph",
-  "item.tcc.meta_morph.effect": "Max HP increases ATTACK_DAMAGE by %1$.0f%% per point. Attacks deal +ATK imaginary damage. Each resistance gives +%2$.2f life steal",
+  "item.tcc.meta_morph.effect": "Max HP gives ~+%1$.0f ATTACK_DAMAGE. Attacks deal ~%3$.0f imaginary damage. Imaginary resistance gives ~%2$.2f life steal",
 
   "item.tcc.su": "§6Su",
   "item.tcc.su.effect": "+%1$.0f imaginary resistance, max HP %2$.0f%%, damage taken %3$.0f%%",
@@ -539,12 +542,12 @@
   "item.tcc.juezhe.effect": "+%1$.0f imaginary resistance, max HP %2$.0f%%, damage taken %3$.0f%%",
 
   "item.tcc.tingzhi_zhijian": "§5Key of Stagnation",
-  "item.tcc.tingzhi_zhijian.effect": "Overheal %1$.0f%%, ammo regen %2$.0f%% base + resistance scaling",
+  "item.tcc.tingzhi_zhijian.effect": "Overheal %1$.0f%%, regen %2$.1f%% ammo/sec",
 
   "item.tcc.tianhui": "§4Heavenly Wisdom",
-  "item.tcc.tianhui.effect": "Imaginary resistance %1$.0f, max HP %2$.0f%%, damage cap %3$.0f%%, min %4$.0f%%",
+  "item.tcc.tianhui.effect": "Imaginary resistance %1$d, max HP %2$.0f%%, current damage cap %3$d%%, min %4$.0f%%",
 
   "item.tcc.yinguo_zhuanlun": "§4Wheel of Causality",
-  "item.tcc.yinguo_zhuanlun.effect": "Overheal %1$.0f%%, ammo regen equals resistance, bonus imaginary dmg equals resistance",
+  "item.tcc.yinguo_zhuanlun.effect": "Overheal %1$.0f%%, regen %2$.0f%% ammo/sec, bonus %3$.0f imaginary dmg on hit",
   "tcc.tooltip.bound": "Bound to: %1$s"
 }

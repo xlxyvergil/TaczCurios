@@ -3,13 +3,12 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -32,19 +31,10 @@ public class SteelSlash extends BaseCurioItem {
         super(properties);
     }
 
-    private static boolean isHoldingMeleeWeapon(LivingEntity entity) {
-        return !entity.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND)
-            .get(Attributes.ATTACK_DAMAGE).isEmpty();
-    }
-
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (isHoldingMeleeWeapon(livingEntity)) {
-            double critChanceBoost = TaczCuriosConfig.COMMON.steelSlashCritChance.get();
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        } else {
-            AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
-        }
+        double critChanceBoost = TaczCuriosConfig.COMMON.steelSlashCritChance.get();
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

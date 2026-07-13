@@ -54,16 +54,12 @@ public class Su extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingRifle(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                TaczCuriosConfig.COMMON.suImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
-                "tcc.su.imaginary_resistance", AttributeModifier.Operation.ADDITION);
-            AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
-                TaczCuriosConfig.COMMON.suMaxHealthReduction.get(), MAX_HEALTH_UUID,
-                "tcc.su.max_health", AttributeModifier.Operation.MULTIPLY_BASE);
-        } else {
-            removeEffects(livingEntity);
-        }
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            TaczCuriosConfig.COMMON.suImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            "tcc.su.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
+            TaczCuriosConfig.COMMON.suMaxHealthReduction.get(), MAX_HEALTH_UUID,
+            "tcc.su.max_health", AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override
@@ -71,6 +67,11 @@ public class Su extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     @Override

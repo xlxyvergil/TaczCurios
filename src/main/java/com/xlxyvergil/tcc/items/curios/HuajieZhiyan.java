@@ -4,8 +4,12 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.util.*;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,18 +53,18 @@ public class HuajieZhiyan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
-            double resistance = TaczCuriosConfig.COMMON.huajieZhiyanImaginaryResistance.get();
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                resistance, IMAGINARY_RESISTANCE_UUID,
-                "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        double resistance = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            resistance, IMAGINARY_RESISTANCE_UUID,
+            "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
-            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            double healthBoost = totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get();
-            AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
-                healthBoost, MAX_HEALTH_UUID,
-                "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
+        double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double healthBoost = totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get();
+        AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
+            healthBoost, MAX_HEALTH_UUID,
+            "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
 
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
                     h.register(ADAPT_ID,
@@ -71,7 +75,7 @@ public class HuajieZhiyan extends BaseCurioItem {
                 livingEntity.getPersistentData().putBoolean(ADAPT_REGISTERED_KEY, true);
             }
         } else {
-            removeEffects(livingEntity);
+            unregisterAdaptation(livingEntity);
         }
     }
 
@@ -80,6 +84,11 @@ public class HuajieZhiyan extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         unregisterAdaptation(livingEntity);
+    }
+
+    @Override
+    public void applyGunSwitchEffect(LivingEntity livingEntity) {
+        applyEffects(livingEntity);
     }
 
     private void unregisterAdaptation(LivingEntity livingEntity) {
@@ -109,6 +118,11 @@ public class HuajieZhiyan extends BaseCurioItem {
         return true;
     }
 
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+            stack -> stack.getItem() instanceof HuajieZhiyan).isEmpty();
+    }
+
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
@@ -120,15 +134,22 @@ public class HuajieZhiyan extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String gunTypes = GunTypeChecker.formatGunTypes(GunTypeChecker.ALL_GUN_TYPES.stream().toList());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
+        double healthFromResistance = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                healthFromResistance = resistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get();
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.huajie_zhiyan.effect",
-                TaczCuriosConfig.COMMON.huajieZhiyanImaginaryResistance.get(),
+                TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(),
                 TaczCuriosConfig.COMMON.huajieZhiyanMaxSlots.get(),
                 TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get() * 100,
                 TaczCuriosConfig.COMMON.huajieZhiyanDecaySeconds.get(),
-                TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get())
+                healthFromResistance)
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));

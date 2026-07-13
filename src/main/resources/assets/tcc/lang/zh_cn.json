@@ -315,6 +315,7 @@
   "tcc.tooltip.slot": "§7装备槽位：§aTCC饰品栏",
   "tcc.tooltip.slot.3rd": "§7装备槽位：§a逐火之蛾",
   "tcc.tooltip.restricted_gun_types": "§7限定枪械：%s",
+  "tcc.tooltip.restricted_melee": "§7限定：近战武器",
   "tcc.tooltip.rarity.common": "§7稀有度：§9常见",
   "tcc.tooltip.rarity.uncommon": "§7稀有度：§b罕见",
   "tcc.tooltip.rarity.rare": "§7稀有度：§6稀有",
@@ -485,53 +486,55 @@
   "item.tcc.qianjie_yicheng.effect": "%1$s 幸运值",
 
   "item.tcc.huishi_zhijuan": "§f绘世之卷",
-  "item.tcc.huishi_zhijuan.effect": "受伤后进入受伤冷却：基础%1$stick，每2点幸运+1tick，上限%2$stick",
+  "item.tcc.huishi_zhijuan.effect": "受伤后进入%1$stick受伤冷却",
+  "item.tcc.huishi_zhijuan.effect.stat": "%1$.0f虚数抗性",
 
   "item.tcc.yongjie_zhijian": "§f永劫之键",
-  "item.tcc.yongjie_zhijian.effect": "%1$s 幸运值，每点幸运%2$s%%暴击率和%3$s%%暴击伤害（加算）",
+  "item.tcc.yongjie_zhijian.effect": "%1$d 幸运值，当前提供%2$s%%暴击率和%3$s%%暴击伤害",
 
   "item.tcc.fanxing": "§4繁星",
-  "item.tcc.fanxing.effect": "受伤后进入受伤冷却：基础%1$stick，每2点幸运1tick，上限%2$stick。%3$.0f虚数抗性，每点虚数抗性提供%4$.0f幸运值",
+  "item.tcc.fanxing.effect": "受伤后进入%1$stick受伤冷却。当前%2$d虚数抗性，提供%3$d幸运值",
 
   "item.tcc.shijie_fanyan": "§4千界一乘·视界反演",
-  "item.tcc.shijie_fanyan.effect": "%1$s 幸运值，每点幸运%2$s%%暴击率和%3$s%%暴击伤害（加算），每10点幸运1%%虚数崩解触发概率（基础%4$s%%），攻击必定触发侵染，枪械伤害全部变为虚数伤害",
+  "item.tcc.shijie_fanyan.effect": "%1$d 幸运值，当前提供%2$s%%暴击率和%3$s%%暴击伤害，虚数崩解触发概率%4$s%%，攻击必定触发侵染，枪械伤害全部变为虚数伤害",
 
   "// 重型武器系列饰品": "",
   "item.tcc.vill_v": "§6维尔薇",
-  "item.tcc.vill_v.effect": "血量低于%1$s%%时触发伤害吸收等级%2$s，间隔%3$ss",
+  "item.tcc.vill_v.effect": "血量低于%1$s%%时触发伤害吸收%2$s，间隔%3$ss",
 
   "item.tcc.xukong_wancang": "§6虚空万藏",
   "item.tcc.xukong_wancang.effect": "攻击触发额外%1$.0f点虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药",
 
   "item.tcc.yuxi_zhixia": "§f愚戏之匣",
-  "item.tcc.yuxi_zhixia.effect": "血量低于%1$s%%时触发伤害吸收等级%2$s，间隔%3$ss",
+  "item.tcc.yuxi_zhixia.effect": "血量低于%1$s%%时触发伤害吸收%2$s，间隔%3$ss",
+  "item.tcc.yuxi_zhixia.effect.stat": "%1$.0f虚数抗性",
 
   "item.tcc.qishi_zhijian": "§f启示之键",
   "item.tcc.qishi_zhijian.effect": "攻击触发额外%1$.0f点虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药",
 
   "item.tcc.luoxuan": "§4螺旋",
-  "item.tcc.luoxuan.effect": "%1$.0f虚数抗性。每隔%2$ss施加一次伤害吸收等级%3$s",
+  "item.tcc.luoxuan.effect": "%1$.0f虚数抗性。每隔%2$ss施加一次伤害吸收%3$s",
 
   "item.tcc.xukong_wancang_yzth": "§4虚空万藏·雨众天华",
-  "item.tcc.xukong_wancang_yzth.effect": "攻击触发额外%1$.0f+攻击力*(虚数抗性/100)的虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药。枪械伤害转换为虚数伤害，攻击必定触发侵染",
+  "item.tcc.xukong_wancang_yzth.effect": "攻击附加约%2$s点虚数伤害。每秒恢复%1$s%%弹药，最低1个弹药。枪械伤害转换为虚数伤害，攻击必定触发侵染",
 
   "item.tcc.kalpas": "§6千劫",
-  "item.tcc.kalpas.effect": "%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss",
+  "item.tcc.kalpas.effect": "%1$.0f虚数抗性。受到伤害时按顺序适应%2$s种伤害，减免%3$.0f%%，衰减%4$ss",
 
   "item.tcc.imer": "§6伊默尔",
   "item.tcc.imer.effect": "最大生命值每点提升%1$.0f%%攻击力",
 
   "item.tcc.huajie_zhiyan": "§5坏劫之焱",
-  "item.tcc.huajie_zhiyan.effect": "%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss。每点虚数抗性+%5$.0f最大生命值",
+  "item.tcc.huajie_zhiyan.effect": "%1$.0f虚数抗性。受到伤害时按顺序适应%2$s种伤害，减免%3$.0f%%，衰减%4$ss。虚数抗性提供约+%5$.0f最大生命值",
 
   "item.tcc.dominance_key": "§5支配之键",
-  "item.tcc.dominance_key.effect": "最大生命值每点提升%1$.0f%%攻击力。造成伤害时附加攻击力*%2$.0f%%虚数伤害",
+  "item.tcc.dominance_key.effect": "最大生命值提供约+%1$.0f攻击力。造成伤害时附加约%2$.0f点虚数伤害",
 
   "item.tcc.aomie": "§4鏖灭",
-  "item.tcc.aomie.effect": "%1$.0f虚数抗性。受到伤害时适应：最大槽位%2$s，减免%3$.0f%%，衰减%4$ss。每点虚数抗性%5$.0f最大生命值",
+  "item.tcc.aomie.effect": "%1$.0f虚数抗性。受到伤害时按顺序适应%2$s种伤害，减免%3$.0f%%，衰减%4$ss。虚数抗性提供约%5$.0f最大生命值",
 
   "item.tcc.meta_morph": "§4Meta-Morph",
-  "item.tcc.meta_morph.effect": "最大生命值每点提升%1$.0f%%攻击力。造成伤害时附加攻击力虚数伤害。每点虚数抗性%2$.2f生命偷取",
+  "item.tcc.meta_morph.effect": "最大生命值提供约+%1$.0f攻击力。造成伤害时附加约%3$.0f点虚数伤害。虚数抗性提供约%2$.2f生命偷取",
 
   "item.tcc.su": "§6苏",
   "item.tcc.su.effect": "%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
@@ -543,12 +546,12 @@
   "item.tcc.juezhe.effect": "%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
 
   "item.tcc.tingzhi_zhijian": "§5停滞之键",
-  "item.tcc.tingzhi_zhijian.effect": "超量治疗%1$.0f%%，弹药恢复基础%2$.0f%%加虚数抗性折算",
+  "item.tcc.tingzhi_zhijian.effect": "超量治疗%1$.0f%%，每秒恢复%2$.1f%%弹药",
 
   "item.tcc.tianhui": "§4天慧",
-  "item.tcc.tianhui.effect": "虚数抗性%1$.0f，最大生命值%2$.0f%%，伤害限制%3$.0f%%，最低%4$.0f%%",
+  "item.tcc.tianhui.effect": "虚数抗性%1$d，最大生命值%2$.0f%%，当前伤害限制%3$d%%，最低%4$.0f%%",
 
   "item.tcc.yinguo_zhuanlun": "§4因果转轮",
-  "item.tcc.yinguo_zhuanlun.effect": "超量治疗%1$.0f%%，每秒恢复虚数抗性等值弹药，附加虚数抗性等量虚数伤害",
+  "item.tcc.yinguo_zhuanlun.effect": "超量治疗%1$.0f%%，每秒恢复%2$.0f%%弹药，攻击额外附加%3$.0f点虚数伤害",
   "tcc.tooltip.bound": "已绑定至：%1$s"
 }

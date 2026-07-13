@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -152,6 +153,12 @@ public class IslandBoomRaven extends BaseCurioItem {
 
         CompoundTag tag = stack.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && hasEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.effect",
                 String.format("%+.0f", TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get() * 100),

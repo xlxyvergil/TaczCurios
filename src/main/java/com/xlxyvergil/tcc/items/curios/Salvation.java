@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -105,11 +106,18 @@ public class Salvation extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
         
-        // 继承抗性（从NBT读取）
+        // 继承抗性（装备时从属性修饰符读取实际值）
         CompoundTag tag = stack.getTag();
         double baseValue = getBaseResistance();
         double progressValue = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", baseValue + progressValue))
+        double total = baseValue + progressValue;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && hasSalvationEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", total))
             .withStyle(ChatFormatting.AQUA));
         
         // 常驻加成

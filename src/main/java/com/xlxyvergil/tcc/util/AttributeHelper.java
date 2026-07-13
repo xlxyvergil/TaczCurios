@@ -32,6 +32,9 @@ public class AttributeHelper {
     /** 移动速度 */
     public static final Attribute MOVEMENT_SPEED = Attributes.MOVEMENT_SPEED;
     
+    /** 幸运值 - minecraft:generic.luck */
+    public static final Attribute LUCK = Attributes.LUCK;
+    
     // ========== Forge 属性 ==========
     
     /** 实体交互范围（攻击范围） */
@@ -47,6 +50,12 @@ public class AttributeHelper {
     
     /** 暴击伤害 (PercentBasedAttribute, base=1.5, range=[1,100]) */
     public static final Attribute CRIT_DAMAGE = ALObjects.Attributes.CRIT_DAMAGE.get();
+    
+    /** 生命偷取 (PercentBasedAttribute, base=0.0, range=[0,10]) */
+    public static final Attribute LIFE_STEAL = ALObjects.Attributes.LIFE_STEAL.get();
+    
+    /** 过量治疗 (PercentBasedAttribute) */
+    public static final Attribute OVERHEAL = ALObjects.Attributes.OVERHEAL.get();
     
     // ========== TAA 枪械属性 ==========
     

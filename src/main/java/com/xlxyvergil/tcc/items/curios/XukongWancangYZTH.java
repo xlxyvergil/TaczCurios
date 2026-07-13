@@ -13,6 +13,7 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -182,9 +183,19 @@ public class XukongWancangYZTH extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        double computedImaginaryDamage = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                double attackDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                computedImaginaryDamage = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get()
+                    + attackDamage * (resistance / 100.0);
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect",
-                TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get(),
-                String.format("%.0f", TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100))
+                String.format("%.0f", TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100),
+                String.format("%.0f", computedImaginaryDamage))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

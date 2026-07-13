@@ -14,14 +14,13 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -42,16 +40,6 @@ import java.util.UUID;
 public class YinguoZhuanlun extends BaseCurioItem {
 
     private static final UUID OVERHEAL_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-1234567892");
-
-    private static final Attribute OVERHEAL = resolveOverheal();
-
-    private static Attribute resolveOverheal() {
-        try {
-            return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "overheal"));
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
 
     public YinguoZhuanlun(Properties properties) {
         super(properties);
@@ -72,8 +60,8 @@ public class YinguoZhuanlun extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        if (OVERHEAL != null && GunTypeChecker.isHoldingRifle(livingEntity)) {
-            AttributeHelper.applyModifier(livingEntity, OVERHEAL,
+        if (GunTypeChecker.isHoldingRifle(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.OVERHEAL,
                 TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get(), OVERHEAL_UUID,
                 "tcc.yinguo_zhuanlun.overheal", AttributeModifier.Operation.ADDITION);
         } else {
@@ -83,9 +71,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        if (OVERHEAL != null) {
-            AttributeHelper.removeModifier(livingEntity, OVERHEAL, OVERHEAL_UUID);
-        }
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.OVERHEAL, OVERHEAL_UUID);
     }
 
     @Override
@@ -184,8 +170,19 @@ public class YinguoZhuanlun extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
+        double resistance = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null) {
+                resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        double ammoPercent = resistance * TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get() * 100;
+
         tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.effect",
-                String.format("%.0f", TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get() * 100))
+                String.format("%.0f", TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get() * 100),
+                String.format("%.0f", ammoPercent),
+                String.format("%.0f", resistance))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));
