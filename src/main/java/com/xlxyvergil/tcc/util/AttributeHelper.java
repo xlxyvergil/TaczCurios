@@ -171,11 +171,9 @@ public class AttributeHelper {
         if (attributeId == null || attributeId.isBlank()) {
             return null;
         }
-        try {
-            return ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation(attributeId));
-        } catch (Exception ignored) {
-            return null;
-        }
+        ResourceLocation loc = ResourceLocation.tryParse(attributeId);
+        if (loc == null) return null;
+        return ForgeRegistries.ATTRIBUTES.getValue(loc);
     }
     
     /**

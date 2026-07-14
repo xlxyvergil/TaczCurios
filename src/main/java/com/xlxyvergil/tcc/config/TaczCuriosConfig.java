@@ -327,7 +327,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue fanxingBaseCooldown;
         public final ForgeConfigSpec.IntValue fanxingLuckPerTick;
         public final ForgeConfigSpec.IntValue fanxingMaxCooldown;
-        public final ForgeConfigSpec.DoubleValue fanxingImaginaryResistance;
         public final ForgeConfigSpec.DoubleValue fanxingLuckPerResistance;
 
         // 视界反演配置
@@ -364,7 +363,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionInterval;
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionLevel;
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionDuration;
-        public final ForgeConfigSpec.DoubleValue luoxuanImaginaryResistance;
 
         // 虚空万藏·雨众天华配置
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamage;
@@ -381,7 +379,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue imerAttackPerHealth;
 
         // 坏劫之焱配置
-        public final ForgeConfigSpec.DoubleValue huajieZhiyanImaginaryResistance;
         public final ForgeConfigSpec.IntValue huajieZhiyanMaxSlots;
         public final ForgeConfigSpec.DoubleValue huajieZhiyanAdaptFactor;
         public final ForgeConfigSpec.IntValue huajieZhiyanDecaySeconds;
@@ -392,7 +389,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue dominanceKeyImaginaryDamageScale;
 
         // 鏖灭配置
-        public final ForgeConfigSpec.DoubleValue aoMieImaginaryResistance;
         public final ForgeConfigSpec.IntValue aoMieMaxSlots;
         public final ForgeConfigSpec.DoubleValue aoMieAdaptFactor;
         public final ForgeConfigSpec.IntValue aoMieDecaySeconds;
@@ -412,7 +408,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue wanwuXiumianAmmoRegenPercent;
 
         // 觉者配置
-        public final ForgeConfigSpec.DoubleValue juezheImaginaryResistance;
         public final ForgeConfigSpec.DoubleValue juezheMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue juezheDamageTakenFactor;
 
@@ -422,7 +417,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue tingzhiZhijianAmmoResistanceScale;
 
         // 天慧配置
-        public final ForgeConfigSpec.DoubleValue tianhuiImaginaryResistance;
         public final ForgeConfigSpec.DoubleValue tianhuiMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue tianhuiResistanceScale;
         public final ForgeConfigSpec.DoubleValue tianhuiMinDamageFactor;
@@ -1495,9 +1489,6 @@ public class TaczCuriosConfig {
             fanxingMaxCooldown = builder
                     .comment("受伤冷却上限(tick) (默认: 120)")
                     .defineInRange("maxCooldown", 120, 1, 12000);
-            fanxingImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             fanxingLuckPerResistance = builder
                     .comment("每点虚数抗性提供的幸运值 (默认: 1.0)")
                     .defineInRange("luckPerResistance", 1.0, 0.0, 100.0);
@@ -1588,9 +1579,6 @@ public class TaczCuriosConfig {
             luoxuanAbsorptionDuration = builder
                     .comment("吸收效果持续时间(秒) (默认: 30)")
                     .defineInRange("absorptionDuration", 30, 1, 3600);
-            luoxuanImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
             // 虚空万藏·雨众天华配置
@@ -1631,9 +1619,6 @@ public class TaczCuriosConfig {
 
             // 坏劫之焱配置
             builder.comment("坏劫之焱饰品配置").push("huajie_zhiyan");
-            huajieZhiyanImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             huajieZhiyanMaxSlots = builder
                     .comment("适应最大槽位 (默认: 4)")
                     .defineInRange("maxSlots", 4, 1, 100);
@@ -1660,9 +1645,6 @@ public class TaczCuriosConfig {
 
             // 鏖灭配置
             builder.comment("鏖灭饰品配置").push("aomie");
-            aoMieImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             aoMieMaxSlots = builder
                     .comment("适应最大槽位 (默认: 6)")
                     .defineInRange("maxSlots", 6, 1, 100);
@@ -1712,9 +1694,6 @@ public class TaczCuriosConfig {
 
             // 觉者配置
             builder.comment("觉者饰品配置").push("juezhe");
-            juezheImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 31.0)")
-                    .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
             juezheMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.4)")
                     .defineInRange("maxHealthReduction", -0.4, -1.0, 0.0);
@@ -1738,9 +1717,6 @@ public class TaczCuriosConfig {
 
             // 天慧配置
             builder.comment("天慧饰品配置").push("tianhui");
-            tianhuiImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 31.0)")
-                    .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
             tianhuiMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.5)")
                     .defineInRange("maxHealthReduction", -0.5, -1.0, 0.0);

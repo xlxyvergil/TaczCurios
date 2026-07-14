@@ -60,7 +60,7 @@ public class Fanxing extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
-        double resistance = TaczCuriosConfig.COMMON.fanxingImaginaryResistance.get()
+        double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             resistance, IMAGINARY_RESISTANCE_UUID,
@@ -162,14 +162,8 @@ public class Fanxing extends BaseCurioItem {
 
         // 虚数抗性显示
         CompoundTag tag = stack.getTag();
-        double baseValue = TaczCuriosConfig.COMMON.fanxingImaginaryResistance.get();
+        double baseValue = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && isEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.GOLD));

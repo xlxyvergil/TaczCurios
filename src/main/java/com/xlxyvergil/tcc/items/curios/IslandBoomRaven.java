@@ -7,7 +7,6 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -162,38 +161,34 @@ public class IslandBoomRaven extends BaseCurioItem {
 
         CompoundTag tag = stack.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && hasEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%+.0f", armorBoost),
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("%.1f",
+                String.format("%.0f", armorBoost),
                 Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%+.0f", speedBoost),
+        tooltip.add(Component.translatable("%.1f",
+                String.format("%.0f", speedBoost),
                 Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("%.1f",
+                String.valueOf(total),
+                Component.translatable(TccAttributes.IMAGINARY_DAMAGE.get().getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.attr_regen")
             .withStyle(ChatFormatting.GOLD));
-
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.valueOf(total),
-                Component.translatable(TccAttributes.IMAGINARY_DAMAGE.get().getDescriptionId()))
-                .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.special_invis",
                 String.format("%.1f", invisIntervalSecs),
                 String.format("%.1f", invisDurationSecs))
             .withStyle(ChatFormatting.RED));
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
-            .withStyle(ChatFormatting.GOLD));
+
 
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");

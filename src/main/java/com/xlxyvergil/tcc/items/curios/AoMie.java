@@ -145,12 +145,6 @@ public class AoMie extends BaseCurioItem {
         // 虚数抗性显示
         double baseValue = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && isEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
         tooltip.add(Component.literal(""));
         int maxSlots = TaczCuriosConfig.COMMON.aoMieMaxSlots.get();
         double adaptFactor = TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100;

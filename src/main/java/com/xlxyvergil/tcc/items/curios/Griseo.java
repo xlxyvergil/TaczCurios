@@ -141,12 +141,6 @@ public class Griseo extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         double baseValue = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && isEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
         tooltip.add(Component.literal(""));
 
         double hurtCooldownSecs = TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get() / 20.0;

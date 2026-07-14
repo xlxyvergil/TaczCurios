@@ -112,17 +112,11 @@ public class Salvation extends BaseCurioItem {
         
         double damageReduction = TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100;
         
-        // 继承抗性（装备时从属性修饰符读取实际值）
+        // 继承抗性
         CompoundTag tag = stack.getTag();
         double baseValue = getBaseResistance();
         double progressValue = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         double total = baseValue + progressValue;
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && hasSalvationEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
         tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.RED));
         

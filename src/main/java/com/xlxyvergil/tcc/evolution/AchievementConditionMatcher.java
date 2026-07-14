@@ -98,15 +98,17 @@ public final class AchievementConditionMatcher {
         // Check equipped curios
         if (c.equippedCurios() != null) {
             for (String curio : c.equippedCurios()) {
-                if (!LivingDeathEventHandler.hasEquipped(player, curio)) return false;
+                boolean has = LivingDeathEventHandler.hasEquipped(player, curio);
+                LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): equippedCurio={}, has={}", def.id(), curio, has);
+                if (!has) return false;
             }
         }
 
         // Check killer entity type (who killed the player)
         if (c.killer() != null) {
-            if (otherEntity == null) return false;
+            if (otherEntity == null) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL killer=null", def.id()); return false; }
             String killerKey = BuiltInRegistries.ENTITY_TYPE.getKey(otherEntity.getType()).toString();
-            if (!c.killer().equals(killerKey)) return false;
+            if (!c.killer().equals(killerKey)) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL killer expected={} actual={}", def.id(), c.killer(), killerKey); return false; }
         }
 
         // Check killed entity (what the player killed, for melee kills)
@@ -119,16 +121,20 @@ public final class AchievementConditionMatcher {
                     break;
                 }
             }
-            if (!matched) return false;
+            if (!matched) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL kills expected={} actual={}", def.id(), c.kills(), killedKey); return false; }
         }
 
         // Check stat threshold (for melee kill achievements that also require stat milestones)
         if (c.stat() != null && player instanceof ServerPlayer sp) {
             ResourceLocation statKey = ResourceLocation.tryParse(c.stat());
-            if (statKey == null) return false;
-            var stat = Stats.CUSTOM.get(statKey);
-            if (stat == null) return false;
-            if (sp.getStats().getValue(stat) < c.statThreshold()) return false;
+            if (statKey == null) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL stat parse={}", def.id(), c.stat()); return false; }
+            ResourceLocation canonicalId = BuiltInRegistries.CUSTOM_STAT.get(statKey);
+            if (canonicalId == null) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL stat not found in CUSTOM_STAT={}", def.id(), statKey); return false; }
+            var stat = Stats.CUSTOM.get(canonicalId);
+            if (stat == null) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL Stats.CUSTOM.get() returned null", def.id()); return false; }
+            int actualValue = sp.getStats().getValue(stat);
+            if (actualValue < c.statThreshold()) { LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): FAIL stat={} required={} actual={}", def.id(), c.stat(), c.statThreshold(), actualValue); return false; }
+            LOGGER.info("[TCC-DEBUG] matchesDeathConditions({}): PASS stat={} required={} actual={}", def.id(), c.stat(), c.statThreshold(), actualValue);
         }
 
         // Check extra stat thresholds (for achievements requiring multiple stat checks)
@@ -136,7 +142,9 @@ public final class AchievementConditionMatcher {
             for (AchievementDefinitions.StatCondition sc : c.extraStats()) {
                 ResourceLocation key = ResourceLocation.tryParse(sc.stat());
                 if (key == null) return false;
-                var s = Stats.CUSTOM.get(key);
+                ResourceLocation canonicalId = BuiltInRegistries.CUSTOM_STAT.get(key);
+                if (canonicalId == null) return false;
+                var s = Stats.CUSTOM.get(canonicalId);
                 if (s == null) return false;
                 if (sp2.getStats().getValue(s) < sc.statThreshold()) return false;
             }

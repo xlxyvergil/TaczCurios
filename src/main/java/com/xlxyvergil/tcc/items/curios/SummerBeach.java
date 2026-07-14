@@ -95,12 +95,6 @@ public class SummerBeach extends BaseCurioItem {
         
         double baseValue = getBaseResistance();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && hasSummerBeachEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.GOLD));

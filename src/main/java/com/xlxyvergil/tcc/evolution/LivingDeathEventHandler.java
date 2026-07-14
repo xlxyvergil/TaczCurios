@@ -26,9 +26,13 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.function.Predicate;
 
+import org.slf4j.Logger;
+import com.mojang.logging.LogUtils;
+
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LivingDeathEventHandler {
     public static final String TRIGGER_LIVING_DEATH = "living_death";
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private LivingDeathEventHandler() {}
 
@@ -42,6 +46,8 @@ public final class LivingDeathEventHandler {
 
         if (sourceEntity instanceof Player killerPlayer) {
             String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+            LOGGER.info("[TCC-DEBUG] onLivingDeath: killed={}, sourceEntity={}, killedKey={}",
+                    killed.getType().getDescriptionId(), sourceEntity.getType().getDescriptionId(), killedKey);
             handleTrigger(killerPlayer, killed, killedKey, sourceEntity, source,
                     TRIGGER_LIVING_DEATH, false, false);
         }
@@ -113,17 +119,19 @@ public final class LivingDeathEventHandler {
 
         // ===== Achievement-driven GRANT (death trigger) =====
         if (serverPlayer != null) {
-            for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(trigger)) {
-                if (def.reward() == null) continue;
-                if (def.isPlayerKilled() != playerKilled) continue;
+            var defs = AchievementDefinitions.getByTrigger(trigger);
+            LOGGER.info("[TCC-DEBUG] handleTrigger: trigger={}, playerKilled={}, defCount={}", trigger, playerKilled, defs.size());
+            for (AchievementDefinitions.AchievementDef def : defs) {
+                LOGGER.info("[TCC-DEBUG]  checking def: id={}, playerKilled={}, enabled={}, hasReward={}",
+                        def.id(), def.isPlayerKilled(), def.isEnabled(), def.reward() != null);
+                if (def.reward() == null) { LOGGER.info("[TCC-DEBUG]   -> SKIP: no reward"); continue; }
+                if (def.isPlayerKilled() != playerKilled) { LOGGER.info("[TCC-DEBUG]   -> SKIP: playerKilled mismatch"); continue; }
+                if (!def.isEnabled()) { LOGGER.info("[TCC-DEBUG]   -> SKIP: disabled"); continue; }
+                if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) { LOGGER.info("[TCC-DEBUG]   -> SKIP: already done"); continue; }
+                if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) { LOGGER.info("[TCC-DEBUG]   -> SKIP: prerequisites not met"); continue; }
+                if (!AchievementConditionMatcher.matchesDeathConditions(player, killed, otherEntity, def)) { LOGGER.info("[TCC-DEBUG]   -> SKIP: conditions not met"); continue; }
 
-                // Skip disabled achievements
-                if (!def.isEnabled()) continue;
-
-                if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
-                if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
-                if (!AchievementConditionMatcher.matchesDeathConditions(player, killed, otherEntity, def)) continue;
-
+                LOGGER.info("[TCC-DEBUG]   -> AWARDING: {}", def.id());
                 RuleAdvancementMapping.awardNextCriterion(
                         serverPlayer, def.id(), def.criteriaCount());
             }

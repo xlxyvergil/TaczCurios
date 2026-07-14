@@ -162,12 +162,6 @@ public class Raven extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && hasEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
 
         tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.GOLD));

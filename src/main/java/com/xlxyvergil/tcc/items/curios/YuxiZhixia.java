@@ -127,12 +127,6 @@ public class YuxiZhixia extends BaseCurioItem {
         // 虚数抗性显示
         double baseValue = TaczCuriosConfig.COMMON.villVImaginaryResistance.get();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && isEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
         tooltip.add(Component.literal(""));
 
         double triggerHpRatio = TaczCuriosConfig.COMMON.yuxiZhixiaTriggerHpRatio.get() * 100;

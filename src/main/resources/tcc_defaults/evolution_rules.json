@@ -269,6 +269,56 @@
           "value": 1.0
         }
       ]
+    },
+
+    "tcc_vill_v_imaginary_from_enchant": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:vill_v",
+      "description": {
+        "zh_cn": "每附魔20次物品，+1虚数抗性（上限20）",
+        "en_us": "Every 20 items enchanted, +1 Imaginary Resistance (cap 20)"
+      },
+      "stat": "minecraft:enchant_item",
+      "statThreshold": 20,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_vill_v_imaginary"
+      }
+    },
+
+    "tcc_yuxi_zhixia_imaginary_from_heavy_wither": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:yuxi_zhixia",
+      "description": {
+        "zh_cn": "使用重型武器击杀凋灵，每次+20虚数抗性（上限20）",
+        "en_us": "Kill Wither with heavy weapon, +20 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": ["heavy"]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_yuxi_zhixia_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 20.0
+        }
+      ]
     }
   }
 }
