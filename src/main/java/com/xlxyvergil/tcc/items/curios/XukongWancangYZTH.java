@@ -36,6 +36,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class XukongWancangYZTH extends BaseCurioItem {
@@ -119,23 +121,23 @@ public class XukongWancangYZTH extends BaseCurioItem {
         if (!GunTypeChecker.isHoldingHeavyWeapon(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
 
+        Entity hurtEntity = event.getHurtEntity();
+        if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
+        if (targetLiving.isDeadOrDying()) return;
+
         // 额外虚数伤害：20 + attack_damage * (虚数抗性 / 100)
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
             + (float) Math.round(attackDamage * (imaginaryResistance / 100.0) * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
-            attacker,
-            TccDamageSources.imaginaryDamage(attacker.level(), attacker),
+            targetLiving,
+            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
             imaginaryBonus
         );
 
         if (event.getBullet() == null) return;
         if (!event.getBullet().getPersistentData().getBoolean(INFECTION_KEY)) return;
-
-        Entity hurtEntity = event.getHurtEntity();
-        if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
-        if (targetLiving.isDeadOrDying()) return;
 
         // 攻击必定触发侵染
         var infection = TccMobEffects.IMAGINARY_INFECTION.get();
@@ -166,11 +168,14 @@ public class XukongWancangYZTH extends BaseCurioItem {
             (double) TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get());
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+        double ammoRegen = TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100;
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
@@ -186,7 +191,7 @@ public class XukongWancangYZTH extends BaseCurioItem {
             }
         }
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect",
-                String.format("%.0f", TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100),
+                String.format("%.0f", ammoRegen),
                 String.format("%.0f", computedImaginaryDamage))
             .withStyle(ChatFormatting.RED));
 

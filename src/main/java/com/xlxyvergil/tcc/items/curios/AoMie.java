@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -20,6 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -53,9 +56,13 @@ public class AoMie extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double resistance = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                stack -> stack.getItem() instanceof AoMie);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            resistance, IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.aomie.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
@@ -128,9 +135,29 @@ public class AoMie extends BaseCurioItem {
         return DropRule.ALWAYS_KEEP;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        CompoundTag tag = stack.getTag();
+
+        // 虚数抗性显示
+        double baseValue = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        tooltip.add(Component.literal(""));
+        int maxSlots = TaczCuriosConfig.COMMON.aoMieMaxSlots.get();
+        double adaptFactor = TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100;
+        int decaySeconds = TaczCuriosConfig.COMMON.aoMieDecaySeconds.get();
+
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
@@ -144,18 +171,20 @@ public class AoMie extends BaseCurioItem {
                 healthFromResistance = resistance * TaczCuriosConfig.COMMON.aoMieHealthPerResistance.get();
             }
         }
-        tooltip.add(Component.translatable("item.tcc.aomie.effect",
-                String.format("%.2f", TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()),
-                TaczCuriosConfig.COMMON.aoMieMaxSlots.get(),
-                String.format("%.2f", TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100),
-                TaczCuriosConfig.COMMON.aoMieDecaySeconds.get(),
-                String.format("%.2f", healthFromResistance))
+        tooltip.add(Component.translatable("attribute.modifier.plus.0",
+                String.format("%.2f", healthFromResistance),
+                Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+                .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("item.tcc.aomie.special_adapt",
+                maxSlots,
+                String.format("%.2f", adaptFactor),
+                decaySeconds)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
 
-        CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

@@ -35,6 +35,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 public class Raven extends BaseCurioItem {
 
     private static final UUID ARMOR_UUID = UUID.fromString("3d18c48e-0b11-4cb9-ae4e-55f9e1bf78d6");
@@ -144,15 +147,20 @@ public class Raven extends BaseCurioItem {
 
     
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
+        double armorBoost = TaczCuriosConfig.COMMON.ravenArmorMultiplier.get() * 100;
+        double speedBoost = TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get() * 100;
+        double invisIntervalSecs = TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() / 20.0;
+        double invisDurationSecs = TaczCuriosConfig.COMMON.ravenInvisDuration.get() / 20.0;
+
         CompoundTag tag = stack.getTag();
         double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        double cap = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:raven");
         double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
         if (level != null && level.isClientSide()) {
             Player player = Minecraft.getInstance().player;
@@ -161,62 +169,21 @@ public class Raven extends BaseCurioItem {
             }
         }
 
-        tooltip.add(Component.translatable("item.tcc.raven.effect",
-                String.format("%+.0f", TaczCuriosConfig.COMMON.ravenArmorMultiplier.get() * 100),
-                String.format("%+.0f", TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get() * 100),
-                String.format("%.1f", TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() / 20.0),
-                String.format("%.1f", TaczCuriosConfig.COMMON.ravenInvisDuration.get() / 20.0))
-            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(Component.translatable("item.tcc.raven.resistance", String.format("%.0f", total))
-            .withStyle(ChatFormatting.AQUA));
-
-        EvolutionRegistry.Rule evolveRule = getEvolutionRuleOrNull();
-        if (evolveRule != null && !evolveRule.requirements.kills.isEmpty()) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.raven.kill_progress_title")
-                .withStyle(ChatFormatting.GREEN));
-            CompoundTag killCounts = tag != null ? tag.getCompound(com.xlxyvergil.tcc.util.EvolutionNbtKeys.KILL_COUNTS) : null;
-            for (EvolutionRegistry.KillRequirement req : evolveRule.requirements.kills) {
-                String matchKey = EntityConditionHelper.getMatchKey(req.entity.key, req.entity.nbt);
-                int current = killCounts != null ? killCounts.getInt(matchKey) : 0;
-                String entityDisplay = getEntityDisplayName(req.entity);
-                tooltip.add(Component.translatable("item.tcc.raven.evolution_progress", entityDisplay, current, req.count)
-                    .withStyle(current >= req.count ? ChatFormatting.GREEN : ChatFormatting.GRAY));
-            }
-        }
-
-        Map<String, Double> sources = new LinkedHashMap<>();
-        Map<String, EvolutionRegistry.EntityRef> sourceEntities = new LinkedHashMap<>();
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:raven")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            for (EvolutionRegistry.KillGain k : rule.kills) {
-                String key = EntityConditionHelper.getMatchKey(k.entity.key, k.entity.nbt);
-                sources.merge(key, k.value, Double::sum);
-                sourceEntities.putIfAbsent(key, k.entity);
-            }
-        }
-
-        if (cap > 0 && !sources.isEmpty()) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.raven.resist_source_title", String.format("%.0f", cap))
-                .withStyle(ChatFormatting.AQUA));
-            for (var entry : sources.entrySet()) {
-                EvolutionRegistry.EntityRef entity = sourceEntities.get(entry.getKey());
-                String display = entity != null ? getEntityDisplayName(entity) : entry.getKey();
-                tooltip.add(Component.translatable("item.tcc.raven.resist_detail", display, (int) Math.round(entry.getValue()))
-                    .withStyle(ChatFormatting.GRAY));
-            }
-        }
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", armorBoost),
+                Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", speedBoost),
+                Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.raven.special_invis",
+                String.format("%.1f", invisIntervalSecs),
+                String.format("%.1f", invisDurationSecs))
+            .withStyle(ChatFormatting.WHITE));
 
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
@@ -228,29 +195,5 @@ public class Raven extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
-
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.raven.how_to_obtain")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-    }
-
-    private static EvolutionRegistry.Rule getEvolutionRuleOrNull() {
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.EVOLVE, "tcc:raven")) {
-            if ("tcc:island_boom_raven".equals(rule.to)) {
-                return rule;
-            }
-        }
-        return null;
-    }
-
-    private static String getEntityDisplayName(EvolutionRegistry.EntityRef entity) {
-        try {
-            ResourceLocation rl = new ResourceLocation(entity.key);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            String suffix = entity.name == null || entity.name.isBlank() ? "" : " " + entity.name;
-            return entityType.getDescription().getString() + suffix;
-        } catch (Exception ignored) {
-            return entity.key;
-        }
     }
 }

@@ -115,33 +115,27 @@ public final class StatPollingEventHandler {
 
         int current = player.getStats().getValue(Stats.CUSTOM.get(registered));
         int threshold = conds.statThreshold();
-        int set = Math.min(threshold, current);
+        int maxSteps = def.criteriaCount();
+        int steps = Math.min(current / threshold, maxSteps);
 
-        if (set > 0) {
-            // Award all steps up to current value
-            // For criteria_count = threshold, award steps based on progress
-            awardStatProgress(player, def, set, threshold);
+        if (steps > 0) {
+            awardStatProgress(player, def, steps);
         }
     }
 
     private static void awardStatProgress(ServerPlayer player, AchievementDefinitions.AchievementDef def,
-                                           int current, int threshold) {
+                                           int steps) {
         if (def.criteriaCount() <= 0) return;
+        if (steps <= 0) return;
 
-        // Align: if criteriaCount == 1, award all when current >= threshold
-        // If criteriaCount > 1, use it as step count
         if (def.criteriaCount() == 1) {
-            if (current >= threshold) {
-                RuleAdvancementMapping.awardAll(player, def.id(), def.criteriaCount());
-            }
+            RuleAdvancementMapping.awardAll(player, def.id(), def.criteriaCount());
         } else {
-            // Multi-step: criteriaCount is the threshold, each step = 1 stat point
-            int steps = Math.min(current, def.criteriaCount());
-            // Re-award all steps up to current (idempotent, already-done steps are skipped)
             var rl = new ResourceLocation(def.id());
             var adv = player.server.getAdvancements().getAdvancement(rl);
             if (adv == null) return;
-            for (int i = 1; i <= steps; i++) {
+            int maxSteps = Math.min(steps, def.criteriaCount());
+            for (int i = 1; i <= maxSteps; i++) {
                 var cp = player.getAdvancements().getOrStartProgress(adv).getCriterion("step_" + i);
                 if (cp != null && !cp.isDone()) {
                     player.getAdvancements().award(adv, "step_" + i);

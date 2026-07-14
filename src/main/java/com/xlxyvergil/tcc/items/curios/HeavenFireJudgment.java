@@ -16,9 +16,8 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -116,18 +115,23 @@ public class HeavenFireJudgment extends BaseCurioItem {
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get() * 100;
         double bleedingDamagePerLevel = TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.get() * 100;
         int bleedingDuration = TaczCuriosConfig.COMMON.heavenFireBleedingDuration.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.effect", 
-                String.format("%+.0f", damageBoost), 
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", damageBoost),
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.special",
                 String.format("%+.0f", healthCost), 
                 String.format("%+.0f", bleedingDamagePerLevel), 
-                String.format("%d", bleedingDuration)));
+                String.format("%d", bleedingDuration))
+            .withStyle(ChatFormatting.WHITE));
         
         // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
         
         // 虚数侵染上限
         int infectionMax = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.inflection_max",
-                String.format("%d", infectionMax)));
+                String.format("%d", infectionMax))
+            .withStyle(ChatFormatting.YELLOW));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -135,27 +139,6 @@ public class HeavenFireJudgment extends BaseCurioItem {
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
-        
-        // 添加获取方式
-        String entityName = resolveSummerBeachGrantKillerName();
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.how_to_obtain", entityName)
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-    }
-
-    private static String resolveSummerBeachGrantKillerName() {
-        AchievementDefinitions.AchievementDef def =
-                AchievementDefinitions.get("tcc:summer_beach_grant").orElse(null);
-        if (def == null || def.conditions() == null || def.conditions().killer() == null) return "未知";
-        String killerKey = def.conditions().killer();
-        String entityName = killerKey;
-        try {
-            ResourceLocation rl = new ResourceLocation(killerKey);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            entityName = entityType.getDescription().getString();
-        } catch (Exception ignored) {
-        }
-        return entityName;
     }
     
     /**

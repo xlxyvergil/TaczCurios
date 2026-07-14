@@ -8,6 +8,10 @@
           "en_us": "My Island"
         },
         "icon": "tcc:seven_thunders",
+        "description": {
+          "zh_cn": "爆头击杀任意实体30次",
+          "en_us": "Headshot kill any entity 30 times"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -36,6 +40,10 @@
           "en_us": "Night Raid"
         },
         "icon": "tcc:xiora",
+        "description": {
+          "zh_cn": "佩戴涤罪七雷，隐身后使用狙击枪爆头击杀任意实体10次",
+          "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders with invisibility and sniper"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -67,6 +75,10 @@
           "en_us": "Thunder Seen"
         },
         "icon": "tcc:seven_thunders_thunder_seen",
+        "description": {
+          "zh_cn": "佩戴涤罪七雷·雷鸣见，使用狙击枪爆头击杀任意实体10次",
+          "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders: Thunder Seen with sniper"
+        },
         "frame": "task",
         "hidden": false
       },
@@ -97,6 +109,10 @@
           "en_us": "Night Raven"
         },
         "icon": "tcc:raven",
+        "description": {
+          "zh_cn": "佩戴希奥拉，隐身后使用狙击枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Xiora with invisibility and sniper"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -128,6 +144,10 @@
           "en_us": "Seven Thunders Calling"
         },
         "icon": "tcc:island_boom_raven",
+        "description": {
+          "zh_cn": "佩戴渡鸦和涤罪七雷·雷鸣见，100米外使用狙击枪击杀末影龙，虚数伤害抗性大于60",
+          "en_us": "Kill the Ender Dragon from 100m+ while wearing Raven and Seven Thunders: Thunder Seen with sniper, Imaginary Damage Resistance > 60"
+        },
         "frame": "challenge",
         "hidden": false
       },
@@ -166,6 +186,10 @@
           "en_us": "Judgement Key"
         },
         "icon": "tcc:judgement_key",
+        "description": {
+          "zh_cn": "获得裁决之键",
+          "en_us": "Obtain Judgement Key"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -185,6 +209,10 @@
           "en_us": "Kevin"
         },
         "icon": "tcc:summer_beach",
+        "description": {
+          "zh_cn": "佩戴天火圣裁，被凋灵击杀",
+          "en_us": "Be killed by a Wither while wearing Heaven Fire Judgment"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -213,6 +241,10 @@
           "en_us": "Evolution: Heaven Fire Apocalypse"
         },
         "icon": "tcc:heaven_fire_apocalypse",
+        "description": {
+          "zh_cn": "佩戴天火圣裁，流血结算未死亡，虚数伤害抗性大于等于40",
+          "en_us": "Survive bleeding settlement while wearing Heaven Fire Judgment, Imaginary Damage Resistance ≥ 40"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -241,6 +273,10 @@
           "en_us": "Evolution: Inexhaustible Sword"
         },
         "icon": "tcc:brahma_beasts",
+        "description": {
+          "zh_cn": "佩戴凯文和天火劫灭，使用手枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Kevin and Heaven Fire Apocalypse with pistol"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -270,6 +306,10 @@
           "en_us": "Evolution: Salvation"
         },
         "icon": "tcc:salvation",
+        "description": {
+          "zh_cn": "佩戴无烬之剑和天火劫灭，使用手枪击杀末影龙，虚数伤害抗性大于80",
+          "en_us": "Kill the Ender Dragon while wearing Inexhaustible Sword and Heaven Fire Apocalypse with pistol, Imaginary Damage Resistance > 80"
+        },
         "frame": "challenge",
         "hidden": false
       },
@@ -306,6 +346,10 @@
           "en_us": "Apocalypse Endless"
         },
         "icon": "tcc:heaven_fire_apocalypse_endless",
+        "description": {
+          "zh_cn": "获得天火劫灭·无烬终焉",
+          "en_us": "Obtain Heaven Fire Apocalypse Endless"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -325,6 +369,10 @@
           "en_us": "Colors of Life"
         },
         "icon": "tcc:griseo",
+        "description": {
+          "zh_cn": "繁殖动物达到200次",
+          "en_us": "Animals Bred reaches 200"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -352,6 +400,10 @@
           "en_us": "Thousand Realms"
         },
         "icon": "tcc:qianjie_yicheng",
+        "description": {
+          "zh_cn": "佩戴格蕾修，访问下界",
+          "en_us": "Visit the Nether while wearing Griseo"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -379,6 +431,10 @@
           "en_us": "Evolution: Scroll of Painted World"
         },
         "icon": "tcc:huishi_zhijuan",
+        "description": {
+          "zh_cn": "佩戴千界一乘，钓鱼达到200条",
+          "en_us": "Fish Caught reaches 200 while wearing Thousand Realms"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -407,6 +463,10 @@
           "en_us": "Evolution: Key of Perpetuity"
         },
         "icon": "tcc:yongjie_zhijian",
+        "description": {
+          "zh_cn": "佩戴绘世之卷，访问末地",
+          "en_us": "Visit the End while wearing Scroll of Painted World"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -434,6 +494,10 @@
           "en_us": "Evolution: Fanxing & World Inversion"
         },
         "icon": "tcc:fanxing",
+        "description": {
+          "zh_cn": "鞘翅飞行距离达到2556500cm，虚数伤害抗性大于60",
+          "en_us": "Elytra flight distance reaches 2556500cm, Imaginary Damage Resistance > 60"
+        },
         "frame": "challenge",
         "hidden": false
       },
@@ -468,6 +532,10 @@
           "en_us": "World Inversion"
         },
         "icon": "tcc:shijie_fanyan",
+        "description": {
+          "zh_cn": "获得千界一乘·视界反演",
+          "en_us": "Obtain First Key of Worlds - Horizon Inversion"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -487,6 +555,10 @@
           "en_us": "Kalpas"
         },
         "icon": "tcc:kalpas",
+        "description": {
+          "zh_cn": "造成伤害达到10000",
+          "en_us": "Damage Dealt reaches 10000"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -514,6 +586,10 @@
           "en_us": "Imer"
         },
         "icon": "tcc:imer",
+        "description": {
+          "zh_cn": "佩戴千劫，承受伤害达到10000",
+          "en_us": "Damage Taken reaches 10000 while wearing Kalpas"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -538,10 +614,14 @@
       "enabled": true,
       "display": {
         "title": {
-          "zh_cn": "进化：画界之言",
-          "en_us": "Evolution: Words of the Painted Realm"
+          "zh_cn": "进化：坏劫之焱",
+          "en_us": "Evolution: Blazing Calamity"
         },
         "icon": "tcc:huajie_zhiyan",
+        "description": {
+          "zh_cn": "佩戴伊默尔，造成伤害达到50000并击杀凋灵",
+          "en_us": "Damage Dealt reaches 50000 and kill a Wither while wearing Imer"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -574,6 +654,10 @@
           "en_us": "Evolution: Dominance Key"
         },
         "icon": "tcc:dominance_key",
+        "description": {
+          "zh_cn": "佩戴坏劫之焱，击杀生物达到1000",
+          "en_us": "Mob Kills reaches 1000 while wearing Blazing Calamity"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -602,6 +686,10 @@
           "en_us": "Evolution: Annihilation"
         },
         "icon": "tcc:aomie",
+        "description": {
+          "zh_cn": "佩戴支配之键，击杀生物达到5000、承受伤害达到50000并击杀末影龙，虚数伤害抗性大于70",
+          "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Dominance Key, Imaginary Damage Resistance > 70"
+        },
         "frame": "challenge",
         "hidden": false
       },
@@ -644,6 +732,10 @@
           "en_us": "Meta-Morph"
         },
         "icon": "tcc:meta_morph",
+        "description": {
+          "zh_cn": "获得Meta-Morph",
+          "en_us": "Obtain Meta-Morph"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -663,6 +755,10 @@
           "en_us": "Su"
         },
         "icon": "tcc:su",
+        "description": {
+          "zh_cn": "使用步枪击杀僵尸100次",
+          "en_us": "Kill Zombies 100 times with rifle"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -692,6 +788,10 @@
           "en_us": "All Things Slumber"
         },
         "icon": "tcc:wanwu_xiumian",
+        "description": {
+          "zh_cn": "佩戴苏，治愈僵尸村民达到20次",
+          "en_us": "Zombie Villagers Cured reaches 20 while wearing Su"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -720,6 +820,10 @@
           "en_us": "The Enlightened One"
         },
         "icon": "tcc:juezhe",
+        "description": {
+          "zh_cn": "佩戴万物休眠，赢得袭击达到10次",
+          "en_us": "Raids Won reaches 10 while wearing All Things Slumber"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -748,6 +852,10 @@
           "en_us": "Key of Stagnation"
         },
         "icon": "tcc:tingzhi_zhijian",
+        "description": {
+          "zh_cn": "佩戴觉者，使用步枪击杀凋灵",
+          "en_us": "Kill a Wither while wearing The Enlightened One with rifle"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -778,6 +886,10 @@
           "en_us": "Heavenly Wisdom"
         },
         "icon": "tcc:tianhui",
+        "description": {
+          "zh_cn": "佩戴停滞之键，击杀末影龙，血量低于2心",
+          "en_us": "Kill the Ender Dragon while wearing Key of Stagnation with less than 2 hearts"
+        },
         "frame": "challenge",
         "hidden": false
       },
@@ -814,6 +926,10 @@
           "en_us": "Wheel of Causality"
         },
         "icon": "tcc:yinguo_zhuanlun",
+        "description": {
+          "zh_cn": "获得因果转轮",
+          "en_us": "Obtain Wheel of Causality"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -833,6 +949,10 @@
           "en_us": "VILL-V"
         },
         "icon": "tcc:vill_v",
+        "description": {
+          "zh_cn": "与工作台交互达到200次",
+          "en_us": "Interact with Crafting Table reaches 200"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -860,6 +980,10 @@
           "en_us": "Void Archives"
         },
         "icon": "tcc:xukong_wancang",
+        "description": {
+          "zh_cn": "佩戴维尔薇，与村民交易达到200次",
+          "en_us": "Trade with Villagers reaches 200 while wearing Vill-V"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -888,6 +1012,10 @@
           "en_us": "Featherlight Casket"
         },
         "icon": "tcc:yuxi_zhixia",
+        "description": {
+          "zh_cn": "佩戴虚空万藏，使用重型武器击杀凋灵",
+          "en_us": "Kill a Wither while wearing Void Archives with heavy weapon"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -903,10 +1031,10 @@
       },
       "prerequisites": ["tcc:xukong_wancang_grant"],
       "reward": {
-        "type": "grant",
-        "item": "tcc:yuxi_zhixia",
-        "overflowMode": "INVENTORY_THEN_DROP",
-        "bindToPlayer": false
+        "type": "evolve",
+        "item": "tcc:vill_v",
+        "to": "tcc:yuxi_zhixia",
+        "bindToPlayer": true
       }
     },
 
@@ -918,6 +1046,10 @@
           "en_us": "Key of Revelation"
         },
         "icon": "tcc:qishi_zhijian",
+        "description": {
+          "zh_cn": "佩戴愚戏之匣，使用重型武器击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Box of Fools with heavy weapon"
+        },
         "frame": "goal",
         "hidden": false
       },
@@ -933,10 +1065,10 @@
       },
       "prerequisites": ["tcc:yuxi_zhixia_grant"],
       "reward": {
-        "type": "grant",
-        "item": "tcc:qishi_zhijian",
-        "overflowMode": "INVENTORY_THEN_DROP",
-        "bindToPlayer": false
+        "type": "evolve",
+        "item": "tcc:xukong_wancang",
+        "to": "tcc:qishi_zhijian",
+        "bindToPlayer": true
       }
     },
 
@@ -948,6 +1080,10 @@
           "en_us": "Spiral"
         },
         "icon": "tcc:luoxuan",
+        "description": {
+          "zh_cn": "佩戴启示之键，自上次死亡后存活864000tick，虚数伤害抗性大于60",
+          "en_us": "Time Since Death reaches 864000 ticks while wearing Key of Revelation, Imaginary Damage Resistance > 60"
+        },
         "frame": "challenge",
         "hidden": false
       },
@@ -965,11 +1101,11 @@
       "prerequisites": ["tcc:qishi_zhijian_grant"],
       "reward": {
         "type": "evolve",
-        "item": "tcc:qishi_zhijian",
-        "to": "tcc:xukong_wancang_yzth",
+        "item": "tcc:yuxi_zhixia",
+        "to": "tcc:luoxuan",
         "bindToPlayer": true,
         "linkedEvolves": [
-          { "item": "tcc:xukong_wancang", "to": "tcc:luoxuan" }
+          { "item": "tcc:qishi_zhijian", "to": "tcc:xukong_wancang_yzth" }
         ],
         "autoAchievements": ["tcc:xukong_wancang_yzth_grant"]
       }
@@ -983,6 +1119,10 @@
           "en_us": "Void Archives - Primordial Synthesis"
         },
         "icon": "tcc:xukong_wancang_yzth",
+        "description": {
+          "zh_cn": "获得虚空万藏·雨众天华",
+          "en_us": "Obtain Void Archives - Amrita Ruin"
+        },
         "frame": "goal",
         "hidden": false
       },

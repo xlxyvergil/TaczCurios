@@ -21,6 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -99,7 +101,7 @@ public class QishiZhijian extends BaseCurioItem {
 
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker),
+            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
             TaczCuriosConfig.COMMON.qishiZhijianImaginaryDamage.get().floatValue()
         );
     }
@@ -122,18 +124,22 @@ public class QishiZhijian extends BaseCurioItem {
             (double) TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get());
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
+        double imaginaryDamage = TaczCuriosConfig.COMMON.qishiZhijianImaginaryDamage.get();
+        double ammoRegen = TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get() * 100;
+
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.qishi_zhijian.effect",
-                String.format("%.2f", TaczCuriosConfig.COMMON.qishiZhijianImaginaryDamage.get()),
-                String.format("%.0f", TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get() * 100))
+                String.format("%.2f", imaginaryDamage),
+                String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

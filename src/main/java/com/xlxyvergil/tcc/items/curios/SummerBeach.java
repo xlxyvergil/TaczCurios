@@ -29,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 /**
  * 夏日沙滩 - 提供基础20点虚数抗性，击杀配置列表中的实体获得额外抗性
  */
@@ -82,6 +85,7 @@ public class SummerBeach extends BaseCurioItem {
         return super.canEquip(slotContext, stack);
     }
     
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
@@ -90,7 +94,6 @@ public class SummerBeach extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         
         double baseValue = getBaseResistance();
-        double maxProgress = ImaginaryResistanceHelper.getMaxExtraResistanceFromProgressRules("tcc:summer_beach");
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         if (level != null && level.isClientSide()) {
             Player player = Minecraft.getInstance().player;
@@ -99,62 +102,14 @@ public class SummerBeach extends BaseCurioItem {
             }
         }
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.effect", String.format("%.0f", total))
-            .withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
         
         // EL 第四诅咒削弱（仅加载神秘遗物时显示）
         if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
             double curseReduction = TaczCuriosConfig.COMMON.summerBeachELCurseReduction.get();
             tooltip.add(Component.translatable("item.tcc.summer_beach.el_curse_reduction", String.format("%.0f", curseReduction * 100))
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
-        }
-        
-        // 显示每个实体的击杀进度
-        List<EvolutionRegistry.KillRequirement> requirements = getEvolutionKillRequirements();
-        if (!requirements.isEmpty()) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.summer_beach.kill_progress_title")
-                .withStyle(ChatFormatting.GREEN));
-            CompoundTag killCounts = tag != null ? tag.getCompound(EvolutionNbtKeys.KILL_COUNTS) : null;
-            for (EvolutionRegistry.KillRequirement req : requirements) {
-                String matchKey = EntityConditionHelper.getMatchKey(req.entity.key, req.entity.nbt);
-                int current = killCounts != null ? killCounts.getInt(matchKey) : 0;
-                String entityDisplay = getEntityDisplayName(req.entity);
-                tooltip.add(Component.translatable("item.tcc.summer_beach.evolution_progress", entityDisplay, current, req.count)
-                    .withStyle(current >= req.count ? ChatFormatting.GREEN : ChatFormatting.GRAY));
-            }
-        }
-        
-        Map<String, Double> sources = new LinkedHashMap<>();
-        Map<String, EvolutionRegistry.EntityRef> sourceEntities = new LinkedHashMap<>();
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.ATTRIBUTE, "tcc:summer_beach")) {
-            EvolutionRegistry.Progress progress = rule.progress;
-            if (progress == null) {
-                continue;
-            }
-            if (!"tcc:imaginary_damage_resistance".equals(progress.attribute)) {
-                continue;
-            }
-            if (progress.operation != AttributeModifier.Operation.ADDITION) {
-                continue;
-            }
-            for (EvolutionRegistry.KillGain k : rule.kills) {
-                String key = EntityConditionHelper.getMatchKey(k.entity.key, k.entity.nbt);
-                sources.merge(key, k.value, Double::sum);
-                sourceEntities.putIfAbsent(key, k.entity);
-            }
-        }
-
-        if (maxProgress > 0 && !sources.isEmpty()) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.summer_beach.resist_source_title", String.format("%.0f", maxProgress))
-                .withStyle(ChatFormatting.AQUA));
-            for (var entry : sources.entrySet()) {
-                EvolutionRegistry.EntityRef entity = sourceEntities.get(entry.getKey());
-                String display = entity != null ? getEntityDisplayName(entity) : entry.getKey();
-                tooltip.add(Component.translatable("item.tcc.summer_beach.resist_detail", display, (int) Math.round(entry.getValue()))
-                    .withStyle(ChatFormatting.GRAY));
-            }
         }
         
         // 绑定信息
@@ -169,34 +124,8 @@ public class SummerBeach extends BaseCurioItem {
         tooltip.add(Component.literal(""));
  
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
-        
-        // 下级进化方式
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.summer_beach.how_to_obtain")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
-    private static List<EvolutionRegistry.KillRequirement> getEvolutionKillRequirements() {
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTypeAndItemOrEmpty(EvolutionRegistry.RuleType.EVOLVE, "tcc:summer_beach")) {
-            if ("tcc:brahma_beasts".equals(rule.to)) {
-                return rule.requirements.kills;
-            }
-        }
-        return List.of();
-    }
-    
-    private static String getEntityDisplayName(EvolutionRegistry.EntityRef entity) {
-        try {
-            ResourceLocation rl = new ResourceLocation(entity.key);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            String suffix = entity.name == null || entity.name.isBlank() ? "" : " " + entity.name;
-            return entityType.getDescription().getString() + suffix;
-        } catch (Exception ignored) {
-            return entity.key;
-        }
-    }
-
-    
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
         applyEffects(livingEntity);

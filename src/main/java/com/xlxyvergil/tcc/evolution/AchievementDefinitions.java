@@ -198,10 +198,13 @@ public final class AchievementDefinitions {
             return t != null ? t : id;
         }
 
-        /** Get display description for a locale, dynamically generated from conditions.
+        /** Get display description for a locale, from display.description map.
          *  The %d placeholders are filled by caller with (current, total). */
         public String description(String locale, int current, int total) {
-            String fmt = DescriptionGenerator.generate(this, locale);
+            if (display == null || display.description == null) return id;
+            String fmt = display.description.get(locale);
+            if (fmt == null) fmt = display.description.get("en_us");
+            if (fmt == null) return id;
             return String.format(fmt, current, total);
         }
     }

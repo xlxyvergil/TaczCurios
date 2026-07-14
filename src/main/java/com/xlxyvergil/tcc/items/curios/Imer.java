@@ -17,6 +17,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -91,16 +93,20 @@ public class Imer extends BaseCurioItem {
         return DropRule.ALWAYS_KEEP;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
+        double attackPerHealth = TaczCuriosConfig.COMMON.imerAttackPerHealth.get() * 100;
+
         tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
-        tooltip.add(Component.translatable("item.tcc.imer.effect",
-                String.format("%.2f", TaczCuriosConfig.COMMON.imerAttackPerHealth.get() * 100))
+        tooltip.add(Component.translatable("attribute.modifier.plus.0",
+                String.format("%.2f", attackPerHealth),
+                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -30,6 +30,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 public class IslandBoomRaven extends BaseCurioItem {
 
     private static final UUID ARMOR_UUID = UUID.fromString("2dddf4c2-5d16-4f88-9e08-e5f9131c7b4e");
@@ -145,11 +148,17 @@ public class IslandBoomRaven extends BaseCurioItem {
 
     
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+        double armorBoost = TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get() * 100;
+        double speedBoost = TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get() * 100;
+        double invisIntervalSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() / 20.0;
+        double invisDurationSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0;
 
         CompoundTag tag = stack.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
@@ -160,16 +169,31 @@ public class IslandBoomRaven extends BaseCurioItem {
             }
         }
 
-        tooltip.add(Component.translatable("item.tcc.island_boom_raven.effect",
-                String.format("%+.0f", TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get() * 100),
-                String.format("%+.0f", TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get() * 100),
-                String.format("%.0f", total),
-                String.format("%.1f", TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() / 20.0),
-                String.format("%.1f", TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0))
-            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", armorBoost),
+                Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(Component.translatable("item.tcc.island_boom_raven.resistance", String.format("%.0f", total))
-            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", speedBoost),
+                Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("item.tcc.island_boom_raven.attr_regen")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.valueOf(total),
+                Component.translatable(TccAttributes.IMAGINARY_DAMAGE.get().getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("item.tcc.island_boom_raven.special_invis",
+                String.format("%.1f", invisIntervalSecs),
+                String.format("%.1f", invisDurationSecs))
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
@@ -181,10 +205,6 @@ public class IslandBoomRaven extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
-
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.island_boom_raven.how_to_obtain")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
     }

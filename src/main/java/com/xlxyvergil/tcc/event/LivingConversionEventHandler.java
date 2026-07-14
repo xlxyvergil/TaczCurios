@@ -11,22 +11,10 @@ import net.minecraftforge.event.entity.living.LivingConversionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.lang.reflect.Field;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LivingConversionEventHandler {
-
-    private static Field conversionStarterField;
-
-    static {
-        try {
-            conversionStarterField = ZombieVillager.class.getDeclaredField("conversionStarter");
-            conversionStarterField.setAccessible(true);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException("Failed to find ZombieVillager.conversionStarter field", e);
-        }
-    }
 
     private LivingConversionEventHandler() {}
 
@@ -35,12 +23,7 @@ public final class LivingConversionEventHandler {
         if (!(event.getEntity() instanceof ZombieVillager zombieVillager)) return;
         if (zombieVillager.level().isClientSide) return;
 
-        UUID converterUUID;
-        try {
-            converterUUID = (UUID) conversionStarterField.get(zombieVillager);
-        } catch (IllegalAccessException e) {
-            return;
-        }
+        UUID converterUUID = zombieVillager.conversionStarter;
 
         if (converterUUID == null) return;
 

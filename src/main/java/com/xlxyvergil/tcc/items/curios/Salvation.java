@@ -31,6 +31,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 /**
  * 救世 - 裂隙级饰品
  */
@@ -102,9 +105,12 @@ public class Salvation extends BaseCurioItem {
         return ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
     }
     
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
+        
+        double damageReduction = TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100;
         
         // 继承抗性（装备时从属性修饰符读取实际值）
         CompoundTag tag = stack.getTag();
@@ -117,12 +123,12 @@ public class Salvation extends BaseCurioItem {
                 total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             }
         }
-        tooltip.add(Component.translatable("item.tcc.salvation.effect", String.format("%.0f", total))
-            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.RED));
         
         // 常驻加成
-        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100))
-            .withStyle(ChatFormatting.GREEN));
+        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", damageReduction))
+            .withStyle(ChatFormatting.RED));
         
         // EL 第四诅咒削弱（仅加载神秘遗物时显示）
         if (ModList.get().isLoaded("enigmaticlegacy")) {
@@ -135,11 +141,6 @@ public class Salvation extends BaseCurioItem {
         tooltip.add(Component.literal(""));
  
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
-        
-        // 添加获取方式
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.salvation.how_to_obtain")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
     
     @Override

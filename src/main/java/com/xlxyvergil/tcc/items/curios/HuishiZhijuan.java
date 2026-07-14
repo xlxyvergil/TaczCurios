@@ -19,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -139,15 +141,25 @@ public class HuishiZhijuan extends BaseCurioItem {
         return Math.min(cooldown, max);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
+        // 虚数抗性显示
+        CompoundTag tag = stack.getTag();
+        double baseValue = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
         tooltip.add(Component.literal(""));
-
-        tooltip.add(Component.translatable("item.tcc.huishi_zhijuan.effect.stat",
-                String.format("%.2f", TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()))
-            .withStyle(ChatFormatting.YELLOW));
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance",
+                String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
@@ -167,7 +179,7 @@ public class HuishiZhijuan extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
 
-        CompoundTag tag = stack.getTag();
+        tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

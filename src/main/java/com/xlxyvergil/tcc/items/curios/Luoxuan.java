@@ -3,11 +3,13 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,6 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -49,8 +53,13 @@ public class Luoxuan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                stack -> stack.getItem() instanceof Luoxuan);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.villVImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            TaczCuriosConfig.COMMON.villVImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.luoxuan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
@@ -114,25 +123,44 @@ public class Luoxuan extends BaseCurioItem {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        CompoundTag tag = stack.getTag();
+
+        // 虚数抗性显示
+        double baseValue = TaczCuriosConfig.COMMON.villVImaginaryResistance.get();
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        tooltip.add(Component.literal(""));
+
+        double absorptionIntervalSecs = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get() / 20.0;
+        int absorptionLevel = TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get();
+
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("item.tcc.luoxuan.effect",
-                String.format("%.2f", TaczCuriosConfig.COMMON.villVImaginaryResistance.get()),
-                TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get(),
-                TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get())
+        tooltip.add(Component.translatable("item.tcc.luoxuan.special_absorption",
+                "",
+                absorptionIntervalSecs,
+                absorptionLevel)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
 
-        CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

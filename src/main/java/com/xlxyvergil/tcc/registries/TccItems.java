@@ -208,7 +208,7 @@ public class TccItems {
     public static final RegistryObject<Item> SEVEN_THUNDERS_THUNDER_SEEN = ITEMS.register("seven_thunders_thunder_seen",
         () -> new SevenThundersThunderSeen(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.RARE)));
+            .rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> JUDGEMENT_KEY = ITEMS.register("judgement_key",
         () -> new JudgementKey(new Item.Properties()

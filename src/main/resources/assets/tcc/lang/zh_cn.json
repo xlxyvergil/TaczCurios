@@ -1,401 +1,254 @@
 {
   "itemGroup.tcc.tacz_curio_tab": "Tacz饰品",
-  
   "curios.identifier.tcc_slot": "Tacz饰品栏",
   "curios.modifiers.tcc_slot": "Tacz饰品属性：",
-  
   "curios.identifier.tcc_3rd": "逐火之蛾",
   "curios.modifiers.tcc_3rd": "逐火之蛾属性：",
-
   "curios.identifier.tcc_tdk": "神之键",
   "curios.modifiers.tcc_tdk": "神之键属性：",
-  
   "// TAA属性本地化覆盖": "",
   "attribute.name.taa.explosion_knockbacknew": "爆炸击退",
   "attribute.name.taa.explosion_knockbacknew.desc": "爆炸击退效果",
-  
   "block.tcc.teshin_workbench": "泰辛工作台",
-  
   "entity.minecraft.villager.teshin": "泰辛",
   "entity.minecraft.villager.tcc.teshin": "泰辛",
-
   "item.tcc.soldier_basic_tag": "§9士兵基础挂牌",
   "item.tcc.soldier_basic_tag.effect": "%1$s%%通用枪械伤害",
-  
   "item.tcc.soldier_specific_tag": "§f士兵特定挂牌",
   "item.tcc.soldier_specific_tag.effect": "%1$s%%通用枪械伤害",
-  
   "item.tcc.heavy_caliber_tag": "§6重口径",
   "item.tcc.heavy_caliber_tag.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器伤害，%2$s%%扩散程度",
-  
   "item.tcc.red_movement_tag": "§b红-有-三",
   "item.tcc.red_movement_tag.effect": "%1$s%%持枪移动速度",
-  
-  "item.tcc.summer_beach": "§f凯文",
-  "item.tcc.summer_beach.effect": "%1$s虚数抗性",
-  "item.tcc.summer_beach.kill_progress_title": "进化需求:",
-  "item.tcc.summer_beach.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.summer_beach.how_to_obtain": "§7§o同时装备天火劫灭且满足进化需求时进化为无烬之剑",
-  "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d",
+  "item.tcc.summer_beach": "§6凯文",
   "item.tcc.summer_beach.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
-  
   "item.tcc.brahma_beasts": "§f无烬之剑",
-  "item.tcc.brahma_beasts.effect": "%1$s虚数抗性",
-  "item.tcc.brahma_beasts.kill_progress_title": "进化需求:",
-  "item.tcc.brahma_beasts.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.brahma_beasts.how_to_obtain": "§7§o虚数抗性>80且满足无烬之剑进化需求时进化为救世",
-  "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d",
   "item.tcc.brahma_beasts.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
-  
   "item.tcc.salvation": "§4救世",
-  "item.tcc.salvation.effect": "%1$s虚数抗性",
   "item.tcc.salvation.passive_bonuses": "常驻: 抗性提升III, 免疫击退, 受到的伤害降低%1$s%%",
   "item.tcc.salvation.el_curse_reduction": "§d第四诅咒效果削弱%1$s%%",
-  "item.tcc.salvation.how_to_obtain": "§7§o虚数抗性>80且装备无烬之剑+天火劫灭且满足无烬之剑进化需求时获得",
-
-  "item.tcc.xiora": "§f希奥拉",
+  "item.tcc.xiora": "§6希奥拉",
   "item.tcc.raven": "§f渡鸦",
   "item.tcc.island_boom_raven": "§4小岛爆爆鸦",
-
   "item.tcc.seven_thunders": "§6涤罪七雷",
-  "item.tcc.seven_thunders_thunder_seen": "§6涤罪七雷·雷鸣见",
+  "item.tcc.seven_thunders_thunder_seen": "§f涤罪七雷·雷鸣见",
   "item.tcc.judgement_key": "§4裁决之键",
-
-  "item.tcc.seven_thunders.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害",
-  "item.tcc.seven_thunders.how_to_obtain": "§7§o通过TACZ爆头击杀任意30个实体获得（仅一次）；持有涤罪七雷，使用狙击枪爆头击杀任意实体10次进化为涤罪七雷·雷鸣见",
-
-  "item.tcc.xiora.kill_progress_title": "进化需求:",
-  "item.tcc.xiora.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.xiora.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.xiora.resist_detail": "  %1$s: %2$d",
-
-  "item.tcc.xiora.effect": "护甲%1$s%% 移速%2$s%%",
-  "item.tcc.xiora.resistance": "%1$s虚数抗性",
-  "item.tcc.xiora.how_to_obtain": "§7§o持有涤罪七雷且隐身状态下，用狙击枪爆头击杀任意10个实体获得（仅一次）；隐身状态下用狙击枪击杀末影龙进化为渡鸦",
-
-  "item.tcc.raven.kill_progress_title": "进化需求:",
-  "item.tcc.raven.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.raven.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.raven.resist_detail": "  %1$s: %2$d",
-  "item.tcc.raven.evolution_distance": "  最小距离: %1$s格",
-  "item.tcc.raven.evolution_equipped": "  需同时装备:",
-  "item.tcc.raven.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
-
-  "item.tcc.raven.effect": "护甲%1$s%% 移速%2$s%% 每%3$s秒获得%4$s秒隐身",
-  "item.tcc.raven.resistance": "%1$s虚数抗性",
-  "item.tcc.raven.how_to_obtain": "§7§o由希奥拉进化而来（隐身状态下用狙击枪击杀末影龙）；持有雷鸣见且虚数抗性>60并在100格外用狙击枪击杀末影龙时进化为小岛爆爆鸦，同时雷鸣见进化为裁决之键",
-
-  "item.tcc.seven_thunders_thunder_seen.effect": "%1$s%%爆头倍率 %2$s%%暴击几率 %3$s%%暴击伤害 爆头时%4$s%%概率转为虚数伤害并额外造成目标%5$s%%最大生命值虚数伤害",
-  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§o持有涤罪七雷，使用狙击枪爆头击杀任意实体10次进化为雷鸣见",
-  "item.tcc.seven_thunders_thunder_seen.evolution_title": "进化需求:",
-  "item.tcc.seven_thunders_thunder_seen.evolution_distance": "  最小距离: %1$s格",
-  "item.tcc.seven_thunders_thunder_seen.evolution_equipped": "  需同时装备:",
-  "item.tcc.seven_thunders_thunder_seen.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
-  "item.tcc.seven_thunders_thunder_seen.evolution_kill": "  击杀%1$s x%2$d",
-
-  "item.tcc.judgement_key.effect": "%1$s%%暴击几率 %2$s%%暴击伤害 伤害转为虚数 爆头时有几率造成一次额外虚数伤害 流血继承崩解增伤",
-  "item.tcc.judgement_key.how_to_obtain": "§7§o由涤罪七雷·雷鸣见进化而来",
-  "item.tcc.judgement_key.evolution_title": "进化需求:",
-  "item.tcc.judgement_key.evolution_distance": "  最小距离: %1$s格",
-  "item.tcc.judgement_key.evolution_equipped": "  需同时装备:",
-  "item.tcc.judgement_key.evolution_attribute": "  属性需求: %1$s %2$s %3$s",
-  "item.tcc.judgement_key.evolution_kill": "  击杀%1$s x%2$d",
-
-  "item.tcc.island_boom_raven.resist_source_title": "抗性来源（最高%1$s）：",
-  "item.tcc.island_boom_raven.resist_detail": "  %1$s: %2$d",
-
-  "item.tcc.island_boom_raven.effect": "护甲%1$s%% 移速%2$s%% 生命恢复II 虚数伤害提升%3$s%% 每%4$s秒获得%5$s秒隐身",
-  "item.tcc.island_boom_raven.resistance": "%1$s虚数抗性",
-  "item.tcc.island_boom_raven.how_to_obtain": "§7§o由渡鸦进化而来",
-  
+  "item.tcc.raven.special_invis": "每%1$s秒获得%2$s秒隐身",
+  "item.tcc.seven_thunders_thunder_seen.special": "爆头时%4$s%%概率转为虚数伤害并额外造成目标%5$s%%最大生命值虚数伤害",
+  "item.tcc.judgement_key.special": "伤害转为虚数 爆头时有几率造成一次额外虚数伤害 流血继承崩解增伤",
+  "item.tcc.island_boom_raven.attr_regen": "生命恢复II",
+  "item.tcc.island_boom_raven.special_invis": "每%1$s秒获得%2$s秒隐身",
   "item.tcc.ural_wolf_tag": "§b乌拉尔银狼",
   "item.tcc.ural_wolf_tag.effect": "%1$s%%爆头倍率",
-  
   "item.tcc.heaven_fire_judgment": "§f天火圣裁",
-  "item.tcc.heaven_fire_judgment.effect": "%1$s%%通用枪械伤害 伤害转为虚数 %2$s%%当前生命值 施加流血：%3$s%%最大生命值/级 持续%4$s秒 血量低于40%%时无效 流血结算可进化为天火劫灭",
-  
+  "item.tcc.heaven_fire_judgment.special": "伤害转为虚数 %1$s%%当前生命值 施加流血：%2$s%%最大生命值/级 持续%3$s秒 血量低于40%%时无效 流血结算可进化为天火劫灭",
   "item.tcc.heaven_fire_judgment.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
-
-  "advancement.tcc.tcc_root.title": "TACZ饰品",
-
-  "advancement.tcc.my_island.title": "我的小岛",
-
-  "advancement.tcc.xiora_mission.title": "夜袭强敌",
-
-  "advancement.tcc.thunder_seen.title": "雷光初现",
-
-  "advancement.tcc.xiora_to_raven.title": "夜袭渡鸦",
-
-  "advancement.tcc.raven_to_island.title": "七雷召唤",
-
-  "advancement.tcc.summer_beach_grant.title": "凯文",
-
-  "advancement.tcc.summer_to_brahma.title": "进化：无烬之剑",
-
-  "advancement.tcc.brahma_to_salvation.title": "进化：救赎",
-
-  "advancement.tcc.judgment_to_apocalypse.title": "进化：天火劫灭",
-
-  "advancement.tcc.judgement_key.title": "裁决",
-
-  "advancement.tcc.heaven_fire_apocalypse_endless.title": "劫灭无尽",
-
-  "advancement.tcc.griseo_grant.title": "生命的色彩",
-
-  "advancement.tcc.qianjie_yicheng_grant.title": "千界一乘",
-
-  "advancement.tcc.griseo_to_huishi_zhijuan.title": "进化：绘世之卷",
-
-  "advancement.tcc.qianjie_to_yongjie_zhijian.title": "进化：永劫之键",
-
-  "advancement.tcc.huishi_to_fanxing.title": "进化：繁星·视界反演",
-
-  "advancement.tcc.shijie_fanyan_grant.title": "视界反演",
-
-  "advancement.tcc.kalpas_grant.title": "千劫",
-
-  "advancement.tcc.imer_grant.title": "伊默尔",
-
-  "advancement.tcc.kalpas_to_huajie_zhiyan.title": "进化：画界之言",
-
-  "advancement.tcc.imer_to_dominance_key.title": "进化：支配之键",
-
-  "advancement.tcc.huajie_to_aomie.title": "进化：鏖灭",
-
-  "advancement.tcc.meta_morph_grant.title": "Meta-Morph",
-  
-  "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§o被%1$s击杀后获得凯文（绑定）；流血结算时虚数抗性≥40且未死亡则进化为天火劫灭",
   "item.tcc.heaven_fire_judgment.inflection_max": "§b虚数侵染上限: %1$s层",
-  
   "item.tcc.heaven_fire_apocalypse": "§d天火劫灭",
-  "item.tcc.heaven_fire_apocalypse.effect": "血量100%%时 %1$s%%通用枪械伤害 伤害转为虚数 %2$s爆炸范围 %3$s%%爆炸伤害 自损%4$s%%最大生命值 延迟5秒后流血 为周围%5$s格内玩家%6$s%%通用枪械伤害 持续%7$s秒 不可卸下 死亡不掉落",
-  
+  "item.tcc.heaven_fire_apocalypse.special": "血量100%%时 伤害转为虚数 自损%1$s%%最大生命值 延迟5秒后流血 为周围%2$s格内玩家%3$s%%通用枪械伤害 持续%4$s秒",
   "item.tcc.heaven_fire_apocalypse.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
-  
-  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§o同时装备无烬之剑，虚数抗性>80且满足进化需求时进化为无烬终焉",
   "item.tcc.heaven_fire_apocalypse.inflection_max": "§b虚数侵染上限: %1$s层",
-  
   "item.tcc.heaven_fire_apocalypse_endless": "§4天火劫灭·无烬终焉",
-  "item.tcc.heaven_fire_apocalypse_endless.effect": "%1$s%%通用枪械伤害 伤害转为虚数 %3$s%%爆炸伤害 为周围%4$s格内玩家提供 天火强化Ⅲ 持续%6$s秒 不可卸下 死亡不掉落",
-  "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§o由天火劫灭进化而来",
+  "item.tcc.heaven_fire_apocalypse_endless.special": "伤害转为虚数 为周围%1$s格内玩家提供 天火强化Ⅲ 持续%3$s秒",
   "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§b虚数侵染上限: %1$s层",
   "item.tcc.heaven_fire_apocalypse_endless.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
   "item.tcc.heaven_fire_apocalypse_endless.collapse_info": "§5虚数崩解: 每层侵染每秒造成%1$s%%最大生命值伤害，最高可达%4$s%%",
-  
   "item.tcc.burst_reload": "§9爆发装填",
   "item.tcc.burst_reload.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
-  
   "item.tcc.corrupt_magazine": "§6腐败弹匣",
   "item.tcc.corrupt_magazine.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹匣容量，%2$s%%装填时间",
-  
   "item.tcc.split_chamber": "§6分裂膛室",
   "item.tcc.split_chamber.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹头数量",
-  
   "item.tcc.despicable_acceleration": "§6卑劣加速",
   "item.tcc.despicable_acceleration.effect": "%1$s%%射击速度，%2$s%%通用伤害和全部步枪、狙击枪、冲锋枪、机枪、重型武器、手枪、霰弹枪伤害",
-  
   "item.tcc.merged_rifling": "§f并合膛线",
   "item.tcc.merged_rifling.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器伤害和%2$s%%持枪移动速度，无法与膛线同时装备",
-  
   "item.tcc.alloy_drill": "§6合金钻头",
   "item.tcc.alloy_drill.effect": "%1$s%%护甲穿透",
-  
   "item.tcc.careful_heart": "§f我小心海也绝非鳝类",
   "item.tcc.careful_heart.effect": "%1$s%%重型武器伤害，%2$s%%爆炸伤害，%3$s%%爆炸范围",
-  
   "item.tcc.blaze_storm": "§6烈焰风暴",
   "item.tcc.blaze_storm.effect": "%1$s%%爆炸范围，%2$s%%爆炸伤害，无法与烈焰风暴Prime同时装备",
-  
   "item.tcc.blaze_storm_prime": "§f烈焰风暴Prime",
   "item.tcc.blaze_storm_prime.effect": "%1$s%%爆炸范围，%2$s%%爆炸伤害，无法与烈焰风暴同时装备",
-  
   "item.tcc.ripping_prime": "§f撕裂Prime",
   "item.tcc.ripping_prime.effect": "%1$s%%射速,%2$s穿透",
-  
   "item.tcc.close_combat_prime": "§f抵近射击Prime",
   "item.tcc.close_combat_prime.effect": "%1$s%%霰弹枪伤害",
-  
   "item.tcc.evil_accuracy": "§6极恶精准",
   "item.tcc.evil_accuracy.effect": "%1$s%%后坐力，%2$s%%射速",
-  
   "item.tcc.limit_speed": "§b极限速度",
   "item.tcc.limit_speed.effect": "%1$s%%弹药速度",
-  
   "item.tcc.ferocious_extension": "§b凶恶延伸",
   "item.tcc.ferocious_extension.effect": "%1$s%%子弹射程",
-  
   "item.tcc.rifling": "§b膛线",
   "item.tcc.rifling.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器伤害，无法与并合膛线同时装备",
-  
   "item.tcc.close_range_shot": "§b抵近射击",
   "item.tcc.close_range_shot.effect": "%1$s%%霰弹枪伤害",
-  
   "item.tcc.heavy_firepower": "§6重装火力",
   "item.tcc.heavy_firepower.effect": "%1$s%%手枪伤害，%2$s%%扩散程度",
-  
   "item.tcc.wasp_stinger": "§b黄蜂螫刺",
   "item.tcc.wasp_stinger.effect": "%1$s%%手枪伤害",
-  
   "item.tcc.prophecy_pact": "§9预言契约",
   "item.tcc.prophecy_pact.effect": "%1$s%%手枪伤害",
-  
   "item.tcc.malignant_spread": "§6恶性扩散",
   "item.tcc.malignant_spread.effect": "%1$s%%霰弹枪伤害，%2$s%%扩散程度",
-  
   "item.tcc.chamber": "§6蓄力装填",
   "item.tcc.chamber.effect": "满弹匣狙击枪时%1$s%%伤害，无法与膛室Prime同时装备",
-  
   "item.tcc.chamber_prime": "§f膛室Prime",
   "item.tcc.chamber_prime.effect": "满弹匣狙击枪时%1$s%%伤害，无法与膛室同时装备",
-  
   "item.tcc.core_fusion": "内融核心",
   "item.tcc.core_fusion.effect": "用于制作高级饰品的材料",
-  
   "item.tcc.rift_silver": "§d裂隙碎银",
   "item.tcc.rift_silver.effect": "右键使用可随机获得一个饰品",
   "item.tcc.rift_silver.usage": "使用后随机获得1个饰品。",
-
   "item.tcc.tactical_reload": "§b战术上膛",
   "item.tcc.tactical_reload.effect": "%1$s%%霰弹枪装填时间",
-
   "item.tcc.overloaded_magazine": "§6过载弹匣",
   "item.tcc.overloaded_magazine.effect": "%1$s%%霰弹枪弹匣容量，%2$s%%装填时间",
-
   "item.tcc.infernal_chamber": "§6地狱弹膛",
   "item.tcc.infernal_chamber.effect": "%1$s%%霰弹枪弹头数量",
-
   "item.tcc.sustained_fire": "§9持续火力",
   "item.tcc.sustained_fire.effect": "%1$s%%手枪装填时间",
-
   "item.tcc.infected_magazine": "§6感染弹匣",
   "item.tcc.infected_magazine.effect": "%1$s%%手枪弹匣容量，%2$s%%装填时间",
-
   "item.tcc.deadly_surge": "§6致命洪流",
   "item.tcc.deadly_surge.effect": "%1$s%%手枪射速，%2$s%%弹头数量",
-
   "item.tcc.bullet_spread": "§6弹头扩散",
   "item.tcc.bullet_spread.effect": "%1$s%%手枪弹头数量",
-  
   "item.tcc.oppression_point": "§9压迫点",
   "item.tcc.oppression_point.effect": "%1$s%%近战伤害",
-  
   "item.tcc.oppression_point_prime": "§f压迫点Prime",
   "item.tcc.oppression_point_prime.effect": "%1$s%%近战伤害",
-  
   "item.tcc.sword_wind": "§9剑风",
   "item.tcc.sword_wind.effect": "%1$s近战距离",
-  
   "item.tcc.sword_wind_prime": "§f剑风Prime",
   "item.tcc.sword_wind_prime.effect": "%1$s近战距离",
-  
   "item.tcc.depleted_reload": "§6耗竭装填",
   "item.tcc.depleted_reload.effect": "%1$s%%弹匣容量，%2$s%%装填时间",
-  
   "item.tcc.burst_reload_prime": "§f爆发装填Prime",
   "item.tcc.burst_reload_prime.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
-  
   "item.tcc.tactical_reload_prime": "§f战术上膛Prime",
   "item.tcc.tactical_reload_prime.effect": "%1$s%%霰弹枪装填时间",
-  
   "item.tcc.shotgun_expansion_prime": "§f霰弹扩充Prime",
   "item.tcc.shotgun_expansion_prime.effect": "%1$s%%霰弹枪弹匣容量",
-  
   "item.tcc.magazine_boost_prime": "§f弹匣增幅Prime",
   "item.tcc.magazine_boost_prime.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器弹匣容量",
-  
   "item.tcc.tandem_magazine_prime": "§f串联弹匣Prime",
   "item.tcc.tandem_magazine_prime.effect": "%1$s%%手枪弹匣容量",
-  
   "item.tcc.shotgun_expansion": "§9霰弹扩充",
   "item.tcc.shotgun_expansion.effect": "%1$s%%霰弹枪弹匣容量",
-  
   "item.tcc.magazine_boost": "§9弹匣增幅",
   "item.tcc.magazine_boost.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、发射器弹匣容量",
-  
   "item.tcc.tandem_magazine": "§9串联弹匣",
   "item.tcc.tandem_magazine.effect": "%1$s%%手枪弹匣容量",
-
   "item.tcc.kikaku_ichijin": "§d掎角一阵",
   "item.tcc.kikaku_ichijin.effect": "造成伤害时，以64格内最近的玩家或女仆为祭品，用祭品总血量的倍率乘以伤害，破坏目标周围球形范围的方块，祭品死亡",
-
   "message.tcc.kikaku_ichijin.self_sacrifice": "stella",
   "message.tcc.kikaku_ichijin.sacrifice": "%s这是必要的牺牲，你明白吧",
   "message.tcc.kikaku_ichijin.sacrificed": "你被%s献祭了",
-
   "tcc.tooltip.slot": "§7装备槽位：§aTCC饰品栏",
   "tcc.tooltip.slot.3rd": "§7装备槽位：§a逐火之蛾",
   "tcc.tooltip.restricted_gun_types": "§7限定枪械：%s",
   "tcc.tooltip.restricted_melee": "§7限定：近战武器",
+  "tcc.tooltip.imaginary_resistance": "%1$.0f虚数抗性",
   "tcc.tooltip.rarity.common": "§7稀有度：§9常见",
   "tcc.tooltip.rarity.uncommon": "§7稀有度：§b罕见",
   "tcc.tooltip.rarity.rare": "§7稀有度：§6稀有",
   "tcc.tooltip.rarity.epic": "§7稀有度：§f传说",
   "tcc.tooltip.rarity.rift": "§7稀有度：§d裂隙",
-
+  "tcc.tooltip.how_to_obtain": "§7§o达成「%1$s」：%2$s",
+  "tcc.tooltip.growth_condition": "§7§o成长条件：%s",
   "gem_class.tcc_slot": "TCC饰品",
   "text.apotheosis.category.curios:tcc_slot.plural": "TCC饰品",
   "text.apotheosis.category.curios:tcc_3rd.plural": "逐火之蛾",
   "text.apotheosis.category.curios:tcc_tdk.plural": "神之键",
   "// Apotheosis词缀 - 暴击属性": "",
-  "affix.tcc:tcc_slot/attribute/critical_chance": "易暴击", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "心胸大开",
-  "affix.tcc:tcc_slot/attribute/critical_damage": "打得疼", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "致命武力",
-
+  "affix.tcc:tcc_slot/attribute/critical_chance": "易暴击",
+  "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "心胸大开",
+  "affix.tcc:tcc_slot/attribute/critical_damage": "打得疼",
+  "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "致命武力",
   "// Apotheosis词缀 - TAA核心战斗属性": "",
-  "affix.tcc:tcc_slot/attribute/gun_damage": "火力猛", "affix.tcc:tcc_slot/attribute/gun_damage.suffix": "已强化枪械",
-  "affix.tcc:tcc_slot/attribute/fire_rate": "射速快", "affix.tcc:tcc_slot/attribute/fire_rate.suffix": "超省子弹！",
-  "affix.tcc:tcc_slot/attribute/magazine_capacity": "弹匣大", "affix.tcc:tcc_slot/attribute/magazine_capacity.suffix": "配备大弹鼓",
-  "affix.tcc:tcc_slot/attribute/reload_time": "装填快", "affix.tcc:tcc_slot/attribute/reload_time.suffix": "快速装填大师",
-  "affix.tcc:tcc_slot/attribute/headshot_damage": "爆头狠", "affix.tcc:tcc_slot/attribute/headshot_damage.suffix": "爆头爱好者",
-  "affix.tcc:tcc_slot/attribute/ads_speed": "开镜快", "affix.tcc:tcc_slot/attribute/ads_speed.suffix": "冷静射手",
-  "affix.tcc:tcc_slot/attribute/pierce": "穿透强", "affix.tcc:tcc_slot/attribute/pierce.suffix": "穿爆燃弹",
-  "affix.tcc:tcc_slot/attribute/recoil_reduction": "后坐小", "affix.tcc:tcc_slot/attribute/recoil_reduction.suffix": "人体支架",
-  "affix.tcc:tcc_slot/attribute/accuracy": "精度高", "affix.tcc:tcc_slot/attribute/accuracy.suffix": "强迫症福音",
-  "affix.tcc:tcc_slot/attribute/armor_penetration": "破甲狠", "affix.tcc:tcc_slot/attribute/armor_penetration.suffix": "护甲粉碎机",
-  "affix.tcc:tcc_slot/attribute/bullet_count": "子弹多", "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "一枪变多枪",
-  "affix.tcc:tcc_slot/attribute/explosion_radius": "爆炸广", "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "拆迁办主任",
-  "affix.tcc:tcc_slot/attribute/explosion_damage": "爆炸猛", "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT成精",
-  "affix.tcc:tcc_slot/attribute/knockback": "击退远", "affix.tcc:tcc_slot/attribute/knockback.suffix": "人体保龄球",
-  "affix.tcc:tcc_slot/attribute/effective_range": "射程远", "affix.tcc:tcc_slot/attribute/effective_range.suffix": "超视距打击",
-  "affix.tcc:tcc_slot/attribute/ammo_speed": "弹速快", "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "超音速快递",
-  "affix.tcc:tcc_slot/attribute/move_speed": "移速快", "affix.tcc:tcc_slot/attribute/move_speed.suffix": "减肥成功",
-  "affix.tcc:tcc_slot/attribute/silence": "消音好", "affix.tcc:tcc_slot/attribute/silence.suffix": "安静的美男子",
-  "affix.tcc:tcc_slot/attribute/weight_reduction": "重量轻", "affix.tcc:tcc_slot/attribute/weight_reduction.suffix": "轻量化大师",
-  
+  "affix.tcc:tcc_slot/attribute/gun_damage": "火力猛",
+  "affix.tcc:tcc_slot/attribute/gun_damage.suffix": "已强化枪械",
+  "affix.tcc:tcc_slot/attribute/fire_rate": "射速快",
+  "affix.tcc:tcc_slot/attribute/fire_rate.suffix": "超省子弹！",
+  "affix.tcc:tcc_slot/attribute/magazine_capacity": "弹匣大",
+  "affix.tcc:tcc_slot/attribute/magazine_capacity.suffix": "配备大弹鼓",
+  "affix.tcc:tcc_slot/attribute/reload_time": "装填快",
+  "affix.tcc:tcc_slot/attribute/reload_time.suffix": "快速装填大师",
+  "affix.tcc:tcc_slot/attribute/headshot_damage": "爆头狠",
+  "affix.tcc:tcc_slot/attribute/headshot_damage.suffix": "爆头爱好者",
+  "affix.tcc:tcc_slot/attribute/ads_speed": "开镜快",
+  "affix.tcc:tcc_slot/attribute/ads_speed.suffix": "冷静射手",
+  "affix.tcc:tcc_slot/attribute/pierce": "穿透强",
+  "affix.tcc:tcc_slot/attribute/pierce.suffix": "穿爆燃弹",
+  "affix.tcc:tcc_slot/attribute/recoil_reduction": "后坐小",
+  "affix.tcc:tcc_slot/attribute/recoil_reduction.suffix": "人体支架",
+  "affix.tcc:tcc_slot/attribute/accuracy": "精度高",
+  "affix.tcc:tcc_slot/attribute/accuracy.suffix": "强迫症福音",
+  "affix.tcc:tcc_slot/attribute/armor_penetration": "破甲狠",
+  "affix.tcc:tcc_slot/attribute/armor_penetration.suffix": "护甲粉碎机",
+  "affix.tcc:tcc_slot/attribute/bullet_count": "子弹多",
+  "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "一枪变多枪",
+  "affix.tcc:tcc_slot/attribute/explosion_radius": "爆炸广",
+  "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "拆迁办主任",
+  "affix.tcc:tcc_slot/attribute/explosion_damage": "爆炸猛",
+  "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT成精",
+  "affix.tcc:tcc_slot/attribute/knockback": "击退远",
+  "affix.tcc:tcc_slot/attribute/knockback.suffix": "人体保龄球",
+  "affix.tcc:tcc_slot/attribute/effective_range": "射程远",
+  "affix.tcc:tcc_slot/attribute/effective_range.suffix": "超视距打击",
+  "affix.tcc:tcc_slot/attribute/ammo_speed": "弹速快",
+  "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "超音速快递",
+  "affix.tcc:tcc_slot/attribute/move_speed": "移速快",
+  "affix.tcc:tcc_slot/attribute/move_speed.suffix": "减肥成功",
+  "affix.tcc:tcc_slot/attribute/silence": "消音好",
+  "affix.tcc:tcc_slot/attribute/silence.suffix": "安静的美男子",
+  "affix.tcc:tcc_slot/attribute/weight_reduction": "重量轻",
+  "affix.tcc:tcc_slot/attribute/weight_reduction.suffix": "轻量化大师",
   "// 精准度细分词缀": "",
-  "affix.tcc:tcc_slot/attribute/accuracy_stand": "站得稳", "affix.tcc:tcc_slot/attribute/accuracy_stand.suffix": "站桩输出",
-  "affix.tcc:tcc_slot/attribute/accuracy_move": "跑得准", "affix.tcc:tcc_slot/attribute/accuracy_move.suffix": "跑打达人",
-  "affix.tcc:tcc_slot/attribute/accuracy_sneak": "蹲得稳", "affix.tcc:tcc_slot/attribute/accuracy_sneak.suffix": "苟王之王",
-  "affix.tcc:tcc_slot/attribute/accuracy_lie": "趴得准", "affix.tcc:tcc_slot/attribute/accuracy_lie.suffix": "地躺拳法",
-  "affix.tcc:tcc_slot/attribute/accuracy_aim": "瞄得准", "affix.tcc:tcc_slot/attribute/accuracy_aim.suffix": "瞄不准算我输",
-  
+  "affix.tcc:tcc_slot/attribute/accuracy_stand": "站得稳",
+  "affix.tcc:tcc_slot/attribute/accuracy_stand.suffix": "站桩输出",
+  "affix.tcc:tcc_slot/attribute/accuracy_move": "跑得准",
+  "affix.tcc:tcc_slot/attribute/accuracy_move.suffix": "跑打达人",
+  "affix.tcc:tcc_slot/attribute/accuracy_sneak": "蹲得稳",
+  "affix.tcc:tcc_slot/attribute/accuracy_sneak.suffix": "苟王之王",
+  "affix.tcc:tcc_slot/attribute/accuracy_lie": "趴得准",
+  "affix.tcc:tcc_slot/attribute/accuracy_lie.suffix": "地躺拳法",
+  "affix.tcc:tcc_slot/attribute/accuracy_aim": "瞄得准",
+  "affix.tcc:tcc_slot/attribute/accuracy_aim.suffix": "瞄不准算我输",
   "// 后坐力细分词缀": "",
-  "affix.tcc:tcc_slot/attribute/recoil_pitch": "垂直稳", "affix.tcc:tcc_slot/attribute/recoil_pitch.suffix": "垂直压枪",
-  "affix.tcc:tcc_slot/attribute/recoil_yaw": "水平稳", "affix.tcc:tcc_slot/attribute/recoil_yaw.suffix": "水平压枪",
-  
+  "affix.tcc:tcc_slot/attribute/recoil_pitch": "垂直稳",
+  "affix.tcc:tcc_slot/attribute/recoil_pitch.suffix": "垂直压枪",
+  "affix.tcc:tcc_slot/attribute/recoil_yaw": "水平稳",
+  "affix.tcc:tcc_slot/attribute/recoil_yaw.suffix": "水平压枪",
   "// Apotheosis词缀 - TAA专属枪械伤害": "",
-  "affix.tcc:tcc_slot/attribute/pistol_damage": "手枪强", "affix.tcc:tcc_slot/attribute/pistol_damage.suffix": "小手枪大威力",
-  "affix.tcc:tcc_slot/attribute/rifle_damage": "步枪强", "affix.tcc:tcc_slot/attribute/rifle_damage.suffix": "步枪特化专家",
-  "affix.tcc:tcc_slot/attribute/shotgun_damage": "霰弹强", "affix.tcc:tcc_slot/attribute/shotgun_damage.suffix": "贴脸输出王者",
-  "affix.tcc:tcc_slot/attribute/sniper_damage": "狙击强", "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "千里之外取人首级",
-  "affix.tcc:tcc_slot/attribute/smg_damage": "冲锋强", "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "冲锋狂魔",
-  "affix.tcc:tcc_slot/attribute/lmg_damage": "机枪强", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "火力压制大师",
-  "affix.tcc:tcc_slot/attribute/launcher_damage": "重武强", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "重火力爱好者",
-
+  "affix.tcc:tcc_slot/attribute/pistol_damage": "手枪强",
+  "affix.tcc:tcc_slot/attribute/pistol_damage.suffix": "小手枪大威力",
+  "affix.tcc:tcc_slot/attribute/rifle_damage": "步枪强",
+  "affix.tcc:tcc_slot/attribute/rifle_damage.suffix": "步枪特化专家",
+  "affix.tcc:tcc_slot/attribute/shotgun_damage": "霰弹强",
+  "affix.tcc:tcc_slot/attribute/shotgun_damage.suffix": "贴脸输出王者",
+  "affix.tcc:tcc_slot/attribute/sniper_damage": "狙击强",
+  "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "千里之外取人首级",
+  "affix.tcc:tcc_slot/attribute/smg_damage": "冲锋强",
+  "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "冲锋狂魔",
+  "affix.tcc:tcc_slot/attribute/lmg_damage": "机枪强",
+  "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "火力压制大师",
+  "affix.tcc:tcc_slot/attribute/launcher_damage": "重武强",
+  "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "重火力爱好者",
   "// Apotheosis词缀 - 虚数伤害抗性": "",
-  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance": "虚数护盾", "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance.suffix": "虚空庇护",
-
+  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance": "虚数护盾",
+  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance.suffix": "虚空庇护",
   "// 虚数伤害属性": "",
   "attribute.name.tcc.imaginary_damage": "虚数伤害",
   "attribute.name.tcc.imaginary_damage.desc": "攻击时附加虚数伤害，绕过护甲和魔法减免",
   "attribute.name.tcc.imaginary_damage_resistance": "虚数伤害抗性",
   "attribute.name.tcc.imaginary_damage_resistance.desc": "按百分比减免受到的虚数伤害",
-  
   "// 虚数伤害死亡信息": "",
   "death.attack.imaginary_damage": "%1$s被虚数吞噬了",
   "death.attack.imaginary_damage.player": "%1$s在与%2$s战斗时被虚数吞噬了",
-  
   "// 天火流血效果": "",
   "effect.tcc.heaven_fire_bleeding": "天火流血",
   "effect.tcc.imaginary_infection": "虚数侵染",
@@ -403,7 +256,6 @@
   "effect.tcc.erosion": "侵蚀",
   "effect.tcc.heaven_fire_apocalypse_delay": "延迟判定",
   "effect.tcc.heaven_fire_apocalypse_buff": "天火强化",
-  
   "// Buff触发效果显示名": "",
   "effect.tcc.argon_scope": "氩晶瞄具",
   "effect.tcc.gilded_argon_scope": "镀层氩晶瞄具",
@@ -419,7 +271,6 @@
   "effect.tcc.gilded_infernal_chamber": "镀层地狱弹膛",
   "effect.tcc.gilded_bullet_spread": "镀层弹头扩散",
   "effect.tcc.gilded_steel_slash": "镀层斩铁",
-  
   "item.tcc.critical_delay": "§6关键延迟",
   "item.tcc.critical_delay.effect": "暴击几率%1$s%%，射速%2$s%%",
   "item.tcc.lethal_crit": "§9致命一击",
@@ -486,110 +337,127 @@
   "item.tcc.gilded_marksman.effect": "手持手枪时，每负面效果种数%1$s%%伤害（乘算）",
   "item.tcc.condition_overload": "§6异况超量",
   "item.tcc.condition_overload.effect": "近战时，目标每负面效果种数%1$s%%伤害（乘算）",
-
   "item.tcc.collapse_crystal": "§d崩坏结晶",
   "item.tcc.collapse_crystal.usage": "§7放在背包中，尝试取下逐火之蛾或神之键槽位的饰品时消耗一个",
-
   "// 逐火之蛾/神之键 新饰品": "",
   "item.tcc.griseo": "§6格蕾修",
   "item.tcc.griseo.effect": "受伤后进入%1$stick受伤冷却",
-
   "item.tcc.qianjie_yicheng": "§6千界一乘",
-  "item.tcc.qianjie_yicheng.effect": "%1$s 幸运值",
-
   "item.tcc.huishi_zhijuan": "§f绘世之卷",
   "item.tcc.huishi_zhijuan.effect": "受伤后进入%1$stick受伤冷却",
-  "item.tcc.huishi_zhijuan.effect.stat": "%1$.0f虚数抗性",
-
   "item.tcc.yongjie_zhijian": "§f永劫之键",
-  "item.tcc.yongjie_zhijian.effect": "%1$d 幸运值，当前提供%2$s%%暴击率和%3$s%%暴击伤害",
-
   "item.tcc.fanxing": "§4繁星",
-  "item.tcc.fanxing.effect": "受伤后进入%1$stick受伤冷却。当前%2$d虚数抗性，提供%3$d幸运值",
-
+  "item.tcc.fanxing.special_cooldown": "受伤后进入%1$stick受伤冷却",
   "item.tcc.shijie_fanyan": "§4千界一乘·视界反演",
-  "item.tcc.shijie_fanyan.effect": "%1$d 幸运值，当前提供%2$s%%暴击率和%3$s%%暴击伤害，虚数崩解触发概率%4$s%%，攻击必定触发侵染，枪械伤害全部变为虚数伤害",
-
+  "item.tcc.shijie_fanyan.special": "虚数崩解触发概率%4$s%%，攻击必定触发侵染，枪械伤害全部变为虚数伤害",
   "// 重型武器系列饰品": "",
   "item.tcc.vill_v": "§6维尔薇",
   "item.tcc.vill_v.effect": "血量低于%1$s%%时触发伤害吸收%2$s，间隔%3$ss",
-
   "item.tcc.xukong_wancang": "§6虚空万藏",
   "item.tcc.xukong_wancang.effect": "攻击触发额外%1$.0f点虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药",
-
   "item.tcc.yuxi_zhixia": "§f愚戏之匣",
   "item.tcc.yuxi_zhixia.effect": "血量低于%1$s%%时触发伤害吸收%2$s，间隔%3$ss",
-  "item.tcc.yuxi_zhixia.effect.stat": "%1$.0f虚数抗性",
-
   "item.tcc.qishi_zhijian": "§f启示之键",
   "item.tcc.qishi_zhijian.effect": "攻击触发额外%1$.0f点虚数伤害。每秒恢复%2$s%%弹药，最低1个弹药",
-
   "item.tcc.luoxuan": "§4螺旋",
-  "item.tcc.luoxuan.effect": "%1$.0f虚数抗性。每隔%2$ss施加一次伤害吸收%3$s",
-
+  "item.tcc.luoxuan.special_absorption": "每隔%2$ss施加一次伤害吸收%3$s",
   "item.tcc.xukong_wancang_yzth": "§4虚空万藏·雨众天华",
-  "item.tcc.xukong_wancang_yzth.effect": "攻击附加约%2$s点虚数伤害。每秒恢复%1$s%%弹药，最低1个弹药。枪械伤害转换为虚数伤害，攻击必定触发侵染",
-
+  "item.tcc.xukong_wancang_yzth.effect": "攻击附加约%2$s点虚数伤害。根据虚数抗性值，每秒恢复%1$s%%弹药，最低1个弹药。枪械伤害转换为虚数伤害，攻击必定触发侵染",
   "item.tcc.kalpas": "§6千劫",
-  "item.tcc.kalpas.effect": "%1$.0f虚数抗性。受到伤害时按顺序适应%2$s种伤害，减免%3$.0f%%，衰减%4$ss",
-
+  "item.tcc.kalpas.effect": "受到伤害时按顺序适应%1$s种伤害，减免%2$.0f%%，衰减%3$ss",
   "item.tcc.imer": "§6伊默尔",
-  "item.tcc.imer.effect": "最大生命值每点提升%1$.0f%%攻击力",
-
   "item.tcc.huajie_zhiyan": "§5坏劫之焱",
-  "item.tcc.huajie_zhiyan.effect": "%1$.0f虚数抗性。受到伤害时按顺序适应%2$s种伤害，减免%3$.0f%%，衰减%4$ss。虚数抗性提供约+%5$.0f最大生命值",
-
+  "item.tcc.huajie_zhiyan.special_adapt": "受到伤害时按顺序适应%1$s种伤害，减免%2$.0f%%，衰减%3$ss",
   "item.tcc.dominance_key": "§5支配之键",
-  "item.tcc.dominance_key.effect": "最大生命值提供约+%1$.0f攻击力。造成伤害时附加约%2$.0f点虚数伤害",
-
+  "item.tcc.dominance_key.special_damage": "根据攻击力，造成伤害时附加约%1$s点虚数伤害",
   "item.tcc.aomie": "§4鏖灭",
-  "item.tcc.aomie.effect": "%1$.0f虚数抗性。受到伤害时按顺序适应%2$s种伤害，减免%3$.0f%%，衰减%4$ss。虚数抗性提供约%5$.0f最大生命值",
-
+  "item.tcc.aomie.special_adapt": "受到伤害时按顺序适应%1$s种伤害，减免%2$.0f%%，衰减%3$ss",
   "item.tcc.meta_morph": "§4Meta-Morph",
-  "item.tcc.meta_morph.effect": "最大生命值提供约+%1$.0f攻击力。造成伤害时附加约%3$.0f点虚数伤害。虚数抗性提供约%2$.2f生命偷取",
-
+  "item.tcc.meta_morph.special_damage": "根据虚数抗性值，造成伤害时附加约%1$s点虚数伤害",
   "item.tcc.su": "§6苏",
-  "item.tcc.su.effect": "%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
-
+  "item.tcc.su.attr_damage_taken": "受到伤害降低至%1$.0f%%",
   "item.tcc.wanwu_xiumian": "§6万物休眠",
-  "item.tcc.wanwu_xiumian.effect": "超量治疗%1$.0f%%，每秒恢复%2$.0f%%弹药",
-
+  "item.tcc.wanwu_xiumian.special_ammo": "每秒恢复%1$s%%弹药",
   "item.tcc.juezhe": "§5觉者",
-  "item.tcc.juezhe.effect": "%1$.0f虚数抗性，最大生命值%2$.0f%%，受到伤害降低至%3$.0f%%",
-
+  "item.tcc.juezhe.attr_damage_taken": "受到伤害降低至%1$.0f%%",
   "item.tcc.tingzhi_zhijian": "§5停滞之键",
-  "item.tcc.tingzhi_zhijian.effect": "超量治疗%1$.0f%%，每秒恢复%2$.1f%%弹药",
-
+  "item.tcc.tingzhi_zhijian.special_ammo": "每秒恢复%1$s%%弹药",
   "item.tcc.tianhui": "§4天慧",
-  "item.tcc.tianhui.effect": "虚数抗性%1$d，最大生命值%2$.0f%%，当前伤害限制%3$d%%，最低%4$.0f%%",
-
+  "item.tcc.tianhui.special_damage_limit": "根据虚数抗性值，当前受到伤害降低至%1$d%%，不低于%2$.0f%%",
   "item.tcc.yinguo_zhuanlun": "§4因果转轮",
-  "item.tcc.yinguo_zhuanlun.effect": "超量治疗%1$.0f%%，每秒恢复%2$.0f%%弹药，攻击额外附加%3$.0f点虚数伤害",
+  "item.tcc.yinguo_zhuanlun.special": "根据虚数抗性值，每秒恢复%1$s%%弹药，攻击额外附加%2$s点虚数伤害",
   "tcc.tooltip.bound": "已绑定至：%1$s",
-
+  "advancement.tcc.tcc_root.title": "TACZ饰品",
+  "advancement.tcc.tcc_root.description": "TACZ饰品",
+  "advancement.tcc.my_island.title": "我的小岛",
+  "advancement.tcc.my_island.description": "你不要再和我提小岛的事啦……我已经不在意了，真的。",
+  "advancement.tcc.xiora_mission.title": "夜袭强敌",
+  "advancement.tcc.xiora_mission.description": "总觉得晚上出门更安全……可能这就是职业病吧。",
+  "advancement.tcc.thunder_seen.title": "雷光初现",
+  "advancement.tcc.thunder_seen.description": "鸣神",
+  "advancement.tcc.xiora_to_raven.title": "夜袭渡鸦",
+  "advancement.tcc.xiora_to_raven.description": "诛愆尤",
+  "advancement.tcc.raven_to_island.title": "七雷召唤",
+  "advancement.tcc.raven_to_island.description": "让我数数，这里有一个律者，两个律者……唔，真有你的啊。",
+  "advancement.tcc.summer_beach_grant.title": "凯文",
+  "advancement.tcc.summer_beach_grant.description": "@灰蛇，你给我把字数限制关掉。",
+  "advancement.tcc.summer_to_brahma.title": "进化：无烬之剑",
+  "advancement.tcc.summer_to_brahma.description": "梵天百兽，加诸此身……「业魔」入渊，「救世」拔剑！",
+  "advancement.tcc.brahma_to_salvation.title": "进化：救赎",
+  "advancement.tcc.brahma_to_salvation.description": "此即——‘救世’之铭！",
+  "advancement.tcc.judgment_to_apocalypse.title": "进化：天火劫灭",
+  "advancement.tcc.judgment_to_apocalypse.description": "那么，鸟为什么会飞？",
+  "advancement.tcc.judgement_key.title": "裁决",
+  "advancement.tcc.judgement_key.description": "伏逆戈",
+  "advancement.tcc.heaven_fire_apocalypse_endless.title": "劫灭无尽",
+  "advancement.tcc.heaven_fire_apocalypse_endless.description": "星煌",
+  "advancement.tcc.griseo_grant.title": "生命的色彩",
+  "advancement.tcc.griseo_grant.description": "星星们，和月亮住在一起，在很高很高的天上……",
+  "advancement.tcc.qianjie_yicheng_grant.title": "千界一乘",
+  "advancement.tcc.qianjie_yicheng_grant.description": "星空，很美。想把它留在这里……留在我的画里。",
+  "advancement.tcc.griseo_to_huishi_zhijuan.title": "进化：绘世之卷",
+  "advancement.tcc.griseo_to_huishi_zhijuan.description": "唔……画笔，会自己画画吗？它会想画什么出来呢？",
+  "advancement.tcc.qianjie_to_yongjie_zhijian.title": "进化：永劫之键",
+  "advancement.tcc.qianjie_to_yongjie_zhijian.description": "笔、笔在自己画画！啊……好可惜，是梦啊。",
+  "advancement.tcc.huishi_to_fanxing.title": "进化：繁星·视界反演",
+  "advancement.tcc.huishi_to_fanxing.description": "到截稿时间了？可是，我才刚刚启动数位屏啊。",
+  "advancement.tcc.shijie_fanyan_grant.title": "视界反演",
+  "advancement.tcc.shijie_fanyan_grant.description": "航行无异常，可以睡……嗯？今天就是截稿日？好吧。",
+  "advancement.tcc.kalpas_grant.title": "千劫",
+  "advancement.tcc.kalpas_grant.description": "你来的太迟了，「后继者」。",
+  "advancement.tcc.imer_grant.title": "伊默尔",
+  "advancement.tcc.imer_grant.description": "你的名字并不重要，律者。",
+  "advancement.tcc.kalpas_to_huajie_zhiyan.title": "进化：坏劫之焱",
+  "advancement.tcc.kalpas_to_huajie_zhiyan.description": "烈火，在灼烧。灼烧着一切，吞噬着一切，毁灭着一切。",
+  "advancement.tcc.imer_to_dominance_key.title": "进化：支配之键",
+  "advancement.tcc.imer_to_dominance_key.description": "尽敌鏖杀，无止无休！",
+  "advancement.tcc.huajie_to_aomie.title": "进化：鏖灭",
+  "advancement.tcc.huajie_to_aomie.description": "谁***又来***偷吃我的东西？！！！",
+  "advancement.tcc.meta_morph_grant.title": "Meta-Morph",
+  "advancement.tcc.meta_morph_grant.description": "孤独的美食家",
   "advancement.tcc.su_grant.title": "苏",
-
+  "advancement.tcc.su_grant.description": "欢迎，来访者。",
   "advancement.tcc.wanwu_xiumian_grant.title": "万物休眠",
-
+  "advancement.tcc.wanwu_xiumian_grant.description": "尘归尘，土归土。",
   "advancement.tcc.juezhe_grant.title": "觉者",
-
+  "advancement.tcc.juezhe_grant.description": "以此「天慧」，授予你踏破试炼之理。",
   "advancement.tcc.tingzhi_zhijian_grant.title": "停滞之键",
-
+  "advancement.tcc.tingzhi_zhijian_grant.description": "愿往日的枯壤，化作幼芽新生的温床。",
   "advancement.tcc.tianhui_grant.title": "天慧",
-
+  "advancement.tcc.tianhui_grant.description": "万千因果线，皆系于此间。",
   "advancement.tcc.yinguo_zhuanlun_grant.title": "因果转轮",
-
+  "advancement.tcc.yinguo_zhuanlun_grant.description": "愿此「天慧」之刻印，能为你指明前行的方向。",
   "advancement.tcc.vill_v_grant.title": "VILL-V",
-
+  "advancement.tcc.vill_v_grant.description": "放心吧，问题总会解决的——至少它总能解决我们嘛。",
   "advancement.tcc.xukong_wancang_grant.title": "虚空万藏",
-
-  "advancement.tcc.yuxi_zhixia_grant.title": "羽曦之匣",
-
+  "advancement.tcc.xukong_wancang_grant.description": "不过······今天休演哦？",
+  "advancement.tcc.yuxi_zhixia_grant.title": "愚戏之匣",
+  "advancement.tcc.yuxi_zhixia_grant.description": "「凯文毁灭按钮」！",
   "advancement.tcc.qishi_zhijian_grant.title": "启示之键",
-
+  "advancement.tcc.qishi_zhijian_grant.description": "「维尔薇竟然没有恶作剧」！",
   "advancement.tcc.luoxuan_grant.title": "螺旋",
-
+  "advancement.tcc.luoxuan_grant.description": "我曾经准备过一个让整片大陆消失的魔术，可惜……有人先我一步把它完成了。",
   "advancement.tcc.xukong_wancang_yzth_grant.title": "虚空万藏·原始统括",
-
+  "advancement.tcc.xukong_wancang_yzth_grant.description": "对凯文武装·666",
   "stat.tcc.zombie_villager_cured": "治愈僵尸村民次数"
 }

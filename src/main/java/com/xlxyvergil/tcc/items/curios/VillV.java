@@ -1,21 +1,28 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.CurioAbsorptionEventHandler;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.registries.TccItems;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,9 +31,12 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class VillV extends BaseCurioItem {
+
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678901");
 
     public VillV(Properties properties) {
         super(properties);
@@ -47,10 +57,19 @@ public class VillV extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.villVImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            total, IMAGINARY_RESISTANCE_UUID,
+            "tcc.vill_v.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            IMAGINARY_RESISTANCE_UUID);
     }
 
     @Override
@@ -81,6 +100,11 @@ public class VillV extends BaseCurioItem {
             stack -> stack.getItem() instanceof VillV).isEmpty();
     }
 
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity,
+            stack -> stack.getItem() instanceof VillV);
+    }
+
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
@@ -98,9 +122,29 @@ public class VillV extends BaseCurioItem {
         );
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        // 虚数抗性显示
+        CompoundTag tag = stack.getTag();
+        double baseValue = TaczCuriosConfig.COMMON.villVImaginaryResistance.get();
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        tooltip.add(Component.literal(""));
+
+        double triggerHpRatio = TaczCuriosConfig.COMMON.villVTriggerHpRatio.get() * 100;
+        int absorptionLevel = TaczCuriosConfig.COMMON.villVAbsorptionLevel.get();
+        int cooldownSeconds = TaczCuriosConfig.COMMON.villVCooldownSeconds.get().intValue();
+
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
@@ -108,15 +152,14 @@ public class VillV extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.vill_v.effect",
-                (int)(double)(TaczCuriosConfig.COMMON.villVTriggerHpRatio.get() * 100),
-                TaczCuriosConfig.COMMON.villVAbsorptionLevel.get(),
-                TaczCuriosConfig.COMMON.villVCooldownSeconds.get().intValue())
+                (int) triggerHpRatio,
+                absorptionLevel,
+                cooldownSeconds)
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
 
-        CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

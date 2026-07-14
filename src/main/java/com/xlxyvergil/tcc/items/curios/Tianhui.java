@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -29,6 +30,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Tianhui extends BaseCurioItem {
@@ -55,8 +58,13 @@ public class Tianhui extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                stack -> stack.getItem() instanceof Tianhui);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.suImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            TaczCuriosConfig.COMMON.suImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
             TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get(), MAX_HEALTH_UUID,
@@ -125,11 +133,32 @@ public class Tianhui extends BaseCurioItem {
         DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
+        CompoundTag tag = stack.getTag();
+
+        // 虚数抗性显示
+        double baseValue = TaczCuriosConfig.COMMON.suImaginaryResistance.get();
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
         tooltip.add(Component.literal(""));
+        double maxHealthReduction = TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100;
+        double minDamageFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100;
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.literal(""));
+
+        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         double resistance = TaczCuriosConfig.COMMON.suImaginaryResistance.get();
         double computedDamageLimit = 0;
@@ -142,18 +171,20 @@ public class Tianhui extends BaseCurioItem {
                 computedDamageLimit = Math.max(minFactor, factor) * 100;
             }
         }
-        tooltip.add(Component.translatable("item.tcc.tianhui.effect",
-                (int)resistance,
-                String.format("%.2f", TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100),
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%.2f", maxHealthReduction),
+                Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("item.tcc.tianhui.special_damage_limit",
                 (int)computedDamageLimit,
-                String.format("%.2f", TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100))
+                String.format("%.2f", minDamageFactor))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift")
             .withStyle(ChatFormatting.RED));
 
-        CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

@@ -21,6 +21,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class YongjieZhijian extends BaseCurioItem {
 
@@ -111,6 +113,7 @@ public class YongjieZhijian extends BaseCurioItem {
         return DropRule.ALWAYS_KEEP;
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
@@ -131,11 +134,20 @@ public class YongjieZhijian extends BaseCurioItem {
                 critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100;
             }
         }
-        tooltip.add(Component.translatable("item.tcc.yongjie_zhijian.effect",
-                luck,
-                String.format("%.0f", critChance),
-                String.format("%.0f", critDamage))
-            .withStyle(ChatFormatting.WHITE));
+        String yzjCritChanceStr = String.format("%.0f", critChance);
+        String yzjCritDamageStr = String.format("%.0f", critDamage);
+        tooltip.add(Component.translatable("attribute.modifier.plus.0",
+                String.valueOf(luck),
+                Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                yzjCritChanceStr,
+                Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                yzjCritDamageStr,
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));

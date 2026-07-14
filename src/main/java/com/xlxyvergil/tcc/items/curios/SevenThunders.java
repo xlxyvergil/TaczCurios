@@ -64,18 +64,24 @@ public class SevenThunders extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("sniper"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("item.tcc.seven_thunders.effect",
-                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100),
-                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100),
-                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100))
-            .withStyle(ChatFormatting.AQUA));
+        String stHeadshotStr = String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100);
+        String stCritChanceStr = String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100);
+        String stCritDamageStr = String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100);
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                stHeadshotStr,
+                Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                stCritChanceStr,
+                Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                stCritDamageStr,
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
-
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.seven_thunders.how_to_obtain")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 }

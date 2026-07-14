@@ -1,400 +1,255 @@
 {
   "itemGroup.tcc.tacz_curio_tab": "TACZ Curios",
-  
   "curios.identifier.tcc_slot": "TACZ Curio Slot",
   "curios.modifiers.tcc_slot": "TACZ Curio Attributes:",
-  
   "curios.identifier.tcc_3rd": "Fire Moth",
   "curios.modifiers.tcc_3rd": "Fire Moth Attributes:",
-
   "curios.identifier.tcc_tdk": "Divine Key",
   "curios.modifiers.tcc_tdk": "Divine Key Attributes:",
-  
   "block.tcc.teshin_workbench": "Teshin Workbench",
-  
   "entity.minecraft.villager.teshin": "Teshin",
   "entity.minecraft.villager.tcc.teshin": "Teshin",
-
   "item.tcc.soldier_basic_tag": "§9Soldier Basic Tag",
   "item.tcc.soldier_basic_tag.effect": "%1$s%% universal firearm damage",
-  
   "item.tcc.soldier_specific_tag": "§fSoldier Specific Tag",
   "item.tcc.soldier_specific_tag.effect": "%1$s%% universal firearm damage",
-  
   "item.tcc.heavy_caliber_tag": "§6Heavy Caliber",
   "item.tcc.heavy_caliber_tag.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher damage, %2$s%% spread",
-  
   "item.tcc.red_movement_tag": "§bRed-Has-Three",
   "item.tcc.red_movement_tag.effect": "%1$s%% gun movement speed",
-  
   "item.tcc.summer_beach": "§fKevin",
-  "item.tcc.summer_beach.effect": "%1$s imaginary damage resistance",
-  "item.tcc.summer_beach.kill_progress_title": "Evolution Requirements:",
-  "item.tcc.summer_beach.resist_source_title": "Resistance Source (max %1$s):",
-  "item.tcc.summer_beach.how_to_obtain": "§7§oEvolves to Inexhaustible Sword when killing evolution targets while wearing Heaven Fire Apocalypse",
-  "item.tcc.summer_beach.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.summer_beach.resist_detail": "  %1$s: %2$d",
   "item.tcc.summer_beach.el_curse_reduction": "§dFourth Curse reduced by %1$s%%",
-  
   "item.tcc.brahma_beasts": "§fInexhaustible Sword",
-  "item.tcc.brahma_beasts.effect": "%1$s imaginary damage resistance",
-  "item.tcc.brahma_beasts.kill_progress_title": "Evolution Requirements:",
-  "item.tcc.brahma_beasts.resist_source_title": "Resistance Source (max %1$s):",
-  "item.tcc.brahma_beasts.how_to_obtain": "§7§oImaginary resistance >80 and meet Inexhaustible Sword evolution requirements to evolve to Salvation",
-  "item.tcc.brahma_beasts.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.brahma_beasts.resist_detail": "  %1$s: %2$d",
   "item.tcc.brahma_beasts.el_curse_reduction": "§dFourth Curse reduced by %1$s%%",
-  
   "item.tcc.salvation": "§4Salvation",
-  "item.tcc.salvation.effect": "%1$s imaginary damage resistance",
   "item.tcc.salvation.passive_bonuses": "Passive: Resistance III, Knockback Immunity, Damage taken -%1$s%%",
   "item.tcc.salvation.el_curse_reduction": "§dFourth Curse reduced by %1$s%%",
-  "item.tcc.salvation.how_to_obtain": "§7§oObtained when imaginary resistance >80 with Inexhaustible Sword + Heaven Fire Apocalypse and meet evolution requirements",
-
   "item.tcc.xiora": "§fXiora",
   "item.tcc.raven": "§fRaven",
   "item.tcc.island_boom_raven": "§4Island Boom Raven",
-
   "item.tcc.seven_thunders": "§6Seven Thunders",
   "item.tcc.seven_thunders_thunder_seen": "§6Seven Thunders: Thunder Seen",
   "item.tcc.judgement_key": "§4Judgement Key",
-
-  "item.tcc.seven_thunders.effect": "%1$s%% headshot multiplier %2$s%% crit chance %3$s%% crit damage",
-  "item.tcc.seven_thunders.how_to_obtain": "§7§oObtain by landing 30 TACZ headshot kills (once only); With Seven Thunders equipped, land 10 sniper headshot kills on any entity to evolve into Seven Thunders: Thunder Seen",
-
-  "item.tcc.xiora.kill_progress_title": "Evolution Requirements:",
-  "item.tcc.xiora.resist_source_title": "Resistance Source (max %1$s):",
-  "item.tcc.xiora.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.xiora.resist_detail": "  %1$s: %2$d",
-  "item.tcc.xiora.effect": "Armor %1$s%% Move Speed %2$s%%",
-  "item.tcc.xiora.resistance": "%1$s imaginary damage resistance",
-  "item.tcc.xiora.how_to_obtain": "§7§oObtain by landing 10 TACZ sniper headshot kills while holding Seven Thunders and being invisible (once only); While invisible, kill the Ender Dragon with a sniper to evolve into Raven",
-
-  "item.tcc.raven.kill_progress_title": "Evolution Requirements:",
-  "item.tcc.raven.resist_source_title": "Resistance Source (max %1$s):",
-  "item.tcc.raven.evolution_progress": "  %1$s: %2$d/%3$d",
-  "item.tcc.raven.resist_detail": "  %1$s: %2$d",
-  "item.tcc.raven.evolution_distance": "  Min distance: %1$s blocks",
-  "item.tcc.raven.evolution_equipped": "  Must also equip:",
-  "item.tcc.raven.evolution_attribute": "  Attribute requirement: %1$s %2$s %3$s",
-  "item.tcc.raven.effect": "Armor %1$s%% Move Speed %2$s%% Gain invisibility for %4$s seconds every %3$s seconds",
-  "item.tcc.raven.resistance": "%1$s imaginary damage resistance",
-  "item.tcc.raven.how_to_obtain": "§7§oEvolved from Xiora (while invisible, kill the Ender Dragon with a sniper); With Thunder Seen held, imaginary resistance >60, and kill the Ender Dragon with a sniper from 100+ blocks to evolve into Island Boom Raven, and Thunder Seen evolves into Judgement Key",
-
-  "item.tcc.seven_thunders_thunder_seen.effect": "%1$s%% headshot multiplier %2$s%% crit chance %3$s%% crit damage On headshot: %4$s%% chance to convert damage to Imaginary and deal extra %5$s%% target max HP as Imaginary damage",
-  "item.tcc.seven_thunders_thunder_seen.how_to_obtain": "§7§oWith Seven Thunders equipped, land 10 sniper headshot kills on any entity to evolve into Thunder Seen",
-  "item.tcc.seven_thunders_thunder_seen.evolution_title": "Evolution Requirements:",
-  "item.tcc.seven_thunders_thunder_seen.evolution_distance": "  Min distance: %1$s blocks",
-  "item.tcc.seven_thunders_thunder_seen.evolution_equipped": "  Must also equip:",
-  "item.tcc.seven_thunders_thunder_seen.evolution_attribute": "  Attribute requirement: %1$s %2$s %3$s",
-  "item.tcc.seven_thunders_thunder_seen.evolution_kill": "  Kill %1$s x%2$d",
-
-  "item.tcc.judgement_key.effect": "%1$s%% crit chance %2$s%% crit damage Damage converted to Imaginary On headshot: deals extra true damage (converts to bleeding if immune) Bleeding inherits Collapse bonuses",
-  "item.tcc.judgement_key.how_to_obtain": "§7§oEvolved from Seven Thunders: Thunder Seen",
-  "item.tcc.judgement_key.evolution_title": "Evolution Requirements:",
-  "item.tcc.judgement_key.evolution_distance": "  Min distance: %1$s blocks",
-  "item.tcc.judgement_key.evolution_equipped": "  Must also equip:",
-  "item.tcc.judgement_key.evolution_attribute": "  Attribute requirement: %1$s %2$s %3$s",
-  "item.tcc.judgement_key.evolution_kill": "  Kill %1$s x%2$d",
-
-  "item.tcc.island_boom_raven.resist_source_title": "Resistance Source (max %1$s):",
-  "item.tcc.island_boom_raven.resist_detail": "  %1$s: %2$d",
-  "item.tcc.island_boom_raven.effect": "Armor %1$s%% Move Speed %2$s%% Regeneration II Imaginary damage bonus %3$s%% Gain invisibility for %5$s seconds every %4$s seconds",
-  "item.tcc.island_boom_raven.resistance": "%1$s imaginary damage resistance",
-  "item.tcc.island_boom_raven.how_to_obtain": "§7§oEvolved from Raven",
-
-  "advancement.tcc.tcc_root.title": "TACZ Curios",
-
-  "advancement.tcc.my_island.title": "My Island",
-
-  "advancement.tcc.xiora_mission.title": "Night Raid",
-
-  "advancement.tcc.thunder_seen.title": "Thunder Seen",
-
-  "advancement.tcc.xiora_to_raven.title": "Night Raven",
-
-  "advancement.tcc.raven_to_island.title": "Seven Thunders Calling",
-
-  "advancement.tcc.summer_beach_grant.title": "Kevin",
-
-  "advancement.tcc.summer_to_brahma.title": "Evolution: Inexhaustible Sword",
-
-  "advancement.tcc.brahma_to_salvation.title": "Evolution: Salvation",
-
-  "advancement.tcc.judgment_to_apocalypse.title": "Evolution: Heaven Fire Apocalypse",
-
-  "advancement.tcc.judgement_key.title": "Judgement Key",
-
-  "advancement.tcc.heaven_fire_apocalypse_endless.title": "Apocalypse Endless",
-
-  "advancement.tcc.griseo_grant.title": "Colors of Life",
-
-  "advancement.tcc.qianjie_yicheng_grant.title": "Thousand Realms",
-
-  "advancement.tcc.griseo_to_huishi_zhijuan.title": "Evolution: Scroll of Painted World",
-
-  "advancement.tcc.qianjie_to_yongjie_zhijian.title": "Evolution: Key of Perpetuity",
-
-  "advancement.tcc.huishi_to_fanxing.title": "Evolution: Fanxing & World Inversion",
-
-  "advancement.tcc.shijie_fanyan_grant.title": "World Inversion",
-
-  "advancement.tcc.kalpas_grant.title": "Kalpas",
-
-  "advancement.tcc.imer_grant.title": "Imer",
-
-  "advancement.tcc.kalpas_to_huajie_zhiyan.title": "Evolution: Words of the Painted Realm",
-
-  "advancement.tcc.imer_to_dominance_key.title": "Evolution: Dominance Key",
-
-  "advancement.tcc.huajie_to_aomie.title": "Evolution: Annihilation",
-
-  "advancement.tcc.meta_morph_grant.title": "Meta-Morph",
-  
+  "item.tcc.raven.special_invis": "Gain invisibility for %2$s seconds every %1$s seconds",
+  "item.tcc.seven_thunders_thunder_seen.special": "Headshots have %4$s%% chance to convert to imaginary damage and deal %5$s%% max HP extra imaginary damage",
+  "item.tcc.judgement_key.special": "Damage converted to Imaginary. On headshot: chance to deal extra imaginary damage. Bleeding inherits Imaginary Collapse damage bonus",
+  "item.tcc.island_boom_raven.attr_regen": "Regeneration II",
+  "item.tcc.island_boom_raven.special_invis": "Gain invisibility for %2$s seconds every %1$s seconds",
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",
-  
   "item.tcc.heaven_fire_judgment": "§fHeaven Fire Judgment",
-  "item.tcc.heaven_fire_judgment.effect": "%1$s%% universal firearm damage Damage converted to Imaginary %2$s%% current health Apply bleeding: %3$s%% max health/level for %4$s seconds Disabled below 40%% health Can evolve to Heaven Fire Apocalypse on bleeding settlement",
-  
+  "item.tcc.heaven_fire_judgment.special": "Damage converted to Imaginary %1$s%% current health Apply bleeding: %2$s%% max health/level for %3$s seconds Disabled below 40%% health Can evolve to Heaven Fire Apocalypse on bleeding settlement",
   "item.tcc.heaven_fire_judgment.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base %3$s%% resistance)",
-  
-  "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§oWhen killed by %1$s, obtain Kevin (Bound); Evolves to Heaven Fire Apocalypse when bleeding settles with ≥40 imaginary resistance and alive",
-  
+  "item.tcc.heaven_fire_judgment.inflection_max": "§bImaginary Infection cap: %1$s stacks",
   "item.tcc.heaven_fire_apocalypse": "§dHeaven Fire Apocalypse",
-  "item.tcc.heaven_fire_apocalypse.effect": "At 100%% health %1$s%% universal firearm damage Damage converted to Imaginary %2$s explosion range %3$s%% explosion damage Lose %4$s%% max health Bleeding after 5s delay %6$s%% universal firearm damage to players within %5$s blocks for %7$s seconds Cannot unequip Kept on death",
+  "item.tcc.heaven_fire_apocalypse.special": "At 100%% health Damage converted to Imaginary Lose %1$s%% max health Bleeding after 5s delay %3$s%% universal firearm damage to players within %2$s blocks for %4$s seconds Cannot unequip Kept on death",
   "item.tcc.heaven_fire_apocalypse.inflection_max": "§bImaginary Infection cap: %1$s stacks",
-
   "item.tcc.heaven_fire_apocalypse.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base %3$s%% resistance)",
-  
-  "item.tcc.heaven_fire_apocalypse.how_to_obtain": "§7§oWith Inexhaustible Sword equipped, imaginary resistance >80 and meet evolution requirements to evolve to Endless",
-  
   "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
-  "item.tcc.heaven_fire_apocalypse_endless.effect": "Permanent %1$s%% universal firearm damage Damage converted to Imaginary %3$s%% explosion damage Provides Heaven Fire Boost III to players within %4$s blocks for %6$s seconds Cannot unequip Kept on death",
-  "item.tcc.heaven_fire_apocalypse_endless.how_to_obtain": "§7§oEvolved from Heaven Fire Apocalypse",
+  "item.tcc.heaven_fire_apocalypse_endless.special": "Damage converted to Imaginary Provides Heaven Fire Boost III to players within %1$s blocks for %3$s seconds Cannot unequip Kept on death",
   "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§bImaginary Infection cap: %1$s stacks",
   "item.tcc.heaven_fire_apocalypse_endless.damage_conversion": "Imaginary Damage %1$s%% (%2$s%% base %3$s%% resistance)",
   "item.tcc.heaven_fire_apocalypse_endless.collapse_info": "§5Imaginary Collapse: %1$s%% max HP/sec per infection level, up to %4$s%%",
-  
   "item.tcc.burst_reload": "§9Burst Reload",
   "item.tcc.burst_reload.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",
-  
   "item.tcc.corrupt_magazine": "§6Corrupt Magazine",
   "item.tcc.corrupt_magazine.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity, %2$s%% reload time",
-  
   "item.tcc.split_chamber": "§6Split Chamber",
   "item.tcc.split_chamber.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher bullet count",
-  
-  "item.tcc.despicable_acceleration": "§fDespicable Acceleration",
+  "item.tcc.despicable_acceleration": "§6Despicable Acceleration",
   "item.tcc.despicable_acceleration.effect": "%1$s%% shooting speed, %2$s%% universal damage and all rifle, sniper rifle, SMG, LMG, launcher, pistol, and shotgun damage",
-  
   "item.tcc.merged_rifling": "§fMerged Rifling",
   "item.tcc.merged_rifling.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher damage and %2$s%% gun movement speed, cannot be equipped with rifling at the same time",
-  
   "item.tcc.alloy_drill": "§6Alloy Drill",
   "item.tcc.alloy_drill.effect": "%1$s%% armor penetration",
-  
   "item.tcc.careful_heart": "§fCareful Heart",
   "item.tcc.careful_heart.effect": "%1$s%% launcher damage bonus, %2$s%% explosion damage bonus, %3$s%% explosion range bonus",
-  
   "item.tcc.blaze_storm": "§6Blaze Storm",
   "item.tcc.blaze_storm.effect": "%1$s%% explosion range, %2$s%% explosion damage, cannot be equipped with Blaze Storm Prime at the same time",
-  
   "item.tcc.blaze_storm_prime": "§fBlaze Storm Prime",
   "item.tcc.blaze_storm_prime.effect": "%1$s%% explosion range, %2$s%% explosion damage, cannot be equipped with Blaze Storm at the same time",
-  
   "item.tcc.ripping_prime": "§fRipping Prime",
   "item.tcc.ripping_prime.effect": "%1$s%% fire rate, %2$s penetration",
-  
   "item.tcc.close_combat_prime": "§fClose Combat Prime",
   "item.tcc.close_combat_prime.effect": "%1$s%% shotgun damage",
-  
   "item.tcc.evil_accuracy": "§6Evil Accuracy",
   "item.tcc.evil_accuracy.effect": "%1$s%% recoil, %2$s%% fire rate",
-  
   "item.tcc.limit_speed": "§bLimit Speed",
   "item.tcc.limit_speed.effect": "%1$s%% ammunition speed",
-  
   "item.tcc.ferocious_extension": "§bFerocious Extension",
   "item.tcc.ferocious_extension.effect": "%1$s%% bullet range",
-  
   "item.tcc.rifling": "§bRifling",
   "item.tcc.rifling.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher damage, cannot be equipped with merged rifling at the same time",
-  
   "item.tcc.close_range_shot": "§bClose Range Shot",
   "item.tcc.close_range_shot.effect": "%1$s%% shotgun damage",
-  
   "item.tcc.heavy_firepower": "§6Heavy Firepower",
   "item.tcc.heavy_firepower.effect": "%1$s%% pistol damage, %2$s%% spread",
-  
   "item.tcc.wasp_stinger": "§bWasp Stinger",
   "item.tcc.wasp_stinger.effect": "%1$s%% pistol damage",
-  
   "item.tcc.prophecy_pact": "§9Prophecy Pact",
   "item.tcc.prophecy_pact.effect": "%1$s%% pistol damage",
-  
   "item.tcc.malignant_spread": "§6Malignant Spread",
   "item.tcc.malignant_spread.effect": "%1$s%% shotgun damage, %2$s%% spread",
-  
-  "item.tcc.chamber": "§bChamber",
+  "item.tcc.chamber": "§6Chamber",
   "item.tcc.chamber.effect": "%1$s%% damage when magazine is full for sniper rifles, cannot be equipped with chamber prime at the same time",
-  
   "item.tcc.chamber_prime": "§fChamber Prime",
   "item.tcc.chamber_prime.effect": "%1$s%% damage when magazine is full for sniper rifles, cannot be equipped with chamber at the same time",
-  
   "item.tcc.core_fusion": "Core Fusion",
   "item.tcc.core_fusion.effect": "Material for crafting advanced curios",
-  
   "item.tcc.rift_silver": "§dRift Silver",
   "item.tcc.rift_silver.effect": "Right-click to randomly obtain a curio",
   "item.tcc.rift_silver.usage": "Use to randomly obtain 1 curio.",
-
-  "item.tcc.tactical_reload": "§9Tactical Reload",
+  "item.tcc.tactical_reload": "§bTactical Reload",
   "item.tcc.tactical_reload.effect": "%1$s%% shotgun reload time",
-
   "item.tcc.overloaded_magazine": "§6Overloaded Magazine",
   "item.tcc.overloaded_magazine.effect": "%1$s%% shotgun magazine capacity, %2$s%% reload time",
-
   "item.tcc.infernal_chamber": "§6Infernal Chamber",
   "item.tcc.infernal_chamber.effect": "%1$s%% shotgun bullet count",
-
   "item.tcc.sustained_fire": "§9Sustained Fire",
   "item.tcc.sustained_fire.effect": "%1$s%% pistol reload time",
-
   "item.tcc.infected_magazine": "§6Infected Magazine",
   "item.tcc.infected_magazine.effect": "%1$s%% pistol magazine capacity, %2$s%% reload time",
-
   "item.tcc.deadly_surge": "§6Deadly Surge",
   "item.tcc.deadly_surge.effect": "%1$s%% pistol fire rate, %2$s%% bullet count",
-
   "item.tcc.bullet_spread": "§6Bullet Spread",
   "item.tcc.bullet_spread.effect": "%1$s%% pistol bullet count",
-  
   "item.tcc.oppression_point": "§9Oppression Point",
   "item.tcc.oppression_point.effect": "%1$s%% melee damage",
-  
   "item.tcc.oppression_point_prime": "§fOppression Point Prime",
   "item.tcc.oppression_point_prime.effect": "%1$s%% melee damage",
-  
   "item.tcc.sword_wind": "§9Sword Wind",
   "item.tcc.sword_wind.effect": "%1$s melee distance",
-  
   "item.tcc.sword_wind_prime": "§fSword Wind Prime",
   "item.tcc.sword_wind_prime.effect": "%1$s melee distance",
-  
   "item.tcc.depleted_reload": "§6Depleted Reload",
   "item.tcc.depleted_reload.effect": "%1$s%% magazine capacity, %2$s%% reload time",
-  
   "item.tcc.burst_reload_prime": "§fBurst Reload Prime",
   "item.tcc.burst_reload_prime.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",
-  
   "item.tcc.tactical_reload_prime": "§fTactical Reload Prime",
   "item.tcc.tactical_reload_prime.effect": "%1$s%% shotgun reload time",
-  
   "item.tcc.shotgun_expansion_prime": "§fShotgun Expansion Prime",
   "item.tcc.shotgun_expansion_prime.effect": "%1$s%% shotgun magazine capacity",
-  
   "item.tcc.magazine_boost_prime": "§fMagazine Boost Prime",
   "item.tcc.magazine_boost_prime.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity",
-  
   "item.tcc.tandem_magazine_prime": "§fTandem Magazine Prime",
   "item.tcc.tandem_magazine_prime.effect": "%1$s%% pistol magazine capacity",
-  
   "item.tcc.shotgun_expansion": "§9Shotgun Expansion",
   "item.tcc.shotgun_expansion.effect": "%1$s%% shotgun magazine capacity",
-  
   "item.tcc.magazine_boost": "§9Magazine Boost",
   "item.tcc.magazine_boost.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher magazine capacity",
-  
   "item.tcc.tandem_magazine": "§9Tandem Magazine",
   "item.tcc.tandem_magazine.effect": "%1$s%% pistol magazine capacity",
-
   "item.tcc.kikaku_ichijin": "§dKikaku Ichijin",
   "item.tcc.kikaku_ichijin.effect": "When dealing damage, use the nearest player or maid within 64 blocks as a sacrifice. Multiply damage by a multiplier of the sacrifice's max HP, destroy blocks in a spherical range around the target, and the sacrifice dies",
-
   "message.tcc.kikaku_ichijin.self_sacrifice": "stella",
   "message.tcc.kikaku_ichijin.sacrifice": "%s, this is a necessary sacrifice, you understand, right?",
   "message.tcc.kikaku_ichijin.sacrificed": "You were sacrificed by %s",
-
   "tcc.tooltip.slot": "§7Equipment Slot: §aTACZ Curio Slot",
   "tcc.tooltip.slot.3rd": "§7Equipment Slot: §aTCC 3rd Curio Slot",
   "tcc.tooltip.restricted_gun_types": "§7Restricted to: %s",
   "tcc.tooltip.restricted_melee": "§7Restricted to: Melee",
+  "tcc.tooltip.imaginary_resistance": "%1$.0f Imaginary Resistance",
   "tcc.tooltip.rarity.common": "§7Rarity: §9Common",
   "tcc.tooltip.rarity.uncommon": "§7Rarity: §bUncommon",
   "tcc.tooltip.rarity.rare": "§7Rarity: §6Rare",
   "tcc.tooltip.rarity.epic": "§7Rarity: §fLegendary",
   "tcc.tooltip.rarity.rift": "§7Rarity: §dRift",
-
+  "tcc.tooltip.how_to_obtain": "§7§oObtain 「%1$s」: %2$s",
+  "tcc.tooltip.growth_condition": "§7§oGrowth: %s",
   "gem_class.tcc_slot": "TCC Curios",
-  
   "// TAA Attribute Localization Overrides": "",
   "attribute.name.taa.explosion_knockbacknew": "Explosion Knockback",
   "attribute.name.taa.explosion_knockbacknew.desc": "Explosion knockback effect",
-  
   "// Apotheosis Category Plural": "",
   "text.apotheosis.category.curios:tcc_slot.plural": "TCC Curios",
   "text.apotheosis.category.curios:tcc_3rd.plural": "Fire Moth",
   "text.apotheosis.category.curios:tcc_tdk.plural": "Divine Keys",
-
   "// Apotheosis Affixes - Critical Attributes": "",
-  "affix.tcc:tcc_slot/attribute/critical_chance": "Easy Crit", "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "Wide Open Heart",
-  "affix.tcc:tcc_slot/attribute/critical_damage": "Hard Hit", "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "Deadly Force",
-
+  "affix.tcc:tcc_slot/attribute/critical_chance": "Easy Crit",
+  "affix.tcc:tcc_slot/attribute/critical_chance.suffix": "Wide Open Heart",
+  "affix.tcc:tcc_slot/attribute/critical_damage": "Hard Hit",
+  "affix.tcc:tcc_slot/attribute/critical_damage.suffix": "Deadly Force",
   "// Apotheosis Affixes - TAA Core Combat Attributes": "",
-  "affix.tcc:tcc_slot/attribute/gun_damage": "Strong Firepower", "affix.tcc:tcc_slot/attribute/gun_damage.suffix": "Enhanced Gun",
-  "affix.tcc:tcc_slot/attribute/fire_rate": "Fast Fire", "affix.tcc:tcc_slot/attribute/fire_rate.suffix": "Bullet Saver!",
-  "affix.tcc:tcc_slot/attribute/magazine_capacity": "Big Mag", "affix.tcc:tcc_slot/attribute/magazine_capacity.suffix": "Equipped with Drum Mag",
-  "affix.tcc:tcc_slot/attribute/reload_time": "Quick Reload", "affix.tcc:tcc_slot/attribute/reload_time.suffix": "Reload Master",
-  "affix.tcc:tcc_slot/attribute/headshot_damage": "Brutal Headshot", "affix.tcc:tcc_slot/attribute/headshot_damage.suffix": "Headshot Enthusiast",
-  "affix.tcc:tcc_slot/attribute/ads_speed": "Quick ADS", "affix.tcc:tcc_slot/attribute/ads_speed.suffix": "Calm Shooter",
-  "affix.tcc:tcc_slot/attribute/pierce": "Strong Pierce", "affix.tcc:tcc_slot/attribute/pierce.suffix": "Piercing Incendiary",
-  "affix.tcc:tcc_slot/attribute/recoil_reduction": "Low Recoil", "affix.tcc:tcc_slot/attribute/recoil_reduction.suffix": "Human Tripod",
-  "affix.tcc:tcc_slot/attribute/accuracy": "High Precision", "affix.tcc:tcc_slot/attribute/accuracy.suffix": "OCD's Dream",
-  "affix.tcc:tcc_slot/attribute/armor_penetration": "Brutal Penetration", "affix.tcc:tcc_slot/attribute/armor_penetration.suffix": "Armor Crusher",
-  "affix.tcc:tcc_slot/attribute/bullet_count": "More Bullets", "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "One Shot Becomes Many",
-  "affix.tcc:tcc_slot/attribute/explosion_radius": "Wide Blast", "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "Demolition Chief",
-  "affix.tcc:tcc_slot/attribute/explosion_damage": "Heavy Blast", "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT Spirit",
-  "affix.tcc:tcc_slot/attribute/knockback": "Far Knockback", "affix.tcc:tcc_slot/attribute/knockback.suffix": "Human Bowling",
-  "affix.tcc:tcc_slot/attribute/effective_range": "Long Range", "affix.tcc:tcc_slot/attribute/effective_range.suffix": "Beyond Visual Range",
-  "affix.tcc:tcc_slot/attribute/ammo_speed": "Fast Ammo", "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "Supersonic Express",
-  "affix.tcc:tcc_slot/attribute/move_speed": "Fast Move", "affix.tcc:tcc_slot/attribute/move_speed.suffix": "Weight Loss Success",
-  "affix.tcc:tcc_slot/attribute/silence": "Good Silence", "affix.tcc:tcc_slot/attribute/silence.suffix": "Quiet Gentleman",
-  "affix.tcc:tcc_slot/attribute/weight_reduction": "Light Weight", "affix.tcc:tcc_slot/attribute/weight_reduction.suffix": "Lightweight Master",
-  
+  "affix.tcc:tcc_slot/attribute/gun_damage": "Strong Firepower",
+  "affix.tcc:tcc_slot/attribute/gun_damage.suffix": "Enhanced Gun",
+  "affix.tcc:tcc_slot/attribute/fire_rate": "Fast Fire",
+  "affix.tcc:tcc_slot/attribute/fire_rate.suffix": "Bullet Saver!",
+  "affix.tcc:tcc_slot/attribute/magazine_capacity": "Big Mag",
+  "affix.tcc:tcc_slot/attribute/magazine_capacity.suffix": "Equipped with Drum Mag",
+  "affix.tcc:tcc_slot/attribute/reload_time": "Quick Reload",
+  "affix.tcc:tcc_slot/attribute/reload_time.suffix": "Reload Master",
+  "affix.tcc:tcc_slot/attribute/headshot_damage": "Brutal Headshot",
+  "affix.tcc:tcc_slot/attribute/headshot_damage.suffix": "Headshot Enthusiast",
+  "affix.tcc:tcc_slot/attribute/ads_speed": "Quick ADS",
+  "affix.tcc:tcc_slot/attribute/ads_speed.suffix": "Calm Shooter",
+  "affix.tcc:tcc_slot/attribute/pierce": "Strong Pierce",
+  "affix.tcc:tcc_slot/attribute/pierce.suffix": "Piercing Incendiary",
+  "affix.tcc:tcc_slot/attribute/recoil_reduction": "Low Recoil",
+  "affix.tcc:tcc_slot/attribute/recoil_reduction.suffix": "Human Tripod",
+  "affix.tcc:tcc_slot/attribute/accuracy": "High Precision",
+  "affix.tcc:tcc_slot/attribute/accuracy.suffix": "OCD's Dream",
+  "affix.tcc:tcc_slot/attribute/armor_penetration": "Brutal Penetration",
+  "affix.tcc:tcc_slot/attribute/armor_penetration.suffix": "Armor Crusher",
+  "affix.tcc:tcc_slot/attribute/bullet_count": "More Bullets",
+  "affix.tcc:tcc_slot/attribute/bullet_count.suffix": "One Shot Becomes Many",
+  "affix.tcc:tcc_slot/attribute/explosion_radius": "Wide Blast",
+  "affix.tcc:tcc_slot/attribute/explosion_radius.suffix": "Demolition Chief",
+  "affix.tcc:tcc_slot/attribute/explosion_damage": "Heavy Blast",
+  "affix.tcc:tcc_slot/attribute/explosion_damage.suffix": "TNT Spirit",
+  "affix.tcc:tcc_slot/attribute/knockback": "Far Knockback",
+  "affix.tcc:tcc_slot/attribute/knockback.suffix": "Human Bowling",
+  "affix.tcc:tcc_slot/attribute/effective_range": "Long Range",
+  "affix.tcc:tcc_slot/attribute/effective_range.suffix": "Beyond Visual Range",
+  "affix.tcc:tcc_slot/attribute/ammo_speed": "Fast Ammo",
+  "affix.tcc:tcc_slot/attribute/ammo_speed.suffix": "Supersonic Express",
+  "affix.tcc:tcc_slot/attribute/move_speed": "Fast Move",
+  "affix.tcc:tcc_slot/attribute/move_speed.suffix": "Weight Loss Success",
+  "affix.tcc:tcc_slot/attribute/silence": "Good Silence",
+  "affix.tcc:tcc_slot/attribute/silence.suffix": "Quiet Gentleman",
+  "affix.tcc:tcc_slot/attribute/weight_reduction": "Light Weight",
+  "affix.tcc:tcc_slot/attribute/weight_reduction.suffix": "Lightweight Master",
   "// Accuracy Sub-Affixes": "",
-  "affix.tcc:tcc_slot/attribute/accuracy_stand": "Steady Stand", "affix.tcc:tcc_slot/attribute/accuracy_stand.suffix": "Stationary DPS",
-  "affix.tcc:tcc_slot/attribute/accuracy_move": "Accurate Run", "affix.tcc:tcc_slot/attribute/accuracy_move.suffix": "Run & Gun Expert",
-  "affix.tcc:tcc_slot/attribute/accuracy_sneak": "Steady Crouch", "affix.tcc:tcc_slot/attribute/accuracy_sneak.suffix": "King of Camping",
-  "affix.tcc:tcc_slot/attribute/accuracy_lie": "Accurate Prone", "affix.tcc:tcc_slot/attribute/accuracy_lie.suffix": "Ground Boxing",
-  "affix.tcc:tcc_slot/attribute/accuracy_aim": "Precise Aim", "affix.tcc:tcc_slot/attribute/accuracy_aim.suffix": "Can't Miss",
-  
+  "affix.tcc:tcc_slot/attribute/accuracy_stand": "Steady Stand",
+  "affix.tcc:tcc_slot/attribute/accuracy_stand.suffix": "Stationary DPS",
+  "affix.tcc:tcc_slot/attribute/accuracy_move": "Accurate Run",
+  "affix.tcc:tcc_slot/attribute/accuracy_move.suffix": "Run & Gun Expert",
+  "affix.tcc:tcc_slot/attribute/accuracy_sneak": "Steady Crouch",
+  "affix.tcc:tcc_slot/attribute/accuracy_sneak.suffix": "King of Camping",
+  "affix.tcc:tcc_slot/attribute/accuracy_lie": "Accurate Prone",
+  "affix.tcc:tcc_slot/attribute/accuracy_lie.suffix": "Ground Boxing",
+  "affix.tcc:tcc_slot/attribute/accuracy_aim": "Precise Aim",
+  "affix.tcc:tcc_slot/attribute/accuracy_aim.suffix": "Can't Miss",
   "// Recoil Sub-Affixes": "",
-  "affix.tcc:tcc_slot/attribute/recoil_pitch": "Vertical Stable", "affix.tcc:tcc_slot/attribute/recoil_pitch.suffix": "Vertical Control",
-  "affix.tcc:tcc_slot/attribute/recoil_yaw": "Horizontal Stable", "affix.tcc:tcc_slot/attribute/recoil_yaw.suffix": "Horizontal Control",
-  
+  "affix.tcc:tcc_slot/attribute/recoil_pitch": "Vertical Stable",
+  "affix.tcc:tcc_slot/attribute/recoil_pitch.suffix": "Vertical Control",
+  "affix.tcc:tcc_slot/attribute/recoil_yaw": "Horizontal Stable",
+  "affix.tcc:tcc_slot/attribute/recoil_yaw.suffix": "Horizontal Control",
   "// Apotheosis Affixes - TAA Exclusive Gun Damage": "",
-  "affix.tcc:tcc_slot/attribute/pistol_damage": "Strong Pistol", "affix.tcc:tcc_slot/attribute/pistol_damage.suffix": "Small Gun Big Power",
-  "affix.tcc:tcc_slot/attribute/rifle_damage": "Strong Rifle", "affix.tcc:tcc_slot/attribute/rifle_damage.suffix": "Rifle Specialist",
-  "affix.tcc:tcc_slot/attribute/shotgun_damage": "Strong Shotgun", "affix.tcc:tcc_slot/attribute/shotgun_damage.suffix": "Close Range King",
-  "affix.tcc:tcc_slot/attribute/sniper_damage": "Strong Sniper", "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "Thousand Yard Kill",
-  "affix.tcc:tcc_slot/attribute/smg_damage": "Strong SMG", "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "Charge Maniac",
-  "affix.tcc:tcc_slot/attribute/lmg_damage": "Strong LMG", "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "Suppression Master",
-  "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher", "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover",
-
+  "affix.tcc:tcc_slot/attribute/pistol_damage": "Strong Pistol",
+  "affix.tcc:tcc_slot/attribute/pistol_damage.suffix": "Small Gun Big Power",
+  "affix.tcc:tcc_slot/attribute/rifle_damage": "Strong Rifle",
+  "affix.tcc:tcc_slot/attribute/rifle_damage.suffix": "Rifle Specialist",
+  "affix.tcc:tcc_slot/attribute/shotgun_damage": "Strong Shotgun",
+  "affix.tcc:tcc_slot/attribute/shotgun_damage.suffix": "Close Range King",
+  "affix.tcc:tcc_slot/attribute/sniper_damage": "Strong Sniper",
+  "affix.tcc:tcc_slot/attribute/sniper_damage.suffix": "Thousand Yard Kill",
+  "affix.tcc:tcc_slot/attribute/smg_damage": "Strong SMG",
+  "affix.tcc:tcc_slot/attribute/smg_damage.suffix": "Charge Maniac",
+  "affix.tcc:tcc_slot/attribute/lmg_damage": "Strong LMG",
+  "affix.tcc:tcc_slot/attribute/lmg_damage.suffix": "Suppression Master",
+  "affix.tcc:tcc_slot/attribute/launcher_damage": "Strong Launcher",
+  "affix.tcc:tcc_slot/attribute/launcher_damage.suffix": "Heavy Fire Lover",
   "// Apotheosis Affixes - Imaginary Damage Resistance": "",
-  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance": "Imaginary Shield", "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance.suffix": "Void Ward",
-
+  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance": "Imaginary Shield",
+  "affix.tcc:tcc_slot/attribute/imaginary_damage_resistance.suffix": "Void Ward",
   "// Imaginary Damage Attribute": "",
   "attribute.name.tcc.imaginary_damage": "Imaginary Damage",
   "attribute.name.tcc.imaginary_damage.desc": "Bonus imaginary damage on attack, bypasses armor and magic resistance",
   "attribute.name.tcc.imaginary_damage_resistance": "Imaginary Damage Resistance",
   "attribute.name.tcc.imaginary_damage_resistance.desc": "Percentage reduction of incoming imaginary damage",
-  
   "// Imaginary Damage Death Messages": "",
   "death.attack.imaginary_damage": "%1$s was consumed by the imaginary",
   "death.attack.imaginary_damage.player": "%1$s was consumed by the imaginary whilst fighting %2$s",
-  
   "// Heaven Fire Bleeding Effect": "",
   "effect.tcc.heaven_fire_bleeding": "Heaven Fire Bleeding",
   "effect.tcc.imaginary_infection": "Imaginary Infection",
@@ -402,7 +257,6 @@
   "effect.tcc.erosion": "Erosion",
   "effect.tcc.heaven_fire_apocalypse_delay": "Heaven Fire Apocalypse Delay",
   "effect.tcc.heaven_fire_apocalypse_buff": "Heaven Fire Boost",
-  
   "effect.tcc.argon_scope": "Argon Scope",
   "effect.tcc.gilded_argon_scope": "Gilded Argon Scope",
   "effect.tcc.gilded_argon_scope_kill": "Gilded Argon Scope Stack",
@@ -417,7 +271,6 @@
   "effect.tcc.gilded_infernal_chamber": "Gilded Infernal Chamber",
   "effect.tcc.gilded_bullet_spread": "Gilded Bullet Spread",
   "effect.tcc.gilded_steel_slash": "Gilded Steel Slash",
-  
   "// 33 New Curios": "",
   "item.tcc.critical_delay": "§6Critical Delay",
   "item.tcc.critical_delay.effect": "Crit Chance %1$s%%, Fire Rate %2$s%%",
@@ -485,107 +338,127 @@
   "item.tcc.gilded_marksman.effect": "With Pistol: %1$s%% damage per harmful effect type (multiplicative)",
   "item.tcc.condition_overload": "§6Condition Overload",
   "item.tcc.condition_overload.effect": "Melee: %1$s%% damage per harmful effect type on target (multiplicative)",
-
+  "item.tcc.collapse_crystal": "§dCollapse Crystal",
+  "item.tcc.collapse_crystal.usage": "§7Keep in inventory. Consumed when attempting to remove a curio from Fire Moth or Divine Key slots",
   "// Fire Moth / Divine Key New Curios": "",
   "item.tcc.griseo": "§6Griseo",
   "item.tcc.griseo.effect": "Enter %1$s ticks hurt cooldown after taking damage",
-
   "item.tcc.qianjie_yicheng": "§6Thousand Worlds",
-  "item.tcc.qianjie_yicheng.effect": "+%1$s Luck",
-
   "item.tcc.huishi_zhijuan": "§fScroll of Painting",
   "item.tcc.huishi_zhijuan.effect": "Enter %1$s ticks hurt cooldown after taking damage",
-  "item.tcc.huishi_zhijuan.effect.stat": "%1$.0f Imaginary Resistance",
-
   "item.tcc.yongjie_zhijian": "§fEternal Calamity Key",
-  "item.tcc.yongjie_zhijian.effect": "+%1$d Luck, currently granting +%2$s%% crit rate and +%3$s%% crit damage",
-
   "item.tcc.fanxing": "§4Starry Sky",
-  "item.tcc.fanxing.effect": "Enter %1$s ticks hurt cooldown after taking damage. Currently %2$d imaginary resistance, granting %3$d luck",
-
+  "item.tcc.fanxing.special_cooldown": "After taking damage, enter %1$s tick damage cooldown",
   "item.tcc.shijie_fanyan": "§4First Key of Worlds - Horizon Inversion",
-  "item.tcc.shijie_fanyan.effect": "+%1$d Luck, currently granting +%2$s%% crit rate and +%3$s%% crit damage, imaginary collapse trigger rate %4$s%%, always inflict infection on hit, all gun damage becomes imaginary damage",
-
+  "item.tcc.shijie_fanyan.special": "Imaginary Collapse trigger %4$s%%, attacks always inflict Infusion, all gun damage converted to imaginary",
   "// Heavy Weapon Series Curios": "",
   "item.tcc.vill_v": "§6Vill-V",
   "item.tcc.vill_v.effect": "Grants Absorption Lv.%2$s when HP < %1$s%%, %3$ss cooldown",
-
   "item.tcc.xukong_wancang": "§6Void Archives",
   "item.tcc.xukong_wancang.effect": "Attacks deal +%1$.0f imaginary damage. Restore %2$s%% ammo per second, min 1 ammo",
-
   "item.tcc.yuxi_zhixia": "§fBox of Fools",
   "item.tcc.yuxi_zhixia.effect": "Grants Absorption Lv.%2$s when HP < %1$s%%, %3$ss cooldown",
-  "item.tcc.yuxi_zhixia.effect.stat": "%1$.0f Imaginary Resistance",
-
   "item.tcc.qishi_zhijian": "§fKey of Revelation",
   "item.tcc.qishi_zhijian.effect": "Attacks deal +%1$.0f imaginary damage. Restore %2$s%% ammo per second, min 1 ammo",
-
   "item.tcc.luoxuan": "§4Spiral",
-  "item.tcc.luoxuan.effect": "+%1$.0f imaginary resistance. Applies Absorption Lv.%3$s every %2$ss",
-
+  "item.tcc.luoxuan.special_absorption": "Applies Absorption %3$s every %2$ss",
   "item.tcc.xukong_wancang_yzth": "§4Void Archives - Amrita Ruin",
-  "item.tcc.xukong_wancang_yzth.effect": "Attacks deal about %2$s imaginary damage. Restore %1$s%% ammo per second, min 1 ammo. Gun damage becomes imaginary, always inflict infection",
-
+  "item.tcc.xukong_wancang_yzth.effect": "Attacks deal about %2$s imaginary damage. Based on imaginary resistance, restore %1$s%% ammo per second, min 1 ammo. Gun damage becomes imaginary, always inflict infection",
   "item.tcc.kalpas": "§6Kalpas",
-  "item.tcc.kalpas.effect": "+%1$.0f imaginary resistance. Adapts to %2$s damage types when hit, %3$.0f%% reduction, decays in %4$ss",
-
+  "item.tcc.kalpas.effect": "Adapts to %1$s damage types when hit, %2$.0f%% reduction, decays in %3$ss",
   "item.tcc.imer": "§6Imer",
-  "item.tcc.imer.effect": "Max HP increases ATTACK_DAMAGE by %1$.0f%% per point",
-
   "item.tcc.huajie_zhiyan": "§5Blazing Calamity",
-  "item.tcc.huajie_zhiyan.effect": "+%1$.0f imaginary resistance. Adapts to %2$s damage types when hit, %3$.0f%% reduction, decays in %4$ss. Imaginary resistance gives ~+%5$.0f max HP",
-
+  "item.tcc.huajie_zhiyan.special_adapt": "Adapts to %1$s damage types when hit, %2$.0f%% reduction, decays in %3$ss",
   "item.tcc.dominance_key": "§5Key of Dominance",
-  "item.tcc.dominance_key.effect": "Max HP gives ~+%1$.0f ATTACK_DAMAGE. Attacks deal ~%2$.0f imaginary damage",
-
+  "item.tcc.dominance_key.special_damage": "Deals ~%1$s bonus imaginary damage based on attack",
   "item.tcc.aomie": "§4Annihilation",
-  "item.tcc.aomie.effect": "+%1$.0f imaginary resistance. Adapts to %2$s damage types when hit, %3$.0f%% reduction, decays in %4$ss. Imaginary resistance gives ~%5$.0f max HP",
-
+  "item.tcc.aomie.special_adapt": "Adapts to %1$s damage types when hit, %2$.0f%% reduction, decays in %3$ss",
   "item.tcc.meta_morph": "§4Meta-Morph",
-  "item.tcc.meta_morph.effect": "Max HP gives ~+%1$.0f ATTACK_DAMAGE. Attacks deal ~%3$.0f imaginary damage. Imaginary resistance gives ~%2$.2f life steal",
-
+  "item.tcc.meta_morph.special_damage": "Deals ~%1$s bonus imaginary damage based on imaginary resistance",
   "item.tcc.su": "§6Su",
-  "item.tcc.su.effect": "+%1$.0f imaginary resistance, max HP %2$.0f%%, damage taken %3$.0f%%",
-
+  "item.tcc.su.attr_damage_taken": "Damage taken reduced to %1$.0f%%",
   "item.tcc.wanwu_xiumian": "§6All Things Slumber",
-  "item.tcc.wanwu_xiumian.effect": "Overheal %1$.0f%%, ammo regen %2$.0f%%/s",
-
+  "item.tcc.wanwu_xiumian.special_ammo": "Restores %1$s%% ammo per second",
   "item.tcc.juezhe": "§5The Enlightened One",
-  "item.tcc.juezhe.effect": "+%1$.0f imaginary resistance, max HP %2$.0f%%, damage taken %3$.0f%%",
-
+  "item.tcc.juezhe.attr_damage_taken": "Damage taken reduced to %1$.0f%%",
   "item.tcc.tingzhi_zhijian": "§5Key of Stagnation",
-  "item.tcc.tingzhi_zhijian.effect": "Overheal %1$.0f%%, regen %2$.1f%% ammo/sec",
-
+  "item.tcc.tingzhi_zhijian.special_ammo": "Restores %1$s%% ammo per second",
   "item.tcc.tianhui": "§4Heavenly Wisdom",
-  "item.tcc.tianhui.effect": "Imaginary resistance %1$d, max HP %2$.0f%%, current damage cap %3$d%%, min %4$.0f%%",
-
+  "item.tcc.tianhui.special_damage_limit": "Based on imaginary resistance, damage taken reduced to %1$d%%, not lower than %2$.0f%%",
   "item.tcc.yinguo_zhuanlun": "§4Wheel of Causality",
-  "item.tcc.yinguo_zhuanlun.effect": "Overheal %1$.0f%%, regen %2$.0f%% ammo/sec, bonus %3$.0f imaginary dmg on hit",
+  "item.tcc.yinguo_zhuanlun.special": "Based on imaginary resistance: restore %1$s%% ammo/sec, deal %2$s bonus imaginary damage",
   "tcc.tooltip.bound": "Bound to: %1$s",
-
+  "advancement.tcc.tcc_root.title": "Tacz Curios",
+  "advancement.tcc.tcc_root.description": "Tacz Curios",
+  "advancement.tcc.my_island.title": "My Island",
+  "advancement.tcc.my_island.description": "Don't mention the island again... I'm over it, really.",
+  "advancement.tcc.xiora_mission.title": "Night Raid",
+  "advancement.tcc.xiora_mission.description": "Going out at night feels safer... must be occupational habit.",
+  "advancement.tcc.thunder_seen.title": "Thunder Revealed",
+  "advancement.tcc.thunder_seen.description": "Thundering God",
+  "advancement.tcc.xiora_to_raven.title": "Night Raid Raven",
+  "advancement.tcc.xiora_to_raven.description": "Punish the Sinner",
+  "advancement.tcc.raven_to_island.title": "Seven Thunders Summoning",
+  "advancement.tcc.raven_to_island.description": "Let me count, one Herrscher, two Herrschers... well, isn't that something.",
+  "advancement.tcc.summer_beach_grant.title": "Kevin",
+  "advancement.tcc.summer_beach_grant.description": "@Gray Serpent, turn off the character limit.",
+  "advancement.tcc.summer_to_brahma.title": "Evolution: Inexhaustible Sword",
+  "advancement.tcc.summer_to_brahma.description": "Hundred Beasts of Brahma, upon this body... 'Karma Demon' descends, 'Salvation' draws sword!",
+  "advancement.tcc.brahma_to_salvation.title": "Evolution: Salvation",
+  "advancement.tcc.brahma_to_salvation.description": "This is—the brand of 'Salvation'!",
+  "advancement.tcc.judgment_to_apocalypse.title": "Evolution: Heaven Fire Apocalypse",
+  "advancement.tcc.judgment_to_apocalypse.description": "So, why do birds fly?",
+  "advancement.tcc.judgement_key.title": "Judgment",
+  "advancement.tcc.judgement_key.description": "Subdue the Rebellion",
+  "advancement.tcc.heaven_fire_apocalypse_endless.title": "Endless Calamity",
+  "advancement.tcc.heaven_fire_apocalypse_endless.description": "Star Blaze",
+  "advancement.tcc.griseo_grant.title": "Colors of Life",
+  "advancement.tcc.griseo_grant.description": "The stars live with the moon, high up in the sky...",
+  "advancement.tcc.qianjie_yicheng_grant.title": "Thousand Realms, One Vehicle",
+  "advancement.tcc.qianjie_yicheng_grant.description": "The starry sky is beautiful. I want to keep it here... in my painting.",
+  "advancement.tcc.griseo_to_huishi_zhijuan.title": "Evolution: Scroll of World Painting",
+  "advancement.tcc.griseo_to_huishi_zhijuan.description": "Hmm... can a brush paint by itself? What would it want to paint?",
+  "advancement.tcc.qianjie_to_yongjie_zhijian.title": "Evolution: Key of Eternal Calamity",
+  "advancement.tcc.qianjie_to_yongjie_zhijian.description": "The brush, it's painting by itself! Ah... too bad it's just a dream.",
+  "advancement.tcc.huishi_to_fanxing.title": "Evolution: Starry Sky - Horizon Inversion",
+  "advancement.tcc.huishi_to_fanxing.description": "Deadline already? But I just turned on my tablet.",
+  "advancement.tcc.shijie_fanyan_grant.title": "Horizon Inversion",
+  "advancement.tcc.shijie_fanyan_grant.description": "Navigation normal, can sleep... Huh? Today's the deadline? Fine.",
+  "advancement.tcc.kalpas_grant.title": "Kalpas",
+  "advancement.tcc.kalpas_grant.description": "You're too late, 'Successor'.",
+  "advancement.tcc.imer_grant.title": "Imer",
+  "advancement.tcc.imer_grant.description": "Your name doesn't matter, Herrscher.",
+  "advancement.tcc.kalpas_to_huajie_zhiyan.title": "Evolution: Blazing Calamity",
+  "advancement.tcc.kalpas_to_huajie_zhiyan.description": "The flames burn. Burning everything, consuming everything, destroying everything.",
+  "advancement.tcc.imer_to_dominance_key.title": "Evolution: Key of Dominance",
+  "advancement.tcc.imer_to_dominance_key.description": "Slay all enemies, without end!",
+  "advancement.tcc.huajie_to_aomie.title": "Evolution: Annihilation",
+  "advancement.tcc.huajie_to_aomie.description": "Who the hell stole my food again?!!!",
+  "advancement.tcc.meta_morph_grant.title": "Meta-Morph",
+  "advancement.tcc.meta_morph_grant.description": "The Solitary Gourmet",
   "advancement.tcc.su_grant.title": "Su",
-
+  "advancement.tcc.su_grant.description": "Welcome, visitor.",
   "advancement.tcc.wanwu_xiumian_grant.title": "All Things Slumber",
-
+  "advancement.tcc.wanwu_xiumian_grant.description": "Dust to dust, ashes to ashes.",
   "advancement.tcc.juezhe_grant.title": "The Enlightened One",
-
+  "advancement.tcc.juezhe_grant.description": "With this 'Heavenly Wisdom', I grant you the power to overcome trials.",
   "advancement.tcc.tingzhi_zhijian_grant.title": "Key of Stagnation",
-
+  "advancement.tcc.tingzhi_zhijian_grant.description": "May the barren soil of yesterday become the nurturing bed for new sprouts.",
   "advancement.tcc.tianhui_grant.title": "Heavenly Wisdom",
-
+  "advancement.tcc.tianhui_grant.description": "Countless threads of causality converge here.",
   "advancement.tcc.yinguo_zhuanlun_grant.title": "Wheel of Causality",
-
+  "advancement.tcc.yinguo_zhuanlun_grant.description": "May this mark of 'Heavenly Wisdom' guide your path forward.",
   "advancement.tcc.vill_v_grant.title": "VILL-V",
-
+  "advancement.tcc.vill_v_grant.description": "Don't worry, problems always solve themselves—or at least, they solve us.",
   "advancement.tcc.xukong_wancang_grant.title": "Void Archives",
-
-  "advancement.tcc.yuxi_zhixia_grant.title": "Featherlight Casket",
-
+  "advancement.tcc.xukong_wancang_grant.description": "But... no performance today, okay?",
+  "advancement.tcc.yuxi_zhixia_grant.title": "Box of Fools",
+  "advancement.tcc.yuxi_zhixia_grant.description": "'Kevin Destruction Button'!",
   "advancement.tcc.qishi_zhijian_grant.title": "Key of Revelation",
-
+  "advancement.tcc.qishi_zhijian_grant.description": "'Vill-V actually didn't prank anyone'!",
   "advancement.tcc.luoxuan_grant.title": "Spiral",
-
+  "advancement.tcc.luoxuan_grant.description": "I once prepared a magic trick to make an entire continent disappear, but... someone beat me to it.",
   "advancement.tcc.xukong_wancang_yzth_grant.title": "Void Archives - Primordial Synthesis",
-
+  "advancement.tcc.xukong_wancang_yzth_grant.description": "Anti-Kevin Weapon 666",
   "stat.tcc.zombie_villager_cured": "Zombie Villagers Cured"
 }

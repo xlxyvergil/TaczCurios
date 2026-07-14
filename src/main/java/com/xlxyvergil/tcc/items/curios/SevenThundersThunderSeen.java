@@ -172,13 +172,26 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("sniper"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.effect",
-                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get() * 100),
-                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritChance.get() * 100),
-                String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritDamage.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 100))
-            .withStyle(ChatFormatting.AQUA));
+        String sttsHeadshotStr = String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get() * 100);
+        String sttsCritChanceStr = String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritChance.get() * 100);
+        String sttsCritDamageStr = String.format("%+.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritDamage.get() * 100);
+        String sttsProcStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get() * 100);
+        String sttsExtraHpStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 100);
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                sttsHeadshotStr,
+                Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                sttsCritChanceStr,
+                Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                sttsCritDamageStr,
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.special",
+                sttsHeadshotStr, sttsCritChanceStr, sttsCritDamageStr, sttsProcStr, sttsExtraHpStr)
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
 
@@ -190,61 +203,6 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
             tooltip.add(Component.literal(""));
             tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
                 .withStyle(ChatFormatting.RED));
-        }
-
-        EvolutionRegistry.Rule evolveRule = getLinkedEvolveRuleOrNull();
-        if (evolveRule != null) {
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.evolution_title")
-                .withStyle(ChatFormatting.GREEN));
-            if (!evolveRule.requirements.kills.isEmpty()) {
-                for (EvolutionRegistry.KillRequirement req : evolveRule.requirements.kills) {
-                    tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.evolution_kill",
-                            getEntityDisplayName(req.entity), req.count)
-                        .withStyle(ChatFormatting.GRAY));
-                }
-            }
-        }
-
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.how_to_obtain")
-            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-    }
-
-    private static EvolutionRegistry.Rule getLinkedEvolveRuleOrNull() {
-        for (EvolutionRegistry.Rule rule : EvolutionRegistry.getAllRules()) {
-            if (rule.type != EvolutionRegistry.RuleType.EVOLVE) continue;
-            if (rule.requirementsRef == null || rule.requirementsRef.isEmpty()) continue;
-            for (EvolutionRegistry.LinkedEvolve linked : rule.requirementsRef) {
-                if ("tcc:seven_thunders_thunder_seen".equals(linked.item) && "tcc:judgement_key".equals(linked.to)) {
-                    return rule;
-                }
-            }
-        }
-        return null;
-    }
-
-    private static String getEntityDisplayName(EvolutionRegistry.EntityRef entity) {
-        try {
-            ResourceLocation rl = new ResourceLocation(entity.key);
-            var entityType = BuiltInRegistries.ENTITY_TYPE.get(rl);
-            String suffix = entity.name == null || entity.name.isBlank() ? "" : " " + entity.name;
-            return entityType.getDescription().getString() + suffix;
-        } catch (Exception ignored) {
-            return entity.key;
-        }
-    }
-
-    private static String getItemDisplayName(String itemId) {
-        try {
-            ResourceLocation rl = new ResourceLocation(itemId);
-            var item = BuiltInRegistries.ITEM.get(rl);
-            if (item == null) {
-                return itemId;
-            }
-            return item.getDescription().getString();
-        } catch (Exception ignored) {
-            return itemId;
         }
     }
 }

@@ -16,6 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
@@ -104,18 +106,25 @@ public class WanwuXiumian extends BaseCurioItem {
         applyEffects(livingEntity);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
+        double overheal = TaczCuriosConfig.COMMON.wanwuXiumianOverheal.get() * 100;
+        double ammoRegen = TaczCuriosConfig.COMMON.wanwuXiumianAmmoRegenPercent.get() * 100;
+
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("item.tcc.wanwu_xiumian.effect",
-                String.format("%.0f", TaczCuriosConfig.COMMON.wanwuXiumianOverheal.get() * 100),
-                String.format("%.0f", TaczCuriosConfig.COMMON.wanwuXiumianAmmoRegenPercent.get() * 100))
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%.0f", overheal),
+                Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
+                .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("item.tcc.wanwu_xiumian.special_ammo",
+                String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

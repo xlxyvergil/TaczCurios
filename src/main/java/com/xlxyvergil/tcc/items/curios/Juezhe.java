@@ -10,6 +10,7 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,6 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -120,26 +123,45 @@ public class Juezhe extends BaseCurioItem {
         DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        CompoundTag tag = stack.getTag();
+
+        // 虚数抗性显示
+        double baseValue = TaczCuriosConfig.COMMON.suImaginaryResistance.get();
+        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
+        tooltip.add(Component.literal(""));
+        double maxHealthReduction = TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100;
+        double damageTakenFactor = TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100;
+        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("item.tcc.juezhe.effect",
-                String.format("%.2f", TaczCuriosConfig.COMMON.suImaginaryResistance.get()),
-                String.format("%.2f", TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100),
-                String.format("%.2f", TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100))
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%.2f", maxHealthReduction),
+                Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltip.add(Component.translatable("item.tcc.juezhe.attr_damage_taken",
+                String.format("%.2f", damageTakenFactor))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
-        CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

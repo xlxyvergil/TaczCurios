@@ -12,6 +12,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.damagesource.DamageSource;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.network.chat.Component;
@@ -131,21 +132,32 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         int potionAmplifier = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get();
         int totalNearbyPlayerDamageBoost = nearbyPlayerDamageBoost * (potionAmplifier + 1);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.effect", 
-                String.format("%+.0f", damageBoost), 
-                String.format("%+.0f", explosionRadiusBoost), 
-                String.format("%+.0f", explosionDamageBoost), 
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", damageBoost),
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("attribute.modifier.plus.0",
+                String.format("%+.0f", explosionRadiusBoost),
+                Component.translatable(AttributeHelper.EXPLOSION_RADIUS.getDescriptionId()))
+                .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%+.0f", explosionDamageBoost),
+                Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.special",
                 String.format("%+.0f", healthCost),
                 String.format("%+.0f", nearbyPlayerRadius), 
                 String.format("%+d", totalNearbyPlayerDamageBoost),
-                String.format("%d", nearbyPlayerDuration)));
+                String.format("%d", nearbyPlayerDuration))
+            .withStyle(ChatFormatting.RED));
         
         // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
         
         // 虚数侵染上限 + 虚数崩解
         int infectionMax = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
-                String.format("%d", infectionMax)));
+                String.format("%d", infectionMax))
+            .withStyle(ChatFormatting.RED));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -153,11 +165,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
-        
-        // 添加获取方式
-        tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.how_to_obtain")
-            .withStyle(net.minecraft.ChatFormatting.GRAY, net.minecraft.ChatFormatting.ITALIC));
     }
     
     /**

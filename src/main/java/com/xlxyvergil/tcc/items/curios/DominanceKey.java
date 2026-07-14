@@ -23,6 +23,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -121,18 +123,19 @@ public class DominanceKey extends BaseCurioItem {
         float imaginaryBonus = (float) (Math.round(attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get() * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(attacker.level(), attacker),
+            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
             imaginaryBonus
         );
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
-tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
+        tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
         double attackFromHealth = 0;
         double imaginaryDamage = 0;
@@ -145,8 +148,11 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
                 imaginaryDamage = attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get();
             }
         }
-        tooltip.add(Component.translatable("item.tcc.dominance_key.effect",
+        tooltip.add(Component.translatable("attribute.modifier.plus.0",
                 String.format("%.2f", attackFromHealth),
+                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltip.add(Component.translatable("item.tcc.dominance_key.special_damage",
                 String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 

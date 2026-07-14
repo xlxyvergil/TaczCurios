@@ -24,6 +24,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TingzhiZhijian extends BaseCurioItem {
 
@@ -110,11 +112,14 @@ public class TingzhiZhijian extends BaseCurioItem {
         applyEffects(livingEntity);
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+        double overheal = TaczCuriosConfig.COMMON.tingzhiZhijianOverheal.get() * 100;
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
@@ -130,8 +135,11 @@ public class TingzhiZhijian extends BaseCurioItem {
         double scalePercent = resistance * TaczCuriosConfig.COMMON.tingzhiZhijianAmmoResistanceScale.get();
         double totalPercent = (basePercent + scalePercent) * 100;
 
-        tooltip.add(Component.translatable("item.tcc.tingzhi_zhijian.effect",
-                String.format("%.0f", TaczCuriosConfig.COMMON.tingzhiZhijianOverheal.get() * 100),
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
+                String.format("%.0f", overheal),
+                Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
+                .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("item.tcc.tingzhi_zhijian.special_ammo",
                 String.format("%.1f", totalPercent))
             .withStyle(ChatFormatting.AQUA));
 

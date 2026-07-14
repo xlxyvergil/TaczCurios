@@ -5,6 +5,10 @@
       "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:summer_beach",
+      "description": {
+        "zh_cn": "使用手枪击杀凋灵，每次+1虚数抗性（上限20）",
+        "en_us": "Kill Wither with pistol, +1 Imaginary Resistance per kill (cap 20)"
+      },
       "requirements": {
         "holdingGunTypes": [
           "pistol"
@@ -29,6 +33,10 @@
       "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:brahma_beasts",
+      "description": {
+        "zh_cn": "使用手枪击杀末影龙，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Ender Dragon with pistol, +2 Imaginary Resistance per kill (cap 20)"
+      },
       "requirements": {
         "holdingGunTypes": [
           "pistol"
@@ -44,7 +52,7 @@
           "entity": {
             "key": "minecraft:ender_dragon"
           },
-          "value": 20.0
+          "value": 2.0
         }
       ]
     },
@@ -54,6 +62,13 @@
       "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:xiora",
+      "description": {
+        "zh_cn": "使用狙击枪击杀凋灵，每次+1虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +1 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": ["sniper"]
+      },
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
@@ -73,6 +88,13 @@
       "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:raven",
+      "description": {
+        "zh_cn": "使用狙击枪击杀凋灵，每次+1虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +1 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": ["sniper"]
+      },
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
@@ -93,8 +115,12 @@
       "trigger": "stat_polling",
       "type": "attribute",
       "item": "tcc:griseo",
+      "description": {
+        "zh_cn": "每游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day played (24000 ticks), +1 Imaginary Resistance (cap 20)"
+      },
       "stat": "minecraft:play_time",
-      "statThreshold": 48000,
+      "statThreshold": 24000,
       "value": 1.0,
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
@@ -109,8 +135,12 @@
       "trigger": "stat_polling",
       "type": "attribute",
       "item": "tcc:huishi_zhijuan",
+      "description": {
+        "zh_cn": "每游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day played (24000 ticks), +1 Imaginary Resistance (cap 20)"
+      },
       "stat": "minecraft:play_time",
-      "statThreshold": 48000,
+      "statThreshold": 24000,
       "value": 1.0,
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
@@ -125,8 +155,12 @@
       "trigger": "stat_polling",
       "type": "attribute",
       "item": "tcc:fanxing",
+      "description": {
+        "zh_cn": "每游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day played (24000 ticks), +1 Imaginary Resistance (cap 20)"
+      },
       "stat": "minecraft:play_time",
-      "statThreshold": 48000,
+      "statThreshold": 24000,
       "value": 1.0,
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
@@ -142,6 +176,10 @@
       "trigger": "stat_polling",
       "type": "attribute",
       "item": "tcc:kalpas",
+      "description": {
+        "zh_cn": "每造成2000点伤害，+1虚数抗性（上限20）",
+        "en_us": "Every 2000 damage dealt, +1 Imaginary Resistance (cap 20)"
+      },
       "stat": "minecraft:damage_dealt",
       "statThreshold": 2000,
       "value": 1.0,
@@ -159,6 +197,10 @@
       "trigger": "living_death",
       "type": "attribute",
       "item": "tcc:huajie_zhiyan",
+      "description": {
+        "zh_cn": "凋灵死亡时+1虚数抗性（上限20）",
+        "en_us": "When Wither dies nearby, +1 Imaginary Resistance (cap 20)"
+      },
       "playerKilled": false,
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
@@ -182,6 +224,10 @@
       "trigger": "stat_polling",
       "type": "attribute",
       "item": "tcc:su",
+      "description": {
+        "zh_cn": "每赢得一次袭击，+4虚数抗性（上限20）",
+        "en_us": "Every raid won, +4 Imaginary Resistance (cap 20)"
+      },
       "stat": "minecraft:raid_win",
       "statThreshold": 1,
       "value": 4.0,
@@ -199,6 +245,10 @@
       "trigger": "gun_kill",
       "type": "attribute",
       "item": "tcc:juezhe",
+      "description": {
+        "zh_cn": "使用步枪击杀凋灵，每次+1虚数抗性（上限20）",
+        "en_us": "Kill Wither with rifle, +1 Imaginary Resistance per kill (cap 20)"
+      },
       "requirements": {
         "holdingGunTypes": [
           "rifle"

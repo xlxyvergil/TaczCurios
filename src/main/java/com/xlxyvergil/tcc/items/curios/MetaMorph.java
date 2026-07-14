@@ -34,6 +34,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MetaMorph extends BaseCurioItem {
 
@@ -130,11 +133,12 @@ public class MetaMorph extends BaseCurioItem {
         float imaginaryBonus = (float) (Math.round(attackDamage * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(attacker.level(), attacker),
+            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
             imaginaryBonus
         );
     }
 
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
@@ -156,9 +160,15 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
                 imaginaryDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
             }
         }
-        tooltip.add(Component.translatable("item.tcc.meta_morph.effect",
+        tooltip.add(Component.translatable("attribute.modifier.plus.0",
                 String.format("%.2f", attackFromHealth),
+                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("attribute.modifier.plus.1",
                 String.format("%.2f", lifeStealFromResistance),
+                Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
+                .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.meta_morph.special_damage",
                 String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));
 

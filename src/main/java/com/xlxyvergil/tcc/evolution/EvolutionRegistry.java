@@ -215,7 +215,7 @@ public final class EvolutionRegistry {
         String biome = normalize(json.biome);
         double statValue = json.statValue;
         return new Rule(ruleId, type, enabled, trigger, playerKilled, item, to, bindToPlayer, req, killGains, progress, linked, grant, killer, damageSourceTags, excludeKeys,
-                stat, statThreshold, biome, statValue);
+                stat, statThreshold, biome, statValue, json.description);
     }
 
     private static List<String> toStringList(List<String> json) {
@@ -476,11 +476,13 @@ public final class EvolutionRegistry {
         public final int statThreshold;
         public final String biome;
         public final double statValue;
+        public final Map<String, String> description;
 
         public Rule(String ruleId, RuleType type, boolean enabled, String trigger, boolean playerKilled, String item, String to, boolean bindToPlayer,
                     Requirements requirements, List<KillGain> kills, Progress progress, List<LinkedEvolve> requirementsRef,
                     Grant grant, EntityRef killer, List<String> damageSourceTags, List<String> excludeNbtKeys,
-                    String stat, int statThreshold, String biome, double statValue) {
+                    String stat, int statThreshold, String biome, double statValue,
+                    Map<String, String> description) {
             this.ruleId = Objects.requireNonNull(ruleId);
             this.type = Objects.requireNonNull(type);
             this.enabled = enabled;
@@ -501,6 +503,7 @@ public final class EvolutionRegistry {
             this.statThreshold = statThreshold;
             this.biome = biome;
             this.statValue = statValue;
+            this.description = description == null ? Collections.emptyMap() : Map.copyOf(description);
         }
     }
 
@@ -637,6 +640,8 @@ public final class EvolutionRegistry {
         String biome;
         @com.google.gson.annotations.SerializedName("value")
         double statValue;
+
+        Map<String, String> description;
     }
 
     private static final class RequirementsJson {
