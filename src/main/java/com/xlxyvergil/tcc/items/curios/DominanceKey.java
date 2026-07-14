@@ -148,9 +148,7 @@ public class DominanceKey extends BaseCurioItem {
                 imaginaryDamage = attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get();
             }
         }
-        tooltip.add(Component.translatable("attribute.modifier.plus.0",
-                String.format("%.2f", attackFromHealth),
-                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromHealth, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         tooltip.add(Component.translatable("item.tcc.dominance_key.special_damage",
                 String.format("%.2f", imaginaryDamage))

@@ -177,9 +177,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
         }
         double ammoPercent = resistance * TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get() * 100;
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%.0f", overheal),
-                Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(overheal, "%.0f", Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.AQUA));
         tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.special",
                 String.format("%.0f", ammoPercent),

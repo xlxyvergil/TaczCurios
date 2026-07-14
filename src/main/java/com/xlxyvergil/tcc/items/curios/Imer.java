@@ -104,9 +104,7 @@ public class Imer extends BaseCurioItem {
 
         tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.0",
-                String.format("%.2f", attackPerHealth),
-                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackPerHealth, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -5,6 +5,8 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.items.ItemBaseCurio;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -166,5 +168,14 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
                 tag.putDouble(progress.capCounterKey, 0.0);
             }
         }
+    }
+
+    /**
+     * 根据值正负生成属性修饰符 tooltip Component，复用 Apothic Attributes 的翻译键
+     */
+    protected static MutableComponent formatModifierTooltip(double value, String valueFormat, Component attrName) {
+        String formatted = String.format(valueFormat, value >= 0 ? value : -value);
+        String key = value >= 0 ? "attributeslib.modifier.plus" : "attributeslib.modifier.take";
+        return Component.translatable(key, formatted, attrName);
     }
 }

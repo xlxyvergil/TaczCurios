@@ -144,9 +144,7 @@ public class Su extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%.2f", maxHealthReduction),
-                Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.su.attr_damage_taken",
                 String.format("%.2f", damageTakenFactor))

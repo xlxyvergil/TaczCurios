@@ -97,9 +97,7 @@ public class QianjieYicheng extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.0",
-                String.valueOf(luck),
-                Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(luck, "%.0f%%", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -104,16 +104,12 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         int totalNearbyPlayerDamageBoost = (int)(perLevelBoost * (potionAmplifier + 1));
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();
         
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%+.0f", damageBoost),
-                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%+.0f", explosionDamageBoost),
-                Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.special",
-                String.format("%+.0f", nearbyPlayerRadius), 
+                String.format("%.0f", nearbyPlayerRadius), 
                 String.format("%+d", totalNearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration))
             .withStyle(ChatFormatting.RED));

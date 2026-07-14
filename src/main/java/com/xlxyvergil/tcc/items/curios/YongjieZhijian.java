@@ -136,17 +136,11 @@ public class YongjieZhijian extends BaseCurioItem {
         }
         String yzjCritChanceStr = String.format("%.0f", critChance);
         String yzjCritDamageStr = String.format("%.0f", critDamage);
-        tooltip.add(Component.translatable("attribute.modifier.plus.0",
-                String.valueOf(luck),
-                Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(luck, "%.0f%%", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                yzjCritChanceStr,
-                Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critChance, "%.0f", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                yzjCritDamageStr,
-                Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critDamage, "%.0f", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

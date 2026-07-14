@@ -135,9 +135,7 @@ public class TingzhiZhijian extends BaseCurioItem {
         double scalePercent = resistance * TaczCuriosConfig.COMMON.tingzhiZhijianAmmoResistanceScale.get();
         double totalPercent = (basePercent + scalePercent) * 100;
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%.0f", overheal),
-                Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(overheal, "%.0f", Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.AQUA));
         tooltip.add(Component.translatable("item.tcc.tingzhi_zhijian.special_ammo",
                 String.format("%.1f", totalPercent))

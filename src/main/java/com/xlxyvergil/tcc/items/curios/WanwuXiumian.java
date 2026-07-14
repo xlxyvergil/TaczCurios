@@ -119,9 +119,7 @@ public class WanwuXiumian extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%.0f", overheal),
-                Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(overheal, "%.0f", Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.AQUA));
         tooltip.add(Component.translatable("item.tcc.wanwu_xiumian.special_ammo",
                 String.format("%.0f", ammoRegen))

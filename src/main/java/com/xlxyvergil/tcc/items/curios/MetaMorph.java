@@ -160,13 +160,9 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
                 imaginaryDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
             }
         }
-        tooltip.add(Component.translatable("attribute.modifier.plus.0",
-                String.format("%.2f", attackFromHealth),
-                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromHealth, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("attribute.modifier.plus.1",
-                String.format("%.2f", lifeStealFromResistance),
-                Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(lifeStealFromResistance, "%.0f", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.meta_morph.special_damage",
                 String.format("%.2f", imaginaryDamage))
