@@ -6,12 +6,17 @@ import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.stats.Stats;
 
 import java.util.Optional;
 
@@ -75,11 +80,15 @@ public final class AchievementConditionMatcher {
             }
         }
 
+        // Check health range
+        if (c.healthMin() != null && player.getHealth() <= c.healthMin()) return false;
+        if (c.healthMax() != null && player.getHealth() >= c.healthMax()) return false;
+
         return true;
     }
 
     /**
-     * Check conditions for a death event (no gunId).
+     * Check conditions for a kill event (no gunId).
      */
     public static boolean matchesDeathConditions(Player player, LivingEntity killed,
                                                   Entity otherEntity, AchievementDefinitions.AchievementDef def) {
@@ -93,11 +102,44 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check killer entity type
+        // Check killer entity type (who killed the player)
         if (c.killer() != null) {
             if (otherEntity == null) return false;
             String killerKey = BuiltInRegistries.ENTITY_TYPE.getKey(otherEntity.getType()).toString();
             if (!c.killer().equals(killerKey)) return false;
+        }
+
+        // Check killed entity (what the player killed, for melee kills)
+        if (c.kills() != null && !c.kills().isEmpty() && killed != null) {
+            String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+            boolean matched = false;
+            for (AchievementDefinitions.KillCondition kc : c.kills()) {
+                if ("*".equals(kc.entity()) || killedKey.equals(kc.entity())) {
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) return false;
+        }
+
+        // Check stat threshold (for melee kill achievements that also require stat milestones)
+        if (c.stat() != null && player instanceof ServerPlayer sp) {
+            ResourceLocation statKey = ResourceLocation.tryParse(c.stat());
+            if (statKey == null) return false;
+            var stat = Stats.CUSTOM.get(statKey);
+            if (stat == null) return false;
+            if (sp.getStats().getValue(stat) < c.statThreshold()) return false;
+        }
+
+        // Check extra stat thresholds (for achievements requiring multiple stat checks)
+        if (c.extraStats() != null && player instanceof ServerPlayer sp2) {
+            for (AchievementDefinitions.StatCondition sc : c.extraStats()) {
+                ResourceLocation key = ResourceLocation.tryParse(sc.stat());
+                if (key == null) return false;
+                var s = Stats.CUSTOM.get(key);
+                if (s == null) return false;
+                if (sp2.getStats().getValue(s) < sc.statThreshold()) return false;
+            }
         }
 
         // Check attributes
@@ -108,6 +150,46 @@ public final class AchievementConditionMatcher {
                 double value = player.getAttributeValue(attr);
                 if (!compare(value, ac.comparator(), ac.value())) return false;
             }
+        }
+
+        // Check health range
+        if (c.healthMin() != null && player.getHealth() <= c.healthMin()) return false;
+        if (c.healthMax() != null && player.getHealth() >= c.healthMax()) return false;
+
+        return true;
+    }
+
+    /**
+     * Check conditions for a stat_polling / biome_visit event (no kill/death context).
+     * Checks equipped curios, attribute thresholds, and dimension.
+     */
+    public static boolean matchesStatBiomeConditions(Player player, AchievementDefinitions.AchievementDef def) {
+        AchievementDefinitions.AchievementConditions c = def.conditions();
+        if (c == null) return true;
+
+        // Check equipped curios
+        if (c.equippedCurios() != null) {
+            for (String curio : c.equippedCurios()) {
+                if (!LivingDeathEventHandler.hasEquipped(player, curio)) return false;
+            }
+        }
+
+        // Check attributes
+        if (c.attributes() != null) {
+            for (AchievementDefinitions.AttributeCondition ac : c.attributes()) {
+                Attribute attr = AttributeHelper.resolveAttribute(ac.attribute());
+                if (attr == null) return false;
+                double value = player.getAttributeValue(attr);
+                if (!compare(value, ac.comparator(), ac.value())) return false;
+            }
+        }
+
+        // Check dimension
+        if (c.dimension() != null) {
+            ResourceLocation rl = ResourceLocation.tryParse(c.dimension());
+            if (rl == null) return false;
+            ResourceKey<Level> target = ResourceKey.create(Registries.DIMENSION, rl);
+            if (player.level().dimension() != target) return false;
         }
 
         return true;

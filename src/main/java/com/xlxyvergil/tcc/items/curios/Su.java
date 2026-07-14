@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -54,8 +55,13 @@ public class Su extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                stack -> stack.getItem() instanceof Su);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.suImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            TaczCuriosConfig.COMMON.suImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.su.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
             TaczCuriosConfig.COMMON.suMaxHealthReduction.get(), MAX_HEALTH_UUID,

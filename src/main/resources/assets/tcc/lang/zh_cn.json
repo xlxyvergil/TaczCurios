@@ -119,40 +119,52 @@
   "item.tcc.heaven_fire_judgment.damage_conversion": "虚数伤害 %1$s%%（基础%2$s%% 抗性加成%3$s%%）",
 
   "advancement.tcc.tcc_root.title": "TACZ饰品",
-  "advancement.tcc.tcc_root.description": "十二英桀",
 
   "advancement.tcc.my_island.title": "我的小岛",
-  "advancement.tcc.my_island.description": "通过TACZ爆头击杀任意实体",
 
   "advancement.tcc.xiora_mission.title": "夜袭强敌",
-  "advancement.tcc.xiora_mission.description": "持有涤罪七雷，隐身状态下狙击爆头击杀任意实体",
 
   "advancement.tcc.thunder_seen.title": "雷光初现",
-  "advancement.tcc.thunder_seen.description": "持有涤罪七雷，使用狙击枪爆头击杀任意实体",
 
   "advancement.tcc.xiora_to_raven.title": "夜袭渡鸦",
-  "advancement.tcc.xiora_to_raven.description": "持有希奥拉，隐身状态下狙击击杀末影龙",
 
   "advancement.tcc.raven_to_island.title": "七雷召唤",
-  "advancement.tcc.raven_to_island.description": "持有夜袭渡鸦和雷光初现，虚数抗性>60，100格外狙击击杀末影龙",
 
   "advancement.tcc.summer_beach_grant.title": "凯文",
-  "advancement.tcc.summer_beach_grant.description": "持有天火圣裁，被凋零击杀",
 
   "advancement.tcc.summer_to_brahma.title": "进化：无烬之剑",
-  "advancement.tcc.summer_to_brahma.description": "持有凯文和天火劫灭，使用手枪击杀末影龙",
 
   "advancement.tcc.brahma_to_salvation.title": "进化：救赎",
-  "advancement.tcc.brahma_to_salvation.description": "持有无烬之剑和天火劫灭，虚数抗性>80，手枪击杀末影龙（2次）",
 
   "advancement.tcc.judgment_to_apocalypse.title": "进化：天火劫灭",
-  "advancement.tcc.judgment_to_apocalypse.description": "持有天火圣裁，虚数抗性≥40且流血结算未死亡",
 
   "advancement.tcc.judgement_key.title": "裁决",
-  "advancement.tcc.judgement_key.description": "获得裁决之键",
 
   "advancement.tcc.heaven_fire_apocalypse_endless.title": "劫灭无尽",
-  "advancement.tcc.heaven_fire_apocalypse_endless.description": "获得劫灭无尽",
+
+  "advancement.tcc.griseo_grant.title": "生命的色彩",
+
+  "advancement.tcc.qianjie_yicheng_grant.title": "千界一乘",
+
+  "advancement.tcc.griseo_to_huishi_zhijuan.title": "进化：绘世之卷",
+
+  "advancement.tcc.qianjie_to_yongjie_zhijian.title": "进化：永劫之键",
+
+  "advancement.tcc.huishi_to_fanxing.title": "进化：繁星·视界反演",
+
+  "advancement.tcc.shijie_fanyan_grant.title": "视界反演",
+
+  "advancement.tcc.kalpas_grant.title": "千劫",
+
+  "advancement.tcc.imer_grant.title": "伊默尔",
+
+  "advancement.tcc.kalpas_to_huajie_zhiyan.title": "进化：画界之言",
+
+  "advancement.tcc.imer_to_dominance_key.title": "进化：支配之键",
+
+  "advancement.tcc.huajie_to_aomie.title": "进化：鏖灭",
+
+  "advancement.tcc.meta_morph_grant.title": "Meta-Morph",
   
   "item.tcc.heaven_fire_judgment.how_to_obtain": "§7§o被%1$s击杀后获得凯文（绑定）；流血结算时虚数抗性≥40且未死亡则进化为天火劫灭",
   "item.tcc.heaven_fire_judgment.inflection_max": "§b虚数侵染上限: %1$s层",
@@ -553,5 +565,31 @@
 
   "item.tcc.yinguo_zhuanlun": "§4因果转轮",
   "item.tcc.yinguo_zhuanlun.effect": "超量治疗%1$.0f%%，每秒恢复%2$.0f%%弹药，攻击额外附加%3$.0f点虚数伤害",
-  "tcc.tooltip.bound": "已绑定至：%1$s"
+  "tcc.tooltip.bound": "已绑定至：%1$s",
+
+  "advancement.tcc.su_grant.title": "苏",
+
+  "advancement.tcc.wanwu_xiumian_grant.title": "万物休眠",
+
+  "advancement.tcc.juezhe_grant.title": "觉者",
+
+  "advancement.tcc.tingzhi_zhijian_grant.title": "停滞之键",
+
+  "advancement.tcc.tianhui_grant.title": "天慧",
+
+  "advancement.tcc.yinguo_zhuanlun_grant.title": "因果转轮",
+
+  "advancement.tcc.vill_v_grant.title": "VILL-V",
+
+  "advancement.tcc.xukong_wancang_grant.title": "虚空万藏",
+
+  "advancement.tcc.yuxi_zhixia_grant.title": "羽曦之匣",
+
+  "advancement.tcc.qishi_zhijian_grant.title": "启示之键",
+
+  "advancement.tcc.luoxuan_grant.title": "螺旋",
+
+  "advancement.tcc.xukong_wancang_yzth_grant.title": "虚空万藏·原始统括",
+
+  "stat.tcc.zombie_villager_cured": "治愈僵尸村民次数"
 }

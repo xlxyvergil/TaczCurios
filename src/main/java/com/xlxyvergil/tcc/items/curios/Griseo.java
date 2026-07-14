@@ -1,7 +1,10 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -11,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -24,11 +28,13 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Griseo extends BaseCurioItem {
 
     private static final String COOLDOWN_KEY = TaczCurios.MODID + ":griseo_hurt_cooldown";
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("c8d9e0f1-a2b3-4567-abcd-ef0123456790");
 
     public Griseo(Properties properties) {
         super(properties);
@@ -49,10 +55,19 @@ public class Griseo extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            total, IMAGINARY_RESISTANCE_UUID,
+            "tcc.griseo.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            IMAGINARY_RESISTANCE_UUID);
     }
 
     @Override
@@ -81,6 +96,11 @@ public class Griseo extends BaseCurioItem {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
             stack -> stack.getItem() instanceof Griseo).isEmpty();
+    }
+
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity,
+            stack -> stack.getItem() instanceof Griseo);
     }
 
     @SubscribeEvent

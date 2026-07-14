@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:yinguo_zhuanlun"
+    },
+    "title": {
+      "translate": "advancement.tcc.yinguo_zhuanlun_grant.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.yinguo_zhuanlun_grant.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:tingzhi_zhijian_grant",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

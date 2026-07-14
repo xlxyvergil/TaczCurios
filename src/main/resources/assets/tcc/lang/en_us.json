@@ -104,40 +104,52 @@
   "item.tcc.island_boom_raven.how_to_obtain": "§7§oEvolved from Raven",
 
   "advancement.tcc.tcc_root.title": "TACZ Curios",
-  "advancement.tcc.tcc_root.description": "The Twelve Herrschers",
 
   "advancement.tcc.my_island.title": "My Island",
-  "advancement.tcc.my_island.description": "Land TACZ headshot kills on any entity",
 
   "advancement.tcc.xiora_mission.title": "Night Raid",
-  "advancement.tcc.xiora_mission.description": "Land sniper headshot kills while invisible and holding Seven Thunders",
 
   "advancement.tcc.thunder_seen.title": "Thunder Seen",
-  "advancement.tcc.thunder_seen.description": "Land sniper headshot kills while holding Seven Thunders",
 
   "advancement.tcc.xiora_to_raven.title": "Night Raven",
-  "advancement.tcc.xiora_to_raven.description": "Kill the Ender Dragon with a sniper while holding Xiora and being invisible",
 
   "advancement.tcc.raven_to_island.title": "Seven Thunders Calling",
-  "advancement.tcc.raven_to_island.description": "Kill the Ender Dragon with a sniper from 100m+ while holding Night Raven & Thunder Seen with >60 imaginary resistance",
 
   "advancement.tcc.summer_beach_grant.title": "Kevin",
-  "advancement.tcc.summer_beach_grant.description": "Die to a Wither while holding Heaven Fire Judgment",
 
   "advancement.tcc.summer_to_brahma.title": "Evolution: Inexhaustible Sword",
-  "advancement.tcc.summer_to_brahma.description": "Kill the Ender Dragon with a pistol while holding Kevin and Heaven Fire Apocalypse",
 
   "advancement.tcc.brahma_to_salvation.title": "Evolution: Salvation",
-  "advancement.tcc.brahma_to_salvation.description": "Kill the Ender Dragon 2 times with a pistol while holding Inexhaustible Sword & Heaven Fire Apocalypse with >80 imaginary resistance",
 
   "advancement.tcc.judgment_to_apocalypse.title": "Evolution: Heaven Fire Apocalypse",
-  "advancement.tcc.judgment_to_apocalypse.description": "Survive bleeding settlement with ≥40 imaginary resistance while holding Heaven Fire Judgment",
 
   "advancement.tcc.judgement_key.title": "Judgement Key",
-  "advancement.tcc.judgement_key.description": "Obtain the Judgement Key",
 
   "advancement.tcc.heaven_fire_apocalypse_endless.title": "Apocalypse Endless",
-  "advancement.tcc.heaven_fire_apocalypse_endless.description": "Obtain Heaven Fire Apocalypse Endless",
+
+  "advancement.tcc.griseo_grant.title": "Colors of Life",
+
+  "advancement.tcc.qianjie_yicheng_grant.title": "Thousand Realms",
+
+  "advancement.tcc.griseo_to_huishi_zhijuan.title": "Evolution: Scroll of Painted World",
+
+  "advancement.tcc.qianjie_to_yongjie_zhijian.title": "Evolution: Key of Perpetuity",
+
+  "advancement.tcc.huishi_to_fanxing.title": "Evolution: Fanxing & World Inversion",
+
+  "advancement.tcc.shijie_fanyan_grant.title": "World Inversion",
+
+  "advancement.tcc.kalpas_grant.title": "Kalpas",
+
+  "advancement.tcc.imer_grant.title": "Imer",
+
+  "advancement.tcc.kalpas_to_huajie_zhiyan.title": "Evolution: Words of the Painted Realm",
+
+  "advancement.tcc.imer_to_dominance_key.title": "Evolution: Dominance Key",
+
+  "advancement.tcc.huajie_to_aomie.title": "Evolution: Annihilation",
+
+  "advancement.tcc.meta_morph_grant.title": "Meta-Morph",
   
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",
@@ -549,5 +561,31 @@
 
   "item.tcc.yinguo_zhuanlun": "§4Wheel of Causality",
   "item.tcc.yinguo_zhuanlun.effect": "Overheal %1$.0f%%, regen %2$.0f%% ammo/sec, bonus %3$.0f imaginary dmg on hit",
-  "tcc.tooltip.bound": "Bound to: %1$s"
+  "tcc.tooltip.bound": "Bound to: %1$s",
+
+  "advancement.tcc.su_grant.title": "Su",
+
+  "advancement.tcc.wanwu_xiumian_grant.title": "All Things Slumber",
+
+  "advancement.tcc.juezhe_grant.title": "The Enlightened One",
+
+  "advancement.tcc.tingzhi_zhijian_grant.title": "Key of Stagnation",
+
+  "advancement.tcc.tianhui_grant.title": "Heavenly Wisdom",
+
+  "advancement.tcc.yinguo_zhuanlun_grant.title": "Wheel of Causality",
+
+  "advancement.tcc.vill_v_grant.title": "VILL-V",
+
+  "advancement.tcc.xukong_wancang_grant.title": "Void Archives",
+
+  "advancement.tcc.yuxi_zhixia_grant.title": "Featherlight Casket",
+
+  "advancement.tcc.qishi_zhijian_grant.title": "Key of Revelation",
+
+  "advancement.tcc.luoxuan_grant.title": "Spiral",
+
+  "advancement.tcc.xukong_wancang_yzth_grant.title": "Void Archives - Primordial Synthesis",
+
+  "stat.tcc.zombie_villager_cured": "Zombie Villagers Cured"
 }

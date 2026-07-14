@@ -1,17 +1,3 @@
 {
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "java.import.gradle.enabled": true,
-    "java.import.gradle.arguments": "",
-    "java.autobuild.enabled": true,
-    "terminal.integrated.detectLocale": "on",
-    "files.autoGuessEncoding": false,
-    "files.encoding": "utf8",
-    "terminal.integrated.defaultProfile.windows": "PowerShell",
-    "terminal.integrated.profiles.windows": {
-        "PowerShell": {
-            "source": "PowerShell",
-            "args": ["-NoExit", "-Command", "$OutputEncoding = [Console]::OutputEncoding = [System.Text.Encoding]::UTF8"]
-        }
-    }
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx4G -Xms100m -Xlog:disable"
 }

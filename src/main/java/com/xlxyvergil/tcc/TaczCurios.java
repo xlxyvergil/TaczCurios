@@ -68,6 +68,9 @@ public class TaczCurios
             TccVillagers.registerTrades();
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
+
+            // 注册所有自定义统计
+            TccStats.register();
         });
     }
 

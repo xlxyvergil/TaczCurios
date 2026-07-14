@@ -86,6 +86,139 @@
           "value": 1.0
         }
       ]
+    },
+
+    "tcc_griseo_imaginary_from_days": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:griseo",
+      "stat": "minecraft:play_time",
+      "statThreshold": 48000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_griseo_imaginary"
+      }
+    },
+    "tcc_huishi_zhijuan_imaginary_from_days": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:huishi_zhijuan",
+      "stat": "minecraft:play_time",
+      "statThreshold": 48000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_huishi_zhijuan_imaginary"
+      }
+    },
+    "tcc_fanxing_imaginary_from_days": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:fanxing",
+      "stat": "minecraft:play_time",
+      "statThreshold": 48000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_fanxing_imaginary"
+      }
+    },
+
+    "tcc_kalpas_imaginary_from_melee": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:kalpas",
+      "stat": "minecraft:damage_dealt",
+      "statThreshold": 2000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_kalpas_imaginary"
+      }
+    },
+
+    "tcc_huajie_zhiyan_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:huajie_zhiyan",
+      "playerKilled": false,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_huajie_zhiyan_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 1.0
+        }
+      ]
+    },
+
+    "tcc_su_imaginary_from_raid": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:su",
+      "stat": "minecraft:raid_win",
+      "statThreshold": 1,
+      "value": 4.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_su_imaginary"
+      }
+    },
+
+    "tcc_juezhe_imaginary_from_wither_rifle": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:juezhe",
+      "requirements": {
+        "holdingGunTypes": [
+          "rifle"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_juezhe_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 1.0
+        }
+      ]
     }
   }
 }

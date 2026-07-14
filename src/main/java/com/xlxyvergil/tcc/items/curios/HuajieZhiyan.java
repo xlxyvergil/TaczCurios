@@ -8,6 +8,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -53,9 +54,13 @@ public class HuajieZhiyan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double resistance = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                stack -> stack.getItem() instanceof HuajieZhiyan);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            resistance, IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());

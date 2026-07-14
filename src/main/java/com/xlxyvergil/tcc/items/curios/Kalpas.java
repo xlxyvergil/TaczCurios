@@ -8,6 +8,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -50,8 +51,13 @@ public class Kalpas extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                stack -> stack.getItem() instanceof Kalpas);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.kalpas.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {

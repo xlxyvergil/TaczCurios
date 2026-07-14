@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:qishi_zhijian"
+    },
+    "title": {
+      "translate": "advancement.tcc.qishi_zhijian_grant.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.qishi_zhijian_grant.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:yuxi_zhixia_grant",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

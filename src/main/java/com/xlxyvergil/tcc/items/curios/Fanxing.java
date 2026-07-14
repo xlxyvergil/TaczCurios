@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -55,7 +56,10 @@ public class Fanxing extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             resistance, IMAGINARY_RESISTANCE_UUID,
             "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
@@ -112,6 +116,11 @@ public class Fanxing extends BaseCurioItem {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
             stack -> stack.getItem() instanceof Fanxing).isEmpty();
+    }
+
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity,
+            stack -> stack.getItem() instanceof Fanxing);
     }
 
     @SubscribeEvent

@@ -198,43 +198,11 @@ public final class AchievementDefinitions {
             return t != null ? t : id;
         }
 
-        /** Get display description for a locale, with %d and {entity}/{killer} placeholders filled */
+        /** Get display description for a locale, dynamically generated from conditions.
+         *  The %d placeholders are filled by caller with (current, total). */
         public String description(String locale, int current, int total) {
-            if (display == null || display.description == null) return "";
-            String fmt = display.description.get(locale);
-            if (fmt == null) fmt = display.description.get("en_us");
-            if (fmt == null) return "";
-
-            // Resolve {entity} placeholder
-            fmt = resolveEntityPlaceholder(fmt, locale);
-            // Resolve {killer} placeholder
-            fmt = resolveKillerPlaceholder(fmt, locale);
-
+            String fmt = DescriptionGenerator.generate(this, locale);
             return String.format(fmt, current, total);
-        }
-
-        private String resolveEntityPlaceholder(String fmt, String locale) {
-            if (!fmt.contains("{entity}")) return fmt;
-            String name = resolveFirstKillEntityName(locale);
-            return fmt.replace("{entity}", name);
-        }
-
-        private String resolveKillerPlaceholder(String fmt, String locale) {
-            if (!fmt.contains("{killer}")) return fmt;
-            String name = conditions != null && conditions.killer != null
-                    ? entityDisplayName(conditions.killer)
-                    : "?";
-            return fmt.replace("{killer}", name);
-        }
-
-        private String resolveFirstKillEntityName(String locale) {
-            if (conditions == null || conditions.kills == null || conditions.kills.isEmpty())
-                return "?";
-            String entityKey = conditions.kills.get(0).entity();
-            if ("*".equals(entityKey)) {
-                return "zh_cn".equals(locale) ? "任意实体" : "any entity";
-            }
-            return entityDisplayName(entityKey);
         }
     }
 
@@ -258,9 +226,22 @@ public final class AchievementDefinitions {
         String stat,
         @SerializedName("statThreshold") int statThreshold,
         // --- biome_visit ---
-        String biome
+        String biome,
+        String dimension,
+        // --- extra stats (for kill/death achievements that require multiple stat checks) ---
+        @SerializedName("extraStats") List<StatCondition> extraStats,
+        // --- health range (current HP check, e.g. healthMin: 0, healthMax: 4) ---
+        @SerializedName("healthMin") Double healthMin,
+        @SerializedName("healthMax") Double healthMax
     ) {
         /** stat 阈值，若 JSON 未设置则默认 1 */
+        public int statThreshold() { return statThreshold > 0 ? statThreshold : 1; }
+    }
+
+    public record StatCondition(
+        String stat,
+        @SerializedName("statThreshold") int statThreshold
+    ) {
         public int statThreshold() { return statThreshold > 0 ? statThreshold : 1; }
     }
 

@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -54,8 +55,12 @@ public class HuishiZhijuan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            TaczCuriosConfig.COMMON.griseoImaginaryResistance.get(), IMAGINARY_RESISTANCE_UUID,
+            total, IMAGINARY_RESISTANCE_UUID,
             "tcc.huishi_zhijuan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
     }
 
@@ -90,6 +95,11 @@ public class HuishiZhijuan extends BaseCurioItem {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
             stack -> stack.getItem() instanceof HuishiZhijuan).isEmpty();
+    }
+
+    private static ItemStack findEquippedStack(LivingEntity livingEntity) {
+        return CurioSearchHelper.findFirstEquippedStack(livingEntity,
+            stack -> stack.getItem() instanceof HuishiZhijuan);
     }
 
     @SubscribeEvent

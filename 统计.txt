@@ -1,0 +1,318 @@
+=== 统计信息列表 ===
+{| class="wikitable sortable" style="text-align:left"
+! width=150 | 统计名称
+! class="unsortable" | 描述
+! 命名空间ID
+|-
+| {{tp|stat.minecraft.animals_bred}}
+| 玩家通过给成对的动物喂食来使之[[繁殖]]的次数。
+| minecraft:animals_bred
+|-
+| {{tp|stat.minecraft.clean_armor}}
+| 玩家使用[[炼药锅]]洗去[[皮革盔甲]]染色的次数。
+| minecraft:clean_armor
+|-
+| {{tp|stat.minecraft.clean_banner}}
+| 玩家使用炼药锅洗去[[旗帜]]上的图案的次数。
+| minecraft:clean_banner
+|-
+| {{tp|stat.minecraft.bell_ring}}
+| 玩家敲响[[钟]]的次数。
+| minecraft:bell_ring
+|-
+| {{tp|stat.minecraft.eat_cake_slice}}
+| 玩家吃下的[[蛋糕]]片数。
+| minecraft:eat_cake_slice
+|-
+| {{tp|stat.minecraft.fill_cauldron}}
+| 玩家使用[[水桶]]将[[炼药锅]]装满的次数。
+| minecraft:fill_cauldron
+|-
+| {{tp|stat.minecraft.happy_ghast_one_cm}}
+| 玩家骑乘[[快乐恶魂]]移动的总距离。
+| minecraft:happy_ghast_one_cm
+|-
+| {{tp|stat.minecraft.open_chest}}
+| 玩家打开[[箱子]]的次数。
+| minecraft:open_chest
+|-
+| {{tp|stat.minecraft.damage_absorbed}}
+| 玩家吸收的[[伤害]]总量，单位为{{hp|1}}的{{frac|1|10}}。
+| minecraft:damage_absorbed
+|-
+| {{tp|stat.minecraft.damage_blocked_by_shield}}
+| 玩家使用[[盾牌]]抵挡的伤害总量，单位为{{hp|1}}的{{frac|1|10}}。
+| minecraft:damage_blocked_by_shield
+|-
+| {{tp|stat.minecraft.damage_dealt}}
+| 玩家造成的伤害总量，单位为{{hp|1}}的{{frac|1|10}}，只统计近战攻击造成的伤害。
+| minecraft:damage_dealt
+|-
+| {{tp|stat.minecraft.damage_dealt_absorbed}}
+| 玩家造成但被吸收的伤害总量，单位为{{hp|1}}的{{frac|1|10}}。
+| minecraft:damage_dealt_absorbed
+|-
+| {{tp|stat.minecraft.damage_dealt_resisted}}
+| 玩家造成但被抵挡的伤害总量，单位为{{hp|1}}的{{frac|1|10}}。
+| minecraft:damage_dealt_resisted
+|-
+| {{tp|stat.minecraft.damage_resisted}}
+| 玩家抵挡的伤害总量，单位为{{hp|1}}的{{frac|1|10}}。
+| minecraft:damage_resisted
+|-
+| {{tp|stat.minecraft.damage_taken}}
+| 玩家承受的伤害总量，单位为{{hp|1}}的{{frac|1|10}}。
+| minecraft:damage_taken
+|-
+| {{tp|stat.minecraft.inspect_dispenser}}
+| 玩家和[[发射器]]交互的次数。
+| minecraft:inspect_dispenser
+|-
+| {{tp|stat.minecraft.boat_one_cm}}
+| 玩家乘[[船]]移动的总距离。
+| minecraft:boat_one_cm
+|-
+| {{tp|stat.minecraft.aviate_one_cm}}
+| 玩家使用[[鞘翅]]滑行的总距离。
+| minecraft:aviate_one_cm
+|-
+| {{tp|stat.minecraft.horse_one_cm}}
+| 玩家骑[[马]]移动的总距离。
+| minecraft:horse_one_cm
+|-
+| {{tp|stat.minecraft.minecart_one_cm}}
+| 玩家乘[[矿车]]移动的总距离。
+| minecraft:minecart_one_cm
+|-
+| {{tp|stat.minecraft.nautilus_one_cm}}
+| 玩家骑[[鹦鹉螺]]移动的总距离。
+| minecraft:nautilus_one_cm
+|-
+| {{tp|stat.minecraft.pig_one_cm}}
+| 玩家用[[鞍]]骑[[猪]]移动的总距离。
+| minecraft:pig_one_cm
+|-
+| {{tp|stat.minecraft.strider_one_cm}}
+| 玩家用鞍骑[[炽足兽]]移动的总距离。
+| minecraft:strider_one_cm
+|-
+| {{tp|stat.minecraft.climb_one_cm}}
+| 玩家通过[[梯子]]或[[藤蔓]]向上移动的总距离。
+| minecraft:climb_one_cm
+|-
+| {{tp|stat.minecraft.crouch_one_cm}}
+| 玩家[[潜行]]时移动的总距离。
+| minecraft:crouch_one_cm
+|-
+| {{tp|stat.minecraft.fall_one_cm}}
+| 玩家坠落的总距离，[[跳跃]]不计算在内。若玩家单次坠落距离超过1格，则会统计该次坠落的距离。
+| minecraft:fall_one_cm
+|-
+| {{tp|stat.minecraft.fly_one_cm}}
+| 玩家同时向上、向前移动的总距离，玩家离地至少一格时移动的距离才会被统计。
+| minecraft:fly_one_cm
+|-
+| {{tp|stat.minecraft.sprint_one_cm}}
+| 玩家[[疾跑]]的总距离。
+| minecraft:sprint_one_cm
+|-
+| {{tp|stat.minecraft.swim_one_cm}}
+| 玩家[[游泳]]的总距离，在水下直立行走的距离不计算在内。
+| minecraft:swim_one_cm
+|-
+| {{tp|stat.minecraft.walk_one_cm}}
+| 玩家行走的总距离。
+| minecraft:walk_one_cm
+|-
+| {{tp|stat.minecraft.walk_on_water_one_cm}}
+| 玩家在[[水]]面上下游动的总距离。
+| minecraft:walk_on_water_one_cm
+|-
+| {{tp|stat.minecraft.walk_under_water_one_cm}}
+| 玩家在水下直立行走的总距离。
+| minecraft:walk_under_water_one_cm
+|-
+| {{tp|stat.minecraft.inspect_dropper}}
+| 玩家和[[投掷器]]交互的次数。
+| minecraft:inspect_dropper
+|-
+| {{tp|stat.minecraft.open_enderchest}}
+| 玩家打开[[末影箱]]的次数。
+| minecraft:open_enderchest
+|-
+| {{tp|stat.minecraft.fish_caught}}
+| 玩家捕到的鱼的总数。
+| minecraft:fish_caught
+|-
+| {{tp|stat.minecraft.leave_game}}
+| 玩家点击“保存并退回到标题画面”按钮的次数。
+| minecraft:leave_game
+|-
+| {{tp|stat.minecraft.inspect_hopper}}
+| 玩家和[[漏斗]]交互的次数。
+| minecraft:inspect_hopper
+|-
+| {{tp|stat.minecraft.interact_with_anvil}}
+| 玩家和[[铁砧]]交互的次数。
+| minecraft:interact_with_anvil
+|-
+| {{tp|stat.minecraft.interact_with_beacon}}
+| 玩家和[[信标]]交互的次数。
+| minecraft:interact_with_beacon
+|-
+| {{tp|stat.minecraft.interact_with_blast_furnace}}
+| 玩家和[[高炉]]交互的次数。
+| minecraft:interact_with_blast_furnace
+|-
+| {{tp|stat.minecraft.interact_with_brewingstand}}
+| 玩家和[[酿造台]]交互的次数。
+| minecraft:interact_with_brewingstand
+|-
+| {{tp|stat.minecraft.interact_with_campfire}}
+| 玩家和[[营火]]交互的次数。
+| minecraft:interact_with_campfire
+|-
+| {{tp|stat.minecraft.interact_with_cartography_table}}
+| 玩家和[[制图台]]交互的次数。
+| minecraft:interact_with_cartography_table
+|-
+| {{tp|stat.minecraft.interact_with_crafting_table}}
+| 玩家和[[工作台]]交互的次数。
+| minecraft:interact_with_crafting_table
+|-
+| {{tp|stat.minecraft.interact_with_furnace}}
+| 玩家和[[熔炉]]交互的次数。
+| minecraft:interact_with_furnace
+|-
+| {{tp|stat.minecraft.interact_with_grindstone}}
+| 玩家和[[砂轮]]交互的次数。
+| minecraft:interact_with_grindstone
+|-
+| {{tp|stat.minecraft.interact_with_lectern}}
+| 玩家和[[讲台]]交互的次数。
+| minecraft:interact_with_lectern
+|-
+| {{tp|stat.minecraft.interact_with_loom}}
+| 玩家和[[织布机]]交互的次数。
+| minecraft:interact_with_loom
+|-
+| {{tp|stat.minecraft.interact_with_smithing_table}}
+| 玩家和[[锻造台]]交互的次数。
+| minecraft:interact_with_smithing_table
+|-
+| {{tp|stat.minecraft.interact_with_smoker}}
+| 玩家和[[烟熏炉]]交互的次数。
+| minecraft:interact_with_smoker
+|-
+| {{tp|stat.minecraft.interact_with_stonecutter}}
+| 玩家和[[切石机]]交互的次数。
+| minecraft:interact_with_stonecutter
+|-
+| {{tp|stat.minecraft.drop}}
+| 玩家丢弃物品的次数。
+| minecraft:drop
+|-
+| {{tp|stat.minecraft.enchant_item}}
+| 玩家为物品使用[[附魔台]]附魔的次数。
+| minecraft:enchant_item
+|-
+| {{tp|stat.minecraft.jump}}
+| 玩家进行[[跳跃]]的次数。
+| minecraft:jump
+|-
+| {{tp|stat.minecraft.mob_kills}}
+| 玩家击杀的[[生物]]总数。
+| minecraft:mob_kills
+|-
+| {{tp|stat.minecraft.open_barrel}}
+| 玩家打开[[木桶]]的次数。
+| minecraft:open_barrel
+|-
+| {{tp|stat.minecraft.play_record}}
+| 玩家用[[唱片机]]播放[[音乐唱片]]的次数。
+| minecraft:play_record
+|-
+| {{tp|stat.minecraft.play_noteblock}}
+| 玩家击打[[音符盒]]的次数。
+| minecraft:play_noteblock
+|-
+| {{tp|stat.minecraft.tune_noteblock}}
+| 玩家和音符盒交互的次数。
+| minecraft:tune_noteblock
+|-
+| {{tp|stat.minecraft.deaths}}
+| 玩家死亡的次数。
+| minecraft:deaths
+|-
+| {{tp|stat.minecraft.pot_flower}}
+| 玩家将[[植物]]种进[[花盆]]的次数。
+| minecraft:pot_flower
+|-
+| {{tp|stat.minecraft.player_kills}}
+| 玩家（在开启PvP的[[服务器]]中）击杀的玩家总数，间接击杀的玩家不计算在内。
+| minecraft:player_kills
+|-
+| {{tp|stat.minecraft.raid_trigger}}
+| 玩家触发[[袭击]]的次数。
+| minecraft:raid_trigger
+|-
+| {{tp|stat.minecraft.raid_win}}
+| 玩家战胜袭击的次数。
+| minecraft:raid_win
+|-
+| {{tp|stat.minecraft.clean_shulker_box}}
+| 玩家使用[[炼药锅]]洗去[[潜影盒]]染色的次数。
+| minecraft:clean_shulker_box
+|-
+| {{tp|stat.minecraft.open_shulker_box}}
+| 玩家打开[[潜影盒]]的次数。
+| minecraft:open_shulker_box
+|-
+| {{tp|stat.minecraft.time_since_death}}
+| 玩家自上次死亡以来经过的游戏时长。
+| minecraft:time_since_death
+|-
+| {{tp|stat.minecraft.time_since_rest}}
+| 玩家自上次在[[床]]上睡眠以来经过的游戏时长，用于生成[[幻翼]]。
+| minecraft:time_since_rest
+|-
+| {{tp|stat.minecraft.sneak_time}}
+| 玩家[[潜行]]的时长。
+| minecraft:sneak_time
+|-
+| {{tp|stat.minecraft.talked_to_villager}}
+| 玩家和[[村民]]交互（打开其GUI）的次数。
+| minecraft:talked_to_villager
+|-
+| {{tp|stat.minecraft.target_hit}}
+| 玩家射中[[标靶]]的次数。
+| minecraft:target_hit
+|-
+| {{tp|stat.minecraft.play_time}}
+| 玩家在游戏中经过的时长。该项统计的展示单位有秒、分钟、小时和天，游戏会根据实际情况选择最合理的单位展示数据。游戏暂停时，统计也会随之暂停。
+| minecraft:play_time
+|-
+| {{tp|stat.minecraft.total_world_time}}
+| 玩家打开世界的总时长。该项统计的展示单位有秒、分钟、小时和天，游戏会根据实际情况选择最合理的单位展示数据。与游戏时长不同的是，该项即使在游戏暂停时也会进行统计。
+| minecraft:total_world_time
+|-
+| {{tp|stat.minecraft.sleep_in_bed}}
+| 玩家在床上睡觉的次数。
+| minecraft:sleep_in_bed
+|-
+| {{tp|stat.minecraft.sleep_in_straw_bed}}
+| 玩家在{{pa|Straw Bed|}}上睡觉的次数。
+| minecraft:sleep_in_straw_bed
+|-
+| {{tp|stat.minecraft.traded_with_villager}}
+| 玩家和村民进行[[交易]]的次数。
+| minecraft:traded_with_villager
+|-
+| {{tp|stat.minecraft.trigger_trapped_chest}}
+| 玩家打开[[陷阱箱]]的次数。
+| minecraft:trigger_trapped_chest
+|-
+| {{tp|stat.minecraft.use_cauldron}}
+| 玩家从炼药锅中装取水、熔岩和细雪的次数。<ref>{{bug|MC-204108}}</ref>
+| minecraft:use_cauldron
+|}

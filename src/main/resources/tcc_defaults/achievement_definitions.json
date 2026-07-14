@@ -7,10 +7,6 @@
           "zh_cn": "我的小岛",
           "en_us": "My Island"
         },
-        "description": {
-          "zh_cn": "通过TACZ爆头击杀{entity}（%d/%d）",
-          "en_us": "Land TACZ headshot kills on {entity} (%d/%d)"
-        },
         "icon": "tcc:seven_thunders",
         "frame": "goal",
         "hidden": false
@@ -38,10 +34,6 @@
         "title": {
           "zh_cn": "夜袭强敌",
           "en_us": "Night Raid"
-        },
-        "description": {
-          "zh_cn": "持有涤罪七雷，隐身状态下狙击爆头击杀{entity}（%d/%d）",
-          "en_us": "Land sniper headshot kills on {entity} while invisible and holding Seven Thunders (%d/%d)"
         },
         "icon": "tcc:xiora",
         "frame": "goal",
@@ -74,10 +66,6 @@
           "zh_cn": "雷光初现",
           "en_us": "Thunder Seen"
         },
-        "description": {
-          "zh_cn": "持有涤罪七雷，使用狙击枪爆头击杀{entity}（%d/%d）",
-          "en_us": "Land sniper headshot kills on {entity} while holding Seven Thunders (%d/%d)"
-        },
         "icon": "tcc:seven_thunders_thunder_seen",
         "frame": "task",
         "hidden": false
@@ -107,10 +95,6 @@
         "title": {
           "zh_cn": "夜袭渡鸦",
           "en_us": "Night Raven"
-        },
-        "description": {
-          "zh_cn": "持有希奥拉，隐身状态下狙击击杀{entity}",
-          "en_us": "Kill {entity} with a sniper while holding Xiora and being invisible"
         },
         "icon": "tcc:raven",
         "frame": "goal",
@@ -142,10 +126,6 @@
         "title": {
           "zh_cn": "七雷召唤",
           "en_us": "Seven Thunders Calling"
-        },
-        "description": {
-          "zh_cn": "持有夜袭渡鸦和雷光初现，虚数抗性>60，100格外狙击击杀{entity}",
-          "en_us": "Kill {entity} with a sniper from 100m+ while holding Night Raven & Thunder Seen with >60 imaginary resistance"
         },
         "icon": "tcc:island_boom_raven",
         "frame": "challenge",
@@ -185,10 +165,6 @@
           "zh_cn": "裁决",
           "en_us": "Judgement Key"
         },
-        "description": {
-          "zh_cn": "获得裁决之键",
-          "en_us": "Obtain the Judgement Key"
-        },
         "icon": "tcc:judgement_key",
         "frame": "goal",
         "hidden": false
@@ -207,10 +183,6 @@
         "title": {
           "zh_cn": "凯文",
           "en_us": "Kevin"
-        },
-        "description": {
-          "zh_cn": "持有天火圣裁，被{killer}击杀",
-          "en_us": "Die to {killer} while holding Heaven Fire Judgment"
         },
         "icon": "tcc:summer_beach",
         "frame": "goal",
@@ -240,10 +212,6 @@
           "zh_cn": "进化：天火劫灭",
           "en_us": "Evolution: Heaven Fire Apocalypse"
         },
-        "description": {
-          "zh_cn": "持有天火圣裁，虚数抗性≥40且流血结算未死亡",
-          "en_us": "Survive bleeding settlement with ≥40 imaginary resistance while holding Heaven Fire Judgment"
-        },
         "icon": "tcc:heaven_fire_apocalypse",
         "frame": "goal",
         "hidden": false
@@ -271,10 +239,6 @@
         "title": {
           "zh_cn": "进化：无烬之剑",
           "en_us": "Evolution: Inexhaustible Sword"
-        },
-        "description": {
-          "zh_cn": "持有凯文和天火劫灭，使用手枪击杀{entity}",
-          "en_us": "Kill {entity} with a pistol while holding Kevin and Heaven Fire Apocalypse"
         },
         "icon": "tcc:brahma_beasts",
         "frame": "goal",
@@ -304,10 +268,6 @@
         "title": {
           "zh_cn": "进化：救赎",
           "en_us": "Evolution: Salvation"
-        },
-        "description": {
-          "zh_cn": "持有无烬之剑和天火劫灭，虚数抗性>80，手枪击杀{entity}",
-          "en_us": "Kill {entity} with a pistol while holding Inexhaustible Sword & Heaven Fire Apocalypse with >80 imaginary resistance"
         },
         "icon": "tcc:salvation",
         "frame": "challenge",
@@ -345,15 +305,688 @@
           "zh_cn": "劫灭无尽",
           "en_us": "Apocalypse Endless"
         },
-        "description": {
-          "zh_cn": "获得劫灭无尽",
-          "en_us": "Obtain Heaven Fire Apocalypse Endless"
-        },
         "icon": "tcc:heaven_fire_apocalypse_endless",
         "frame": "goal",
         "hidden": false
       },
       "parent": "tcc:summer_to_brahma",
+      "trigger": "auto",
+      "criteria_count": 1,
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:griseo_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "生命的色彩",
+          "en_us": "Colors of Life"
+        },
+        "icon": "tcc:griseo",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "stat_polling",
+      "criteria_count": 200,
+      "conditions": {
+        "stat": "minecraft:animals_bred",
+        "statThreshold": 200
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:griseo",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:qianjie_yicheng_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "千界一乘",
+          "en_us": "Thousand Realms"
+        },
+        "icon": "tcc:qianjie_yicheng",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:griseo_grant",
+      "trigger": "biome_visit",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:griseo"],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:griseo_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:qianjie_yicheng",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:griseo_to_huishi_zhijuan": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：绘世之卷",
+          "en_us": "Evolution: Scroll of Painted World"
+        },
+        "icon": "tcc:huishi_zhijuan",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:qianjie_yicheng_grant",
+      "trigger": "stat_polling",
+      "criteria_count": 200,
+      "conditions": {
+        "equippedCurios": ["tcc:qianjie_yicheng"],
+        "stat": "minecraft:fish_caught",
+        "statThreshold": 200
+      },
+      "prerequisites": ["tcc:qianjie_yicheng_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:griseo",
+        "to": "tcc:huishi_zhijuan",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:qianjie_to_yongjie_zhijian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：永劫之键",
+          "en_us": "Evolution: Key of Perpetuity"
+        },
+        "icon": "tcc:yongjie_zhijian",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:griseo_to_huishi_zhijuan",
+      "trigger": "biome_visit",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:huishi_zhijuan"],
+        "dimension": "minecraft:the_end"
+      },
+      "prerequisites": ["tcc:griseo_to_huishi_zhijuan"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:qianjie_yicheng",
+        "to": "tcc:yongjie_zhijian",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:huishi_to_fanxing": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：繁星·视界反演",
+          "en_us": "Evolution: Fanxing & World Inversion"
+        },
+        "icon": "tcc:fanxing",
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:qianjie_to_yongjie_zhijian",
+      "trigger": "stat_polling",
+      "criteria_count": 2556500,
+      "conditions": {
+        "stat": "minecraft:aviate_one_cm",
+        "statThreshold": 2556500,
+        "attributes": [
+          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
+        ]
+      },
+      "prerequisites": ["tcc:griseo_to_huishi_zhijuan", "tcc:qianjie_to_yongjie_zhijian"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:huishi_zhijuan",
+        "to": "tcc:fanxing",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:yongjie_zhijian", "to": "tcc:shijie_fanyan" }
+        ],
+        "autoAchievements": ["tcc:shijie_fanyan_grant"]
+      }
+    },
+
+    "tcc:shijie_fanyan_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "视界反演",
+          "en_us": "World Inversion"
+        },
+        "icon": "tcc:shijie_fanyan",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:qianjie_to_yongjie_zhijian",
+      "trigger": "auto",
+      "criteria_count": 1,
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:kalpas_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "千劫",
+          "en_us": "Kalpas"
+        },
+        "icon": "tcc:kalpas",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "stat_polling",
+      "criteria_count": 10000,
+      "conditions": {
+        "stat": "minecraft:damage_dealt",
+        "statThreshold": 10000
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:kalpas",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:imer_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "伊默尔",
+          "en_us": "Imer"
+        },
+        "icon": "tcc:imer",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kalpas_grant",
+      "trigger": "stat_polling",
+      "criteria_count": 10000,
+      "conditions": {
+        "equippedCurios": ["tcc:kalpas"],
+        "stat": "minecraft:damage_taken",
+        "statThreshold": 10000
+      },
+      "prerequisites": ["tcc:kalpas_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:imer",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:kalpas_to_huajie_zhiyan": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：画界之言",
+          "en_us": "Evolution: Words of the Painted Realm"
+        },
+        "icon": "tcc:huajie_zhiyan",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:imer_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:imer"],
+        "stat": "minecraft:damage_dealt",
+        "statThreshold": 50000,
+        "kills": [
+          { "entity": "minecraft:wither", "value": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:imer_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:kalpas",
+        "to": "tcc:huajie_zhiyan",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:imer_to_dominance_key": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：支配之键",
+          "en_us": "Evolution: Dominance Key"
+        },
+        "icon": "tcc:dominance_key",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kalpas_to_huajie_zhiyan",
+      "trigger": "stat_polling",
+      "criteria_count": 1000,
+      "conditions": {
+        "equippedCurios": ["tcc:huajie_zhiyan"],
+        "stat": "minecraft:mob_kills",
+        "statThreshold": 1000
+      },
+      "prerequisites": ["tcc:kalpas_to_huajie_zhiyan"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:imer",
+        "to": "tcc:dominance_key",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:huajie_to_aomie": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：鏖灭",
+          "en_us": "Evolution: Annihilation"
+        },
+        "icon": "tcc:aomie",
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:imer_to_dominance_key",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:dominance_key"],
+        "stat": "minecraft:mob_kills",
+        "statThreshold": 5000,
+        "extraStats": [
+          { "stat": "minecraft:damage_taken", "statThreshold": 50000 }
+        ],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ],
+        "attributes": [
+          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 70.0 }
+        ]
+      },
+      "prerequisites": ["tcc:imer_to_dominance_key"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:huajie_zhiyan",
+        "to": "tcc:aomie",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:dominance_key", "to": "tcc:meta_morph" }
+        ],
+        "autoAchievements": ["tcc:meta_morph_grant"]
+      }
+    },
+
+    "tcc:meta_morph_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "Meta-Morph",
+          "en_us": "Meta-Morph"
+        },
+        "icon": "tcc:meta_morph",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:imer_to_dominance_key",
+      "trigger": "auto",
+      "criteria_count": 1,
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:su_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "苏",
+          "en_us": "Su"
+        },
+        "icon": "tcc:su",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "criteria_count": 100,
+      "conditions": {
+        "holdingGunTypes": ["rifle"],
+        "kills": [
+          { "entity": "minecraft:zombie", "value": 1 }
+        ]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:su",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:wanwu_xiumian_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "万物休眠",
+          "en_us": "All Things Slumber"
+        },
+        "icon": "tcc:wanwu_xiumian",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:su_grant",
+      "trigger": "stat_polling",
+      "criteria_count": 20,
+      "conditions": {
+        "equippedCurios": ["tcc:su"],
+        "stat": "tcc:zombie_villager_cured",
+        "statThreshold": 20
+      },
+      "prerequisites": ["tcc:su_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:wanwu_xiumian",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:juezhe_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "觉者",
+          "en_us": "The Enlightened One"
+        },
+        "icon": "tcc:juezhe",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:wanwu_xiumian_grant",
+      "trigger": "stat_polling",
+      "criteria_count": 10,
+      "conditions": {
+        "equippedCurios": ["tcc:wanwu_xiumian"],
+        "stat": "minecraft:raid_win",
+        "statThreshold": 10
+      },
+      "prerequisites": ["tcc:wanwu_xiumian_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:juezhe",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:tingzhi_zhijian_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "停滞之键",
+          "en_us": "Key of Stagnation"
+        },
+        "icon": "tcc:tingzhi_zhijian",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:juezhe_grant",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:juezhe"],
+        "holdingGunTypes": ["rifle"],
+        "kills": [
+          { "entity": "minecraft:wither", "value": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:juezhe_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:tingzhi_zhijian",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:tianhui_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "天慧",
+          "en_us": "Heavenly Wisdom"
+        },
+        "icon": "tcc:tianhui",
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:tingzhi_zhijian_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:tingzhi_zhijian"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ],
+        "healthMin": 0.0,
+        "healthMax": 4.0
+      },
+      "prerequisites": ["tcc:tingzhi_zhijian_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:tingzhi_zhijian",
+        "to": "tcc:yinguo_zhuanlun",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:juezhe", "to": "tcc:tianhui" }
+        ],
+        "autoAchievements": ["tcc:yinguo_zhuanlun_grant"]
+      }
+    },
+
+    "tcc:yinguo_zhuanlun_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "因果转轮",
+          "en_us": "Wheel of Causality"
+        },
+        "icon": "tcc:yinguo_zhuanlun",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tingzhi_zhijian_grant",
+      "trigger": "auto",
+      "criteria_count": 1,
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:vill_v_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "VILL-V",
+          "en_us": "VILL-V"
+        },
+        "icon": "tcc:vill_v",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "stat_polling",
+      "criteria_count": 200,
+      "conditions": {
+        "stat": "minecraft:interact_with_crafting_table",
+        "statThreshold": 200
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:vill_v",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:xukong_wancang_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "虚空万藏",
+          "en_us": "Void Archives"
+        },
+        "icon": "tcc:xukong_wancang",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:vill_v_grant",
+      "trigger": "stat_polling",
+      "criteria_count": 200,
+      "conditions": {
+        "equippedCurios": ["tcc:vill_v"],
+        "stat": "minecraft:traded_with_villager",
+        "statThreshold": 200
+      },
+      "prerequisites": ["tcc:vill_v_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:xukong_wancang",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:yuxi_zhixia_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "羽曦之匣",
+          "en_us": "Featherlight Casket"
+        },
+        "icon": "tcc:yuxi_zhixia",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:xukong_wancang_grant",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:xukong_wancang"],
+        "holdingGunTypes": ["rpg", "mg"],
+        "kills": [
+          { "entity": "minecraft:wither", "value": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:xukong_wancang_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:yuxi_zhixia",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:qishi_zhijian_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "启示之键",
+          "en_us": "Key of Revelation"
+        },
+        "icon": "tcc:qishi_zhijian",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:yuxi_zhixia_grant",
+      "trigger": "gun_kill",
+      "criteria_count": 1,
+      "conditions": {
+        "equippedCurios": ["tcc:yuxi_zhixia"],
+        "holdingGunTypes": ["rpg", "mg"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "value": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:yuxi_zhixia_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:qishi_zhijian",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:luoxuan_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "螺旋",
+          "en_us": "Spiral"
+        },
+        "icon": "tcc:luoxuan",
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:qishi_zhijian_grant",
+      "trigger": "stat_polling",
+      "criteria_count": 864000,
+      "conditions": {
+        "equippedCurios": ["tcc:qishi_zhijian"],
+        "stat": "minecraft:time_since_death",
+        "statThreshold": 864000,
+        "attributes": [
+          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
+        ]
+      },
+      "prerequisites": ["tcc:qishi_zhijian_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:qishi_zhijian",
+        "to": "tcc:xukong_wancang_yzth",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:xukong_wancang", "to": "tcc:luoxuan" }
+        ],
+        "autoAchievements": ["tcc:xukong_wancang_yzth_grant"]
+      }
+    },
+
+    "tcc:xukong_wancang_yzth_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "虚空万藏·原始统括",
+          "en_us": "Void Archives - Primordial Synthesis"
+        },
+        "icon": "tcc:xukong_wancang_yzth",
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:qishi_zhijian_grant",
       "trigger": "auto",
       "criteria_count": 1,
       "conditions": null,

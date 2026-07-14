@@ -97,6 +97,17 @@ public final class EvolutionRegistry {
         return List.copyOf(out);
     }
 
+    public static List<Rule> getRulesByType(RuleType type) {
+        loadOnce();
+        List<Rule> out = new ArrayList<>();
+        for (Rule rule : RULES.values()) {
+            if (rule.type == type) {
+                out.add(rule);
+            }
+        }
+        return List.copyOf(out);
+    }
+
     public static List<KillRequirement> getKillRequirementsOrEmpty(String ruleId) {
         loadOnce();
         return getRule(ruleId).map(r -> r.requirements.kills).orElse(Collections.emptyList());
@@ -199,7 +210,12 @@ public final class EvolutionRegistry {
         List<LinkedEvolve> linked = toLinkedEvolves(json.requirementsRef);
         List<String> damageSourceTags = toStringList(json.damageSourceTags);
         List<String> excludeKeys = json.excludeNbtKeys == null ? Collections.emptyList() : List.copyOf(json.excludeNbtKeys);
-        return new Rule(ruleId, type, enabled, trigger, playerKilled, item, to, bindToPlayer, req, killGains, progress, linked, grant, killer, damageSourceTags, excludeKeys);
+        String stat = normalize(json.stat);
+        int statThreshold = Math.max(json.statThreshold, 0);
+        String biome = normalize(json.biome);
+        double statValue = json.statValue;
+        return new Rule(ruleId, type, enabled, trigger, playerKilled, item, to, bindToPlayer, req, killGains, progress, linked, grant, killer, damageSourceTags, excludeKeys,
+                stat, statThreshold, biome, statValue);
     }
 
     private static List<String> toStringList(List<String> json) {
@@ -455,9 +471,16 @@ public final class EvolutionRegistry {
         public final List<String> damageSourceTags;
         public final List<String> excludeNbtKeys;
 
+        // stat_polling / biome_visit 专用字段
+        public final String stat;
+        public final int statThreshold;
+        public final String biome;
+        public final double statValue;
+
         public Rule(String ruleId, RuleType type, boolean enabled, String trigger, boolean playerKilled, String item, String to, boolean bindToPlayer,
                     Requirements requirements, List<KillGain> kills, Progress progress, List<LinkedEvolve> requirementsRef,
-                    Grant grant, EntityRef killer, List<String> damageSourceTags, List<String> excludeNbtKeys) {
+                    Grant grant, EntityRef killer, List<String> damageSourceTags, List<String> excludeNbtKeys,
+                    String stat, int statThreshold, String biome, double statValue) {
             this.ruleId = Objects.requireNonNull(ruleId);
             this.type = Objects.requireNonNull(type);
             this.enabled = enabled;
@@ -474,6 +497,10 @@ public final class EvolutionRegistry {
             this.killer = killer;
             this.damageSourceTags = Objects.requireNonNull(damageSourceTags);
             this.excludeNbtKeys = Objects.requireNonNull(excludeNbtKeys);
+            this.stat = stat;
+            this.statThreshold = statThreshold;
+            this.biome = biome;
+            this.statValue = statValue;
         }
     }
 
@@ -603,6 +630,13 @@ public final class EvolutionRegistry {
         ProgressJson progress;
         List<String> excludeNbtKeys;
         String ruleId;
+
+        // stat_polling / biome_visit 专用字段
+        String stat;
+        int statThreshold;
+        String biome;
+        @com.google.gson.annotations.SerializedName("value")
+        double statValue;
     }
 
     private static final class RequirementsJson {

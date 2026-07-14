@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:yongjie_zhijian"
+    },
+    "title": {
+      "translate": "advancement.tcc.qianjie_to_yongjie_zhijian.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.qianjie_to_yongjie_zhijian.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:griseo_to_huishi_zhijuan",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}
