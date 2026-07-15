@@ -171,7 +171,7 @@ public class HuajieZhiyan extends BaseCurioItem {
                 healthFromResistance = resistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get();
             }
         }
-        tooltip.add(formatModifierTooltip(healthFromResistance, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(healthFromResistance, "%.1f", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.translatable("item.tcc.huajie_zhiyan.special_adapt",

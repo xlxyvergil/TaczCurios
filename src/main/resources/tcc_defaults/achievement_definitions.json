@@ -887,8 +887,8 @@
         },
         "icon": "tcc:tianhui",
         "description": {
-          "zh_cn": "佩戴停滞之键，击杀末影龙，血量低于2心",
-          "en_us": "Kill the Ender Dragon while wearing Key of Stagnation with less than 2 hearts"
+          "zh_cn": "佩戴停滞之键，击杀末影龙，血量低于4心",
+          "en_us": "Kill the Ender Dragon while wearing Key of Stagnation with less than 4 hearts"
         },
         "frame": "challenge",
         "hidden": false
@@ -902,8 +902,7 @@
         "kills": [
           { "entity": "minecraft:ender_dragon", "value": 1 }
         ],
-        "healthMin": 0.0,
-        "healthMax": 4.0
+        "healthMax": 8.0
       },
       "prerequisites": ["tcc:tingzhi_zhijian_grant"],
       "reward": {

@@ -165,7 +165,7 @@ public class AoMie extends BaseCurioItem {
                 healthFromResistance = resistance * TaczCuriosConfig.COMMON.aoMieHealthPerResistance.get();
             }
         }
-        tooltip.add(formatModifierTooltip(healthFromResistance, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(healthFromResistance, "%.1f", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("item.tcc.aomie.special_adapt",

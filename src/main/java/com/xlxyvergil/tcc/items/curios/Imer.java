@@ -51,10 +51,10 @@ public class Imer extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.imerAttackPerHealth.get() * 100.0) / 100.0;
+            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.imerAttackPerHealth.get());
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
-                "tcc.imer.attack_damage", AttributeModifier.Operation.ADDITION);
+                "tcc.imer.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             removeEffects(livingEntity);
         }
@@ -104,7 +104,7 @@ public class Imer extends BaseCurioItem {
 
         tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
-        tooltip.add(formatModifierTooltip(attackPerHealth, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackPerHealth * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

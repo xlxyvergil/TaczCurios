@@ -64,10 +64,10 @@ public class MetaMorph extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get() * 100.0) / 100.0;
+            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get());
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
-                "tcc.meta_morph.attack_damage", AttributeModifier.Operation.ADDITION);
+                "tcc.meta_morph.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
 
             double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 100.0) / 100.0;
@@ -160,9 +160,9 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
                 imaginaryDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
             }
         }
-        tooltip.add(formatModifierTooltip(attackFromHealth, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(formatModifierTooltip(lifeStealFromResistance, "%.0f%%", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(lifeStealFromResistance, "+%.2f", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.meta_morph.special_damage",
                 String.format("%.2f", imaginaryDamage))

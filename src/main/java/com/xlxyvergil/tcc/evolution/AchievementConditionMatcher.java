@@ -80,9 +80,8 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check health range
-        if (c.healthMin() != null && player.getHealth() <= c.healthMin()) return false;
-        if (c.healthMax() != null && player.getHealth() >= c.healthMax()) return false;
+        // Check health max (player health must be <= healthMax)
+        if (c.healthMax() != null && player.getHealth() > c.healthMax()) return false;
 
         return true;
     }
@@ -160,9 +159,8 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check health range
-        if (c.healthMin() != null && player.getHealth() <= c.healthMin()) return false;
-        if (c.healthMax() != null && player.getHealth() >= c.healthMax()) return false;
+        // Check health max (player health must be <= healthMax)
+        if (c.healthMax() != null && player.getHealth() > c.healthMax()) return false;
 
         return true;
     }

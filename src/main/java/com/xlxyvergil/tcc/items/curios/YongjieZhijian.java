@@ -123,15 +123,13 @@ public class YongjieZhijian extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         int luck = TaczCuriosConfig.COMMON.yongjieZhijianLuck.get();
-        double critChance = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100;
-        double critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100;
-        String yzjCritChanceStr = String.format("%.0f", critChance);
-        String yzjCritDamageStr = String.format("%.0f", critDamage);
+        double critChance = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get();
+        double critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get();
         tooltip.add(formatModifierTooltip(luck, "%.0f", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(formatModifierTooltip(critChance, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critChance, "%.2f", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(formatModifierTooltip(critDamage, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critDamage, "%.2f", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
