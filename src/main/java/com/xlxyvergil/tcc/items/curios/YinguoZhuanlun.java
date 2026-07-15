@@ -187,7 +187,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
-            .withStyle(ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift").withStyle(ChatFormatting.RED));

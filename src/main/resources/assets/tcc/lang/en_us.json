@@ -459,5 +459,8 @@
   "advancement.tcc.luoxuan_grant.description": "I once prepared a magic trick to make an entire continent disappear, but... someone beat me to it.",
   "advancement.tcc.xukong_wancang_yzth_grant.title": "Void Archives - Primordial Synthesis",
   "advancement.tcc.xukong_wancang_yzth_grant.description": "Anti-Kevin Weapon 666",
-  "stat.tcc.zombie_villager_cured": "Zombie Villagers Cured"
+  "stat.tcc.zombie_villager_cured": "Zombie Villagers Cured",
+  "tcc.tooltip.affected_by_imaginary_resistance": "§7Effect is affected by Imaginary Resistance",
+  "tcc.tooltip.affected_by_luck": "§7Effect is affected by Luck",
+  "tcc.tooltip.affected_by_max_health": "§7Effect is affected by Max Health"
 }

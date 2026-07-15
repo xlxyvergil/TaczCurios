@@ -161,7 +161,7 @@ public class Tianhui extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
-            .withStyle(ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift")

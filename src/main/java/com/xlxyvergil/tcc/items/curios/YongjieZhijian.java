@@ -133,7 +133,7 @@ public class YongjieZhijian extends BaseCurioItem {
                 .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_luck")
-            .withStyle(ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));

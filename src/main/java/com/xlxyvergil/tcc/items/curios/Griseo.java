@@ -143,7 +143,7 @@ public class Griseo extends BaseCurioItem {
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
 
-        double hurtCooldownSecs = TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get();
+        int hurtCooldownSecs = TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get();
 
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));

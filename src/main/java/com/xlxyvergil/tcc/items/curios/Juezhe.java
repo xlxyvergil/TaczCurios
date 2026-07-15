@@ -145,10 +145,10 @@ public class Juezhe extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
+                .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.juezhe.attr_damage_taken",
                 String.format("%.2f", damageTakenFactor))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic")

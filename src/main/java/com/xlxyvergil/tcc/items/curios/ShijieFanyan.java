@@ -240,7 +240,7 @@ public class ShijieFanyan extends BaseCurioItem {
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_luck")
-            .withStyle(ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));

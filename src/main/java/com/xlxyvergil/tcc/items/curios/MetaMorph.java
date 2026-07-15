@@ -174,11 +174,11 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
         tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health")
-                .withStyle(ChatFormatting.GRAY));
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
         tooltip.add(formatModifierTooltip(lifeStealFromResistance, "%.2f", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
-                .withStyle(ChatFormatting.GRAY));
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
         tooltip.add(Component.translatable("item.tcc.meta_morph.special_damage",
                 String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));

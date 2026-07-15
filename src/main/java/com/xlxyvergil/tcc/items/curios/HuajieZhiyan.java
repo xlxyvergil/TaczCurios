@@ -172,16 +172,16 @@ public class HuajieZhiyan extends BaseCurioItem {
             }
         }
         tooltip.add(formatModifierTooltip(healthFromResistance, "%.1f", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
+                .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("item.tcc.huajie_zhiyan.special_adapt",
                 maxSlots,
                 String.format("%.2f", adaptFactor),
                 decaySeconds)
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
-            .withStyle(ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));

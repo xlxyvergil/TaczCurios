@@ -154,13 +154,13 @@ public class DominanceKey extends BaseCurioItem {
             }
         }
         tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
+                .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.dominance_key.special_damage",
                 String.format("%.2f", imaginaryDamage))
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health")
-            .withStyle(ChatFormatting.GRAY));
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
