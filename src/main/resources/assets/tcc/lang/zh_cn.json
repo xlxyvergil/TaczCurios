@@ -457,7 +457,7 @@
   "advancement.tcc.xukong_wancang_yzth_grant.title": "虚空万藏·原始统括",
   "advancement.tcc.xukong_wancang_yzth_grant.description": "对凯文武装·666",
   "stat.tcc.zombie_villager_cured": "治愈僵尸村民次数",
-  "tcc.tooltip.affected_by_imaginary_resistance": "§7效果受到虚数抗性影响",
-  "tcc.tooltip.affected_by_luck": "§7效果受到幸运值影响",
-  "tcc.tooltip.affected_by_max_health": "§7效果受到最大生命值影响"
+  "tcc.tooltip.affected_by_imaginary_resistance": "效果受到虚数抗性影响",
+  "tcc.tooltip.affected_by_luck": "效果受到幸运值影响",
+  "tcc.tooltip.affected_by_max_health": "效果受到最大生命值影响"
 }
