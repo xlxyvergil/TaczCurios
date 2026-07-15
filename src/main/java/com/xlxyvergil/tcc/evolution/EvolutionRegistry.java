@@ -169,18 +169,60 @@ public final class EvolutionRegistry {
     }
 
     private static void ensureDefaults(Path file) {
-        copyDefaultIfMissing(file);
+        if (Files.exists(file)) {
+            mergeDefaults(file);
+        } else {
+            copyDefaults(file);
+        }
     }
 
-    private static void copyDefaultIfMissing(Path file) {
-        if (Files.exists(file)) {
-            return;
-        }
+    private static void copyDefaults(Path file) {
         try (InputStream in = EvolutionRegistry.class.getResourceAsStream(DEFAULT_RESOURCE)) {
             if (in == null) {
                 return;
             }
             Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ignored) {
+        }
+    }
+
+    /**
+     * 合并默认规则到已有配置文件：仅追加新 key，不修改已存在的条目。
+     * 用户自定义的修改和排序得到保留，mod 更新带来的新规则自动追加。
+     */
+    private static void mergeDefaults(Path file) {
+        try {
+            // 读取默认 JSON
+            JsonObject defaultRoot;
+            try (InputStream in = EvolutionRegistry.class.getResourceAsStream(DEFAULT_RESOURCE)) {
+                if (in == null) return;
+                defaultRoot = JsonParser.parseReader(new java.io.InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
+            }
+
+            // 读取用户 JSON
+            String userJson = Files.readString(file, StandardCharsets.UTF_8);
+            JsonObject userRoot = JsonParser.parseString(userJson).getAsJsonObject();
+
+            JsonElement defaultRules = defaultRoot.get("rules");
+            if (defaultRules == null || !defaultRules.isJsonObject()) return;
+
+            JsonObject userRules = userRoot.getAsJsonObject("rules");
+            if (userRules == null) {
+                userRules = new JsonObject();
+                userRoot.add("rules", userRules);
+            }
+
+            boolean added = false;
+            for (var entry : defaultRules.getAsJsonObject().entrySet()) {
+                if (!userRules.has(entry.getKey())) {
+                    userRules.add(entry.getKey(), entry.getValue());
+                    added = true;
+                }
+            }
+
+            if (added) {
+                Files.writeString(file, GSON.toJson(userRoot), StandardCharsets.UTF_8);
+            }
         } catch (IOException ignored) {
         }
     }

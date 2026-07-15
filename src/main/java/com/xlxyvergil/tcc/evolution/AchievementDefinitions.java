@@ -96,7 +96,13 @@ public final class AchievementDefinitions {
     public static boolean isLoaded() { return loaded; }
 
     private static boolean ensureDefaults(Path file) {
-        if (Files.exists(file)) return true;
+        if (Files.exists(file)) {
+            return mergeDefaults(file);
+        }
+        return copyDefaults(file);
+    }
+
+    private static boolean copyDefaults(Path file) {
         try (InputStream in = AchievementDefinitions.class.getResourceAsStream(DEFAULT_RESOURCE)) {
             if (in == null) {
                 LOGGER.error("Default achievement definitions resource not found: {}", DEFAULT_RESOURCE);
@@ -107,6 +113,51 @@ public final class AchievementDefinitions {
         } catch (IOException e) {
             LOGGER.error("Failed to copy default achievement definitions to {}", file, e);
             return false;
+        }
+    }
+
+    /**
+     * 合并默认成就定义到已有配置文件：仅追加新 key，不修改已存在的条目。
+     * 用户自定义的修改和排序得到保留，mod 更新带来的新成就自动追加。
+     */
+    private static boolean mergeDefaults(Path file) {
+        try {
+            JsonObject defaultRoot;
+            try (InputStream in = AchievementDefinitions.class.getResourceAsStream(DEFAULT_RESOURCE)) {
+                if (in == null) {
+                    LOGGER.error("Default achievement definitions resource not found: {}", DEFAULT_RESOURCE);
+                    return false;
+                }
+                defaultRoot = JsonParser.parseReader(new java.io.InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
+            }
+
+            String userJson = Files.readString(file, StandardCharsets.UTF_8);
+            JsonObject userRoot = JsonParser.parseString(userJson).getAsJsonObject();
+
+            JsonElement defaultAchievements = defaultRoot.get("achievements");
+            if (defaultAchievements == null || !defaultAchievements.isJsonObject()) return true;
+
+            JsonObject userAchievements = userRoot.getAsJsonObject("achievements");
+            if (userAchievements == null) {
+                userAchievements = new JsonObject();
+                userRoot.add("achievements", userAchievements);
+            }
+
+            boolean added = false;
+            for (var entry : defaultAchievements.getAsJsonObject().entrySet()) {
+                if (!userAchievements.has(entry.getKey())) {
+                    userAchievements.add(entry.getKey(), entry.getValue());
+                    added = true;
+                }
+            }
+
+            if (added) {
+                Files.writeString(file, GSON.toJson(userRoot), StandardCharsets.UTF_8);
+            }
+            return true;
+        } catch (IOException e) {
+            LOGGER.error("Failed to merge default achievement definitions", e);
+            return true; // 已有文件仍然可用
         }
     }
 

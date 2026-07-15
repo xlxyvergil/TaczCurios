@@ -67,11 +67,11 @@ public class SevenThunders extends BaseCurioItem {
         String stHeadshotStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100);
         String stCritChanceStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100);
         String stCritDamageStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100);
-        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100, "%.0f", Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100, "%.0f", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100, "%.0f", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -10,7 +10,6 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -145,7 +144,6 @@ public class Tianhui extends BaseCurioItem {
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         double maxHealthReduction = TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100;
-        double minDamageFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100;
         tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.GOLD));
 
@@ -154,23 +152,12 @@ public class Tianhui extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        double resistance = TaczCuriosConfig.COMMON.suImaginaryResistance.get();
-        double computedDamageLimit = 0;
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && isEquipped(player)) {
-                double actualResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                double factor = 1.0 - (actualResistance * TaczCuriosConfig.COMMON.tianhuiResistanceScale.get());
-                double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();
-                computedDamageLimit = Math.max(minFactor, factor) * 100;
-            }
-        }
-        tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
+        tooltip.add(Component.literal(""));
+        tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(Component.translatable("item.tcc.tianhui.special_damage_limit",
-                (int)computedDamageLimit,
-                String.format("%.2f", minDamageFactor))
+        int minDamagePercent = (int)(TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100);
+        tooltip.add(Component.translatable("item.tcc.tianhui.special_damage_limit", minDamagePercent)
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

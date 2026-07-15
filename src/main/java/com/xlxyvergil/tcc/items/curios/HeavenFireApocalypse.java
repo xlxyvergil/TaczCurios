@@ -132,11 +132,11 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         int potionAmplifier = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get();
         int totalNearbyPlayerDamageBoost = nearbyPlayerDamageBoost * (potionAmplifier + 1);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
-        tooltip.add(formatModifierTooltip(damageBoost, "%.0f", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionRadiusBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_RADIUS.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.special",
                 String.format("%.0f", healthCost),

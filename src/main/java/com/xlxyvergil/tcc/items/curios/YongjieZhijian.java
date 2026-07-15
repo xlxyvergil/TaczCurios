@@ -5,7 +5,6 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -123,24 +122,16 @@ public class YongjieZhijian extends BaseCurioItem {
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
-        int luck = 0;
-        double critChance = 0;
-        double critDamage = 0;
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
-                critChance = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100;
-                critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100;
-            }
-        }
+        int luck = TaczCuriosConfig.COMMON.yongjieZhijianLuck.get();
+        double critChance = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100;
+        double critDamage = luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100;
         String yzjCritChanceStr = String.format("%.0f", critChance);
         String yzjCritDamageStr = String.format("%.0f", critDamage);
-        tooltip.add(formatModifierTooltip(luck, "%.0f%%", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(luck, "%.0f", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(formatModifierTooltip(critChance, "%.0f", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critChance, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(formatModifierTooltip(critDamage, "%.0f", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critDamage, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

@@ -115,7 +115,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get() * 100;
         double bleedingDamagePerLevel = TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.get() * 100;
         int bleedingDuration = TaczCuriosConfig.COMMON.heavenFireBleedingDuration.get();
-        tooltip.add(formatModifierTooltip(damageBoost, "%.0f", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.special",
                 String.format("%+.0f", healthCost), 

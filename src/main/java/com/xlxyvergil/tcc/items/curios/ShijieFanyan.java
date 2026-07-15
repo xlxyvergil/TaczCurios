@@ -226,11 +226,11 @@ public class ShijieFanyan extends BaseCurioItem {
         String sfCritChanceStr = String.format("%.0f", critChance);
         String sfCritDamageStr = String.format("%.0f", critDamage);
         String sfCollapseStr = String.format("%.1f", collapseChance);
-        tooltip.add(formatModifierTooltip(luck, "%.0f%%", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(luck, "%.0f", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(formatModifierTooltip(critChance, "%.0f", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critChance, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(formatModifierTooltip(critDamage, "%.0f", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(critDamage, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.shijie_fanyan.special",
                 luck, sfCritChanceStr, sfCritDamageStr, sfCollapseStr)

@@ -165,13 +165,13 @@ public class IslandBoomRaven extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
             .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(formatModifierTooltip(armorBoost, "%.0f", Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(armorBoost, "%.0f%%", Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(formatModifierTooltip(speedBoost, "%.0f", Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%", Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE.get().getDescriptionId()))
+        tooltip.add(formatModifierTooltip(total, "%.0f%%", Component.translatable(TccAttributes.IMAGINARY_DAMAGE.get().getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.attr_regen")

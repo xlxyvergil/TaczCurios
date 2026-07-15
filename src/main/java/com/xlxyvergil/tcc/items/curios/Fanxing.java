@@ -192,7 +192,7 @@ public class Fanxing extends BaseCurioItem {
                 computedCooldown)
             .withStyle(ChatFormatting.RED));
 
-        tooltip.add(formatModifierTooltip(computedLuck, "%.0f%%", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(computedLuck, "%.0f", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
