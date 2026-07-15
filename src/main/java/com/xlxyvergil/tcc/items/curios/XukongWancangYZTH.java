@@ -190,10 +190,19 @@ public class XukongWancangYZTH extends BaseCurioItem {
                     + attackDamage * (resistance / 100.0);
             }
         }
-        tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect",
-                String.format("%.0f", ammoRegen),
+        tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.damage",
                 String.format("%.0f", computedImaginaryDamage))
             .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.ammo",
+                String.format("%.0f", ammoRegen))
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));

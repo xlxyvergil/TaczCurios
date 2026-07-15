@@ -10,14 +10,17 @@ import com.xlxyvergil.tcc.creativetab.TccCreativeTab;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import net.minecraft.core.registries.Registries;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.RegisterEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import net.minecraftforge.fml.InterModComms;
 
@@ -38,12 +41,19 @@ public class TaczCurios
         modEventBus.addListener((RegisterCapabilitiesEvent e) ->
             e.register(CurioAdaptationCapability.Handler.class));
 
+        // 在 RegisterEvent<BLOCK> 时统一注册方块、物品、POI 类型和村民职业
+        // 参考 AE2 模式：一个事件处理所有注册
+        modEventBus.addListener((RegisterEvent event) -> {
+            if (!event.getRegistryKey().equals(Registries.BLOCK)) {
+                return;
+            }
+            TccBlocks.init(ForgeRegistries.BLOCKS);
+            TccItems.init(ForgeRegistries.ITEMS);
+            TccPoiTypes.init();
+            TccVillagers.init();
+        });
+
         // 注册Deferred Register
-        TccItems.ITEMS.register(modEventBus);
-        TccBlocks.BLOCKS.register(modEventBus);
-        TccBlocks.ITEMS.register(modEventBus);
-        TccPoiTypes.POI_TYPES.register(modEventBus);
-        TccVillagers.PROFESSIONS.register(modEventBus);
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
@@ -62,10 +72,10 @@ public class TaczCurios
         registerClientEventsSafely();
         
     }
+
     
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            TccVillagers.registerTrades();
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
 

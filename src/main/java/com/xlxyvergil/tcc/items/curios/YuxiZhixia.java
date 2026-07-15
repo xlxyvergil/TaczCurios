@@ -109,7 +109,7 @@ public class YuxiZhixia extends BaseCurioItem {
 
         CurioAbsorptionEventHandler.tryTriggerAbsorption(
             entity,
-            TccItems.YUXI_ZHIXIA.get(),
+            TccItems.YUXI_ZHIXIA,
             TaczCuriosConfig.COMMON.yuxiZhixiaTriggerHpRatio.get(),
             TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionLevel.get(),
             TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionDuration.get(),
@@ -133,7 +133,7 @@ public class YuxiZhixia extends BaseCurioItem {
         int absorptionLevel = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionLevel.get();
         int cooldownSeconds = TaczCuriosConfig.COMMON.yuxiZhixiaCooldownSeconds.get().intValue();
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

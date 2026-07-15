@@ -2,17 +2,12 @@ package com.xlxyvergil.tcc.event;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
-import com.aizistral.enigmaticlegacy.handlers.SuperpositionHandler;
-import com.aizistral.enigmaticlegacy.items.CursedRing;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
-import com.xlxyvergil.tcc.items.curios.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.curios.IslandBoomRaven;
-import com.xlxyvergil.tcc.items.curios.Salvation;
-import com.xlxyvergil.tcc.items.curios.SummerBeach;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.resources.ResourceLocation;
@@ -21,8 +16,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -31,7 +24,6 @@ import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -185,10 +177,10 @@ public class TccAttributeEvents {
         if (!(attacker instanceof Player)) return false;
         return CuriosApi.getCuriosInventory(attacker).resolve()
             .map(inv -> 
-                inv.findFirstCurio(TccItems.GILDED_RIFLE_APTITUDE.get()).isPresent() ||
-                inv.findFirstCurio(TccItems.GILDED_SHOTGUN_SAVVY.get()).isPresent() ||
-                inv.findFirstCurio(TccItems.GILDED_MARKSMAN.get()).isPresent() ||
-                inv.findFirstCurio(TccItems.CONDITION_OVERLOAD.get()).isPresent()
+                inv.findFirstCurio(TccItems.GILDED_RIFLE_APTITUDE).isPresent() ||
+                inv.findFirstCurio(TccItems.GILDED_SHOTGUN_SAVVY).isPresent() ||
+                inv.findFirstCurio(TccItems.GILDED_MARKSMAN).isPresent() ||
+                inv.findFirstCurio(TccItems.CONDITION_OVERLOAD).isPresent()
             ).orElse(false);
     }
 
@@ -296,40 +288,6 @@ public class TccAttributeEvents {
                 event.setCanceled(true);
             }
         }
-    }
-
-    /**
-     * EL 第四诅咒补偿：根据装备的饰品等级，递减性抵消七咒之戒对怪物/EnderDragon 的伤害降低效果。
-     * 优先级 LOWEST 确保在 EL 的 LivingHurtEvent 处理器之后执行。
-     */
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onLivingHurtELCurseCompensation(LivingHurtEvent event) {
-        if (!ModList.get().isLoaded("enigmaticlegacy")) return;
-        if (event.getEntity().level().isClientSide()) return;
-        // EL 第四诅咒仅对 Monster 和 EnderDragon 生效
-        if (!(event.getEntity() instanceof Monster || event.getEntity() instanceof EnderDragon)) return;
-        if (!(event.getSource().getEntity() instanceof Player player)) return;
-        if (!SuperpositionHandler.isTheCursedOne(player)) return;
-
-        // 按饰品等级确定诅咒削减比例（通过配置文件可调）
-        double curseReduction;
-        if (Salvation.hasSalvationEquipped(player)) {
-            curseReduction = TaczCuriosConfig.COMMON.salvationELCurseReduction.get();
-        } else if (BrahmaBeasts.hasBrahmaBeastsEquipped(player)) {
-            curseReduction = TaczCuriosConfig.COMMON.brahmaBeastsELCurseReduction.get();
-        } else if (SummerBeach.hasSummerBeachEquipped(player)) {
-            curseReduction = TaczCuriosConfig.COMMON.summerBeachELCurseReduction.get();
-        } else {
-            return;
-        }
-
-        // modifier = EL 已应用的伤害倍率（默认 0.5）
-        double modifier = CursedRing.monsterDamageDebuff.getValue().asModifierInverted();
-        // effectiveModifier = modifier + reduction * (1 - modifier)
-        double effectiveModifier = modifier + curseReduction * (1.0 - modifier);
-        // compensation = effectiveModifier / modifier 把伤害恢复到目标水平
-        float compensation = (float) (effectiveModifier / modifier);
-        event.setAmount(event.getAmount() * compensation);
     }
 
 }

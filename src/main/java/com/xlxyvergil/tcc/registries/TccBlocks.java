@@ -1,26 +1,31 @@
 package com.xlxyvergil.tcc.registries;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.IForgeRegistry;
 
-public class TccBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TaczCurios.MODID);
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TaczCurios.MODID);
+// 参照 AE2 InitBlocks：不用 DeferredRegister，而是在 RegisterEvent<BLOCK> 时直接注册
+public final class TccBlocks {
 
-    // 注册Teshin工作台方块，使用与泥土相同的属性
-    public static final RegistryObject<Block> TESHIN_WORKBENCH = BLOCKS.register("teshin_workbench", 
-        () -> new Block(BlockBehaviour.Properties.copy(Blocks.DIRT).strength(0.5F).lightLevel(state -> 8)));
-    
-    // 为方块注册物品
-    public static final RegistryObject<Item> TESHIN_WORKBENCH_ITEM = ITEMS.register("teshin_workbench", 
-        () -> new BlockItem(TESHIN_WORKBENCH.get(), new Item.Properties()));
-        
-    public static void init() {}
+    public static final Block TESHIN_WORKBENCH = new Block(
+        BlockBehaviour.Properties.copy(Blocks.DIRT).strength(0.5F).lightLevel(state -> 8));
+    public static final Item TESHIN_WORKBENCH_ITEM = new BlockItem(TESHIN_WORKBENCH, new Item.Properties());
+
+    private TccBlocks() {
+    }
+
+    public static void init(IForgeRegistry<Block> blockRegistry) {
+        blockRegistry.register(id("teshin_workbench"), TESHIN_WORKBENCH);
+        ForgeRegistries.ITEMS.register(id("teshin_workbench"), TESHIN_WORKBENCH_ITEM);
+    }
+
+    private static ResourceLocation id(String path) {
+        return new ResourceLocation(TaczCurios.MODID, path);
+    }
 }

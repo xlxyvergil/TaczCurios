@@ -232,8 +232,15 @@ public class ShijieFanyan extends BaseCurioItem {
         tooltip.add(formatModifierTooltip(critDamage, "%.2f", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.shijie_fanyan.special",
-                luck, sfCritChanceStr, sfCritDamageStr, sfCollapseStr)
+                sfCollapseStr)
             .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_luck")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));

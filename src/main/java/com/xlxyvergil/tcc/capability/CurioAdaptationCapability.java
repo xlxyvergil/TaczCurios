@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.capability;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -37,15 +38,22 @@ public class CurioAdaptationCapability {
         final int maxSlots;
         final double adaptFactor;
         final int decayTicks;          // 无伤害多少 tick 后重置
+        final int maxAdaptCount;       // 同类型适应最大叠加次数
         long lastHitTick = -1;        // 上次受伤的游戏刻 (-1 表示未初始化)
 
         final ArrayList<String> memory = new ArrayList<>();
         final HashMap<String, Integer> counts = new HashMap<>();
 
         AdaptInstance(int maxSlots, double adaptFactor, int decaySeconds) {
+            this(maxSlots, adaptFactor, decaySeconds,
+                TaczCuriosConfig.COMMON.adaptationMaxCount.get());
+        }
+
+        AdaptInstance(int maxSlots, double adaptFactor, int decaySeconds, int maxAdaptCount) {
             this.maxSlots = maxSlots;
             this.adaptFactor = adaptFactor;
             this.decayTicks = decaySeconds * 20;
+            this.maxAdaptCount = maxAdaptCount;
         }
 
         /**
@@ -75,10 +83,12 @@ public class CurioAdaptationCapability {
             lastHitTick = tick;
 
             if (memory.contains(msgId)) {
-                // 命中已记忆类型 → 移到队首 + 累加计数 + 减免
+                // 命中已记忆类型 → 移到队首 + 累加计数（上限 maxAdaptCount） + 减免
                 memory.remove(msgId);
                 memory.add(0, msgId);
-                int count = counts.merge(msgId, 1, Integer::sum);
+                int rawCount = counts.getOrDefault(msgId, 0) + 1;
+                int count = Math.min(rawCount, maxAdaptCount);
+                counts.put(msgId, count);
                 double factor = Math.pow(adaptFactor, count - 1);
                 amountRef[0] *= (float) factor;
             } else {
@@ -99,6 +109,7 @@ public class CurioAdaptationCapability {
             tag.putInt("maxSlots", maxSlots);
             tag.putDouble("adaptFactor", adaptFactor);
             tag.putInt("decayTicks", decayTicks);
+            tag.putInt("maxAdaptCount", maxAdaptCount);
             tag.putLong("lastHitTick", lastHitTick);
             if (!memory.isEmpty()) {
                 ListTag memTag = new ListTag();
@@ -117,7 +128,8 @@ public class CurioAdaptationCapability {
             AdaptInstance inst = new AdaptInstance(
                 tag.getInt("maxSlots"),
                 tag.getDouble("adaptFactor"),
-                tag.getInt("decayTicks") / 20
+                tag.getInt("decayTicks") / 20,
+                tag.getInt("maxAdaptCount")
             );
             inst.lastHitTick = tag.getLong("lastHitTick");
             if (tag.contains("memory")) {

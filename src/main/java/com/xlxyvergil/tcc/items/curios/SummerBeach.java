@@ -96,15 +96,8 @@ public class SummerBeach extends BaseCurioItem {
         double baseValue = getBaseResistance();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
-        
-        // EL 第四诅咒削弱（仅加载神秘遗物时显示）
-        if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
-            double curseReduction = TaczCuriosConfig.COMMON.summerBeachELCurseReduction.get();
-            tooltip.add(Component.translatable("item.tcc.summer_beach.el_curse_reduction", String.format("%.0f", curseReduction * 100))
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
-        }
         
         // 绑定信息
         if (tag != null && tag.getBoolean("IsBound")) {

@@ -141,6 +141,9 @@ public class TingzhiZhijian extends BaseCurioItem {
                 String.format("%.1f", totalPercent))
             .withStyle(ChatFormatting.AQUA));
 
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.GRAY));
+
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
 

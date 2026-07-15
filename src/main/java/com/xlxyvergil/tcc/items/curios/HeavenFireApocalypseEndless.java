@@ -108,6 +108,8 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.special",
                 String.format("%.0f", nearbyPlayerRadius), 
                 String.format("%+d", totalNearbyPlayerDamageBoost),
@@ -129,7 +131,10 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
                 String.format("%.1f", collapsePct), String.format("%.0f", debuffPct), String.valueOf(maxDebuff),
                 String.format("%.1f", maxCollapsePct))
             .withStyle(ChatFormatting.RED));
-        
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.GRAY));
+
         tooltip.add(Component.literal(""));
         
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));

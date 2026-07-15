@@ -183,6 +183,11 @@ public class YinguoZhuanlun extends BaseCurioItem {
                 String.format("%.0f", ammoPercent),
                 String.format("%.0f", resistance))
             .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.AQUA));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift").withStyle(ChatFormatting.RED));

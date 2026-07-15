@@ -117,19 +117,12 @@ public class Salvation extends BaseCurioItem {
         double baseValue = getBaseResistance();
         double progressValue = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         double total = baseValue + progressValue;
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.RED));
         
         // 常驻加成
         tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", damageReduction))
             .withStyle(ChatFormatting.RED));
-        
-        // EL 第四诅咒削弱（仅加载神秘遗物时显示）
-        if (ModList.get().isLoaded("enigmaticlegacy")) {
-            double curseReduction = TaczCuriosConfig.COMMON.salvationELCurseReduction.get();
-            tooltip.add(Component.translatable("item.tcc.salvation.el_curse_reduction", String.format("%.0f", curseReduction * 100))
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
-        }
         
         // 槽位和稀有度
         tooltip.add(Component.literal(""));

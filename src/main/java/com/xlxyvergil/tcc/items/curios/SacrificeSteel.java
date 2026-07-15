@@ -41,7 +41,7 @@ public class SacrificeSteel extends BaseCurioItem {
      */
     private static boolean hasSacrificeOppression(LivingEntity entity) {
         return CuriosApi.getCuriosInventory(entity).resolve()
-            .map(inv -> inv.findFirstCurio(TccItems.SACRIFICE_OPPRESSION.get()).isPresent())
+            .map(inv -> inv.findFirstCurio(TccItems.SACRIFICE_OPPRESSION).isPresent())
             .orElse(false);
     }
 

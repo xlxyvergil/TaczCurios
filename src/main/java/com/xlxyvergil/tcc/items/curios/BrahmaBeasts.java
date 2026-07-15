@@ -99,15 +99,8 @@ public class BrahmaBeasts extends BaseCurioItem {
             }
         }
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
-        
-        // EL 第四诅咒削弱（仅加载神秘遗物时显示）
-        if (net.minecraftforge.fml.ModList.get().isLoaded("enigmaticlegacy")) {
-            double curseReduction = TaczCuriosConfig.COMMON.brahmaBeastsELCurseReduction.get();
-            tooltip.add(Component.translatable("item.tcc.brahma_beasts.el_curse_reduction", String.format("%.0f", curseReduction * 100))
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
-        }
         
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");

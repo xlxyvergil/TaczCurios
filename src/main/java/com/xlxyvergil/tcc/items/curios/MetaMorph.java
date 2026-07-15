@@ -1,6 +1,6 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -64,12 +64,13 @@ public class MetaMorph extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get());
+            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            double attackBonus = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
+                + totalResistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
                 "tcc.meta_morph.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
 
-            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 100.0) / 100.0;
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
                 lifeSteal, LIFE_STEAL_UUID,
@@ -83,6 +84,11 @@ public class MetaMorph extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LIFE_STEAL, LIFE_STEAL_UUID);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        applyEffects(slotContext.entity());
     }
 
     @Override
@@ -119,21 +125,25 @@ public class MetaMorph extends BaseCurioItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !isEquipped(attacker)) return;
-        if (!GunTypeChecker.isHoldingMeleeWeapon(attacker)) return;
-        if (!(attacker.level() instanceof ServerLevel)) return;
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getEntity().level().isClientSide()) return;
 
-        Entity hurtEntity = event.getHurtEntity();
-        if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
-        if (targetLiving.isDeadOrDying()) return;
+        DamageSource source = event.getSource();
+        if (source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
+
+        Entity attackerEntity = source.getEntity();
+        if (!(attackerEntity instanceof LivingEntity attacker)) return;
+        if (!isEquipped(attacker)) return;
+        if (!GunTypeChecker.isHoldingMeleeWeapon(attacker)) return;
+
+        LivingEntity target = event.getEntity();
+        if (target.isDeadOrDying()) return;
 
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
         float imaginaryBonus = (float) (Math.round(attackDamage * 100.0) / 100.0);
         TccAttributeEvents.applyImaginaryDamage(
-            targetLiving,
-            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
+            target,
+            TccDamageSources.imaginaryDamage(target.level(), attacker),
             imaginaryBonus
         );
     }
@@ -154,16 +164,19 @@ tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
             Player player = Minecraft.getInstance().player;
             if (player != null && isEquipped(player)) {
                 double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
-                attackFromHealth = maxHealth * TaczCuriosConfig.COMMON.metaMorphAttackPerHealth.get();
                 double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                attackFromHealth = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
+                    + resistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
                 lifeStealFromResistance = resistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
                 imaginaryDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
             }
         }
-        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(formatModifierTooltip(lifeStealFromResistance, "+%.2f", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health"));
+        tooltip.add(formatModifierTooltip(lifeStealFromResistance, "%.2f", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance"));
         tooltip.add(Component.translatable("item.tcc.meta_morph.special_damage",
                 String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));

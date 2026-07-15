@@ -223,15 +223,9 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenRefreshThreshold;
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenDuration;
         
-        // 夏日沙滩配置
-        public final ForgeConfigSpec.DoubleValue summerBeachELCurseReduction;
         public final ForgeConfigSpec.IntValue summerBeachBaseResistance;
         
-        // 梵天百兽配置
-        public final ForgeConfigSpec.DoubleValue brahmaBeastsELCurseReduction;
-        
         // 救世配置
-        public final ForgeConfigSpec.DoubleValue salvationELCurseReduction;
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
         public final ForgeConfigSpec.IntValue salvationResistanceLevel;
         
@@ -369,6 +363,9 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHAmmoRegenPercent;
         public final ForgeConfigSpec.IntValue xukongWancangYZTHInfectionDuration;
 
+        // 适应系统通用配置
+        public final ForgeConfigSpec.IntValue adaptationMaxCount;
+
         // 千劫配置
         public final ForgeConfigSpec.DoubleValue kalpasImaginaryResistance;
         public final ForgeConfigSpec.IntValue kalpasMaxSlots;
@@ -376,7 +373,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue kalpasDecaySeconds;
 
         // 伊默尔配置
-        public final ForgeConfigSpec.DoubleValue imerAttackPerHealth;
+        public final ForgeConfigSpec.DoubleValue imerAttackDamageBonus;
 
         // 坏劫之焱配置
         public final ForgeConfigSpec.IntValue huajieZhiyanMaxSlots;
@@ -385,7 +382,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue huajieZhiyanHealthPerResistance;
 
         // 支配之键配置
-        public final ForgeConfigSpec.DoubleValue dominanceKeyAttackPerHealth;
+        public final ForgeConfigSpec.DoubleValue dominanceKeyHealthToAttackPercent;
         public final ForgeConfigSpec.DoubleValue dominanceKeyImaginaryDamageScale;
 
         // 鏖灭配置
@@ -395,7 +392,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue aoMieHealthPerResistance;
 
         // Meta-Morph配置
-        public final ForgeConfigSpec.DoubleValue metaMorphAttackPerHealth;
+        public final ForgeConfigSpec.DoubleValue metaMorphHealthToAttackPercent;
+        public final ForgeConfigSpec.DoubleValue metaMorphResistanceToAttackPercent;
         public final ForgeConfigSpec.DoubleValue metaMorphLifeStealPerResistance;
 
         // 苏配置
@@ -1245,26 +1243,13 @@ public class TaczCuriosConfig {
             
             // 夏日沙滩配置
             builder.comment("夏日沙滩饰品配置").push("summer_beach");
-            summerBeachELCurseReduction = builder
-                    .comment("夏日沙滩对第四诅咒效果的削弱比例 (默认: 0.25 = 抵消25%的诅咒效果)")
-                    .defineInRange("elCurseReduction", 0.25, 0, 1);
             summerBeachBaseResistance = builder
                     .comment("夏日沙滩虚数抗性基础值 (默认: 41)")
                     .defineInRange("baseResistance", 41, 0, 1000);
             builder.pop();
             
-            // 梵天百兽配置
-            builder.comment("梵天百兽饰品配置").push("brahma_beasts");
-            brahmaBeastsELCurseReduction = builder
-                    .comment("梵天百兽对第四诅咒效果的削弱比例 (默认: 0.5 = 抵消50%的诅咒效果)")
-                    .defineInRange("elCurseReduction", 0.5, 0, 1);
-            builder.pop();
-            
             // 救世配置
             builder.comment("救世饰品配置").push("salvation");
-            salvationELCurseReduction = builder
-                    .comment("救世对第四诅咒效果的削弱比例 (默认: 1.0 = 完全免疫第四诅咒)")
-                    .defineInRange("elCurseReduction", 1.0, 0, 1);
             salvationDamageReduction = builder
                     .comment("救世伤害降低比例 (默认: 0.3 = 30%)")
                     .defineInRange("damageReduction", 0.3, 0, 1);
@@ -1519,8 +1504,8 @@ public class TaczCuriosConfig {
                     .comment("触发吸收效果的血量阈值 (默认: 0.2 = 20%)")
                     .defineInRange("triggerHpRatio", 0.2, 0, 1);
             villVAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 1 = ABSORPTION I)")
-                    .defineInRange("absorptionLevel", 1, 1, 255);
+                    .comment("吸收效果等级 (默认: 3 = ABSORPTION III)")
+                    .defineInRange("absorptionLevel", 3, 1, 255);
             villVAbsorptionDuration = builder
                     .comment("吸收效果持续时间(秒) (默认: 60)")
                     .defineInRange("absorptionDuration", 60.0, 1, 3600);
@@ -1548,8 +1533,8 @@ public class TaczCuriosConfig {
                     .comment("触发吸收效果的血量阈值 (默认: 0.3 = 30%)")
                     .defineInRange("triggerHpRatio", 0.3, 0, 1);
             yuxiZhixiaAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 2 = ABSORPTION II)")
-                    .defineInRange("absorptionLevel", 2, 1, 255);
+                    .comment("吸收效果等级 (默认: 6 = ABSORPTION VI)")
+                    .defineInRange("absorptionLevel", 6, 1, 255);
             yuxiZhixiaAbsorptionDuration = builder
                     .comment("吸收效果持续时间(秒) (默认: 60)")
                     .defineInRange("absorptionDuration", 60.0, 1, 3600);
@@ -1574,8 +1559,8 @@ public class TaczCuriosConfig {
                     .comment("吸收效果施加间隔(秒) (默认: 30)")
                     .defineInRange("absorptionInterval", 30, 1, 3600);
             luoxuanAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 3 = ABSORPTION III)")
-                    .defineInRange("absorptionLevel", 3, 1, 255);
+                    .comment("吸收效果等级 (默认: 9 = ABSORPTION Ⅸ )")
+                    .defineInRange("absorptionLevel", 9, 1, 255);
             luoxuanAbsorptionDuration = builder
                     .comment("吸收效果持续时间(秒) (默认: 30)")
                     .defineInRange("absorptionDuration", 30, 1, 3600);
@@ -1592,6 +1577,13 @@ public class TaczCuriosConfig {
             xukongWancangYZTHInfectionDuration = builder
                     .comment("侵染效果持续时间(秒) (默认: 10)")
                     .defineInRange("infectionDuration", 10, 1, 3600);
+            builder.pop();
+
+            // 适应系统通用配置
+            builder.comment("适应系统通用配置").push("adaptation");
+            adaptationMaxCount = builder
+                    .comment("同类型伤害适应最大叠加次数 (默认: 4，范围: 1~1000)")
+                    .defineInRange("maxCount", 4, 1, 1000);
             builder.pop();
 
             // 千劫配置
@@ -1612,9 +1604,9 @@ public class TaczCuriosConfig {
 
             // 伊默尔配置
             builder.comment("伊默尔饰品配置").push("imer");
-            imerAttackPerHealth = builder
-                    .comment("每点最大生命值提升的攻击力 (默认: 0.05 = 5%)")
-                    .defineInRange("attackPerHealth", 0.05, 0.0, 10.0);
+            imerAttackDamageBonus = builder
+                    .comment("攻击伤害加成 (默认: 0.1 = 10%，MULTIPLY_BASE)")
+                    .defineInRange("attackDamageBonus", 0.1, 0.0, 10.0);
             builder.pop();
 
             // 坏劫之焱配置
@@ -1629,15 +1621,15 @@ public class TaczCuriosConfig {
                     .comment("适应衰减时间(秒) (默认: 20)")
                     .defineInRange("decaySeconds", 20, 1, 3600);
             huajieZhiyanHealthPerResistance = builder
-                    .comment("每点虚数抗性提升的最大生命值 (默认: 3.0)")
-                    .defineInRange("healthPerResistance", 3.0, 0.0, 1000.0);
+                    .comment("每点虚数抗性提升的最大生命值 (默认: 1.0)")
+                    .defineInRange("healthPerResistance", 1.0, 0.0, 1000.0);
             builder.pop();
 
             // 支配之键配置
             builder.comment("支配之键饰品配置").push("dominance_key");
-            dominanceKeyAttackPerHealth = builder
-                    .comment("每点最大生命值提升的攻击力 (默认: 0.05 = 5%)")
-                    .defineInRange("attackPerHealth", 0.05, 0.0, 10.0);
+            dominanceKeyHealthToAttackPercent = builder
+                    .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%，攻击加成 = 最大生命值 * 此值 / 100)")
+                    .defineInRange("healthToAttackPercent", 0.10, 0.0, 10.0);
             dominanceKeyImaginaryDamageScale = builder
                     .comment("攻击力转虚数伤害比例 (默认: 0.3 = 30%)")
                     .defineInRange("imaginaryDamageScale", 0.3, 0.0, 10.0);
@@ -1655,15 +1647,18 @@ public class TaczCuriosConfig {
                     .comment("适应衰减时间(秒) (默认: 20)")
                     .defineInRange("decaySeconds", 20, 1, 3600);
             aoMieHealthPerResistance = builder
-                    .comment("每点虚数抗性提升的最大生命值 (默认: 4.0)")
-                    .defineInRange("healthPerResistance", 4.0, 0.0, 1000.0);
+                    .comment("每点虚数抗性提升的最大生命值 (默认: 2.0)")
+                    .defineInRange("healthPerResistance", 2.0, 0.0, 1000.0);
             builder.pop();
 
             // Meta-Morph配置
             builder.comment("Meta-Morph饰品配置").push("meta_morph");
-            metaMorphAttackPerHealth = builder
-                    .comment("每点最大生命值提升的攻击力 (默认: 0.05 = 5%)")
-                    .defineInRange("attackPerHealth", 0.05, 0.0, 10.0);
+            metaMorphHealthToAttackPercent = builder
+                    .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%)")
+                    .defineInRange("healthToAttackPercent", 0.10, 0.0, 10.0);
+            metaMorphResistanceToAttackPercent = builder
+                    .comment("虚数抗性转攻击力比例 (默认: 0.10 = 10%)")
+                    .defineInRange("resistanceToAttackPercent", 0.10, 0.0, 10.0);
             metaMorphLifeStealPerResistance = builder
                     .comment("每点虚数抗性提供的生命偷取 (默认: 0.01)")
                     .defineInRange("lifeStealPerResistance", 0.01, 0.0, 1.0);

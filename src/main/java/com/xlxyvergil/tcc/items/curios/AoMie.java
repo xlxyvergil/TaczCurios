@@ -150,7 +150,7 @@ public class AoMie extends BaseCurioItem {
         double adaptFactor = TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.aoMieDecaySeconds.get();
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
@@ -173,6 +173,9 @@ public class AoMie extends BaseCurioItem {
                 String.format("%.2f", adaptFactor),
                 decaySeconds)
             .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));

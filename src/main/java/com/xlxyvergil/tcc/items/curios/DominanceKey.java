@@ -61,7 +61,7 @@ public class DominanceKey extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get());
+            double attackBonus = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyHealthToAttackPercent.get() / 100.0;
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
                 "tcc.dominance_key.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
@@ -73,6 +73,11 @@ public class DominanceKey extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        applyEffects(slotContext.entity());
     }
 
     @Override
@@ -143,16 +148,19 @@ public class DominanceKey extends BaseCurioItem {
             Player player = Minecraft.getInstance().player;
             if (player != null && isEquipped(player)) {
                 double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
-                attackFromHealth = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyAttackPerHealth.get();
+                attackFromHealth = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyHealthToAttackPercent.get() / 100.0;
                 double attackDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
                 imaginaryDamage = attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get();
             }
         }
-        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         tooltip.add(Component.translatable("item.tcc.dominance_key.special_damage",
                 String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));

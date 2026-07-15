@@ -1,10 +1,8 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
-import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -50,8 +48,7 @@ public class Imer extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
-            double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double attackBonus = Math.round(maxHealth * TaczCuriosConfig.COMMON.imerAttackPerHealth.get());
+            double attackBonus = TaczCuriosConfig.COMMON.imerAttackDamageBonus.get();
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_UUID,
                 "tcc.imer.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
@@ -100,12 +97,14 @@ public class Imer extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double attackPerHealth = TaczCuriosConfig.COMMON.imerAttackPerHealth.get() * 100;
-
         tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
 
-        tooltip.add(formatModifierTooltip(attackPerHealth * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        double bonusPercent = TaczCuriosConfig.COMMON.imerAttackDamageBonus.get() * 100;
+        tooltip.add(formatModifierTooltip(bonusPercent, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));

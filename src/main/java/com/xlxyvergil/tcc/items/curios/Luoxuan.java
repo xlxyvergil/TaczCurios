@@ -138,7 +138,7 @@ public class Luoxuan extends BaseCurioItem {
         double absorptionIntervalSecs = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get() / 20.0;
         int absorptionLevel = TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get();
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

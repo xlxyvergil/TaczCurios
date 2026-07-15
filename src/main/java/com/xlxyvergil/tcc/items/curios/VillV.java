@@ -114,7 +114,7 @@ public class VillV extends BaseCurioItem {
 
         CurioAbsorptionEventHandler.tryTriggerAbsorption(
             entity,
-            TccItems.VILL_V.get(),
+            TccItems.VILL_V,
             TaczCuriosConfig.COMMON.villVTriggerHpRatio.get(),
             TaczCuriosConfig.COMMON.villVAbsorptionLevel.get(),
             TaczCuriosConfig.COMMON.villVAbsorptionDuration.get(),
@@ -137,7 +137,7 @@ public class VillV extends BaseCurioItem {
         int absorptionLevel = TaczCuriosConfig.COMMON.villVAbsorptionLevel.get();
         int cooldownSeconds = TaczCuriosConfig.COMMON.villVCooldownSeconds.get().intValue();
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

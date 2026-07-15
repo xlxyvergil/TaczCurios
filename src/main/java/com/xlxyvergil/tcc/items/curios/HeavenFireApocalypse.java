@@ -138,6 +138,8 @@ public class HeavenFireApocalypse extends BaseCurioItem {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.special",
                 String.format("%.0f", healthCost),
                 String.format("%.0f", nearbyPlayerRadius), 

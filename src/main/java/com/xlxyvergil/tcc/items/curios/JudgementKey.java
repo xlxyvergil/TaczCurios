@@ -201,6 +201,8 @@ public class JudgementKey extends BaseCurioItem {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(critDamage, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.judgement_key.special")
             .withStyle(ChatFormatting.RED));
 

@@ -136,7 +136,7 @@ public class Su extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         double maxHealthReduction = TaczCuriosConfig.COMMON.suMaxHealthReduction.get() * 100;
         double damageTakenFactor = TaczCuriosConfig.COMMON.suDamageTakenFactor.get() * 100;
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

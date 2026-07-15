@@ -162,16 +162,13 @@ public class IslandBoomRaven extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(formatModifierTooltip(armorBoost, "%.0f%%", Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%", Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
-                .withStyle(ChatFormatting.GOLD));
-
-        tooltip.add(formatModifierTooltip(total, "%.0f%%", Component.translatable(TccAttributes.IMAGINARY_DAMAGE.get().getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.attr_regen")

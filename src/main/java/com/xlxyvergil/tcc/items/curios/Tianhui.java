@@ -144,7 +144,7 @@ public class Tianhui extends BaseCurioItem {
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         double maxHealthReduction = TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get() * 100;
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
@@ -159,6 +159,9 @@ public class Tianhui extends BaseCurioItem {
         int minDamagePercent = (int)(TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100);
         tooltip.add(Component.translatable("item.tcc.tianhui.special_damage_limit", minDamagePercent)
             .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift")

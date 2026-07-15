@@ -106,21 +106,14 @@ public class HeavenFireJudgment extends BaseCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
         
         // 添加装备效果
-        // 根据语言文件中的占位符顺序传递参数：
-        // %1$s - damageBoost (通用枪械伤害加成)
-        // %2$s - healthCost (当前生命值扣除)
-        // %3$s - bleedingDamagePerLevel (每级流血伤害比例)
-        // %4$s - bleedingDuration (流血持续时间)
         double damageBoost = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get() * 100;
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get() * 100;
-        double bleedingDamagePerLevel = TaczCuriosConfig.COMMON.heavenFireBleedingDamagePerLevel.get() * 100;
-        int bleedingDuration = TaczCuriosConfig.COMMON.heavenFireBleedingDuration.get();
         tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.special",
-                String.format("%+.0f", healthCost), 
-                String.format("%+.0f", bleedingDamagePerLevel), 
-                String.format("%d", bleedingDuration))
+                String.format("%+.0f", healthCost))
             .withStyle(ChatFormatting.WHITE));
         
         // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加

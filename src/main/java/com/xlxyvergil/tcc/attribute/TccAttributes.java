@@ -18,13 +18,6 @@ public class TccAttributes {
         DeferredRegister.create(Registries.ATTRIBUTE, "tcc");
     
     /**
-     * 虚数伤害属性 - 攻击时附加的虚数伤害值
-     */
-    public static final RegistryObject<Attribute> IMAGINARY_DAMAGE = 
-        ATTRIBUTES.register("imaginary_damage", 
-            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage", 0.0D, 0.0D, 1000.0D).setSyncable(true));
-    
-    /**
      * 虚数伤害抗性 - 范围 -100 到 +100，默认 0
      * 正值降低虚数伤害，负值增加虚数伤害
      */
@@ -39,7 +32,6 @@ public class TccAttributes {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeModificationEvent event) {
         event.getTypes().forEach(type -> {
-            event.add(type, IMAGINARY_DAMAGE.get());
             event.add(type, IMAGINARY_DAMAGE_RESISTANCE.get());
         });
     }

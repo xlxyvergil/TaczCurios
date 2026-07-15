@@ -136,7 +136,7 @@ public class Kalpas extends BaseCurioItem {
         double adaptFactor = TaczCuriosConfig.COMMON.kalpasAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.kalpasDecaySeconds.get();
 
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance", String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

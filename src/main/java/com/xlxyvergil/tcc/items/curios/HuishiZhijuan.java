@@ -151,8 +151,7 @@ public class HuishiZhijuan extends BaseCurioItem {
         double baseValue = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.imaginary_resistance",
-                String.format("%.0f", total))
+        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
@@ -169,6 +168,9 @@ public class HuishiZhijuan extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.huishi_zhijuan.effect",
                 computedCooldown)
             .withStyle(ChatFormatting.WHITE));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_luck")
+            .withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
