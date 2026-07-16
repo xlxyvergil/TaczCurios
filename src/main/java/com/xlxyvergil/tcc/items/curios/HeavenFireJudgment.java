@@ -17,11 +17,14 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerLevel;
+import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -59,6 +62,14 @@ public class HeavenFireJudgment extends BaseCurioItem {
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
+        if (slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("IsBound")) {
+                tag.putBoolean("IsBound", true);
+                tag.putString("BoundPlayer", player.getStringUUID());
+                tag.putString("BoundPlayerName", player.getGameProfile().getName());
+            }
+        }
         
         LivingEntity entity = (LivingEntity) slotContext.entity();
         applyEffects(entity);
@@ -74,7 +85,25 @@ public class HeavenFireJudgment extends BaseCurioItem {
         LivingEntity entity = (LivingEntity) slotContext.entity();
         removeEffects(entity);
     }
-    
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerUUID = tag.getString("BoundPlayer");
+            if (slotContext.entity() instanceof Player player) {
+                return player.getStringUUID().equals(boundPlayerUUID);
+            }
+            return false;
+        }
+        return super.canEquip(slotContext, stack);
+    }
+
+    @Override
+    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+        return DropRule.ALWAYS_KEEP;
+    }
+
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get())) return;
@@ -130,6 +159,14 @@ public class HeavenFireJudgment extends BaseCurioItem {
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
+                .withStyle(ChatFormatting.RED));
+        }
     }
     
     /**

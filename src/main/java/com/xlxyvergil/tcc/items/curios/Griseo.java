@@ -87,11 +87,6 @@ public class Griseo extends BaseCurioItem {
     }
 
     @Override
-    protected boolean isBoundItem() {
-        return true;
-    }
-
-    @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
     }

@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "tcc:heaven_fire_judgment",
     "tcc:careful_heart",
     "tcc:chamber_prime",
     "tcc:blaze_storm_prime",
@@ -9,7 +8,6 @@
     "tcc:close_combat_prime",
     "tcc:soldier_specific_tag",
     "tcc:merged_rifling",
-    "tcc:brahma_beasts",
     "tcc:oppression_point_prime",
     "tcc:sword_wind_prime",
     "tcc:burst_reload_prime",
@@ -18,9 +16,7 @@
     "tcc:magazine_boost_prime",
     "tcc:tandem_magazine_prime",
     "tcc:destruction_prime",
-    "tcc:dominance_key",
     "tcc:thunder_barrel_prime",
-    "tcc:tingzhi_zhijian",
     "tcc:weakness_mastery_prime",
     "tcc:pistol_mastery_prime",
     "tcc:sacrifice_oppression",
@@ -33,12 +29,6 @@
     "tcc:gilded_steel_slash",
     "tcc:gilded_rifle_aptitude",
     "tcc:gilded_shotgun_savvy",
-    "tcc:gilded_marksman",
-    "tcc:huajie_zhiyan",
-    "tcc:huishi_zhijuan",
-    "tcc:juezhe",
-    "tcc:yongjie_zhijian",
-    "tcc:yuxi_zhixia",
-    "tcc:qishi_zhijian"
+    "tcc:gilded_marksman"
   ]
 }

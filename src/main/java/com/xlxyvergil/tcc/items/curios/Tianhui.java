@@ -154,11 +154,11 @@ public class Tianhui extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
         tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
-                .withStyle(ChatFormatting.GOLD));
+                .withStyle(ChatFormatting.RED));
 
         int minDamagePercent = (int)(TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100);
         tooltip.add(Component.translatable("item.tcc.tianhui.special_damage_limit", minDamagePercent)
-            .withStyle(ChatFormatting.GOLD));
+            .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));

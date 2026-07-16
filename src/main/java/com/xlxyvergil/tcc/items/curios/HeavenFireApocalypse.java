@@ -13,6 +13,7 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.network.chat.Component;
@@ -61,11 +62,32 @@ public class HeavenFireApocalypse extends BaseCurioItem {
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
+        if (slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("IsBound")) {
+                tag.putBoolean("IsBound", true);
+                tag.putString("BoundPlayer", player.getStringUUID());
+                tag.putString("BoundPlayerName", player.getGameProfile().getName());
+            }
+        }
         
         LivingEntity entity = (LivingEntity) slotContext.entity();
         applyEffects(entity);
     }
     
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerUUID = tag.getString("BoundPlayer");
+            if (slotContext.entity() instanceof Player player) {
+                return player.getStringUUID().equals(boundPlayerUUID);
+            }
+            return false;
+        }
+        return super.canEquip(slotContext, stack);
+    }
+
     @Override
     protected boolean isBoundItem() {
         return true;
@@ -161,6 +183,14 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         // 添加稀有度提示
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
+                .withStyle(ChatFormatting.RED));
+        }
     }
     
     /**

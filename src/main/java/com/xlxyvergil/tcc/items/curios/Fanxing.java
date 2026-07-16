@@ -188,16 +188,16 @@ public class Fanxing extends BaseCurioItem {
                 if (computedCooldown > max) computedCooldown = max;
             }
         }
-        tooltip.add(Component.translatable("item.tcc.fanxing.special_cooldown",
-                computedCooldown)
-            .withStyle(ChatFormatting.RED));
+
 
         tooltip.add(formatModifierTooltip(computedLuck, "%.0f", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_luck")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
-
+        tooltip.add(Component.translatable("item.tcc.fanxing.special_cooldown",
+                computedCooldown)
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
 
