@@ -5,12 +5,15 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,6 +59,32 @@ public class SevenThunders extends BaseCurioItem {
     }
 
     @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        super.onEquip(slotContext, prevStack, stack);
+        if (slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("IsBound")) {
+                tag.putBoolean("IsBound", true);
+                tag.putString("BoundPlayer", player.getStringUUID());
+                tag.putString("BoundPlayerName", player.getGameProfile().getName());
+            }
+        }
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerUUID = tag.getString("BoundPlayer");
+            if (slotContext.entity() instanceof Player player) {
+                return player.getStringUUID().equals(boundPlayerUUID);
+            }
+            return false;
+        }
+        return super.canEquip(slotContext, stack);
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
@@ -77,5 +106,13 @@ public class SevenThunders extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
+
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
+                .withStyle(ChatFormatting.RED));
+        }
     }
 }

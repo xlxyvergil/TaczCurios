@@ -107,20 +107,19 @@ public class HuishiZhijuan extends BaseCurioItem {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
-        if (!isEquipped(player)) return;
-        if (!GunTypeChecker.isHoldingAnyGun(player)) return;
+        if (!isEquipped(entity)) return;
+        if (!GunTypeChecker.isHoldingAnyGun(entity)) return;
 
-        int cooldown = player.getPersistentData().getInt(COOLDOWN_KEY);
+        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
         if (cooldown > 0) {
             event.setCanceled(true);
         } else {
-            int luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+            int luck = (int) entity.getAttributeValue(AttributeHelper.LUCK);
             int cooldownTicks = TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get()
                 + (luck / 2) * TaczCuriosConfig.COMMON.huishiZhijuanLuckPerTick.get();
             int maxCooldown = TaczCuriosConfig.COMMON.huishiZhijuanMaxCooldown.get();
             if (cooldownTicks > maxCooldown) cooldownTicks = maxCooldown;
-            player.getPersistentData().putInt(COOLDOWN_KEY, cooldownTicks);
+            entity.getPersistentData().putInt(COOLDOWN_KEY, cooldownTicks);
         }
     }
 

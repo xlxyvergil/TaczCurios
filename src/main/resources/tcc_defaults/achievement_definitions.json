@@ -76,7 +76,7 @@
         },
         "icon": "tcc:seven_thunders_thunder_seen",
         "description": {
-          "zh_cn": "佩戴涤罪七雷·雷鸣见，使用狙击枪爆头击杀任意实体10次",
+          "zh_cn": "佩戴涤罪七雷，使用狙击枪爆头击杀任意实体10次",
           "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders: Thunder Seen with sniper"
         },
         "frame": "task",

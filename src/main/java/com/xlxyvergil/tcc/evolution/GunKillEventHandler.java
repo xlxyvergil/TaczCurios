@@ -1,8 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
-import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
-import com.xlxyvergil.tcc.util.EffectCacheHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,7 +17,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
-import java.lang.reflect.Method;
 import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -36,22 +33,6 @@ public final class GunKillEventHandler {
 
         LivingEntity killed = event.getKilledEntity();
         handleGunKill(player, killed, event.getGunId());
-    }
-
-    /**
-     * 在枪械伤害前缓存攻击者身上的 Buff 快照，
-     * 用于解决攻击破隐类效果（如 irons_spellbooks:true_invisibility）在击杀时已消失的问题。
-     */
-    @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (!(attacker instanceof Player player)) return;
-        if (player.level().isClientSide) return;
-
-        LivingEntity hurt = resolveHurt(event);
-        if (hurt != null) {
-            EffectCacheHelper.snapshotAttackerEffects(player, hurt);
-        }
     }
 
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
@@ -92,8 +73,6 @@ public final class GunKillEventHandler {
             if (rule.type != EvolutionRegistry.RuleType.ATTRIBUTE) continue;
             applyAttributeRule(player, killed, gunId, rule);
         }
-
-        EffectCacheHelper.clearTarget(killed);
     }
 
     private static void applyAttributeRule(Player player, LivingEntity killed,
@@ -124,9 +103,10 @@ public final class GunKillEventHandler {
                                                     ResourceLocation gunId, EvolutionRegistry.Requirements req) {
         if (!req.requiredEffects.isEmpty()) {
             for (String effectId : req.requiredEffects) {
-                if (killed == null || !EffectCacheHelper.hadEffectCached(killed, player.getStringUUID(), effectId)) {
-                    return false;
-                }
+                net.minecraft.resources.ResourceLocation effectRl = net.minecraft.resources.ResourceLocation.tryParse(effectId);
+                if (effectRl == null) return false;
+                net.minecraft.world.effect.MobEffect effect = ForgeRegistries.MOB_EFFECTS.getValue(effectRl);
+                if (effect == null || !player.hasEffect(effect)) return false;
             }
         }
         if (!req.holdingGunTypes.isEmpty()) {
@@ -175,21 +155,5 @@ public final class GunKillEventHandler {
         }
         return ItemStack.EMPTY;
     }
-
-    private static LivingEntity resolveHurt(EntityHurtByGunEvent.Pre event) {
-        Object out = callGetter(event, "getHurtEntity");
-        if (out instanceof LivingEntity living) return living;
-        out = callGetter(event, "getEntity");
-        if (out instanceof LivingEntity living2) return living2;
-        return null;
-    }
-
-    private static Object callGetter(Object obj, String name) {
-        try {
-            Method m = obj.getClass().getMethod(name);
-            return m.invoke(obj);
-        } catch (Exception ignored) {
-            return null;
-        }
-    }
+    
 }

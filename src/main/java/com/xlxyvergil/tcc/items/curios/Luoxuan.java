@@ -105,20 +105,19 @@ public class Luoxuan extends BaseCurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide()) return;
-        if (!(entity instanceof Player player)) return;
-        if (!GunTypeChecker.isHoldingHeavyWeapon(player)) return;
+        if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 
         int interval = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get() * 20;
-        if (player.tickCount % interval != 0) return;
+        if (entity.tickCount % interval != 0) return;
 
         int level = TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get();
         int duration = TaczCuriosConfig.COMMON.luoxuanAbsorptionDuration.get() * 20;
         int amplifier = level - 1;
 
-        MobEffectInstance existing = player.getEffect(MobEffects.ABSORPTION);
+        MobEffectInstance existing = entity.getEffect(MobEffects.ABSORPTION);
         if (existing == null || existing.getAmplifier() < amplifier
             || existing.getDuration() < duration / 2) {
-            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, amplifier,
+            entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, amplifier,
                 false, false, true));
         }
     }

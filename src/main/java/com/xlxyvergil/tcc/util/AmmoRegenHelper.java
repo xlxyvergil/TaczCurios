@@ -5,7 +5,7 @@ import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.xlxyvergil.taa.api.ExtendedGunProperties;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -22,18 +22,18 @@ public final class AmmoRegenHelper {
     /**
      * 恢复手持枪械的弹药。
      *
-     * @param player       玩家
+     * @param entity       装备实体
      * @param held         手持枪械物品
      * @param iGun         枪械接口实例
      * @param regenPercent  恢复比例 (0.0 ~ 1.0)，外部已截取到两位小数
      */
-    public static void regenAmmo(Player player, ItemStack held, IGun iGun, double regenPercent) {
+    public static void regenAmmo(LivingEntity entity, ItemStack held, IGun iGun, double regenPercent) {
         var gunInfo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held));
         if (gunInfo.isEmpty()) return;
         var gunData = gunInfo.get().getGunData();
 
-        // 从玩家缓存获取经过全部计算后的弹匣容量
-        var cacheProperty = IGunOperator.fromLivingEntity(player).getCacheProperty();
+        // 从实体缓存获取经过全部计算后的弹匣容量
+        var cacheProperty = IGunOperator.fromLivingEntity(entity).getCacheProperty();
         if (cacheProperty == null) return;
         Integer maxAmmo = cacheProperty.getCache(ExtendedGunProperties.MAGAZINE_CAPACITY);
         if (maxAmmo == null || maxAmmo <= 0) return;

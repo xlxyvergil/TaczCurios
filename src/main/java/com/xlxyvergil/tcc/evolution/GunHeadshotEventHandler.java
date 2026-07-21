@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
-import com.xlxyvergil.tcc.util.EffectCacheHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -39,8 +38,6 @@ public final class GunHeadshotEventHandler {
             tag.putString(LAST_HEADSHOT_ATTACKER_KEY, player.getStringUUID());
             tag.putLong(LAST_HEADSHOT_TIME_KEY, player.level().getGameTime());
             tag.putString(LAST_HEADSHOT_GUN_ID_KEY, event.getGunId() != null ? event.getGunId().toString() : "");
-            // 缓存攻击时玩家身上的 Buff（用于攻击破隐类效果的成就判定）
-            EffectCacheHelper.snapshotAttackerEffects(player, hurt);
         }
 
         handleTrigger(player, hurt, event.getGunId(), TRIGGER_GUN_HEADSHOT_HIT);
@@ -95,7 +92,6 @@ public final class GunHeadshotEventHandler {
     private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source,
                                              net.minecraft.resources.ResourceLocation gunId) {
         handleTrigger(player, killed, gunId, TRIGGER_GUN_HEADSHOT_KILL);
-        EffectCacheHelper.clearTarget(killed);
     }
 
     /**

@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import top.theillusivec4.curios.api.SlotContext;
 
 public class Xiora extends BaseCurioItem {
 
@@ -73,7 +74,31 @@ public class Xiora extends BaseCurioItem {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof Xiora);
     }
 
-    
+    @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        super.onEquip(slotContext, prevStack, stack);
+        if (slotContext.entity() instanceof Player player) {
+            CompoundTag tag = stack.getOrCreateTag();
+            if (!tag.getBoolean("IsBound")) {
+                tag.putBoolean("IsBound", true);
+                tag.putString("BoundPlayer", player.getStringUUID());
+                tag.putString("BoundPlayerName", player.getGameProfile().getName());
+            }
+        }
+    }
+
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerUUID = tag.getString("BoundPlayer");
+            if (slotContext.entity() instanceof Player player) {
+                return player.getStringUUID().equals(boundPlayerUUID);
+            }
+            return false;
+        }
+        return super.canEquip(slotContext, stack);
+    }
 
     @OnlyIn(Dist.CLIENT)
     @Override
@@ -100,5 +125,12 @@ public class Xiora extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
+
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
+                .withStyle(ChatFormatting.RED));
+        }
     }
 }

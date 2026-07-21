@@ -109,18 +109,17 @@ public class QishiZhijian extends BaseCurioItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
-        if (!(entity instanceof Player player)) return;
-        if (player.level().isClientSide()) return;
+        if (entity.level().isClientSide()) return;
 
         // 每秒恢复一次弹药
-        if (player.tickCount % 20 != 0) return;
-        if (!GunTypeChecker.isHoldingHeavyWeapon(player)) return;
+        if (entity.tickCount % 20 != 0) return;
+        if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 
-        ItemStack held = player.getMainHandItem();
+        ItemStack held = entity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        AmmoRegenHelper.regenAmmo(player, held, iGun,
+        AmmoRegenHelper.regenAmmo(entity, held, iGun,
             (double) TaczCuriosConfig.COMMON.qishiZhijianAmmoRegenPercent.get());
     }
 

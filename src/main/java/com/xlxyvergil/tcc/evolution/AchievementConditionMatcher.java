@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.AttributeHelper;
-import com.xlxyvergil.tcc.util.EffectCacheHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.mojang.logging.LogUtils;
@@ -44,12 +43,13 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check required effects（统一使用伤害前缓存的 Buff 快照）
+        // Check required effects（实时检测玩家身上的 Buff）
         if (c.requiredEffects() != null) {
             for (String effectId : c.requiredEffects()) {
-                if (killed == null || !EffectCacheHelper.hadEffectCached(killed, player.getStringUUID(), effectId)) {
-                    return false;
-                }
+                ResourceLocation effectRl = ResourceLocation.tryParse(effectId);
+                if (effectRl == null) return false;
+                var effect = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getValue(effectRl);
+                if (effect == null || !player.hasEffect(effect)) return false;
             }
         }
 

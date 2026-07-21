@@ -103,9 +103,8 @@ public class VillV extends BaseCurioItem {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
-        if (!isEquipped(player)) return;
-        if (!GunTypeChecker.isHoldingHeavyWeapon(player)) return;
+        if (!isEquipped(entity)) return;
+        if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 
         CurioAbsorptionEventHandler.tryTriggerAbsorption(
             entity,

@@ -79,20 +79,19 @@ public class YinguoZhuanlun extends BaseCurioItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
-        if (!(entity instanceof Player player)) return;
-        if (player.level().isClientSide()) return;
-        if (player.tickCount % 20 != 0) return;
-        if (!GunTypeChecker.isHoldingRifle(player)) return;
+        if (entity.level().isClientSide()) return;
+        if (entity.tickCount % 20 != 0) return;
+        if (!GunTypeChecker.isHoldingRifle(entity)) return;
 
-        ItemStack held = player.getMainHandItem();
+        ItemStack held = entity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        double totalResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double totalResistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double resistanceScale = TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get();
         double percent = Math.round(totalResistance * resistanceScale * 100.0) / 100.0;
 
-        AmmoRegenHelper.regenAmmo(player, held, iGun, percent);
+        AmmoRegenHelper.regenAmmo(entity, held, iGun, percent);
     }
 
     @Override

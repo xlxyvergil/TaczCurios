@@ -114,9 +114,8 @@ public class Juezhe extends BaseCurioItem {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
-        if (!isEquipped(player)) return;
-        if (!GunTypeChecker.isHoldingRifle(player)) return;
+        if (!isEquipped(entity)) return;
+        if (!GunTypeChecker.isHoldingRifle(entity)) return;
         if (entity.level().isClientSide()) return;
 
         float cap = event.getAmount() * TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get().floatValue();

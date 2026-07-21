@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.mixin;
 
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -41,9 +40,6 @@ public abstract class DamageResistanceMixin {
     @ModifyVariable(method = "setHealth", at = @At("HEAD"), argsOnly = true)
     private float tcc$modifySetHealth(float health) {
         LivingEntity self = (LivingEntity) (Object) this;
-
-        // 仅对玩家生效
-        if (!(self instanceof Player)) return health;
 
         float current = self.getHealth();
         float delta = health - current;

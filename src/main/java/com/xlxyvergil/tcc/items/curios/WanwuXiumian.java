@@ -65,16 +65,15 @@ public class WanwuXiumian extends BaseCurioItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
-        if (!(entity instanceof Player player)) return;
-        if (player.level().isClientSide()) return;
-        if (player.tickCount % 20 != 0) return;
-        if (!GunTypeChecker.isHoldingRifle(player)) return;
+        if (entity.level().isClientSide()) return;
+        if (entity.tickCount % 20 != 0) return;
+        if (!GunTypeChecker.isHoldingRifle(entity)) return;
 
-        ItemStack held = player.getMainHandItem();
+        ItemStack held = entity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(held);
         if (iGun == null) return;
 
-        AmmoRegenHelper.regenAmmo(player, held, iGun,
+        AmmoRegenHelper.regenAmmo(entity, held, iGun,
             TaczCuriosConfig.COMMON.wanwuXiumianAmmoRegenPercent.get());
     }
 

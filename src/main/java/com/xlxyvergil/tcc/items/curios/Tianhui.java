@@ -113,12 +113,11 @@ public class Tianhui extends BaseCurioItem {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
-        if (!isEquipped(player)) return;
-        if (!GunTypeChecker.isHoldingRifle(player)) return;
+        if (!isEquipped(entity)) return;
+        if (!GunTypeChecker.isHoldingRifle(entity)) return;
         if (entity.level().isClientSide()) return;
 
-        double totalImaginaryResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double totalImaginaryResistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double baseFactor = 1.0;
         double resistanceScale = TaczCuriosConfig.COMMON.tianhuiResistanceScale.get();
         double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();

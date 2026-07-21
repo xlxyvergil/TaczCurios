@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.BaseCurioItem;
-import com.xlxyvergil.tcc.util.EffectCacheHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -163,7 +162,6 @@ public final class LivingDeathEventHandler {
             }
         }
 
-        EffectCacheHelper.clearTarget(killed);
     }
 
     // ===== Utility methods (public/shared) =====
@@ -194,9 +192,10 @@ public final class LivingDeathEventHandler {
     static boolean passesExtraRequirements(Player player, LivingEntity killed, EvolutionRegistry.Requirements req) {
         if (!req.requiredEffects.isEmpty()) {
             for (String effectId : req.requiredEffects) {
-                if (killed == null || !EffectCacheHelper.hadEffectCached(killed, player.getStringUUID(), effectId)) {
-                    return false;
-                }
+                ResourceLocation effectRl = ResourceLocation.tryParse(effectId);
+                if (effectRl == null) return false;
+                var effect = net.minecraftforge.registries.ForgeRegistries.MOB_EFFECTS.getValue(effectRl);
+                if (effect == null || !player.hasEffect(effect)) return false;
             }
         }
         if (!req.holdingGunTypes.isEmpty()) {

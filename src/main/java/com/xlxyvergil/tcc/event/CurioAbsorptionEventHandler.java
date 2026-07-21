@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
  * @SubscribeEvent
  * public static void onLivingHurt(LivingHurtEvent event) {
  *     LivingEntity entity = event.getEntity();
- *     if (!(entity instanceof Player)) return;
  *     CurioAbsorptionEventHandler.tryTriggerAbsorption(
  *         entity, TccItems.YOUR_ITEM.get(),
  *         TaczCuriosConfig.COMMON.curioAbsorptionTriggerHp.get(),
@@ -59,7 +58,7 @@ public class CurioAbsorptionEventHandler {
      * </ol>
      * 触发后会赋予 ABSORPTION 效果并重新进入冷却（冷却由 {@link #onLivingTick} 自动递减）。
      *
-     * @param entity            实体（通常是 Player）
+     * @param entity            实体（LivingEntity）
      * @param curioItem         要检查的饰品物品
      * @param triggerHpRatio    触发血量阈值（0~1，如 0.25 = 25%）
      * @param absorptionLevel   吸收效果等级（1 = ABSORPTION I，4 = ABSORPTION IV）
