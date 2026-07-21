@@ -73,6 +73,9 @@ public class TaczCuriosClientTooltip {
 
         // 逐火之蛾饰品的虚数抗性成长条件
         appendEvolutionCondition(tooltip, stack);
+
+        // 奖励物品的成就进度（玩家 NBT 中的累计值）
+        AchievementProgressRenderer.appendProgress(stack, tooltip);
     }
 
     private static void appendApocalypseDynamicInfo(List<Component> tooltip) {
@@ -107,7 +110,7 @@ public class TaczCuriosClientTooltip {
 
     // ==================== 成就达成方式 tooltip ====================
 
-    /** 构建奖励物品 → 成就定义的映射 */
+    /** 构建奖励/佩戴物品 → 成就定义的映射 */
     private static Map<String, AchievementDefinitions.AchievementDef> getRewardMap() {
         if (rewardToAchievement == null) {
             rewardToAchievement = new HashMap<>();
@@ -128,13 +131,24 @@ public class TaczCuriosClientTooltip {
                 if (reward.linkedEvolves() != null) {
                     for (AchievementDefinitions.LinkedEvolveRef ref : reward.linkedEvolves()) {
                         if (ref.to() != null) {
-                            rewardToAchievement.put(ref.to(), def);
+                            rewardToAchievement.putIfAbsent(ref.to(), def);
                         }
+                    }
+                }
+                // equippedCurios → 佩戴物品也映射到该成就（用于在任务道具上显示进度）
+                if (def.conditions() != null && def.conditions().equippedCurios() != null) {
+                    for (String curio : def.conditions().equippedCurios()) {
+                        rewardToAchievement.putIfAbsent(curio, def);
                     }
                 }
             }
         }
         return rewardToAchievement;
+    }
+
+    /** 公开访问：根据物品 ID 获取关联的成就定义（用于进度读取等场景） */
+    public static AchievementDefinitions.AchievementDef getAchievementForItem(String itemId) {
+        return getRewardMap().get(itemId);
     }
 
     /** 如果物品是某成就的奖励，追加达成条件描述 */

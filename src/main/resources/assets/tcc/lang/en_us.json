@@ -152,6 +152,8 @@
   "tcc.tooltip.rarity.rift": "§7Rarity: §dRift",
   "tcc.tooltip.how_to_obtain": "§7§oObtain 「%1$s」: %2$s",
   "tcc.tooltip.growth_condition": "§7§oGrowth: %s",
+  "tcc.tooltip.achievement_progress": "§7Progress: ",
+  "tcc.tooltip.achievement_biome": "§7Visited: ",
   "gem_class.tcc_slot": "TCC Curios",
   "// TAA Attribute Localization Overrides": "",
   "attribute.name.taa.explosion_knockbacknew": "Explosion Knockback",

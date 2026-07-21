@@ -32,6 +32,14 @@ public final class GunKillEventHandler {
         if (player.level().isClientSide) return;
 
         LivingEntity killed = event.getKilledEntity();
+        if (killed == null) return;
+
+        // 配置中的特殊实体由 GunKillDebugFallbackHandler 通过 LivingDeathEvent 处理，此处跳过
+        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+        if (GunKillFallbackEntities.contains(entityKey)) {
+            return;
+        }
+
         handleGunKill(player, killed, event.getGunId());
     }
 

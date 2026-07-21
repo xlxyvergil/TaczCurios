@@ -155,6 +155,8 @@
   "tcc.tooltip.rarity.rift": "§7稀有度：§d裂隙",
   "tcc.tooltip.how_to_obtain": "§7§o达成「%1$s」：%2$s",
   "tcc.tooltip.growth_condition": "§7§o成长条件：%s",
+  "tcc.tooltip.achievement_progress": "§7进度：",
+  "tcc.tooltip.achievement_biome": "§7已访问：",
   "gem_class.tcc_slot": "TCC饰品",
   "text.apotheosis.category.curios:tcc_slot.plural": "TCC饰品",
   "text.apotheosis.category.curios:tcc_3rd.plural": "逐火之蛾",

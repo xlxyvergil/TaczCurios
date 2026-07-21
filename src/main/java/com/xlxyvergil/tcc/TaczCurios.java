@@ -11,8 +11,10 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
@@ -60,6 +62,12 @@ public class TaczCurios
 
         
         MinecraftForge.EVENT_BUS.register(this);
+        // 注册玩家登录事件（用于同步成就进度到客户端）
+        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
+            if (event.getEntity() instanceof ServerPlayer sp) {
+                com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp);
+            }
+        });
         // 注册战利品表事件处理器
         MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
         // 注册天火流血结算事件处理器
@@ -82,6 +90,9 @@ public class TaczCurios
             // 注册所有自定义统计
             TccStats.register();
         });
+
+        // 注册网络通道
+        com.xlxyvergil.tcc.network.NetworkHandler.init();
     }
 
     private void intermodStuff(InterModEnqueueEvent event) {

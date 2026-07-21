@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -52,6 +53,12 @@ public final class GunHeadshotEventHandler {
         LivingEntity killed = resolveKilled(event);
         if (killed == null) return;
 
+        // 配置中的特殊实体由 onLivingDeath 回退处理，此处跳过
+        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+        if (GunKillFallbackEntities.contains(entityKey)) {
+            return;
+        }
+
         if (event.isHeadShot()) {
             // 清除 NBT 标记，防止 onLivingDeath 重复计数
             killed.getPersistentData().remove(LAST_HEADSHOT_ATTACKER_KEY);
@@ -69,6 +76,13 @@ public final class GunHeadshotEventHandler {
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity killed = event.getEntity();
         if (killed.level().isClientSide) return;
+
+        // 仅处理配置文件中声明的特殊实体
+        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+        if (!GunKillFallbackEntities.contains(entityKey)) {
+            return;
+        }
+
         Entity sourceEntity = event.getSource().getEntity();
         if (!(sourceEntity instanceof Player player)) return;
 

@@ -1595,7 +1595,7 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 3)")
                     .defineInRange("maxSlots", 3, 1, 100);
             kalpasAdaptFactor = builder
-                    .comment("适应系数 (默认: 0.8)")
+                    .comment("减免至 (默认: 0.8)")
                     .defineInRange("adaptFactor", 0.8, 0.0, 1.0);
             kalpasDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")
@@ -1615,7 +1615,7 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 4)")
                     .defineInRange("maxSlots", 4, 1, 100);
             huajieZhiyanAdaptFactor = builder
-                    .comment("适应系数 (默认: 0.7)")
+                    .comment("减免至 (默认: 0.7)")
                     .defineInRange("adaptFactor", 0.7, 0.0, 1.0);
             huajieZhiyanDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")
@@ -1641,7 +1641,7 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 6)")
                     .defineInRange("maxSlots", 6, 1, 100);
             aoMieAdaptFactor = builder
-                    .comment("适应减免系数 (默认: 0.5)")
+                    .comment("减免至 (默认: 0.5)")
                     .defineInRange("adaptFactor", 0.5, 0.0, 1.0);
             aoMieDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")

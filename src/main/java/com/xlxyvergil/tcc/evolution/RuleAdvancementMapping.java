@@ -1,7 +1,8 @@
 package com.xlxyvergil.tcc.evolution;
 
+import com.xlxyvergil.tcc.network.NetworkHandler;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -11,10 +12,17 @@ import net.minecraft.server.level.ServerPlayer;
  * All mapping and logic is driven by achievement_definitions.json.
  * This class provides convenience methods for:
  * - Checking if an achievement is done
- * - Awarding criteria (advancing progress)
+ * - Awarding criteria (advancing progress via NBT tracking)
  * - Checking prerequisites
+ * <p>
+ * Progress is tracked in the player's persistent NBT data, not in the advancement
+ * criteria. Achievements only have a single {@code step_1} criterion.
+ * When the accumulated NBT progress reaches {@code criteriaCount},
+ * {@code step_1} is awarded, completing the achievement.
  */
 public final class RuleAdvancementMapping {
+    private static final String PROGRESS_PREFIX = "tcc_ach_progress_";
+
     private RuleAdvancementMapping() {}
 
     /** Check if the player has completed the achievement for this achievement ID. */
@@ -25,56 +33,83 @@ public final class RuleAdvancementMapping {
         return player.getAdvancements().getOrStartProgress(adv).isDone();
     }
 
+    /** Get current progress from player NBT. */
+    public static int getProgress(ServerPlayer player, String achievementId) {
+        CompoundTag data = player.getPersistentData();
+        return data.getInt(PROGRESS_PREFIX + achievementId.replace(':', '_'));
+    }
+
+    /** Set progress in player NBT. */
+    private static void setProgress(ServerPlayer player, String achievementId, int progress) {
+        CompoundTag data = player.getPersistentData();
+        data.putInt(PROGRESS_PREFIX + achievementId.replace(':', '_'), progress);
+    }
+
     /**
-     * Award the next uncompleted criterion for an achievement.
+     * Award multiple "steps" by accumulating NBT progress.
+     * When progress reaches criteriaCount, {@code step_1} is awarded,
+     * completing the advancement and triggering {@code AdvancementEarnEvent}.
+     */
+    public static void awardSteps(ServerPlayer player, String achievementId, int criteriaCount, int steps) {
+        if (steps <= 0 || criteriaCount <= 0) return;
+        if (player.server == null) return;
+        if (isAdvancementDone(player, achievementId)) return;
+
+        int current = getProgress(player, achievementId);
+        int newProgress = Math.min(current + steps, criteriaCount);
+        setProgress(player, achievementId, newProgress);
+
+        // 同步到客户端
+        NetworkHandler.syncAchievementProgress(player, achievementId, newProgress);
+
+        if (newProgress >= criteriaCount) {
+            Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
+            if (adv != null) {
+                player.getAdvancements().award(adv, "step_1");
+            }
+        }
+    }
+
+    /**
+     * Award the next criterion (1 step).
      * @return true if the achievement is now fully complete
      */
     public static boolean awardNextCriterion(ServerPlayer player, String achievementId, int criteriaCount) {
         if (criteriaCount <= 0) return false;
         if (player.server == null) return false;
-        ResourceLocation id = new ResourceLocation(achievementId);
-        Advancement adv = player.server.getAdvancements().getAdvancement(id);
-        if (adv == null) return false;
-        var progress = player.getAdvancements().getOrStartProgress(adv);
-        if (progress.isDone()) return false;
+        if (isAdvancementDone(player, achievementId)) return false;
 
-        int step = nextUndone(progress, criteriaCount);
-        player.getAdvancements().award(adv, "step_" + step);
-        return player.getAdvancements().getOrStartProgress(adv).isDone();
+        int current = getProgress(player, achievementId);
+        int newProgress = Math.min(current + 1, criteriaCount);
+        setProgress(player, achievementId, newProgress);
+
+        // 同步到客户端
+        NetworkHandler.syncAchievementProgress(player, achievementId, newProgress);
+
+        if (newProgress >= criteriaCount) {
+            Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
+            if (adv != null) {
+                player.getAdvancements().award(adv, "step_1");
+                return true;
+            }
+        }
+        return false;
     }
 
-    /** Award all criteria at once (for single-step grants). */
+    /** Award all criteria at once (for one-time triggers like biome_visit). */
     public static void awardAll(ServerPlayer player, String achievementId, int criteriaCount) {
         if (criteriaCount <= 0) return;
         if (player.server == null) return;
-        ResourceLocation id = new ResourceLocation(achievementId);
-        Advancement adv = player.server.getAdvancements().getAdvancement(id);
-        if (adv == null) return;
-        var progress = player.getAdvancements().getOrStartProgress(adv);
-        if (progress.isDone()) return;
+        if (isAdvancementDone(player, achievementId)) return;
 
-        for (int i = nextUndone(progress, criteriaCount); i <= criteriaCount; i++) {
-            player.getAdvancements().award(adv, "step_" + i);
-        }
-    }
+        setProgress(player, achievementId, criteriaCount);
 
-    /**
-     * Award multiple criteria steps based on the kill value.
-     * @param steps 此次击杀应推进的步骤数（来自 KillCondition.value）
-     */
-    public static void awardSteps(ServerPlayer player, String achievementId, int criteriaCount, int steps) {
-        if (steps <= 0 || criteriaCount <= 0) return;
-        if (player.server == null) return;
-        ResourceLocation id = new ResourceLocation(achievementId);
-        Advancement adv = player.server.getAdvancements().getAdvancement(id);
-        if (adv == null) return;
-        var progress = player.getAdvancements().getOrStartProgress(adv);
-        if (progress.isDone()) return;
+        // 同步到客户端
+        NetworkHandler.syncAchievementProgress(player, achievementId, criteriaCount);
 
-        int start = nextUndone(progress, criteriaCount);
-        int end = Math.min(start + steps - 1, criteriaCount);
-        for (int i = start; i <= end; i++) {
-            player.getAdvancements().award(adv, "step_" + i);
+        Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
+        if (adv != null) {
+            player.getAdvancements().award(adv, "step_1");
         }
     }
 
@@ -85,13 +120,5 @@ public final class RuleAdvancementMapping {
             if (!isAdvancementDone(player, prereq)) return false;
         }
         return true;
-    }
-
-    private static int nextUndone(AdvancementProgress progress, int maxSteps) {
-        for (int i = 1; i <= maxSteps; i++) {
-            var cp = progress.getCriterion("step_" + i);
-            if (cp == null || !cp.isDone()) return i;
-        }
-        return Math.max(1, maxSteps);
     }
 }

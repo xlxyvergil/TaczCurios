@@ -1,17 +1,15 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,7 +19,6 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -77,6 +74,9 @@ public final class StatPollingEventHandler {
 
         // biome_visit: every 20 ticks
         if (t % 20 == 0) {
+            // 记录当前维度/群系到玩家 NBT（通用，与成就/规则解耦）
+            recordCurrentBiome(player);
+
             if (biomeDefs != null) {
                 for (var def : biomeDefs) {
                     checkBiome(player, def);
@@ -125,30 +125,33 @@ public final class StatPollingEventHandler {
 
     private static void awardStatProgress(ServerPlayer player, AchievementDefinitions.AchievementDef def,
                                            int steps) {
-        if (def.criteriaCount() <= 0) return;
-        if (steps <= 0) return;
+        if (def.criteriaCount() <= 0 || steps <= 0) return;
+        if (RuleAdvancementMapping.isAdvancementDone(player, def.id())) return;
 
-        if (def.criteriaCount() == 1) {
-            RuleAdvancementMapping.awardAll(player, def.id(), def.criteriaCount());
-        } else {
-            var rl = new ResourceLocation(def.id());
-            var adv = player.server.getAdvancements().getAdvancement(rl);
-            if (adv == null) return;
-            int maxSteps = Math.min(steps, def.criteriaCount());
-            for (int i = 1; i <= maxSteps; i++) {
-                var cp = player.getAdvancements().getOrStartProgress(adv).getCriterion("step_" + i);
-                if (cp != null && !cp.isDone()) {
-                    player.getAdvancements().award(adv, "step_" + i);
-                }
-            }
-        }
+        RuleAdvancementMapping.awardSteps(player, def.id(), def.criteriaCount(), steps);
     }
 
     // ===================== biome_visit =====================
 
+    private static final String VISITED_DIMENSIONS_KEY = "tcc_visited_dimensions";
+    private static final String VISITED_BIOMES_KEY = "tcc_visited_biomes";
+
     /**
-     * Check if the player is in the target biome or dimension.
-     * Supports biome, biome tag (#prefix), and dimension checks.
+     * 将玩家当前所在的维度和群系记录到玩家 NBT 列表中。
+     * 每 20 tick 调用一次，写入 tcc_visited_dimensions / tcc_visited_biomes。
+     */
+    private static void recordCurrentBiome(ServerPlayer player) {
+        ResourceLocation dimId = player.level().dimension().location();
+        recordVisit(player, VISITED_DIMENSIONS_KEY, dimId.toString());
+
+        var biomeHolder = player.level().getBiome(player.blockPosition());
+        biomeHolder.unwrapKey().ifPresent(key ->
+                recordVisit(player, VISITED_BIOMES_KEY, key.location().toString()));
+    }
+
+    /**
+     * Check if the target biome/dimension is in the player's visited NBT list.
+     * 对 biome tag（#前缀）无法通过 NBT 判断，回退到实时检测。
      */
     private static void checkBiome(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (!def.isEnabled()) return;
@@ -162,11 +165,11 @@ public final class StatPollingEventHandler {
 
         boolean matched = false;
         if (conds.biome() != null) {
-            matched = isInBiome(player, conds.biome());
+            matched = isInNbtList(player, VISITED_BIOMES_KEY, conds.biome());
         }
-        // Dimension-only: no biome field but has dimension (already checked in matchesStatBiomeConditions)
+        // Dimension-only: no biome field but has dimension
         if (!matched && conds.biome() == null && conds.dimension() != null) {
-            matched = true;
+            matched = isInNbtList(player, VISITED_DIMENSIONS_KEY, conds.dimension());
         }
 
         if (matched) {
@@ -175,27 +178,34 @@ public final class StatPollingEventHandler {
     }
 
     /**
-     * Check if the player is in the given biome or biome tag.
-     * Supports "#prefix" for biome tags.
+     * 将访问记录写入玩家 NBT 列表，避免重复。
      */
-    public static boolean isInBiome(ServerPlayer player, String biomeStr) {
-        var biomeHolder = player.level().getBiome(player.blockPosition());
-
-        if (biomeStr.startsWith("#")) {
-            // Biome tag check
-            TagKey<Biome> tagKey = TagKey.create(
-                Registries.BIOME, new ResourceLocation(biomeStr.substring(1)));
-            var reg = player.level().registryAccess().registry(Registries.BIOME);
-            if (reg.isEmpty()) return false;
-            return reg.get().getTag(tagKey)
-                .map(holderSet -> holderSet.contains(biomeHolder))
-                .orElse(false);
+    private static void recordVisit(ServerPlayer player, String nbtKey, String id) {
+        CompoundTag data = player.getPersistentData();
+        net.minecraft.nbt.ListTag list;
+        if (data.contains(nbtKey, net.minecraft.nbt.Tag.TAG_LIST)) {
+            list = data.getList(nbtKey, net.minecraft.nbt.Tag.TAG_STRING);
+            for (net.minecraft.nbt.Tag tag : list) {
+                if (tag.getAsString().equals(id)) return; // 已记录
+            }
         } else {
-            // Single biome check
-            return biomeHolder.unwrapKey()
-                .map(key -> key.location().toString().equals(biomeStr))
-                .orElse(false);
+            list = new net.minecraft.nbt.ListTag();
         }
+        list.add(net.minecraft.nbt.StringTag.valueOf(id));
+        data.put(nbtKey, list);
+
+        // 同步到客户端
+        NetworkHandler.syncVisited(player, nbtKey, id);
+    }
+
+    private static boolean isInNbtList(ServerPlayer player, String nbtKey, String target) {
+        CompoundTag data = player.getPersistentData();
+        if (!data.contains(nbtKey, net.minecraft.nbt.Tag.TAG_LIST)) return false;
+        var list = data.getList(nbtKey, net.minecraft.nbt.Tag.TAG_STRING);
+        for (var tag : list) {
+            if (tag.getAsString().equals(target)) return true;
+        }
+        return false;
     }
 
     // ===================== ATTRIBUTE rules (evolution_rules.json) =====================
@@ -273,7 +283,7 @@ public final class StatPollingEventHandler {
         if (rule.biome == null) return;
         if (rule.item == null || rule.progress == null) return;
 
-        if (!isInBiome(player, rule.biome)) return;
+        if (!isInNbtList(player, VISITED_BIOMES_KEY, rule.biome)) return;
 
         if (!LivingDeathEventHandler.passesExtraRequirements(player, null, rule.requirements)) return;
 
