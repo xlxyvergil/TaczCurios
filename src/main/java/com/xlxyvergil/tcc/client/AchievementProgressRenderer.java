@@ -7,6 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
@@ -76,50 +78,52 @@ public final class AchievementProgressRenderer {
     }
 
     /**
-     * 对 biome_visit 类型：从玩家 NBT 读取访问记录并显示。
-     * 使用 NaturesCompass 的方式获取翻译名称（Util.makeDescriptionId + I18n）。
+     * 对 biome_visit 类型：显示成就要求的维度/群系名称。
+     * 读取玩家 NBT 判断是否已访问，已访问显示名称，未访问则显示空。
      */
     private static void appendBiomeVisit(AchievementDefinitions.AchievementDef def, List<Component> tooltip) {
         AchievementDefinitions.AchievementConditions conds = def.conditions();
         if (conds == null) return;
 
-        String type;
         ResourceLocation id;
+        String nbtListKey;
         if (conds.dimension() != null) {
             id = ResourceLocation.tryParse(conds.dimension());
             if (id == null) return;
-            type = "dimension";
+            nbtListKey = "tcc_visited_dimensions";
         } else if (conds.biome() != null) {
             id = ResourceLocation.tryParse(conds.biome());
             if (id == null) return;
-            type = "biome";
+            nbtListKey = "tcc_visited_biomes";
         } else {
             return;
         }
 
-        // 维度翻译键格式："dimension.路径"（不带命名空间），与 Minecraft 实际格式一致
-        // 群系翻译键格式："biome.命名空间.路径"，用 Util.makeDescriptionId 生成
-        String key = "dimension".equals(type) ? "dimension." + id.getPath() : Util.makeDescriptionId(type, id);
+        // 翻译名称
+        String key = "tcc_visited_dimensions".equals(nbtListKey)
+            ? "dimension." + id.getPath()
+            : Util.makeDescriptionId("biome", id);
         String localized = I18n.get(key);
-        Component nameComponent;
-        if ("biome".equals(type)) {
-            // 群系：不做回退，直接显示（与 NaturesCompass 一致）
-            nameComponent = Component.literal(localized).withStyle(ChatFormatting.GREEN);
-        } else {
-            // 维度：翻译找不到时做回退（与 NaturesCompass 一致）
-            if (!localized.equals(key)) {
-                nameComponent = Component.literal(localized).withStyle(ChatFormatting.GREEN);
-            } else {
-                // 回退：去掉命名空间，下划线转空格，单词首字母大写
-                String fallback = id.getPath().replace('_', ' ');
-                fallback = org.apache.commons.lang3.text.WordUtils.capitalize(fallback);
-                nameComponent = Component.literal(fallback).withStyle(ChatFormatting.GREEN);
+
+        // 检查 NBT 中是否有该维度/群系的访问记录
+        boolean visited = false;
+        var player = Minecraft.getInstance().player;
+        if (player != null) {
+            CompoundTag data = player.getPersistentData();
+            if (data.contains(nbtListKey)) {
+                ListTag list = data.getList(nbtListKey, Tag.TAG_STRING);
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.getString(i).equals(id.toString())) {
+                        visited = true;
+                        break;
+                    }
+                }
             }
         }
 
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.achievement_biome")
-                .append(nameComponent)
+                .append(visited ? Component.literal(localized).withStyle(ChatFormatting.GREEN) : Component.literal(""))
                 .withStyle(ChatFormatting.GRAY));
     }
 
