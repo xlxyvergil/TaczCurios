@@ -71,6 +71,16 @@ public class ItemBaseCurio extends Item implements ICurioItem, IBindable, Vanish
     }
 
     /**
+     * 公开判断当前饰品是否为绑定物品（需要崩坏结晶才能卸下）。
+     * 用于客户端 tooltip 显示等场景。
+     *
+     * @return 如果 {@link #isBoundItem()} 返回 {@code true} 则为绑定物品
+     */
+    public boolean requiresCollapseCrystal() {
+        return isBoundItem();
+    }
+
+    /**
      * 判断当前槽位是否属于需要崩坏结晶才能卸下的绑定槽位。
      *
      * @param context 槽位上下文

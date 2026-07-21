@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mojang.logging.LogUtils;
 import net.minecraftforge.fml.loading.FMLPaths;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +24,6 @@ import java.util.Set;
  * 因此需要通过 GunKillDebugFallbackHandler 来处理。
  */
 public final class GunKillFallbackEntities {
-    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "gun_kill_fallback_entities.json";
     private static final String DEFAULT_RESOURCE = "/tcc_defaults/gun_kill_fallback_entities.json";
@@ -49,12 +46,10 @@ public final class GunKillFallbackEntities {
             try {
                 Files.createDirectories(file.getParent());
             } catch (IOException e) {
-                LOGGER.error("Failed to create config directory for {}", FILE_NAME, e);
                 loaded = true;
                 return;
             }
             if (!ensureDefaults(file)) {
-                LOGGER.error("Failed to ensure default {} exists", FILE_NAME);
                 loaded = true;
                 return;
             }
@@ -69,13 +64,11 @@ public final class GunKillFallbackEntities {
         }
         try (InputStream in = GunKillFallbackEntities.class.getResourceAsStream(DEFAULT_RESOURCE)) {
             if (in == null) {
-                LOGGER.error("Default resource not found: {}", DEFAULT_RESOURCE);
                 return false;
             }
             Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
             return true;
         } catch (IOException e) {
-            LOGGER.error("Failed to copy default {} to {}", FILE_NAME, file, e);
             return false;
         }
     }
@@ -94,9 +87,8 @@ public final class GunKillFallbackEntities {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to read {}", file, e);
+            // ignore
         }
         FALLBACK_ENTITIES = Set.copyOf(entities);
-        LOGGER.info("Loaded {} fallback entities: {}", FALLBACK_ENTITIES.size(), FALLBACK_ENTITIES);
     }
 }

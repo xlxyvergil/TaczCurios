@@ -6,15 +6,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
-import com.mojang.logging.LogUtils;
 import com.xlxyvergil.tcc.util.CurioGrantHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.locale.Language;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.fml.loading.FMLPaths;
-import org.slf4j.Logger;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -32,7 +29,6 @@ import java.util.*;
  * trigger conditions, criteria count, prerequisites, and reward (grant/evolve).
  */
 public final class AchievementDefinitions {
-    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String FILE_NAME = "achievement_definitions.json";
     private static final String DEFAULT_RESOURCE = "/tcc_defaults/achievement_definitions.json";
@@ -74,17 +70,14 @@ public final class AchievementDefinitions {
             if (loadAttempted) return;
             Path file = FMLPaths.CONFIGDIR.get().resolve("tcc").resolve(FILE_NAME);
             try { Files.createDirectories(file.getParent()); } catch (IOException e) {
-                LOGGER.error("Failed to create config directory for achievement definitions", e);
                 loadAttempted = true;
                 return;
             }
             if (!ensureDefaults(file)) {
-                LOGGER.error("Failed to ensure default achievement_definitions.json exists");
                 loadAttempted = true;
                 return;
             }
             if (!readAll(file)) {
-                LOGGER.error("Failed to load achievement definitions — no achievements will be processed");
                 loadAttempted = true;
                 return;
             }
@@ -105,13 +98,11 @@ public final class AchievementDefinitions {
     private static boolean copyDefaults(Path file) {
         try (InputStream in = AchievementDefinitions.class.getResourceAsStream(DEFAULT_RESOURCE)) {
             if (in == null) {
-                LOGGER.error("Default achievement definitions resource not found: {}", DEFAULT_RESOURCE);
                 return false;
             }
             Files.copy(in, file, StandardCopyOption.REPLACE_EXISTING);
             return true;
         } catch (IOException e) {
-            LOGGER.error("Failed to copy default achievement definitions to {}", file, e);
             return false;
         }
     }
@@ -125,7 +116,6 @@ public final class AchievementDefinitions {
             JsonObject defaultRoot;
             try (InputStream in = AchievementDefinitions.class.getResourceAsStream(DEFAULT_RESOURCE)) {
                 if (in == null) {
-                    LOGGER.error("Default achievement definitions resource not found: {}", DEFAULT_RESOURCE);
                     return false;
                 }
                 defaultRoot = JsonParser.parseReader(new java.io.InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
@@ -156,7 +146,6 @@ public final class AchievementDefinitions {
             }
             return true;
         } catch (IOException e) {
-            LOGGER.error("Failed to merge default achievement definitions", e);
             return true; // 已有文件仍然可用
         }
     }
@@ -168,36 +157,31 @@ public final class AchievementDefinitions {
             JsonObject root = JsonParser.parseReader(reader).getAsJsonObject();
             JsonElement el = root.get("achievements");
             if (el == null || !el.isJsonObject()) {
-                LOGGER.error("Missing or invalid 'achievements' key in achievement_definitions.json");
                 return false;
             }
             for (var entry : el.getAsJsonObject().entrySet()) {
                 try {
                     AchievementDef def = GSON.fromJson(entry.getValue(), AchievementDef.class);
                     if (def == null) {
-                        LOGGER.warn("Failed to deserialize achievement {}", entry.getKey());
                         continue;
                     }
                     String id = entry.getKey();
                     AchievementDef fixed = new AchievementDef(id, def);
                     ACHIEVEMENTS.put(id, fixed);
                 } catch (Exception e) {
-                    LOGGER.error("Failed to parse achievement definition '{}'", entry.getKey(), e);
+                    // skip malformed entry
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to read achievement_definitions.json", e);
             return false;
         }
 
         if (ACHIEVEMENTS.isEmpty()) {
-            LOGGER.warn("No achievement definitions loaded from {}", file);
             return false;
         }
 
         for (AchievementDef def : ACHIEVEMENTS.values()) {
             if (def.trigger == null) {
-                LOGGER.warn("Achievement '{}' has null trigger — skipping trigger index", def.id());
                 continue;
             }
             BY_TRIGGER.computeIfAbsent(def.trigger, k -> new ArrayList<>()).add(def);

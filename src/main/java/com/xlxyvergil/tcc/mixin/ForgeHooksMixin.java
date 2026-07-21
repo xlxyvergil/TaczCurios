@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.mojang.logging.LogUtils;
 import com.xlxyvergil.tcc.helpers.LootTableHelper;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -26,17 +25,11 @@ public class ForgeHooksMixin {
         LootTable returnedTable = info.getReturnValue();
 
         if (custom && returnedTable != null) {
-            LogUtils.getLogger().debug("Caught custom LootTable loading: " + name);
-
             try {
-                LogUtils.getLogger().debug("Unfreezing " + name + "...");
                 LootTableHelper.unfreezePlease(returnedTable);
             } catch (Exception ex) {
-                LogUtils.getLogger().error("FAILED TO PROCESS LOOT TABLE: " + name, ex);
                 throw new RuntimeException(ex);
             }
-
-            LogUtils.getLogger().debug("Force dispatching LootTableLoadEvent for " + name + "...");
 
             // 创建临时事件处理器来处理战利品表加载
             com.xlxyvergil.tcc.event.TccEventHandler handler = new com.xlxyvergil.tcc.event.TccEventHandler();
@@ -47,10 +40,8 @@ public class ForgeHooksMixin {
                 returnedTable = LootTable.EMPTY;
             }
 
-            LogUtils.getLogger().debug("Freezing " + name + " back...");
             returnedTable.freeze();
 
-            LogUtils.getLogger().debug("Returning " + name + " to Forge handler...");
             info.setReturnValue(returnedTable);
         }
     }

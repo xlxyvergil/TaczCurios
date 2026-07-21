@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.helpers;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import com.mojang.logging.LogUtils;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -34,7 +32,6 @@ public class LootTableHelper {
             isFrozenPool.setAccessible(true);
             lootPoolsTable.setAccessible(true);
         } catch (Throwable ex) {
-            LogUtils.getLogger().error("FAILED TO REFLECT LOOTTABLE FIELDS", ex);
             throw new RuntimeException(ex);
         }
     }
@@ -49,7 +46,6 @@ public class LootTableHelper {
                 unfreezePlease(pool);
             }
         } catch (Throwable ex) {
-            LogUtils.getLogger().error("FAILED TO UNFREEZE LOOT TABLE", ex);
             throw new RuntimeException(ex);
         }
     }
@@ -58,7 +54,6 @@ public class LootTableHelper {
         try {
             isFrozenPool.set(pool, false);
         } catch (Throwable ex) {
-            LogUtils.getLogger().error("FAILED TO UNFREEZE LOOT POOL", ex);
             throw new RuntimeException(ex);
         }
     }
@@ -84,7 +79,6 @@ public class LootTableHelper {
             poolList.add(newPool);
             
         } catch (Throwable ex) {
-            LogUtils.getLogger().error("FAILED TO ADD LOOT ENTRY TO CHEST", ex);
             throw new RuntimeException(ex);
         }
     }

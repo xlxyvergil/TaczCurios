@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.items.ItemBaseCurio;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
 import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
@@ -76,6 +77,12 @@ public class TaczCuriosClientTooltip {
 
         // 奖励物品的成就进度（玩家 NBT 中的累计值）
         AchievementProgressRenderer.appendProgress(stack, tooltip);
+
+        // 绑定饰品（需要崩坏结晶才能卸下）
+        if (stack.getItem() instanceof ItemBaseCurio curio && curio.requiresCollapseCrystal()) {
+            tooltip.add(Component.translatable("tcc.tooltip.requires_collapse_crystal")
+                    .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC));
+        }
     }
 
     private static void appendApocalypseDynamicInfo(List<Component> tooltip) {

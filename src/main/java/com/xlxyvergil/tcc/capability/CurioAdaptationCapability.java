@@ -89,7 +89,8 @@ public class CurioAdaptationCapability {
                 int rawCount = counts.getOrDefault(msgId, 0) + 1;
                 int count = Math.min(rawCount, maxAdaptCount);
                 counts.put(msgId, count);
-                double factor = Math.pow(adaptFactor, count - 1);
+                // adaptFactor 为每层减伤比例，如 0.2 = 减免 20%
+                double factor = Math.pow(1.0 - adaptFactor, count - 1);
                 amountRef[0] *= (float) factor;
             } else {
                 // 新类型 → 插入队首 + 初始化 + 淘汰最旧

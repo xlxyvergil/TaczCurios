@@ -1426,7 +1426,7 @@ public class TaczCuriosConfig {
                     .comment("受伤冷却基础冷却(tick) (默认: 10 = 0.5秒)")
                     .defineInRange("hurtCooldownTicks", 10, 1, 12000);
             griseoImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .comment("虚数抗性基础值 (默认: 21.0)")
                     .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
@@ -1513,7 +1513,7 @@ public class TaczCuriosConfig {
                     .comment("吸收触发冷却时间(秒) (默认: 60)")
                     .defineInRange("cooldownSeconds", 60.0, 1, 3600);
             villVImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .comment("虚数抗性基础值 (默认: 21.0)")
                     .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
@@ -1589,14 +1589,14 @@ public class TaczCuriosConfig {
             // 千劫配置
             builder.comment("千劫饰品配置").push("kalpas");
             kalpasImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 21.0)")
+                    .comment("虚数抗性基础值 (默认: 21.0)")
                     .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             kalpasMaxSlots = builder
                     .comment("适应最大槽位 (默认: 3)")
                     .defineInRange("maxSlots", 3, 1, 100);
             kalpasAdaptFactor = builder
-                    .comment("减免至 (默认: 0.8)")
-                    .defineInRange("adaptFactor", 0.8, 0.0, 1.0);
+                    .comment("每层减伤比例 (默认: 0.2 = 20%)")
+                    .defineInRange("adaptFactor", 0.2, 0.0, 1.0);
             kalpasDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")
                     .defineInRange("decaySeconds", 20, 1, 3600);
@@ -1615,8 +1615,8 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 4)")
                     .defineInRange("maxSlots", 4, 1, 100);
             huajieZhiyanAdaptFactor = builder
-                    .comment("减免至 (默认: 0.7)")
-                    .defineInRange("adaptFactor", 0.7, 0.0, 1.0);
+                    .comment("每层减伤比例 (默认: 0.3 = 30%)")
+                    .defineInRange("adaptFactor", 0.3, 0.0, 1.0);
             huajieZhiyanDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")
                     .defineInRange("decaySeconds", 20, 1, 3600);
@@ -1641,7 +1641,7 @@ public class TaczCuriosConfig {
                     .comment("适应最大槽位 (默认: 6)")
                     .defineInRange("maxSlots", 6, 1, 100);
             aoMieAdaptFactor = builder
-                    .comment("减免至 (默认: 0.5)")
+                    .comment("每层减伤比例 (默认: 0.5 = 50%)")
                     .defineInRange("adaptFactor", 0.5, 0.0, 1.0);
             aoMieDecaySeconds = builder
                     .comment("适应衰减时间(秒) (默认: 20)")
@@ -1657,7 +1657,7 @@ public class TaczCuriosConfig {
                     .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%)")
                     .defineInRange("healthToAttackPercent", 0.10, 0.0, 10.0);
             metaMorphResistanceToAttackPercent = builder
-                    .comment("虚数抗性转攻击力比例 (默认: 0.10 = 10%)")
+                    .comment("每点虚数抗性转化为攻击力的比例 (默认: 0.10 = 10%)")
                     .defineInRange("resistanceToAttackPercent", 0.10, 0.0, 10.0);
             metaMorphLifeStealPerResistance = builder
                     .comment("每点虚数抗性提供的生命偷取 (默认: 0.01)")
@@ -1667,7 +1667,7 @@ public class TaczCuriosConfig {
             // 苏配置
             builder.comment("苏饰品配置").push("su");
             suImaginaryResistance = builder
-                    .comment("虚数抗性加成 (默认: 31.0)")
+                    .comment("虚数抗性基础值 (默认: 31.0)")
                     .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
             suMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.3)")
@@ -1706,7 +1706,7 @@ public class TaczCuriosConfig {
                     .comment("基础弹药恢复百分比 (默认: 0.1 = 10%)")
                     .defineInRange("ammoBasePercent", 0.1, 0.0, 1.0);
             tingzhiZhijianAmmoResistanceScale = builder
-                    .comment("虚数抗性弹药恢复缩放 (默认: 0.005 = 1/200)")
+                    .comment("每点虚数抗性提供的弹药恢复系数 (默认: 0.005)")
                     .defineInRange("ammoResistanceScale", 0.005, 0.0, 1.0);
             builder.pop();
 
@@ -1716,7 +1716,7 @@ public class TaczCuriosConfig {
                     .comment("最大生命值减少比例 (默认: -0.5)")
                     .defineInRange("maxHealthReduction", -0.5, -1.0, 0.0);
             tianhuiResistanceScale = builder
-                    .comment("虚数抗性对伤害减免的缩放 (默认: 0.01)")
+                    .comment("每点虚数抗性提供的伤害减免系数 (默认: 0.01 = 每点抗性减免1%伤害)")
                     .defineInRange("resistanceScale", 0.01, 0.0, 1.0);
             tianhuiMinDamageFactor = builder
                     .comment("最低伤害乘算因子 (默认: 0.1 = 10%)")
@@ -1729,7 +1729,7 @@ public class TaczCuriosConfig {
                     .comment("超量治疗值 (默认: 1.0)")
                     .defineInRange("overheal", 1.0, 0.0, 10.0);
             yinguoZhuanlunAmmoResistanceScale = builder
-                    .comment("虚数抗性弹药恢复缩放 (默认: 0.01 = 1/100)")
+                    .comment("每点虚数抗性提供的弹药恢复系数 (默认: 0.01)")
                     .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
             builder.pop();
 
