@@ -27,8 +27,6 @@ public final class AchievementProgressRenderer {
 
     private static final String PROGRESS_PREFIX = "tcc_ach_progress_";
     private static final String TRIGGER_BIOME = "biome_visit";
-    private static final String VISITED_DIMENSIONS_KEY = "tcc_visited_dimensions";
-    private static final String VISITED_BIOMES_KEY = "tcc_visited_biomes";
 
     private AchievementProgressRenderer() {}
 
@@ -36,6 +34,14 @@ public final class AchievementProgressRenderer {
      * 检查物品是否与某个成就关联，若有则从玩家 NBT 读取进度并追加到 tooltip。
      */
     public static void appendProgress(ItemStack stack, List<Component> tooltip) {
+        try {
+            doAppendProgress(stack, tooltip);
+        } catch (Exception ignored) {
+            // 防御性：玩家统计数据未就绪、注册表查询异常等情况下不崩溃
+        }
+    }
+
+    private static void doAppendProgress(ItemStack stack, List<Component> tooltip) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         if (itemId == null) return;
 
@@ -49,7 +55,7 @@ public final class AchievementProgressRenderer {
         CompoundTag data = player.getPersistentData();
 
         if (TRIGGER_BIOME.equals(def.trigger())) {
-            appendBiomeVisit(def, data, tooltip);
+            appendBiomeVisit(def, tooltip);
             return;
         }
 
@@ -63,10 +69,6 @@ public final class AchievementProgressRenderer {
             current = data.getInt(nbtKey);
         }
 
-        int total = def.criteriaCount();
-        // 已达成不显示
-        if (current >= total) return;
-
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.achievement_progress")
                 .append(Component.literal(String.valueOf(current)).withStyle(ChatFormatting.GREEN))
@@ -77,42 +79,30 @@ public final class AchievementProgressRenderer {
      * 对 biome_visit 类型：从玩家 NBT 读取访问记录并显示。
      * 使用 NaturesCompass 的方式获取翻译名称（Util.makeDescriptionId + I18n）。
      */
-    private static void appendBiomeVisit(AchievementDefinitions.AchievementDef def, CompoundTag data, List<Component> tooltip) {
+    private static void appendBiomeVisit(AchievementDefinitions.AchievementDef def, List<Component> tooltip) {
         AchievementDefinitions.AchievementConditions conds = def.conditions();
         if (conds == null) return;
 
-        String nbtKey;
         String type;
         ResourceLocation id;
         if (conds.dimension() != null) {
             id = ResourceLocation.tryParse(conds.dimension());
             if (id == null) return;
-            nbtKey = VISITED_DIMENSIONS_KEY;
             type = "dimension";
         } else if (conds.biome() != null) {
             id = ResourceLocation.tryParse(conds.biome());
             if (id == null) return;
-            nbtKey = VISITED_BIOMES_KEY;
             type = "biome";
         } else {
             return;
         }
 
-        // 通过进度 NBT 判断成就是否已完成（与击杀/统计类逻辑一致）
-        String progressKey = PROGRESS_PREFIX + def.id().replace(':', '_');
-        int progress = data.getInt(progressKey);
-        if (progress >= def.criteriaCount()) return;
-
-        // 判断是否已访问过
-        boolean visited = isInNbtList(data, nbtKey, id.toString());
-
-        String key = Util.makeDescriptionId(type, id);
+        // 维度翻译键格式："dimension.路径"（不带命名空间），与 Minecraft 实际格式一致
+        // 群系翻译键格式："biome.命名空间.路径"，用 Util.makeDescriptionId 生成
+        String key = "dimension".equals(type) ? "dimension." + id.getPath() : Util.makeDescriptionId(type, id);
         String localized = I18n.get(key);
         Component nameComponent;
-        if (!visited) {
-            // 未访问 → 空名称
-            nameComponent = Component.literal("").withStyle(ChatFormatting.GREEN);
-        } else if ("biome".equals(type)) {
+        if ("biome".equals(type)) {
             // 群系：不做回退，直接显示（与 NaturesCompass 一致）
             nameComponent = Component.literal(localized).withStyle(ChatFormatting.GREEN);
         } else {
@@ -133,19 +123,9 @@ public final class AchievementProgressRenderer {
                 .withStyle(ChatFormatting.GRAY));
     }
 
-    /** 检查玩家 NBT 的 StringList 中是否包含目标值 */
-    private static boolean isInNbtList(CompoundTag data, String listKey, String target) {
-        if (!data.contains(listKey, net.minecraft.nbt.Tag.TAG_LIST)) return false;
-        var list = data.getList(listKey, net.minecraft.nbt.Tag.TAG_STRING);
-        for (var tag : list) {
-            if (tag.getAsString().equals(target)) return true;
-        }
-        return false;
-    }
-
     /**
      * 对 stat_polling 类型：从客户端 Statistics 读取原始数据计算进度。
-     * Minecraft 内置的 Stats 系统会自动同步到客户端。
+     * 服务端在每次 stat 变动后主动同步给客户端，客户端直接读取本地缓存。
      */
     private static int resolveStatProgress(net.minecraft.client.player.LocalPlayer player,
                                             AchievementDefinitions.AchievementDef def) {
@@ -155,15 +135,25 @@ public final class AchievementProgressRenderer {
         ResourceLocation statId = ResourceLocation.tryParse(conds.stat());
         if (statId == null) return 0;
 
+        // 先尝试通过 BuiltInRegistries.CUSTOM_STAT 验证（与服务端一致），
+        // 某些 stat 可能未在客户端注册，此时回退直接读取。
         ResourceLocation registered = BuiltInRegistries.CUSTOM_STAT.get(statId);
         if (registered == null) {
             registered = BuiltInRegistries.CUSTOM_STAT.get(new ResourceLocation(statId.getPath()));
         }
+
+        // 与服务端一致（StatPollingEventHandler.checkStat）：未注册的 stat 直接跳过
         if (registered == null) return 0;
 
-        int current = player.getStats().getValue(Stats.CUSTOM.get(registered));
-        int threshold = conds.statThreshold();
-        int maxSteps = def.criteriaCount();
-        return Math.min(current / threshold, maxSteps);
+        int current;
+        try {
+            current = player.getStats().getValue(Stats.CUSTOM.get(registered));
+        } catch (Exception e) {
+            // 防御性：Stat 构造函数/注册表尚未就绪时可能抛异常
+            return 0;
+        }
+        // 返回原始 stat 值用于进度显示（与击杀类成就保持一致），
+        // 服务端按 threshold 分步判定，但客户端直接显示原始值让玩家了解实际进度
+        return current;
     }
 }

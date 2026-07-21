@@ -57,17 +57,21 @@ public final class RuleAdvancementMapping {
 
         int current = getProgress(player, achievementId);
         int newProgress = Math.min(current + steps, criteriaCount);
-        setProgress(player, achievementId, newProgress);
 
-        // 同步到客户端
-        NetworkHandler.syncAchievementProgress(player, achievementId, newProgress);
-
+        // 当到达 criteriaCount 时，确保 advancement 存在并能成功 award
         if (newProgress >= criteriaCount) {
             Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
-            if (adv != null) {
+            if (adv == null) {
+                // 无法 award → 不标记完成，保持在 criteriaCount - 1
+                newProgress = Math.min(current + steps, criteriaCount - 1);
+                if (newProgress <= current) return;
+            } else {
                 player.getAdvancements().award(adv, "step_1");
             }
         }
+
+        setProgress(player, achievementId, newProgress);
+        NetworkHandler.syncAchievementProgress(player, achievementId, newProgress);
     }
 
     /**
@@ -81,19 +85,22 @@ public final class RuleAdvancementMapping {
 
         int current = getProgress(player, achievementId);
         int newProgress = Math.min(current + 1, criteriaCount);
-        setProgress(player, achievementId, newProgress);
-
-        // 同步到客户端
-        NetworkHandler.syncAchievementProgress(player, achievementId, newProgress);
 
         if (newProgress >= criteriaCount) {
             Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
-            if (adv != null) {
+            if (adv == null) {
+                // 无法 award → 不标记完成
+                newProgress = Math.min(current + 1, criteriaCount - 1);
+                if (newProgress <= current) return false;
+            } else {
                 player.getAdvancements().award(adv, "step_1");
-                return true;
             }
         }
-        return false;
+
+        setProgress(player, achievementId, newProgress);
+        NetworkHandler.syncAchievementProgress(player, achievementId, newProgress);
+
+        return newProgress >= criteriaCount;
     }
 
     /** Award all criteria at once (for one-time triggers like biome_visit). */
@@ -102,15 +109,16 @@ public final class RuleAdvancementMapping {
         if (player.server == null) return;
         if (isAdvancementDone(player, achievementId)) return;
 
-        setProgress(player, achievementId, criteriaCount);
-
-        // 同步到客户端
-        NetworkHandler.syncAchievementProgress(player, achievementId, criteriaCount);
-
+        // 先获取 Advancement 并 award，成功后更新 NBT progress。
+        // 避免在 adv 不存在时错误地将 progress 设为 criteriaCount，
+        // 导致客户端 tooltip 以为已完成而隐藏显示，但成就实际未达成。
         Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
-        if (adv != null) {
-            player.getAdvancements().award(adv, "step_1");
-        }
+        if (adv == null) return;
+
+        player.getAdvancements().award(adv, "step_1");
+
+        setProgress(player, achievementId, criteriaCount);
+        NetworkHandler.syncAchievementProgress(player, achievementId, criteriaCount);
     }
 
     /** Check if ALL prerequisites for an achievement are complete. */

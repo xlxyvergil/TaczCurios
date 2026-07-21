@@ -8,6 +8,8 @@
     "ForgeHooksMixin",
     "LivingEntityAccessor",
     "LivingEntityHurtMixin",
+    "PlayerListMixin",
+    "ServerStatsCounterMixin",
     "ZombieVillagerCureMixin"
   ],
   "injectors": {
