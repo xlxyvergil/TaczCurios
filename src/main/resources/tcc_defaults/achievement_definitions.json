@@ -381,7 +381,7 @@
       "criteria_count": 200,
       "conditions": {
         "stat": "minecraft:animals_bred",
-        "statThreshold": 200
+        "statThreshold": 1
       },
       "prerequisites": [],
       "reward": {
@@ -444,7 +444,7 @@
       "conditions": {
         "equippedCurios": ["tcc:qianjie_yicheng"],
         "stat": "minecraft:fish_caught",
-        "statThreshold": 200
+        "statThreshold": 1
       },
       "prerequisites": ["tcc:qianjie_yicheng_grant"],
       "reward": {
@@ -506,7 +506,7 @@
       "criteria_count": 2556500,
       "conditions": {
         "stat": "minecraft:aviate_one_cm",
-        "statThreshold": 2556500,
+        "statThreshold": 1,
         "attributes": [
           { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
         ]
@@ -567,7 +567,7 @@
       "criteria_count": 10000,
       "conditions": {
         "stat": "minecraft:damage_dealt",
-        "statThreshold": 10000
+        "statThreshold": 1
       },
       "prerequisites": [],
       "reward": {
@@ -599,7 +599,7 @@
       "conditions": {
         "equippedCurios": ["tcc:kalpas"],
         "stat": "minecraft:damage_taken",
-        "statThreshold": 10000
+        "statThreshold": 1
       },
       "prerequisites": ["tcc:kalpas_grant"],
       "reward": {
@@ -667,7 +667,7 @@
       "conditions": {
         "equippedCurios": ["tcc:huajie_zhiyan"],
         "stat": "minecraft:mob_kills",
-        "statThreshold": 1000
+        "statThreshold": 1
       },
       "prerequisites": ["tcc:kalpas_to_huajie_zhiyan"],
       "reward": {
@@ -801,7 +801,7 @@
       "conditions": {
         "equippedCurios": ["tcc:su"],
         "stat": "tcc:zombie_villager_cured",
-        "statThreshold": 20
+        "statThreshold": 1
       },
       "prerequisites": ["tcc:su_grant"],
       "reward": {
@@ -833,7 +833,7 @@
       "conditions": {
         "equippedCurios": ["tcc:wanwu_xiumian"],
         "stat": "minecraft:raid_win",
-        "statThreshold": 10
+        "statThreshold": 1
       },
       "prerequisites": ["tcc:wanwu_xiumian_grant"],
       "reward": {

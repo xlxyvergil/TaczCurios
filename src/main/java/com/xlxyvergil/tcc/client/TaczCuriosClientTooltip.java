@@ -72,11 +72,11 @@ public class TaczCuriosClientTooltip {
         // 奖励物品的成就达成方式
         appendAchievementCondition(tooltip, stack);
 
-        // 逐火之蛾饰品的虚数抗性成长条件
-        appendEvolutionCondition(tooltip, stack);
-
         // 奖励物品的成就进度（玩家 NBT 中的累计值）
         AchievementProgressRenderer.appendProgress(stack, tooltip);
+
+        // 逐火之蛾饰品的虚数抗性成长条件
+        appendEvolutionCondition(tooltip, stack);
 
         // 绑定饰品（需要崩坏结晶才能卸下）
         if (stack.getItem() instanceof ItemBaseCurio curio && curio.requiresCollapseCrystal()) {

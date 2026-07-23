@@ -114,21 +114,12 @@ public final class StatPollingEventHandler {
         if (registered == null) return;
 
         int current = player.getStats().getValue(Stats.CUSTOM.get(registered));
-        int threshold = conds.statThreshold();
-        int maxSteps = def.criteriaCount();
-        int steps = Math.min(current / threshold, maxSteps);
+        int criteriaCount = def.criteriaCount();
 
-        if (steps > 0) {
-            awardStatProgress(player, def, steps);
+        if (current >= criteriaCount) {
+            // Stat value meets or exceeds criteria_count, complete the achievement
+            RuleAdvancementMapping.awardAll(player, def.id(), criteriaCount);
         }
-    }
-
-    private static void awardStatProgress(ServerPlayer player, AchievementDefinitions.AchievementDef def,
-                                           int steps) {
-        if (def.criteriaCount() <= 0 || steps <= 0) return;
-        if (RuleAdvancementMapping.isAdvancementDone(player, def.id())) return;
-
-        RuleAdvancementMapping.awardSteps(player, def.id(), def.criteriaCount(), steps);
     }
 
     // ===================== biome_visit =====================
