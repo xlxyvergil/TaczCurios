@@ -2,26 +2,47 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
-import net.minecraft.core.registries.BuiltInRegistries;
+import com.xlxyvergil.tcc.capability.GunKillDataCapability;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.LogicalSide;
 
-import java.util.UUID;
 
+/**
+ * 统一的枪杀判定处理器。
+ *
+ * 架构说明：
+ * - {@link #onGunHurtPre} 监听 {@link EntityHurtByGunEvent.Pre}，将枪伤信息
+ *   (attacker UUID / gunId / tick / victim UUID) 写入 GunKillDataCapability。
+ * - {@link #onLivingDeath} 监听 {@link LivingDeathEvent}，对所有实体统一判定：
+ *     1. 死亡源校验：只接受 tacz:bullets（枪械直伤）或 tcc:imaginary_damage（虚数伤害）；
+ *     2. GunKillDataCapability 校验：确认死亡前曾被枪械伤害，且 victim 一致；
+ *     3. 时间窗口（40 tick）：枪伤与死亡的时间差。
+ * - 使用 Capability 而非 NBT，以兼容 {@code getPersistentData()} 被重写返回空 NBT 的实体
+ *   （如 RevelationFix 的 Apollyon）。
+ */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillDebugFallbackHandler {
-    private static final String PD_ATTACKER = "tcc_last_gun_attacker";
-    private static final String PD_GUN_ID = "tcc_last_gun_id";
-    private static final String PD_TICK = "tcc_last_gun_tick";
-    private static final String PD_VICTIM = "tcc_last_gun_victim";
+
+    /** 枪伤 → 死亡的时间窗口（tick）。需要覆盖枪伤残血 → 近战/虚数伤害收割的场景。 */
+    private static final long DEATH_WINDOW_TICKS = 40L;
 
     private GunKillDebugFallbackHandler() {
+    }
+
+    /**
+     * 刷新枪杀判定窗口。用于虚数崩等 DoT 效果，确保 DoT 击杀时仍能通过时间窗口校验。
+     */
+    public static void refreshGunKillWindow(LivingEntity target, ServerPlayer attacker) {
+        GunKillDataCapability.setGunData(target,
+            attacker.getStringUUID(), "", attacker.level().getGameTime(), target.getStringUUID());
     }
 
     @SubscribeEvent
@@ -42,11 +63,11 @@ public final class GunKillDebugFallbackHandler {
             return;
         }
 
-        var pd = hurt.getPersistentData();
-        pd.putString(PD_ATTACKER, player.getStringUUID());
-        pd.putString(PD_GUN_ID, event.getGunId() != null ? event.getGunId().toString() : "");
-        pd.putLong(PD_TICK, player.level().getGameTime());
-        pd.putString(PD_VICTIM, hurt.getStringUUID());
+        GunKillDataCapability.setGunData(hurt,
+            player.getStringUUID(),
+            event.getGunId() != null ? event.getGunId().toString() : "",
+            player.level().getGameTime(),
+            hurt.getStringUUID());
     }
 
     @SubscribeEvent
@@ -56,43 +77,39 @@ public final class GunKillDebugFallbackHandler {
         }
         LivingEntity killed = event.getEntity();
 
-        // 仅处理配置文件中声明的特殊实体（如末影龙）
-        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-        if (!GunKillFallbackEntities.contains(entityKey)) {
+        // ① 检查 Capability 中的枪伤记录（由 onGunHurtPre 写入）
+        GunKillDataCapability.GunKillData data = GunKillDataCapability.getData(killed);
+        if (data == null) {
             return;
         }
 
-        var pd = killed.getPersistentData();
-        if (!pd.contains(PD_ATTACKER) || !pd.contains(PD_TICK)) {
-            return;
-        }
-        if (pd.contains(PD_VICTIM) && !killed.getStringUUID().equals(pd.getString(PD_VICTIM))) {
+        // ② victim 一致性校验
+        if (!killed.getStringUUID().equals(data.victim)) {
             return;
         }
 
-        long tick = pd.getLong(PD_TICK);
+        // ③ 死亡源校验：击杀者必须是 Capability 中记录的枪伤来源玩家
+        String attackerUuid = data.attacker;
+        DamageSource source = event.getSource();
+        Entity sourceEntity = source.getEntity();
+        if (sourceEntity == null || !sourceEntity.getUUID().toString().equals(attackerUuid)) {
+            return;
+        }
+        if (!(sourceEntity instanceof ServerPlayer player)) {
+            return;
+        }
+
+        // ④ 时间窗口校验
         long now = level.getGameTime();
-        if (now - tick > 40) {
+        if (now - data.tick > DEATH_WINDOW_TICKS) {
             return;
         }
 
-        String attackerUuid = pd.getString(PD_ATTACKER);
-        String gunIdStr = pd.getString(PD_GUN_ID);
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(attackerUuid);
-        } catch (Exception ignored) {
-            return;
-        }
-        ServerPlayer player = level.getServer().getPlayerList().getPlayer(uuid);
-        if (player == null) {
-            return;
-        }
-
+        // ⑤ 解析 gunId
         ResourceLocation gunId = null;
-        if (gunIdStr != null && !gunIdStr.isBlank()) {
+        if (!data.gunId.isBlank()) {
             try {
-                gunId = new ResourceLocation(gunIdStr);
+                gunId = new ResourceLocation(data.gunId);
             } catch (Exception ignored) {
                 gunId = null;
             }

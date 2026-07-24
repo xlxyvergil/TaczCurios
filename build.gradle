@@ -175,7 +175,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
 
     // RevelationFix (optional, compile only) - 本地依赖
-    compileOnly fg.deobf(files("libs/[Forge]RevelationFix-1.20.1-4.2.jar"))
+    compileOnly fg.deobf(files("libs/[Forge]RevelationFix-1.20.1-4.4.jar"))
 
     // Mixin annotation processor for refmap generation
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

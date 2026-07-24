@@ -1,20 +1,20 @@
 {
   "display": {
     "icon": {
-      "item": "tcc:juezhe"
+      "item": "tcc:yinguo_zhuanlun"
     },
     "title": {
-      "translate": "advancement.tcc.juezhe_grant.title"
+      "translate": "advancement.tcc.tingzhi_zhijian_to_yinguo_zhuanlun.title"
     },
     "description": {
-      "translate": "advancement.tcc.juezhe_grant.description"
+      "translate": "advancement.tcc.tingzhi_zhijian_to_yinguo_zhuanlun.description"
     },
     "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "tcc:wanwu_xiumian_grant",
+  "parent": "tcc:wanwu_xiumian_to_tingzhi_zhijian",
   "criteria": {
     "step_1": { "trigger": "minecraft:impossible" }
   }

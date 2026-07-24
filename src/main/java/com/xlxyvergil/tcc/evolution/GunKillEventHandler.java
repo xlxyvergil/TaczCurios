@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.evolution;
 
-import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,8 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -19,29 +16,18 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.function.Predicate;
 
-@Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
+/**
+ * gun_kill 触发器的成就/属性规则处理器。
+ *
+ * 架构说明：
+ * 击杀判定统一由 {@link GunKillDebugFallbackHandler#onLivingDeath} 处理（基于 LivingDeathEvent
+ * + 死亡源 tag 校验 + NBT 枪伤记录）。本类不再直接监听 {@code EntityKillByGunEvent}，
+ * {@link #handleGunKill} 由 fallback 处理器在确认枪杀后调用。
+ */
 public final class GunKillEventHandler {
     public static final String TRIGGER_GUN_KILL = "gun_kill";
 
     private GunKillEventHandler() {}
-
-    @SubscribeEvent
-    public static void onGunKill(EntityKillByGunEvent event) {
-        LivingEntity attacker = event.getAttacker();
-        if (!(attacker instanceof Player player)) return;
-        if (player.level().isClientSide) return;
-
-        LivingEntity killed = event.getKilledEntity();
-        if (killed == null) return;
-
-        // 配置中的特殊实体由 GunKillDebugFallbackHandler 通过 LivingDeathEvent 处理，此处跳过
-        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-        if (GunKillFallbackEntities.contains(entityKey)) {
-            return;
-        }
-
-        handleGunKill(player, killed, event.getGunId());
-    }
 
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;

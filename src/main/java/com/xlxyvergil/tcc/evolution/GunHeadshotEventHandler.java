@@ -1,9 +1,7 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
-import com.tacz.guns.api.event.common.EntityKillByGunEvent;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
+import com.xlxyvergil.tcc.capability.GunKillDataCapability;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,12 +18,16 @@ public final class GunHeadshotEventHandler {
     public static final String TRIGGER_GUN_HEADSHOT_HIT = "gun_headshot_hit";
     public static final String TRIGGER_GUN_HEADSHOT_KILL = "gun_headshot_kill";
 
-    private static final String LAST_HEADSHOT_ATTACKER_KEY = "tcc_last_headshot_attacker";
-    private static final String LAST_HEADSHOT_TIME_KEY = "tcc_last_headshot_time";
-    private static final String LAST_HEADSHOT_GUN_ID_KEY = "tcc_last_headshot_gun_id";
+    /** 爆头 → 死亡的时间窗口（tick）。虚数伤害在 Post 事件同 tick 触发，2 tick 足够。 */
+    private static final long DEATH_WINDOW_TICKS = 2L;
 
     private GunHeadshotEventHandler() {}
 
+    /**
+     * 监听 {@link EntityHurtByGunEvent.Pre}：
+     * 1. 爆头命中时触发 gun_headshot_hit 成就判定；
+     * 2. 将爆头标记（attacker / time / gunId）写入 GunKillDataCapability，供 {@link #onLivingDeath} 使用。
+     */
     @SubscribeEvent
     public static void onGunHeadshotHit(EntityHurtByGunEvent.Pre event) {
         if (!event.isHeadShot()) return;
@@ -35,72 +37,54 @@ public final class GunHeadshotEventHandler {
 
         LivingEntity hurt = resolveHurt(event);
         if (hurt != null) {
-            CompoundTag tag = hurt.getPersistentData();
-            tag.putString(LAST_HEADSHOT_ATTACKER_KEY, player.getStringUUID());
-            tag.putLong(LAST_HEADSHOT_TIME_KEY, player.level().getGameTime());
-            tag.putString(LAST_HEADSHOT_GUN_ID_KEY, event.getGunId() != null ? event.getGunId().toString() : "");
+            GunKillDataCapability.setHeadshotData(hurt,
+                player.getStringUUID(),
+                player.level().getGameTime(),
+                event.getGunId() != null ? event.getGunId().toString() : "");
         }
 
         handleTrigger(player, hurt, event.getGunId(), TRIGGER_GUN_HEADSHOT_HIT);
     }
 
-    @SubscribeEvent
-    public static void onGunHeadshotKill(EntityKillByGunEvent event) {
-        LivingEntity attacker = event.getAttacker();
-        if (!(attacker instanceof Player player)) return;
-        if (player.level().isClientSide) return;
-
-        LivingEntity killed = resolveKilled(event);
-        if (killed == null) return;
-
-        // 配置中的特殊实体由 onLivingDeath 回退处理，此处跳过
-        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-        if (GunKillFallbackEntities.contains(entityKey)) {
-            return;
-        }
-
-        if (event.isHeadShot()) {
-            // 清除 NBT 标记，防止 onLivingDeath 重复计数
-            killed.getPersistentData().remove(LAST_HEADSHOT_ATTACKER_KEY);
-            triggerHeadshotKill(player, killed, null, event.getGunId());
-            return;
-        }
-        CompoundTag tag = killed.getPersistentData();
-        if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) return;
-        long lastHeadshotTime = tag.getLong(LAST_HEADSHOT_TIME_KEY);
-        if (player.level().getGameTime() - lastHeadshotTime > 2) return;
-        triggerHeadshotKill(player, killed, null, event.getGunId());
-    }
-
+    /**
+     * 统一的爆头击杀判定：监听 {@link LivingDeathEvent}，对所有实体处理。
+     *
+     * 流程：
+     * 1. 死亡源 attacker 必须是玩家；
+     * 2. 从 GunKillDataCapability 读取爆头标记：attacker 匹配，且在 2 tick 窗口内；
+     * 3. 读取 gunId，触发 gun_headshot_kill 成就判定。
+     *
+     * 使用 Capability 而非 NBT，以兼容 {@code getPersistentData()} 被重写返回空 NBT 的实体
+     * （如 RevelationFix 的 Apollyon）。
+     */
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity killed = event.getEntity();
         if (killed.level().isClientSide) return;
 
-        // 仅处理配置文件中声明的特殊实体
-        String entityKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
-        if (!GunKillFallbackEntities.contains(entityKey)) {
-            return;
-        }
-
-        Entity sourceEntity = event.getSource().getEntity();
+        // ① 死亡源 attacker 必须是玩家
+        DamageSource source = event.getSource();
+        Entity sourceEntity = source.getEntity();
         if (!(sourceEntity instanceof Player player)) return;
 
-        CompoundTag tag = killed.getPersistentData();
-        if (!player.getStringUUID().equals(tag.getString(LAST_HEADSHOT_ATTACKER_KEY))) return;
-        if (player.level().getGameTime() - tag.getLong(LAST_HEADSHOT_TIME_KEY) > 2) return;
+        // ② 从 Capability 读取爆头标记
+        var cap = killed.getCapability(GunKillDataCapability.CAPABILITY);
+        if (!cap.isPresent()) return;
+        var data = cap.orElse(null).data();
+        if (!player.getStringUUID().equals(data.headshotAttacker)) return;
+        if (player.level().getGameTime() - data.headshotTime > DEATH_WINDOW_TICKS) return;
 
+        // ③ 读取 gunId 并触发爆头击杀判定
         net.minecraft.resources.ResourceLocation gunId = null;
-        String gunIdStr = tag.getString(LAST_HEADSHOT_GUN_ID_KEY);
-        if (gunIdStr != null && !gunIdStr.isBlank()) {
+        if (!data.headshotGunId.isBlank()) {
             try {
-                gunId = new net.minecraft.resources.ResourceLocation(gunIdStr);
+                gunId = new net.minecraft.resources.ResourceLocation(data.headshotGunId);
             } catch (Exception ignored) {
                 gunId = null;
             }
         }
 
-        triggerHeadshotKill(player, killed, event.getSource(), gunId);
+        triggerHeadshotKill(player, killed, source, gunId);
     }
 
     private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source,
@@ -140,16 +124,6 @@ public final class GunHeadshotEventHandler {
             RuleAdvancementMapping.awardSteps(
                     serverPlayer, def.id(), def.criteriaCount(), killValue);
         }
-    }
-
-    private static LivingEntity resolveKilled(EntityKillByGunEvent event) {
-        Object out = callGetter(event, "getKilledEntity");
-        if (out instanceof LivingEntity living) return living;
-        out = callGetter(event, "getHurtEntity");
-        if (out instanceof LivingEntity living2) return living2;
-        out = callGetter(event, "getEntity");
-        if (out instanceof LivingEntity living3) return living3;
-        return null;
     }
 
     private static LivingEntity resolveHurt(EntityHurtByGunEvent.Pre event) {

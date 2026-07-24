@@ -278,9 +278,9 @@ public final class AchievementDefinitions {
 
     public record StatCondition(
         String stat,
-        @SerializedName("statThreshold") int statThreshold
+        @SerializedName("criteria_count") int criteriaCount
     ) {
-        public int statThreshold() { return statThreshold > 0 ? statThreshold : 1; }
+        public int criteriaCount() { return criteriaCount > 0 ? criteriaCount : 1; }
     }
 
     public record KillCondition(

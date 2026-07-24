@@ -631,8 +631,9 @@
       "criteria_count": 1,
       "conditions": {
         "equippedCurios": ["tcc:imer"],
-        "stat": "minecraft:damage_dealt",
-        "statThreshold": 50000,
+        "extraStats": [
+          { "stat": "minecraft:damage_dealt", "criteria_count": 50000 }
+        ],
         "kills": [
           { "entity": "minecraft:wither", "value": 1 }
         ]
@@ -687,7 +688,7 @@
         },
         "icon": "tcc:aomie",
         "description": {
-          "zh_cn": "佩戴支配之键，击杀生物达到5000、承受伤害达到50000并击杀末影龙，虚数伤害抗性大于70",
+          "zh_cn": "佩戴支配之键，击杀怪物达到5000、承受伤害达到50000并击杀末影龙，虚数伤害抗性大于70",
           "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Dominance Key, Imaginary Damage Resistance > 70"
         },
         "frame": "challenge",
@@ -699,10 +700,9 @@
       "criteria_count": 1,
       "conditions": {
         "equippedCurios": ["tcc:dominance_key"],
-        "stat": "minecraft:mob_kills",
-        "statThreshold": 5000,
         "extraStats": [
-          { "stat": "minecraft:damage_taken", "statThreshold": 50000 }
+          { "stat": "minecraft:mob_kills", "criteria_count": 5000 },
+          { "stat": "minecraft:damage_taken", "criteria_count": 50000 }
         ],
         "kills": [
           { "entity": "minecraft:ender_dragon", "value": 1 }
@@ -812,7 +812,7 @@
       }
     },
 
-    "tcc:juezhe_grant": {
+    "tcc:su_to_juezhe": {
       "enabled": true,
       "display": {
         "title": {
@@ -837,14 +837,14 @@
       },
       "prerequisites": ["tcc:wanwu_xiumian_grant"],
       "reward": {
-        "type": "grant",
-        "item": "tcc:juezhe",
-        "overflowMode": "INVENTORY_THEN_DROP",
+        "type": "evolve",
+        "item": "tcc:su",
+        "to": "tcc:juezhe",
         "bindToPlayer": false
       }
     },
 
-    "tcc:tingzhi_zhijian_grant": {
+    "tcc:wanwu_xiumian_to_tingzhi_zhijian": {
       "enabled": true,
       "display": {
         "title": {
@@ -859,7 +859,7 @@
         "frame": "goal",
         "hidden": false
       },
-      "parent": "tcc:juezhe_grant",
+      "parent": "tcc:su_to_juezhe",
       "trigger": "gun_kill",
       "criteria_count": 1,
       "conditions": {
@@ -869,16 +869,16 @@
           { "entity": "minecraft:wither", "value": 1 }
         ]
       },
-      "prerequisites": ["tcc:juezhe_grant"],
+      "prerequisites": ["tcc:su_to_juezhe"],
       "reward": {
-        "type": "grant",
-        "item": "tcc:tingzhi_zhijian",
-        "overflowMode": "INVENTORY_THEN_DROP",
+        "type": "evolve",
+        "item": "tcc:wanwu_xiumian",
+        "to": "tcc:tingzhi_zhijian",
         "bindToPlayer": false
       }
     },
 
-    "tcc:tianhui_grant": {
+    "tcc:juezhe_to_tianhui": {
       "enabled": true,
       "display": {
         "title": {
@@ -893,7 +893,7 @@
         "frame": "challenge",
         "hidden": false
       },
-      "parent": "tcc:tingzhi_zhijian_grant",
+      "parent": "tcc:wanwu_xiumian_to_tingzhi_zhijian",
       "trigger": "living_death",
       "playerKilled": false,
       "criteria_count": 1,
@@ -904,20 +904,20 @@
         ],
         "healthMax": 8.0
       },
-      "prerequisites": ["tcc:tingzhi_zhijian_grant"],
+      "prerequisites": ["tcc:wanwu_xiumian_to_tingzhi_zhijian"],
       "reward": {
         "type": "evolve",
-        "item": "tcc:tingzhi_zhijian",
-        "to": "tcc:yinguo_zhuanlun",
+        "item": "tcc:juezhe",
+        "to": "tcc:tianhui",
         "bindToPlayer": true,
         "linkedEvolves": [
-          { "item": "tcc:juezhe", "to": "tcc:tianhui" }
+          { "item": "tcc:tingzhi_zhijian", "to": "tcc:yinguo_zhuanlun" }
         ],
-        "autoAchievements": ["tcc:yinguo_zhuanlun_grant"]
+        "autoAchievements": ["tcc:tingzhi_zhijian_to_yinguo_zhuanlun"]
       }
     },
 
-    "tcc:yinguo_zhuanlun_grant": {
+    "tcc:tingzhi_zhijian_to_yinguo_zhuanlun": {
       "enabled": true,
       "display": {
         "title": {
@@ -932,7 +932,7 @@
         "frame": "goal",
         "hidden": false
       },
-      "parent": "tcc:tingzhi_zhijian_grant",
+      "parent": "tcc:wanwu_xiumian_to_tingzhi_zhijian",
       "trigger": "auto",
       "criteria_count": 1,
       "conditions": null,
@@ -960,7 +960,7 @@
       "criteria_count": 200,
       "conditions": {
         "stat": "minecraft:interact_with_crafting_table",
-        "statThreshold": 200
+        "statThreshold": 1
       },
       "prerequisites": [],
       "reward": {
@@ -992,7 +992,7 @@
       "conditions": {
         "equippedCurios": ["tcc:vill_v"],
         "stat": "minecraft:traded_with_villager",
-        "statThreshold": 200
+        "statThreshold": 1
       },
       "prerequisites": ["tcc:vill_v_grant"],
       "reward": {
@@ -1092,7 +1092,7 @@
       "conditions": {
         "equippedCurios": ["tcc:qishi_zhijian"],
         "stat": "minecraft:time_since_death",
-        "statThreshold": 864000,
+        "statThreshold": 1,
         "attributes": [
           { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
         ]

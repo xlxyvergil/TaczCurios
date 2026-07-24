@@ -17,6 +17,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -35,6 +36,9 @@ public class TccAttributeEvents {
     private static final java.util.concurrent.ConcurrentHashMap<LivingEntity, Float> INTENDED_DAMAGE
         = new java.util.concurrent.ConcurrentHashMap<>();
 
+    /** 虚数侵染来源 attacker UUID，供 ImaginaryCollapseEffect 读取以创建带 attacker 的 DamageSource */
+    public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
+
     public static void setIntendedDamage(LivingEntity entity, float damage) {
         INTENDED_DAMAGE.put(entity, damage);
     }
@@ -50,10 +54,19 @@ public class TccAttributeEvents {
 
         target.invulnerableTime = 0;
 
-        // 亚波伦直伤路径：不经过 hurt() 以避免 RevelationFix 的限伤拦截
+        // 亚波伦路径：下界走直伤（修改自定义 HealthData 绕过限伤），非下界退化为清除冷却 + hurt
         if (ApollyonCompat.isRevelationFixApostle(target)) {
-            ApollyonCompat.applyDirectDamage(target, intendedDamage);
-            return true;
+            if (target.level().dimension() == Level.NETHER) {
+                // 直伤路径：完全绕过 RevelationFix 限伤
+                float newHealth = ApollyonCompat.applyDirectDamage(target, intendedDamage);
+                if (newHealth <= 0) {
+                    target.die(source);
+                }
+                return true;
+            } else {
+                // 非下界：清除冷却后走正常 hurt 路径（仍受 APOLLYON_HURT_LIMIT 限制）
+                ApollyonCompat.clearHitCooldown(target);
+            }
         }
 
         setIntendedDamage(target, intendedDamage);
@@ -100,6 +113,9 @@ public class TccAttributeEvents {
         // forceAddEffect 写 Map，addEffect 负责网络同步（Applicable 事件由 HIGHEST 监听器放行）
         forceAddEffect(living, newInstance);
         living.addEffect(newInstance, attacker);
+
+        // 记录侵染来源 attacker，供 ImaginaryCollapseEffect 创建带 attacker 的 DamageSource
+        living.getPersistentData().putString(INFECTION_ATTACKER_KEY, attacker.getStringUUID());
 
         // 仅天火劫灭/劫灭无尽可触发虚数崩解
         // 自然消失前无法再次施加，避免枪械连射导致 duration 被反复刷新为 20 的倍数，

@@ -119,18 +119,6 @@ public final class AchievementConditionMatcher {
             if (!matched) { return false; }
         }
 
-        // Check stat threshold (for melee kill achievements that also require stat milestones)
-        if (c.stat() != null && player instanceof ServerPlayer sp) {
-            ResourceLocation statKey = ResourceLocation.tryParse(c.stat());
-            if (statKey == null) { return false; }
-            ResourceLocation canonicalId = BuiltInRegistries.CUSTOM_STAT.get(statKey);
-            if (canonicalId == null) { return false; }
-            var stat = Stats.CUSTOM.get(canonicalId);
-            if (stat == null) { return false; }
-            int actualValue = sp.getStats().getValue(stat);
-            if (actualValue < c.statThreshold()) { return false; }
-        }
-
         // Check extra stat thresholds (for achievements requiring multiple stat checks)
         if (c.extraStats() != null && player instanceof ServerPlayer sp2) {
             for (AchievementDefinitions.StatCondition sc : c.extraStats()) {
@@ -140,7 +128,7 @@ public final class AchievementConditionMatcher {
                 if (canonicalId == null) return false;
                 var s = Stats.CUSTOM.get(canonicalId);
                 if (s == null) return false;
-                if (sp2.getStats().getValue(s) < sc.statThreshold()) return false;
+                if (sp2.getStats().getValue(s) < sc.criteriaCount()) return false;
             }
         }
 

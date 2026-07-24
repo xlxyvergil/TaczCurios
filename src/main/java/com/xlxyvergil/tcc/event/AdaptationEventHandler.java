@@ -2,9 +2,6 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -13,30 +10,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 适应效果的 Forge 事件处理。
+ * 饰品适应效果的事件处理。
  * <ul>
- *   <li>{@link AttachCapabilitiesEvent} — 挂载 Capability 到所有 LivingEntity</li>
  *   <li>{@link LivingHurtEvent} — 对所有活跃的适应实例执行减免</li>
- *   <li>{@link LivingDeathEvent} — 死亡时清空数据</li>
- *   <li>{@link PlayerEvent.Clone} — 玩家死亡复活时清空数据</li>
+ *   <li>{@link LivingDeathEvent} — 死亡时清空适应数据</li>
+ *   <li>{@link PlayerEvent.Clone} — 玩家死亡复活时清空适应数据</li>
  * </ul>
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AdaptationEventHandler {
-
-    /**
-     * 将所有 LivingEntity 挂载适应 Capability。
-     * 每个实体只有一份 Handler，即使没有饰品装备，实例集合为空，几乎无开销。
-     */
-    @SubscribeEvent
-    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof LivingEntity living) {
-            event.addCapability(
-                CurioAdaptationCapability.ID,
-                new CurioAdaptationCapability.Provider(living)
-            );
-        }
-    }
 
     /**
      * 伤害事件处理。优先级 LOW，与 L2Hostility AdaptingTrait 同级。

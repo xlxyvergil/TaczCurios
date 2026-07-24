@@ -41,6 +41,10 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue judgmentImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue shijieFanyanImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue xukongWancangYZTHImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue metaMorphImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue yinguoZhuanlunImaginaryInfectionMaxLevel;
 
         // 裁决之键配置
         public final ForgeConfigSpec.DoubleValue judgementProcChance;
@@ -589,6 +593,18 @@ public class TaczCuriosConfig {
             endlessImaginaryInfectionMaxLevel = builder
                     .comment("劫灭无尽的虚数侵染上限 (默认: 9)")
                     .defineInRange("endlessMaxLevel", 9, 1, 99);
+            shijieFanyanImaginaryInfectionMaxLevel = builder
+                    .comment("视界反演的虚数侵染上限 (默认: 9)")
+                    .defineInRange("shijieFanyanMaxLevel", 9, 1, 99);
+            xukongWancangYZTHImaginaryInfectionMaxLevel = builder
+                    .comment("雨众天华的虚数侵染上限 (默认: 9)")
+                    .defineInRange("xukongWancangYZTHMaxLevel", 9, 1, 99);
+            metaMorphImaginaryInfectionMaxLevel = builder
+                    .comment("Meta-Morph的虚数侵染上限 (默认: 9)")
+                    .defineInRange("metaMorphMaxLevel", 9, 1, 99);
+            yinguoZhuanlunImaginaryInfectionMaxLevel = builder
+                    .comment("因果转轮的虚数侵染上限 (默认: 9)")
+                    .defineInRange("yinguoZhuanlunMaxLevel", 9, 1, 99);
             builder.pop();
             
             // 裁决之键配置

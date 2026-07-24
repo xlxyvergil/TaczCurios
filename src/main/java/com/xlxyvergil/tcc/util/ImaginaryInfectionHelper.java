@@ -5,6 +5,10 @@ import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
 import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.curios.JudgementKey;
+import com.xlxyvergil.tcc.items.curios.MetaMorph;
+import com.xlxyvergil.tcc.items.curios.ShijieFanyan;
+import com.xlxyvergil.tcc.items.curios.XukongWancangYZTH;
+import com.xlxyvergil.tcc.items.curios.YinguoZhuanlun;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
@@ -43,6 +47,30 @@ public final class ImaginaryInfectionHelper {
         if (JudgementKey.hasEquipped(attacker)) {
             return new InfectionInfo(
                 TaczCuriosConfig.COMMON.judgementKeyImaginaryInfectionMaxLevel.get(),
+                false
+            );
+        }
+        if (ShijieFanyan.hasEquipped(attacker)) {
+            return new InfectionInfo(
+                TaczCuriosConfig.COMMON.shijieFanyanImaginaryInfectionMaxLevel.get(),
+                false
+            );
+        }
+        if (XukongWancangYZTH.isEquipped(attacker)) {
+            return new InfectionInfo(
+                TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryInfectionMaxLevel.get(),
+                false
+            );
+        }
+        if (YinguoZhuanlun.hasEquipped(attacker)) {
+            return new InfectionInfo(
+                TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryInfectionMaxLevel.get(),
+                false
+            );
+        }
+        if (MetaMorph.isEquipped(attacker)) {
+            return new InfectionInfo(
+                TaczCuriosConfig.COMMON.metaMorphImaginaryInfectionMaxLevel.get(),
                 false
             );
         }
