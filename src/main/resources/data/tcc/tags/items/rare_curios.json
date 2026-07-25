@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
+    "tcc:despicable_acceleration",
     "tcc:heavy_caliber_tag",
-    "tcc:ural_wolf_tag",
     "tcc:alloy_drill",
     "tcc:blaze_storm",
     "tcc:evil_accuracy",
@@ -14,11 +14,9 @@
     "tcc:depleted_reload",
     "tcc:overloaded_magazine",
     "tcc:infernal_chamber",
-    "tcc:sustained_fire",
     "tcc:infected_magazine",
     "tcc:deadly_surge",
     "tcc:bullet_spread",
-    "tcc:despicable_acceleration",
     "tcc:critical_delay",
     "tcc:weakness_sense",
     "tcc:destruction",

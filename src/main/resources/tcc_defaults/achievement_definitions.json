@@ -201,6 +201,39 @@
       "reward": null
     },
 
+    "tcc:heaven_fire_judgment": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "天火圣裁",
+          "en_us": "Heaven Fire Judgment"
+        },
+        "icon": "tcc:heaven_fire_judgment",
+        "description": {
+          "zh_cn": "使用手枪击杀凋零骷髅100次",
+          "en_us": "Kill Wither Skeletons 100 times with pistol"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "criteria_count": 100,
+      "conditions": {
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "minecraft:wither_skeleton", "value": 1 }
+        ]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:heaven_fire_judgment",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
     "tcc:summer_beach_grant": {
       "enabled": true,
       "display": {
@@ -216,7 +249,7 @@
         "frame": "goal",
         "hidden": false
       },
-      "parent": "tcc:tcc_root",
+      "parent": "tcc:heaven_fire_judgment",
       "trigger": "living_death",
       "playerKilled": true,
       "criteria_count": 1,
@@ -224,7 +257,7 @@
         "killer": "minecraft:wither",
         "equippedCurios": ["tcc:heaven_fire_judgment"]
       },
-      "prerequisites": [],
+      "prerequisites": ["tcc:heaven_fire_judgment"],
       "reward": {
         "type": "grant",
         "item": "tcc:summer_beach",

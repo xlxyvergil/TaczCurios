@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "tcc:soldier_basic_tag",
     "tcc:prophecy_pact",
     "tcc:magazine_boost",
     "tcc:oppression_point",
@@ -9,6 +8,7 @@
     "tcc:shotgun_expansion",
     "tcc:tandem_magazine",
     "tcc:burst_reload",
+    "tcc:sustained_fire",
     "tcc:lethal_crit",
     "tcc:thunder_barrel",
     "tcc:pistol_mastery",

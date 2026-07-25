@@ -302,7 +302,7 @@
         "en_us": "Kill Wither with heavy weapon, +20 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
-        "holdingGunTypes": ["heavy"]
+        "holdingGunTypes": ["rpg", "mg"]
       },
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",

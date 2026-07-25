@@ -144,7 +144,7 @@ public class TccItems {
     // 士兵特定挂牌 - 提供50%特定枪械伤害加成（狙击枪）
     public static final Item SOLDIER_SPECIFIC_TAG = new SoldierSpecificTag(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.UNCOMMON));
+            .rarity(Rarity.EPIC));
     
     // 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度
     public static final Item HEAVY_CALIBER_TAG = new HeavyCaliberTag(new Item.Properties()
@@ -203,7 +203,7 @@ public class TccItems {
     // 乌拉尔银狼 - 提供150%爆头倍率加成
     public static final Item URAL_WOLF_TAG = new UralWolfTag(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.RARE));
+            .rarity(Rarity.UNCOMMON));
     
     // 天火圣裁 - 以玩家生命值50%提升伤害，造成伤害后扣除50%生命值
     public static final Item HEAVEN_FIRE_JUDGMENT = new HeavenFireJudgment(new Item.Properties()
@@ -218,12 +218,12 @@ public class TccItems {
     // 卑劣加速 - 提升90%射击速度，但降低15%通用伤害和全部特定枪械伤害
     public static final Item DESPICABLE_ACCELERATION = new DespicableAcceleration(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC));
+            .rarity(Rarity.RARE));
     
     // 并合膛线 - 提升155%通用伤害和25%持枪移动速度
     public static final Item MERGED_RIFLING = new MergedRifling(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.UNCOMMON));
+            .rarity(Rarity.EPIC));
     
     // 合金钻头 - 提升200%穿透能力
     public static final Item ALLOY_DRILL = new AlloyDrill(new Item.Properties()
@@ -273,12 +273,12 @@ public class TccItems {
     // 膛线 - 提升165%特定枪械伤害
     public static final Item RIFLING = new Rifling(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.RARE));
+            .rarity(Rarity.UNCOMMON));
     
     // 抵近射击 - 提升90%霰弹枪伤害
     public static final Item CLOSE_RANGE_SHOT = new CloseRangeShot(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.RARE));
+            .rarity(Rarity.UNCOMMON));
     
     // 重装火力 - 提升165%手枪伤害，提高55%不精准度
     public static final Item HEAVY_FIREPOWER = new HeavyFirepower(new Item.Properties()
@@ -288,7 +288,7 @@ public class TccItems {
     // 黄蜂蜇刺 - 提升220%手枪伤害
     public static final Item WASP_STINGER = new WaspStinger(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.RARE));
+            .rarity(Rarity.UNCOMMON));
     
     // 预言契约 - 提升90%手枪伤害
     public static final Item PROPHECY_PACT = new ProphecyPact(new Item.Properties()
