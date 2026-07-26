@@ -118,9 +118,9 @@ public class KikakuIchijin extends BaseCurioItem {
         LivingEntity victim = event.getEntity();
         destroyBlocksAroundVictim(serverLevel, victim);
 
-        // 对祭品造成100%生命值的伤害（让不死图腾有机会生效）
-        // 使用伤害源让不死图腾可以触发
-        sacrifice.hurt(sacrifice.damageSources().magic(), sacrificeMaxHealth);
+        // 强制击杀祭品——直接设置死亡标记（通过 AT 暴露的 dead 字段）
+        sacrifice.setHealth(0.0f);
+        sacrifice.dead = true;
 
         // 广播消息给所有玩家
         if (sacrifice == attacker) {
