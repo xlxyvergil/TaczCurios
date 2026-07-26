@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -38,7 +39,7 @@ public class BurstReload extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get();
+            double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -61,7 +62,7 @@ public class BurstReload extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double reloadBoost = TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get() * 100;
+        double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.burstReloadReloadSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.burst_reload.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.BLUE));
         
@@ -69,8 +70,6 @@ public class BurstReload extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
     
     @Override

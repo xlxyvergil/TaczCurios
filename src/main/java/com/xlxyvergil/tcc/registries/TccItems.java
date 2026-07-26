@@ -11,6 +11,7 @@ import com.xlxyvergil.tcc.items.curios.ChamberPrime;
 import com.xlxyvergil.tcc.items.curios.CloseCombatPrime;
 import com.xlxyvergil.tcc.items.curios.CloseRangeShot;
 import com.xlxyvergil.tcc.items.materials.CoreFusion;
+import com.xlxyvergil.tcc.items.materials.FusionVesselItem;
 import com.xlxyvergil.tcc.items.curios.CorruptMagazine;
 import com.xlxyvergil.tcc.items.curios.DeadlySurge;
 import com.xlxyvergil.tcc.items.curios.DespicableAcceleration;
@@ -233,7 +234,7 @@ public class TccItems {
     // 我小心海也绝非鳝类 - 提升300%发射器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
     public static final Item CAREFUL_HEART = new CarefulHeart(new Item.Properties()
             .stacksTo(1)
-            .rarity(Rarity.EPIC));
+            .rarity(RIFT));
     
     // 烈焰风暴 - 增加24%爆炸范围（乘算），增加24%爆炸伤害（乘算）
     public static final Item BLAZE_STORM = new BlazeStorm(new Item.Properties()
@@ -365,6 +366,10 @@ public class TccItems {
     
     // 裂隙碎银 - 用于随机抽取饰品
     public static final Item RIFT_SILVER = new RiftSilver(new Item.Properties());
+    
+    // 融合容器 - 用于存储 CoreFusion 和饰品升级
+    public static final Item FUSION_VESSEL = new FusionVesselItem(new Item.Properties()
+            .stacksTo(1));
     
     // 压迫点 - 提升120%近战伤害
     public static final Item OPPRESSION_POINT = new OppressionPoint(new Item.Properties()
@@ -785,6 +790,7 @@ public class TccItems {
         registry.register(id("bullet_spread"), BULLET_SPREAD);
         registry.register(id("core_fusion"), CORE_FUSION);
         registry.register(id("rift_silver"), RIFT_SILVER);
+        registry.register(id("fusion_vessel"), FUSION_VESSEL);
         registry.register(id("oppression_point"), OPPRESSION_POINT);
         registry.register(id("oppression_point_prime"), OPPRESSION_POINT_PRIME);
         registry.register(id("sword_wind"), SWORD_WIND);

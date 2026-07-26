@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "tcc:fusion_vessel"
+  },
+  "pattern": [
+    "III",
+    "PIP",
+    "PPP"
+  ],
+  "key": {
+    "I": {
+      "item": "tcc:core_fusion"
+    },
+    "P": {
+      "tag": "minecraft:iron_block"
+    }
+  }
+}

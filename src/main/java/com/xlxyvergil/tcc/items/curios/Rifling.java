@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -46,7 +47,7 @@ public class Rifling extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = TaczCuriosConfig.COMMON.riflingDamageBoost.get();
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.riflingDamageBoost.get(), getFusionLevel());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, damageBoost, DAMAGE_UUIDS[0], DAMAGE_NAMES[0], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, damageBoost, DAMAGE_UUIDS[1], DAMAGE_NAMES[1], AttributeModifier.Operation.ADDITION);
@@ -77,7 +78,7 @@ public class Rifling extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = TaczCuriosConfig.COMMON.riflingDamageBoost.get() * 100;
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.riflingDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.rifling.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.AQUA));
         
@@ -85,8 +86,6 @@ public class Rifling extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
     
     @Override

@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -33,7 +34,7 @@ public class GildedBulletSpread extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double baseBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get();
+            double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, baseBulletCount, BASE_BULLET_COUNT_UUID, BASE_BULLET_COUNT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
@@ -54,8 +55,8 @@ public class GildedBulletSpread extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get() * 100;
-        double buffBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get() * 100;
+        double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double buffBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
         int duration = TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_bullet_spread.effect",
@@ -63,7 +64,6 @@ public class GildedBulletSpread extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

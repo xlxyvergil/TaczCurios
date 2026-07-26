@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -34,7 +35,7 @@ public class ThunderBarrelPrime extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double critChanceBoost = TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get();
+            double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
@@ -57,14 +58,13 @@ public class ThunderBarrelPrime extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get() * 100;
+        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.thunder_barrel_prime.effect",
                 String.format("%+.0f", critChanceBoost))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

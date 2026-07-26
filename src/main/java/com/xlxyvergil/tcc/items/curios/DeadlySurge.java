@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -43,8 +44,8 @@ public class DeadlySurge extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         // 检查生物是否持有手枪，只有持有手枪时才应用加成
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double roundsPerMinuteBoost = TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get();
-            double bulletCountBoost = TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get();
+            double roundsPerMinuteBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get(), getFusionLevel());
+            double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, roundsPerMinuteBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }
@@ -73,8 +74,8 @@ public class DeadlySurge extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double roundsPerMinuteBoost = TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() * 100;
-        double bulletCountBoost = TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() * 100;
+        double roundsPerMinuteBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.deadly_surge.effect", String.format("%+.0f", roundsPerMinuteBoost), String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
@@ -82,8 +83,6 @@ public class DeadlySurge extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
 
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

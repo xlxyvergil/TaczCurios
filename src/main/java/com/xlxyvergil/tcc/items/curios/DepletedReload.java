@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,8 +43,8 @@ public class DepletedReload extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
         if (GunTypeChecker.isHoldingSniper(livingEntity)) {
-            double magazinePenalty = TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get();
-            double reloadBoost = TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get();
+            double magazinePenalty = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get(), getFusionLevel());
+            double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazinePenalty, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
@@ -72,8 +73,8 @@ public class DepletedReload extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double magazinePenalty = Math.abs(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get() * 100);
-        double reloadBoost = TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get() * 100;
+        double magazinePenalty = Math.abs(FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get() * 100, FusionUpgradeUtil.getLevel(stack)));
+        double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.depleted_reload.effect", 
                                           String.format("%+.0f", magazinePenalty), 
                                           String.format("%+.0f", reloadBoost))
@@ -83,8 +84,6 @@ public class DepletedReload extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
 
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 
     /**

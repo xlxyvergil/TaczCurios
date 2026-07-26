@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -33,7 +34,7 @@ public class SteelSlash extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double critChanceBoost = TaczCuriosConfig.COMMON.steelSlashCritChance.get();
+        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
@@ -53,14 +54,13 @@ public class SteelSlash extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = TaczCuriosConfig.COMMON.steelSlashCritChance.get() * 100;
+        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.steel_slash.effect",
                 String.format("%+.0f", critChanceBoost))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 
     @Override

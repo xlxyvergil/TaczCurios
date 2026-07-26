@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,7 @@ public class SwordWindPrime extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double rangeBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
+        double rangeBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ENTITY_REACH, rangeBoost, ENTITY_INTERACTION_RANGE_UUID, ENTITY_INTERACTION_RANGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
@@ -66,8 +67,6 @@ public class SwordWindPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 }
 

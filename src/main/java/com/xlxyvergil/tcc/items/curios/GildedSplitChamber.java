@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -33,7 +34,7 @@ public class GildedSplitChamber extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double baseBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get();
+            double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, baseBulletCount, BASE_BULLET_COUNT_UUID, BASE_BULLET_COUNT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
@@ -54,8 +55,8 @@ public class GildedSplitChamber extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get() * 100;
-        double buffBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get() * 100;
+        double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double buffBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
         int duration = TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect",
@@ -63,7 +64,6 @@ public class GildedSplitChamber extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

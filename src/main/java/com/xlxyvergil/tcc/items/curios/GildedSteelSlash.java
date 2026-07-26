@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -32,7 +33,7 @@ public class GildedSteelSlash extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double baseCritChance = TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get();
+        double baseCritChance = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, baseCritChance, BASE_CRIT_CHANCE_UUID, BASE_CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
@@ -50,8 +51,8 @@ public class GildedSteelSlash extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCritChance = TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100;
-        double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100;
+        double baseCritChance = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double buffCritDmg = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
         int duration = TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_steel_slash.effect",
@@ -59,7 +60,6 @@ public class GildedSteelSlash extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

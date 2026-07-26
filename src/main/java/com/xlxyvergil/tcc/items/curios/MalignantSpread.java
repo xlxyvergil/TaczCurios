@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -42,8 +43,8 @@ public class MalignantSpread extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get();
-        double inaccuracyBoost = TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get();
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get(), getFusionLevel());
+        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get(), getFusionLevel());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
         
@@ -74,8 +75,8 @@ public class MalignantSpread extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() * 100;
-        double inaccuracyBoost = TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() * 100;
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.malignant_spread.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
         
@@ -83,8 +84,6 @@ public class MalignantSpread extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

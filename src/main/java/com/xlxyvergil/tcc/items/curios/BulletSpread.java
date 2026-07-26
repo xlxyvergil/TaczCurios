@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -41,7 +42,7 @@ public class BulletSpread extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         // 检查生物是否持有手枪，只有持有手枪时才应用加成
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double bulletCountBoost = TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get();
+            double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -69,7 +70,7 @@ public class BulletSpread extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double bulletCountBoost = TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get() * 100;
+        double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.bullet_spread.effect", String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
@@ -77,8 +78,6 @@ public class BulletSpread extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

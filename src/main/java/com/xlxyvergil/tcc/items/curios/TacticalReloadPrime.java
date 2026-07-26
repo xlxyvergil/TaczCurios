@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -35,7 +36,7 @@ public class TacticalReloadPrime extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadPrimeReloadSpeedBoost.get();
+            double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.tacticalReloadPrimeReloadSpeedBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -58,7 +59,7 @@ public class TacticalReloadPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double reloadBoost = TaczCuriosConfig.COMMON.tacticalReloadPrimeReloadSpeedBoost.get() * 100;
+        double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.tacticalReloadPrimeReloadSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.tactical_reload_prime.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.WHITE));
 
@@ -66,8 +67,6 @@ public class TacticalReloadPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
 
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

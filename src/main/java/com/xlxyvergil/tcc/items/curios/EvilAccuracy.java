@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -39,8 +40,8 @@ public class EvilAccuracy extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double recoilReduction = TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get();
-        double fireRateReduction = TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get();
+        double recoilReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get(), getFusionLevel());
+        double fireRateReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get(), getFusionLevel());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.RECOIL, recoilReduction, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateReduction, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
@@ -69,8 +70,8 @@ public class EvilAccuracy extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double recoilReduction = TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get() * 100;
-        double fireRateReduction = TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get() * 100;
+        double recoilReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double fireRateReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.evil_accuracy.effect", 
                 String.format("%+.0f", recoilReduction), String.format("%+.0f", fireRateReduction))
             .withStyle(ChatFormatting.GOLD));
@@ -79,8 +80,6 @@ public class EvilAccuracy extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

@@ -4,6 +4,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -37,7 +38,7 @@ public class SplitChamber extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double ammoBoost = TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get();
+            double ammoBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, ammoBoost, AMMO_UUID, AMMO_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -60,7 +61,7 @@ public class SplitChamber extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double ammoBoost = TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get() * 100;
+        double ammoBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.split_chamber.effect", String.format("%+.0f", ammoBoost))
             .withStyle(ChatFormatting.GOLD));
         
@@ -68,8 +69,6 @@ public class SplitChamber extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     @Override

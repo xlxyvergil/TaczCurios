@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -47,12 +48,12 @@ public class SacrificeOppression extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double meleeDamageBoost = TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get();
+        double meleeDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
         // 套装效果：同时装备牺牲斩铁时，额外 +25%
         if (hasSacrificeSteel(livingEntity)) {
-            double setBonus = TaczCuriosConfig.COMMON.sacrificeSetBonus.get();
+            double setBonus = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get(), getFusionLevel());
             double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
@@ -77,20 +78,19 @@ public class SacrificeOppression extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double meleeDamageBoost = TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get() * 100;
+        double meleeDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.effect",
                 String.format("%+.0f", meleeDamageBoost))
             .withStyle(ChatFormatting.WHITE));
 
         // 套装提示
-        double setBonusPct = (TaczCuriosConfig.COMMON.sacrificeSetBonus.get() - 1.0) * 100;
+        double setBonusPct = (FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get(), FusionUpgradeUtil.getLevel(stack)) - 1.0) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.set_bonus",
                 String.format("%+.0f", setBonusPct))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

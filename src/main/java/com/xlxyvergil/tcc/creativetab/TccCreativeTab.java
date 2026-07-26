@@ -140,6 +140,7 @@ public class TccCreativeTab {
 
                 // 添加材料物品
                 output.accept(TccItems.CORE_FUSION);
+                output.accept(TccItems.FUSION_VESSEL);
                 output.accept(TccItems.RIFT_SILVER);
                 output.accept(TccItems.COLLAPSE_CRYSTAL);
 

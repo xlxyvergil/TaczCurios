@@ -4,6 +4,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -44,8 +45,8 @@ public class CorruptMagazine extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
         if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get();
-            double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get();
+            double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get(), getFusionLevel());
+            double reloadPenalty = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadPenalty, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
@@ -74,8 +75,8 @@ public class CorruptMagazine extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double magazineBoost = TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get() * 100;
-        double reloadPenalty = TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get() * 100;
+        double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double reloadPenalty = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect", String.format("%+.0f", magazineBoost), String.format("%+.0f", reloadPenalty))
             .withStyle(ChatFormatting.GOLD));
         
@@ -83,8 +84,6 @@ public class CorruptMagazine extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

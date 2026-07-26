@@ -105,8 +105,6 @@ public class SevenThunders extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
-
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");

@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,7 +42,7 @@ public class MagazineBoostPrime extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double magazineBoost = TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get();
+            double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -68,7 +69,7 @@ public class MagazineBoostPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double magazineBoost = TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get() * 100;
+        double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.magazine_boost_prime.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.WHITE));
 
@@ -76,8 +77,6 @@ public class MagazineBoostPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
 
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
     
     /**

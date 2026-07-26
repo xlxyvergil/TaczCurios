@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -57,8 +58,8 @@ public class MergedRifling extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get();
-        double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get();
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get(), getFusionLevel());
+        double speedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get(), getFusionLevel());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, damageBoost, DAMAGE_UUIDS[0], DAMAGE_NAMES[0], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, damageBoost, DAMAGE_UUIDS[1], DAMAGE_NAMES[1], AttributeModifier.Operation.ADDITION);
@@ -98,8 +99,8 @@ public class MergedRifling extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() * 100;
-        double speedBoost = TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() * 100;
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double speedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
                 String.format("%+.0f", damageBoost), String.format("%+.0f", speedBoost))
             .withStyle(ChatFormatting.WHITE));
@@ -108,8 +109,6 @@ public class MergedRifling extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
     
     /**

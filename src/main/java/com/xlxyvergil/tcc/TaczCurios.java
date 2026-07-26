@@ -62,6 +62,7 @@ public class TaczCurios
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
+        TccRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
 
         
         MinecraftForge.EVENT_BUS.register(this);

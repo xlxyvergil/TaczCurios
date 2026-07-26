@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -44,9 +45,9 @@ public class BlazeStorm extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性值
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get();
-        double explosionDamageBoost = TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get();
-        double explosionEnabled = TaczCuriosConfig.COMMON.blazeStormExplosionEnabled.get();
+        double explosionRadiusBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get(), getFusionLevel());
+        double explosionDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get(), getFusionLevel());
+        double explosionEnabled = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionEnabled.get(), getFusionLevel());
         
         // 应用爆炸范围加成
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -90,8 +91,8 @@ public class BlazeStorm extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get() * 100;
-        double explosionDamageBoost = TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get() * 100;
+        double explosionRadiusBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double explosionDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.blaze_storm.effect", 
                 String.format("%+.0f", explosionRadiusBoost), String.format("%+.0f", explosionDamageBoost))
             .withStyle(ChatFormatting.GOLD));
@@ -100,8 +101,6 @@ public class BlazeStorm extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

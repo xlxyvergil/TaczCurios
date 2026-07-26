@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,7 @@ public class CloseCombatPrime extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get();
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, SHOTGUN_DAMAGE_UUID, SHOTGUN_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
@@ -62,7 +63,7 @@ public class CloseCombatPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() * 100;
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.WHITE));
         
@@ -71,8 +72,6 @@ public class CloseCombatPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
     
     /**

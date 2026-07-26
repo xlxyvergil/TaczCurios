@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -31,7 +32,7 @@ public class UralWolfTag extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double multiplierBoost = TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get();
+        double multiplierBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, multiplierBoost, HEADSHOT_MULTIPLIER_MODIFIER_UUID, "tcc.ural_wolf_tag.headshot_multiplier", AttributeModifier.Operation.ADDITION);
     }
     
@@ -51,7 +52,7 @@ public class UralWolfTag extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double multiplierBoost = TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() * 100;
+        double multiplierBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.ural_wolf_tag.effect", String.format("%+.0f", multiplierBoost))
             .withStyle(ChatFormatting.AQUA));
         
@@ -59,8 +60,6 @@ public class UralWolfTag extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
     
     @Override

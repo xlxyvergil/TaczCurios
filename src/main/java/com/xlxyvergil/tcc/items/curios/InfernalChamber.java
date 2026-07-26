@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -42,7 +43,7 @@ public class InfernalChamber extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity) {
         // 检查生物是否持有霰弹枪，只有持有霰弹枪时才应用加成
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double bulletCountBoost = TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get();
+            double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -69,7 +70,7 @@ public class InfernalChamber extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double bulletCountBoost = TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get() * 100;
+        double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.infernal_chamber.effect", String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
@@ -77,8 +78,6 @@ public class InfernalChamber extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
 
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

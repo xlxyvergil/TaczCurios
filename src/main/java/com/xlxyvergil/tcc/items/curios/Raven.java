@@ -184,6 +184,5 @@ public class Raven extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 }

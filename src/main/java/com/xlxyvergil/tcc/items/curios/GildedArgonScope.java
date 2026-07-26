@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -44,9 +45,9 @@ public class GildedArgonScope extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCrit = TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get() * 100;
-        double buffCrit = TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.get() * 100;
-        double extraCrit = TaczCuriosConfig.COMMON.gildedArgonScopeHeadshotKillExtra.get() * 100;
+        double baseCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double buffCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double extraCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedArgonScopeHeadshotKillExtra.get() * 100, FusionUpgradeUtil.getLevel(stack));
         int duration = TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_argon_scope.effect",
@@ -54,7 +55,6 @@ public class GildedArgonScope extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

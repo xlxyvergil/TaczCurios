@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -31,7 +32,7 @@ public class RedMovementTag extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get();
+        double speedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVE_SPEED, speedBoost, MOVE_SPEED_MODIFIER_UUID, "tcc_red_movement_speed_boost", AttributeModifier.Operation.ADDITION);
     }
     
@@ -51,7 +52,7 @@ public class RedMovementTag extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double speedBoost = TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get() * 100;
+        double speedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.red_movement_tag.effect", String.format("%+.0f", speedBoost))
             .withStyle(ChatFormatting.AQUA));
         
@@ -59,8 +60,6 @@ public class RedMovementTag extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
     
     @Override

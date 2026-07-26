@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -34,8 +35,8 @@ public class CriticalDelay extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double critChanceBoost = TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get();
-        double fireRateReduction = TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get();
+        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get(), getFusionLevel());
+        double fireRateReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get(), getFusionLevel());
 
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateReduction, FIRE_RATE_UUID, FIRE_RATE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -58,15 +59,14 @@ public class CriticalDelay extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get() * 100;
-        double fireRateReduction = TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get() * 100;
+        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double fireRateReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.critical_delay.effect",
                 String.format("%+.0f", critChanceBoost), String.format("%+.0f", fireRateReduction))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 
     @Override

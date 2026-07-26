@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,7 +42,7 @@ public class ProphecyPact extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get();
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
@@ -65,7 +66,7 @@ public class ProphecyPact extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() * 100;
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.BLUE));
         
@@ -73,8 +74,6 @@ public class ProphecyPact extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
     
     /**

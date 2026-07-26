@@ -189,7 +189,6 @@ public class YinguoZhuanlun extends BaseCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift").withStyle(ChatFormatting.RED));
 
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {

@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +30,23 @@ public class CurioCombatEventHandler {
         return CuriosApi.getCuriosInventory(entity).resolve()
             .map(inv -> inv.findFirstCurio(curio).isPresent())
             .orElse(false);
+    }
+
+    /**
+     * 查找玩家身上指定饰品 curio 的 ItemStack，用于读取融合等级。
+     */
+    private static ItemStack findCurioStack(LivingEntity entity, Item curio) {
+        return CuriosApi.getCuriosInventory(entity).resolve()
+            .map(inv -> inv.findFirstCurio(curio).map(s -> s.stack()).orElse(ItemStack.EMPTY))
+            .orElse(ItemStack.EMPTY);
+    }
+
+    /**
+     * 获取指定饰品在玩家身上的融合等级，0 表示未装备或未升级。
+     */
+    private static int getCurioFusionLevel(LivingEntity entity, Item curio) {
+        ItemStack stack = findCurioStack(entity, curio);
+        return stack.isEmpty() ? 0 : FusionUpgradeUtil.getLevel(stack);
     }
 
     private static boolean isHoldingMeleeWeapon(LivingEntity entity) {
@@ -190,28 +209,32 @@ public class CurioCombatEventHandler {
 
         // R-06 镀层步枪才能: 手持步枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_RIFLE_APTITUDE)) {
-            double perHarmful = TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get();
+            int level = getCurioFusionLevel(player, TccItems.GILDED_RIFLE_APTITUDE);
+            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get(), level);
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // S-07 镀层通晓霰弹枪: 手持霰弹枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.GILDED_SHOTGUN_SAVVY)) {
-            double perHarmful = TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get();
+            int level = getCurioFusionLevel(player, TccItems.GILDED_SHOTGUN_SAVVY);
+            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get(), level);
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // P-09 镀层准确射手: 手持手枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_MARKSMAN)) {
-            double perHarmful = TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get();
+            int level = getCurioFusionLevel(player, TccItems.GILDED_MARKSMAN);
+            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get(), level);
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // M-06 异况超量: 手持近战时，每负面效果直接乘算（始终生效）
         if (isHoldingMeleeWeapon(player) && hasCurio(player, TccItems.CONDITION_OVERLOAD)) {
-            double perHarmful = TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get();
+            int level = getCurioFusionLevel(player, TccItems.CONDITION_OVERLOAD);
+            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get(), level);
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }

@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.event;
 
 import com.tacz.guns.api.event.common.GunDrawEvent;
-import com.xlxyvergil.tcc.items.ItemBaseCurio;
+import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,9 +22,9 @@ public class GunSwitchEventHandler {
                 curiosInventory.getCurios().forEach((slotIdentifier, stacksHandler) -> {
                     for (int i = 0; i < stacksHandler.getSlots(); i++) {
                         ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
-                        if (!stack.isEmpty() && stack.getItem() instanceof ItemBaseCurio curioItem) {
-                            // 直接调用基类的效果应用方法
-                            curioItem.applyGunSwitchEffect(player);
+                        if (!stack.isEmpty() && stack.getItem() instanceof BaseCurioItem curioItem) {
+                            // 使用 applyEffectsWithLevel 传递 ItemStack 以支持融合等级计算
+                            curioItem.applyEffectsWithLevel(player, stack);
                         }
                     }
                 });

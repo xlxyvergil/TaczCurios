@@ -24,6 +24,9 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
     
     // 互斥映射表：物品注册名 -> 互斥的物品注册名集合
     private static final Map<String, Set<String>> CONFLICT_MAP = new HashMap<>();
+
+    // 融合升级等级 ThreadLocal — 在调用 applyEffects 前由 onEquip/applyEffectsWithLevel 设置
+    private static final ThreadLocal<Integer> FUSION_LEVEL = ThreadLocal.withInitial(() -> 0);
     
     static {
         loadConflictsFromConfig();
@@ -52,20 +55,33 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         }
     }
     
+    /**
+     * 获取当前上下文的融合等级。在 applyEffects() 被调用前由 BaseCurioItem 自动设置。
+     * <p>子类在 applyEffects() 中调用此方法获取饰品当前等级，用于计算实际属性值。</p>
+     */
+    protected static int getFusionLevel() {
+        return FUSION_LEVEL.get();
+    }
+
     public BaseCurioItem(Properties properties) {
         super(properties);
     }
-    
+
     /**
      * 当饰品被装备时调用
      */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
-        
+
         LivingEntity entity = slotContext.entity();
         ensureCapCounters(stack);
-        applyEffects(entity);
+        FUSION_LEVEL.set(FusionUpgradeUtil.getLevel(stack));
+        try {
+            applyEffects(entity);
+        } finally {
+            FUSION_LEVEL.remove();
+        }
         // 更新TACZ枪械属性缓存，让属性变化立即生效（支持玩家、女仆等所有LivingEntity）
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
     }
@@ -137,6 +153,33 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         removeEffects(entity);
         applyEffects(entity);
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
+    }
+
+    /**
+     * 使用指定 ItemStack 的融合等级刷新效果（由 {@code GunSwitchEventHandler} 等持有 ItemStack 的调用者使用）。
+     */
+    public final void refreshEffects(LivingEntity entity, ItemStack stack) {
+        removeEffects(entity);
+        FUSION_LEVEL.set(FusionUpgradeUtil.getLevel(stack));
+        try {
+            applyEffects(entity);
+        } finally {
+            FUSION_LEVEL.remove();
+        }
+        AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
+    }
+
+    /**
+     * 使用指定 ItemStack 的融合等级应用效果（不先 removeEffects）。
+     * 供 GunSwitchEventHandler 等持有 ItemStack 的调用者使用，替代 {@code applyGunSwitchEffect}。
+     */
+    public final void applyEffectsWithLevel(LivingEntity entity, ItemStack stack) {
+        FUSION_LEVEL.set(FusionUpgradeUtil.getLevel(stack));
+        try {
+            applyEffects(entity);
+        } finally {
+            FUSION_LEVEL.remove();
+        }
     }
     
     /**

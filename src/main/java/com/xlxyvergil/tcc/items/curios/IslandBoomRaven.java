@@ -190,7 +190,6 @@ public class IslandBoomRaven extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
     }
 
     }

@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -37,13 +38,12 @@ public class FragmentShot extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCritDmg = TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get() * 100;
+        double baseCritDmg = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get() * 100, FusionUpgradeUtil.getLevel(stack));
         int duration = TaczCuriosConfig.COMMON.fragmentShotDuration.get();
         tooltip.add(Component.translatable("item.tcc.fragment_shot.effect",
                 String.format("%+.0f", baseCritDmg), duration)
             .withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 }

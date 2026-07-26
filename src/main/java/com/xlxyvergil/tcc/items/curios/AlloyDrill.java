@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,7 +43,7 @@ public class AlloyDrill extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double armorIgnoreBoost = TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get();
+        double armorIgnoreBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, armorIgnoreBoost, ARMOR_IGNORE_UUID, ARMOR_IGNORE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
@@ -75,7 +76,7 @@ public class AlloyDrill extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double armorIgnoreBoost = TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get() * 100;
+        double armorIgnoreBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.alloy_drill.effect", String.format("%+.0f", armorIgnoreBoost))
             .withStyle(ChatFormatting.GOLD));
         
@@ -84,7 +85,6 @@ public class AlloyDrill extends BaseCurioItem {
         
         
         // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

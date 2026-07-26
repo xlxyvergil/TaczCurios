@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -38,7 +39,7 @@ public class OppressionPoint extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get();
+        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get(), getFusionLevel());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
@@ -63,7 +64,7 @@ public class OppressionPoint extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double meleeDamageBoost = TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get() * 100;
+        double meleeDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.oppression_point.effect", String.format("%+.0f", meleeDamageBoost))
             .withStyle(ChatFormatting.BLUE));
         
@@ -71,7 +72,5 @@ public class OppressionPoint extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.common"));
     }
 }

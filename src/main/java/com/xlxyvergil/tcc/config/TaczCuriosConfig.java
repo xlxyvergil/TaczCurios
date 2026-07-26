@@ -508,6 +508,18 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue conditionOverloadPerHarmful;
         public final ForgeConfigSpec.DoubleValue sacrificeSetBonus;
 
+        // ==== 融合升级配置 ====
+        public final ForgeConfigSpec.DoubleValue fusionGrowthCoefficient;
+        public final ForgeConfigSpec.IntValue fusionEbcCommon;
+        public final ForgeConfigSpec.IntValue fusionEbcUncommon;
+        public final ForgeConfigSpec.IntValue fusionEbcRare;
+        public final ForgeConfigSpec.IntValue fusionEbcEpic;
+        public final ForgeConfigSpec.IntValue fusionMaxLevelCommon;
+        public final ForgeConfigSpec.IntValue fusionMaxLevelUncommon;
+        public final ForgeConfigSpec.IntValue fusionMaxLevelRare;
+        public final ForgeConfigSpec.IntValue fusionMaxLevelEpic;
+        public final ForgeConfigSpec.IntValue fusionVesselCapacity;
+
         
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
@@ -697,41 +709,41 @@ public class TaczCuriosConfig {
             builder.comment("膛线饰品配置").push("rifling");
             riflingDamageBoost = builder
                     .comment("特定枪械伤害加成 (默认: 1.65 = 165%)")
-                    .defineInRange("damageBoost", 1.65, -1, 100);
+                    .defineInRange("damageBoost", 0.18, -1, 100);
             builder.pop();
             
             // 分裂膛室配置
             builder.comment("分裂膛室饰品配置").push("split_chamber");
             splitChamberBulletCountBoost = builder
                     .comment("弹头数量加成 (默认: 0.9 = 90%)")
-                    .defineInRange("bulletCountBoost", 0.9, -1, 100);
+                    .defineInRange("bulletCountBoost", 0.1, -1, 100);
             builder.pop();
             
             // 卑劣加速配置
             builder.comment("卑劣加速饰品配置").push("despicable_acceleration");
             despicableAccelerationFireRateBoost = builder
                     .comment("射击速度加成 (默认: +0.9 = +90%)")
-                    .defineInRange("fireRateBoost", 0.9, -1, 100);
+                    .defineInRange("fireRateBoost", 0.1, -1, 100);
             despicableAccelerationDamageReduction = builder
                     .comment("伤害降低 (默认: -0.15 = -15%)")
-                    .defineInRange("damageReduction", -0.15, -1, 0);
+                    .defineInRange("damageReduction", -0.02, -1, 0);
             builder.pop();
             
             // 并合膛线配置
             builder.comment("并合膛线饰品配置").push("merged_rifling");
             mergedRiflingDamageBoost = builder
                     .comment("特定枪械伤害加成 (默认: 1.55 = 155%)")
-                    .defineInRange("damageBoost", 1.55, -1, 100);
+                    .defineInRange("damageBoost", 0.15, -1, 100);
             mergedRiflingMovementSpeedBoost = builder
                     .comment("持枪移动速度加成 (默认: 0.25 = 25%)")
-                    .defineInRange("movementSpeedBoost", 0.25, -1, 100);
+                    .defineInRange("movementSpeedBoost", 0.02, -1, 100);
             builder.pop();
             
             // 合金钻头配置
             builder.comment("合金钻头饰品配置").push("alloy_drill");
             alloyDrillArmorPenetrationBoost = builder
                     .comment("护甲穿透加成 (默认: 2.0 = 200%)")
-                    .defineInRange("armorPenetrationBoost", 2.0, -1, 100);
+                    .defineInRange("armorPenetrationBoost", 0.22, -1, 100);
             builder.pop();
             
             // 我小心海也绝非鳝类配置
@@ -756,29 +768,29 @@ public class TaczCuriosConfig {
             
             // G-01 关键延迟
             builder.comment("关键延迟饰品配置").push("critical_delay");
-            criticalDelayCritChanceBoost = builder.comment("暴击几率加成 (默认: 2.0)").defineInRange("critChanceBoost", 2.0, -1, 100);
-            criticalDelayFireRateReduction = builder.comment("射速降低 (默认: -0.2)").defineInRange("fireRateReduction", -0.2, -1, 0);
+            criticalDelayCritChanceBoost = builder.comment("暴击几率加成 (默认: 2.0)").defineInRange("critChanceBoost", 0.22, -1, 100);
+            criticalDelayFireRateReduction = builder.comment("射速降低 (默认: -0.2)").defineInRange("fireRateReduction", -0.02, -1, 0);
             builder.pop();
             
             // R-01 致命一击
             builder.comment("致命一击饰品配置").push("lethal_crit");
-            lethalCritCritChance = builder.comment("暴击几率加成 (默认: 1.5)").defineInRange("critChance", 1.5, -1, 100);
+            lethalCritCritChance = builder.comment("暴击几率加成 (默认: 1.5)").defineInRange("critChance", 0.3, -1, 100);
             builder.pop();
             
             // R-02 弱点感应
             builder.comment("弱点感应饰品配置").push("weakness_sense");
-            weaknessSenseCritDamage = builder.comment("暴击伤害加成 (默认: 1.2)").defineInRange("critDamage", 1.2, -1, 100);
+            weaknessSenseCritDamage = builder.comment("暴击伤害加成 (默认: 1.2)").defineInRange("critDamage", 0.13, -1, 100);
             builder.pop();
             
             // R-03 氩晶瞄具
             builder.comment("氩晶瞄具饰品配置").push("argon_scope");
-            argonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 1.35, -1, 100);
+            argonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 0.15, -1, 100);
             argonScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // R-04 镀层氩晶瞄具
             builder.comment("镀层氩晶瞄具饰品配置").push("gilded_argon_scope");
-            gildedArgonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
+            gildedArgonScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 0.11, -1, 100);
             gildedArgonScopeCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.4)").defineInRange("critChancePerLevel", 0.4, -1, 100);
             gildedArgonScopeHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (默认: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
             gildedArgonScopeDuration = builder.comment("Buff持续时间(秒) (默认: 12)").defineInRange("duration", 12, 1, 300);
@@ -787,20 +799,20 @@ public class TaczCuriosConfig {
             
             // R-05 尖刃弹头
             builder.comment("尖刃弹头饰品配置").push("sharp_bullet");
-            sharpBulletBaseCritDamage = builder.comment("基础暴击伤害 (默认: 1.2)").defineInRange("baseCritDamage", 1.2, -1, 100);
+            sharpBulletBaseCritDamage = builder.comment("基础暴击伤害 (默认: 1.2)").defineInRange("baseCritDamage", 0.13, -1, 100);
             sharpBulletDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // R-06 镀层步枪才能
             builder.comment("镀层步枪才能饰品配置").push("gilded_rifle_aptitude");
-            gildedRifleAptitudePerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
+            gildedRifleAptitudePerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.04, -1, 100);
             gildedRifleAptitudeDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedRifleAptitudeMaxStacks = builder.comment("最大叠加层数 (默认: 2)").defineInRange("maxStacks", 2, 1, 20);
             builder.pop();
             
             // R-07 镀层分裂膛室
             builder.comment("镀层分裂膛室饰品配置").push("gilded_split_chamber");
-            gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (默认: 0.8)").defineInRange("bulletCountBase", 0.8, -1, 100);
+            gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (默认: 0.8)").defineInRange("bulletCountBase", 0.08, -1, 100);
             gildedSplitChamberBulletCountPerLevel = builder.comment("Buff每级额外弹头数量 (默认: 0.3)").defineInRange("bulletCountPerLevel", 0.3, -1, 100);
             gildedSplitChamberDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedSplitChamberMaxStacks = builder.comment("最大叠加层数 (默认: 5)").defineInRange("maxStacks", 5, 1, 20);
@@ -808,46 +820,46 @@ public class TaczCuriosConfig {
             
             // S-01 破灭
             builder.comment("破灭饰品配置").push("destruction");
-            destructionCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
+            destructionCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.07, -1, 100);
             builder.pop();
             
             // S-02 破灭Prime
             builder.comment("破灭Prime饰品配置").push("destruction_prime");
-            destructionPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 1.1, -1, 100);
+            destructionPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 0.1, -1, 100);
             builder.pop();
             
             // S-03 雷筒
             builder.comment("雷筒饰品配置").push("thunder_barrel");
-            thunderBarrelCritChance = builder.comment("暴击几率加成 (默认: 0.9)").defineInRange("critChance", 0.9, -1, 100);
+            thunderBarrelCritChance = builder.comment("暴击几率加成 (默认: 0.9)").defineInRange("critChance", 0.1, -1, 100);
             builder.pop();
             
             // S-04 雷筒Prime
             builder.comment("雷筒Prime饰品配置").push("thunder_barrel_prime");
-            thunderBarrelPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.65)").defineInRange("critChance", 1.65, -1, 100);
+            thunderBarrelPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.65)").defineInRange("critChance", 0.16, -1, 100);
             builder.pop();
             
             // S-05 雷射瞄具
             builder.comment("雷射瞄具饰品配置").push("laser_scope");
-            laserScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
+            laserScopeBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 0.13, -1, 100);
             laserScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // S-06 破片射击
             builder.comment("破片射击饰品配置").push("fragment_shot");
-            fragmentShotBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.99)").defineInRange("baseCritDamage", 0.99, -1, 100);
+            fragmentShotBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.99)").defineInRange("baseCritDamage", 0.11, -1, 100);
             fragmentShotDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // S-07 镀层通晓霰弹枪
             builder.comment("镀层通晓霰弹枪饰品配置").push("gilded_shotgun_savvy");
-            gildedShotgunSavvyPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
+            gildedShotgunSavvyPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.04, -1, 100);
             gildedShotgunSavvyDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedShotgunSavvyMaxStacks = builder.comment("最大叠加层数 (默认: 2)").defineInRange("maxStacks", 2, 1, 20);
             builder.pop();
             
             // S-08 镀层地狱弹膛
             builder.comment("镀层地狱弹膛饰品配置").push("gilded_infernal_chamber");
-            gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (默认: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
+            gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (默认: 1.1)").defineInRange("bulletCountBase", 0.1, -1, 100);
             gildedInfernalChamberBulletCountPerLevel = builder.comment("Buff每级额外弹头数量 (默认: 0.3)").defineInRange("bulletCountPerLevel", 0.3, -1, 100);
             gildedInfernalChamberDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedInfernalChamberMaxStacks = builder.comment("最大叠加层数 (默认: 5)").defineInRange("maxStacks", 5, 1, 20);
@@ -855,12 +867,12 @@ public class TaczCuriosConfig {
             
             // P-01 弱点专精
             builder.comment("弱点专精饰品配置").push("weakness_mastery");
-            weaknessMasteryCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
+            weaknessMasteryCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.07, -1, 100);
             builder.pop();
             
             // P-02 弱点专精Prime
             builder.comment("弱点专精Prime饰品配置").push("weakness_mastery_prime");
-            weaknessMasteryPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 1.1, -1, 100);
+            weaknessMasteryPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 0.1, -1, 100);
             builder.pop();
             
             // P-03 空尖弹
@@ -871,23 +883,23 @@ public class TaczCuriosConfig {
             
             // P-04 手枪精通
             builder.comment("手枪精通饰品配置").push("pistol_mastery");
-            pistolMasteryCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 1.2, -1, 100);
+            pistolMasteryCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 0.16, -1, 100);
             builder.pop();
             
             // P-05 手枪精通Prime
             builder.comment("手枪精通Prime饰品配置").push("pistol_mastery_prime");
-            pistolMasteryPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.87)").defineInRange("critChance", 1.87, -1, 100);
+            pistolMasteryPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.87)").defineInRange("critChance", 0.18, -1, 100);
             builder.pop();
             
             // P-06 液压准心
             builder.comment("液压准心饰品配置").push("hydraulic_crosshair");
-            hydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 1.35, -1, 100);
+            hydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.35)").defineInRange("baseCritChance", 0.15, -1, 100);
             hydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // P-07 镀层液压准心
             builder.comment("镀层液压准心饰品配置").push("gilded_hydraulic_crosshair");
-            gildedHydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 1.2, -1, 100);
+            gildedHydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (默认: 1.2)").defineInRange("baseCritChance", 0.11, -1, 100);
             gildedHydraulicCrosshairCritChancePerLevel = builder.comment("Buff每级暴击几率 (默认: 0.4)").defineInRange("critChancePerLevel", 0.4, -1, 100);
             gildedHydraulicCrosshairHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (默认: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
             gildedHydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 12)").defineInRange("duration", 12, 1, 300);
@@ -896,20 +908,20 @@ public class TaczCuriosConfig {
             
             // P-08 尖锐子弹
             builder.comment("尖锐子弹饰品配置").push("sharp_ammo");
-            sharpAmmoBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.75)").defineInRange("baseCritDamage", 0.75, -1, 100);
+            sharpAmmoBaseCritDamage = builder.comment("基础暴击伤害 (默认: 0.75)").defineInRange("baseCritDamage", 0.08, -1, 100);
             sharpAmmoDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             // P-09 镀层准确射手
             builder.comment("镀层准确射手饰品配置").push("gilded_marksman");
-            gildedMarksmanPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
+            gildedMarksmanPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.04, -1, 100);
             gildedMarksmanDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedMarksmanMaxStacks = builder.comment("最大叠加层数 (默认: 3)").defineInRange("maxStacks", 3, 1, 20);
             builder.pop();
             
             // P-10 镀层弹头扩散
             builder.comment("镀层弹头扩散饰品配置").push("gilded_bullet_spread");
-            gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (默认: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
+            gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (默认: 1.1)").defineInRange("bulletCountBase", 0.1, -1, 100);
             gildedBulletSpreadBulletCountPerLevel = builder.comment("Buff每级额外弹头数量 (默认: 0.3)").defineInRange("bulletCountPerLevel", 0.3, -1, 100);
             gildedBulletSpreadDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedBulletSpreadMaxStacks = builder.comment("最大叠加层数 (默认: 4)").defineInRange("maxStacks", 4, 1, 20);
@@ -917,27 +929,27 @@ public class TaczCuriosConfig {
             
             // M-01 斩铁
             builder.comment("斩铁饰品配置").push("steel_slash");
-            steelSlashCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 1.2, -1, 100);
+            steelSlashCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 0.24, -1, 100);
             builder.pop();
             
             // M-02 肢解
             builder.comment("肢解饰品配置").push("dismemberment");
-            dismembermentCritDamage = builder.comment("暴击伤害加成 (默认: 0.9)").defineInRange("critDamage", 0.9, -1, 100);
+            dismembermentCritDamage = builder.comment("暴击伤害加成 (默认: 0.9)").defineInRange("critDamage", 0.18, -1, 100);
             builder.pop();
             
             // M-03 牺牲压迫点
             builder.comment("牺牲压迫点饰品配置").push("sacrifice_oppression");
-            sacrificeOppressionMeleeDamage = builder.comment("近战伤害加成 (默认: 1.1)").defineInRange("meleeDamage", 1.1, -1, 100);
+            sacrificeOppressionMeleeDamage = builder.comment("近战伤害加成 (默认: 1.1)").defineInRange("meleeDamage", 0.1, -1, 100);
             builder.pop();
             
             // M-04 牺牲斩铁
             builder.comment("牺牲斩铁饰品配置").push("sacrifice_steel");
-            sacrificeSteelCritChance = builder.comment("暴击几率加成 (默认: 2.2)").defineInRange("critChance", 2.2, -1, 100);
+            sacrificeSteelCritChance = builder.comment("暴击几率加成 (默认: 2.2)").defineInRange("critChance", 0.21, -1, 100);
             builder.pop();
             
             // M-05 镀层斩铁
             builder.comment("镀层斩铁饰品配置").push("gilded_steel_slash");
-            gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (默认: 1.1)").defineInRange("critChanceBase", 1.1, -1, 100);
+            gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (默认: 1.1)").defineInRange("critChanceBase", 0.1, -1, 100);
             gildedSteelSlashCritDamagePerLevel = builder.comment("Buff每级暴击伤害 (默认: 0.3)").defineInRange("critDamagePerLevel", 0.3, -1, 100);
             gildedSteelSlashDuration = builder.comment("Buff持续时间(秒) (默认: 20)").defineInRange("duration", 20, 1, 300);
             gildedSteelSlashMaxStacks = builder.comment("最大叠加层数 (默认: 4)").defineInRange("maxStacks", 4, 1, 20);
@@ -945,7 +957,7 @@ public class TaczCuriosConfig {
             
             // M-06 异况超量
             builder.comment("异况超量饰品配置").push("condition_overload");
-            conditionOverloadPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.8)").defineInRange("perHarmful", 0.8, -1, 100);
+            conditionOverloadPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.8)").defineInRange("perHarmful", 0.08, -1, 100);
             builder.pop();
             
             // M-07 牺牲套装组合
@@ -956,11 +968,11 @@ public class TaczCuriosConfig {
             // 虚数崩解配置
         builder.comment("烈焰风暴饰品配置").push("blaze_storm");
         blazeStormExplosionRadiusBoost = builder
-                .comment("爆炸范围加成 (默认: 0.24 = 24%)")
-                .defineInRange("explosionRadiusBoost", 0.24, -1, 100);
+                    .comment("爆炸范围加成 (默认: 0.24 = 24%)")
+                    .defineInRange("explosionRadiusBoost", 0.03, -1, 100);
         blazeStormExplosionDamageBoost = builder
                 .comment("爆炸伤害加成 (默认: 0.24 = 24%)")
-                .defineInRange("explosionDamageBoost", 0.24, -1, 100);
+                .defineInRange("explosionDamageBoost", 0.03, -1, 100);
         blazeStormExplosionEnabled = builder
                 .comment("爆炸启用属性 (默认: 2.0)")
                 .defineInRange("explosionEnabled", 2.0, -1, 100);
@@ -970,10 +982,10 @@ public class TaczCuriosConfig {
         builder.comment("烈焰风暴Prime饰品配置").push("blaze_storm_prime");
         blazeStormPrimeExplosionRadiusBoost = builder
                 .comment("爆炸范围加成 (默认: 0.66 = 66%)")
-                .defineInRange("explosionRadiusBoost", 0.66, -1, 100);
+                .defineInRange("explosionRadiusBoost", 0.06, -1, 100);
         blazeStormPrimeExplosionDamageBoost = builder
                 .comment("爆炸伤害加成 (默认: 0.66 = 66%)")
-                .defineInRange("explosionDamageBoost", 0.66, -1, 100);
+                .defineInRange("explosionDamageBoost", 0.06, -1, 100);
         blazeStormPrimeExplosionEnabled = builder
                 .comment("爆炸启用属性 (默认: 2.0)")
                 .defineInRange("explosionEnabled", 2.0, -1, 100);
@@ -983,65 +995,65 @@ public class TaczCuriosConfig {
             builder.comment("撕裂Prime饰品配置").push("ripping_prime");
             rippingPrimeFireRateBoost = builder
                     .comment("射速加成 (默认: 0.55 = 55%)")
-                    .defineInRange("fireRateBoost", 0.55, -1, 100);
+                    .defineInRange("fireRateBoost", 0.06, -1, 100);
             rippingPrimePenetrationBoost = builder
                     .comment("穿透加成 (默认: 2.2)")
-                    .defineInRange("penetrationBoost", 2.2, -1, 100);
+                    .defineInRange("penetrationBoost", 0.24, -1, 100);
             builder.pop();
             
             // 抵近射击Prime配置
             builder.comment("抵近射击Prime饰品配置").push("close_combat_prime");
             closeCombatPrimeShotgunDamageBoost = builder
                     .comment("霰弹枪伤害加成 (默认: 1.65 = 165%)")
-                    .defineInRange("shotgunDamageBoost", 1.65, -1, 100);
+                    .defineInRange("shotgunDamageBoost", 0.16, -1, 100);
             builder.pop();
             
             // 极恶精准配置
             builder.comment("极恶精准饰品配置").push("evil_accuracy");
             evilAccuracyRecoilReduction = builder
                     .comment("后坐力降低 (默认: -0.9 = -90%)")
-                    .defineInRange("recoilReduction", -0.9, -1, 1);
+                    .defineInRange("recoilReduction", -0.1, -1, 1);
             evilAccuracyFireRateReduction = builder
                     .comment("射速降低 (默认: -0.36 = -36%)")
-                    .defineInRange("fireRateReduction", -0.36, -1, 0);
+                    .defineInRange("fireRateReduction", -0.04, -1, 0);
             builder.pop();
             
             // 极限速度配置
             builder.comment("极限速度饰品配置").push("limit_speed");
             limitSpeedBulletSpeedBoost = builder
                     .comment("弹药速度加成 (默认: 0.6 = 60%)")
-                    .defineInRange("bulletSpeedBoost", 0.6, -1, 100);
+                    .defineInRange("bulletSpeedBoost", 0.07, -1, 100);
             builder.pop();
             
             // 凶恶延伸配置
             builder.comment("凶恶延伸饰品配置").push("ferocious_extension");
             ferociousExtensionRangeBoost = builder
                     .comment("子弹射程加成 (默认: 1.2 = 120%)")
-                    .defineInRange("rangeBoost", 1.2, -1, 100);
+                    .defineInRange("rangeBoost", 0.13, -1, 100);
             builder.pop();
             
             // 抵近射击配置
             builder.comment("抵近射击饰品配置").push("close_range_shot");
             closeRangeShotDamageBoost = builder
                     .comment("霰弹枪伤害加成 (默认: 0.9 = 90%)")
-                    .defineInRange("damageBoost", 0.9, -1, 100);
+                    .defineInRange("damageBoost", 0.12, -1, 100);
             builder.pop();
             
             // 重装火力配置
             builder.comment("重装火力饰品配置").push("heavy_firepower");
             heavyFirepowerDamageBoost = builder
                     .comment("手枪伤害加成 (默认: +1.65 = +165%)")
-                    .defineInRange("damageBoost", 1.65, -1, 100);
+                    .defineInRange("damageBoost", 0.18, -1, 100);
             heavyFirepowerAccuracyReduction = builder
                     .comment("扩散程度增加 (默认: +0.55 = +55%)")
-                    .defineInRange("accuracyReduction", 0.55, -1, 1);
+                    .defineInRange("accuracyReduction", 0.06, -1, 1);
             builder.pop();
             
             // 黄蜂蜇刺配置
             builder.comment("黄蜂蜇刺饰品配置").push("wasp_stinger");
             waspStingerDamageBoost = builder
                     .comment("手枪伤害加成 (默认: 2.2 = 220%)")
-                    .defineInRange("damageBoost", 2.2, -1, 100);
+                    .defineInRange("damageBoost", 0.24, -1, 100);
             builder.pop();
             
             // 预言契约配置
@@ -1055,89 +1067,89 @@ public class TaczCuriosConfig {
             builder.comment("恶性扩散饰品配置").push("malignant_spread");
             malignantSpreadDamageBoost = builder
                     .comment("霰弹枪伤害加成 (默认: +1.65 = +165%)")
-                    .defineInRange("damageBoost", 1.65, -1, 100);
+                    .defineInRange("damageBoost", 0.18, -1, 100);
             malignantSpreadAccuracyReduction = builder
                     .comment("扩散程度增加 (默认: +0.55 = +55%)")
-                    .defineInRange("accuracyReduction", 0.55, -1, 1);
+                    .defineInRange("accuracyReduction", 0.06, -1, 1);
             builder.pop();
             
             // 膛室配置
             builder.comment("膛室饰品配置").push("chamber");
             chamberSniperDamageBoost = builder
                     .comment("狙击枪伤害加成 (默认: 0.4 = 40%)")
-                    .defineInRange("sniperDamageBoost", 0.4, -1, 100);
+                    .defineInRange("sniperDamageBoost", 0.04, -1, 100);
             builder.pop();
             
             // 膛室Prime配置
             builder.comment("膛室Prime饰品配置").push("chamber_prime");
             chamberPrimeSniperDamageBoost = builder
                     .comment("狙击枪伤害加成 (默认: 1.0 = 100%)")
-                    .defineInRange("sniperDamageBoost", 1.0, -1, 100);
+                    .defineInRange("sniperDamageBoost", 0.09, -1, 100);
             builder.pop();
             
             // 战术上膛配置
             builder.comment("战术上膛饰品配置").push("tactical_reload");
             tacticalReloadSpeedBoost = builder
                     .comment("霰弹枪装填时间加成 (默认: -0.6 = -60%)")
-                    .defineInRange("reloadSpeedBoost", -0.6, -1, 100);
+                    .defineInRange("reloadSpeedBoost", -0.07, -1, 100);
             builder.pop();
             
             // 过载弹匣配置
             builder.comment("过载弹匣饰品配置").push("overloaded_magazine");
             overloadedMagazineCapacityBoost = builder
                     .comment("霰弹枪弹匣容量加成 (默认: +0.6 = +60%)")
-                    .defineInRange("capacityBoost", 0.6, -1, 100);
+                    .defineInRange("capacityBoost", 0.07, -1, 100);
             overloadedMagazineReloadSpeedReduction = builder
                     .comment("装填时间增加 (默认: +0.18 = +18%)")
-                    .defineInRange("reloadSpeedReduction", 0.18, -1, 1);
+                    .defineInRange("reloadSpeedReduction", 0.02, -1, 1);
             builder.pop();
             
             // 地狱弹膛配置
             builder.comment("地狱弹膛饰品配置").push("infernal_chamber");
             infernalChamberBulletCountBoost = builder
                     .comment("霰弹枪弹头数量加成 (默认: 1.2 = 120%)")
-                    .defineInRange("bulletCountBoost", 1.2, -1, 100);
+                    .defineInRange("bulletCountBoost", 0.13, -1, 100);
             builder.pop();
             
             // 持续火力配置
             builder.comment("持续火力饰品配置").push("sustained_fire");
             sustainedFireReloadSpeedBoost = builder
                     .comment("手枪装填时间加成 (默认: -0.48 = -48%)")
-                    .defineInRange("reloadSpeedBoost", -0.48, -1, 100);
+                    .defineInRange("reloadSpeedBoost", -0.05, -1, 100);
             builder.pop();
             
             // 感染弹匣配置
             builder.comment("感染弹匣饰品配置").push("infected_magazine");
             infectedMagazineCapacityBoost = builder
                     .comment("手枪弹匣容量加成 (默认: +0.6 = +60%)")
-                    .defineInRange("capacityBoost", 0.6, -1, 100);
+                    .defineInRange("capacityBoost", 0.07, -1, 100);
             infectedMagazineReloadSpeedReduction = builder
                     .comment("装填时间增加 (默认: +0.3 = +30%)")
-                    .defineInRange("reloadSpeedReduction", 0.3, -1, 1);
+                    .defineInRange("reloadSpeedReduction", 0.03, -1, 1);
             builder.pop();
             
             // 致命洪流配置
             builder.comment("致命洪流饰品配置").push("deadly_surge");
             deadlySurgeFireRateBoost = builder
                     .comment("手枪射速加成 (默认: 0.6 = 60%)")
-                    .defineInRange("fireRateBoost", 0.6, -1, 100);
+                    .defineInRange("fireRateBoost", 0.07, -1, 100);
             deadlySurgeBulletCountBoost = builder
                     .comment("弹头数量加成 (默认: 0.6 = 60%)")
-                    .defineInRange("bulletCountBoost", 0.6, -1, 100);
+                    .defineInRange("bulletCountBoost", 0.07, -1, 100);
             builder.pop();
             
             // 弹头扩散配置
             builder.comment("弹头扩散饰品配置").push("bullet_spread");
             bulletSpreadBulletCountBoost = builder
                     .comment("手枪弹头数量加成 (默认: 1.2 = 120%)")
-                    .defineInRange("bulletCountBoost", 1.2, -1, 100);
+                    .defineInRange("bulletCountBoost", 0.13, -1, 100);
             builder.pop();
             
             // 压迫点配置
             builder.comment("压迫点饰品配置").push("oppression_point");
             oppressionPointMeleeDamageBoost = builder
                     .comment("近战伤害加成 (默认: 1.2 = 120%)")
-                    .defineInRange("meleeDamageBoost", 1.2, -1, 100);
+                    .defineInRange("meleeDamageBoost", 0.24, -1, 100);
             builder.pop();
             
             // 压迫点Prime配置
@@ -1151,14 +1163,14 @@ public class TaczCuriosConfig {
             builder.comment("爆发装填饰品配置").push("burst_reload");
             burstReloadReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.3 = -30%)")
-                    .defineInRange("reloadSpeedBoost",-0.3, -1, 100);
+                    .defineInRange("reloadSpeedBoost",-0.06, -1, 100);
             builder.pop();
             
             // 剑风配置
             builder.comment("剑风饰品配置").push("sword_wind");
             swordWindMeleeRangeBoost = builder
                     .comment("近战距离加成 (默认: 1.1)")
-                    .defineInRange("meleeRangeBoost", 1.1, -1, 100);
+                    .defineInRange("meleeRangeBoost", 0.22, -1, 100);
             builder.pop();
             
             // 剑风Prime配置
@@ -1172,27 +1184,27 @@ public class TaczCuriosConfig {
             builder.comment("腐败弹匣饰品配置").push("corrupt_magazine");
             corruptMagazineCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: +0.66 = +66%)")
-                    .defineInRange("capacityBoost", 0.66, -1, 100);
+                    .defineInRange("capacityBoost", 0.07, -1, 100);
             corruptMagazineReloadSpeedReduction = builder
                     .comment("装填时间增加 (默认: +0.33 = +33%)")
-                    .defineInRange("reloadSpeedReduction", 0.33, -1, 1);
+                    .defineInRange("reloadSpeedReduction", 0.04, -1, 1);
             builder.pop();
             
             // 重口径配置
             builder.comment("重口径饰品配置").push("heavy_caliber_tag");
             heavyCaliberTagDamageBoost = builder
                     .comment("特定枪械伤害加成 (默认: +1.65 = +165%)")
-                    .defineInRange("damageBoost", 1.65, -1, 100);
+                    .defineInRange("damageBoost", 0.18, -1, 100);
             heavyCaliberTagInaccuracyBoost = builder
                     .comment("扩散程度加成 (默认: +0.55 = +55%)")
-                    .defineInRange("inaccuracyBoost", 0.55, -1, 100);
+                    .defineInRange("inaccuracyBoost", 0.06, -1, 100);
             builder.pop();
             
             // 红-有-三配置
             builder.comment("红-有-三饰品配置").push("red_movement_tag");
             redMovementTagSpeedBoost = builder
                     .comment("移动速度加成 (默认: 1.5 = 150%)")
-                    .defineInRange("speedBoost", 1.5, -1, 100);
+                    .defineInRange("speedBoost", 0.2, -1, 100);
             builder.pop();
             
             // 希奥拉配置
@@ -1304,83 +1316,83 @@ public class TaczCuriosConfig {
             builder.comment("士兵基础挂牌饰品配置").push("soldier_basic_tag");
             soldierBasicTagDamageBoost = builder
                     .comment("通用枪械伤害加成 (默认: 0.3 = 30%)")
-                    .defineInRange("damageBoost", 0.3, -1, 100);
+                    .defineInRange("damageBoost", 0.04, -1, 100);
             builder.pop();
             
             // 弹匣增幅配置
             builder.comment("弹匣增幅饰品配置").push("magazine_boost");
             magazineBoostReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.3 = -30%)")
-                    .defineInRange("reloadSpeedBoost",-0.3, -1, 100);
+                    .defineInRange("reloadSpeedBoost",-0.03, -1, 100);
             magazineBoostCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.3 = 30%)")
-                    .defineInRange("capacityBoost", 0.3, -1, 100);
+                    .defineInRange("capacityBoost", 0.03, -1, 100);
             builder.pop();
             
             // 士兵特定挂牌配置
             builder.comment("士兵特定挂牌饰品配置").push("soldier_specific_tag");
             soldierSpecificTagDamageBoost = builder
                     .comment("通用枪械伤害加成 (默认: 0.55 = 55%)")
-                    .defineInRange("damageBoost", 0.55, -1, 100);
+                    .defineInRange("damageBoost", 0.05, -1, 100);
             builder.pop();
             
             // 乌拉尔银狼配置
             builder.comment("乌拉尔银狼饰品配置").push("ural_wolf_tag");
             uralWolfTagHeadshotMultiplierBoost = builder
                     .comment("爆头倍率加成 (默认: 1.5 = 150%)")
-                    .defineInRange("headshotMultiplierBoost", 1.5, -1, 100);
+                    .defineInRange("headshotMultiplierBoost", 0.2, -1, 100);
             builder.pop();
             
             // 耗竭装填配置
             builder.comment("耗竭装填饰品配置").push("depleted_reload");
             depletedReloadMagazineCapacityPenalty = builder
                     .comment("弹匣容量减少 (默认: -0.6 = -60%)")
-                    .defineInRange("magazineCapacityPenalty", -0.6, -1, 0);
+                    .defineInRange("magazineCapacityPenalty", -0.07, -1, 0);
             depletedReloadReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.48 = -48%)")
-                    .defineInRange("reloadSpeedBoost", -0.48, -1, 100);
+                    .defineInRange("reloadSpeedBoost", -0.05, -1, 100);
             builder.pop();
             
             // 爆发装填Prime配置
             builder.comment("爆发装填Prime饰品配置").push("burst_reload_prime");
             burstReloadPrimeReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.55 = -55%)")
-                    .defineInRange("reloadSpeedBoost", -0.55, -1, 100);
+                    .defineInRange("reloadSpeedBoost", -0.06, -1, 100);
             builder.pop();
             
             // 战术上膛Prime配置
             builder.comment("战术上膛Prime饰品配置").push("tactical_reload_prime");
             tacticalReloadPrimeReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.9 = -90%)")
-                    .defineInRange("reloadSpeedBoost", -0.9, -1, 100);
+                    .defineInRange("reloadSpeedBoost", -0.08, -1, 100);
             builder.pop();
             
             // 霰弹扩充Prime配置
             builder.comment("霰弹扩充Prime饰品配置").push("shotgun_expansion_prime");
             shotgunExpansionPrimeCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 1.1 = 110%)")
-                    .defineInRange("capacityBoost", 1.1, -1, 100);
+                    .defineInRange("capacityBoost", 0.1, -1, 100);
             builder.pop();
             
             // 弹匣增幅Prime配置
             builder.comment("弹匣增幅Prime饰品配置").push("magazine_boost_prime");
             magazineBoostPrimeCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.55 = 55%)")
-                    .defineInRange("capacityBoost", 0.55, -1, 100);
+                    .defineInRange("capacityBoost", 0.05, -1, 100);
             builder.pop();
             
             // 串联弹匣Prime配置
             builder.comment("串联弹匣Prime饰品配置").push("tandem_magazine_prime");
             tandemMagazinePrimeCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.55 = 55%)")
-                    .defineInRange("capacityBoost", 0.55, -1, 100);
+                    .defineInRange("capacityBoost", 0.06, -1, 100);
             builder.pop();
             
             // 霰弹扩充配置
             builder.comment("霰弹扩充饰品配置").push("shotgun_expansion");
             shotgunExpansionCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.6 = 60%)")
-                    .defineInRange("capacityBoost", 0.6, -1, 100);
+                    .defineInRange("capacityBoost", 0.07, -1, 100);
             builder.pop();
             
 
@@ -1388,7 +1400,7 @@ public class TaczCuriosConfig {
             builder.comment("串联弹匣饰品配置").push("tandem_magazine");
             tandemMagazineCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.3 = 30%)")
-                    .defineInRange("capacityBoost", 0.3, -1, 100);
+                    .defineInRange("capacityBoost", 0.06, -1, 100);
             builder.pop();
             
             // 掎角一阵配置
@@ -1777,6 +1789,40 @@ public class TaczCuriosConfig {
                         o -> o instanceof String);
             builder.pop();
             
+            // ==== 融合升级配置 ====
+            builder.comment("融合升级系统配置（饰品等级升级）").push("fusion_upgrade");
+            fusionGrowthCoefficient = builder
+                    .comment("属性增长系数 C（公式：实际值 = 基础值 × (1 + 等级 × C)）(默认: 0.8)")
+                    .defineInRange("growthCoefficient", 0.8, 0.01, 100.0);
+            fusionEbcCommon = builder
+                    .comment("COMMON 稀有度 EBC（基础内融核心消耗）(默认: 10)")
+                    .defineInRange("ebc_common", 10, 1, 10000);
+            fusionEbcUncommon = builder
+                    .comment("UNCOMMON 稀有度 EBC (默认: 20)")
+                    .defineInRange("ebc_uncommon", 20, 1, 10000);
+            fusionEbcRare = builder
+                    .comment("RARE 稀有度 EBC (默认: 30)")
+                    .defineInRange("ebc_rare", 30, 1, 10000);
+            fusionEbcEpic = builder
+                    .comment("EPIC 稀有度 EBC (默认: 40)")
+                    .defineInRange("ebc_epic", 40, 1, 10000);
+            fusionMaxLevelCommon = builder
+                    .comment("COMMON 稀有度封顶等级 (默认: 5)")
+                    .defineInRange("maxLevel_common", 5, 1, 100);
+            fusionMaxLevelUncommon = builder
+                    .comment("UNCOMMON 稀有度封顶等级 (默认: 8)")
+                    .defineInRange("maxLevel_uncommon", 8, 1, 100);
+            fusionMaxLevelRare = builder
+                    .comment("RARE 稀有度封顶等级 (默认: 10)")
+                    .defineInRange("maxLevel_rare", 10, 1, 100);
+            fusionMaxLevelEpic = builder
+                    .comment("EPIC 稀有度封顶等级 (默认: 12)")
+                    .defineInRange("maxLevel_epic", 12, 1, 100);
+            fusionVesselCapacity = builder
+                    .comment("融合容器容量上限（默认: 655200 = 4 × EPIC满级消耗）")
+                    .defineInRange("fusionVesselCapacity", 655200, 1, Integer.MAX_VALUE);
+            builder.pop();
+
             builder.pop();
         }
     }

@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -44,9 +45,9 @@ public class GildedHydraulicCrosshair extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100;
-        double buffCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100;
-        double extraCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.get() * 100;
+        double baseCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double buffCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double extraCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.get() * 100, FusionUpgradeUtil.getLevel(stack));
         int duration = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get();
         tooltip.add(Component.translatable("item.tcc.gilded_hydraulic_crosshair.effect",
@@ -54,7 +55,6 @@ public class GildedHydraulicCrosshair extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
     }
 
     @Override

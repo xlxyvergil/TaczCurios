@@ -150,8 +150,6 @@ public class Juezhe extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic")
-            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");

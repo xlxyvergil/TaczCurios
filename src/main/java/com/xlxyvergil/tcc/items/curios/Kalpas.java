@@ -145,8 +145,6 @@ public class Kalpas extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
-
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

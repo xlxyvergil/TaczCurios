@@ -110,7 +110,6 @@ public class SummerBeach extends BaseCurioItem {
         // 槽位和稀有度
         tooltip.add(Component.literal(""));
  
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
 
     @Override

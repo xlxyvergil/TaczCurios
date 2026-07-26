@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -34,7 +35,7 @@ public class WeaknessMastery extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double critDamageBoost = TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get();
+            double critDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get(), getFusionLevel());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
@@ -57,14 +58,13 @@ public class WeaknessMastery extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critDamageBoost = TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get() * 100;
+        double critDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.weakness_mastery.effect",
                 String.format("%+.0f", critDamageBoost))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));
         
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.uncommon"));
     }
 
     @Override

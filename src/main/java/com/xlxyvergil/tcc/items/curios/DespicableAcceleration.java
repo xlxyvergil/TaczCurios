@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -65,8 +66,8 @@ public class DespicableAcceleration extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get();
-        double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get();
+        double firingSpeedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get(), getFusionLevel());
+        double damageReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get(), getFusionLevel());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, firingSpeedBoost, FIRING_SPEED_UUID, FIRING_SPEED_NAME, AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageReduction, GENERAL_DAMAGE_UUID, GENERAL_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
@@ -127,8 +128,8 @@ public class DespicableAcceleration extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double firingSpeedBoost = TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() * 100;
-        double damageReduction = TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() * 100;
+        double firingSpeedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
         tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
                 String.format("%+.0f", firingSpeedBoost), String.format("%+.0f", damageReduction))
             .withStyle(ChatFormatting.GOLD));
@@ -137,8 +138,6 @@ public class DespicableAcceleration extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rare"));
     }
     
     /**

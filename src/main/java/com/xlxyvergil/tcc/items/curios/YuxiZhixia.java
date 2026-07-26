@@ -147,8 +147,6 @@ public class YuxiZhixia extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.epic"));
-
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));

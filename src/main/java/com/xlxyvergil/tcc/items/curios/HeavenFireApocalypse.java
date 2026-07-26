@@ -181,9 +181,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
-
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");

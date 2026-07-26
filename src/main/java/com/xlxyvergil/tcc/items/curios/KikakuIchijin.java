@@ -75,8 +75,6 @@ public class KikakuIchijin extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
 
-        // 添加稀有度提示
-        tooltip.add(Component.translatable("tcc.tooltip.rarity.rift"));
     }
 
     /**
