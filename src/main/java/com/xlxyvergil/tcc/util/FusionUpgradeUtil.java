@@ -18,19 +18,15 @@ public class FusionUpgradeUtil {
 
     /**
      * 读取饰品当前等级。
-     * <p>无 NBT 标签时：可升级饰品默认返回 1，不可升级返回 0（旧存档兼容）。</p>
+     * <p>无 NBT 标签时默认返回 1（新饰品初始等级）。</p>
      */
     public static int getLevel(ItemStack stack) {
         if (stack.isEmpty()) return 0;
         CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains(NBT_KEY_LEVEL)) {
-            Rarity rarity = stack.getItem().getRarity(stack);
-            if (getMaxLevel(rarity) > 0) {
-                return 1; // 新饰品默认 1 级
-            }
-            return 0;
+        if (tag != null && tag.contains(NBT_KEY_LEVEL)) {
+            return tag.getInt(NBT_KEY_LEVEL);
         }
-        return tag.getInt(NBT_KEY_LEVEL);
+        return 1;
     }
 
     /**

@@ -7,9 +7,12 @@ import com.xlxyvergil.tcc.registries.TccRecipeSerializers;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -23,6 +26,9 @@ import net.minecraft.world.level.Level;
  * 并在合成后扣除容器内 CoreFusion 并返还容器。</p>
  */
 public class FusionUpgradeRecipe extends CustomRecipe {
+
+    private static final TagKey<Item> TCC_SLOT = TagKey.create(Registries.ITEM,
+            new ResourceLocation("curios", "tcc_slot"));
 
     public FusionUpgradeRecipe(ResourceLocation id) {
         super(id, CraftingBookCategory.MISC);
@@ -165,6 +171,7 @@ public class FusionUpgradeRecipe extends CustomRecipe {
      */
     private static boolean isUpgradeableCurio(ItemStack stack) {
         if (stack.isEmpty()) return false;
+        if (!stack.is(TCC_SLOT)) return false;
         Rarity rarity = stack.getItem().getRarity(stack);
         return FusionUpgradeUtil.getMaxLevel(rarity) > 0;
     }
