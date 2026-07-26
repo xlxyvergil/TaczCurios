@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 /**
- * 镀层液压准心击杀Buff - 爆头击杀触发，暴击几率叠加（最多5层）
+ * 镀层液压准心击杀Buff - 爆头击杀触发，暴击几率叠加（最多60层）
  */
 public class GildedHydraulicCrosshairKillEffect extends MobEffect {
     public GildedHydraulicCrosshairKillEffect() {
@@ -19,6 +19,6 @@ public class GildedHydraulicCrosshairKillEffect extends MobEffect {
 
     @Override
     public double getAttributeModifierValue(int amplifier, AttributeModifier modifier) {
-        return (amplifier + 1) * TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get();
+        return amplifier * TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get();
     }
 }

@@ -49,7 +49,12 @@ public class Destruction extends BaseCurioItem {
 
     @Override
     public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity());
+        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
+        try {
+            applyEffects(slotContext.entity());
+        } finally {
+            removeFusionLevel();
+        }
     }
 
     @Override

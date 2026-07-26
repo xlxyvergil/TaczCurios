@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,18 +44,14 @@ public class GildedSteelSlash extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity());
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCritChance = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double buffCritDmg = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        double baseCritChance = TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100 * fusionLevel;
+        double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100 * fusionLevel;
         int duration = TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get();
-        int maxStacks = TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get();
+        int maxStacks = TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_steel_slash.effect",
                 String.format("%+.0f", baseCritChance), String.format("%+.0f", buffCritDmg), duration, maxStacks)
             .withStyle(ChatFormatting.WHITE));
@@ -65,5 +62,15 @@ public class GildedSteelSlash extends BaseCurioItem {
     @Override
     public void applyGunSwitchEffect(LivingEntity livingEntity) {
         applyEffects(livingEntity);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
+        try {
+            applyEffects(slotContext.entity());
+        } finally {
+            removeFusionLevel();
+        }
     }
 }

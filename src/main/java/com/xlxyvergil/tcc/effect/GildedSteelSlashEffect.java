@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 /**
- * 镀层斩铁Buff - 击杀触发，暴击伤害提升（可叠加4层）
+ * 镀层斩铁Buff - 击杀触发，暴击伤害提升（可叠加48层）
  */
 public class GildedSteelSlashEffect extends MobEffect {
     public GildedSteelSlashEffect() {
@@ -19,6 +19,6 @@ public class GildedSteelSlashEffect extends MobEffect {
 
     @Override
     public double getAttributeModifierValue(int amplifier, AttributeModifier modifier) {
-        return (amplifier + 1) * TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get();
+        return amplifier * TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get();
     }
 }

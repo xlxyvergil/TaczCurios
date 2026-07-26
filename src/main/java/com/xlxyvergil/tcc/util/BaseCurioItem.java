@@ -27,7 +27,7 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
 
     // 融合升级等级 ThreadLocal — 在调用 applyEffects 前由 onEquip/applyEffectsWithLevel 设置
     private static final ThreadLocal<Integer> FUSION_LEVEL = ThreadLocal.withInitial(() -> 0);
-    
+
     static {
         loadConflictsFromConfig();
     }
@@ -61,6 +61,14 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
      */
     protected static int getFusionLevel() {
         return FUSION_LEVEL.get();
+    }
+
+    protected static void setFusionLevel(int level) {
+        FUSION_LEVEL.set(level);
+    }
+
+    protected static void removeFusionLevel() {
+        FUSION_LEVEL.remove();
     }
 
     public BaseCurioItem(Properties properties) {

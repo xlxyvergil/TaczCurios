@@ -48,17 +48,23 @@ public class GildedInfernalChamber extends BaseCurioItem {
 
     @Override
     public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity());
+        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
+        try {
+            applyEffects(slotContext.entity());
+        } finally {
+            removeFusionLevel();
+        }
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double buffBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        double baseBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get() * 100 * fusionLevel;
+        double buffBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100 * fusionLevel;
         int duration = TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get();
-        int maxStacks = TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get();
+        int maxStacks = TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_infernal_chamber.effect",
                 String.format("%+.0f", baseBulletCount), String.format("%+.0f", buffBulletCount), duration, maxStacks)
             .withStyle(ChatFormatting.WHITE));

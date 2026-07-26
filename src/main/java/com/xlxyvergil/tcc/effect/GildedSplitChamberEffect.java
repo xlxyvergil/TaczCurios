@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 /**
- * 镀层分裂膛室Buff - 击杀触发，弹头数量提升（可叠加5层）
+ * 镀层分裂膛室Buff - 击杀触发，弹头数量提升（可叠加60层）
  */
 public class GildedSplitChamberEffect extends MobEffect {
     public GildedSplitChamberEffect() {
@@ -19,6 +19,6 @@ public class GildedSplitChamberEffect extends MobEffect {
 
     @Override
     public double getAttributeModifierValue(int amplifier, AttributeModifier modifier) {
-        return (amplifier + 1) * TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get();
+        return amplifier * TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get();
     }
 }

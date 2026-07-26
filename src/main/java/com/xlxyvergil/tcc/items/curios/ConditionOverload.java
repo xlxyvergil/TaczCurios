@@ -36,11 +36,6 @@ public class ConditionOverload extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        // tick不需要处理
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));

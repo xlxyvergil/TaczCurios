@@ -69,18 +69,6 @@ public class BlazeStorm extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, EXPLOSION_ENABLED_UUID);
     }
     
-    /**
-     * 当玩家持有时，每tick更新效果
-     */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        applyEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);

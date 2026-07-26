@@ -55,18 +55,6 @@ public class AlloyDrill extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, ARMOR_IGNORE_UUID);
     }
     
-    /**
-     * 当饰品在插槽中时，每tick更新效果
-     */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 属性修饰符是持久的，不需要每tick刷新
-        // 效果在 onEquip/onUnequip/applyGunSwitchEffect 中管理
-    }
-
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);

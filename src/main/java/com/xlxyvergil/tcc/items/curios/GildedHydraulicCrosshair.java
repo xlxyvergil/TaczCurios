@@ -37,19 +37,15 @@ public class GildedHydraulicCrosshair extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity());
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double buffCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double extraCrit = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        double baseCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100 * fusionLevel;
+        double buffCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100 * fusionLevel;
+        double extraCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.get() * 100;
         int duration = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get();
-        int maxStacks = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get();
+        int maxStacks = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_hydraulic_crosshair.effect",
                 String.format("%+.0f", baseCrit), String.format("%+.0f", buffCrit), String.format("%+.0f", extraCrit), duration, maxStacks)
             .withStyle(ChatFormatting.WHITE));

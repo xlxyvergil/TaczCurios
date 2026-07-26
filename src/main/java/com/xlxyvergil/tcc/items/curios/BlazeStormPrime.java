@@ -39,19 +39,6 @@ public class BlazeStormPrime extends BaseCurioItem {
         super(properties);
     }
     
-    /**
-     * 当玩家持有时，每tick更新效果
-     */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 确保效果持续生效
-        applyEffects((LivingEntity) slotContext.entity());
-    }
-
-    /**
-     * 应用所有效果加成
-     * 增加配置中的爆炸范围和爆炸伤害加成（乘算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性值

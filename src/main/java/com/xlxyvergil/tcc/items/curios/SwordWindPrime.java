@@ -59,8 +59,8 @@ public class SwordWindPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get();
-        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%+.0f", meleeDistanceBoost))
+        double meleeDistanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get(), FusionUpgradeUtil.getLevel(stack));
+        tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%+.1f", meleeDistanceBoost))
             .withStyle(ChatFormatting.WHITE));
         
         // 添加饰品槽位信息

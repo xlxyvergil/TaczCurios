@@ -42,11 +42,11 @@ public class CurioCombatEventHandler {
     }
 
     /**
-     * 获取指定饰品在玩家身上的融合等级，0 表示未装备或未升级。
+     * 获取指定饰品在玩家身上的融合等级。仅在 hasCurio 确认装备后调用。
      */
     private static int getCurioFusionLevel(LivingEntity entity, Item curio) {
         ItemStack stack = findCurioStack(entity, curio);
-        return stack.isEmpty() ? 0 : FusionUpgradeUtil.getLevel(stack);
+        return FusionUpgradeUtil.getLevel(stack);
     }
 
     private static boolean isHoldingMeleeWeapon(LivingEntity entity) {
@@ -58,14 +58,31 @@ public class CurioCombatEventHandler {
         player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, 0, false, false, true));
     }
 
-    private static void applyStackingBuff(Player player, MobEffect effect, int durationSeconds, int maxStacks) {
+    private static void applyStackingBuff(Player player, MobEffect effect, int durationSeconds, int maxStacks, int addAmount) {
         MobEffectInstance existing = player.getEffect(effect);
         if (existing != null) {
-            int newAmp = Math.min(existing.getAmplifier() + 1, maxStacks - 1);
+            int newAmp = Math.min(existing.getAmplifier() + addAmount, maxStacks - 1);
             player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, newAmp, false, false, true));
         } else {
-            player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, 0, false, false, true));
+            // 首次施加：amplifier = 饰品等级
+            player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, addAmount, false, false, true));
         }
+    }
+
+    /**
+     * 应用镀层饰品的非叠加Buff，amplifier = fusionLevel - 1，Effect 直接用 amplifier 计算。
+     */
+    private static void applyGildedBuff(Player player, Item curio, MobEffect effect, int durationSeconds) {
+        int level = getCurioFusionLevel(player, curio);
+        player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, level - 1, false, false, true));
+    }
+
+    /**
+     * 应用镀层饰品的叠加Buff，每次叠加 +curioLevel（叠层Effect使用 amplifier × PerLevel 计算数值）。
+     */
+    private static void applyGildedStackingBuff(Player player, Item curio, MobEffect effect, int durationSeconds, int maxStacks) {
+        int level = getCurioFusionLevel(player, curio);
+        applyStackingBuff(player, effect, durationSeconds, maxStacks, level);
     }
 
     /**
@@ -84,7 +101,7 @@ public class CurioCombatEventHandler {
         }
         // R-04 镀层氩晶瞄具：爆头→nonStacking(爆头buff)
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_ARGON_SCOPE)) {
-            applyNonStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
+            applyGildedBuff(player, TccItems.GILDED_ARGON_SCOPE, TccMobEffects.GILDED_ARGON_SCOPE.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
         }
         // S-05 雷射瞄具
@@ -97,7 +114,7 @@ public class CurioCombatEventHandler {
         }
         // P-07 镀层液压准心：爆头→nonStacking(爆头buff)
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR)) {
-            applyNonStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
+            applyGildedBuff(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
         }
     }
@@ -116,7 +133,7 @@ public class CurioCombatEventHandler {
                 applyNonStackingBuff(player, TccMobEffects.ARGON_SCOPE.get(), TaczCuriosConfig.COMMON.argonScopeDuration.get());
             }
             if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_ARGON_SCOPE)) {
-                applyNonStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE.get(),
+                applyGildedBuff(player, TccItems.GILDED_ARGON_SCOPE, TccMobEffects.GILDED_ARGON_SCOPE.get(),
                     TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
             }
             if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.LASER_SCOPE)) {
@@ -126,20 +143,20 @@ public class CurioCombatEventHandler {
                 applyNonStackingBuff(player, TccMobEffects.HYDRAULIC_CROSSHAIR.get(), TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get());
             }
             if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR)) {
-                applyNonStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
+                applyGildedBuff(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
                     TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
             }
         }
 
         // R-04 镀层氩晶瞄具: 爆头击杀→stacking(击杀buff)
         if (event.isHeadShot() && GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_ARGON_SCOPE)) {
-            applyStackingBuff(player, TccMobEffects.GILDED_ARGON_SCOPE_KILL.get(),
+            applyGildedStackingBuff(player, TccItems.GILDED_ARGON_SCOPE, TccMobEffects.GILDED_ARGON_SCOPE_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get());
         }
         // P-07 镀层液压准心: 爆头击杀→stacking(击杀buff)
         if (event.isHeadShot() && GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR)) {
-            applyStackingBuff(player, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR_KILL.get(),
+            applyGildedStackingBuff(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get());
         }
@@ -149,7 +166,7 @@ public class CurioCombatEventHandler {
         }
         // R-07 镀层分裂膛室
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_SPLIT_CHAMBER)) {
-            applyStackingBuff(player, TccMobEffects.GILDED_SPLIT_CHAMBER.get(),
+            applyGildedStackingBuff(player, TccItems.GILDED_SPLIT_CHAMBER, TccMobEffects.GILDED_SPLIT_CHAMBER.get(),
                 TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get(),
                 TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get());
         }
@@ -159,7 +176,7 @@ public class CurioCombatEventHandler {
         }
         // S-08 镀层地狱弹膛
         if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.GILDED_INFERNAL_CHAMBER)) {
-            applyStackingBuff(player, TccMobEffects.GILDED_INFERNAL_CHAMBER.get(),
+            applyGildedStackingBuff(player, TccItems.GILDED_INFERNAL_CHAMBER, TccMobEffects.GILDED_INFERNAL_CHAMBER.get(),
                 TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get(),
                 TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get());
         }
@@ -169,7 +186,7 @@ public class CurioCombatEventHandler {
         }
         // P-10 镀层弹头扩散
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_BULLET_SPREAD)) {
-            applyStackingBuff(player, TccMobEffects.GILDED_BULLET_SPREAD.get(),
+            applyGildedStackingBuff(player, TccItems.GILDED_BULLET_SPREAD, TccMobEffects.GILDED_BULLET_SPREAD.get(),
                 TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get(),
                 TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get());
         }
@@ -184,7 +201,7 @@ public class CurioCombatEventHandler {
         if (player.level().isClientSide) return;
         // M-05 镀层斩铁
         if (isHoldingMeleeWeapon(player) && hasCurio(player, TccItems.GILDED_STEEL_SLASH)) {
-            applyStackingBuff(player, TccMobEffects.GILDED_STEEL_SLASH.get(),
+            applyGildedStackingBuff(player, TccItems.GILDED_STEEL_SLASH, TccMobEffects.GILDED_STEEL_SLASH.get(),
                 TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get(),
                 TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get());
         }

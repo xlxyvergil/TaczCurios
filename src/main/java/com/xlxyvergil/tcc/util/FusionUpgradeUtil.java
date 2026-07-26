@@ -73,15 +73,16 @@ public class FusionUpgradeUtil {
 
     /**
      * 计算指定等级的实际属性值，截断到 2 位小数。
-     * <p>公式：{@code 实际值 = 基础值 × (1 + 等级 × C)}</p>
+     * <p>公式：实际值 = 基础值 × (1 + (等级 - 1) × C)</p>
+     * <p>等级 1 时等于基础值本身，等级 ≥ 2 时按 C 增长。</p>
      * <p>截断（而非四舍五入）确保 7.2% → 7%、-7.2% → -7%，与 tooltip 显示一致。</p>
      *
-     * @param baseValue Config 中配置的 Lv.0 基础值
+     * @param baseValue Config 中配置的基础值（Lv.1 时的值）
      * @param level     当前饰品等级
      * @return 按等级缩放后的实际值（截断到 2 位小数）
      */
     public static double getActualValue(double baseValue, int level) {
-        double raw = baseValue * (1 + level * getGrowthCoefficient());
+        double raw = baseValue * (1 + (level - 1) * getGrowthCoefficient());
         return (int)(raw * 100.0) / 100.0;
     }
 
