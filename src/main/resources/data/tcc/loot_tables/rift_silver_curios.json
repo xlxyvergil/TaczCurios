@@ -118,11 +118,6 @@
         {
           "type": "minecraft:item",
           "weight": 8,
-          "name": "tcc:careful_heart"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 8,
           "name": "tcc:soldier_specific_tag"
         },
         {
@@ -259,11 +254,6 @@
           "type": "minecraft:item",
           "weight": 1,
           "name": "tcc:gilded_marksman"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "tcc:kikaku_ichijin"
         }
       ]
     }

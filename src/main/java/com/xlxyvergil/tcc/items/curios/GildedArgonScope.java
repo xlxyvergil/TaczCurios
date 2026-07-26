@@ -46,8 +46,11 @@ public class GildedArgonScope extends BaseCurioItem {
         double extraCrit = TaczCuriosConfig.COMMON.gildedArgonScopeHeadshotKillExtra.get() * 100;
         int duration = TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
-        tooltip.add(Component.translatable("item.tcc.gilded_argon_scope.effect",
-                String.format("%+.0f", baseCrit), String.format("%+.0f", buffCrit), String.format("%+.0f", extraCrit), duration, maxStacks)
+        tooltip.add(Component.translatable("item.tcc.gilded_argon_scope.effect_base",
+                String.format("%+.0f", baseCrit), duration)
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.tcc.gilded_argon_scope.effect_kill",
+                String.format("%+.0f", buffCrit), maxStacks, duration)
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         

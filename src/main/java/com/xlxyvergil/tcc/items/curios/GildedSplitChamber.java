@@ -65,8 +65,11 @@ public class GildedSplitChamber extends BaseCurioItem {
         double buffBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get() * 100 * fusionLevel;
         int duration = TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
-        tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect",
-                String.format("%+.0f", baseBulletCount), String.format("%+.0f", buffBulletCount), duration, maxStacks)
+        tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect_base",
+                String.format("%+.0f", baseBulletCount))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect_kill",
+                String.format("%+.0f", buffBulletCount), maxStacks, duration)
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
         
