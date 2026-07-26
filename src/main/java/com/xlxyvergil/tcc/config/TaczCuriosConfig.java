@@ -297,9 +297,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyUnbreakableBlocks;
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyNormalBlocks;
         
-        // Apotheosis集成配置
-        public final ForgeConfigSpec.BooleanValue enableApotheosisIntegration;
-
 
 
         // ========== 逐火之蛾/神之键 新饰品配置 ==========
@@ -1415,13 +1412,6 @@ public class TaczCuriosConfig {
             kikakuIchijinDestroyNormalBlocks = builder
                     .comment("是否破坏普通方块 (默认: false)")
                     .define("destroyNormalBlocks", false);
-            builder.pop();
-            
-            // Apotheosis集成配置
-            builder.comment("Apotheosis神化属性集成配置").push("apotheosis_integration");
-            enableApotheosisIntegration = builder
-                    .comment("是否启用TCC饰品的Apotheosis神化属性支持 (默认: true)")
-                    .define("enableApotheosisIntegration", true);
             builder.pop();
             
             // ==== 吸收饰品通用配置 ====
