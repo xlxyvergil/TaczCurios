@@ -48,22 +48,22 @@ public class SacrificeOppression extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         double meleeDamageBoost = TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get();
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
         // 套装效果：同时装备牺牲斩铁时，额外 +25%
         if (hasSacrificeSteel(livingEntity)) {
             double setBonus = TaczCuriosConfig.COMMON.sacrificeSetBonus.get();
             double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
-            AttributeHelper.removeModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, SET_BONUS_UUID);
+            AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, SET_BONUS_UUID);
         }
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, MELEE_DAMAGE_UUID);
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.MELEE_DAMAGE, SET_BONUS_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, MELEE_DAMAGE_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, SET_BONUS_UUID);
     }
 
     @Override

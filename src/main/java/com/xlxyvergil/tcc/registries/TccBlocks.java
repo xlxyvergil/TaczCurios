@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
-// 参照 AE2 InitBlocks：不用 DeferredRegister，而是在 RegisterEvent<BLOCK> 时直接注册
+
 public final class TccBlocks {
 
     public static final Block TESHIN_WORKBENCH = new Block(
-        BlockBehaviour.Properties.copy(Blocks.DIRT).strength(0.5F).lightLevel(state -> 8));
+        BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).lightLevel(state -> 8).noOcclusion());
     public static final Item TESHIN_WORKBENCH_ITEM = new BlockItem(TESHIN_WORKBENCH, new Item.Properties());
 
     private TccBlocks() {

@@ -17,6 +17,10 @@ public final class TccStats {
     public static final ResourceLocation ZOMBIE_VILLAGER_CURED =
             new ResourceLocation(TaczCurios.MODID, "zombie_villager_cured");
 
+    /** 玩家合成物品的累计次数（PVill-V 成就需求） */
+    public static final ResourceLocation ITEMS_CRAFTED =
+            new ResourceLocation(TaczCurios.MODID, "items_crafted");
+
     // ===== 新增统计在此声明 =====
 
     private TccStats() {}
@@ -24,6 +28,7 @@ public final class TccStats {
     /** 注册所有自定义统计到 BuiltInRegistries.CUSTOM_STAT */
     public static void register() {
         registerCustom(ZOMBIE_VILLAGER_CURED, StatFormatter.DEFAULT);
+        registerCustom(ITEMS_CRAFTED, StatFormatter.DEFAULT);
 
         // ===== 新增统计在此注册 =====
     }

@@ -5,7 +5,8 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"4": "tcc:block/teshin_workbench_core",
-		"5": "tcc:block/teshin_workbench_base"
+		"5": "tcc:block/teshin_workbench_base",
+		"particle": "tcc:block/teshin_workbench_base"
 	},
 	"elements": [
 		{

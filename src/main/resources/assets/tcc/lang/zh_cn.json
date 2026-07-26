@@ -272,6 +272,7 @@
   "effect.tcc.gilded_infernal_chamber": "镀层地狱弹膛",
   "effect.tcc.gilded_bullet_spread": "镀层弹头扩散",
   "effect.tcc.gilded_steel_slash": "镀层斩铁",
+  "effect.tcc.mob_imaginary_resistance_buff": "虚数屏障",
   "item.tcc.critical_delay": "§6关键延迟",
   "item.tcc.critical_delay.effect": "暴击几率%1$s%%，射速%2$s%%",
   "item.tcc.lethal_crit": "§9致命一击",
@@ -467,6 +468,7 @@
   "advancement.tcc.xukong_wancang_yzth_grant.title": "虚空万藏·原始统括",
   "advancement.tcc.xukong_wancang_yzth_grant.description": "对凯文武装·666",
   "stat.tcc.zombie_villager_cured": "治愈僵尸村民次数",
+  "stat.tcc.items_crafted": "合成物品次数",
   "tcc.tooltip.affected_by_imaginary_resistance": "效果受到虚数抗性影响",
   "tcc.tooltip.affected_by_luck": "效果受到幸运值影响",
   "tcc.tooltip.affected_by_max_health": "效果受到最大生命值影响"

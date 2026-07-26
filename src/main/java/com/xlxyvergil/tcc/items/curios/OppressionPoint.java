@@ -39,7 +39,7 @@ public class OppressionPoint extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
         double damageBoost = TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get();
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
     /**

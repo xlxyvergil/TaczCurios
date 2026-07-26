@@ -427,6 +427,10 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunAmmoResistanceScale;
 
+        // 怪物虚数抗性Buff配置
+        public final ForgeConfigSpec.DoubleValue mobBuffImaginaryResistance;
+        public final ForgeConfigSpec.BooleanValue mobBuffApplyToPlayers;
+
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
@@ -1747,6 +1751,16 @@ public class TaczCuriosConfig {
             yinguoZhuanlunAmmoResistanceScale = builder
                     .comment("每点虚数抗性提供的弹药恢复系数 (默认: 0.01)")
                     .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
+            builder.pop();
+
+            // 怪物虚数抗性Buff配置
+            builder.comment("怪物虚数抗性Buff配置（非玩家实体生成时自带的正面效果）").push("mob_buff");
+            mobBuffImaginaryResistance = builder
+                    .comment("Buff提供的虚数抗性值 (默认: 30.0)")
+                    .defineInRange("imaginaryResistance", 30.0, -100.0, 100.0);
+            mobBuffApplyToPlayers = builder
+                    .comment("是否对玩家也应用此Buff (默认: false)")
+                    .define("applyToPlayers", false);
             builder.pop();
 
             // 饰品互斥配置

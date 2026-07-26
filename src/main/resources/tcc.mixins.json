@@ -10,7 +10,8 @@
     "LivingEntityHurtMixin",
     "PlayerListMixin",
     "ServerStatsCounterMixin",
-    "ZombieVillagerCureMixin"
+    "ZombieVillagerCureMixin",
+    "RSCraftingGridBehaviorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

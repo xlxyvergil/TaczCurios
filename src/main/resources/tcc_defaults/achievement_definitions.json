@@ -982,17 +982,17 @@
         },
         "icon": "tcc:vill_v",
         "description": {
-          "zh_cn": "与工作台交互达到200次",
-          "en_us": "Interact with Crafting Table reaches 200"
+          "zh_cn": "合成物品达到1200次",
+          "en_us": "Craft items 1200 times"
         },
         "frame": "goal",
         "hidden": false
       },
       "parent": "tcc:tcc_root",
       "trigger": "stat_polling",
-      "criteria_count": 200,
+      "criteria_count": 1200,
       "conditions": {
-        "stat": "minecraft:interact_with_crafting_table",
+        "stat": "tcc:items_crafted",
         "statThreshold": 1
       },
       "prerequisites": [],
@@ -1113,15 +1113,15 @@
         },
         "icon": "tcc:luoxuan",
         "description": {
-          "zh_cn": "佩戴启示之键，自上次死亡后存活864000tick，虚数伤害抗性大于60",
-          "en_us": "Time Since Death reaches 864000 ticks while wearing Key of Revelation, Imaginary Damage Resistance > 60"
+          "zh_cn": "佩戴启示之键，自上次死亡后存活6小时，虚数伤害抗性大于60",
+          "en_us": "Time Since Death reaches 6 hours while wearing Key of Revelation, Imaginary Damage Resistance > 60"
         },
         "frame": "challenge",
         "hidden": false
       },
       "parent": "tcc:qishi_zhijian_grant",
       "trigger": "stat_polling",
-      "criteria_count": 864000,
+      "criteria_count": 432000,
       "conditions": {
         "equippedCurios": ["tcc:qishi_zhijian"],
         "stat": "minecraft:time_since_death",
