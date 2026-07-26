@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
-import com.xlxyvergil.tcc.event.TccEventHandler;
+
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TccVillagers;
 import com.xlxyvergil.tcc.creativetab.TccCreativeTab;
@@ -71,8 +71,6 @@ public class TaczCurios
                 com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp);
             }
         });
-        // 注册战利品表事件处理器
-        MinecraftForge.EVENT_BUS.register(TccEventHandler.getInstance());
         // 注册天火流血结算事件处理器
         MinecraftForge.EVENT_BUS.register(new HeavenFireSettlementHandler());
         

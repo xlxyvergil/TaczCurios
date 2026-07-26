@@ -25,7 +25,7 @@ public class GildedMarksman extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity) {
-        // 无基础属性，伤害乘算在TccEventHandler.onLivingHurt中处理
+        // 无基础属性，伤害乘算在其他处理器中处理
     }
 
     @Override

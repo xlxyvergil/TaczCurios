@@ -289,9 +289,6 @@ public class TaczCuriosConfig {
         // 串联弹匣配置
         public final ForgeConfigSpec.DoubleValue tandemMagazineCapacityBoost;
         
-        // 裂隙碎银配置
-        public final ForgeConfigSpec.DoubleValue riftSilverChestSpawnChance;
-        
         // 掎角一阵配置
         public final ForgeConfigSpec.DoubleValue kikakuIchijinHealthMultiplier;
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyUnbreakableBlocks;
@@ -1392,13 +1389,6 @@ public class TaczCuriosConfig {
             tandemMagazineCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.3 = 30%)")
                     .defineInRange("capacityBoost", 0.3, -1, 100);
-            builder.pop();
-            
-            // 裂隙碎银配置
-            builder.comment("裂隙碎银配置").push("rift_silver");
-            riftSilverChestSpawnChance = builder
-                    .comment("裂隙碎银在箱子中的生成几率 (默认: 0.05 = 5%)")
-                    .defineInRange("chestSpawnChance", 0.05, -1, 1);
             builder.pop();
             
             // 掎角一阵配置

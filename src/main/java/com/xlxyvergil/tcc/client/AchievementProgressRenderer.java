@@ -239,9 +239,11 @@ public final class AchievementProgressRenderer {
 
     /**
      * 解析 stat 的本地化名称（stat.minecraft.damage_dealt → "伤害造成"）。
+     * 与 Minecraft {@link net.minecraft.stats.Stat#getDisplayName()} 一致，
+     * 将 ResourceLocation 中的 {@code ':'} 替换为 {@code '.'} 构造翻译键。
      */
     private static String resolveStatName(String statId) {
-        String key = "stat." + statId;
+        String key = "stat." + statId.replace(':', '.');
         String localized = I18n.get(key);
         return localized.equals(key) ? statId : localized;
     }

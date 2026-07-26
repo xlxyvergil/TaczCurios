@@ -5,12 +5,10 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "DamageResistanceMixin",
-    "ForgeHooksMixin",
     "LivingEntityAccessor",
     "LivingEntityHurtMixin",
     "PlayerListMixin",
     "ServerStatsCounterMixin",
-    "ZombieVillagerCureMixin",
     "RSCraftingGridBehaviorMixin"
   ],
   "injectors": {
