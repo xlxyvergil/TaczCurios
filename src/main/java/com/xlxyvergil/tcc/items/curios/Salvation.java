@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -89,7 +90,7 @@ public class Salvation extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         double imaginaryResistance = getSalvationResistance(livingEntity);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
             imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
@@ -161,10 +162,6 @@ public class Salvation extends BaseCurioItem {
         }
     }
     
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
     
     /**
      * 每tick刷新抗性提升效果

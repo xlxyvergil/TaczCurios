@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -65,7 +66,7 @@ public class ShijieFanyan extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
                 TaczCuriosConfig.COMMON.shijieFanyanLuck.get(), LUCK_UUID,
@@ -118,12 +119,7 @@ public class ShijieFanyan extends BaseCurioItem {
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity());
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
+        applyEffects(slotContext.entity(), stack);
     }
 
     @Override

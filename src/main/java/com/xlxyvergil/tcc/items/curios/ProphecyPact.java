@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -41,8 +42,8 @@ public class ProphecyPact extends BaseCurioItem {
      * 提升手枪伤害（加算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
@@ -66,7 +67,7 @@ public class ProphecyPact extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.BLUE));
         
@@ -76,11 +77,4 @@ public class ProphecyPact extends BaseCurioItem {
         
     }
     
-    /**
-     * 当玩家切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

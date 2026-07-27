@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,12 +19,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 抵近射击Prime饰品 - 提供165%霰弹枪伤害加成
+ * 抵近射击Prime饰品 - 提供165%霰弹枪伤害加�?
  * 效果：为玩家提供165%的霰弹枪伤害加成
  */
 public class CloseCombatPrime extends BaseCurioItem {
     
-    // 霰弹枪伤害属性的UUID和配置
+    // 霰弹枪伤害属性的UUID和配�?
     private static final UUID SHOTGUN_DAMAGE_UUID = UUID.fromString("fa19535c-5dcb-4c3c-833f-53ea1c9bc5b0");
     private static final String SHOTGUN_DAMAGE_NAME = "tcc.close_combat_prime.shotgun_damage";
     
@@ -32,17 +33,17 @@ public class CloseCombatPrime extends BaseCurioItem {
     }
     
     /**
-     * 应用霰弹枪伤害加成
+     * 应用霰弹枪伤害加�?
      * 给生物添加霰弹枪伤害加成（加法）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, SHOTGUN_DAMAGE_UUID, SHOTGUN_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
     /**
-     * 移除霰弹枪伤害加成
+     * 移除霰弹枪伤害加�?
      */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
@@ -63,7 +64,7 @@ public class CloseCombatPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.WHITE));
         
@@ -74,11 +75,4 @@ public class CloseCombatPrime extends BaseCurioItem {
         
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

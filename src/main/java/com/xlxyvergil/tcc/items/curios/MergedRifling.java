@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,7 @@ import java.util.UUID;
  */
 public class MergedRifling extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    // 属性修饰符UUID - 用于唯一标识这些修饰�?
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("f36f64c9-c3ec-4faf-b233-1d3ae64ef940"),
         UUID.fromString("32254b9b-364b-44de-bbf2-352df3726ac5"),
@@ -38,7 +39,7 @@ public class MergedRifling extends BaseCurioItem {
     };
     private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("6967f153-c8f1-4f6c-9752-bd2f5e5253c2");
     
-    // 修饰符名称
+    // 修饰符名�?
     private static final String[] DAMAGE_NAMES = {
         "tcc.merged_rifling.rifle_damage",
         "tcc.merged_rifling.sniper_damage",
@@ -57,9 +58,9 @@ public class MergedRifling extends BaseCurioItem {
      * 提升特定枪械伤害和持枪移动速度（都使用加算
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get(), getFusionLevel());
-        double speedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get());
+        double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, damageBoost, DAMAGE_UUIDS[0], DAMAGE_NAMES[0], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, damageBoost, DAMAGE_UUIDS[1], DAMAGE_NAMES[1], AttributeModifier.Operation.ADDITION);
@@ -99,8 +100,8 @@ public class MergedRifling extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double speedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() ) * 100;
+        double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
                 String.format("%+.0f", damageBoost), String.format("%+.0f", speedBoost))
             .withStyle(ChatFormatting.WHITE));
@@ -111,11 +112,4 @@ public class MergedRifling extends BaseCurioItem {
         
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

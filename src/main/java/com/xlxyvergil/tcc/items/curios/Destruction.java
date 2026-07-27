@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 破灭 - 霰弹枪饰品
- * 效果：暴击伤害 +60%
+ * 破灭 - 霰弹枪饰�?
+ * 效果：暴击伤�?+60%
  */
 public class Destruction extends BaseCurioItem {
 
@@ -33,9 +34,9 @@ public class Destruction extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double critDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.destructionCritDamage.get(), getFusionLevel());
+            double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.destructionCritDamage.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
@@ -48,22 +49,12 @@ public class Destruction extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
-        double critDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.destructionCritDamage.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.destructionCritDamage.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.destruction.effect",
                 String.format("%+.0f", critDamageBoost))
             .withStyle(ChatFormatting.GOLD));
@@ -72,8 +63,4 @@ public class Destruction extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

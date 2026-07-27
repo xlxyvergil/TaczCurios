@@ -50,7 +50,7 @@ public class YongjieZhijian extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
             int luck = (int) livingEntity.getAttributeValue(AttributeHelper.LUCK);
             double critChance = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100.0) / 100.0;
@@ -99,12 +99,7 @@ public class YongjieZhijian extends BaseCurioItem {
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity());
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
+        applyEffects(slotContext.entity(), stack);
     }
 
     @Override

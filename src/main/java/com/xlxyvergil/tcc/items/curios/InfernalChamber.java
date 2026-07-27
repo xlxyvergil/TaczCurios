@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -40,10 +41,10 @@ public class InfernalChamber extends BaseCurioItem {
      * 提升弹头数量（加算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有霰弹枪，只有持有霰弹枪时才应用加成
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get(), getFusionLevel());
+            double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -70,7 +71,7 @@ public class InfernalChamber extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.infernal_chamber.effect", String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
@@ -80,11 +81,4 @@ public class InfernalChamber extends BaseCurioItem {
 
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

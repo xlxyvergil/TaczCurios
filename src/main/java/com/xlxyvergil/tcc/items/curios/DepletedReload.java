@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,15 +20,15 @@ import java.util.UUID;
 
 /**
  * 耗竭装填 - 降低弹匣容量，提升装填速度
- * 效果：降低60%弹匣容量，提升48%装填速度，仅对狙击枪生效
+ * 效果：降�?0%弹匣容量，提�?8%装填速度，仅对狙击枪生效
  */
 public class DepletedReload extends BaseCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    // 属性修饰符UUID - 用于唯一标识这些修饰�?
     private static final UUID MAGAZINE_UUID = UUID.fromString("17c2b815-8561-4354-a395-d03c4ac4e029");
     private static final UUID RELOAD_UUID = UUID.fromString("68cef118-0938-46f4-881f-698e812abf70");
 
-    // 修饰符名称
+    // 修饰符名�?
     private static final String MAGAZINE_NAME = "tcc.depleted_reload.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.depleted_reload.reload_speed";
 
@@ -40,11 +41,11 @@ public class DepletedReload extends BaseCurioItem {
      * 降低弹匣容量，提升装填速度
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
         if (GunTypeChecker.isHoldingSniper(livingEntity)) {
-            double magazinePenalty = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get(), getFusionLevel());
-            double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get(), getFusionLevel());
+            double magazinePenalty = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get());
+            double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazinePenalty, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
@@ -73,8 +74,8 @@ public class DepletedReload extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double magazinePenalty = Math.abs(FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get() * 100, FusionUpgradeUtil.getLevel(stack)));
-        double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double magazinePenalty = Math.abs(FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get() ) * 100);
+        double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.depleted_reload.effect", 
                                           String.format("%+.0f", magazinePenalty), 
                                           String.format("%+.0f", reloadBoost))
@@ -86,11 +87,4 @@ public class DepletedReload extends BaseCurioItem {
 
     }
 
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

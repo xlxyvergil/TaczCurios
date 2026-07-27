@@ -2,7 +2,7 @@ package com.xlxyvergil.tcc.client;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -40,21 +40,18 @@ public class CurioFusionTooltipHandler {
 
         List<Component> tooltip = event.getToolTip();
 
-        Rarity rarity = stack.getItem().getRarity(stack);
+        FusionData data = FusionData.from(stack);
 
         // 融合等级（仅 tcc_slot）
         String levelText = null;
-        if (stack.is(TCC_SLOT)) {
-            int maxLevel = FusionUpgradeUtil.getMaxLevel(rarity);
-            if (maxLevel > 0) {
-                int nbtLevel = FusionUpgradeUtil.getLevel(stack);
-                levelText = Component.translatable("tcc.tooltip.fusion_level",
-                        Math.min(nbtLevel, maxLevel), maxLevel).getString();
-            }
+        if (stack.is(TCC_SLOT) && data.isUpgradeable()) {
+            int maxLevel = data.maxLevel();
+            levelText = Component.translatable("tcc.tooltip.fusion_level",
+                    Math.min(data.level(), maxLevel), maxLevel).getString();
         }
 
         // 稀有度
-        String rarityKey = getRarityKey(rarity);
+        String rarityKey = getRarityKey(data.rarity());
         String rarityName = rarityKey != null
                 ? Component.translatable(rarityKey).getString()
                 : null;

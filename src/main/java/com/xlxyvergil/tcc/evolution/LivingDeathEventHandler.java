@@ -98,7 +98,7 @@ public final class LivingDeathEventHandler {
             }
         }
         if (changed && tracked.getItem() instanceof BaseCurioItem curio) {
-            curio.refreshEffects(player);
+            curio.refreshEffects(player, tracked);
         }
         return changed;
     }
@@ -148,7 +148,7 @@ public final class LivingDeathEventHandler {
                 }
             }
             if (changed && tracked.getItem() instanceof BaseCurioItem curio) {
-                curio.refreshEffects(player);
+                curio.refreshEffects(player, tracked);
             }
         }
 

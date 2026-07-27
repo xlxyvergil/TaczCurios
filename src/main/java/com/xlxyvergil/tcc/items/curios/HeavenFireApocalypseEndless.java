@@ -61,7 +61,7 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
             }
         }
         LivingEntity entity = (LivingEntity) slotContext.entity();
-        applyEffects(entity);
+        applyEffects(entity, stack);
     }
     
     @Override
@@ -83,7 +83,7 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.endlessGunTypes.get())) return;
         
         // 使用可配置的数值
@@ -224,8 +224,5 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireApocalypseEndless).isEmpty();
     }
     
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

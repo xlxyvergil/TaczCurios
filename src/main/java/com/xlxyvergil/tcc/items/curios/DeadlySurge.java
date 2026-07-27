@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,15 +21,15 @@ import java.util.UUID;
 
 /**
  * 致命洪流 - 提升60%射速和60%弹头数量
- * 效果：提升60%射速（加算），提升60%弹头数量（加算）
+ * 效果：提�?0%射速（加算），提升60%弹头数量（加算）
  */
 public class DeadlySurge extends BaseCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识修饰符
+    // 属性修饰符UUID - 用于唯一标识修饰�?
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("d8e4852c-2b0c-4a77-a9b3-a2a84683ae93");
     private static final UUID BULLET_COUNT_UUID = UUID.fromString("b00e1320-1674-4bdb-8456-6fe4b80791fc");
 
-    // 修饰符名称
+    // 修饰符名�?
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.deadly_surge.rounds_per_minute";
     private static final String BULLET_COUNT_NAME = "tcc.deadly_surge.bullet_count";
 
@@ -41,11 +42,11 @@ public class DeadlySurge extends BaseCurioItem {
      * 提升射速（加算）和弹头数量（加算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有手枪，只有持有手枪时才应用加成
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double roundsPerMinuteBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get(), getFusionLevel());
-            double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get(), getFusionLevel());
+            double roundsPerMinuteBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get());
+            double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, roundsPerMinuteBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }
@@ -74,8 +75,8 @@ public class DeadlySurge extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double roundsPerMinuteBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double bulletCountBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double roundsPerMinuteBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() ) * 100;
+        double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.deadly_surge.effect", String.format("%+.0f", roundsPerMinuteBoost), String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
@@ -85,11 +86,4 @@ public class DeadlySurge extends BaseCurioItem {
 
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

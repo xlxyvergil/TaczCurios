@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
@@ -41,12 +41,9 @@ public class CurioCombatEventHandler {
             .orElse(ItemStack.EMPTY);
     }
 
-    /**
-     * 获取指定饰品在玩家身上的融合等级。仅在 hasCurio 确认装备后调用。
-     */
     private static int getCurioFusionLevel(LivingEntity entity, Item curio) {
         ItemStack stack = findCurioStack(entity, curio);
-        return FusionUpgradeUtil.getLevel(stack);
+        return FusionData.from(stack).level();
     }
 
     private static boolean isHoldingMeleeWeapon(LivingEntity entity) {
@@ -226,32 +223,36 @@ public class CurioCombatEventHandler {
 
         // R-06 镀层步枪才能: 手持步枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingDmgBoostGunType(player) && hasCurio(player, TccItems.GILDED_RIFLE_APTITUDE)) {
-            int level = getCurioFusionLevel(player, TccItems.GILDED_RIFLE_APTITUDE);
-            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get(), level);
+            ItemStack curioStack = findCurioStack(player, TccItems.GILDED_RIFLE_APTITUDE);
+            FusionData data = FusionData.from(curioStack);
+            double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get());
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // S-07 镀层通晓霰弹枪: 手持霰弹枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingShotgun(player) && hasCurio(player, TccItems.GILDED_SHOTGUN_SAVVY)) {
-            int level = getCurioFusionLevel(player, TccItems.GILDED_SHOTGUN_SAVVY);
-            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get(), level);
+            ItemStack curioStack = findCurioStack(player, TccItems.GILDED_SHOTGUN_SAVVY);
+            FusionData data = FusionData.from(curioStack);
+            double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get());
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // P-09 镀层准确射手: 手持手枪时，每负面效果直接乘算
         if (GunTypeChecker.isHoldingPistol(player) && hasCurio(player, TccItems.GILDED_MARKSMAN)) {
-            int level = getCurioFusionLevel(player, TccItems.GILDED_MARKSMAN);
-            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get(), level);
+            ItemStack curioStack = findCurioStack(player, TccItems.GILDED_MARKSMAN);
+            FusionData data = FusionData.from(curioStack);
+            double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get());
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
         // M-06 异况超量: 手持近战时，每负面效果直接乘算（始终生效）
         if (isHoldingMeleeWeapon(player) && hasCurio(player, TccItems.CONDITION_OVERLOAD)) {
-            int level = getCurioFusionLevel(player, TccItems.CONDITION_OVERLOAD);
-            double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get(), level);
+            ItemStack curioStack = findCurioStack(player, TccItems.CONDITION_OVERLOAD);
+            FusionData data = FusionData.from(curioStack);
+            double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get());
             double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }

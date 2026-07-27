@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 /**
  * 霰弹扩充 - 提升弹匣容量
- * 效果：提升弹匣容量，仅对霰弹枪生效
+ * 效果：提升弹匣容量，仅对霰弹枪生�?
  */
 public class ShotgunExpansion extends BaseCurioItem {
 
@@ -34,9 +35,9 @@ public class ShotgunExpansion extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.shotgunExpansionCapacityBoost.get(), getFusionLevel());
+            double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.shotgunExpansionCapacityBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -59,7 +60,7 @@ public class ShotgunExpansion extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.shotgunExpansionCapacityBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.shotgunExpansionCapacityBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.shotgun_expansion.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.BLUE));
 
@@ -69,8 +70,5 @@ public class ShotgunExpansion extends BaseCurioItem {
 
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

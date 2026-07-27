@@ -72,7 +72,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
         }
         
         LivingEntity entity = (LivingEntity) slotContext.entity();
-        applyEffects(entity);
+        applyEffects(entity, stack);
     }
     
     /**
@@ -105,7 +105,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get())) return;
         double damageMultiplier = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get();
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -303,14 +303,6 @@ public class HeavenFireJudgment extends BaseCurioItem {
     }
     
     /**
-     * 当实体切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
-    
-    /**
      * 血量变化回调 - 由 HeavenFireHealthListener 调用
      */
     public static void onHealthChanged(LivingEntity entity) {
@@ -325,7 +317,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
         
         if (healthPercentage > 0.4) {
             // 血量 > 40% 时恢复属性
-            instance.applyEffects(entity);
+            instance.applyEffects(entity, equippedStack);
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
         } else {
             // 血量 <= 40% 时移除属性

@@ -53,7 +53,7 @@ public class QishiZhijian extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
     }
 
     @Override

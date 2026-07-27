@@ -56,7 +56,7 @@ public class HuishiZhijuan extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
         double total = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()

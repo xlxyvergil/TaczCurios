@@ -49,7 +49,7 @@ public class TingzhiZhijian extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingRifle(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.OVERHEAL,
                 TaczCuriosConfig.COMMON.tingzhiZhijianOverheal.get(), OVERHEAL_UUID,
@@ -104,11 +104,6 @@ public class TingzhiZhijian extends BaseCurioItem {
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     @OnlyIn(Dist.CLIENT)

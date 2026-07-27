@@ -5,6 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 
+import javax.annotation.Nullable;
+
 /**
  * 融合升级工具类 — 集中管理饰品升级的 NBT 读写、公式计算与 Config 读取。
  * 
@@ -72,17 +74,39 @@ public class FusionUpgradeUtil {
     // ========== 公式计算 ==========
 
     /**
-     * 计算指定等级的实际属性值，截断到 2 位小数。
-     * <p>公式：实际值 = 基础值 × (1 + (等级 - 1) × C)</p>
-     * <p>等级 1 时等于基础值本身，等级 ≥ 2 时按 C 增长。</p>
-     * <p>截断（而非四舍五入）确保 7.2% → 7%、-7.2% → -7%，与 tooltip 显示一致。</p>
+     * 根据 {@link FusionData} 计算实际属性值（便捷重载）。
      *
-     * @param baseValue Config 中配置的基础值（Lv.1 时的值）
-     * @param level     当前饰品等级
+     * @param maxLevelValue Config 中配置的满级值
+     * @param data          融合快照（包含当前等级与稀有度）
      * @return 按等级缩放后的实际值（截断到 2 位小数）
      */
-    public static double getActualValue(double baseValue, int level) {
-        double raw = baseValue * (1 + (level - 1) * getGrowthCoefficient());
+    public static double getActualValue(double maxLevelValue, FusionData data) {
+        return getActualValue(maxLevelValue, data.level(), data.rarity());
+    }
+
+    /**
+     * 计算指定等级的实际属性值，截断到 2 位小数。
+     * <p>Config 中配置的是 <b>满级值</b>，反向推导各等级实际值。</p>
+     * <p>公式：实际值 = 满级值 × (1 + (等级 - 1) × C) / (1 + (最大等级 - 1) × C)</p>
+     * <ul>
+     *   <li>Lv.1 时：满级值 / (1 + (最大等级 - 1) × C)</li>
+     *   <li>Lv.MAX 时：满级值（与 Config 一致）</li>
+     * </ul>
+     * <p>若稀有度不参与升级（maxLevel ≤ 1），直接返回满级值。</p>
+     * <p>截断（而非四舍五入）确保 7.2% → 7%、-7.2% → -7%，与 tooltip 显示一致。</p>
+     *
+     * @param maxLevelValue Config 中配置的满级值
+     * @param level         当前饰品等级
+     * @param rarity        饰品稀有度，用于获取最大等级；为 null 时直接返回满级值
+     * @return 按等级缩放后的实际值（截断到 2 位小数）
+     */
+    public static double getActualValue(double maxLevelValue, int level, @Nullable Rarity rarity) {
+        if (rarity == null) return maxLevelValue;
+        int maxLevel = getMaxLevel(rarity);
+        if (maxLevel <= 1) return maxLevelValue;
+        double maxMultiplier = 1.0 + (maxLevel - 1) * getGrowthCoefficient();
+        double levelMultiplier = 1.0 + (level - 1) * getGrowthCoefficient();
+        double raw = maxLevelValue * levelMultiplier / maxMultiplier;
         return (int)(raw * 100.0) / 100.0;
     }
 

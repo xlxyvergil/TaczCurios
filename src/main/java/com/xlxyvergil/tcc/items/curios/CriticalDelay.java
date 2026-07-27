@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 /**
  * 关键延迟 - 枪械通用饰品
- * 效果：暴击几率 +200%，射速 -20%
+ * 效果：暴击几�?+200%，射�?-20%
  */
 public class CriticalDelay extends BaseCurioItem {
 
@@ -34,9 +35,9 @@ public class CriticalDelay extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get(), getFusionLevel());
-        double fireRateReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get());
+        double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get());
 
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateReduction, FIRE_RATE_UUID, FIRE_RATE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -54,8 +55,8 @@ public class CriticalDelay extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double fireRateReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get() ) * 100;
+        double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.critical_delay.effect",
                 String.format("%+.0f", critChanceBoost), String.format("%+.0f", fireRateReduction))
             .withStyle(ChatFormatting.GOLD));
@@ -64,8 +65,4 @@ public class CriticalDelay extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

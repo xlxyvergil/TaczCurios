@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,9 +43,9 @@ public class MalignantSpread extends BaseCurioItem {
      * 应用恶性扩散效     * 提升霰弹枪伤害（加算）和不精准度（乘算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get(), getFusionLevel());
-        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get());
+        double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
         
@@ -75,8 +76,8 @@ public class MalignantSpread extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() ) * 100;
+        double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.malignant_spread.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
         
@@ -86,11 +87,4 @@ public class MalignantSpread extends BaseCurioItem {
         
     }
     
-    /**
-     * 当实体切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

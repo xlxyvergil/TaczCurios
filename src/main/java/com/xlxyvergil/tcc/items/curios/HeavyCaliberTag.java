@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -52,9 +53,9 @@ public class HeavyCaliberTag extends BaseCurioItem {
     /**
      * 应用重口径效     * 提升特定枪械伤害（加算）和不精准度（加算     */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get(), getFusionLevel());
-        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get());
+        double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get());
         
         // 应用特定枪械伤害提升（加算）
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, damageBoost, DAMAGE_UUIDS[0], DAMAGE_NAMES[0], AttributeModifier.Operation.ADDITION);
@@ -95,8 +96,8 @@ public class HeavyCaliberTag extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get() ) * 100;
+        double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect", 
                 String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
@@ -107,11 +108,5 @@ public class HeavyCaliberTag extends BaseCurioItem {
         
     }
     
-    /**
-     * 当实体切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

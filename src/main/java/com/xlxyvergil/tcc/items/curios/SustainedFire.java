@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -35,9 +36,9 @@ public class SustainedFire extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get(), getFusionLevel());
+            double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -60,7 +61,7 @@ public class SustainedFire extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.sustained_fire.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.BLUE));
 
@@ -70,8 +71,5 @@ public class SustainedFire extends BaseCurioItem {
 
     }
     
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

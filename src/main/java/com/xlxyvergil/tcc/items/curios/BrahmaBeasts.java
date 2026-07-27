@@ -65,7 +65,7 @@ public class BrahmaBeasts extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
         double total = ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
@@ -131,11 +131,6 @@ public class BrahmaBeasts extends BaseCurioItem {
  
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
-    
     public static boolean hasBrahmaBeastsEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof BrahmaBeasts).isEmpty();
     }

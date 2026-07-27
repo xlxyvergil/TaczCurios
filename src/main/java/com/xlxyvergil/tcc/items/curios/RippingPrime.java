@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 /**
  * 撕裂Prime饰品
- * 效果：增加5%射速（乘算），增加0.2穿透（加算）
+ * 效果：增�?%射速（乘算），增加0.2穿透（加算�?
  */
 public class RippingPrime extends BaseCurioItem {
     
@@ -35,9 +36,9 @@ public class RippingPrime extends BaseCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double fireRateBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get(), getFusionLevel());
-        double penetrationBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get());
+        double penetrationBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.PIERCE, penetrationBoost, PIERCE_UUID, PIERCE_NAME, AttributeModifier.Operation.ADDITION);
@@ -62,7 +63,7 @@ public class RippingPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double fireRateBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get() ) * 100;
         double penetrationBoost = TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get();
         tooltip.add(Component.translatable("item.tcc.ripping_prime.effect", 
                 String.format("%+.0f", fireRateBoost), String.format("%.1f", penetrationBoost))
@@ -74,8 +75,5 @@ public class RippingPrime extends BaseCurioItem {
         
     }
     
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

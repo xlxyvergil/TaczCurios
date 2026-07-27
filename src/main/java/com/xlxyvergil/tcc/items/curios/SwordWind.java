@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 /**
  * 剑风 - 提升实体交互范围
- * 效果：提升实体交互范围（加算）
+ * 效果：提升实体交互范围（加算�?
  */
 public class SwordWind extends BaseCurioItem {
     
@@ -40,11 +41,11 @@ public class SwordWind extends BaseCurioItem {
     
     /**
      * 应用剑风效果
-     * 给实体添加实体交互范围加成（加算）
+     * 给实体添加实体交互范围加成（加算�?
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double rangeBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.swordWindMeleeRangeBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.swordWindMeleeRangeBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ENTITY_REACH, rangeBoost, ENTITY_INTERACTION_RANGE_UUID, ENTITY_INTERACTION_RANGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     

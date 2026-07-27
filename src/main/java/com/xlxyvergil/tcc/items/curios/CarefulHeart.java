@@ -43,7 +43,7 @@ public class CarefulHeart extends BaseCurioItem {
      * 提升发射器伤害、爆炸伤害和爆炸范围
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         double launcherDamageBoost = TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get();
         double explosionRadiusBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get();
@@ -97,8 +97,4 @@ public class CarefulHeart extends BaseCurioItem {
     /**
      * 当玩家切换武器时应用效果
      */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

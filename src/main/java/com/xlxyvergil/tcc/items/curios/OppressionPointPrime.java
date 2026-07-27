@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,14 +20,14 @@ import java.util.UUID;
 
 /**
  * 压迫点Prime - 提升近战伤害
- * 效果：提升近战伤害（加算）
+ * 效果：提升近战伤害（加算�?
  */
 public class OppressionPointPrime extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    // 属性修饰符UUID - 用于唯一标识这个修饰�?
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("b4763540-e80b-4bab-9e64-a4a2494d9f5e");
     
-    // 修饰符名称
+    // 修饰符名�?
     private static final String ATTACK_DAMAGE_NAME = "tcc.oppression_point_prime.attack_damage";
     
     public OppressionPointPrime(Properties properties) {
@@ -35,11 +36,11 @@ public class OppressionPointPrime extends BaseCurioItem {
     
     /**
      * 应用压迫点Prime效果
-     * 给生物添加近战伤害加成（加算）
+     * 给生物添加近战伤害加成（加算�?
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
@@ -64,7 +65,7 @@ public class OppressionPointPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double meleeDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.oppression_point_prime.effect", String.format("%+.0f", meleeDamageBoost))
             .withStyle(ChatFormatting.WHITE));
         

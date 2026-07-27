@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层弹头扩散 - 手枪饰品（击杀触发Buff，可叠加）
- * 基础：弹头数量+110%，击杀→Buff额外+30%弹头数量（20s，可叠加4层）
+ * 镀层弹头扩�?- 手枪饰品（击杀触发Buff，可叠加�?
+ * 基础：弹头数�?110%，击杀→Buff额外+30%弹头数量�?0s，可叠加4层）
  */
 public class GildedBulletSpread extends BaseCurioItem {
 
@@ -32,9 +33,9 @@ public class GildedBulletSpread extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get(), getFusionLevel());
+            double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, baseBulletCount, BASE_BULLET_COUNT_UUID, BASE_BULLET_COUNT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
@@ -47,20 +48,10 @@ public class GildedBulletSpread extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        int fusionLevel = FusionData.from(stack).level();
         double baseBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get() * 100 * fusionLevel;
         double buffBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get() * 100 * fusionLevel;
         int duration = TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get();
@@ -75,8 +66,5 @@ public class GildedBulletSpread extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

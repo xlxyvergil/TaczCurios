@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.api.items.IBindable;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -158,7 +157,4 @@ public class ItemBaseCurio extends Item implements ICurioItem, IBindable, Vanish
         }
     }
 
-    /** 应用切枪效果，由子类覆写实现具体逻辑 */
-    public void applyGunSwitchEffect(LivingEntity entity) {
-    }
 }

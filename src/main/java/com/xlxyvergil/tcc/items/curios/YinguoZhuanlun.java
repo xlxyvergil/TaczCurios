@@ -61,7 +61,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingRifle(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.OVERHEAL,
                 TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get(), OVERHEAL_UUID,
@@ -115,11 +115,6 @@ public class YinguoZhuanlun extends BaseCurioItem {
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     public static boolean hasEquipped(LivingEntity livingEntity) {

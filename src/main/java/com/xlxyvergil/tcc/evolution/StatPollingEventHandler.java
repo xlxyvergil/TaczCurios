@@ -259,7 +259,7 @@ public final class StatPollingEventHandler {
         tag.putInt(stepKey, appliedSteps + stepsToAdd);
 
         if (tracked.getItem() instanceof BaseCurioItem curio) {
-            curio.refreshEffects(player);
+            curio.refreshEffects(player, tracked);
         }
     }
 
@@ -294,7 +294,7 @@ public final class StatPollingEventHandler {
         tag.putBoolean(appliedKey, true);
 
         if (tracked.getItem() instanceof BaseCurioItem curio) {
-            curio.refreshEffects(player);
+            curio.refreshEffects(player, tracked);
         }
     }
 

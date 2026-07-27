@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 /**
  * 剑风Prime - 提升实体交互范围
- * 效果：提升实体交互范围（加算）
+ * 效果：提升实体交互范围（加算�?
  */
 public class SwordWindPrime extends BaseCurioItem {
     
@@ -36,8 +37,8 @@ public class SwordWindPrime extends BaseCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double rangeBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ENTITY_REACH, rangeBoost, ENTITY_INTERACTION_RANGE_UUID, ENTITY_INTERACTION_RANGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
@@ -59,7 +60,7 @@ public class SwordWindPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double meleeDistanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get(), FusionUpgradeUtil.getLevel(stack));
+        double meleeDistanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get());
         tooltip.add(Component.translatable("item.tcc.sword_wind_prime.effect", String.format("%+.1f", meleeDistanceBoost))
             .withStyle(ChatFormatting.WHITE));
         

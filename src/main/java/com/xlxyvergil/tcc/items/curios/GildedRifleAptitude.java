@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -15,8 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层步枪才能 - 步枪饰品
- * 手持步枪时，目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
+ * 镀层步枪才�?- 步枪饰品
+ * 手持步枪时，目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理�?
  */
 public class GildedRifleAptitude extends BaseCurioItem {
 
@@ -25,8 +26,8 @@ public class GildedRifleAptitude extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        // 无基础属性，伤害乘算在其他处理器中处理
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 无基础属性，伤害乘算在其他处理器中处�?
     }
 
     @Override
@@ -37,7 +38,7 @@ public class GildedRifleAptitude extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double perHarmful = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double perHarmful = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.gilded_rifle_aptitude.effect",
                 String.format("%+.0f", perHarmful))
             .withStyle(ChatFormatting.WHITE));
@@ -45,8 +46,5 @@ public class GildedRifleAptitude extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,17 +21,17 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 卑劣加速 - 提升射击速度，但降低通用伤害和全部7种特定枪械伤害
- * 效果：射击速度+X%，通用伤害-Y%，特定枪械伤害-Y%
+ * 卑劣加�?- 提升射击速度，但降低通用伤害和全�?种特定枪械伤�?
+ * 效果：射击速度+X%，通用伤害-Y%，特定枪械伤�?Y%
  */
 public class DespicableAcceleration extends BaseCurioItem {
     
-    // 7种特定枪械伤害属性的UUID和配置
+    // 7种特定枪械伤害属性的UUID和配�?
     private static final Map<String, UUID> DAMAGE_UUIDS = new HashMap<>();
     private static final Map<String, String> DAMAGE_NAMES = new HashMap<>();
     
     static {
-        // 初始化7种特定枪械的UUID和名称
+        // 初始�?种特定枪械的UUID和名�?
         DAMAGE_UUIDS.put("pistol", UUID.fromString("ca7ca83d-5439-4fde-a7bf-236d257d5430"));
         DAMAGE_UUIDS.put("rifle", UUID.fromString("7821adde-57d1-42e8-a873-91612b86c24b"));
         DAMAGE_UUIDS.put("shotgun", UUID.fromString("bc3c2aee-ea60-4c98-8f2b-7f7d89523ccc"));
@@ -52,7 +53,7 @@ public class DespicableAcceleration extends BaseCurioItem {
     private static final UUID FIRING_SPEED_UUID = UUID.fromString("46acf410-597b-4388-a0c2-9f39f5934831");
     private static final UUID GENERAL_DAMAGE_UUID = UUID.fromString("adfdea37-0701-41c8-b042-59f7453b0cde");
     
-    // 修饰符名称
+    // 修饰符名�?
     private static final String FIRING_SPEED_NAME = "tcc.despicable_acceleration.firing_speed";
     private static final String GENERAL_DAMAGE_NAME = "tcc.despicable_acceleration.general_damage";
     
@@ -61,18 +62,18 @@ public class DespicableAcceleration extends BaseCurioItem {
     }
     
     /**
-     * 应用加速效果
-     * 提升射击速度，降低通用伤害和7种特定枪械伤害
+     * 应用加速效�?
+     * 提升射击速度，降低通用伤害�?种特定枪械伤�?
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double firingSpeedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get(), getFusionLevel());
-        double damageReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get());
+        double damageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get());
         
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, firingSpeedBoost, FIRING_SPEED_UUID, FIRING_SPEED_NAME, AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageReduction, GENERAL_DAMAGE_UUID, GENERAL_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
         
-        // 应用7种特定枪械伤害降低
+        // 应用7种特定枪械伤害降�?
         for (String gunType : DAMAGE_UUIDS.keySet()) {
             var attribute = getAttributeByType(gunType);
             if (attribute != null) {
@@ -82,14 +83,14 @@ public class DespicableAcceleration extends BaseCurioItem {
     }
     
     /**
-     * 移除加速效果
+     * 移除加速效�?
      */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, FIRING_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GENERAL_DAMAGE_UUID);
         
-        // 移除7种特定枪械伤害降低
+        // 移除7种特定枪械伤害降�?
         for (String gunType : DAMAGE_UUIDS.keySet()) {
             var attribute = getAttributeByType(gunType);
             if (attribute != null) {
@@ -99,7 +100,7 @@ public class DespicableAcceleration extends BaseCurioItem {
     }
     
     /**
-     * 根据枪械类型获取对应的属性
+     * 根据枪械类型获取对应的属�?
      */
     private net.minecraft.world.entity.ai.attributes.Attribute getAttributeByType(String gunType) {
         return switch (gunType) {
@@ -128,8 +129,8 @@ public class DespicableAcceleration extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double firingSpeedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double damageReduction = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() ) * 100;
+        double damageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
                 String.format("%+.0f", firingSpeedBoost), String.format("%+.0f", damageReduction))
             .withStyle(ChatFormatting.GOLD));
@@ -140,11 +141,4 @@ public class DespicableAcceleration extends BaseCurioItem {
         
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

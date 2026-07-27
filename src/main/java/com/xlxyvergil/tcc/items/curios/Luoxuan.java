@@ -52,9 +52,9 @@ public class Luoxuan extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                stack -> stack.getItem() instanceof Luoxuan);
+                s -> s.getItem() instanceof Luoxuan);
         CompoundTag tag = equipped.getTag();
         double total = TaczCuriosConfig.COMMON.villVImaginaryResistance.get()
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
@@ -66,11 +66,6 @@ public class Luoxuan extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     @Override

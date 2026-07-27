@@ -46,7 +46,7 @@ public class Imer extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double attackBonus = TaczCuriosConfig.COMMON.imerAttackDamageBonus.get();
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
@@ -60,11 +60,6 @@ public class Imer extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     @Override

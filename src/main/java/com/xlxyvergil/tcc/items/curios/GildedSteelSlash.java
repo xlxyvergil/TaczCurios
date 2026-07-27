@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -13,15 +13,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层斩铁 - 近战饰品（击杀触发Buff，可叠加）
- * 基础：暴击几率+110%，击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
+ * 镀层斩�?- 近战饰品（击杀触发Buff，可叠加�?
+ * 基础：暴击几�?110%，击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
  */
 public class GildedSteelSlash extends BaseCurioItem {
 
@@ -33,8 +32,8 @@ public class GildedSteelSlash extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double baseCritChance = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double baseCritChance = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, baseCritChance, BASE_CRIT_CHANCE_UUID, BASE_CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
@@ -47,7 +46,7 @@ public class GildedSteelSlash extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        int fusionLevel = FusionData.from(stack).level();
         double baseCritChance = TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100 * fusionLevel;
         double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100 * fusionLevel;
         int duration = TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get();
@@ -62,18 +61,4 @@ public class GildedSteelSlash extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
-
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
 }

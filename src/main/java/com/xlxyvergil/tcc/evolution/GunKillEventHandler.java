@@ -89,7 +89,7 @@ public final class GunKillEventHandler {
         }
 
         if (changed && tracked.getItem() instanceof com.xlxyvergil.tcc.util.BaseCurioItem curio) {
-            curio.refreshEffects(player);
+            curio.refreshEffects(player, tracked);
         }
     }
 

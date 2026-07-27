@@ -66,7 +66,7 @@ public class JudgementKey extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingSniper(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                 TaczCuriosConfig.COMMON.judgementKeyCritChance.get(), CRIT_CHANCE_UUID,
@@ -106,11 +106,6 @@ public class JudgementKey extends BaseCurioItem {
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     public static boolean hasEquipped(LivingEntity livingEntity) {

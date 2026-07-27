@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 乌拉尔银狼饰品 - 提供爆头倍率加成
- * 通过TaczAttributeAdd的headshot_multiplier属性实现
+ * 乌拉尔银狼饰�?- 提供爆头倍率加成
+ * 通过TaczAttributeAdd的headshot_multiplier属性实�?
  */
 public class UralWolfTag extends BaseCurioItem {
     
@@ -31,8 +32,8 @@ public class UralWolfTag extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double multiplierBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double multiplierBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, multiplierBoost, HEADSHOT_MULTIPLIER_MODIFIER_UUID, "tcc.ural_wolf_tag.headshot_multiplier", AttributeModifier.Operation.ADDITION);
     }
     
@@ -52,7 +53,7 @@ public class UralWolfTag extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double multiplierBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double multiplierBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.ural_wolf_tag.effect", String.format("%+.0f", multiplierBoost))
             .withStyle(ChatFormatting.AQUA));
         
@@ -62,8 +63,5 @@ public class UralWolfTag extends BaseCurioItem {
         
     }
     
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

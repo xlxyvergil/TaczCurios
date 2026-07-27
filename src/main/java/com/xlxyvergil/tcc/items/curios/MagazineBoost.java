@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,10 +41,10 @@ public class MagazineBoost extends BaseCurioItem {
      * 提升弹匣容量
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查实体是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
         if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get(), getFusionLevel());
+            double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -70,7 +71,7 @@ public class MagazineBoost extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double magazineBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.magazine_boost.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.BLUE));
 
@@ -80,11 +81,4 @@ public class MagazineBoost extends BaseCurioItem {
 
     }
     
-    /**
-     * 当实体切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

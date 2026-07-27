@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.xlxyvergil.tcc.items.materials.FusionVesselItem;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccRecipeSerializers;
+import com.xlxyvergil.tcc.util.FusionData;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -62,14 +63,14 @@ public class FusionUpgradeRecipe extends CustomRecipe {
 
         if (curio.isEmpty() || vessel.isEmpty()) return false;
 
-        int curioLevel = FusionUpgradeUtil.getLevel(curio);
-        Rarity rarity = curio.getItem().getRarity(curio);
-        int maxLevel = FusionUpgradeUtil.getMaxLevel(rarity);
+        FusionData data = FusionData.from(curio);
+        int curioLevel = data.level();
+        int maxLevel = data.maxLevel();
         if (curioLevel >= maxLevel) return false; // 已满级
 
         // 只要容器内 CoreFusion 至少够升 1 级就算匹配
         int vesselCount = FusionVesselItem.getFusionCount(vessel);
-        int costForOne = getCostForLevel(curioLevel, rarity);
+        int costForOne = getCostForLevel(curioLevel, data.rarity());
         return vesselCount >= costForOne;
     }
 
@@ -90,14 +91,14 @@ public class FusionUpgradeRecipe extends CustomRecipe {
 
         if (curio.isEmpty() || vessel.isEmpty()) return ItemStack.EMPTY;
 
-        int curioLevel = FusionUpgradeUtil.getLevel(curio);
-        Rarity rarity = curio.getItem().getRarity(curio);
-        int maxLevel = FusionUpgradeUtil.getMaxLevel(rarity);
+        FusionData data = FusionData.from(curio);
+        int curioLevel = data.level();
+        int maxLevel = data.maxLevel();
         if (curioLevel >= maxLevel) return ItemStack.EMPTY;
 
         int vesselCount = FusionVesselItem.getFusionCount(vessel);
         // 计算当前容器内融合核心最多能升到多少级
-        int targetLevel = getMaxAffordableLevel(curioLevel, maxLevel, rarity, vesselCount);
+        int targetLevel = getMaxAffordableLevel(curioLevel, maxLevel, data.rarity(), vesselCount);
         if (targetLevel <= curioLevel) return ItemStack.EMPTY;
 
         // 创建升级后的饰品（复制原有 NBT + 直接升到目标等级）
@@ -144,12 +145,12 @@ public class FusionUpgradeRecipe extends CustomRecipe {
                 }
 
                 if (!curio.isEmpty()) {
-                    int curioLevel = FusionUpgradeUtil.getLevel(curio);
-                    Rarity rarity = curio.getItem().getRarity(curio);
-                    int maxLevel = FusionUpgradeUtil.getMaxLevel(rarity);
+                    FusionData data = FusionData.from(curio);
+                    int curioLevel = data.level();
+                    int maxLevel = data.maxLevel();
                     int vesselCount = FusionVesselItem.getFusionCount(stack);
-                    int targetLevel = getMaxAffordableLevel(curioLevel, maxLevel, rarity, vesselCount);
-                    int cost = FusionUpgradeUtil.getUpgradeCost(targetLevel, rarity) - FusionUpgradeUtil.getUpgradeCost(curioLevel, rarity);
+                    int targetLevel = getMaxAffordableLevel(curioLevel, maxLevel, data.rarity(), vesselCount);
+                    int cost = FusionUpgradeUtil.getUpgradeCost(targetLevel, data.rarity()) - FusionUpgradeUtil.getUpgradeCost(curioLevel, data.rarity());
                     ItemStack vesselLeft = stack.copy();
                     vesselLeft.setCount(1);
                     FusionVesselItem.setFusionCount(vesselLeft, FusionVesselItem.getFusionCount(vesselLeft) - cost);
@@ -172,8 +173,7 @@ public class FusionUpgradeRecipe extends CustomRecipe {
     private static boolean isUpgradeableCurio(ItemStack stack) {
         if (stack.isEmpty()) return false;
         if (!stack.is(TCC_SLOT)) return false;
-        Rarity rarity = stack.getItem().getRarity(stack);
-        return FusionUpgradeUtil.getMaxLevel(rarity) > 0;
+        return FusionData.from(stack).isUpgradeable();
     }
 
     /**

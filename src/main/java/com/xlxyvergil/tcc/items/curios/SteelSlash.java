@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 斩铁 - 近战饰品
- * 效果：暴击几率 +120%
+ * 效果：暴击几�?+120%
  */
 public class SteelSlash extends BaseCurioItem {
 
@@ -33,8 +34,8 @@ public class SteelSlash extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
@@ -49,7 +50,7 @@ public class SteelSlash extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.steel_slash.effect",
                 String.format("%+.0f", critChanceBoost))
             .withStyle(ChatFormatting.BLUE));
@@ -58,8 +59,5 @@ public class SteelSlash extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

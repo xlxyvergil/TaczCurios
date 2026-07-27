@@ -55,9 +55,9 @@ public class AoMie extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                stack -> stack.getItem() instanceof AoMie);
+                s -> s.getItem() instanceof AoMie);
         CompoundTag tag = equipped.getTag();
         double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
@@ -93,11 +93,6 @@ public class AoMie extends BaseCurioItem {
         unregisterAdaptation(livingEntity);
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
-
     private void unregisterAdaptation(LivingEntity livingEntity) {
         if (livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
             livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
@@ -127,7 +122,7 @@ public class AoMie extends BaseCurioItem {
 
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
-            stack -> stack.getItem() instanceof AoMie).isEmpty();
+            s -> s.getItem() instanceof AoMie).isEmpty();
     }
 
     @Override

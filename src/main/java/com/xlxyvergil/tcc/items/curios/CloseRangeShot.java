@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,15 +19,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 抵近射击 - 提升霰弹枪90%伤害
+ * 抵近射击 - 提升霰弹�?0%伤害
  * 效果：霰弹枪伤害+90%（加算）
  */
 public class CloseRangeShot extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰符
+    // 属性修饰符UUID - 用于唯一标识这个修饰�?
     private static final UUID DAMAGE_UUID = UUID.fromString("606453a5-947e-4020-8fc8-3f43c2c8cce9");
     
-    // 修饰符名称
+    // 修饰符名�?
     private static final String DAMAGE_NAME = "tcc.close_range_shot.shotgun_damage";
     
     public CloseRangeShot(Properties properties) {
@@ -35,11 +36,11 @@ public class CloseRangeShot extends BaseCurioItem {
     
     /**
      * 应用效果
-     * 提升霰弹枪伤害（加算）
+     * 提升霰弹枪伤害（加算�?
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
     }
     
@@ -65,7 +66,7 @@ public class CloseRangeShot extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.close_range_shot.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.AQUA));
         
@@ -75,11 +76,4 @@ public class CloseRangeShot extends BaseCurioItem {
         
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

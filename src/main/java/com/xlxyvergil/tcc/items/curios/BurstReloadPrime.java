@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,14 +22,14 @@ import java.util.UUID;
 
 /**
  * 爆发装填Prime - 提升装填速度
- * 效果：提升55%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提�?5%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class BurstReloadPrime extends BaseCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
+    // 属性修饰符UUID - 用于唯一标识这些修饰�?
     private static final UUID RELOAD_UUID = UUID.fromString("4e639098-414e-4541-9118-c92ca4670c52");
 
-    // 修饰符名称
+    // 修饰符名�?
     private static final String RELOAD_NAME = "tcc.burst_reload_prime.reload_speed";
 
     public BurstReloadPrime(Properties properties) {
@@ -37,9 +38,9 @@ public class BurstReloadPrime extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
-            double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+            double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
@@ -62,7 +63,7 @@ public class BurstReloadPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double reloadBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.burst_reload_prime.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.WHITE));
 
@@ -72,8 +73,4 @@ public class BurstReloadPrime extends BaseCurioItem {
 
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

@@ -72,7 +72,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         }
         
         LivingEntity entity = (LivingEntity) slotContext.entity();
-        applyEffects(entity);
+        applyEffects(entity, stack);
     }
     
     @Override
@@ -97,7 +97,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      * 应用所有效果加成
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
         double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
         double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
@@ -313,14 +313,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
     }
     
     /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
-    
-    /**
      * 血量变化回调 - 由 HeavenFireHealthListener 调用
      */
     public static void onHealthChanged(LivingEntity entity) {
@@ -335,7 +327,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         
         if (healthPercentage >= 1.0) {
             // 满血时恢复属性
-            instance.applyEffects(entity);
+            instance.applyEffects(entity, equippedStack);
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
         } else {
             // 非满血时移除属性

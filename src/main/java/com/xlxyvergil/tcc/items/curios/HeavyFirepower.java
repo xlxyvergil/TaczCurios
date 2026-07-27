@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -40,9 +41,9 @@ public class HeavyFirepower extends BaseCurioItem {
      * 应用重装火力效果
      * 提升手枪伤害（加算）和不精准度（乘算     */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get(), getFusionLevel());
-        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get());
+        double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get());
         
         // 直接应用手枪伤害加成，无需检查是否手持手
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
@@ -76,8 +77,8 @@ public class HeavyFirepower extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double inaccuracyBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get() ) * 100;
+        double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.heavy_firepower.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
         
@@ -87,11 +88,4 @@ public class HeavyFirepower extends BaseCurioItem {
         
     }
     
-    /**
-     * 当实体切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

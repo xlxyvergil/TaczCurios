@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,7 +23,7 @@ import java.util.UUID;
 
 /**
  * 牺牲斩铁 - 近战饰品
- * 效果：暴击几率 +220%
+ * 效果：暴击几�?+220%
  * 套装：同时装备牺牲压迫点时，额外 +25%
  */
 public class SacrificeSteel extends BaseCurioItem {
@@ -38,7 +39,7 @@ public class SacrificeSteel extends BaseCurioItem {
     }
 
     /**
-     * 检测是否同时装备了牺牲压迫点（Curios API）
+     * 检测是否同时装备了牺牲压迫点（Curios API�?
      */
     private static boolean hasSacrificeOppression(LivingEntity entity) {
         return CuriosApi.getCuriosInventory(entity).resolve()
@@ -47,13 +48,13 @@ public class SacrificeSteel extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
         // 套装效果：同时装备牺牲压迫点时，额外 +25%
         if (hasSacrificeOppression(livingEntity)) {
-            double setBonus = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get(), getFusionLevel());
+            double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
             double bonusModifier = critChanceBoost * (setBonus - 1.0);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
@@ -68,28 +69,18 @@ public class SacrificeSteel extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_steel.effect",
                 String.format("%+.0f", critChanceBoost))
             .withStyle(ChatFormatting.WHITE));
 
         // 套装提示
-        double setBonusPct = (FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get(), FusionUpgradeUtil.getLevel(stack)) - 1.0) * 100;
+        double setBonusPct = (FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get()) - 1.0) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_steel.set_bonus",
                 String.format("%+.0f", setBonusPct))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -98,8 +89,5 @@ public class SacrificeSteel extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

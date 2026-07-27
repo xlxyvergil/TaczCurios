@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -27,10 +28,10 @@ import java.util.UUID;
  */
 public class ChamberPrime extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识修饰符
+    // 属性修饰符UUID - 用于唯一标识修饰�?
     private static final UUID DAMAGE_UUID = UUID.fromString("9ab0de22-87e4-4fa1-a539-cd50dfe7590c");
     
-    // 修饰符名称
+    // 修饰符名�?
     private static final String DAMAGE_NAME = "tcc.chamber_prime.damage";
     
     public ChamberPrime(Properties properties) {
@@ -39,18 +40,18 @@ public class ChamberPrime extends BaseCurioItem {
     
     /**
      * 应用膛室Prime效果
-     * 提升狙击枪伤害（乘算）
+     * 提升狙击枪伤害（乘算�?
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物主手是否持有狙击枪且弹匣满弹药
         boolean shouldApply = GunTypeChecker.isHoldingSniper(livingEntity) && GunTypeChecker.isHoldingGunWithFullMagazine(livingEntity);
         
         if (shouldApply) {
-            double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get(), getFusionLevel());
+            double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
-            // 如果条件不满足，移除修饰符
+            // 如果条件不满足，移除修饰�?
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, DAMAGE_UUID);
         }
         
@@ -91,7 +92,7 @@ public class ChamberPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double damageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.chamber_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.WHITE));
         

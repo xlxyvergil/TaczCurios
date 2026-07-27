@@ -56,9 +56,9 @@ public class Tianhui extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                stack -> stack.getItem() instanceof Tianhui);
+                s -> s.getItem() instanceof Tianhui);
         CompoundTag tag = equipped.getTag();
         double total = TaczCuriosConfig.COMMON.suImaginaryResistance.get()
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
@@ -75,11 +75,6 @@ public class Tianhui extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     @Override

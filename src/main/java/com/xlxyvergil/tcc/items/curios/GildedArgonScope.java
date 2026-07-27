@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -16,9 +17,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层氩晶瞄具 - 步枪饰品（爆头/爆头击杀触发不同Buff）
- * 爆头→+120%暴击几率Buff（12s，不叠加）
- * 爆头击杀→+40%/层暴击几率Buff（12s，最多5层）
+ * 镀层氩晶瞄�?- 步枪饰品（爆�?爆头击杀触发不同Buff�?
+ * 爆头�?120%暴击几率Buff�?2s，不叠加�?
+ * 爆头击杀�?40%/层暴击几率Buff�?2s，最�?层）
  */
 public class GildedArgonScope extends BaseCurioItem {
 
@@ -27,20 +28,20 @@ public class GildedArgonScope extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 不再有装备常驻效果，+120%由爆头Buff提供
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 不再有装备常驻效果需要清理
+        // 不再有装备常驻效果需要清�?
     }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        int fusionLevel = FusionData.from(stack).level();
         double baseCrit = TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get() * 100 * fusionLevel;
         double buffCrit = TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.get() * 100 * fusionLevel;
         double extraCrit = TaczCuriosConfig.COMMON.gildedArgonScopeHeadshotKillExtra.get() * 100;
@@ -56,8 +57,5 @@ public class GildedArgonScope extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

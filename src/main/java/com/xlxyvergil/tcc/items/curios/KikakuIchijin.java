@@ -45,7 +45,7 @@ public class KikakuIchijin extends BaseCurioItem {
      * 掎角一阵没有属性效果，只有事件触发逻辑
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 无属性效果
     }
 

@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层地狱弹膛 - 霰弹枪饰品（击杀触发Buff，可叠加）
- * 基础：弹头数量+110%，击杀→Buff额外+30%弹头数量（20s，可叠加5层）
+ * 镀层地狱弹�?- 霰弹枪饰品（击杀触发Buff，可叠加�?
+ * 基础：弹头数�?110%，击杀→Buff额外+30%弹头数量�?0s，可叠加5层）
  */
 public class GildedInfernalChamber extends BaseCurioItem {
 
@@ -32,9 +33,9 @@ public class GildedInfernalChamber extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double baseBulletCount = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get(), getFusionLevel());
+            double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, baseBulletCount, BASE_BULLET_COUNT_UUID, BASE_BULLET_COUNT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
@@ -47,20 +48,10 @@ public class GildedInfernalChamber extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        int fusionLevel = FusionUpgradeUtil.getLevel(stack);
+        int fusionLevel = FusionData.from(stack).level();
         double baseBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get() * 100 * fusionLevel;
         double buffBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100 * fusionLevel;
         int duration = TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get();
@@ -75,8 +66,5 @@ public class GildedInfernalChamber extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -40,8 +41,8 @@ public class LimitSpeed extends BaseCurioItem {
      * 提高配置中的弹药速度（乘算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double ammoSpeedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double ammoSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.AMMO_SPEED, ammoSpeedBoost, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
@@ -67,7 +68,7 @@ public class LimitSpeed extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double ammoSpeedBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double ammoSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.limit_speed.effect", String.format("%+.0f", ammoSpeedBoost))
             .withStyle(ChatFormatting.AQUA));
         
@@ -75,13 +76,5 @@ public class LimitSpeed extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
-    }
-    
-    /**
-     * 当玩家切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 }

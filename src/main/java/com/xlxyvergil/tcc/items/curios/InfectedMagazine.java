@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -42,11 +43,11 @@ public class InfectedMagazine extends BaseCurioItem {
      * 提升弹匣容量（加算）和降低装填速度（加算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有手枪，只有持有手枪时才应用加成
         if (GunTypeChecker.isHoldingPistol(livingEntity)) {
-            double magazineCapacityBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get(), getFusionLevel());
-            double reloadDebuff = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get(), getFusionLevel());
+            double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get());
+            double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get());
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineCapacityBoost, MAGAZINE_CAPACITY_UUID, MAGAZINE_CAPACITY_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadDebuff, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
@@ -76,8 +77,8 @@ public class InfectedMagazine extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         // 添加装备效果
-        double magazineCapacityBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get() * 100, FusionUpgradeUtil.getLevel(stack));
-        double reloadDebuff = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get() ) * 100;
+        double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.infected_magazine.effect", 
                 String.format("%+.0f", magazineCapacityBoost), String.format("%+.0f", reloadDebuff))
             .withStyle(ChatFormatting.GOLD));
@@ -88,11 +89,4 @@ public class InfectedMagazine extends BaseCurioItem {
 
     }
     
-    /**
-     * 当生物切换武器时应用效果
-     */
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

@@ -56,9 +56,9 @@ public class YuxiZhixia extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                stack -> stack.getItem() instanceof YuxiZhixia);
+                s -> s.getItem() instanceof YuxiZhixia);
         CompoundTag tag = equipped.getTag();
         double total = TaczCuriosConfig.COMMON.villVImaginaryResistance.get()
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);

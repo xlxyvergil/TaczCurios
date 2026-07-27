@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 肢解 - 近战饰品
- * 效果：暴击伤害 +90%
+ * 效果：暴击伤�?+90%
  */
 public class Dismemberment extends BaseCurioItem {
 
@@ -33,8 +34,8 @@ public class Dismemberment extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double critDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
@@ -49,7 +50,7 @@ public class Dismemberment extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double critDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.dismemberment.effect",
                 String.format("%+.0f", critDamageBoost))
             .withStyle(ChatFormatting.BLUE));
@@ -58,8 +59,4 @@ public class Dismemberment extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

@@ -57,7 +57,7 @@ public class Fanxing extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
         double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
@@ -80,15 +80,10 @@ public class Fanxing extends BaseCurioItem {
     }
 
     @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
-
-    @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity != null) {
-            applyEffects(entity);
+            applyEffects(entity, stack);
         }
     }
 

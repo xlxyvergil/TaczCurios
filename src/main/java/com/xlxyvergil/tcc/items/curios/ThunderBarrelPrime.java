@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 雷筒Prime - 霰弹枪饰品
- * 效果：暴击几率 +165%
+ * 雷筒Prime - 霰弹枪饰�?
+ * 效果：暴击几�?+165%
  */
 public class ThunderBarrelPrime extends BaseCurioItem {
 
@@ -33,9 +34,9 @@ public class ThunderBarrelPrime extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
-            double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get(), getFusionLevel());
+            double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
@@ -48,22 +49,12 @@ public class ThunderBarrelPrime extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
-        double critChanceBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.thunder_barrel_prime.effect",
                 String.format("%+.0f", critChanceBoost))
             .withStyle(ChatFormatting.WHITE));
@@ -72,8 +63,4 @@ public class ThunderBarrelPrime extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
 }

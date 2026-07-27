@@ -45,7 +45,7 @@ public class QianjieYicheng extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         int luck = TaczCuriosConfig.COMMON.qianjieYichengLuck.get();
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
             luck, LUCK_UUID,
@@ -55,11 +55,6 @@ public class QianjieYicheng extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_UUID);
-    }
-
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
     }
 
     @Override

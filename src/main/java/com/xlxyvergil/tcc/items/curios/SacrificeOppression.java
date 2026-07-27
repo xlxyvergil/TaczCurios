@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -21,9 +22,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 牺牲压迫点 - 近战饰品
- * 效果：近战伤害 +110%
- * 套装：同时装备牺牲斩铁时，额外 +25%
+ * 牺牲压迫�?- 近战饰品
+ * 效果：近战伤�?+110%
+ * 套装：同时装备牺牲斩铁时，额�?+25%
  */
 public class SacrificeOppression extends BaseCurioItem {
 
@@ -38,7 +39,7 @@ public class SacrificeOppression extends BaseCurioItem {
     }
 
     /**
-     * 检测是否同时装备了牺牲斩铁（Curios API）
+     * 检测是否同时装备了牺牲斩铁（Curios API�?
      */
     private static boolean hasSacrificeSteel(LivingEntity entity) {
         return CuriosApi.getCuriosInventory(entity).resolve()
@@ -47,13 +48,13 @@ public class SacrificeOppression extends BaseCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity) {
-        double meleeDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get(), getFusionLevel());
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
-        // 套装效果：同时装备牺牲斩铁时，额外 +25%
+        // 套装效果：同时装备牺牲斩铁时，额�?+25%
         if (hasSacrificeSteel(livingEntity)) {
-            double setBonus = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get(), getFusionLevel());
+            double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
             double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
@@ -68,28 +69,18 @@ public class SacrificeOppression extends BaseCurioItem {
     }
 
     @Override
-    public void curioTick(top.theillusivec4.curios.api.SlotContext slotContext, ItemStack stack) {
-        setFusionLevel(FusionUpgradeUtil.getLevel(stack));
-        try {
-            applyEffects(slotContext.entity());
-        } finally {
-            removeFusionLevel();
-        }
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
 
-        double meleeDamageBoost = FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get() * 100, FusionUpgradeUtil.getLevel(stack));
+        double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.effect",
                 String.format("%+.0f", meleeDamageBoost))
             .withStyle(ChatFormatting.WHITE));
 
         // 套装提示
-        double setBonusPct = (FusionUpgradeUtil.getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get(), FusionUpgradeUtil.getLevel(stack)) - 1.0) * 100;
+        double setBonusPct = (FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get()) - 1.0) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.set_bonus",
                 String.format("%+.0f", setBonusPct))
             .withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -98,8 +89,5 @@ public class SacrificeOppression extends BaseCurioItem {
         
     }
 
-    @Override
-    public void applyGunSwitchEffect(LivingEntity livingEntity) {
-        applyEffects(livingEntity);
-    }
+
 }

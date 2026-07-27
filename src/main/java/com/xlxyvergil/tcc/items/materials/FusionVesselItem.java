@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.materials;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
+import com.xlxyvergil.tcc.util.FusionData;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
@@ -14,7 +15,6 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
@@ -146,9 +146,9 @@ public class FusionVesselItem extends Item {
 
         // 3. 饰品格子 → 分解存入
         if (isDecomposable(slotItem)) {
-            Rarity rarity = slotItem.getRarity();
-            int level = FusionUpgradeUtil.getLevel(slotItem);
-            int output = FusionUpgradeUtil.getDecompositionOutput(rarity, level);
+            FusionData data = FusionData.from(slotItem);
+            int level = data.level();
+            int output = FusionUpgradeUtil.getDecompositionOutput(data.rarity(), level);
             if (output <= 0) return false;
 
             // 消耗 1 个饰品
@@ -169,8 +169,7 @@ public class FusionVesselItem extends Item {
     private static boolean isDecomposable(ItemStack stack) {
         if (stack.isEmpty()) return false;
         if (!stack.is(TCC_SLOT)) return false;
-        Rarity rarity = stack.getItem().getRarity(stack);
-        return FusionUpgradeUtil.getMaxLevel(rarity) > 0;
+        return FusionData.from(stack).isUpgradeable();
     }
 
 }
