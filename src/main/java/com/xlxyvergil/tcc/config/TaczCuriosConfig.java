@@ -1779,7 +1779,7 @@ public class TaczCuriosConfig {
             // ==== 融合升级配置 ====
             builder.comment("融合升级系统配置（饰品等级升级）").push("fusion_upgrade");
             fusionGrowthCoefficient = builder
-                    .comment("属性增长系数 C（公式：实际值 = 基础值 × (1 + 等级 × C)）(默认: 0.6)")
+                    .comment("属性增长系数 C。（1）正向饰品（buff/Effect）：实际值 = 基础值 × (1 + 等级 × C)，满级值受 C 影响。（2）反向饰品（属性修饰符）：配置存满级值，公式 = 满级值 × (1 + 等级 × C) / (1 + 最大等级 × C)，满级值锁定为配置值（默认: 0.6)")
                     .defineInRange("growthCoefficient", 0.6, 0.01, 100.0);
             fusionEbcCommon = builder
                     .comment("COMMON 稀有度 EBC（基础内融核心消耗）(默认: 10)")
