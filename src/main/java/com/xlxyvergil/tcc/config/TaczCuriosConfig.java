@@ -1779,8 +1779,8 @@ public class TaczCuriosConfig {
             // ==== 融合升级配置 ====
             builder.comment("融合升级系统配置（饰品等级升级）").push("fusion_upgrade");
             fusionGrowthCoefficient = builder
-                    .comment("属性增长系数 C（公式：实际值 = 基础值 × (1 + 等级 × C)）(默认: 0.8)")
-                    .defineInRange("growthCoefficient", 0.8, 0.01, 100.0);
+                    .comment("属性增长系数 C（公式：实际值 = 基础值 × (1 + 等级 × C)）(默认: 0.6)")
+                    .defineInRange("growthCoefficient", 0.6, 0.01, 100.0);
             fusionEbcCommon = builder
                     .comment("COMMON 稀有度 EBC（基础内融核心消耗）(默认: 10)")
                     .defineInRange("ebc_common", 10, 1, 10000);
@@ -1794,17 +1794,17 @@ public class TaczCuriosConfig {
                     .comment("EPIC 稀有度 EBC (默认: 40)")
                     .defineInRange("ebc_epic", 40, 1, 10000);
             fusionMaxLevelCommon = builder
-                    .comment("COMMON 稀有度封顶等级 (默认: 6)")
-                    .defineInRange("maxLevel_common", 6, 1, 100);
+                    .comment("COMMON 稀有度封顶等级 (默认: 4)")
+                    .defineInRange("maxLevel_common", 4, 0, 100);
             fusionMaxLevelUncommon = builder
-                    .comment("UNCOMMON 稀有度封顶等级 (默认: 8)")
-                    .defineInRange("maxLevel_uncommon", 8, 1, 100);
+                    .comment("UNCOMMON 稀有度封顶等级 (默认: 6)")
+                    .defineInRange("maxLevel_uncommon", 6, 0, 100);
             fusionMaxLevelRare = builder
-                    .comment("RARE 稀有度封顶等级 (默认: 10)")
-                    .defineInRange("maxLevel_rare", 10, 1, 100);
+                    .comment("RARE 稀有度封顶等级 (默认: 8)")
+                    .defineInRange("maxLevel_rare", 8, 0, 100);
             fusionMaxLevelEpic = builder
-                    .comment("EPIC 稀有度封顶等级 (默认: 12)")
-                    .defineInRange("maxLevel_epic", 12, 1, 100);
+                    .comment("EPIC 稀有度封顶等级 (默认: 10)")
+                    .defineInRange("maxLevel_epic", 10, 0, 100);
             fusionVesselCapacity = builder
                     .comment("融合容器容量上限（默认: 655200 = 4 × EPIC满级消耗）")
                     .defineInRange("fusionVesselCapacity", 655200, 1, Integer.MAX_VALUE);

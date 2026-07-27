@@ -67,11 +67,11 @@ public class CurioCombatEventHandler {
     }
 
     /**
-     * 应用镀层饰品的非叠加Buff，amplifier = fusionLevel - 1，Effect 直接用 amplifier 计算。
+     * 应用镀层饰品的非叠加Buff，amplifier = fusionLevel，Effect 直接用 amplifier 计算。
      */
     private static void applyGildedBuff(Player player, Item curio, MobEffect effect, int durationSeconds) {
         int level = getCurioFusionLevel(player, curio);
-        player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, level - 1, false, false, true));
+        player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, level, false, false, true));
     }
 
     /**

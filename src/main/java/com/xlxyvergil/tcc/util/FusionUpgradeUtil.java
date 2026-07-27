@@ -20,7 +20,7 @@ public class FusionUpgradeUtil {
 
     /**
      * 读取饰品当前等级。
-     * <p>无 NBT 标签时默认返回 1（新饰品初始等级）。</p>
+     * <p>无 NBT 标签时默认返回 0（新饰品初始等级）。</p>
      */
     public static int getLevel(ItemStack stack) {
         if (stack.isEmpty()) return 0;
@@ -28,7 +28,7 @@ public class FusionUpgradeUtil {
         if (tag != null && tag.contains(NBT_KEY_LEVEL)) {
             return tag.getInt(NBT_KEY_LEVEL);
         }
-        return 1;
+        return 0;
     }
 
     /**
@@ -87,9 +87,9 @@ public class FusionUpgradeUtil {
     /**
      * 计算指定等级的实际属性值，截断到 2 位小数。
      * <p>Config 中配置的是 <b>满级值</b>，反向推导各等级实际值。</p>
-     * <p>公式：实际值 = 满级值 × (1 + (等级 - 1) × C) / (1 + (最大等级 - 1) × C)</p>
+     * <p>公式：实际值 = 满级值 × (1 + 等级 × C) / (1 + 最大等级 × C)</p>
      * <ul>
-     *   <li>Lv.1 时：满级值 / (1 + (最大等级 - 1) × C)</li>
+     *   <li>Lv.0（未升级）时：满级值 / (1 + 最大等级 × C)</li>
      *   <li>Lv.MAX 时：满级值（与 Config 一致）</li>
      * </ul>
      * <p>若稀有度不参与升级（maxLevel ≤ 1），直接返回满级值。</p>
@@ -104,8 +104,8 @@ public class FusionUpgradeUtil {
         if (rarity == null) return maxLevelValue;
         int maxLevel = getMaxLevel(rarity);
         if (maxLevel <= 1) return maxLevelValue;
-        double maxMultiplier = 1.0 + (maxLevel - 1) * getGrowthCoefficient();
-        double levelMultiplier = 1.0 + (level - 1) * getGrowthCoefficient();
+        double maxMultiplier = 1.0 + maxLevel * getGrowthCoefficient();
+        double levelMultiplier = 1.0 + level * getGrowthCoefficient();
         double raw = maxLevelValue * levelMultiplier / maxMultiplier;
         return (int)(raw * 100.0) / 100.0;
     }
