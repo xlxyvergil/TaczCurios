@@ -1809,8 +1809,6 @@ public class TaczCuriosConfig {
                     .comment("融合容器容量上限（默认: 655200 = 4 × EPIC满级消耗）")
                     .defineInRange("fusionVesselCapacity", 655200, 1, Integer.MAX_VALUE);
             builder.pop();
-            
-            builder.pop();
         }
     }
     
