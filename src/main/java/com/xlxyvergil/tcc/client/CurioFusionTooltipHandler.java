@@ -85,6 +85,10 @@ public class CurioFusionTooltipHandler {
         if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
             return Component.translatable("tcc.tooltip.restricted_melee");
         }
+        // 全枪械
+        if (restriction.equals(GunTypeChecker.ALL_GUN_TYPES_LIST)) {
+            return Component.translatable("tcc.tooltip.restricted_all_guns");
+        }
         String gunTypes = GunTypeChecker.formatGunTypes(restriction);
         return Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes);
     }

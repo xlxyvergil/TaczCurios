@@ -33,14 +33,14 @@ public class GunTypeChecker {
     public static final Set<String> ALL_GUN_TYPES = Set.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
     public static final List<String> ALL_GUN_TYPES_LIST = List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
     
-    private static final Map<String, String> GUN_TYPE_DISPLAY_NAMES = Map.of(
-        "pistol", "手枪",
-        "rifle", "步枪", 
-        "shotgun", "霰弹枪",
-        "sniper", "狙击枪",
-        "smg", "冲锋枪",
-        "mg", "机枪",
-        "rpg", "发射器"
+    private static final Map<String, String> GUN_TYPE_LANG_KEYS = Map.of(
+        "pistol", "gun_type.tcc.pistol",
+        "rifle", "gun_type.tcc.rifle", 
+        "shotgun", "gun_type.tcc.shotgun",
+        "sniper", "gun_type.tcc.sniper",
+        "smg", "gun_type.tcc.smg",
+        "mg", "gun_type.tcc.mg",
+        "rpg", "gun_type.tcc.rpg"
     );
     
     /**
@@ -55,9 +55,16 @@ public class GunTypeChecker {
     /**
      * 将枪械类型列表格式化为可读的显示字符串
      */
+    @net.minecraftforge.api.distmarker.OnlyIn(net.minecraftforge.api.distmarker.Dist.CLIENT)
     public static String formatGunTypes(List<? extends String> gunTypes) {
         return gunTypes.stream()
-            .map(type -> GUN_TYPE_DISPLAY_NAMES.getOrDefault(type, type))
+            .map(type -> {
+                String langKey = GUN_TYPE_LANG_KEYS.get(type);
+                if (langKey != null) {
+                    return net.minecraft.client.resources.language.I18n.get(langKey);
+                }
+                return type;
+            })
             .collect(java.util.stream.Collectors.joining(", "));
     }
     
@@ -83,7 +90,7 @@ public class GunTypeChecker {
     }
     
     /**
-     * 检查生物是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、发射器）
+     * 检查生物是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、重型武器）
      * @param livingEntity 生物实体
      * @return 如果生物持有支持伤害加成的枪械类型返回true，否则返回false
      */
@@ -119,7 +126,7 @@ public class GunTypeChecker {
     }
 
     /**
-     * 检查生物是否持有重型武器（发射器、机枪）
+     * 检查生物是否持有重型武器（重型武器、机枪）
      * @param livingEntity 生物实体
      * @return 如果生物持有重型武器返回true，否则返回false
      */

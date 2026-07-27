@@ -36,7 +36,7 @@ public class TacticalReloadPrime extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.tacticalReloadPrimeReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }

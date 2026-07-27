@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 弹匣增幅 - 提升弹匣容量
- * 效果：提0%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提0%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
  */
 public class MagazineBoost extends BaseCurioItem {
 
@@ -43,7 +43,7 @@ public class MagazineBoost extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查实体是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.magazineBoostCapacityBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }

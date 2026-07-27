@@ -35,7 +35,7 @@ public class Dismemberment extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {

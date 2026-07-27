@@ -22,7 +22,7 @@ import java.util.UUID;
 
 /**
  * 分裂膛室 - 提升弹头数量
- * 效果：提升弹头数量（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提升弹头数量（加算），仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
  */
 public class SplitChamber extends BaseCurioItem {
     
@@ -38,7 +38,7 @@ public class SplitChamber extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double ammoBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, ammoBoost, AMMO_UUID, AMMO_NAME, AttributeModifier.Operation.ADDITION);
         }

@@ -37,7 +37,7 @@ public class SustainedFire extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }

@@ -45,7 +45,7 @@ public class OverloadedMagazine extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.overloadedMagazineCapacityBoost.get());
             double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.overloadedMagazineReloadSpeedReduction.get());
 

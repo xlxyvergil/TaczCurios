@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 致命一击 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/发射器）
+ * 致命一击 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/重型武器）
  * 效果：暴击几率+150%
  */
 public class LethalCrit extends BaseCurioItem {
@@ -35,7 +35,7 @@ public class LethalCrit extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.lethalCritCritChance.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {

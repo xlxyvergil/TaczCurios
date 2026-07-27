@@ -43,7 +43,7 @@ public class DepletedReload extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有支持的枪械类型，只有持有支持的枪械时才应用加成
-        if (GunTypeChecker.isHoldingSniper(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double magazinePenalty = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get());
             double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazinePenalty, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);

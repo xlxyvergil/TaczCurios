@@ -77,6 +77,11 @@ public class IslandBoomRaven extends BaseCurioItem {
     }
 
     @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("sniper");
+    }
+
+    @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.getBoolean("IsBound")) {

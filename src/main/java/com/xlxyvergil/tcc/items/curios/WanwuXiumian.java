@@ -48,7 +48,7 @@ public class WanwuXiumian extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingRifle(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.OVERHEAL,
                 TaczCuriosConfig.COMMON.wanwuXiumianOverheal.get(), OVERHEAL_UUID,
                 "tcc.wanwu_xiumian.overheal", AttributeModifier.Operation.ADDITION);

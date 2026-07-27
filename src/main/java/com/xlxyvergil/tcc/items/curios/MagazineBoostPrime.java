@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 弹匣增幅Prime - 提升弹匣容量
- * 效果：提5%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提5%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
  */
 public class MagazineBoostPrime extends BaseCurioItem {
 
@@ -42,7 +42,7 @@ public class MagazineBoostPrime extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }

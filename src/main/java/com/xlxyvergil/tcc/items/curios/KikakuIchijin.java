@@ -54,7 +54,6 @@ public class KikakuIchijin extends BaseCurioItem {
         // 无属性效果
     }
 
-
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

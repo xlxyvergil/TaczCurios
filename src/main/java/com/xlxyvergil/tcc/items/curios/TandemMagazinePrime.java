@@ -36,7 +36,7 @@ public class TandemMagazinePrime extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.tandemMagazinePrimeCapacityBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }

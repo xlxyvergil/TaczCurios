@@ -68,7 +68,7 @@ public class MergedRifling extends BaseCurioItem {
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LMG, damageBoost, DAMAGE_UUIDS[3], DAMAGE_NAMES[3], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, damageBoost, DAMAGE_UUIDS[4], DAMAGE_NAMES[4], AttributeModifier.Operation.ADDITION);
         
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVE_SPEED, speedBoost, MOVEMENT_SPEED_UUID, MOVEMENT_SPEED_NAME, AttributeModifier.Operation.ADDITION);
         }
     }

@@ -67,7 +67,7 @@ public class JudgementKey extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingSniper(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                 TaczCuriosConfig.COMMON.judgementKeyCritChance.get(), CRIT_CHANCE_UUID,
                 "tcc.judgement_key.crit_chance", AttributeModifier.Operation.MULTIPLY_BASE);

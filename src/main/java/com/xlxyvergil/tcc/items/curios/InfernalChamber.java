@@ -43,7 +43,7 @@ public class InfernalChamber extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有霰弹枪，只有持有霰弹枪时才应用加成
-        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infernalChamberBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }

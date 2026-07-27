@@ -45,7 +45,7 @@ public class Chamber extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物主手是否持有狙击枪且弹匣满弹药
-        boolean shouldApply = GunTypeChecker.isHoldingSniper(livingEntity) && GunTypeChecker.isHoldingGunWithFullMagazine(livingEntity);
+        boolean shouldApply = matchesRestriction(livingEntity) && GunTypeChecker.isHoldingGunWithFullMagazine(livingEntity);
         
         if (shouldApply) {
             double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.chamberSniperDamageBoost.get());

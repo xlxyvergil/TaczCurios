@@ -22,7 +22,7 @@ import java.util.UUID;
 
 /**
  * 爆发装填Prime - 提升装填速度
- * 效果：提升15%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提升15%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
  */
 public class BurstReloadPrime extends BaseCurioItem {
 
@@ -39,7 +39,7 @@ public class BurstReloadPrime extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.RELOAD_TIME, reloadBoost, RELOAD_UUID, RELOAD_NAME, AttributeModifier.Operation.ADDITION);
         }

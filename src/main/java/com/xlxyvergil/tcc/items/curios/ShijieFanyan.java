@@ -67,7 +67,7 @@ public class ShijieFanyan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
                 TaczCuriosConfig.COMMON.shijieFanyanLuck.get(), LUCK_UUID,
                 "tcc.shijie_fanyan.luck", AttributeModifier.Operation.ADDITION);

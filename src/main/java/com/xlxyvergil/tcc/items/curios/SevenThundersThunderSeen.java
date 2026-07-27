@@ -64,7 +64,7 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingSniper(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER,
                 TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get(), HEADSHOT_MULTIPLIER_UUID,
                 "tcc.seven_thunders_thunder_seen.headshot_multiplier", AttributeModifier.Operation.ADDITION);

@@ -42,7 +42,7 @@ public class BulletSpread extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有手枪，只有持有手枪时才应用加成
-        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }

@@ -35,7 +35,7 @@ public class ShotgunExpansion extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingShotgun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.shotgunExpansionCapacityBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, magazineBoost, MAGAZINE_UUID, MAGAZINE_NAME, AttributeModifier.Operation.ADDITION);
         }

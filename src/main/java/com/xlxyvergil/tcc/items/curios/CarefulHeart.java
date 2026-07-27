@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 我小心海也绝非鳝类 - 提升300%发射器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
- * 效果：发射器伤害+300%，爆炸伤害+300%，爆炸范围+300%
+ * 我小心海也绝非鳝类 - 提升300%重型武器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
+ * 效果：重型武器伤害+300%，爆炸伤害+300%，爆炸范围+300%
  */
 public class CarefulHeart extends BaseCurioItem {
     
@@ -40,7 +40,7 @@ public class CarefulHeart extends BaseCurioItem {
     
     /**
      * 应用心海效果
-     * 提升发射器伤害、爆炸伤害和爆炸范围
+     * 提升重型武器伤害、爆炸伤害和爆炸范围
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {

@@ -51,7 +51,7 @@ public class YongjieZhijian extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingAnyGun(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             int luck = (int) livingEntity.getAttributeValue(AttributeHelper.LUCK);
             double critChance = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100.0) / 100.0;
             double critDamage = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100.0) / 100.0;

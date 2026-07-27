@@ -742,7 +742,7 @@ public class TaczCuriosConfig {
             // 我小心海也绝非鳝类配置
             builder.comment("我小心海也绝非鳝类饰品配置").push("careful_heart");
             carefulHeartLauncherDamageBoost = builder
-                    .comment("发射器伤害加成 (默认: 3.0 = 300%)")
+                    .comment("重型武器伤害加成 (默认: 3.0 = 300%)")
                     .defineInRange("launcherDamageBoost", 3.0, -1, 100);
             carefulHeartExplosionDamageBoost = builder
                     .comment("爆炸伤害加成 (默认: 3.0 = 300%)")

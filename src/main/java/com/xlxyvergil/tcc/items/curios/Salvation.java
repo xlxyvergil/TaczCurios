@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -119,6 +120,11 @@ public class Salvation extends BaseCurioItem {
         // 移除抗性提升效果
         livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
     }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
+    }
     
     /**
      * 读取救世装备上的继承抗性值
@@ -171,6 +177,8 @@ public class Salvation extends BaseCurioItem {
         if (event.phase != TickEvent.Phase.END) return;
         if (event.player.level().isClientSide()) return;
         if (!hasSalvationEquipped(event.player)) return;
+        // 检查武器类型限制（仅手枪生效）
+        if (!GunTypeChecker.isHoldingPistol(event.player)) return;
         
         // 每15秒刷新一次抗性提升
         if (event.player.tickCount % 280 == 0) {

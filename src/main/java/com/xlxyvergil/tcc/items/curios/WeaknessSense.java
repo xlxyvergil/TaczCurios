@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 弱点感应 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/发射器）
+ * 弱点感应 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/重型武器）
  * 效果：暴击伤害+120%
  */
 public class WeaknessSense extends BaseCurioItem {
@@ -35,7 +35,7 @@ public class WeaknessSense extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingDmgBoostGunType(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.weaknessSenseCritDamage.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {

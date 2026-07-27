@@ -44,7 +44,7 @@ public class DeadlySurge extends BaseCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 检查生物是否持有手枪，只有持有手枪时才应用加成
-        if (GunTypeChecker.isHoldingPistol(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double roundsPerMinuteBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get());
             double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, roundsPerMinuteBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);

@@ -147,7 +147,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、发射器伤害，增加55%不精准度
+    // 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、重型武器伤害，增加55%不精准度
     public static final Item HEAVY_CALIBER_TAG = new HeavyCaliberTag(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));
@@ -231,7 +231,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.RARE));
     
-    // 我小心海也绝非鳝类 - 提升300%发射器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
+    // 我小心海也绝非鳝类 - 提升300%重型武器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
     public static final Item CAREFUL_HEART = new CarefulHeart(new Item.Properties()
             .stacksTo(1)
             .rarity(RIFT));
@@ -396,7 +396,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.RARE));
     
-    // 爆发装填Prime - 提升55%装填速度（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
+    // 爆发装填Prime - 提升55%装填速度（仅限步枪、狙击枪、冲锋枪、机枪、重型武器）
     public static final Item BURST_RELOAD_PRIME = new BurstReloadPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
@@ -411,7 +411,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // 弹匣增幅Prime - 提升55%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
+    // 弹匣增幅Prime - 提升55%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、重型武器）
     public static final Item MAGAZINE_BOOST_PRIME = new MagazineBoostPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
@@ -426,7 +426,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     
-    // 弹匣增幅 - 提升30%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、发射器）
+    // 弹匣增幅 - 提升30%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、重型武器）
     public static final Item MAGAZINE_BOOST = new MagazineBoost(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));

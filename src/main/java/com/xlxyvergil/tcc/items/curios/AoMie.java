@@ -71,7 +71,7 @@ public class AoMie extends BaseCurioItem {
             healthBoost, MAX_HEALTH_UUID,
             "tcc.aomie.max_health", AttributeModifier.Operation.ADDITION);
 
-        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
                     h.register(ADAPT_ID,

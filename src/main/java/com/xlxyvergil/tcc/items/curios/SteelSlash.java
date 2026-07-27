@@ -35,7 +35,7 @@ public class SteelSlash extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+        if (matchesRestriction(livingEntity)) {
             double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {

@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
 /**
@@ -41,7 +42,12 @@ public class RedMovementTag extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVE_SPEED, MOVE_SPEED_MODIFIER_UUID);
     }
-    
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+    }
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

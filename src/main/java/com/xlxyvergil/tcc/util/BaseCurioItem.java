@@ -181,6 +181,31 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
     }
 
     /**
+     * 检查当前实体是否满足该饰品的武器类型限制。
+     * <p>
+     * 返回 {@code true} 表示当前持有的武器符合限制，效果应生效；<br>
+     * 返回 {@code false} 表示不符合限制，效果不应生效。
+     *
+     * @param entity 要检查的生物实体
+     * @return 是否符合武器类型限制
+     */
+    public boolean matchesRestriction(LivingEntity entity) {
+        List<String> restriction = getWeaponTypeRestriction();
+        if (restriction == null || restriction.isEmpty()) {
+            return true; // 无限制
+        }
+        if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
+            return GunTypeChecker.isHoldingMeleeWeapon(entity);
+        }
+        // 全枪械
+        if (restriction.equals(GunTypeChecker.ALL_GUN_TYPES_LIST)) {
+            return GunTypeChecker.isHoldingAnyGun(entity);
+        }
+        // 其他枪械类型组合
+        return GunTypeChecker.isHoldingConfiguredGunTypes(entity, restriction);
+    }
+
+    /**
      * 根据值正负生成属性修饰符 tooltip Component，复用 Apothic Attributes 的翻译键
      */
     protected static MutableComponent formatModifierTooltip(double value, String valueFormat, Component attrName) {
