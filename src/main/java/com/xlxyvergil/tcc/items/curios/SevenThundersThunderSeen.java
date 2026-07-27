@@ -160,13 +160,15 @@ public class SevenThundersThunderSeen extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("sniper");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("sniper"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         String sttsHeadshotStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get() * 100);
         String sttsCritChanceStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritChance.get() * 100);

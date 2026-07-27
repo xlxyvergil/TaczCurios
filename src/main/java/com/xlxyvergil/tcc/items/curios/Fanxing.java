@@ -149,8 +149,13 @@ public class Fanxing extends BaseCurioItem {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
@@ -163,9 +168,6 @@ public class Fanxing extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         double resistance = 0;
         int computedLuck = 0;

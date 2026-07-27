@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 牺牲压迫�?- 近战饰品
- * 效果：近战伤�?+110%
- * 套装：同时装备牺牲斩铁时，额�?+25%
+ * 牺牲压迫点 - 近战饰品
+ * 效果：近战伤害+110%
+ * 套装：同时装备牺牲斩铁时，额外+25%
  */
 public class SacrificeOppression extends BaseCurioItem {
 
@@ -39,7 +39,7 @@ public class SacrificeOppression extends BaseCurioItem {
     }
 
     /**
-     * 检测是否同时装备了牺牲斩铁（Curios API�?
+     * 检测是否同时装备了牺牲斩铁（Curios API）
      */
     private static boolean hasSacrificeSteel(LivingEntity entity) {
         return CuriosApi.getCuriosInventory(entity).resolve()
@@ -52,7 +52,7 @@ public class SacrificeOppression extends BaseCurioItem {
         double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get());
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
-        // 套装效果：同时装备牺牲斩铁时，额�?+25%
+        // 套装效果：同时装备牺牲斩铁时，额外+25%
         if (hasSacrificeSteel(livingEntity)) {
             double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
             double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
@@ -89,5 +89,9 @@ public class SacrificeOppression extends BaseCurioItem {
         
     }
 
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("melee");
+    }
 
 }

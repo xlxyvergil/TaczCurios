@@ -181,6 +181,11 @@ public class JudgementKey extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("sniper");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
@@ -188,9 +193,6 @@ public class JudgementKey extends BaseCurioItem {
 
         double critChance = TaczCuriosConfig.COMMON.judgementKeyCritChance.get() * 100;
         double critDamage = TaczCuriosConfig.COMMON.judgementKeyCritDamage.get() * 100;
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("sniper"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(formatModifierTooltip(critChance, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));

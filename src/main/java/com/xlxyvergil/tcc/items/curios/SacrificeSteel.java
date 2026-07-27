@@ -23,7 +23,7 @@ import java.util.UUID;
 
 /**
  * 牺牲斩铁 - 近战饰品
- * 效果：暴击几�?+220%
+ * 效果：暴击几率+220%
  * 套装：同时装备牺牲压迫点时，额外 +25%
  */
 public class SacrificeSteel extends BaseCurioItem {
@@ -39,7 +39,7 @@ public class SacrificeSteel extends BaseCurioItem {
     }
 
     /**
-     * 检测是否同时装备了牺牲压迫点（Curios API�?
+     * 检测是否同时装备了牺牲压迫点（Curios API）
      */
     private static boolean hasSacrificeOppression(LivingEntity entity) {
         return CuriosApi.getCuriosInventory(entity).resolve()
@@ -49,16 +49,20 @@ public class SacrificeSteel extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+            double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
-        // 套装效果：同时装备牺牲压迫点时，额外 +25%
-        if (hasSacrificeOppression(livingEntity)) {
-            double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
-            double bonusModifier = critChanceBoost * (setBonus - 1.0);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            // 套装效果：同时装备牺牲压迫点时，额外 +25%
+            if (hasSacrificeOppression(livingEntity)) {
+                double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
+                double bonusModifier = critChanceBoost * (setBonus - 1.0);
+                AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            } else {
+                AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, SET_BONUS_UUID);
+            }
         } else {
-            AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, SET_BONUS_UUID);
+            removeEffects(livingEntity);
         }
     }
 
@@ -69,10 +73,17 @@ public class SacrificeSteel extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+
 
         double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_steel.effect",

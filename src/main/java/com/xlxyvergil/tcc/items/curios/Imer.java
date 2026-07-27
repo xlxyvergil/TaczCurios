@@ -80,6 +80,11 @@ public class Imer extends BaseCurioItem {
         return DropRule.ALWAYS_KEEP;
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -87,7 +92,7 @@ public class Imer extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
+
 
         double bonusPercent = TaczCuriosConfig.COMMON.imerAttackDamageBonus.get() * 100;
         tooltip.add(formatModifierTooltip(bonusPercent, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))

@@ -21,15 +21,15 @@ import java.util.UUID;
 
 
 /**
- * 合金钻头 - 提升穿透能�?
- * 效果：穿透能力加�?
+ * 合金钻头 - 提升穿透能力
+ * 效果：穿透能力加成
  */
 public class AlloyDrill extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID ARMOR_IGNORE_UUID = UUID.fromString("06d45b6d-c8d2-4372-bdfd-b427651a2366");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String ARMOR_IGNORE_NAME = "tcc.alloy_drill.armor_ignore";
     
     public AlloyDrill(Properties properties) {

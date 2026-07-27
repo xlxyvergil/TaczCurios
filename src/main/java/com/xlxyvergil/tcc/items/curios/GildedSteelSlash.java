@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层斩�?- 近战饰品（击杀触发Buff，可叠加�?
- * 基础：暴击几�?110%，击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
+ * 镀层斩铁 - 近战饰品（击杀触发Buff，可叠加）
+ * 基础：暴击几率+110%，击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
  */
 public class GildedSteelSlash extends BaseCurioItem {
 
@@ -33,8 +34,12 @@ public class GildedSteelSlash extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double baseCritChance = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, baseCritChance, BASE_CRIT_CHANCE_UUID, BASE_CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+            double baseCritChance = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, baseCritChance, BASE_CRIT_CHANCE_UUID, BASE_CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            removeEffects(livingEntity);
+        }
     }
 
     @Override
@@ -43,9 +48,16 @@ public class GildedSteelSlash extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
+
+
         int fusionLevel = FusionData.from(stack).level();
         double baseCritChance = TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100 * fusionLevel;
         double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100 * fusionLevel;

@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -26,12 +27,12 @@ import java.util.UUID;
  */
 public class BlazeStormPrime extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("248f06a5-5144-47a0-b56a-6d830ade21b9");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("76d7748e-2371-4513-90cc-880f469f389a");
     private static final UUID EXPLOSION_ENABLED_UUID = UUID.fromString("248f06a5-5144-90cc-b56a-6d830ade21b9");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String EXPLOSION_RADIUS_NAME = "tcc.blaze_storm_prime.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.blaze_storm_prime.explosion_damage";
     private static final String EXPLOSION_ENABLED_NAME = "tcc.blaze_storm_prime.explosion_enabled";
@@ -42,7 +43,7 @@ public class BlazeStormPrime extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性�?
+        // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性
         double explosionRadiusBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get());
         double explosionDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get());
         double explosionEnabled = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionEnabled.get());
@@ -53,18 +54,23 @@ public class BlazeStormPrime extends BaseCurioItem {
         // 应用爆炸伤害加成
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         
-        // 应用爆炸启用属�?
+        // 应用爆炸启用属性
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
     /**
-     * 移除所有效果加�?
+     * 移除所有效果加成
      */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, EXPLOSION_RADIUS_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, EXPLOSION_ENABLED_UUID);
+    }
+    
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
     
     /**

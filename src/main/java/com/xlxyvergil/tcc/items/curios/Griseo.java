@@ -126,6 +126,11 @@ public class Griseo extends BaseCurioItem {
         }
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -143,9 +148,6 @@ public class Griseo extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.griseo.effect",
                 hurtCooldownSecs)

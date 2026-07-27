@@ -19,8 +19,7 @@ import java.util.UUID;
 
 /**
  * 撕裂Prime饰品
- * 效果：增�?%射速（乘算），增加0.2穿透（加算�?
- */
+ * 效果：增加55%射速（乘算），增加0.2穿透（加算） */
 public class RippingPrime extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰
@@ -48,6 +47,11 @@ public class RippingPrime extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, ROUNDS_PER_MINUTE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.PIERCE, PIERCE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     /**

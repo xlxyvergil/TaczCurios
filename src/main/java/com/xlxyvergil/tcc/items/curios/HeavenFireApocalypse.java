@@ -125,16 +125,18 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getWeaponTypeRestriction() {
+        return (List<String>)(List<?>)TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get();
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 限定枪械类型
-        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
         
         // 添加装备效果
         // 根据语言文件中的占位符顺序调整参数传递顺序：

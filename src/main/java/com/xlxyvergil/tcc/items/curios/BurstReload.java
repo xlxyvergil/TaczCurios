@@ -26,10 +26,10 @@ import java.util.UUID;
  */
 public class BurstReload extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID RELOAD_UUID = UUID.fromString("cf64bdda-7972-4439-ab6a-1fe552c4caa3");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String RELOAD_NAME = "tcc.burst_reload.reload_speed";
     
     public BurstReload(Properties properties) {
@@ -48,6 +48,11 @@ public class BurstReload extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     /**

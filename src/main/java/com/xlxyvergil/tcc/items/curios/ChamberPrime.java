@@ -28,10 +28,10 @@ import java.util.UUID;
  */
 public class ChamberPrime extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识修饰�?
+    // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID DAMAGE_UUID = UUID.fromString("9ab0de22-87e4-4fa1-a539-cd50dfe7590c");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String DAMAGE_NAME = "tcc.chamber_prime.damage";
     
     public ChamberPrime(Properties properties) {
@@ -40,7 +40,7 @@ public class ChamberPrime extends BaseCurioItem {
     
     /**
      * 应用膛室Prime效果
-     * 提升狙击枪伤害（乘算�?
+     * 提升狙击枪伤害（乘算）
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
@@ -51,7 +51,7 @@ public class ChamberPrime extends BaseCurioItem {
             double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.chamberPrimeSniperDamageBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
-            // 如果条件不满足，移除修饰�?
+            // 如果条件不满足，移除修饰符
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, DAMAGE_UUID);
         }
         
@@ -78,6 +78,11 @@ public class ChamberPrime extends BaseCurioItem {
         }
     }
 
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("sniper");
+    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 乌拉尔银狼饰�?- 提供爆头倍率加成
- * 通过TaczAttributeAdd的headshot_multiplier属性实�?
+ * 乌拉尔银狼饰品 - 提供爆头倍率加成
+ * 通过TaczAttributeAdd的headshot_multiplier属性实现
  */
 public class UralWolfTag extends BaseCurioItem {
     

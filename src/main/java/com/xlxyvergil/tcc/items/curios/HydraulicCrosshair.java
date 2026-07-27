@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 液压准心 - 手枪饰品（爆头触发Buff�?
- * 基础：暴击几�?135%，爆头命中→Buff期间暴击几率提升�?s，不叠加�?
+ * 液压准心 - 手枪饰品（爆头触发Buff期间）
+ * 基础：暴击几率135%，爆头命中→Buff期间暴击几率提升Xs，不叠加
  */
 public class HydraulicCrosshair extends BaseCurioItem {
 
@@ -32,7 +32,12 @@ public class HydraulicCrosshair extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 不再有装备常驻效果需要清�?
+        // 不再有装备常驻效果需要清除
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

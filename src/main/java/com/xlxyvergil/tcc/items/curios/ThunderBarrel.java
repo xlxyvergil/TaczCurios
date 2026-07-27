@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 雷筒 - 霰弹枪饰�?
- * 效果：暴击几�?+90%
+ * 雷筒 - 霰弹枪饰品
+ * 效果：暴击几率+90%
  */
 public class ThunderBarrel extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class ThunderBarrel extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("shotgun");
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.client;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -22,9 +24,11 @@ import java.util.List;
  * <ol>
  *   <li>融合等级（仅 tcc_slot 通用槽位饰品）</li>
  *   <li>稀有度</li>
+ *   <li>武器类型限制（如有）</li>
  * </ol>
  * 栏位名称由 Curios 自行处理，避免重复。
  * 原有道具自定义信息（效果数值等）保持不动，被顺势下移。
+ * 统一适用于 tcc_slot / tcc_tdk / tcc_3rd 所有槽位，融合等级仅 tcc_slot 显示。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CurioFusionTooltipHandler {
@@ -36,13 +40,13 @@ public class CurioFusionTooltipHandler {
     public static void onTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         if (stack.isEmpty()) return;
-        if (!(stack.getItem() instanceof BaseCurioItem)) return;
+        if (!(stack.getItem() instanceof BaseCurioItem curioItem)) return;
 
         List<Component> tooltip = event.getToolTip();
 
         FusionData data = FusionData.from(stack);
 
-        // 融合等级（仅 tcc_slot）
+        // 融合等级（仅 tcc_slot 通用槽位饰品）
         String levelText = null;
         if (stack.is(TCC_SLOT) && data.isUpgradeable()) {
             int maxLevel = data.maxLevel();
@@ -62,8 +66,27 @@ public class CurioFusionTooltipHandler {
             tooltip.add(insertIdx++, Component.literal(levelText));
         }
         if (rarityName != null) {
-            tooltip.add(insertIdx, Component.literal(rarityName));
+            tooltip.add(insertIdx++, Component.literal(rarityName));
         }
+
+        // 武器类型限制
+        List<String> restriction = curioItem.getWeaponTypeRestriction();
+        if (restriction != null && !restriction.isEmpty()) {
+            Component restrictionText = buildRestrictionComponent(restriction);
+            if (restrictionText != null) {
+                tooltip.add(insertIdx, restrictionText);
+            }
+        }
+    }
+
+    /** 构建武器类型限制的 tooltip 文本 */
+    @Nullable
+    private static Component buildRestrictionComponent(List<String> restriction) {
+        if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
+            return Component.translatable("tcc.tooltip.restricted_melee");
+        }
+        String gunTypes = GunTypeChecker.formatGunTypes(restriction);
+        return Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes);
     }
 
     /** 根据稀有度返回 tcc.tooltip.rarity.* 翻译键 */

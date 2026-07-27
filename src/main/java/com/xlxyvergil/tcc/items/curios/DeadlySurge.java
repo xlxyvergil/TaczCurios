@@ -21,15 +21,15 @@ import java.util.UUID;
 
 /**
  * 致命洪流 - 提升60%射速和60%弹头数量
- * 效果：提�?0%射速（加算），提升60%弹头数量（加算）
+ * 效果：提升30%射速（加算），提升60%弹头数量（加算）
  */
 public class DeadlySurge extends BaseCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识修饰�?
+    // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("d8e4852c-2b0c-4a77-a9b3-a2a84683ae93");
     private static final UUID BULLET_COUNT_UUID = UUID.fromString("b00e1320-1674-4bdb-8456-6fe4b80791fc");
 
-    // 修饰符名�?
+    // 修饰符名称
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.deadly_surge.rounds_per_minute";
     private static final String BULLET_COUNT_NAME = "tcc.deadly_surge.bullet_count";
 
@@ -61,6 +61,11 @@ public class DeadlySurge extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BULLET_COUNT_UUID);
     }
 
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
+    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

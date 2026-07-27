@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * 异况超量 - 近战饰品
- * 手持近战武器时，目标每有一种负面效果，伤害+80%（LivingHurtEvent直接乘算�?
+ * 手持近战武器时，目标每有一种负面效果，伤害+80%（LivingHurtEvent直接乘算）
  */
 public class ConditionOverload extends BaseCurioItem {
 
@@ -28,12 +28,12 @@ public class ConditionOverload extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 无基础属性，伤害乘算在LivingHurtEvent中处�?
+        // 无基础属性，伤害乘算在LivingHurtEvent中处理
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 无基础属�?
+        // 无基础属性
     }
 
     @Override
@@ -46,6 +46,11 @@ public class ConditionOverload extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.literal(""));
         
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("melee");
     }
 
 }

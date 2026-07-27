@@ -116,6 +116,11 @@ public class YuxiZhixia extends BaseCurioItem {
         );
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("rpg", "mg");
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -136,9 +141,6 @@ public class YuxiZhixia extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.yuxi_zhixia.effect",
                 (int) triggerHpRatio,

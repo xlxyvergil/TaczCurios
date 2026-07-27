@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层弹头扩�?- 手枪饰品（击杀触发Buff，可叠加�?
- * 基础：弹头数�?110%，击杀→Buff额外+30%弹头数量�?0s，可叠加4层）
+ * 镀层弹头扩散 - 手枪饰品（击杀触发Buff，可叠加
+ * 基础：弹头数量+110%，击杀→Buff额外+30%弹头数量持续10s，可叠加4层）
  */
 public class GildedBulletSpread extends BaseCurioItem {
 
@@ -45,6 +45,11 @@ public class GildedBulletSpread extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

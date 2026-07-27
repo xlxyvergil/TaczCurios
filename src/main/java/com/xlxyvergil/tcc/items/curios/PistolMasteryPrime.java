@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 手枪精通Prime - 手枪饰品
- * 效果：暴击几�?+187%
+ * 效果：暴击几率+187%
  */
 public class PistolMasteryPrime extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class PistolMasteryPrime extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

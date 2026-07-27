@@ -83,6 +83,11 @@ public class HeavyCaliberTag extends BaseCurioItem {
     }
     
 
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
+    }
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 氩晶瞄具 - 步枪饰品（爆头触发Buff�?
- * 基础：暴击几�?135%，爆头命中→Buff期间暴击几率额外提升�?s，不叠加�?
+ * 氩晶瞄具 - 步枪饰品（爆头触发Buff期间）
+ * 基础：暴击几率135%，爆头命中→Buff期间暴击几率额外提升Xs，不叠加
  */
 public class ArgonScope extends BaseCurioItem {
 
@@ -32,7 +32,12 @@ public class ArgonScope extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 不再有装备常驻效果需要清�?
+        // 不再有装备常驻效果需要清除
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     @Override

@@ -17,9 +17,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层氩晶瞄�?- 步枪饰品（爆�?爆头击杀触发不同Buff�?
- * 爆头�?120%暴击几率Buff�?2s，不叠加�?
- * 爆头击杀�?40%/层暴击几率Buff�?2s，最�?层）
+ * 镀层氩晶瞄具 - 步枪饰品（爆头→爆头击杀触发不同Buff期间）
+ * 爆头→120%暴击几率Buff持续2s，不叠加
+ * 爆头击杀→40%/层暴击几率Buff持续2s，最多4层）
  */
 public class GildedArgonScope extends BaseCurioItem {
 
@@ -34,7 +34,12 @@ public class GildedArgonScope extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 不再有装备常驻效果需要清�?
+        // 不再有装备常驻效果需要清除
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     @Override

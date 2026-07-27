@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 抵近射击Prime饰品 - 提供165%霰弹枪伤害加�?
+ * 抵近射击Prime饰品 - 提供165%霰弹枪伤害加成
  * 效果：为玩家提供165%的霰弹枪伤害加成
  */
 public class CloseCombatPrime extends BaseCurioItem {
     
-    // 霰弹枪伤害属性的UUID和配�?
+    // 霰弹枪伤害属性的UUID和配置
     private static final UUID SHOTGUN_DAMAGE_UUID = UUID.fromString("fa19535c-5dcb-4c3c-833f-53ea1c9bc5b0");
     private static final String SHOTGUN_DAMAGE_NAME = "tcc.close_combat_prime.shotgun_damage";
     
@@ -33,7 +33,7 @@ public class CloseCombatPrime extends BaseCurioItem {
     }
     
     /**
-     * 应用霰弹枪伤害加�?
+     * 应用霰弹枪伤害加成
      * 给生物添加霰弹枪伤害加成（加法）
      */
     @Override
@@ -43,7 +43,7 @@ public class CloseCombatPrime extends BaseCurioItem {
     }
     
     /**
-     * 移除霰弹枪伤害加�?
+     * 移除霰弹枪伤害加成
      */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
@@ -73,6 +73,11 @@ public class CloseCombatPrime extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("shotgun");
     }
     
 }

@@ -20,8 +20,7 @@ import java.util.UUID;
 
 /**
  * 膛线 - 提升特定枪械伤害
- * 效果：特定枪械伤害加成（加算�?
- */
+ * 效果：特定枪械伤害加成（加算） */
 public class Rifling extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰
@@ -64,6 +63,11 @@ public class Rifling extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SMG, DAMAGE_UUIDS[2]);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LMG, DAMAGE_UUIDS[3]);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, DAMAGE_UUIDS[4]);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     /**

@@ -29,7 +29,7 @@ import java.util.UUID;
  */
 public class MergedRifling extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("f36f64c9-c3ec-4faf-b233-1d3ae64ef940"),
         UUID.fromString("32254b9b-364b-44de-bbf2-352df3726ac5"),
@@ -39,7 +39,7 @@ public class MergedRifling extends BaseCurioItem {
     };
     private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("6967f153-c8f1-4f6c-9752-bd2f5e5253c2");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String[] DAMAGE_NAMES = {
         "tcc.merged_rifling.rifle_damage",
         "tcc.merged_rifling.sniper_damage",
@@ -86,6 +86,11 @@ public class MergedRifling extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVE_SPEED, MOVEMENT_SPEED_UUID);
     }
     
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
+    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

@@ -55,6 +55,11 @@ public class ProphecyPact extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, DAMAGE_UUID);
     }
 
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
+    }
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

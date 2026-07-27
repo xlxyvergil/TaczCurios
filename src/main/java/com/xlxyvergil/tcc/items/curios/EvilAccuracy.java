@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,15 +20,15 @@ import java.util.UUID;
 
 /**
  * 极恶精准饰品
- * 效果：降�?0%后坐力，降低36%射速（都加算）
+ * 效果：降低50%后坐力，降低36%射速（都加算）
  */
 public class EvilAccuracy extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID RECOIL_UUID = UUID.fromString("98a8e44a-7d8d-4d10-b934-7e1e1c1c8fca");
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("7da86e2a-9c63-4d3f-8237-feda8559638e");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String RECOIL_NAME = "tcc.evil_accuracy.recoil";
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.evil_accuracy.rounds_per_minute";
     
@@ -36,7 +37,7 @@ public class EvilAccuracy extends BaseCurioItem {
     }
     
     /**
-     * 应用所有效果加�?
+     * 应用所有效果加成
      * 降低配置中的后坐力和射速（都加算）
      */
     @Override
@@ -49,12 +50,17 @@ public class EvilAccuracy extends BaseCurioItem {
     }
     
     /**
-     * 移除所有效果加�?
+     * 移除所有效果加成
      */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RECOIL, RECOIL_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, ROUNDS_PER_MINUTE_UUID);
+    }
+    
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
     
 

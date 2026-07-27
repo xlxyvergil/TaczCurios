@@ -140,6 +140,11 @@ public class HuishiZhijuan extends BaseCurioItem {
         return Math.min(cooldown, max);
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -152,9 +157,6 @@ public class HuishiZhijuan extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         int computedCooldown = TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get();
         if (level != null && level.isClientSide()) {

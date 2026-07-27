@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层通晓霰弹�?- 霰弹饰品
- * 手持霰弹枪时，目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理�?
+ * 镀层通晓霰弹枪 - 霰弹饰品
+ * 手持霰弹枪时，目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
  */
 public class GildedShotgunSavvy extends BaseCurioItem {
 
@@ -27,7 +27,7 @@ public class GildedShotgunSavvy extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 无基础属性，伤害乘算在其他处理器中处�?
+        // 无基础属性，伤害乘算在其他处理器中处理
     }
 
     @Override
@@ -46,5 +46,9 @@ public class GildedShotgunSavvy extends BaseCurioItem {
         
     }
 
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("shotgun");
+    }
 
 }

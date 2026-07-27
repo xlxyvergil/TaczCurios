@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 斩铁 - 近战饰品
- * 效果：暴击几�?+120%
+ * 效果：暴击几率+120%
  */
 public class SteelSlash extends BaseCurioItem {
 
@@ -35,8 +35,12 @@ public class SteelSlash extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+            double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            removeEffects(livingEntity);
+        }
     }
 
     @Override
@@ -45,10 +49,17 @@ public class SteelSlash extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+
 
         double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.steel_slash.effect",

@@ -108,14 +108,16 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getWeaponTypeRestriction() {
+        return (List<String>)(List<?>)TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get();
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
         tooltip.add(Component.literal(""));
-        
-        // 限定枪械类型
-        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.endlessGunTypes.get());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
         
         // 使用无烬终焉自身的配置值（damageBoost和explosionDamage），无爆炸范围
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get() * 100;

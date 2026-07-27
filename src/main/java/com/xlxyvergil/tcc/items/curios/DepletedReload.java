@@ -20,15 +20,15 @@ import java.util.UUID;
 
 /**
  * 耗竭装填 - 降低弹匣容量，提升装填速度
- * 效果：降�?0%弹匣容量，提�?8%装填速度，仅对狙击枪生效
+ * 效果：降低50%弹匣容量，提升48%装填速度，仅对狙击枪生效
  */
 public class DepletedReload extends BaseCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID MAGAZINE_UUID = UUID.fromString("17c2b815-8561-4354-a395-d03c4ac4e029");
     private static final UUID RELOAD_UUID = UUID.fromString("68cef118-0938-46f4-881f-698e812abf70");
 
-    // 修饰符名�?
+    // 修饰符名称
     private static final String MAGAZINE_NAME = "tcc.depleted_reload.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.depleted_reload.reload_speed";
 
@@ -60,6 +60,11 @@ public class DepletedReload extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
     }
 
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("sniper");
+    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

@@ -16,8 +16,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 尖刃弹头 - 步枪饰品（击杀触发Buff�?
- * 基础：暴击伤�?120%，击杀→Buff期间暴击伤害提升�?s，不叠加�?
+ * 尖刃弹头 - 步枪饰品（击杀触发Buff期间）
+ * 基础：暴击伤害120%，击杀→Buff期间暴击伤害提升Xs，不叠加
  */
 public class SharpBullet extends BaseCurioItem {
 
@@ -32,7 +32,12 @@ public class SharpBullet extends BaseCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 不再有装备常驻效果需要清�?
+        // 不再有装备常驻效果需要清除
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     @Override

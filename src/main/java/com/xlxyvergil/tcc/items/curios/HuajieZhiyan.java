@@ -130,6 +130,11 @@ public class HuajieZhiyan extends BaseCurioItem {
         return DropRule.ALWAYS_KEEP;
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -156,7 +161,7 @@ public class HuajieZhiyan extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_melee"));
+
 
         double healthFromResistance = 0;
         if (level != null && level.isClientSide()) {

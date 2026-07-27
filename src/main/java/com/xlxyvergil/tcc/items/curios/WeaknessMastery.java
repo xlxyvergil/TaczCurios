@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 弱点专精 - 手枪饰品
- * 效果：暴击伤�?+60%
+ * 效果：暴击伤害+60%
  */
 public class WeaknessMastery extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class WeaknessMastery extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

@@ -118,6 +118,11 @@ public class XukongWancang extends BaseCurioItem {
             (double) TaczCuriosConfig.COMMON.xukongWancangAmmoRegenPercent.get());
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("rpg", "mg");
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -127,9 +132,6 @@ public class XukongWancang extends BaseCurioItem {
 
         double imaginaryDamage = TaczCuriosConfig.COMMON.xukongWancangImaginaryDamage.get();
         double ammoRegen = TaczCuriosConfig.COMMON.xukongWancangAmmoRegenPercent.get() * 100;
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rpg", "mg"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.translatable("item.tcc.xukong_wancang.effect",
                 String.format("%.2f", imaginaryDamage),

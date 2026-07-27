@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层分裂膛�?- 步枪饰品（击杀触发Buff，可叠加�?
- * 基础：弹头数�?80%，击杀→Buff额外+30%弹头数量�?0s，可叠加5层）
+ * 镀层分裂膛室 - 步枪饰品（击杀触发Buff，可叠加）
+ * 基础：弹头数量+80%，击杀→Buff额外+30%弹头数量持续10s，可叠加5层）
  */
 public class GildedSplitChamber extends BaseCurioItem {
 
@@ -45,6 +45,11 @@ public class GildedSplitChamber extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     @Override

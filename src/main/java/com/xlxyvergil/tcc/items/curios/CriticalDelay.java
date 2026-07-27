@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 关键延迟 - 枪械通用饰品
- * 效果：暴击几�?+200%，射�?-20%
+ * 效果：暴击几率+200%，射速-20%
  */
 public class CriticalDelay extends BaseCurioItem {
 
@@ -47,6 +48,11 @@ public class CriticalDelay extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, FIRE_RATE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
 
     @Override

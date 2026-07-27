@@ -15,6 +15,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /**
@@ -186,5 +187,20 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         String formatted = String.format(valueFormat, value >= 0 ? value : -value);
         String key = value >= 0 ? "attributeslib.modifier.plus" : "attributeslib.modifier.take";
         return Component.translatable(key, formatted, attrName);
+    }
+
+    /**
+     * 返回该饰品的武器类型限制。
+     * <p>
+     * 返回 {@code null} 表示无限制，不在工具提示中显示限制信息。<br>
+     * 返回单元素列表 {@code ["melee"]} 表示近战限制，显示 "限定：近战武器"。<br>
+     * 返回枪械类型列表（如 {@code ["pistol"]}、{@code ["rifle", "sniper"]}）
+     * 显示 "限定枪械：xxx".
+     *
+     * @return 武器类型限制列表，{@code null} 表示无限制
+     */
+    @Nullable
+    public List<String> getWeaponTypeRestriction() {
+        return null;
     }
 }

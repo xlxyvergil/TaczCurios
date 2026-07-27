@@ -20,7 +20,7 @@ import java.util.UUID;
 
 /**
  * 三饰- 提供持枪移动速度加成
- * 通过TaczAttributeAdd的move_speed属性实�?
+ * 通过TaczAttributeAdd的move_speed属性实现
  */
 public class RedMovementTag extends BaseCurioItem {
     

@@ -21,14 +21,14 @@ import java.util.UUID;
 
 /**
  * 弹头扩散 - 提升120%弹头数量
- * 效果：提�?20%弹头数量（加算）
+ * 效果：提升120%弹头数量（加算）
  */
 public class BulletSpread extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识修饰�?
+    // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID BULLET_COUNT_UUID = UUID.fromString("0e7e5d6a-c006-4b94-b5fa-ada36d9f71d2");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String BULLET_COUNT_NAME = "tcc.bullet_spread.bullet_count";
     
     public BulletSpread(Properties properties) {
@@ -57,6 +57,11 @@ public class BulletSpread extends BaseCurioItem {
     }
 
 
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
+    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

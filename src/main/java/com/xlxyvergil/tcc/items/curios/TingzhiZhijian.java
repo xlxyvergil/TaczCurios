@@ -106,6 +106,11 @@ public class TingzhiZhijian extends BaseCurioItem {
         return DropRule.ALWAYS_KEEP;
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("rifle");
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -114,9 +119,6 @@ public class TingzhiZhijian extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
         double overheal = TaczCuriosConfig.COMMON.tingzhiZhijianOverheal.get() * 100;
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         double resistance = 0;
         if (level != null && level.isClientSide()) {

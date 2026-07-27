@@ -20,8 +20,7 @@ import java.util.UUID;
 
 /**
  * 霰弹扩充 - 提升弹匣容量
- * 效果：提升弹匣容量，仅对霰弹枪生�?
- */
+ * 效果：提升弹匣容量，仅对霰弹枪生效 */
 public class ShotgunExpansion extends BaseCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰
@@ -45,6 +44,11 @@ public class ShotgunExpansion extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("shotgun");
     }
 
     /**

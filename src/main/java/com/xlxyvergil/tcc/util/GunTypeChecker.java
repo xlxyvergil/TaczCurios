@@ -31,6 +31,7 @@ public class GunTypeChecker {
     public static final Set<String> RIFLE_GUN_TYPES = Set.of("rifle");
     public static final Set<String> HEAVY_WEAPON_TYPES = Set.of("rpg", "mg");
     public static final Set<String> ALL_GUN_TYPES = Set.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
+    public static final List<String> ALL_GUN_TYPES_LIST = List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
     
     private static final Map<String, String> GUN_TYPE_DISPLAY_NAMES = Map.of(
         "pistol", "手枪",

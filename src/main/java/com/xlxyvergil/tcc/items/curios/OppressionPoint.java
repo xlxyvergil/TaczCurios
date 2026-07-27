@@ -19,15 +19,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 压迫�?- 提升近战伤害
- * 效果：提升近战伤害（加算�?
+ * 压迫点 - 提升近战伤害
+ * 效果：提升近战伤害（加算）
  */
 public class OppressionPoint extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰�?
+    // 属性修饰符UUID - 用于唯一标识这个修饰符
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("1f7eab00-eb00-4941-9404-4fdd3eb10515");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String ATTACK_DAMAGE_NAME = "tcc.oppression_point.attack_damage";
     
     public OppressionPoint(Properties properties) {
@@ -35,8 +35,8 @@ public class OppressionPoint extends BaseCurioItem {
     }
     
     /**
-     * 应用压迫点效�?
-     * 给生物添加近战伤害加成（加算�?
+     * 应用压迫点效果
+     * 给生物添加近战伤害加成（加算）
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
@@ -45,7 +45,7 @@ public class OppressionPoint extends BaseCurioItem {
     }
     
     /**
-     * 移除压迫点效�?
+     * 移除压迫点效果
      */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
@@ -73,5 +73,10 @@ public class OppressionPoint extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("melee");
     }
 }

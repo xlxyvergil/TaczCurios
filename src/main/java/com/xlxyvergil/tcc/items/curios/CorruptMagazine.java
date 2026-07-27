@@ -21,16 +21,16 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 腐败弹匣 - +66%弹匣容量�?33%装填速度
- * 效果：提�?6%弹匣容量（加算），降�?3%装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 腐败弹匣 - +66%弹匣容量-33%装填速度
+ * 效果：提升66%弹匣容量（加算），降低33%装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class CorruptMagazine extends BaseCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID MAGAZINE_UUID = UUID.fromString("5d489ba1-55da-4f3a-83ea-69096eb4cccb");
     private static final UUID RELOAD_UUID = UUID.fromString("b747742d-1f42-4921-a900-af73409d453f");
     
-    // 修饰符名�?
+    // 修饰符名称
     private static final String MAGAZINE_NAME = "tcc.corrupt_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.corrupt_magazine.reload_speed";
     
@@ -62,6 +62,11 @@ public class CorruptMagazine extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
     }
     
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
+    }
 
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）

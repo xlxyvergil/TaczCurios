@@ -126,6 +126,11 @@ public class Tianhui extends BaseCurioItem {
         DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("rifle");
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -142,9 +147,6 @@ public class Tianhui extends BaseCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-
-        String gunTypes = GunTypeChecker.formatGunTypes(List.of("rifle"));
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
 
         tooltip.add(Component.literal(""));
         tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))

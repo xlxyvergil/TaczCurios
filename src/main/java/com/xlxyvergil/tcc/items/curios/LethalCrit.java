@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 致命一�?- 步枪类饰品（步枪/狙击�?冲锋�?机枪/发射器）
- * 效果：暴击几�?+150%
+ * 致命一击 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/发射器）
+ * 效果：暴击几率+150%
  */
 public class LethalCrit extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class LethalCrit extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     @Override

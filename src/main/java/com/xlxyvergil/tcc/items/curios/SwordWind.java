@@ -20,8 +20,7 @@ import java.util.UUID;
 
 /**
  * 剑风 - 提升实体交互范围
- * 效果：提升实体交互范围（加算�?
- */
+ * 效果：提升实体交互范围（加算） */
 public class SwordWind extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这个修饰
@@ -41,7 +40,7 @@ public class SwordWind extends BaseCurioItem {
     
     /**
      * 应用剑风效果
-     * 给实体添加实体交互范围加成（加算�?
+     * 给实体添加实体交互范围加成（加算）
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
@@ -78,6 +77,11 @@ public class SwordWind extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("melee");
     }
 }
 

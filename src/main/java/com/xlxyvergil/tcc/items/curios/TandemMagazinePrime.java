@@ -47,6 +47,11 @@ public class TandemMagazinePrime extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_UUID);
     }
 
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
+    }
+
     /**
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */

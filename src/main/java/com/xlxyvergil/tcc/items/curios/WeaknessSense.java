@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 弱点感应 - 步枪类饰品（步枪/狙击�?冲锋�?机枪/发射器）
- * 效果：暴击伤�?+120%
+ * 弱点感应 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/发射器）
+ * 效果：暴击伤害+120%
  */
 public class WeaknessSense extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class WeaknessSense extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     @Override

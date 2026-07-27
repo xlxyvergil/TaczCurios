@@ -22,14 +22,14 @@ import java.util.UUID;
 
 /**
  * 爆发装填Prime - 提升装填速度
- * 效果：提�?5%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
+ * 效果：提升15%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、发射器生效
  */
 public class BurstReloadPrime extends BaseCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识这些修饰�?
+    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID RELOAD_UUID = UUID.fromString("4e639098-414e-4541-9118-c92ca4670c52");
 
-    // 修饰符名�?
+    // 修饰符名称
     private static final String RELOAD_NAME = "tcc.burst_reload_prime.reload_speed";
 
     public BurstReloadPrime(Properties properties) {
@@ -48,6 +48,11 @@ public class BurstReloadPrime extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
     /**

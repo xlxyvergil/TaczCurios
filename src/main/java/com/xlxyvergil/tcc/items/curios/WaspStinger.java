@@ -20,7 +20,7 @@ import java.util.UUID;
 
 /**
  * 黄蜂蜇刺 - 提升手枪伤害
- * 效果：手枪伤害加成（加算�?
+ * 效果：手枪伤害加成（加算）
  */
 public class WaspStinger extends BaseCurioItem {
     
@@ -43,6 +43,11 @@ public class WaspStinger extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, DAMAGE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     /**

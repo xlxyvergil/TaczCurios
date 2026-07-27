@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 手枪精�?- 手枪饰品
- * 效果：暴击几�?+120%
+ * 手枪精通 - 手枪饰品
+ * 效果：暴击几率+120%
  */
 public class PistolMastery extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class PistolMastery extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

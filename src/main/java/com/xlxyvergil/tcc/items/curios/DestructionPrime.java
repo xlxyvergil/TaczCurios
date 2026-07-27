@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 破灭Prime - 霰弹枪饰�?
- * 效果：暴击伤�?+110%
+ * 破灭Prime - 霰弹枪饰品
+ * 效果：暴击伤害+110%
  */
 public class DestructionPrime extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class DestructionPrime extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("shotgun");
     }
 
     @Override

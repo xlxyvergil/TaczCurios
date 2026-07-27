@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 肢解 - 近战饰品
- * 效果：暴击伤�?+90%
+ * 效果：暴击伤害+90%
  */
 public class Dismemberment extends BaseCurioItem {
 
@@ -35,8 +35,12 @@ public class Dismemberment extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+            double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            removeEffects(livingEntity);
+        }
     }
 
     @Override
@@ -45,10 +49,17 @@ public class Dismemberment extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+
+
 
         double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.dismemberment.effect",

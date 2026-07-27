@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 空尖�?- 手枪饰品
- * 效果：暴击伤�?+60%，手枪伤�?-15%
+ * 空尖弹 - 手枪饰品
+ * 效果：暴击伤害+60%，手枪伤害-15%
  */
 public class HollowPoint extends BaseCurioItem {
 
@@ -52,6 +52,11 @@ public class HollowPoint extends BaseCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, PISTOL_DAMAGE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

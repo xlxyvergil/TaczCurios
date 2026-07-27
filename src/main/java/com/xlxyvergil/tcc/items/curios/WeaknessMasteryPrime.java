@@ -21,7 +21,7 @@ import java.util.UUID;
 
 /**
  * 弱点专精Prime - 手枪饰品
- * 效果：暴击伤�?+110%
+ * 效果：暴击伤害+110%
  */
 public class WeaknessMasteryPrime extends BaseCurioItem {
 
@@ -46,6 +46,11 @@ public class WeaknessMasteryPrime extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("pistol");
     }
 
     @Override

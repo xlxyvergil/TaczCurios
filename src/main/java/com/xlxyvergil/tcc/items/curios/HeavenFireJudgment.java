@@ -122,6 +122,12 @@ public class HeavenFireJudgment extends BaseCurioItem {
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getWeaponTypeRestriction() {
+        return (List<String>)(List<?>)TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get();
+    }
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
@@ -129,10 +135,6 @@ public class HeavenFireJudgment extends BaseCurioItem {
         
         // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 限定枪械类型
-        String gunTypes = GunTypeChecker.formatGunTypes(TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get());
-        tooltip.add(Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes));
         
         // 添加装备效果
         double damageBoost = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get() * 100;
