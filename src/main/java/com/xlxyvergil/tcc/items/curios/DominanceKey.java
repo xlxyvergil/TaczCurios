@@ -120,7 +120,7 @@ public class DominanceKey extends BaseCurioItem {
         if (targetLiving.isDeadOrDying()) return;
 
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float imaginaryBonus = (float) (Math.round(attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get() * 100.0) / 100.0);
+        float imaginaryBonus = (float) (Math.round(attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get() * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),

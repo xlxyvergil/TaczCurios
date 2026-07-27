@@ -129,7 +129,7 @@ public class XukongWancangYZTH extends BaseCurioItem {
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
-            + (float) Math.round(attackDamage * (imaginaryResistance / 100.0) * 100.0) / 100.0);
+            + (float) Math.round(attackDamage * (imaginaryResistance / 100.0) * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),

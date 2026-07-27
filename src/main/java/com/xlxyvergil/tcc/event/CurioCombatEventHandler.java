@@ -55,13 +55,13 @@ public class CurioCombatEventHandler {
         player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, 0, false, false, true));
     }
 
-    private static void applyStackingBuff(Player player, MobEffect effect, int durationSeconds, int maxStacks, int addAmount) {
+    private static void applyStackingBuff(Player player, MobEffect effect, int durationSeconds, int maxStackCount, int addAmount) {
         MobEffectInstance existing = player.getEffect(effect);
         if (existing != null) {
-            int newAmp = Math.min(existing.getAmplifier() + addAmount, maxStacks - 1);
+            int maxAmp = maxStackCount * addAmount;
+            int newAmp = Math.min(existing.getAmplifier() + addAmount, maxAmp);
             player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, newAmp, false, false, true));
         } else {
-            // 首次施加：amplifier = 饰品等级
             player.addEffect(new MobEffectInstance(effect, durationSeconds * 20, addAmount, false, false, true));
         }
     }
@@ -78,8 +78,9 @@ public class CurioCombatEventHandler {
      * 应用镀层饰品的叠加Buff，每次叠加 +curioLevel（叠层Effect使用 amplifier × PerLevel 计算数值）。
      */
     private static void applyGildedStackingBuff(Player player, Item curio, MobEffect effect, int durationSeconds, int maxStacks) {
-        int level = getCurioFusionLevel(player, curio);
-        applyStackingBuff(player, effect, durationSeconds, maxStacks, level);
+        int level = Math.max(1, getCurioFusionLevel(player, curio));
+        int maxStackCount = maxStacks / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
+        applyStackingBuff(player, effect, durationSeconds, maxStackCount, level);
     }
 
     /**
@@ -226,7 +227,7 @@ public class CurioCombatEventHandler {
             ItemStack curioStack = findCurioStack(player, TccItems.GILDED_RIFLE_APTITUDE);
             FusionData data = FusionData.from(curioStack);
             double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.gildedRifleAptitudePerHarmful.get());
-            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 10000.0) / 10000.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
@@ -235,7 +236,7 @@ public class CurioCombatEventHandler {
             ItemStack curioStack = findCurioStack(player, TccItems.GILDED_SHOTGUN_SAVVY);
             FusionData data = FusionData.from(curioStack);
             double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.gildedShotgunSavvyPerHarmful.get());
-            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 10000.0) / 10000.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
@@ -244,7 +245,7 @@ public class CurioCombatEventHandler {
             ItemStack curioStack = findCurioStack(player, TccItems.GILDED_MARKSMAN);
             FusionData data = FusionData.from(curioStack);
             double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.gildedMarksmanPerHarmful.get());
-            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 10000.0) / 10000.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
@@ -253,7 +254,7 @@ public class CurioCombatEventHandler {
             ItemStack curioStack = findCurioStack(player, TccItems.CONDITION_OVERLOAD);
             FusionData data = FusionData.from(curioStack);
             double perHarmful = data.getActualValue(TaczCuriosConfig.COMMON.conditionOverloadPerHarmful.get());
-            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 100.0) / 100.0;
+            double multiplier = Math.round((1.0 + harmfulCount * perHarmful) * 10000.0) / 10000.0;
             event.setAmount(event.getAmount() * (float)multiplier);
         }
     }

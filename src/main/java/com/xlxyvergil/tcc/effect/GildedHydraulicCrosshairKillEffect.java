@@ -17,8 +17,4 @@ public class GildedHydraulicCrosshairKillEffect extends MobEffect {
             "c1d2e3f4-6015-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
-    @Override
-    public double getAttributeModifierValue(int amplifier, AttributeModifier modifier) {
-        return amplifier * TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get();
-    }
 }

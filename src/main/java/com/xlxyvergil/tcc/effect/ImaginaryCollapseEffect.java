@@ -59,10 +59,10 @@ public class ImaginaryCollapseEffect extends MobEffect {
             int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
             double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
             int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
-            debuffMultiplier = Math.round((1.0 + (1.0 + effectiveDebuffs) * percentPerDebuff) * 100.0) / 100.0;
+            debuffMultiplier = Math.round((1.0 + (1.0 + effectiveDebuffs) * percentPerDebuff) * 10000.0) / 10000.0;
         }
 
-        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier * 100.0) / 100.0);
+        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier * 10000.0) / 10000.0);
 
         if (finalDamage > 0) {
             // 从 NBT 读取侵染来源 attacker（由 TccAttributeEvents.applyImaginaryInfection 写入）

@@ -66,7 +66,7 @@ public class AoMie extends BaseCurioItem {
             "tcc.aomie.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.aoMieHealthPerResistance.get() * 100.0) / 100.0;
+        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.aoMieHealthPerResistance.get() * 10000.0) / 10000.0;
         AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
             healthBoost, MAX_HEALTH_UUID,
             "tcc.aomie.max_health", AttributeModifier.Operation.ADDITION);

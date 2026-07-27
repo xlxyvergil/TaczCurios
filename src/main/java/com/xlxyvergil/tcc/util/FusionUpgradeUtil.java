@@ -107,7 +107,7 @@ public class FusionUpgradeUtil {
         double maxMultiplier = 1.0 + maxLevel * getGrowthCoefficient();
         double levelMultiplier = 1.0 + level * getGrowthCoefficient();
         double raw = maxLevelValue * levelMultiplier / maxMultiplier;
-        return (int)(raw * 100.0) / 100.0;
+        return (int)(raw * 10000.0) / 10000.0;
     }
 
     /**

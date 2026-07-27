@@ -73,8 +73,8 @@ public class ShijieFanyan extends BaseCurioItem {
                 "tcc.shijie_fanyan.luck", AttributeModifier.Operation.ADDITION);
 
             int luck = (int) livingEntity.getAttributeValue(AttributeHelper.LUCK);
-            double critChance = Math.round(luck * TaczCuriosConfig.COMMON.shijieFanyanCritChancePerLuck.get() * 100.0) / 100.0;
-            double critDamage = Math.round(luck * TaczCuriosConfig.COMMON.shijieFanyanCritDamagePerLuck.get() * 100.0) / 100.0;
+            double critChance = Math.round(luck * TaczCuriosConfig.COMMON.shijieFanyanCritChancePerLuck.get() * 10000.0) / 10000.0;
+            double critDamage = Math.round(luck * TaczCuriosConfig.COMMON.shijieFanyanCritDamagePerLuck.get() * 10000.0) / 10000.0;
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                 critChance, CRIT_CHANCE_UUID,
@@ -179,7 +179,7 @@ public class ShijieFanyan extends BaseCurioItem {
         // 虚数崩解触发概率：基础5% + 每10点幸运值+1%
         int luck = (int) attacker.getAttributeValue(AttributeHelper.LUCK);
         double collapseChance = Math.round((TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()
-            + (luck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get()) * 100.0) / 100.0;
+            + (luck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get()) * 10000.0) / 10000.0;
         var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
         if (!targetLiving.hasEffect(collapse) && attacker.getRandom().nextDouble() < collapseChance) {
             int collapseDuration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();

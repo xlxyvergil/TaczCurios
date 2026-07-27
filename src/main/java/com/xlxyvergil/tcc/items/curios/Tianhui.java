@@ -117,7 +117,7 @@ public class Tianhui extends BaseCurioItem {
         double resistanceScale = TaczCuriosConfig.COMMON.tianhuiResistanceScale.get();
         double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();
 
-        double factor = Math.round((baseFactor - (totalImaginaryResistance * resistanceScale)) * 100.0) / 100.0;
+        double factor = Math.round((baseFactor - (totalImaginaryResistance * resistanceScale)) * 10000.0) / 10000.0;
         if (factor < minFactor) {
             factor = minFactor;
         }

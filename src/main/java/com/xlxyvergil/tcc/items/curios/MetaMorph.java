@@ -71,7 +71,7 @@ public class MetaMorph extends BaseCurioItem {
                 attackBonus, ATTACK_DAMAGE_UUID,
                 "tcc.meta_morph.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
 
-            double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 100.0) / 100.0;
+            double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 10000.0) / 10000.0;
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
                 lifeSteal, LIFE_STEAL_UUID,
                 "tcc.meta_morph.life_steal", AttributeModifier.Operation.ADDITION);
@@ -135,7 +135,7 @@ public class MetaMorph extends BaseCurioItem {
         if (target.isDeadOrDying()) return;
 
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float imaginaryBonus = (float) (Math.round(attackDamage * 100.0) / 100.0);
+        float imaginaryBonus = (float) (Math.round(attackDamage * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             target,
             TccDamageSources.imaginaryDamage(target.level(), attacker),

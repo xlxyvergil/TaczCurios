@@ -89,7 +89,7 @@ public class YinguoZhuanlun extends BaseCurioItem {
 
         double totalResistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double resistanceScale = TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get();
-        double percent = Math.round(totalResistance * resistanceScale * 100.0) / 100.0;
+        double percent = Math.round(totalResistance * resistanceScale * 10000.0) / 10000.0;
 
         AmmoRegenHelper.regenAmmo(entity, held, iGun, percent);
     }

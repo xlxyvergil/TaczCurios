@@ -58,9 +58,9 @@ public class GildedSteelSlash extends BaseCurioItem {
         tooltip.add(Component.literal(""));
 
 
+        double baseCritChance = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get()) * 100;
         int fusionLevel = FusionData.from(stack).level();
-        double baseCritChance = TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get() * 100 * fusionLevel;
-        double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100 * fusionLevel;
+        double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_steel_slash.effect_base",

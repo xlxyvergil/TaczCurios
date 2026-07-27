@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -56,9 +54,9 @@ public class GildedInfernalChamber extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
+        double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get()) * 100;
         int fusionLevel = FusionData.from(stack).level();
-        double baseBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get() * 100 * fusionLevel;
-        double buffBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100 * fusionLevel;
+        double buffBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_infernal_chamber.effect_base",

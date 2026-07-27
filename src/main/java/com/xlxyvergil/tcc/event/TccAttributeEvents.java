@@ -250,10 +250,10 @@ public class TccAttributeEvents {
             double attackerBonus = 1.0;
             if (source.getEntity() instanceof LivingEntity attacker && IslandBoomRaven.hasEquipped(attacker)) {
                 double attackerRes = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                attackerBonus = Math.round((1.0 + attackerRes / 100.0) * 100.0) / 100.0;
+                attackerBonus = Math.round((1.0 + attackerRes / 100.0) * 10000.0) / 10000.0;
             }
 
-            float finalDamage = (float) ((float) Math.round((damageAfterResistance * (1.0 + infectionLevel * ampPerLevel) * attackerBonus) * 100.0) / 100.0);
+            float finalDamage = (float) ((float) Math.round((damageAfterResistance * (1.0 + infectionLevel * ampPerLevel) * attackerBonus) * 10000.0) / 10000.0);
 
             event.setAmount(finalDamage);
         }

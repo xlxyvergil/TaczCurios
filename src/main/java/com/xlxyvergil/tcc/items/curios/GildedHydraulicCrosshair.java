@@ -47,9 +47,8 @@ public class GildedHydraulicCrosshair extends BaseCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
         int fusionLevel = FusionData.from(stack).level();
-        double baseCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100 * fusionLevel;
-        double buffCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100 * fusionLevel;
-        double extraCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairHeadshotKillExtra.get() * 100;
+        double baseCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100 * (fusionLevel + 1);
+        double buffCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_hydraulic_crosshair.effect_base",

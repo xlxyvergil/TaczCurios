@@ -67,7 +67,7 @@ public class Fanxing extends BaseCurioItem {
             "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        int luckFromResistance = (int) ((int) Math.round(totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get() * 100.0) / 100.0);
+        int luckFromResistance = (int) ((int) Math.round(totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get() * 10000.0) / 10000.0);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
             luckFromResistance, LUCK_UUID,
             "tcc.fanxing.luck", AttributeModifier.Operation.ADDITION);

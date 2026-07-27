@@ -53,8 +53,8 @@ public class YongjieZhijian extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             int luck = (int) livingEntity.getAttributeValue(AttributeHelper.LUCK);
-            double critChance = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 100.0) / 100.0;
-            double critDamage = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 100.0) / 100.0;
+            double critChance = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritChancePerLuck.get() * 10000.0) / 10000.0;
+            double critDamage = Math.round(luck * TaczCuriosConfig.COMMON.yongjieZhijianCritDamagePerLuck.get() * 10000.0) / 10000.0;
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                 critChance, CRIT_CHANCE_UUID,

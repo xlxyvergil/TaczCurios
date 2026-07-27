@@ -56,9 +56,9 @@ public class GildedSplitChamber extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
+        double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get()) * 100;
         int fusionLevel = FusionData.from(stack).level();
-        double baseBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get() * 100 * fusionLevel;
-        double buffBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get() * 100 * fusionLevel;
+        double buffBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect_base",

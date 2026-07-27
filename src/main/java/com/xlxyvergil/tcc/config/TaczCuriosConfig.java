@@ -787,7 +787,7 @@ public class TaczCuriosConfig {
             gildedArgonScopeCritChancePerLevel = builder.comment("叠层Buff每级暴击几率 (基础值: 0.033, 满级: +40%/级)").defineInRange("critChancePerLevel", 0.033, -1, 100);
             gildedArgonScopeHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (基础值: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
             gildedArgonScopeDuration = builder.comment("Buff持续时间(秒) (基础值: 12)").defineInRange("duration", 12, 1, 300);
-            gildedArgonScopeMaxStacks = builder.comment("最大叠加层数 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
+            gildedArgonScopeMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
             // R-05 尖刃弹头
@@ -803,10 +803,10 @@ public class TaczCuriosConfig {
             
             // R-07 镀层分裂膛室
             builder.comment("镀层分裂膛室饰品配置").push("gilded_split_chamber");
-            gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 0.08)").defineInRange("bulletCountBase", 0.08, -1, 100);
+            gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 0.8)").defineInRange("bulletCountBase", 0.8, -1, 100);
             gildedSplitChamberBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
             gildedSplitChamberDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
-            gildedSplitChamberMaxStacks = builder.comment("最大叠加层数 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
+            gildedSplitChamberMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
             // S-01 破灭
@@ -848,10 +848,10 @@ public class TaczCuriosConfig {
             
             // S-08 镀层地狱弹膛
             builder.comment("镀层地狱弹膛饰品配置").push("gilded_infernal_chamber");
-            gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 0.1)").defineInRange("bulletCountBase", 0.1, -1, 100);
+            gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
             gildedInfernalChamberBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
             gildedInfernalChamberDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
-            gildedInfernalChamberMaxStacks = builder.comment("最大叠加层数 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
+            gildedInfernalChamberMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
             // P-01 弱点专精
@@ -892,7 +892,7 @@ public class TaczCuriosConfig {
             gildedHydraulicCrosshairCritChancePerLevel = builder.comment("叠层Buff每级暴击几率 (基础值: 0.033, 满级: +40%/级)").defineInRange("critChancePerLevel", 0.033, -1, 100);
             gildedHydraulicCrosshairHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (基础值: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
             gildedHydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (基础值: 12)").defineInRange("duration", 12, 1, 300);
-            gildedHydraulicCrosshairMaxStacks = builder.comment("最大叠加层数 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
+            gildedHydraulicCrosshairMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
             // P-08 尖锐子弹
@@ -908,10 +908,10 @@ public class TaczCuriosConfig {
             
             // P-10 镀层弹头扩散
             builder.comment("镀层弹头扩散饰品配置").push("gilded_bullet_spread");
-            gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 0.1)").defineInRange("bulletCountBase", 0.1, -1, 100);
+            gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
             gildedBulletSpreadBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
             gildedBulletSpreadDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
-            gildedBulletSpreadMaxStacks = builder.comment("最大叠加层数 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
+            gildedBulletSpreadMaxStacks = builder.comment("最大buff等级 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
             builder.pop();
             
             // M-01 斩铁
@@ -936,10 +936,10 @@ public class TaczCuriosConfig {
             
             // M-05 镀层斩铁
             builder.comment("镀层斩铁饰品配置").push("gilded_steel_slash");
-            gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (基础值: 0.1)").defineInRange("critChanceBase", 0.1, -1, 100);
+            gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (基础值: 1.1)").defineInRange("critChanceBase", 1.1, -1, 100);
             gildedSteelSlashCritDamagePerLevel = builder.comment("叠层Buff每级暴击伤害 (基础值: 0.025, 满级: +30%/级)").defineInRange("critDamagePerLevel", 0.025, -1, 100);
             gildedSteelSlashDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
-            gildedSteelSlashMaxStacks = builder.comment("最大叠加层数 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
+            gildedSteelSlashMaxStacks = builder.comment("最大buff等级 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
             builder.pop();
             
             // M-06 异况超量

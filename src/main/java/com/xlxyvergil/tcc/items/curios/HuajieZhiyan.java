@@ -66,7 +66,7 @@ public class HuajieZhiyan extends BaseCurioItem {
             "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get() * 100.0) / 100.0;
+        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get() * 10000.0) / 10000.0;
         AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
             healthBoost, MAX_HEALTH_UUID,
             "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
