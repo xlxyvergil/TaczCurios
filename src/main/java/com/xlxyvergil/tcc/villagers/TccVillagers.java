@@ -37,7 +37,8 @@ public class TccVillagers {
     public static void init() {
         ForgeRegistries.VILLAGER_PROFESSIONS.register(ID, PROFESSION);
 
-        // 第1级：普通级饰品 - 2个下界合金碎片 购得1个
+        // 第1级：普通级饰品/内融核心 - 2个下界合金碎片 购得1个
+        sellForNetheriteScrap(1, TccItems.CORE_FUSION, 2, 1, 64, 2);
         sellForNetheriteScrap(1, TccItems.PROPHECY_PACT, 2, 1, 64, 2);
         sellForNetheriteScrap(1, TccItems.BURST_RELOAD, 2, 1, 64, 2);
         sellForNetheriteScrap(1, TccItems.SUSTAINED_FIRE, 2, 1, 64, 2);
