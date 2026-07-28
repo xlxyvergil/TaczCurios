@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.capability.GunKillDataCapability;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
+import com.xlxyvergil.tcc.loot.LootTableEventHandler;
 
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TccVillagers;
@@ -60,6 +61,9 @@ public class TaczCurios
             TccPoiTypes.init();
             TccVillagers.init();
         });
+
+        // 注册自定义战利品函数类型（SetFusionCountFunction）— 使用 Enigmatic Legacy 的 BuiltInRegistries 方式
+        LootTableEventHandler.register();
 
         // 注册Deferred Register
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);

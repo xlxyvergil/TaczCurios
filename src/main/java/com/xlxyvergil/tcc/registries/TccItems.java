@@ -234,7 +234,7 @@ public class TccItems {
     // 我小心海也绝非鳝类 - 提升300%重型武器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
     public static final Item CAREFUL_HEART = new CarefulHeart(new Item.Properties()
             .stacksTo(1)
-            .rarity(RIFT));
+            .rarity(Rarity.EPIC));
     
     // 烈焰风暴 - 增加24%爆炸范围（乘算），增加24%爆炸伤害（乘算）
     public static final Item BLAZE_STORM = new BlazeStorm(new Item.Properties()

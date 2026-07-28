@@ -513,6 +513,16 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue fusionMaxLevelEpic;
         public final ForgeConfigSpec.IntValue fusionVesselCapacity;
 
+        // 融合容器战利品配置
+        public final ForgeConfigSpec.IntValue fusionVesselNetherMin;
+        public final ForgeConfigSpec.IntValue fusionVesselNetherMax;
+        public final ForgeConfigSpec.IntValue fusionVesselEndMin;
+        public final ForgeConfigSpec.IntValue fusionVesselEndMax;
+
+        // 融合容器战利品出现几率
+        public final ForgeConfigSpec.DoubleValue fusionVesselNetherChance;
+        public final ForgeConfigSpec.DoubleValue fusionVesselEndChance;
+
         
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
@@ -1808,6 +1818,28 @@ public class TaczCuriosConfig {
             fusionVesselCapacity = builder
                     .comment("融合容器容量上限（默认: 655200 = 4 × EPIC满级消耗）")
                     .defineInRange("fusionVesselCapacity", 655200, 1, Integer.MAX_VALUE);
+            builder.pop();
+
+            // ==== 融合容器战利品配置 ====
+            builder.comment("融合容器战利品生成配置").push("fusion_vessel_loot");
+            fusionVesselNetherMin = builder
+                    .comment("下界要塞/堡垒遗迹中融合容器包含的内融核心最小数量（默认: 200）")
+                    .defineInRange("netherMin", 200, 1, Integer.MAX_VALUE);
+            fusionVesselNetherMax = builder
+                    .comment("下界要塞/堡垒遗迹中融合容器包含的内融核心最大数量（默认: 1000）")
+                    .defineInRange("netherMax", 1000, 1, Integer.MAX_VALUE);
+            fusionVesselEndMin = builder
+                    .comment("末地城中融合容器包含的内融核心最小数量（默认: 3000）")
+                    .defineInRange("endMin", 3000, 1, Integer.MAX_VALUE);
+            fusionVesselEndMax = builder
+                    .comment("末地城中融合容器包含的内融核心最大数量（默认: 10000）")
+                    .defineInRange("endMax", 10000, 1, Integer.MAX_VALUE);
+            fusionVesselNetherChance = builder
+                    .comment("下界要塞/堡垒遗迹中出现融合容器的几率（0~1，默认: 0.01 = 1%）")
+                    .defineInRange("netherChance", 0.01, 0.0, 1.0);
+            fusionVesselEndChance = builder
+                    .comment("末地城战利品箱中出现融合容器的几率（0~1，默认: 0.005 = 0.5%）")
+                    .defineInRange("endChance", 0.005, 0.0, 1.0);
             builder.pop();
         }
     }

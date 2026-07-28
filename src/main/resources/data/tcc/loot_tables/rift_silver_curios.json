@@ -148,6 +148,11 @@
         {
           "type": "minecraft:item",
           "weight": 8,
+          "name": "tcc:careful_heart"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 8,
           "name": "tcc:oppression_point_prime"
         },
         {

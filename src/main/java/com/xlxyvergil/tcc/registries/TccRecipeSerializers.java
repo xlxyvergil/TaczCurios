@@ -2,7 +2,7 @@ package com.xlxyvergil.tcc.registries;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.recipe.FusionUpgradeRecipeSerializer;
-import com.xlxyvergil.tcc.recipe.FusionUpgradeRecipe;
+import com.xlxyvergil.tcc.recipe.FusionVesselCombineRecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -15,4 +15,7 @@ public class TccRecipeSerializers {
 
     public static final RegistryObject<FusionUpgradeRecipeSerializer> FUSION_UPGRADE =
             RECIPE_SERIALIZERS.register("fusion_upgrade", FusionUpgradeRecipeSerializer::new);
+
+    public static final RegistryObject<FusionVesselCombineRecipeSerializer> FUSION_VESSEL_COMBINE =
+            RECIPE_SERIALIZERS.register("fusion_vessel_combine", FusionVesselCombineRecipeSerializer::new);
 }
