@@ -57,7 +57,7 @@ public final class AchievementProgressRenderer {
 
         AchievementDefinitions.AchievementDef def = TaczCuriosClientTooltip.getAchievementForItem(itemId.toString());
         if (def == null) return;
-        if (def.criteriaCount() <= 0) return;
+        if (def.targetCount() <= 0) return;
         if (def.reward() == null) return;
 
         // 成就达成后不再显示进度
@@ -117,10 +117,12 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // kills 条件（仅显示当前击杀数）
+        // kills 条件
         if (conds.kills() != null && !conds.kills().isEmpty()) {
             hasDisplayable = true;
+
             if (conds.kills().size() == 1) {
+                // 单类型：直接显示进度
                 AchievementDefinitions.KillCondition kc = conds.kills().get(0);
                 String entityName = "*".equals(kc.entity())
                         ? Component.translatable("tcc.tooltip.achievement_cond_any_entity").getString()
@@ -129,12 +131,36 @@ public final class AchievementProgressRenderer {
                         Component.literal(entityName),
                         Component.literal(String.valueOf(nbtStep))
                                 .withStyle(ChatFormatting.GREEN));
+            } else if ("and".equals(conds.mode())) {
+                // AND 多类型击杀：逐类型显示子进度
+                for (var kc : conds.kills()) {
+                    String subKey = def.id() + "|" + kc.entity();
+                    int sub = TccPlayerDataCapability.getAchievementProgress(player, subKey);
+                    int target = kc.criteriaCount();
+
+                    String entityName = "*".equals(kc.entity())
+                            ? Component.translatable("tcc.tooltip.achievement_cond_any_entity").getString()
+                            : AchievementDefinitions.entityDisplayName(kc.entity());
+                    addConditionLine(tooltip,
+                            Component.literal(entityName),
+                            Component.literal(sub + "/" + target)
+                                    .withStyle(ChatFormatting.GREEN));
+                }
             } else {
-                // 多个击杀条件：NBT 进度是总体击杀数，无法按实体拆分
-                addConditionLine(tooltip,
-                        Component.translatable("tcc.tooltip.achievement_cond_kill"),
-                        Component.literal(String.valueOf(nbtStep))
-                                .withStyle(ChatFormatting.GREEN));
+                // OR 多类型击杀：逐类型显示独立子进度
+                for (var kc : conds.kills()) {
+                    String subKey = def.id() + "|" + kc.entity();
+                    int sub = TccPlayerDataCapability.getAchievementProgress(player, subKey);
+                    int target = kc.criteriaCount();
+
+                    String entityName = "*".equals(kc.entity())
+                            ? Component.translatable("tcc.tooltip.achievement_cond_any_entity").getString()
+                            : AchievementDefinitions.entityDisplayName(kc.entity());
+                    addConditionLine(tooltip,
+                            Component.literal(entityName),
+                            Component.literal(sub + "/" + target)
+                                    .withStyle(ChatFormatting.GREEN));
+                }
             }
         }
 

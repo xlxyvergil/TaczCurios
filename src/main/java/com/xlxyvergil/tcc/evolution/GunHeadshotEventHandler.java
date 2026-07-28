@@ -117,12 +117,17 @@ public final class GunHeadshotEventHandler {
             // Check kill conditions
             if (!AchievementConditionMatcher.matchesKillConditions(player, other, gunId, def)) continue;
 
-            // Award criterion(s) based on kill value
-            var matchedKill = AchievementConditionMatcher.findMatchingKillCondition(
-                    other, def.conditions());
-            int killValue = matchedKill.map(AchievementDefinitions.KillCondition::value).orElse(1);
-            RuleAdvancementMapping.awardSteps(
-                    serverPlayer, def.id(), def.criteriaCount(), killValue);
+            // Award criterion(s) — 1 step per kill
+            var kills = def.conditions() != null ? def.conditions().kills() : null;
+            if (kills != null && kills.size() > 1) {
+                if (other == null) continue;
+                String killedKey = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(other.getType()).toString();
+                RuleAdvancementMapping.awardMultiTypeKill(
+                        serverPlayer, def.id(), def, killedKey, 1);
+            } else {
+                RuleAdvancementMapping.awardSteps(
+                        serverPlayer, def.id(), def.targetCount(), 1);
+            }
         }
     }
 

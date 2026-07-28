@@ -31,7 +31,7 @@ public final class EvolutionScriptApi {
         if (!(player instanceof net.minecraft.server.level.ServerPlayer sp)) return false;
         if (RuleAdvancementMapping.isAdvancementDone(sp, def.id())) return false;
         if (!RuleAdvancementMapping.arePrerequisitesMet(sp, def)) return false;
-        return RuleAdvancementMapping.awardNextCriterion(sp, def.id(), def.criteriaCount());
+        return RuleAdvancementMapping.awardNextCriterion(sp, def.id(), def.targetCount());
     }
 
     public static boolean applyAttribute(Player player, LivingEntity killed, DamageSource source, String ruleId) {

@@ -286,7 +286,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
 
         // Award achievement
         RuleAdvancementMapping.awardNextCriterion(
-                serverPlayer, def.id(), def.criteriaCount());
+                serverPlayer, def.id(), def.targetCount());
     }
     
     /**

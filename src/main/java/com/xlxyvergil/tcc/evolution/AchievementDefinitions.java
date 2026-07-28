@@ -197,7 +197,6 @@ public final class AchievementDefinitions {
         String parent,
         String trigger,
         @SerializedName("playerKilled") Boolean playerKilled,
-        @SerializedName("criteria_count") int criteriaCount,
         AchievementConditions conditions,
         List<String> prerequisites,
         Reward reward,
@@ -211,7 +210,6 @@ public final class AchievementDefinitions {
                 fromJson.parent,
                 fromJson.trigger,
                 fromJson.playerKilled,
-                fromJson.criteriaCount,
                 fromJson.conditions,
                 fromJson.prerequisites,
                 fromJson.reward,
@@ -224,6 +222,37 @@ public final class AchievementDefinitions {
 
         public boolean isPlayerKilled() { return playerKilled != null && playerKilled; }
         public ResourceLocation idRL() { return new ResourceLocation(id); }
+
+        /**
+         * @return 成就的目标计数。
+         *   <ul>
+         *     <li>击杀类（OR/单类型）：各 {@link KillCondition#criteriaCount()} 之和</li>
+         *     <li>击杀类（AND）：子目标 {@link KillCondition#criteriaCount()} 之和（用于显示）</li>
+         *     <li>stat_polling：{@link AchievementConditions#criteriaCount()}，默认 1</li>
+         *     <li>其他（biome_visit 等）：1</li>
+         *   </ul>
+         */
+        public int targetCount() {
+            if (conditions != null && conditions.kills() != null && !conditions.kills().isEmpty()) {
+                int total = 0;
+                for (KillCondition kc : conditions.kills()) {
+                    total += kc.criteriaCount();
+                }
+                return total;
+            }
+            if (conditions != null && conditions.stat() != null) {
+                return conditions.criteriaCount();
+            }
+            return 1;
+        }
+
+        /** 是否为 AND 多类型击杀：conditions.mode == "and" 且 kills.size > 1 */
+        public boolean isMultiTypeKill() {
+            return conditions != null
+                    && "and".equals(conditions.mode())
+                    && conditions.kills() != null
+                    && conditions.kills().size() > 1;
+        }
 
         /** Get display title for a locale */
         public String title(String locale) {
@@ -260,9 +289,11 @@ public final class AchievementDefinitions {
         @SerializedName("minDistance") Double minDistance,
         List<AttributeCondition> attributes,
         String killer,
+        // --- and/or mode ---
+        @SerializedName("mode") String mode,
         // --- stat_polling ---
         String stat,
-        @SerializedName("statThreshold") int statThreshold,
+        @SerializedName("criteria_count") int criteriaCount,
         // --- biome_visit ---
         String biome,
         String dimension,
@@ -272,8 +303,8 @@ public final class AchievementDefinitions {
         @SerializedName("healthMin") Double healthMin,
         @SerializedName("healthMax") Double healthMax
     ) {
-        /** stat 阈值，若 JSON 未设置则默认 1 */
-        public int statThreshold() { return statThreshold > 0 ? statThreshold : 1; }
+        /** 统计目标计数，若 JSON 未设置则默认 1 */
+        public int criteriaCount() { return criteriaCount > 0 ? criteriaCount : 1; }
     }
 
     public record StatCondition(
@@ -286,10 +317,10 @@ public final class AchievementDefinitions {
     public record KillCondition(
         String entity,
         List<String> nbt,
-        int value
+        @SerializedName("criteria_count") int criteriaCount
     ) {
-        /** @return 该击杀条件贡献的进度步骤数，默认为 1 */
-        public int value() { return value > 0 ? value : 1; }
+        /** @return 该击杀条件要求的总计数，默认为 1 */
+        public int criteriaCount() { return criteriaCount > 0 ? criteriaCount : 1; }
     }
 
     public record AttributeCondition(

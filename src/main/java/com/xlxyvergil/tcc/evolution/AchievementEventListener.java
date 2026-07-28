@@ -58,6 +58,6 @@ public final class AchievementEventListener {
 
         if (!RuleAdvancementMapping.arePrerequisitesMet(player, def)) return;
 
-        RuleAdvancementMapping.awardAll(player, def.id(), def.criteriaCount());
+        RuleAdvancementMapping.awardAll(player, def.id(), def.targetCount());
     }
 }

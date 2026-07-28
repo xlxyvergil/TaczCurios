@@ -51,12 +51,16 @@ public final class GunKillEventHandler {
                 // Check conditions
                 if (!AchievementConditionMatcher.matchesKillConditions(player, killed, gunId, def)) continue;
 
-                // Award criterion(s) based on kill value
-                var matchedKill = AchievementConditionMatcher.findMatchingKillCondition(
-                        killed, def.conditions());
-                int killValue = matchedKill.map(AchievementDefinitions.KillCondition::value).orElse(1);
-                RuleAdvancementMapping.awardSteps(
-                        serverPlayer, def.id(), def.criteriaCount(), killValue);
+                // Award criterion(s) — 1 step per kill
+                var kills = def.conditions() != null ? def.conditions().kills() : null;
+                if (kills != null && kills.size() > 1) {
+                    String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
+                    RuleAdvancementMapping.awardMultiTypeKill(
+                            serverPlayer, def.id(), def, killedKey, 1);
+                } else {
+                    RuleAdvancementMapping.awardSteps(
+                            serverPlayer, def.id(), def.targetCount(), 1);
+                }
             }
         }
 

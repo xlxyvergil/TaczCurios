@@ -115,11 +115,11 @@ public final class StatPollingEventHandler {
         if (registered == null) return;
 
         int current = player.getStats().getValue(Stats.CUSTOM.get(registered));
-        int criteriaCount = def.criteriaCount();
+        int target = def.targetCount();
 
-        if (current >= criteriaCount) {
-            // Stat value meets or exceeds criteria_count, complete the achievement
-            RuleAdvancementMapping.awardAll(player, def.id(), criteriaCount);
+        if (current >= target) {
+            // Stat value meets or exceeds target, complete the achievement
+            RuleAdvancementMapping.awardAll(player, def.id(), target);
         }
     }
 
@@ -165,7 +165,7 @@ public final class StatPollingEventHandler {
         }
 
         if (matched) {
-            RuleAdvancementMapping.awardAll(player, def.id(), def.criteriaCount());
+            RuleAdvancementMapping.awardAll(player, def.id(), def.targetCount());
         }
     }
 

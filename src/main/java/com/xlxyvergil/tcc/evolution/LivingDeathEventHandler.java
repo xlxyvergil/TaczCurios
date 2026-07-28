@@ -72,7 +72,7 @@ public final class LivingDeathEventHandler {
         if (RuleAdvancementMapping.isAdvancementDone(sp, def.id())) return false;
         if (!RuleAdvancementMapping.arePrerequisitesMet(sp, def)) return false;
         if (!AchievementConditionMatcher.matchesDeathConditions(player, null, otherEntity, def)) return false;
-        RuleAdvancementMapping.awardAll(sp, def.id(), def.criteriaCount());
+        RuleAdvancementMapping.awardAll(sp, def.id(), def.targetCount());
         return true;
     }
 
@@ -122,7 +122,7 @@ public final class LivingDeathEventHandler {
                 if (!AchievementConditionMatcher.matchesDeathConditions(player, killed, otherEntity, def)) { continue; }
 
                 RuleAdvancementMapping.awardNextCriterion(
-                        serverPlayer, def.id(), def.criteriaCount());
+                        serverPlayer, def.id(), def.targetCount());
             }
         }
 
