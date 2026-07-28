@@ -75,19 +75,20 @@ public class TaczCurios
                 com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp);
             }
         });
-        // 注册玩家死亡复活事件（复制 Capability + 延迟同步到客户端）
+        // 注册玩家死亡复活/维度切换事件（复制 Capability + 延迟同步到客户端）
+        // PlayerEvent.Clone 在死亡复活 (isWasDeath=true) 和维度切换 (isWasDeath=false) 时都会触发，
+        // 两种情况下都需要复制 Capability 数据并同步客户端
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.Clone event) -> {
-            if (!event.isWasDeath()) return;
             Player original = event.getOriginal();
             Player entity = event.getEntity();
             original.reviveCaps();
-            // 显式复制数据（Forge NBT 持久化在复活流程中不一定可靠）
+            // 显式复制数据（Forge NBT 持久化在客户端切换/复活流程中不一定可靠）
             var oldHandler = original.getCapability(TccPlayerDataCapability.CAPABILITY).orElse(null);
             if (oldHandler != null) {
                 entity.getCapability(TccPlayerDataCapability.CAPABILITY).ifPresent(newHandler ->
                     newHandler.copyFrom(oldHandler));
             }
-            // 延迟同步到下一 tick，确保 respawn packet 先到客户端创建新玩家
+            // 延迟同步到下一 tick，确保 respawn/维度切换 packet 先到客户端创建新玩家
             if (entity instanceof ServerPlayer sp) {
                 sp.server.execute(() ->
                     com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp));
