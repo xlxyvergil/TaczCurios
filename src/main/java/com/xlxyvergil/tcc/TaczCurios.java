@@ -14,6 +14,7 @@ import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -72,6 +73,24 @@ public class TaczCurios
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
                 com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp);
+            }
+        });
+        // 注册玩家死亡复活事件（复制 Capability + 延迟同步到客户端）
+        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.Clone event) -> {
+            if (!event.isWasDeath()) return;
+            Player original = event.getOriginal();
+            Player entity = event.getEntity();
+            original.reviveCaps();
+            // 显式复制数据（Forge NBT 持久化在复活流程中不一定可靠）
+            var oldHandler = original.getCapability(TccPlayerDataCapability.CAPABILITY).orElse(null);
+            if (oldHandler != null) {
+                entity.getCapability(TccPlayerDataCapability.CAPABILITY).ifPresent(newHandler ->
+                    newHandler.copyFrom(oldHandler));
+            }
+            // 延迟同步到下一 tick，确保 respawn packet 先到客户端创建新玩家
+            if (entity instanceof ServerPlayer sp) {
+                sp.server.execute(() ->
+                    com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp));
             }
         });
         // 注册天火流血结算事件处理器

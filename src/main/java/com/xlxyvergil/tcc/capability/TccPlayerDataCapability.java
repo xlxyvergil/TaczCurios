@@ -28,8 +28,8 @@ import java.util.Set;
  * </ul>
  * <p>
  * 使用 Capability 而非 {@code persistentData} 的主要优势是
- * Forge 在 {@code PlayerEvent.Clone}（死亡复活）时会自动复制数据，
- * 避免因死亡导致成就进度丢失。
+ * Capability 随玩家 NBT 自动持久化（player.dat），
+ * 死亡复活后新玩家加载时自动恢复，且被 Forge 的 {@code PlayerEvent.Clone} 事件机制正确复制。
  */
 public final class TccPlayerDataCapability {
 
@@ -84,6 +84,19 @@ public final class TccPlayerDataCapability {
 
         public Set<String> getVisitedDimensions() {
             return visitedDimensions;
+        }
+
+        /**
+         * 从另一个 Handler 复制所有数据（用于 PlayerEvent.Clone 死亡复活）。
+         * Forge 的 Capability NBT 持久化在复活流程中不一定可靠，需要显式复制。
+         */
+        public void copyFrom(Handler other) {
+            this.achievementProgress.clear();
+            this.achievementProgress.putAll(other.achievementProgress);
+            this.visitedBiomes.clear();
+            this.visitedBiomes.addAll(other.visitedBiomes);
+            this.visitedDimensions.clear();
+            this.visitedDimensions.addAll(other.visitedDimensions);
         }
 
         // ===== NBT Serialization =====
