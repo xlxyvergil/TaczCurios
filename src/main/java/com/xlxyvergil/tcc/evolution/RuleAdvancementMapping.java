@@ -1,8 +1,8 @@
 package com.xlxyvergil.tcc.evolution;
 
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.network.NetworkHandler;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -12,17 +12,15 @@ import net.minecraft.server.level.ServerPlayer;
  * All mapping and logic is driven by achievement_definitions.json.
  * This class provides convenience methods for:
  * - Checking if an achievement is done
- * - Awarding criteria (advancing progress via NBT tracking)
+ * - Awarding criteria (advancing progress via Capability tracking)
  * - Checking prerequisites
  * <p>
- * Progress is tracked in the player's persistent NBT data, not in the advancement
+ * Progress is tracked in the player's {@link TccPlayerDataCapability}, not in the advancement
  * criteria. Achievements only have a single {@code step_1} criterion.
- * When the accumulated NBT progress reaches {@code criteriaCount},
+ * When the accumulated progress reaches {@code criteriaCount},
  * {@code step_1} is awarded, completing the achievement.
  */
 public final class RuleAdvancementMapping {
-    private static final String PROGRESS_PREFIX = "tcc_ach_progress_";
-
     private RuleAdvancementMapping() {}
 
     /** Check if the player has completed the achievement for this achievement ID. */
@@ -33,16 +31,14 @@ public final class RuleAdvancementMapping {
         return player.getAdvancements().getOrStartProgress(adv).isDone();
     }
 
-    /** Get current progress from player NBT. */
+    /** Get current progress from player Capability. */
     public static int getProgress(ServerPlayer player, String achievementId) {
-        CompoundTag data = player.getPersistentData();
-        return data.getInt(PROGRESS_PREFIX + achievementId.replace(':', '_'));
+        return TccPlayerDataCapability.getAchievementProgress(player, achievementId);
     }
 
-    /** Set progress in player NBT. */
+    /** Set progress in player Capability. */
     private static void setProgress(ServerPlayer player, String achievementId, int progress) {
-        CompoundTag data = player.getPersistentData();
-        data.putInt(PROGRESS_PREFIX + achievementId.replace(':', '_'), progress);
+        TccPlayerDataCapability.setAchievementProgress(player, achievementId, progress);
     }
 
     /**

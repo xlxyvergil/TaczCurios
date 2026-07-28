@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.client;
 
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -9,9 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
@@ -33,13 +31,12 @@ import java.util.List;
  *   <li>biome → "群系: name" 或 "群系: ???"</li>
  *   <li>dimension → "维度: name" 或 "维度: ???"</li>
  * </ul>
+ * <p>
+ * 数据从 {@link TccPlayerDataCapability} 读取，该 Capability 由服务端通过
+ * {@link com.xlxyvergil.tcc.network.SyncProgressS2CPacket} 同步至客户端。
  */
 @OnlyIn(Dist.CLIENT)
 public final class AchievementProgressRenderer {
-
-    private static final String PROGRESS_PREFIX = "tcc_ach_progress_";
-    private static final String VISITED_BIOMES_KEY = "tcc_visited_biomes";
-    private static final String VISITED_DIMENSIONS_KEY = "tcc_visited_dimensions";
 
     private AchievementProgressRenderer() {}
 
@@ -68,7 +65,6 @@ public final class AchievementProgressRenderer {
 
         var player = Minecraft.getInstance().player;
         if (player == null) return;
-        CompoundTag data = player.getPersistentData();
 
         // 第一行：进度标题
         tooltip.add(Component.literal(""));
@@ -76,19 +72,17 @@ public final class AchievementProgressRenderer {
                 .withStyle(ChatFormatting.GRAY));
 
         // 第二行起：各条件进度
-        appendConditionProgress(player, data, def, tooltip);
+        appendConditionProgress(player, def, tooltip);
     }
 
     /**
      * 按条件类型逐行显示成就进度。
      */
     private static void appendConditionProgress(net.minecraft.client.player.LocalPlayer player,
-                                                CompoundTag data,
                                                 AchievementDefinitions.AchievementDef def,
                                                 List<Component> tooltip) {
         AchievementDefinitions.AchievementConditions conds = def.conditions();
-        String nbtKey = PROGRESS_PREFIX + def.id().replace(':', '_');
-        int nbtStep = data.getInt(nbtKey);
+        int nbtStep = TccPlayerDataCapability.getAchievementProgress(player, def.id());
 
         // 无显式条件：显示总体进度
         if (conds == null) {
@@ -150,7 +144,7 @@ public final class AchievementProgressRenderer {
             ResourceLocation biomeId = ResourceLocation.tryParse(conds.biome());
             if (biomeId != null) {
                 String name = I18n.get(Util.makeDescriptionId("biome", biomeId));
-                boolean visited = isInNbtList(data, VISITED_BIOMES_KEY, biomeId.toString());
+                boolean visited = TccPlayerDataCapability.hasVisitedBiome(player, biomeId.toString());
                 addConditionLine(tooltip,
                         Component.translatable("tcc.tooltip.achievement_cond_biome"),
                         visited ? Component.literal(name).withStyle(ChatFormatting.GREEN)
@@ -181,7 +175,7 @@ public final class AchievementProgressRenderer {
             ResourceLocation dimId = ResourceLocation.tryParse(conds.dimension());
             if (dimId != null) {
                 String name = I18n.get("dimension." + dimId.getPath());
-                boolean visited = isInNbtList(data, VISITED_DIMENSIONS_KEY, dimId.toString());
+                boolean visited = TccPlayerDataCapability.hasVisitedDimension(player, dimId.toString());
                 addConditionLine(tooltip,
                         Component.translatable("tcc.tooltip.achievement_cond_dimension"),
                         visited ? Component.literal(name).withStyle(ChatFormatting.GREEN)
@@ -190,7 +184,7 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // 无可显示的进度条件（仅有 equippedCurios/attributes 等二元判定）：显示总体 NBT 进度
+        // 无可显示的进度条件（仅有 equippedCurios/attributes 等二元判定）：显示总体进度
         if (!hasDisplayable) {
             addConditionLine(tooltip,
                     Component.translatable("tcc.tooltip.achievement_cond_progress"),
@@ -269,15 +263,5 @@ public final class AchievementProgressRenderer {
         }
     }
 
-    /**
-     * 检查某个 ID 是否在玩家 NBT 的字符串列表中（用于 biome/dimension 访问记录）。
-     */
-    private static boolean isInNbtList(CompoundTag data, String key, String value) {
-        if (!data.contains(key, Tag.TAG_LIST)) return false;
-        ListTag list = data.getList(key, Tag.TAG_STRING);
-        for (int i = 0; i < list.size(); i++) {
-            if (list.getString(i).equals(value)) return true;
-        }
-        return false;
-    }
 }
+

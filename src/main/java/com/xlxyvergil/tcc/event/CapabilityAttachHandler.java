@@ -2,15 +2,17 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
  * Capability 挂载事件处理。
- * 将所有 TCC 所需的自定义 Capability 挂载到 LivingEntity 上。
+ * 将所有 TCC 所需的自定义 Capability 挂载到 LivingEntity / Player 上。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CapabilityAttachHandler {
@@ -25,6 +27,12 @@ public class CapabilityAttachHandler {
             event.addCapability(
                 GunKillDataCapability.ID,
                 new GunKillDataCapability.Provider()
+            );
+        }
+        if (event.getObject() instanceof Player) {
+            event.addCapability(
+                TccPlayerDataCapability.ID,
+                new TccPlayerDataCapability.Provider()
             );
         }
     }

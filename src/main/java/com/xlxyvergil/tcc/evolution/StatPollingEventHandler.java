@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -169,32 +170,28 @@ public final class StatPollingEventHandler {
     }
 
     /**
-     * 将访问记录写入玩家 NBT 列表，避免重复。
+     * 将访问记录写入玩家 Capability，避免重复。
      */
     private static void recordVisit(ServerPlayer player, String nbtKey, String id) {
-        CompoundTag data = player.getPersistentData();
-        net.minecraft.nbt.ListTag list;
-        if (data.contains(nbtKey, net.minecraft.nbt.Tag.TAG_LIST)) {
-            list = data.getList(nbtKey, net.minecraft.nbt.Tag.TAG_STRING);
-            for (net.minecraft.nbt.Tag tag : list) {
-                if (tag.getAsString().equals(id)) return; // 已记录
-            }
+        boolean added;
+        if (VISITED_BIOMES_KEY.equals(nbtKey)) {
+            added = TccPlayerDataCapability.addVisitedBiome(player, id);
+        } else if (VISITED_DIMENSIONS_KEY.equals(nbtKey)) {
+            added = TccPlayerDataCapability.addVisitedDimension(player, id);
         } else {
-            list = new net.minecraft.nbt.ListTag();
+            return;
         }
-        list.add(net.minecraft.nbt.StringTag.valueOf(id));
-        data.put(nbtKey, list);
-
-        // 同步到客户端
-        NetworkHandler.syncVisited(player, nbtKey, id);
+        if (added) {
+            // 仅首次记录时同步到客户端
+            NetworkHandler.syncVisited(player, nbtKey, id);
+        }
     }
 
     private static boolean isInNbtList(ServerPlayer player, String nbtKey, String target) {
-        CompoundTag data = player.getPersistentData();
-        if (!data.contains(nbtKey, net.minecraft.nbt.Tag.TAG_LIST)) return false;
-        var list = data.getList(nbtKey, net.minecraft.nbt.Tag.TAG_STRING);
-        for (var tag : list) {
-            if (tag.getAsString().equals(target)) return true;
+        if (VISITED_BIOMES_KEY.equals(nbtKey)) {
+            return TccPlayerDataCapability.hasVisitedBiome(player, target);
+        } else if (VISITED_DIMENSIONS_KEY.equals(nbtKey)) {
+            return TccPlayerDataCapability.hasVisitedDimension(player, target);
         }
         return false;
     }

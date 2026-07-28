@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
 
@@ -44,6 +45,7 @@ public class TaczCurios
         modEventBus.addListener((RegisterCapabilitiesEvent e) -> {
             e.register(CurioAdaptationCapability.Handler.class);
             e.register(GunKillDataCapability.Handler.class);
+            e.register(TccPlayerDataCapability.Handler.class);
         });
 
         // 在 RegisterEvent<BLOCK> 时统一注册方块、物品、POI 类型和村民职业

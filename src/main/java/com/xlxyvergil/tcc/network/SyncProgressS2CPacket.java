@@ -1,9 +1,7 @@
 package com.xlxyvergil.tcc.network;
 
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -18,12 +16,10 @@ import java.util.function.Supplier;
  *   - 维度访问: "visited_tcc_visited_dimensions#minecraft:the_end"
  *   - 群系访问: "visited_tcc_visited_biomes#minecraft:plains"
  * <p>
- * 客户端收到后将数据写入 {@code Minecraft.getInstance().player.getPersistentData()}，
- * 供 tooltip 显示时直接从玩家 NBT 读取。
+ * 客户端收到后将数据写入 {@link TccPlayerDataCapability}，
+ * 供 tooltip 显示时从 Capability 读取。
  */
 public record SyncProgressS2CPacket(String key, int value) {
-
-    private static final String PROGRESS_PREFIX = "tcc_ach_progress_";
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeUtf(key);
@@ -39,37 +35,22 @@ public record SyncProgressS2CPacket(String key, int value) {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
                 var player = Minecraft.getInstance().player;
                 if (player == null) return;
-                CompoundTag data = player.getPersistentData();
 
                 if (key.startsWith("progress_")) {
-                    // 成就进度写入玩家 NBT
+                    // 成就进度写入 Capability
                     String achievementId = key.substring("progress_".length());
-                    String nbtKey = PROGRESS_PREFIX + achievementId.replace(':', '_');
-                    data.putInt(nbtKey, value);
+                    TccPlayerDataCapability.setAchievementProgress(player, achievementId, value);
                 } else if (key.startsWith("visited_")) {
-                    // 维度/群系访问记录写入玩家 NBT 列表
+                    // 维度/群系访问记录写入 Capability
                     String rest = key.substring("visited_".length());
                     int hashIdx = rest.indexOf('#');
                     if (hashIdx >= 0) {
                         String listKey = rest.substring(0, hashIdx);
                         String id = rest.substring(hashIdx + 1);
-                        ListTag list;
-                        if (data.contains(listKey, net.minecraft.nbt.Tag.TAG_LIST)) {
-                            list = data.getList(listKey, net.minecraft.nbt.Tag.TAG_STRING);
-                        } else {
-                            list = new ListTag();
-                        }
-                        // 去重
-                        boolean found = false;
-                        for (var tag : list) {
-                            if (tag.getAsString().equals(id)) {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found) {
-                            list.add(StringTag.valueOf(id));
-                            data.put(listKey, list);
+                        if (NetworkHandler.VISITED_BIOMES_KEY.equals(listKey)) {
+                            TccPlayerDataCapability.addVisitedBiome(player, id);
+                        } else if (NetworkHandler.VISITED_DIMENSIONS_KEY.equals(listKey)) {
+                            TccPlayerDataCapability.addVisitedDimension(player, id);
                         }
                     }
                 }
