@@ -765,8 +765,8 @@
         },
         "icon": "tcc:su",
         "description": {
-          "zh_cn": "使用步枪击杀僵尸100次",
-          "en_us": "Kill Zombies 100 times with rifle"
+          "zh_cn": "使用步枪击杀亡灵生物100次",
+          "en_us": "Kill Undead Mobs 100 times with rifle"
         },
         "frame": "goal",
         "hidden": false
@@ -776,7 +776,7 @@
       "conditions": {
         "holdingGunTypes": ["rifle"],
         "kills": [
-          { "entity": "minecraft:zombie", "criteria_count": 100 }
+          { "entity": "#minecraft:undead", "criteria_count": 100 }
         ]
       },
       "prerequisites": [],

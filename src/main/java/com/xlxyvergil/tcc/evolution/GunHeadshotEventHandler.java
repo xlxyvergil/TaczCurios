@@ -121,9 +121,8 @@ public final class GunHeadshotEventHandler {
             var kills = def.conditions() != null ? def.conditions().kills() : null;
             if (kills != null && kills.size() > 1) {
                 if (other == null) continue;
-                String killedKey = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(other.getType()).toString();
                 RuleAdvancementMapping.awardMultiTypeKill(
-                        serverPlayer, def.id(), def, killedKey, 1);
+                        serverPlayer, def.id(), def, other, 1);
             } else {
                 RuleAdvancementMapping.awardSteps(
                         serverPlayer, def.id(), def.targetCount(), 1);

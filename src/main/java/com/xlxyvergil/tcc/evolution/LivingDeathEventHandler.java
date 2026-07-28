@@ -85,13 +85,12 @@ public final class LivingDeathEventHandler {
         if (!matchesDamageSource(rule, source)) return false;
         if (killed == null) return false;
 
-        String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
         ItemStack tracked = findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
         if (tracked.isEmpty()) return false;
 
         boolean changed = false;
         for (EvolutionRegistry.KillGain k : rule.kills) {
-            if (killedKey.equals(k.entity.key)
+            if (EntityConditionHelper.matchesEntityKey(k.entity.key, killed)
                     && EntityConditionHelper.matchesNbtFilters(killed, k.entity.nbt)) {
                 changed |= incrementProgress(tracked, rule.progress.nbtKey,
                         rule.progress.capCounterKey, rule.progress.cap, k.value);
@@ -140,7 +139,7 @@ public final class LivingDeathEventHandler {
 
             boolean changed = false;
             for (EvolutionRegistry.KillGain k : rule.kills) {
-                if (killedKey.equals(k.entity.key)
+                if (EntityConditionHelper.matchesEntityKey(k.entity.key, killed)
                         && EntityConditionHelper.matchesNbtFilters(killed, k.entity.nbt)) {
                     if (!passesExtraRequirements(player, killed, rule.requirements)) continue;
                     changed |= incrementProgress(tracked, rule.progress.nbtKey,

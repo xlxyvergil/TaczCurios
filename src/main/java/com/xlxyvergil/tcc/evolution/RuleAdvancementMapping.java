@@ -3,9 +3,11 @@ package com.xlxyvergil.tcc.evolution;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions.KillCondition;
 import com.xlxyvergil.tcc.network.NetworkHandler;
+import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
 
@@ -140,17 +142,17 @@ public final class RuleAdvancementMapping {
     /**
      * 处理多类型击杀的进度更新。
      * <p>
-     * 每种实体类型的击杀数使用复合 key {@code <achievementId>|<entityType>} 分别追踪。
+     * 每种实体类型的击杀数使用复合 key {@code <achievementId>|<entity>} 分别追踪。
      * AND 语义：所有子目标均达到后 award。
      * OR 语义：任一子目标达到后 award。
      * <p>
      * 同步总进度（各子进度之和）用于 tooltip 显示。
      *
-     * @param killedEntityKey 被击杀实体的 registry key（如 minecraft:zombie）
+     * @param killed 被击杀的实体（支持 #tag 匹配）
      */
     public static void awardMultiTypeKill(ServerPlayer player, String achievementId,
                                           AchievementDefinitions.AchievementDef def,
-                                          String killedEntityKey, int steps) {
+                                          LivingEntity killed, int steps) {
         if (player.server == null) return;
         if (isAdvancementDone(player, achievementId)) return;
 
@@ -159,7 +161,7 @@ public final class RuleAdvancementMapping {
 
         // 更新被击杀实体的子进度
         for (KillCondition kc : kills) {
-            if (!"*".equals(kc.entity()) && !killedEntityKey.equals(kc.entity())) continue;
+            if (!EntityConditionHelper.matchesEntityKey(kc.entity(), killed)) continue;
 
             String key = subKey(achievementId, kc.entity());
             int current = TccPlayerDataCapability.getAchievementProgress(player, key);

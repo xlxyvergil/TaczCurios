@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,9 +53,8 @@ public final class GunKillEventHandler {
                 // Award criterion(s) — 1 step per kill
                 var kills = def.conditions() != null ? def.conditions().kills() : null;
                 if (kills != null && kills.size() > 1) {
-                    String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
                     RuleAdvancementMapping.awardMultiTypeKill(
-                            serverPlayer, def.id(), def, killedKey, 1);
+                            serverPlayer, def.id(), def, killed, 1);
                 } else {
                     RuleAdvancementMapping.awardSteps(
                             serverPlayer, def.id(), def.targetCount(), 1);
@@ -76,7 +74,6 @@ public final class GunKillEventHandler {
     private static void applyAttributeRule(Player player, LivingEntity killed,
                                             ResourceLocation gunId, EvolutionRegistry.Rule rule) {
         if (rule.item == null || rule.item.isBlank() || rule.progress == null || killed == null) return;
-        String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
 
         ItemStack tracked = findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
         if (tracked.isEmpty()) return;
@@ -86,7 +83,7 @@ public final class GunKillEventHandler {
         boolean changed = false;
         for (EvolutionRegistry.KillGain k : rule.kills) {
             if (k == null || k.entity == null) continue;
-            if (!killedKey.equals(k.entity.key)) continue;
+            if (!EntityConditionHelper.matchesEntityKey(k.entity.key, killed)) continue;
             if (!EntityConditionHelper.matchesNbtFilters(killed, k.entity.nbt)) continue;
             changed |= incrementProgress(tracked, rule.progress.nbtKey,
                     rule.progress.capCounterKey, rule.progress.cap, k.value);

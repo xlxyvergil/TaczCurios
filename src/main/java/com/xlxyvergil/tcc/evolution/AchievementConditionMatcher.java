@@ -99,19 +99,17 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check killer entity type (who killed the player)
+        // Check killer entity type (who killed the player, supports #tag)
         if (c.killer() != null) {
             if (otherEntity == null) { return false; }
-            String killerKey = BuiltInRegistries.ENTITY_TYPE.getKey(otherEntity.getType()).toString();
-            if (!c.killer().equals(killerKey)) { return false; }
+            if (!EntityConditionHelper.matchesEntityKey(c.killer(), otherEntity)) { return false; }
         }
 
-        // Check killed entity (what the player killed, for melee kills)
+        // Check killed entity (what the player killed, supports #tag, for melee kills)
         if (c.kills() != null && !c.kills().isEmpty() && killed != null) {
-            String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
             boolean matched = false;
             for (AchievementDefinitions.KillCondition kc : c.kills()) {
-                if ("*".equals(kc.entity()) || killedKey.equals(kc.entity())) {
+                if (EntityConditionHelper.matchesEntityKey(kc.entity(), killed)) {
                     matched = true;
                     break;
                 }
@@ -206,9 +204,8 @@ public final class AchievementConditionMatcher {
         if (killed == null || conditions == null || conditions.kills() == null || conditions.kills().isEmpty()) {
             return Optional.empty();
         }
-        String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
         for (AchievementDefinitions.KillCondition kc : conditions.kills()) {
-            if (!"*".equals(kc.entity()) && !killedKey.equals(kc.entity())) {
+            if (!EntityConditionHelper.matchesEntityKey(kc.entity(), killed)) {
                 continue;
             }
             if (!EntityConditionHelper.matchesNbtFilters(killed, kc.nbt())) {

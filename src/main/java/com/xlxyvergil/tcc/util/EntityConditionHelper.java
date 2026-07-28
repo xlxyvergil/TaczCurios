@@ -1,6 +1,12 @@
 package com.xlxyvergil.tcc.util;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
@@ -8,6 +14,27 @@ import java.util.List;
 
 public final class EntityConditionHelper {
     private EntityConditionHelper() {
+    }
+
+    /**
+     * 判断实体是否匹配指定的实体键。
+     * <ul>
+     *   <li>{@code "*"} —— 匹配任意实体</li>
+     *   <li>{@code "#namespace:tag"} —— 匹配实体类型 tag（如 {@code #minecraft:undead}）</li>
+     *   <li>其它值 —— 精确匹配实体类型 ID（如 {@code minecraft:zombie}）</li>
+     * </ul>
+     */
+    public static boolean matchesEntityKey(String entityKey, Entity entity) {
+        if (entityKey == null || entityKey.isEmpty() || entity == null) return false;
+        if ("*".equals(entityKey)) return true;
+        if (entityKey.startsWith("#")) {
+            ResourceLocation tagId = ResourceLocation.tryParse(entityKey.substring(1));
+            if (tagId == null) return false;
+            TagKey<EntityType<?>> tag = TagKey.create(Registries.ENTITY_TYPE, tagId);
+            return entity.getType().is(tag);
+        }
+        String entityTypeKey = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
+        return entityTypeKey.equals(entityKey);
     }
 
     public static String formatNbtFilterForDisplay(@Nullable String nbtFilter) {
