@@ -7,7 +7,6 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -56,35 +55,35 @@ public class HuajieZhiyan extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 被动常驻：虚数抗性和生命值 — 不依赖武器类型
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof HuajieZhiyan);
+        CompoundTag tag = equipped.getTag();
+        double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            total, IMAGINARY_RESISTANCE_UUID,
+            "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+
+        double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get() * 10000.0) / 10000.0;
+        AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
+            healthBoost, MAX_HEALTH_UUID,
+            "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
+
+        // 近战限定：适应性系统
         if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                    s -> s.getItem() instanceof HuajieZhiyan);
-            CompoundTag tag = equipped.getTag();
-            double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
-                    + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                total, IMAGINARY_RESISTANCE_UUID,
-                "tcc.huajie_zhiyan.imaginary_resistance", AttributeModifier.Operation.ADDITION);
-
-            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            double healthBoost = Math.round(totalResistance * TaczCuriosConfig.COMMON.huajieZhiyanHealthPerResistance.get() * 10000.0) / 10000.0;
-            AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
-                healthBoost, MAX_HEALTH_UUID,
-                "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
-
-            if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
-                if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
-                    livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
-                        h.register(ADAPT_ID,
-                            TaczCuriosConfig.COMMON.huajieZhiyanMaxSlots.get(),
-                            TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get(),
-                            TaczCuriosConfig.COMMON.huajieZhiyanDecaySeconds.get());
-                    });
-                    livingEntity.getPersistentData().putBoolean(ADAPT_REGISTERED_KEY, true);
-                }
-            } else {
-                unregisterAdaptation(livingEntity);
+            if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
+                livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
+                    h.register(ADAPT_ID,
+                        TaczCuriosConfig.COMMON.huajieZhiyanMaxSlots.get(),
+                        TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get(),
+                        TaczCuriosConfig.COMMON.huajieZhiyanDecaySeconds.get());
+                });
+                livingEntity.getPersistentData().putBoolean(ADAPT_REGISTERED_KEY, true);
             }
+        } else {
+            unregisterAdaptation(livingEntity);
         }
     }
 

@@ -59,17 +59,11 @@ public class DominanceKey extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (matchesRestriction(livingEntity)) {
-            if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
-                double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-                double attackBonus = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyHealthToAttackPercent.get() / 100.0;
-                AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
-                    attackBonus, ATTACK_DAMAGE_UUID,
-                    "tcc.dominance_key.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
-            } else {
-                removeEffects(livingEntity);
-            }
-        }
+        double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
+        double attackBonus = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyHealthToAttackPercent.get() / 100.0;
+        AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
+            attackBonus, ATTACK_DAMAGE_UUID,
+            "tcc.dominance_key.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override
