@@ -10,9 +10,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -78,105 +81,129 @@ public class KikakuIchijin extends BaseCurioItem {
 
     /**
      * 监听伤害事件
-     * 当装备此饰品的玩家或女仆造成伤害时触发
+     * 当装备此饰品的实体造成伤害时触发
      */
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
-        // 获取伤害来源
-        Entity sourceEntity = event.getSource().getEntity();
-        if (!(sourceEntity instanceof LivingEntity attacker)) {
+        if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) {
             return;
         }
+
+        // 从伤害来源链中解析攻击者
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null) return;
 
         // 检查攻击者是否装备了掎角一阵
-        boolean hasKikakuIchijin = !CurioSearchHelper.findFirstEquippedStack(attacker, stack -> stack.getItem() instanceof KikakuIchijin).isEmpty();
+        boolean hasKikaku = !CurioSearchHelper.findFirstEquippedStack(attacker,
+            stack -> stack.getItem() instanceof KikakuIchijin).isEmpty();
+        if (!hasKikaku) return;
 
-        if (!hasKikakuIchijin) {
-            return;
-        }
-
-        // 只在服务端执行
-        if (!(attacker.level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-
-        // 寻找祭品（64格范围内最近的非自身玩家或女仆）
+        // 寻找祭品（根据装备者类型决定搜索逻辑）
         LivingEntity sacrifice = findSacrifice(attacker, serverLevel);
 
         // 计算伤害倍率（祭品总血量 × 配置倍率）
-        float sacrificeMaxHealth = sacrifice.getMaxHealth();
         float healthMultiplier = TaczCuriosConfig.COMMON.kikakuIchijinHealthMultiplier.get().floatValue();
-        float damageMultiplier = sacrificeMaxHealth * healthMultiplier;
-
-        // 获取当前伤害并乘以倍率
-        float originalDamage = event.getAmount();
-        float newDamage = originalDamage * damageMultiplier;
-        event.setAmount(newDamage);
+        float damageMultiplier = sacrifice.getMaxHealth() * healthMultiplier;
+        event.setAmount(event.getAmount() * damageMultiplier);
 
         // 破坏目标周围6*6范围内的方块
-        LivingEntity victim = event.getEntity();
-        destroyBlocksAroundVictim(serverLevel, victim);
+        destroyBlocksAroundVictim(serverLevel, event.getEntity());
 
-        // 强制击杀祭品——直接设置死亡标记（通过 AT 暴露的 dead 字段）
-        sacrifice.setHealth(0.0f);
+        // 击杀祭品——多重方式依次执行确保死亡（应对不同实体的死亡保护机制）
         sacrifice.dead = true;
+        sacrifice.die(sacrifice.damageSources().genericKill());
+        sacrifice.kill();
 
-        // 广播消息给所有玩家
-        if (sacrifice == attacker) {
-            // 祭品是自己
-            serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal(attacker.getName().getString() + ": Stella"), false);
-        } else {
-            // 祭品是其他实体
-            String sacrificeName;
-            if (sacrifice instanceof EntityMaid maid) {
-                // 如果是女仆，使用 getDisplayName()
-                sacrificeName = maid.getDisplayName().getString();
-            } else {
-                sacrificeName = sacrifice.getName().getString();
-            }
-            // 广播消息
+        // 广播消息
+        boolean isSelfSacrifice = (sacrifice == attacker);
+        if (isSelfSacrifice) {
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(
-                Component.literal(attacker.getName().getString() + ": " + sacrificeName + " 这是必要的牺牲，你明白吧"), false);
+                Component.translatable("message.tcc.kikaku_ichijin.self_sacrifice", attacker.getName()), false);
+        } else {
+            Component sacrificeName = sacrifice instanceof EntityMaid maid
+                ? maid.getDisplayName()
+                : sacrifice.getName();
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                Component.translatable("message.tcc.kikaku_ichijin.sacrifice", attacker.getName(), sacrificeName), false);
         }
     }
 
     /**
+     * 解析伤害事件的真正攻击者
+     * 支持弹射物、法术实体、驯服生物等多种间接伤害来源
+     */
+    private static LivingEntity resolveAttacker(LivingHurtEvent event) {
+        DamageSource source = event.getSource();
+        LivingEntity attacker = resolveFromEntity(source.getEntity());
+        if (attacker != null) return attacker;
+        return resolveFromEntity(source.getDirectEntity());
+    }
+
+    private static LivingEntity resolveFromEntity(Entity entity) {
+        if (entity == null) return null;
+        if (entity instanceof LivingEntity living) return living;
+        if (entity instanceof Projectile proj) {
+            if (proj.getOwner() instanceof LivingEntity owner) return owner;
+            return null;
+        }
+        if (entity instanceof OwnableEntity ownable) {
+            Entity owner = ownable.getOwner();
+            if (owner instanceof LivingEntity living) return living;
+        }
+        return null;
+    }
+
+    /**
      * 寻找祭品
-     * 64格范围内最近的非自身玩家或女仆，如果没有则选择自己
+     * 根据装备者类型决定搜索逻辑：
+     * - 女仆装备者 → 优先献祭最近的玩家，没有则献祭自己
+     * - 玩家装备者 → 优先女仆，其次玩家，最后自己
+     * - 其他装备者（如亚波伦）→ 献祭自己
      */
     private static LivingEntity findSacrifice(LivingEntity attacker, ServerLevel level) {
         AABB searchBox = attacker.getBoundingBox().inflate(64.0);
 
-        // 搜索玩家
-        List<Player> nearbyPlayers = level.getEntitiesOfClass(
-            Player.class,
-            searchBox,
-            player -> player != attacker && player.isAlive()
-        );
-
-        // 合并列表并按距离排序
-        List<LivingEntity> candidates = new java.util.ArrayList<>();
-        candidates.addAll(nearbyPlayers);
-
-        // 搜索女仆（如果安装了车万女仆模组）
-        if (ModList.get().isLoaded("touhou_little_maid")) {
-            List<EntityMaid> nearbyMaids = level.getEntitiesOfClass(
-                EntityMaid.class,
-                searchBox,
-                maid -> maid != attacker && maid.isAlive()
+        if (attacker instanceof EntityMaid) {
+            // 女仆装备者：献祭最近的玩家
+            List<Player> nearbyPlayers = level.getEntitiesOfClass(
+                Player.class, searchBox,
+                player -> player != attacker && player.isAlive()
             );
-            candidates.addAll(nearbyMaids);
-        }
-
-        if (candidates.isEmpty()) {
-            // 没有其他候选者，选择自己
+            if (!nearbyPlayers.isEmpty()) {
+                return nearbyPlayers.stream()
+                    .min(Comparator.comparingDouble(p -> p.distanceToSqr(attacker)))
+                    .get();
+            }
             return attacker;
         }
 
-        // 按距离排序，返回最近的
-        return candidates.stream()
-            .min(Comparator.comparingDouble(candidate -> candidate.distanceToSqr(attacker)))
-            .orElse(attacker);
+        if (attacker instanceof Player) {
+            // 玩家装备者：优先女仆，其次玩家
+            if (ModList.get().isLoaded("touhou_little_maid")) {
+                List<EntityMaid> nearbyMaids = level.getEntitiesOfClass(
+                    EntityMaid.class, searchBox,
+                    maid -> maid != attacker && maid.isAlive()
+                );
+                if (!nearbyMaids.isEmpty()) {
+                    return nearbyMaids.stream()
+                        .min(Comparator.comparingDouble(m -> m.distanceToSqr(attacker)))
+                        .get();
+                }
+            }
+            List<Player> nearbyPlayers = level.getEntitiesOfClass(
+                Player.class, searchBox,
+                player -> player != attacker && player.isAlive()
+            );
+            if (!nearbyPlayers.isEmpty()) {
+                return nearbyPlayers.stream()
+                    .min(Comparator.comparingDouble(p -> p.distanceToSqr(attacker)))
+                    .get();
+            }
+            return attacker;
+        }
+
+        // 既不是玩家也不是女仆（如亚波伦）→ 献祭自己
+        return attacker;
     }
 
     /**
