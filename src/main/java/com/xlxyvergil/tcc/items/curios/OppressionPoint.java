@@ -40,8 +40,10 @@ public class OppressionPoint extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
     
     /**

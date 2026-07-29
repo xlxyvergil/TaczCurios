@@ -6,7 +6,7 @@ import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.loot.LootTableEventHandler;
-
+import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.registries.*;
 import com.xlxyvergil.tcc.villagers.TccVillagers;
 import com.xlxyvergil.tcc.creativetab.TccCreativeTab;
@@ -20,6 +20,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -28,6 +29,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegisterEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.InterModComms;
 
 @Mod(TaczCurios.MODID)
@@ -62,10 +64,7 @@ public class TaczCurios
             TccVillagers.init();
         });
 
-        // 注册自定义战利品函数类型（SetFusionCountFunction）— 使用 Enigmatic Legacy 的 BuiltInRegistries 方式
-        LootTableEventHandler.register();
-
-        // 注册Deferred Register
+        // 注册 Deferred Register
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
@@ -76,7 +75,7 @@ public class TaczCurios
         // 注册玩家登录事件（用于同步成就进度到客户端）
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
-                com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp);
+                NetworkHandler.syncAllForPlayer(sp);
             }
         });
         // 注册玩家死亡复活/维度切换事件（复制 Capability + 延迟同步到客户端）
@@ -95,7 +94,7 @@ public class TaczCurios
             // 延迟同步到下一 tick，确保 respawn/维度切换 packet 先到客户端创建新玩家
             if (entity instanceof ServerPlayer sp) {
                 sp.server.execute(() ->
-                    com.xlxyvergil.tcc.network.NetworkHandler.syncAllForPlayer(sp));
+                    NetworkHandler.syncAllForPlayer(sp));
             }
         });
         // 注册天火流血结算事件处理器
@@ -112,6 +111,8 @@ public class TaczCurios
     
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            this.loadClass(LootTableEventHandler.class);
+            MinecraftForge.EVENT_BUS.addListener(LootTableEventHandler::onLootTableLoad);
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
 
@@ -120,7 +121,7 @@ public class TaczCurios
         });
 
         // 注册网络通道
-        com.xlxyvergil.tcc.network.NetworkHandler.init();
+        NetworkHandler.init();
     }
 
     private void intermodStuff(InterModEnqueueEvent event) {
@@ -143,8 +144,17 @@ public class TaczCurios
     
     private void registerClientEventsSafely() throws ClassNotFoundException {
         // 仅在客户端环境中注册客户端事件处理器
-        if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+        if (FMLEnvironment.dist == Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
+        }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void loadClass(Class<?> theClass) {
+        try {
+            Class.forName(theClass.getName());
+        } catch (ClassNotFoundException ex) {
+            throw new IllegalStateException("This can't be happening.", ex);
         }
     }
 }

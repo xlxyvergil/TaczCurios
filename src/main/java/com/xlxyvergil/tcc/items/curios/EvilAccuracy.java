@@ -42,11 +42,13 @@ public class EvilAccuracy extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double recoilReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get());
-        double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get());
-        
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.RECOIL, recoilReduction, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateReduction, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double recoilReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get());
+            double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get());
+            
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.RECOIL, recoilReduction, RECOIL_UUID, RECOIL_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateReduction, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     /**

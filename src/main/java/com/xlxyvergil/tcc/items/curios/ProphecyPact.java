@@ -43,8 +43,10 @@ public class ProphecyPact extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     /**

@@ -106,9 +106,10 @@ public class HeavenFireJudgment extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get())) return;
-        double damageMultiplier = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get();
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double damageMultiplier = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get();
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
     
     @Override
@@ -122,9 +123,8 @@ public class HeavenFireJudgment extends BaseCurioItem {
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
-    @SuppressWarnings("unchecked")
     public List<String> getWeaponTypeRestriction() {
-        return (List<String>)(List<?>)TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get();
+        return List.of("pistol");
     }
 
     @Override
@@ -182,7 +182,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
             return;
         }
 
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get())) return;
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
 
         // 转换为虚数伤害
         event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
@@ -211,7 +211,7 @@ public class HeavenFireJudgment extends BaseCurioItem {
             return;
         }
 
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireJudgmentGunTypes.get())) {
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) {
             return;
         }
 

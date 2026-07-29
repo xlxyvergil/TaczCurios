@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -44,15 +45,20 @@ public class CarefulHeart extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double launcherDamageBoost = TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get();
-        double explosionDamageBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get();
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get();
-        double explosionEnabled = TaczCuriosConfig.COMMON.carefulHeartExplosionEnabled.get();
-        
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, launcherDamageBoost, LAUNCHER_DAMAGE_UUID, LAUNCHER_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double launcherDamageBoost = FusionData.from(stack).getActualValue(
+                    TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get());
+            double explosionDamageBoost = FusionData.from(stack).getActualValue(
+                    TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get());
+            double explosionRadiusBoost = FusionData.from(stack).getActualValue(
+                    TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get());
+            double explosionEnabled = TaczCuriosConfig.COMMON.carefulHeartExplosionEnabled.get();
+
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, launcherDamageBoost, LAUNCHER_DAMAGE_UUID, LAUNCHER_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     /**
@@ -86,9 +92,12 @@ public class CarefulHeart extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         
         // 添加装备效果
-        double launcherDamageBoost = TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get() * 100;
-        double explosionDamageBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get() * 100;
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get() * 100;
+        double launcherDamageBoost = FusionData.from(stack).getActualValue(
+                TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get()) * 100;
+        double explosionDamageBoost = FusionData.from(stack).getActualValue(
+                TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get()) * 100;
+        double explosionRadiusBoost = FusionData.from(stack).getActualValue(
+                TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get()) * 100;
         tooltip.add(Component.translatable("item.tcc.careful_heart.effect", 
                 String.format("%+.0f", launcherDamageBoost), String.format("%+.0f", explosionDamageBoost), String.format("%+.0f", explosionRadiusBoost))
             .withStyle(ChatFormatting.WHITE));

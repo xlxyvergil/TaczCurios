@@ -63,16 +63,18 @@ public class Raven extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        ItemStack equipped = findEquippedStack(livingEntity);
-        CompoundTag tag = equipped.getTag();
-        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
+        if (matchesRestriction(livingEntity)) {
+            ItemStack equipped = findEquippedStack(livingEntity);
+            CompoundTag tag = equipped.getTag();
+            double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.ravenArmorMultiplier.get(), ARMOR_UUID,
-            "tcc.raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get(), MOVE_SPEED_UUID,
-            "tcc.raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
-            "tcc.raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.ravenArmorMultiplier.get(), ARMOR_UUID,
+                "tcc.raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get(), MOVE_SPEED_UUID,
+                "tcc.raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        }
     }
 
     @Override
@@ -114,6 +116,9 @@ public class Raven extends BaseCurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
+
+        // 仅手持狙击枪时保持隐身
+        if (!matchesRestriction(entity)) return;
 
         // 每N秒重新施加隐身（持续刷新）
         if (entity.tickCount % TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() == 0) {

@@ -37,8 +37,10 @@ public class SwordWindPrime extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ENTITY_REACH, rangeBoost, ENTITY_INTERACTION_RANGE_UUID, ENTITY_INTERACTION_RANGE_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ENTITY_REACH, rangeBoost, ENTITY_INTERACTION_RANGE_UUID, ENTITY_INTERACTION_RANGE_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     @Override

@@ -57,16 +57,18 @@ public class IslandBoomRaven extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        ItemStack equipped = findEquippedStack(livingEntity);
-        CompoundTag tag = equipped.getTag();
-        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
+        if (matchesRestriction(livingEntity)) {
+            ItemStack equipped = findEquippedStack(livingEntity);
+            CompoundTag tag = equipped.getTag();
+            double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
 
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get(), ARMOR_UUID,
-            "tcc.island_boom_raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get(), MOVE_SPEED_UUID,
-            "tcc.island_boom_raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
-            "tcc.island_boom_raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get(), ARMOR_UUID,
+                "tcc.island_boom_raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get(), MOVE_SPEED_UUID,
+                "tcc.island_boom_raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.island_boom_raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        }
     }
 
     @Override

@@ -92,23 +92,25 @@ public class Salvation extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double imaginaryResistance = getSalvationResistance(livingEntity);
-        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
-            imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
-        
-        // 常驻抗性提升（可配置，通过效果实现）
-        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-        livingEntity.addEffect(new MobEffectInstance(
-            MobEffects.DAMAGE_RESISTANCE,
-            300,  // 15秒，tick会刷新
-            2,    // 等级2 = 抗性提升III（等级从0开始）
-            false, false, true));
-        
-        // 免疫击退（knockback_resistance = 1.0）
-        AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
-            1.0, KNOCKBACK_RESISTANCE_UUID, "tcc_salvation_knockback_immunity", AttributeModifier.Operation.ADDITION);
-        
-        // 注意：伤害降低通过 HeavenFireHealthListener 中的 LivingHurtEvent 实现（可配置）
+        if (matchesRestriction(livingEntity)) {
+            double imaginaryResistance = getSalvationResistance(livingEntity);
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
+                imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
+            
+            // 常驻抗性提升（可配置，通过效果实现）
+            livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+            livingEntity.addEffect(new MobEffectInstance(
+                MobEffects.DAMAGE_RESISTANCE,
+                300,  // 15秒，tick会刷新
+                2,    // 等级2 = 抗性提升III（等级从0开始）
+                false, false, true));
+            
+            // 免疫击退（knockback_resistance = 1.0）
+            AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
+                1.0, KNOCKBACK_RESISTANCE_UUID, "tcc_salvation_knockback_immunity", AttributeModifier.Operation.ADDITION);
+            
+            // 注意：伤害降低通过 HeavenFireHealthListener 中的 LivingHurtEvent 实现（可配置）
+        }
     }
     
     @Override

@@ -36,11 +36,13 @@ public class RippingPrime extends BaseCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get());
-        double penetrationBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get());
-        
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.PIERCE, penetrationBoost, PIERCE_UUID, PIERCE_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get());
+            double penetrationBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get());
+            
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, fireRateBoost, ROUNDS_PER_MINUTE_UUID, ROUNDS_PER_MINUTE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.PIERCE, penetrationBoost, PIERCE_UUID, PIERCE_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     @Override

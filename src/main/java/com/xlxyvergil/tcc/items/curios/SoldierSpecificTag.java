@@ -37,8 +37,10 @@ public class SoldierSpecificTag extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
     
     @Override

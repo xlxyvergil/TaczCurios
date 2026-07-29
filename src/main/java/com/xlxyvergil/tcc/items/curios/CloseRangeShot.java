@@ -40,8 +40,10 @@ public class CloseRangeShot extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     /**

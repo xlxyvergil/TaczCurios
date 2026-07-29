@@ -58,19 +58,21 @@ public class Fanxing extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        ItemStack equipped = findEquippedStack(livingEntity);
-        CompoundTag tag = equipped.getTag();
-        double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
-                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            resistance, IMAGINARY_RESISTANCE_UUID,
-            "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            ItemStack equipped = findEquippedStack(livingEntity);
+            CompoundTag tag = equipped.getTag();
+            double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
+                    + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                resistance, IMAGINARY_RESISTANCE_UUID,
+                "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
-        double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        int luckFromResistance = (int) ((int) Math.round(totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get() * 10000.0) / 10000.0);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
-            luckFromResistance, LUCK_UUID,
-            "tcc.fanxing.luck", AttributeModifier.Operation.ADDITION);
+            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            int luckFromResistance = (int) ((int) Math.round(totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get() * 10000.0) / 10000.0);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
+                luckFromResistance, LUCK_UUID,
+                "tcc.fanxing.luck", AttributeModifier.Operation.ADDITION);
+        }
     }
 
     @Override

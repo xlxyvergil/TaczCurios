@@ -108,9 +108,8 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<String> getWeaponTypeRestriction() {
-        return (List<String>)(List<?>)TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get();
+        return List.of("pistol");
     }
 
     @Override

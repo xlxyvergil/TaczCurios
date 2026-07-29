@@ -40,8 +40,10 @@ public class FerociousExtension extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EFFECTIVE_RANGE, rangeBoost, EFFECTIVE_RANGE_UUID, EFFECTIVE_RANGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EFFECTIVE_RANGE, rangeBoost, EFFECTIVE_RANGE_UUID, EFFECTIVE_RANGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
     
     /**

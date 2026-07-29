@@ -38,8 +38,10 @@ public class CloseCombatPrime extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, SHOTGUN_DAMAGE_UUID, SHOTGUN_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, damageBoost, SHOTGUN_DAMAGE_UUID, SHOTGUN_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+        }
     }
     
     /**

@@ -34,8 +34,10 @@ public class UralWolfTag extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double multiplierBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, multiplierBoost, HEADSHOT_MULTIPLIER_MODIFIER_UUID, "tcc.ural_wolf_tag.headshot_multiplier", AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double multiplierBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, multiplierBoost, HEADSHOT_MULTIPLIER_MODIFIER_UUID, "tcc.ural_wolf_tag.headshot_multiplier", AttributeModifier.Operation.ADDITION);
+        }
     }
     
     @Override

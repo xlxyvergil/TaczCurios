@@ -98,14 +98,15 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
-        double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
-        double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
-        
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
+            double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
+            double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
+
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
     
     @Override
@@ -125,9 +126,8 @@ public class HeavenFireApocalypse extends BaseCurioItem {
      * 添加物品的悬浮提示信息（鼠标悬停时显示）
      */
     @Override
-    @SuppressWarnings("unchecked")
     public List<String> getWeaponTypeRestriction() {
-        return (List<String>)(List<?>)TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get();
+        return List.of("pistol");
     }
 
     @Override
@@ -206,7 +206,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
             return;
         }
 
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
 
         event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
             TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
@@ -234,7 +234,7 @@ public class HeavenFireApocalypse extends BaseCurioItem {
             return;
         }
 
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, TaczCuriosConfig.COMMON.heavenFireApocalypseGunTypes.get())) return;
+        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
 
         float healthPercentage = attacker.getHealth() / attacker.getMaxHealth();
         if (healthPercentage < 1.0) {

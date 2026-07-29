@@ -45,8 +45,10 @@ public class AlloyDrill extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double armorIgnoreBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, armorIgnoreBoost, ARMOR_IGNORE_UUID, ARMOR_IGNORE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double armorIgnoreBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, armorIgnoreBoost, ARMOR_IGNORE_UUID, ARMOR_IGNORE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
     
     /**

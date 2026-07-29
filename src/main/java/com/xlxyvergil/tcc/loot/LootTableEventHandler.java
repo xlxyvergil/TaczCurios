@@ -7,12 +7,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.Set;
 
@@ -20,7 +21,6 @@ import java.util.Set;
  * 战利品表事件处理器 — 在下界要塞、堡垒遗迹和末地城战利品箱中
  * 添加融合容器（FusionVessel），内含随机数量的内融核心（CoreFusion）。
  */
-@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LootTableEventHandler {
 
     private static final Set<ResourceLocation> NETHER_TABLES = Set.of(
@@ -34,19 +34,15 @@ public class LootTableEventHandler {
     private static final ResourceLocation END_CITY_TABLE =
             new ResourceLocation("minecraft:chests/end_city_treasure");
 
-    /** 自定义战利品函数类型 */
-    public static final LootItemFunctionType SET_FUSION_COUNT =
-            new LootItemFunctionType(new SetFusionCountFunction.Serializer());
+    /** 自定义战利品函数类型 — 类加载时自动注册到 BuiltInRegistries */
+    public static final LootItemFunctionType SET_FUSION_COUNT = register(
+            "set_fusion_count", new SetFusionCountFunction.Serializer());
 
-    /**
-     * 在 Mod 构造时调用，向 BuiltInRegistries 注册自定义战利品函数类型。
-     */
-    public static void register() {
-        Registry.register(
+    private static LootItemFunctionType register(String id, Serializer<? extends LootItemFunction> serializer) {
+        return Registry.register(
                 BuiltInRegistries.LOOT_FUNCTION_TYPE,
-                new ResourceLocation(TaczCurios.MODID, "set_fusion_count"),
-                SET_FUSION_COUNT
-        );
+                new ResourceLocation(TaczCurios.MODID, id),
+                new LootItemFunctionType(serializer));
     }
 
     @SubscribeEvent

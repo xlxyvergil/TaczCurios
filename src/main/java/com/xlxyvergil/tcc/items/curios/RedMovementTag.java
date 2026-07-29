@@ -34,8 +34,10 @@ public class RedMovementTag extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVE_SPEED, speedBoost, MOVE_SPEED_MODIFIER_UUID, "tcc_red_movement_speed_boost", AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVE_SPEED, speedBoost, MOVE_SPEED_MODIFIER_UUID, "tcc_red_movement_speed_boost", AttributeModifier.Operation.ADDITION);
+        }
     }
     
     @Override

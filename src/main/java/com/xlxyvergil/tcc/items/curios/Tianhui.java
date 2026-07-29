@@ -57,17 +57,19 @@ public class Tianhui extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                s -> s.getItem() instanceof Tianhui);
-        CompoundTag tag = equipped.getTag();
-        double total = TaczCuriosConfig.COMMON.suImaginaryResistance.get()
-                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            total, IMAGINARY_RESISTANCE_UUID,
-            "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
-            TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get(), MAX_HEALTH_UUID,
-            "tcc.tianhui.max_health", AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                    s -> s.getItem() instanceof Tianhui);
+            CompoundTag tag = equipped.getTag();
+            double total = TaczCuriosConfig.COMMON.suImaginaryResistance.get()
+                    + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
+                TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get(), MAX_HEALTH_UUID,
+                "tcc.tianhui.max_health", AttributeModifier.Operation.MULTIPLY_BASE);
+        }
     }
 
     @Override

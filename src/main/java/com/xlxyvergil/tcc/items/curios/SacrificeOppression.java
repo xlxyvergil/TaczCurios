@@ -49,16 +49,18 @@ public class SacrificeOppression extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get());
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, meleeDamageBoost, MELEE_DAMAGE_UUID, MELEE_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
-        // 套装效果：同时装备牺牲斩铁时，额外+25%
-        if (hasSacrificeSteel(livingEntity)) {
-            double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
-            double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        } else {
-            AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, SET_BONUS_UUID);
+            // 套装效果：同时装备牺牲斩铁时，额外+25%
+            if (hasSacrificeSteel(livingEntity)) {
+                double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
+                double bonusModifier = meleeDamageBoost * (setBonus - 1.0);
+                AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            } else {
+                AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, SET_BONUS_UUID);
+            }
         }
     }
 

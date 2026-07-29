@@ -61,11 +61,13 @@ public class SummerBeach extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        ItemStack equipped = findEquippedStack(livingEntity);
-        CompoundTag tag = equipped.getTag();
-        double total = ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
-        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-            total, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_summer_beach_resistance", AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            ItemStack equipped = findEquippedStack(livingEntity);
+            CompoundTag tag = equipped.getTag();
+            double total = ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
+            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_summer_beach_resistance", AttributeModifier.Operation.ADDITION);
+        }
     }
     
     @Override

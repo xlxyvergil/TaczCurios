@@ -67,17 +67,19 @@ public class DespicableAcceleration extends BaseCurioItem {
      */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get());
-        double damageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get());
-        
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, firingSpeedBoost, FIRING_SPEED_UUID, FIRING_SPEED_NAME, AttributeModifier.Operation.ADDITION);
-        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageReduction, GENERAL_DAMAGE_UUID, GENERAL_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
-        
-        // 应用7种特定枪械伤害降低
-        for (String gunType : DAMAGE_UUIDS.keySet()) {
-            var attribute = getAttributeByType(gunType);
-            if (attribute != null) {
-                AttributeHelper.applyModifier(livingEntity, attribute, damageReduction, DAMAGE_UUIDS.get(gunType), DAMAGE_NAMES.get(gunType), AttributeModifier.Operation.ADDITION);
+        if (matchesRestriction(livingEntity)) {
+            double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get());
+            double damageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get());
+            
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, firingSpeedBoost, FIRING_SPEED_UUID, FIRING_SPEED_NAME, AttributeModifier.Operation.ADDITION);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageReduction, GENERAL_DAMAGE_UUID, GENERAL_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
+            
+            // 应用7种特定枪械伤害降低
+            for (String gunType : DAMAGE_UUIDS.keySet()) {
+                var attribute = getAttributeByType(gunType);
+                if (attribute != null) {
+                    AttributeHelper.applyModifier(livingEntity, attribute, damageReduction, DAMAGE_UUIDS.get(gunType), DAMAGE_NAMES.get(gunType), AttributeModifier.Operation.ADDITION);
+                }
             }
         }
     }

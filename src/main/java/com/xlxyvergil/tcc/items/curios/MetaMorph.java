@@ -62,21 +62,23 @@ public class MetaMorph extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
-            double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-            double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            double attackBonus = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
-                + totalResistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
-            AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
-                attackBonus, ATTACK_DAMAGE_UUID,
-                "tcc.meta_morph.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
+        if (matchesRestriction(livingEntity)) {
+            if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
+                double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
+                double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                double attackBonus = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
+                    + totalResistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
+                AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
+                    attackBonus, ATTACK_DAMAGE_UUID,
+                    "tcc.meta_morph.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
 
-            double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 10000.0) / 10000.0;
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
-                lifeSteal, LIFE_STEAL_UUID,
-                "tcc.meta_morph.life_steal", AttributeModifier.Operation.ADDITION);
-        } else {
-            removeEffects(livingEntity);
+                double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 10000.0) / 10000.0;
+                AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
+                    lifeSteal, LIFE_STEAL_UUID,
+                    "tcc.meta_morph.life_steal", AttributeModifier.Operation.ADDITION);
+            } else {
+                removeEffects(livingEntity);
+            }
         }
     }
 
