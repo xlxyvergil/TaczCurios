@@ -21,10 +21,10 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
+ /**
  * 融合容器（Fusion Vessel）
  * <p>用于存储大量内融核心（CoreFusion）。
- * 交互方式完全参考 TACZ 弹药盒 {@code overrideStackedOnOther} 模式：</p>
+ * 交互方式：</p>
  * <ul>
  *   <li>右键空格子 → 取出一组（64个）内融核心，不足取全部剩余</li>
  *   <li>右键内融核心格子 → 整组存入容器</li>

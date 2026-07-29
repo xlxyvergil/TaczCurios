@@ -21,6 +21,24 @@ public final class TccStats {
     public static final ResourceLocation ITEMS_CRAFTED =
             new ResourceLocation(TaczCurios.MODID, "items_crafted");
 
+    // ===== 饰品佩戴存活时长统计 =====
+
+    /** 佩戴 griseo 所生存的时间（tick），死亡不重置 */
+    public static final ResourceLocation PLAY_TIME_GRISEO =
+            new ResourceLocation(TaczCurios.MODID, "play_time_griseo");
+
+    /** 佩戴 huishi_zhijuan 所生存的时间（tick），死亡不重置 */
+    public static final ResourceLocation PLAY_TIME_HUISHI_ZHIJUAN =
+            new ResourceLocation(TaczCurios.MODID, "play_time_huishi_zhijuan");
+
+    /** 佩戴 fanxing 所生存的时间（tick），死亡不重置 */
+    public static final ResourceLocation PLAY_TIME_FANXING =
+            new ResourceLocation(TaczCurios.MODID, "play_time_fanxing");
+
+    /** 佩戴 qishi_zhijian 所存活的时间（tick），死亡重置归 0 */
+    public static final ResourceLocation PLAY_TIME_QISHI_ZHIJIAN =
+            new ResourceLocation(TaczCurios.MODID, "play_time_qishi_zhijian");
+
     // ===== 新增统计在此声明 =====
 
     private TccStats() {}
@@ -29,6 +47,12 @@ public final class TccStats {
     public static void register() {
         registerCustom(ZOMBIE_VILLAGER_CURED, StatFormatter.DEFAULT);
         registerCustom(ITEMS_CRAFTED, StatFormatter.DEFAULT);
+
+        // 饰品佩戴存活时长统计
+        registerCustom(PLAY_TIME_GRISEO, StatFormatter.DEFAULT);
+        registerCustom(PLAY_TIME_HUISHI_ZHIJUAN, StatFormatter.DEFAULT);
+        registerCustom(PLAY_TIME_FANXING, StatFormatter.DEFAULT);
+        registerCustom(PLAY_TIME_QISHI_ZHIJIAN, StatFormatter.DEFAULT);
 
         // ===== 新增统计在此注册 =====
     }

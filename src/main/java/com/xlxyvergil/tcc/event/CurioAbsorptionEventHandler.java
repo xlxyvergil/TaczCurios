@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 /**
  * 吸收饰品事件处理器（受击触发式黄心）。
  * <p>
- * 采用<strong>受击触发式</strong>（参考 GoetyRevelation 的 Apostle 减伤模式）：
+ * 采用<strong>受击触发式</strong>：
  * 饰品类在 {@code LivingHurtEvent} 中调用一次 {@link #tryTriggerAbsorption}，
  * 检查装备状态 + 血量阈值 + 冷却后，赋予 ABSORPTION（黄心）效果并进入冷却。
  * 无需在 {@code curioTick} 中每 tick 调用。

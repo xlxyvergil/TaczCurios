@@ -53,7 +53,7 @@ public class TaczCurios
         });
 
         // 在 RegisterEvent<BLOCK> 时统一注册方块、物品、POI 类型和村民职业
-        // 参考 AE2 模式：一个事件处理所有注册
+        // 一个事件处理所有注册
         modEventBus.addListener((RegisterEvent event) -> {
             if (!event.getRegistryKey().equals(Registries.BLOCK)) {
                 return;

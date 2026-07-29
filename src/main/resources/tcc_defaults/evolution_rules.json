@@ -116,10 +116,10 @@
       "type": "attribute",
       "item": "tcc:griseo",
       "description": {
-        "zh_cn": "每游玩1天（24000tick），+1虚数抗性（上限20）",
-        "en_us": "Every 1 day played (24000 ticks), +1 Imaginary Resistance (cap 20)"
+        "zh_cn": "每佩戴格蕾修游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Griseo (24000 ticks), +1 Imaginary Resistance (cap 20)"
       },
-      "stat": "minecraft:play_time",
+      "stat": "tcc:play_time_griseo",
       "statThreshold": 24000,
       "value": 1.0,
       "progress": {
@@ -136,10 +136,10 @@
       "type": "attribute",
       "item": "tcc:huishi_zhijuan",
       "description": {
-        "zh_cn": "每游玩1天（24000tick），+1虚数抗性（上限20）",
-        "en_us": "Every 1 day played (24000 ticks), +1 Imaginary Resistance (cap 20)"
+        "zh_cn": "每佩戴晦朔之卷游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Huishi Zhijuan (24000 ticks), +1 Imaginary Resistance (cap 20)"
       },
-      "stat": "minecraft:play_time",
+      "stat": "tcc:play_time_huishi_zhijuan",
       "statThreshold": 24000,
       "value": 1.0,
       "progress": {
@@ -156,10 +156,10 @@
       "type": "attribute",
       "item": "tcc:fanxing",
       "description": {
-        "zh_cn": "每游玩1天（24000tick），+1虚数抗性（上限20）",
-        "en_us": "Every 1 day played (24000 ticks), +1 Imaginary Resistance (cap 20)"
+        "zh_cn": "每佩戴繁星游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Fanxing (24000 ticks), +1 Imaginary Resistance (cap 20)"
       },
-      "stat": "minecraft:play_time",
+      "stat": "tcc:play_time_fanxing",
       "statThreshold": 24000,
       "value": 1.0,
       "progress": {
@@ -198,8 +198,8 @@
       "type": "attribute",
       "item": "tcc:huajie_zhiyan",
       "description": {
-        "zh_cn": "凋灵死亡时+1虚数抗性（上限20）",
-        "en_us": "When Wither dies nearby, +1 Imaginary Resistance (cap 20)"
+        "zh_cn": "击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "When Wither dies nearby, +2 Imaginary Resistance (cap 20)"
       },
       "playerKilled": false,
       "progress": {
@@ -214,7 +214,7 @@
           "entity": {
             "key": "minecraft:wither"
           },
-          "value": 1.0
+          "value": 2.0
         }
       ]
     },
@@ -246,8 +246,8 @@
       "type": "attribute",
       "item": "tcc:juezhe",
       "description": {
-        "zh_cn": "使用步枪击杀凋灵，每次+1虚数抗性（上限20）",
-        "en_us": "Kill Wither with rifle, +1 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用步枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with rifle, +2 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": [
@@ -266,7 +266,7 @@
           "entity": {
             "key": "minecraft:wither"
           },
-          "value": 1.0
+          "value": 2.0
         }
       ]
     },
@@ -298,8 +298,8 @@
       "type": "attribute",
       "item": "tcc:yuxi_zhixia",
       "description": {
-        "zh_cn": "使用重型武器击杀凋灵，每次+20虚数抗性（上限20）",
-        "en_us": "Kill Wither with heavy weapon, +20 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用重型武器击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with heavy weapon, +2 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": ["rpg", "mg"]
@@ -316,7 +316,7 @@
           "entity": {
             "key": "minecraft:wither"
           },
-          "value": 20.0
+          "value": 2.0
         }
       ]
     }

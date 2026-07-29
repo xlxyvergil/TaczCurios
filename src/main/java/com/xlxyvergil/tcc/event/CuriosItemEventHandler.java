@@ -13,14 +13,12 @@ import top.theillusivec4.curios.api.event.CurioUnequipEvent;
 /**
  * Curios饰品事件处理器
  * 用于监听饰品装备/卸载事件并更新TACZ缓存
- * 参照TACZ处理配件安装和卸载的方式实现
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CuriosItemEventHandler {
     
     /**
      * 监听饰品装备事件
-     * 参照ClientMessageRefitGun.handle()的实现方式
      */
     @SubscribeEvent
     public static void onCurioEquipped(CurioEquipEvent event) {
@@ -32,7 +30,6 @@ public class CuriosItemEventHandler {
     
     /**
      * 监听饰品卸载事件
-     * 参照ClientMessageUnloadAttachment.handle()的实现方式
      */
     @SubscribeEvent
     public static void onCurioUnequipped(CurioUnequipEvent event) {

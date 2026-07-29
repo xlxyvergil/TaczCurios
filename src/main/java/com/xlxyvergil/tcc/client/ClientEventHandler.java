@@ -61,7 +61,6 @@ public class ClientEventHandler {
     
     /**
      * 刷新改装界面
-     * 参照ServerMessageRefreshRefitScreen.updateScreen()的实现
      */
     private static void refreshRefitScreen() {
         Minecraft mc = Minecraft.getInstance();

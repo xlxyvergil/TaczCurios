@@ -1079,8 +1079,8 @@
         },
         "icon": "tcc:luoxuan",
         "description": {
-          "zh_cn": "佩戴启示之键，自上次死亡后存活6小时，虚数伤害抗性大于60",
-          "en_us": "Time Since Death reaches 6 hours while wearing Key of Revelation, Imaginary Damage Resistance > 60"
+          "zh_cn": "佩戴启示之键存活6小时，虚数伤害抗性大于60（死亡重置计数）",
+          "en_us": "Survive 6 hours while wearing Key of Revelation, Imaginary Damage Resistance > 60 (resets on death)"
         },
         "frame": "challenge",
         "hidden": false
@@ -1089,7 +1089,7 @@
       "trigger": "stat_polling",
       "conditions": {
         "equippedCurios": ["tcc:qishi_zhijian"],
-        "stat": "minecraft:time_since_death",
+        "stat": "tcc:play_time_qishi_zhijian",
         "criteria_count": 432000,
         "attributes": [
           { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }

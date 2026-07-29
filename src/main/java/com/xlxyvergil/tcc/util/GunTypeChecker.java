@@ -144,7 +144,7 @@ public class GunTypeChecker {
     }
 
     /**
-     * 检查生物是否持有近战武器（参考 Apotheosis LootCategory.SWORD 的判断逻辑）。
+     * 检查生物是否持有近战武器。
      * 满足以下任一条件即视为近战武器：
      * 1. 物品可以执行 {@code ToolActions.SWORD_DIG}（剑类行为）
      * 2. 物品在主手有基础 ATTACK_DAMAGE 属性且值大于 0

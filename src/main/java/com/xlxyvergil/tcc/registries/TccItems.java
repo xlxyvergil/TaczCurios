@@ -130,7 +130,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 /**
  * 直接在这里注册所有物品，避免复杂的注册系统。
- * 参考 AE2 模式：类加载时静态字段直接 new FooItem()，在 RegisterEvent&lt;BLOCK&gt; 时批量注册。
+ * 类加载时静态字段直接 new FooItem()，在 RegisterEvent&lt;BLOCK&gt; 时批量注册。
  */
 public class TccItems {
 
