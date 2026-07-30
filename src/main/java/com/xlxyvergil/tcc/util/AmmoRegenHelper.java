@@ -7,7 +7,6 @@ import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.xlxyvergil.taa.api.ExtendedGunProperties;
 import com.xlxyvergil.taa.util.AmmoCapacityHelper;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -42,9 +41,8 @@ public final class AmmoRegenHelper {
         if (modifiedAmmoCount == null || modifiedAmmoCount <= 0) return;
 
         // 使用统一兼容链计算最终容量（含 GunsmithLib、KuvaLich 等加成），与 Z 面板/HUD 一致
-        Player player = entity instanceof Player p ? p : null;
         int maxAmmo = AmmoCapacityHelper.computeFinalAmmoCapacity(
-            modifiedAmmoCount, held, player, 0, 0
+            modifiedAmmoCount, held, entity, 0, 0
         );
 
         int currentAmmo = iGun.getCurrentAmmoCount(held);
