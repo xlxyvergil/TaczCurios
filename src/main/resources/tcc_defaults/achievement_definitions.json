@@ -75,7 +75,7 @@
         "icon": "tcc:seven_thunders_thunder_seen",
         "description": {
           "zh_cn": "佩戴涤罪七雷，使用狙击枪爆头击杀任意实体10次",
-          "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders: Thunder Seen with sniper"
+          "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders with sniper"
         },
         "frame": "task",
         "hidden": false
@@ -452,7 +452,7 @@
         "icon": "tcc:huishi_zhijuan",
         "description": {
           "zh_cn": "佩戴千界一乘，钓鱼达到200条",
-          "en_us": "Fish Caught reaches 200 while wearing Thousand Realms"
+          "en_us": "Fish Caught reaches 200 while wearing Thousand Worlds"
         },
         "frame": "goal",
         "hidden": false
@@ -483,7 +483,7 @@
         "icon": "tcc:yongjie_zhijian",
         "description": {
           "zh_cn": "佩戴绘世之卷，访问末地",
-          "en_us": "Visit the End while wearing Scroll of Painted World"
+          "en_us": "Visit the End while wearing Scroll of Painting"
         },
         "frame": "goal",
         "hidden": false
@@ -700,7 +700,7 @@
         "icon": "tcc:aomie",
         "description": {
           "zh_cn": "佩戴支配之键，击杀怪物达到5000、承受伤害达到50000并击杀末影龙，虚数伤害抗性大于70",
-          "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Dominance Key, Imaginary Damage Resistance > 70"
+          "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Key of Dominance, Imaginary Damage Resistance > 70"
         },
         "frame": "challenge",
         "hidden": false

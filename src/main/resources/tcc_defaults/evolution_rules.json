@@ -136,8 +136,8 @@
       "type": "attribute",
       "item": "tcc:huishi_zhijuan",
       "description": {
-        "zh_cn": "每佩戴晦朔之卷游玩1天（24000tick），+1虚数抗性（上限20）",
-        "en_us": "Every 1 day wearing Huishi Zhijuan (24000 ticks), +1 Imaginary Resistance (cap 20)"
+        "zh_cn": "每佩戴绘世之卷游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Scroll of Painting (24000 ticks), +1 Imaginary Resistance (cap 20)"
       },
       "stat": "tcc:play_time_huishi_zhijuan",
       "statThreshold": 24000,
@@ -157,7 +157,7 @@
       "item": "tcc:fanxing",
       "description": {
         "zh_cn": "每佩戴繁星游玩1天（24000tick），+1虚数抗性（上限20）",
-        "en_us": "Every 1 day wearing Fanxing (24000 ticks), +1 Imaginary Resistance (cap 20)"
+        "en_us": "Every 1 day wearing Starry Sky (24000 ticks), +1 Imaginary Resistance (cap 20)"
       },
       "stat": "tcc:play_time_fanxing",
       "statThreshold": 24000,
