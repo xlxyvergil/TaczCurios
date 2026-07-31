@@ -1,12 +1,11 @@
 package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
-import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
 import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.curios.Salvation;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -22,7 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 public class HeavenFireHealthListener {
     
     /**
-     * 监听受伤事件 - 处理天火饰品的伤害降低
+     * 监听受伤事件 - 处理救世饰品的伤害降低
      */
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -31,49 +30,10 @@ public class HeavenFireHealthListener {
             return;
         }
         
-        // 检查受害者是否装备了救世，如果是则降低受到的伤害（可配置）
-        if (Salvation.hasSalvationEquipped(target)) {
-            double damageReduction = TaczCuriosConfig.COMMON.salvationDamageReduction.get();
-            float originalDamage = event.getAmount();
-            float reducedDamage = originalDamage * (float)(1.0 - damageReduction);
-            event.setAmount(reducedDamage);
-        }
-        
-        // 检查攻击者是否装备了天火圣裁或天火劫灭
-        if (event.getSource().getEntity() instanceof LivingEntity attacker) {
-            // 检查是否为虚数伤害（天火饰品转换的伤害类型）
-            if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) {
-                double damageConversionRatio = 0;
-                boolean hasHeavenFireItem = false;
-                
-                // 检查天火圣裁
-                if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
-                    damageConversionRatio = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageConversionRatio.get();
-                    hasHeavenFireItem = true;
-                }
-                // 检查天火劫灭
-                else if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
-                    damageConversionRatio = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageConversionRatio.get();
-                    hasHeavenFireItem = true;
-                }
-                // 检查天火劫灭·无烬终焉
-                else if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
-                    damageConversionRatio = TaczCuriosConfig.COMMON.endlessDamageConversionRatio.get();
-                    hasHeavenFireItem = true;
-                }
-                
-                // 应用伤害降低
-                if (hasHeavenFireItem) {
-                    // 根据攻击者的虚数抗性提升保留系数
-                    double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                    double resistanceBonusPerPoint = TaczCuriosConfig.COMMON.imaginaryDamageResistanceBonusPerPoint.get();
-                    damageConversionRatio += resistance * resistanceBonusPerPoint;
-                    
-                    float originalDamage = event.getAmount();
-                    float reducedDamage = originalDamage * (float)damageConversionRatio;
-                    event.setAmount(reducedDamage);
-                }
-            }
+        // 救世：采用苏的限伤机制，读取降低比例计算保留伤害上限（可配置，默认 0.5 = 降低50%）
+        if (Salvation.hasSalvationEquipped(target) && GunTypeChecker.isHoldingPistol(target)) {
+            float cap = event.getAmount() * (float) (1 - TaczCuriosConfig.COMMON.salvationDamageReduction.get());
+            DamageResistanceHelper.setDamageCap(target, cap);
         }
         
         // 通知饰品类处理血量变化

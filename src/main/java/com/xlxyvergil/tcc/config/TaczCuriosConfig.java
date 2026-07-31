@@ -21,8 +21,6 @@ public class TaczCuriosConfig {
         // 天火圣裁配置
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
-        public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageConversionRatio;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> heavenFireJudgmentGunTypes;
         
         // 天火流血效果配置（两个饰品共用）
         public final ForgeConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
@@ -38,7 +36,6 @@ public class TaczCuriosConfig {
         
         // 按饰品分级的虚数侵染上限
         public final ForgeConfigSpec.IntValue judgementKeyImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue judgmentImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue shijieFanyanImaginaryInfectionMaxLevel;
@@ -75,8 +72,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerRadius;
-        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageConversionRatio;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> heavenFireApocalypseGunTypes;
         
         // 膛线配置
         public final ForgeConfigSpec.DoubleValue riflingDamageBoost;
@@ -236,11 +231,11 @@ public class TaczCuriosConfig {
         // 无烬终焉配置
         public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
         public final ForgeConfigSpec.DoubleValue endlessExplosionDamage;
+        public final ForgeConfigSpec.DoubleValue endlessImaginaryResistanceDamagePerPoint;
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerDamageBoost;
         public final ForgeConfigSpec.IntValue endlessNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue endlessNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
-        public final ForgeConfigSpec.ConfigValue<List<? extends String>> endlessGunTypes;
 
         // ==== 吸收饰品通用配置 ====
         /** 吸收饰品触发血量阈值 (0~1, 默认 0.25 = 25%) */
@@ -428,16 +423,10 @@ public class TaczCuriosConfig {
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
-        // 虚数抗性每点提高的伤害保留比例
-        public final ForgeConfigSpec.DoubleValue imaginaryDamageResistanceBonusPerPoint;
-
         // 虚数崩解配置
         public final ForgeConfigSpec.DoubleValue collapsePercentPerLevel;
         public final ForgeConfigSpec.DoubleValue collapsePercentPerDebuff;
         public final ForgeConfigSpec.IntValue collapseMaxDebuffCount;
-
-        // 无烬终焉伤害转换比例
-        public final ForgeConfigSpec.DoubleValue endlessDamageConversionRatio;
 
         // ========== 新增33个饰品配置字段(G/R/S/P/M) ==========
         public final ForgeConfigSpec.DoubleValue criticalDelayCritChanceBoost;
@@ -530,17 +519,11 @@ public class TaczCuriosConfig {
             // 天火圣裁配置
             builder.comment("天火圣裁饰品配置").push("heaven_fire_judgment");
             heavenFireJudgmentDamageBoost = builder
-                    .comment("通用枪械伤害加成 (默认: 3.25 = 325%)")
-                    .defineInRange("damageBoost", 3.25, -1, 100);
+                    .comment("通用枪械伤害加成 (默认: 0.5 = 50%)")
+                    .defineInRange("damageBoost", 0.5, -1, 100);
             heavenFireJudgmentHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
                     .defineInRange("healthCost", -0.3, -1, 1);
-            heavenFireJudgmentDamageConversionRatio = builder
-                    .comment("伤害降低99%，并转换为虚数伤害")
-                    .defineInRange("damageConversionRatio", 0.01, 0, 1);
-            heavenFireJudgmentGunTypes = builder
-                    .comment("天火圣裁生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
-                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
             builder.pop();
             
             // 天火流血效果配置（两个饰品共用）
@@ -573,9 +556,6 @@ public class TaczCuriosConfig {
             imaginaryInfectionResistanceReduction = builder
                     .comment("虚数侵染降低的虚数抗性值 (默认: 10)")
                     .defineInRange("resistanceReduction", 10.0, 0, 100);
-            imaginaryDamageResistanceBonusPerPoint = builder
-                    .comment("每点虚数抗性提高的伤害保留比例 (默认: 0.01 = 1%/点)")
-                    .defineInRange("damageResistanceBonusPerPoint", 0.01, 0, 1);
             builder.pop();
             
 
@@ -597,9 +577,6 @@ public class TaczCuriosConfig {
             judgementKeyImaginaryInfectionMaxLevel = builder
                     .comment("裁决之键的虚数侵染上限 (默认: 9)")
                     .defineInRange("judgementKeyMaxLevel", 9, 1, 99);
-            judgmentImaginaryInfectionMaxLevel = builder
-                    .comment("天火圣裁的虚数侵染上限 (默认: 3)")
-                    .defineInRange("judgmentMaxLevel", 3, 1, 99);
             apocalypseImaginaryInfectionMaxLevel = builder
                     .comment("天火劫灭的虚数侵染上限 (默认: 6)")
                     .defineInRange("apocalypseMaxLevel", 6, 1, 99);
@@ -674,14 +651,14 @@ public class TaczCuriosConfig {
             // 天火劫灭配置
             builder.comment("天火劫灭饰品配置").push("heaven_fire_apocalypse");
             heavenFireApocalypseDamageBoost = builder
-                    .comment("通用枪械伤害加成 (默认: 10.0 = 1000%)")
-                    .defineInRange("damageBoost", 10.0, -1, 1000);
+                    .comment("通用枪械伤害加成 (默认: 1.0 = 100%)")
+                    .defineInRange("damageBoost", 1.0, -1, 1000);
             heavenFireApocalypseExplosionRadius = builder
-                    .comment("爆炸范围加成 (默认: 10)")
-                    .defineInRange("explosionRadius", 10.0, -1, 100);
+                    .comment("爆炸范围加成 (默认: 1)")
+                    .defineInRange("explosionRadius", 1.0, -1, 100);
             heavenFireApocalypseExplosionDamage = builder
-                    .comment("爆炸伤害加成 (默认: 10.0 = 1000%)")
-                    .defineInRange("explosionDamage", 10.0, -1, 100);
+                    .comment("爆炸伤害加成 (默认: 1.0 = 100%)")
+                    .defineInRange("explosionDamage", 1.0, -1, 100);
             heavenFireApocalypseHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -1.0 = -100%)")
                     .defineInRange("healthCost", -1.0, -1, 1);
@@ -689,8 +666,8 @@ public class TaczCuriosConfig {
                     .comment("装备梵天百兽时天火劫灭扣血比例的减少值 (默认: 0.6 = 从扣100%变为扣40%，即保留60%血量)")
                     .defineInRange("brahmaBeastsHealthCostReduction", 0.6, 0, 1);
             heavenFireApocalypseNearbyPlayerDamageBoost = builder
-                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
-                    .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
+                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 0.5 = 50%/级)")
+                    .defineInRange("nearbyPlayerDamageBoost", 0.5, -1, 100);
             heavenFireApocalypseNearbyPlayerPotionAmplifier = builder
                     .comment("附近玩家获得的药水效果等级 (0=1级, 默认: 0)")
                     .defineInRange("nearbyPlayerPotionAmplifier", 0, 0, 999);
@@ -700,12 +677,6 @@ public class TaczCuriosConfig {
             heavenFireApocalypseNearbyPlayerRadius = builder
                     .comment("影响附近玩家的范围 (默认: 32)")
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
-            heavenFireApocalypseDamageConversionRatio = builder
-                    .comment("伤害降低90%，并转换为虚数伤害")
-                    .defineInRange("damageConversionRatio", 0.01, 0, 1);
-            heavenFireApocalypseGunTypes = builder
-                    .comment("天火劫灭生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
-                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
             builder.pop();
             
             // 膛线配置
@@ -752,14 +723,14 @@ public class TaczCuriosConfig {
             // 我小心海也绝非鳝类配置
             builder.comment("我小心海也绝非鳝类饰品配置").push("careful_heart");
             carefulHeartLauncherDamageBoost = builder
-                    .comment("重型武器伤害加成 (默认: 3.0 = 300%)")
-                    .defineInRange("launcherDamageBoost", 3.0, -1, 100);
+                    .comment("重型武器伤害加成 (默认: 1.5 = 150%)")
+                    .defineInRange("launcherDamageBoost", 1.5, -1, 100);
             carefulHeartExplosionDamageBoost = builder
-                    .comment("爆炸伤害加成 (默认: 3.0 = 300%)")
-                    .defineInRange("explosionDamageBoost", 3.0, -1, 100);
+                    .comment("爆炸伤害加成 (默认: 1.5 = 150%)")
+                    .defineInRange("explosionDamageBoost", 1.5, -1, 100);
             carefulHeartExplosionRadiusBoost = builder
-                    .comment("爆炸范围加成 (默认: 3.0 = 300%)")
-                    .defineInRange("explosionRadiusBoost", 3.0, -1, 100);
+                    .comment("爆炸范围加成 (默认: 1.5 = 150%)")
+                    .defineInRange("explosionRadiusBoost", 1.5, -1, 100);
             carefulHeartExplosionEnabled = builder
                     .comment("爆炸启用属性 (默认: 2.0)")
                     .defineInRange("explosionEnabled", 2.0, -1, 100);
@@ -1274,8 +1245,8 @@ public class TaczCuriosConfig {
             // 救世配置
             builder.comment("救世饰品配置").push("salvation");
             salvationDamageReduction = builder
-                    .comment("救世伤害降低比例 (默认: 0.3 = 30%)")
-                    .defineInRange("damageReduction", 0.3, 0, 1);
+                    .comment("救世伤害减免比例 (默认: 0.5 = 减免50%)")
+                    .defineInRange("damageReduction", 0.5, 0, 1);
             salvationResistanceLevel = builder
                     .comment("救世抗性提升等级 (默认: 2 = 抗性III)")
                     .defineInRange("resistanceLevel", 2, 0, 10);
@@ -1284,11 +1255,14 @@ public class TaczCuriosConfig {
             // 无烬终焉配置
             builder.comment("无烬终焉饰品配置").push("endless");
             endlessDamageBoost = builder
-                    .comment("无烬终焉通用枪械伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
-                    .defineInRange("damageBoost", 10.0, -1, 100);
+                    .comment("无烬终焉通用枪械伤害加成 (默认: 1.0 = 100%)")
+                    .defineInRange("damageBoost", 1.0, -1, 100);
+            endlessImaginaryResistanceDamagePerPoint = builder
+                    .comment("每点虚数抗性提升的枪械伤害百分比 (默认: 1.0 = 每点+1%)")
+                    .defineInRange("imaginaryResistanceDamagePerPoint", 1.0, 0.0, 100.0);
             endlessExplosionDamage = builder
-                    .comment("无烬终焉爆炸伤害加成 (默认: 10.0 = 1000%，与天火劫灭一致)")
-                    .defineInRange("explosionDamage", 10.0, -1, 100);
+                    .comment("无烬终焉爆炸伤害加成 (默认: 1.0 = 100%，与天火劫灭一致)")
+                    .defineInRange("explosionDamage", 1.0, -1, 100);
             endlessNearbyPlayerDamageBoost = builder
                     .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 1.0 = 100%/级)")
                     .defineInRange("nearbyPlayerDamageBoost", 1.0, -1, 100);
@@ -1301,12 +1275,6 @@ public class TaczCuriosConfig {
             endlessNearbyPlayerRadius = builder
                     .comment("影响附近玩家的范围 (默认: 32)")
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
-            endlessGunTypes = builder
-                    .comment("无烬终焉生效的枪械类型列表 (可选: pistol, rifle, shotgun, sniper, smg, mg, rpg)")
-                    .defineList("gunTypes", List.of("pistol"), o -> o instanceof String);
-            endlessDamageConversionRatio = builder
-                    .comment("无烬终焉伤害转换比例：受到的伤害乘以此值后转为虚数伤害 (默认: 0.01 = 1%)")
-                    .defineInRange("damageConversionRatio", 0.01, 0, 1);
             builder.pop();
             
             // 士兵基础挂牌配置
@@ -1682,8 +1650,8 @@ public class TaczCuriosConfig {
                     .comment("最大生命值减少比例 (默认: -0.3)")
                     .defineInRange("maxHealthReduction", -0.3, -1.0, 0.0);
             suDamageTakenFactor = builder
-                    .comment("受到伤害乘算因子 (默认: 0.9 = 减少10%)")
-                    .defineInRange("damageTakenFactor", 0.9, 0.0, 1.0);
+                    .comment("受到伤害降低比例 (默认: 0.1 = 降低10%)")
+                    .defineInRange("damageTakenFactor", 0.1, 0.0, 1.0);
             builder.pop();
 
             // 万物休眠配置
@@ -1702,8 +1670,8 @@ public class TaczCuriosConfig {
                     .comment("最大生命值减少比例 (默认: -0.4)")
                     .defineInRange("maxHealthReduction", -0.4, -1.0, 0.0);
             juezheDamageTakenFactor = builder
-                    .comment("受到伤害乘算因子 (默认: 0.7 = 减少30%)")
-                    .defineInRange("damageTakenFactor", 0.7, 0.0, 1.0);
+                    .comment("受到伤害降低比例 (默认: 0.3 = 降低30%)")
+                    .defineInRange("damageTakenFactor", 0.3, 0.0, 1.0);
             builder.pop();
 
             // 停滞之键配置
@@ -1804,14 +1772,14 @@ public class TaczCuriosConfig {
                     .comment("EPIC 稀有度 EBC (默认: 40)")
                     .defineInRange("ebc_epic", 40, 1, 10000);
             fusionMaxLevelCommon = builder
-                    .comment("COMMON 稀有度封顶等级 (默认: 5)")
-                    .defineInRange("maxLevel_common", 5, 0, 100);
+                    .comment("COMMON 稀有度封顶等级 (默认: 10)")
+                    .defineInRange("maxLevel_common", 10, 0, 100);
             fusionMaxLevelUncommon = builder
                     .comment("UNCOMMON 稀有度封顶等级 (默认: 8)")
-                    .defineInRange("maxLevel_uncommon", 8, 0, 100);
+                    .defineInRange("maxLevel_uncommon", 10, 0, 100);
             fusionMaxLevelRare = builder
                     .comment("RARE 稀有度封顶等级 (默认: 10)")
-                    .defineInRange("maxLevel_rare", 10, 0, 100);
+                    .defineInRange("maxLevel_rare", 12, 0, 100);
             fusionMaxLevelEpic = builder
                     .comment("EPIC 稀有度封顶等级 (默认: 12)")
                     .defineInRange("maxLevel_epic", 12, 0, 100);

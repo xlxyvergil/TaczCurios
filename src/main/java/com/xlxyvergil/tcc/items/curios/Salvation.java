@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
@@ -121,6 +122,8 @@ public class Salvation extends BaseCurioItem {
             KNOCKBACK_RESISTANCE_UUID);
         // 移除抗性提升效果
         livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        // 清除限伤状态
+        DamageResistanceHelper.clearDamageCap(livingEntity);
     }
 
     @Override
@@ -145,6 +148,7 @@ public class Salvation extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
         
+        // 显示降低比例：配置值 × 100，例如 0.4 显示为降低40%
         double damageReduction = TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100;
         
         // 继承抗性
@@ -156,7 +160,10 @@ public class Salvation extends BaseCurioItem {
             .withStyle(ChatFormatting.RED));
         
         // 常驻加成
-        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses", String.format("%.0f", damageReduction))
+        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses")
+            .withStyle(ChatFormatting.RED));
+        // 伤害减免（公共语言键，独立一行）
+        tooltip.add(Component.translatable("tcc.tooltip.damage_reduction", String.format("%.0f", damageReduction))
             .withStyle(ChatFormatting.RED));
         
         // 槽位和稀有度

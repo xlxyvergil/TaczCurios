@@ -44,11 +44,9 @@ public class HeavenFireApocalypse extends BaseCurioItem {
     
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
-    private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("79f78f03-e9ba-4567-9ba9-75f729f6c3e8");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
     
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";
-    private static final String EXPLOSION_RADIUS_NAME = "tcc.heaven_fire_apocalypse.explosion_radius";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
     
     
@@ -100,11 +98,9 @@ public class HeavenFireApocalypse extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
-            double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
             double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-            AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         }
     }
@@ -112,7 +108,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, EXPLOSION_RADIUS_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
     }
     
@@ -141,14 +136,12 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         // 添加装备效果
         // 根据语言文件中的占位符顺序调整参数传递顺序：
         // %1$s - damageBoost (通用枪械伤害加成)
-        // %2$s - explosionRadiusBoost (爆炸范围加成)
-        // %3$s - explosionDamageBoost (爆炸伤害加成)
-        // %4$s - healthCost (当前生命值扣除)
+        // %2$s - explosionDamageBoost (爆炸伤害加成)
+        // %3$s - healthCost (当前生命值扣除)
         // %5$s - nearbyPlayerRadius (周围玩家范围)
         // %6$s - nearbyPlayerDamageBoost (周围玩家伤害加成, 药水等级+1%)
         // %7$s - nearbyPlayerDuration (持续时间)
         double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get() * 100;
-        double explosionRadiusBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionRadius.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get() * 100;
         double healthCost = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
@@ -157,8 +150,6 @@ public class HeavenFireApocalypse extends BaseCurioItem {
         int totalNearbyPlayerDamageBoost = nearbyPlayerDamageBoost * (potionAmplifier + 1);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();
         tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
-                .withStyle(ChatFormatting.RED));
-        tooltip.add(formatModifierTooltip(explosionRadiusBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_RADIUS.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));

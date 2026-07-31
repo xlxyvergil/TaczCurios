@@ -141,8 +141,8 @@
         },
         "icon": "tcc:island_boom_raven",
         "description": {
-          "zh_cn": "佩戴渡鸦和涤罪七雷·雷鸣见，100米外使用狙击枪击杀末影龙，虚数伤害抗性大于60",
-          "en_us": "Kill the Ender Dragon from 100m+ while wearing Raven and Seven Thunders: Thunder Seen with sniper, Imaginary Damage Resistance > 60"
+          "zh_cn": "佩戴渡鸦和涤罪七雷·雷鸣见，100米外使用狙击枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon from 100m+ while wearing Raven and Seven Thunders: Thunder Seen with sniper"
         },
         "frame": "challenge",
         "hidden": false
@@ -155,9 +155,6 @@
         "minDistance": 100.0,
         "kills": [
           { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
-        ],
-        "attributes": [
-          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
         ]
       },
       "prerequisites": ["tcc:xiora_to_raven", "tcc:thunder_seen"],
@@ -267,8 +264,8 @@
         },
         "icon": "tcc:heaven_fire_apocalypse",
         "description": {
-          "zh_cn": "佩戴天火圣裁，流血结算未死亡，虚数伤害抗性大于等于40",
-          "en_us": "Survive bleeding settlement while wearing Heaven Fire Judgment, Imaginary Damage Resistance ≥ 40"
+          "zh_cn": "佩戴天火圣裁，流血结算未死亡",
+          "en_us": "Survive bleeding settlement while wearing Heaven Fire Judgment"
         },
         "frame": "goal",
         "hidden": false
@@ -276,10 +273,7 @@
       "parent": "tcc:summer_beach_grant",
       "trigger": "bleeding_settlement",
       "conditions": {
-        "equippedCurios": ["tcc:heaven_fire_judgment"],
-        "attributes": [
-          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gte", "value": 40.0 }
-        ]
+        "equippedCurios": ["tcc:heaven_fire_judgment"]
       },
       "prerequisites": ["tcc:summer_beach_grant"],
       "reward": {
@@ -330,8 +324,8 @@
         },
         "icon": "tcc:salvation",
         "description": {
-          "zh_cn": "佩戴无烬之剑和天火劫灭，使用手枪击杀末影龙，虚数伤害抗性大于80",
-          "en_us": "Kill the Ender Dragon while wearing Inexhaustible Sword and Heaven Fire Apocalypse with pistol, Imaginary Damage Resistance > 80"
+          "zh_cn": "佩戴无烬之剑和天火劫灭，使用手枪在Y>=200的高度击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Inexhaustible Sword and Heaven Fire Apocalypse with pistol at Y>=200"
         },
         "frame": "challenge",
         "hidden": false
@@ -344,9 +338,7 @@
         "kills": [
           { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
         ],
-        "attributes": [
-          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 80.0 }
-        ]
+        "minHeight": 200.0
       },
       "prerequisites": ["tcc:summer_to_brahma"],
       "reward": {
@@ -512,8 +504,8 @@
         },
         "icon": "tcc:fanxing",
         "description": {
-          "zh_cn": "鞘翅飞行距离达到2556500cm，虚数伤害抗性大于60",
-          "en_us": "Elytra flight distance reaches 2556500cm, Imaginary Damage Resistance > 60"
+          "zh_cn": "鞘翅飞行距离达到2556500cm",
+          "en_us": "Elytra flight distance reaches 2556500cm"
         },
         "frame": "challenge",
         "hidden": false
@@ -522,10 +514,7 @@
       "trigger": "stat_polling",
       "conditions": {
         "stat": "minecraft:aviate_one_cm",
-        "criteria_count": 2556500,
-        "attributes": [
-          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
-        ]
+        "criteria_count": 2556500
       },
       "prerequisites": ["tcc:griseo_to_huishi_zhijuan", "tcc:qianjie_to_yongjie_zhijian"],
       "reward": {
@@ -699,8 +688,8 @@
         },
         "icon": "tcc:aomie",
         "description": {
-          "zh_cn": "佩戴支配之键，击杀怪物达到5000、承受伤害达到50000并击杀末影龙，虚数伤害抗性大于70",
-          "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Key of Dominance, Imaginary Damage Resistance > 70"
+          "zh_cn": "佩戴支配之键，击杀怪物达到5000、承受伤害达到50000并击杀末影龙",
+          "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Key of Dominance"
         },
         "frame": "challenge",
         "hidden": false
@@ -716,9 +705,6 @@
         ],
         "kills": [
           { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
-        ],
-        "attributes": [
-          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 70.0 }
         ]
       },
       "prerequisites": ["tcc:imer_to_dominance_key"],
@@ -1079,8 +1065,8 @@
         },
         "icon": "tcc:luoxuan",
         "description": {
-          "zh_cn": "佩戴启示之键存活6小时，虚数伤害抗性大于60（死亡重置计数）",
-          "en_us": "Survive 6 hours while wearing Key of Revelation, Imaginary Damage Resistance > 60 (resets on death)"
+          "zh_cn": "佩戴启示之键存活6小时（死亡重置计数）",
+          "en_us": "Survive 6 hours while wearing Key of Revelation (resets on death)"
         },
         "frame": "challenge",
         "hidden": false
@@ -1090,10 +1076,7 @@
       "conditions": {
         "equippedCurios": ["tcc:qishi_zhijian"],
         "stat": "tcc:play_time_qishi_zhijian",
-        "criteria_count": 432000,
-        "attributes": [
-          { "attribute": "tcc:imaginary_damage_resistance", "comparator": "gt", "value": 60.0 }
-        ]
+        "criteria_count": 432000
       },
       "prerequisites": ["tcc:qishi_zhijian_grant"],
       "reward": {

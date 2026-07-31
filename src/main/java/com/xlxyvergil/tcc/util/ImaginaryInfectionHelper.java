@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.util;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
-import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
 import com.xlxyvergil.tcc.items.curios.JudgementKey;
 import com.xlxyvergil.tcc.items.curios.MetaMorph;
 import com.xlxyvergil.tcc.items.curios.ShijieFanyan;
@@ -35,12 +34,6 @@ public final class ImaginaryInfectionHelper {
         if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
             return new InfectionInfo(
                 TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        if (HeavenFireJudgment.hasHeavenFireJudgmentEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get(),
                 false
             );
         }

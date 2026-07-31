@@ -6,8 +6,8 @@
       "type": "attribute",
       "item": "tcc:summer_beach",
       "description": {
-        "zh_cn": "使用手枪击杀凋灵，每次+1虚数抗性（上限20）",
-        "en_us": "Kill Wither with pistol, +1 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用手枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with pistol, +2 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": [
@@ -24,7 +24,7 @@
           "entity": {
             "key": "minecraft:wither"
           },
-          "value": 1.0
+          "value": 2.0
         }
       ]
     },
@@ -63,8 +63,8 @@
       "type": "attribute",
       "item": "tcc:xiora",
       "description": {
-        "zh_cn": "使用狙击枪击杀凋灵，每次+1虚数抗性（上限20）",
-        "en_us": "Kill Wither with sniper, +1 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用狙击枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +2 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": ["sniper"]
@@ -79,7 +79,7 @@
           "entity": {
             "key": "minecraft:wither"
           },
-          "value": 1.0
+          "value": 2.0
         }
       ]
     },
@@ -89,8 +89,8 @@
       "type": "attribute",
       "item": "tcc:raven",
       "description": {
-        "zh_cn": "使用狙击枪击杀凋灵，每次+1虚数抗性（上限20）",
-        "en_us": "Kill Wither with sniper, +1 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用狙击枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +2 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": ["sniper"]
@@ -105,7 +105,7 @@
           "entity": {
             "key": "minecraft:wither"
           },
-          "value": 1.0
+          "value": 2.0
         }
       ]
     },

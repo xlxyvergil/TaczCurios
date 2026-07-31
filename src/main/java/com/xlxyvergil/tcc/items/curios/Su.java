@@ -109,7 +109,7 @@ public class Su extends BaseCurioItem {
         if (!GunTypeChecker.isHoldingRifle(entity)) return;
         if (entity.level().isClientSide()) return;
 
-        float cap = event.getAmount() * TaczCuriosConfig.COMMON.suDamageTakenFactor.get().floatValue();
+        float cap = event.getAmount() * (float) (1 - TaczCuriosConfig.COMMON.suDamageTakenFactor.get());
         DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
@@ -130,6 +130,7 @@ public class Su extends BaseCurioItem {
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         double maxHealthReduction = TaczCuriosConfig.COMMON.suMaxHealthReduction.get() * 100;
+        // 显示降低比例：配置值 × 100
         double damageTakenFactor = TaczCuriosConfig.COMMON.suDamageTakenFactor.get() * 100;
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
@@ -138,8 +139,8 @@ public class Su extends BaseCurioItem {
 
         tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("item.tcc.su.attr_damage_taken",
-                String.format("%.2f", damageTakenFactor))
+        tooltip.add(Component.translatable("tcc.tooltip.damage_reduction",
+                String.format("%.0f", damageTakenFactor))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

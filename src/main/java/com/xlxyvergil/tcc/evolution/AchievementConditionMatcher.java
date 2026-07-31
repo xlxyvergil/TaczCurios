@@ -80,6 +80,12 @@ public final class AchievementConditionMatcher {
         // Check health max (player health must be <= healthMax)
         if (c.healthMax() != null && player.getHealth() > c.healthMax()) return false;
 
+        // Check min height (both player and killed entity Y > minHeight)
+        if (c.minHeight() != null && killed != null) {
+            double minH = c.minHeight();
+            if (player.getY() < minH || killed.getY() < minH) return false;
+        }
+
         return true;
     }
 

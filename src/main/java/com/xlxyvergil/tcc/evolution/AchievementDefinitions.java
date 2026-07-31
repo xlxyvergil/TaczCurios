@@ -301,7 +301,9 @@ public final class AchievementDefinitions {
         @SerializedName("extraStats") List<StatCondition> extraStats,
         // --- health range (current HP check, e.g. healthMin: 0, healthMax: 4) ---
         @SerializedName("healthMin") Double healthMin,
-        @SerializedName("healthMax") Double healthMax
+        @SerializedName("healthMax") Double healthMax,
+        // --- Y-coordinate minimum (both killer & killed must be above this) ---
+        @SerializedName("minHeight") Double minHeight
     ) {
         /** 统计目标计数，若 JSON 未设置则默认 1 */
         public int criteriaCount() { return criteriaCount > 0 ? criteriaCount : 1; }

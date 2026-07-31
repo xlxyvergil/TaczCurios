@@ -10,7 +10,6 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -113,7 +112,7 @@ public class Juezhe extends BaseCurioItem {
         if (!GunTypeChecker.isHoldingRifle(entity)) return;
         if (entity.level().isClientSide()) return;
 
-        float cap = event.getAmount() * TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get().floatValue();
+        float cap = event.getAmount() * (float) (1 - TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get());
         DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
@@ -134,6 +133,7 @@ public class Juezhe extends BaseCurioItem {
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         double maxHealthReduction = TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100;
+        // 显示降低比例：配置值 × 100
         double damageTakenFactor = TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100;
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
@@ -142,8 +142,8 @@ public class Juezhe extends BaseCurioItem {
 
         tooltip.add(formatModifierTooltip(maxHealthReduction, "%.0f%%", Component.translatable(AttributeHelper.MAX_HEALTH.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("item.tcc.juezhe.attr_damage_taken",
-                String.format("%.2f", damageTakenFactor))
+        tooltip.add(Component.translatable("tcc.tooltip.damage_reduction",
+                String.format("%.0f", damageTakenFactor))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

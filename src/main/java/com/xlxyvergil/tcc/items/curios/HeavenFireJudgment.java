@@ -1,11 +1,9 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
-import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.RuleAdvancementMapping;
 import com.xlxyvergil.tcc.event.HeavenFireBleedingSettlementEvent;
@@ -141,19 +139,9 @@ public class HeavenFireJudgment extends BaseCurioItem {
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get() * 100;
         tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
-            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.special",
                 String.format("%+.0f", healthCost))
             .withStyle(ChatFormatting.WHITE));
-        
-        // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
-        
-        // 虚数侵染上限
-        int infectionMax = TaczCuriosConfig.COMMON.judgmentImaginaryInfectionMaxLevel.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.inflection_max",
-                String.format("%d", infectionMax))
-            .withStyle(ChatFormatting.YELLOW));
         
         // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
@@ -166,29 +154,6 @@ public class HeavenFireJudgment extends BaseCurioItem {
             tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
                 .withStyle(ChatFormatting.RED));
         }
-    }
-    
-    /**
-     * 监听 TACZ 枪械伤害事件（Pre），将伤害转换为虚数伤害
-     */
-    @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasHeavenFireJudgmentEquipped(attacker)) {
-            return;
-        }
-
-        if (!(attacker.level() instanceof ServerLevel)) {
-            return;
-        }
-
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
-
-        // 转换为虚数伤害
-        event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
-            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
-        event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
-            TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
     }
     
     /**
