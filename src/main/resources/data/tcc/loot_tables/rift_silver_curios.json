@@ -7,257 +7,257 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:chamber"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:despicable_acceleration"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:blaze_storm"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:heavy_caliber_tag"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:alloy_drill"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:evil_accuracy"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:heavy_firepower"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:malignant_spread"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:corrupt_magazine"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:split_chamber"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:overloaded_magazine"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:infernal_chamber"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:infected_magazine"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:deadly_surge"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:bullet_spread"
         },
         {
           "type": "minecraft:item",
-          "weight": 89,
+          "weight": 765,
           "name": "tcc:depleted_reload"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 765,
           "name": "tcc:critical_delay"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 765,
           "name": "tcc:weakness_sense"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 765,
           "name": "tcc:destruction"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 765,
           "name": "tcc:hollow_point"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 765,
           "name": "tcc:argon_scope"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 765,
           "name": "tcc:condition_overload"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:soldier_specific_tag"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:chamber_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:blaze_storm_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:merged_rifling"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:ripping_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:close_combat_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:careful_heart"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:oppression_point_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:sword_wind_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:burst_reload_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:tactical_reload_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:shotgun_expansion_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:magazine_boost_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 8,
+          "weight": 99,
           "name": "tcc:tandem_magazine_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 99,
           "name": "tcc:destruction_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 99,
           "name": "tcc:thunder_barrel_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 99,
           "name": "tcc:weakness_mastery_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 99,
           "name": "tcc:pistol_mastery_prime"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 99,
           "name": "tcc:sacrifice_oppression"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 99,
           "name": "tcc:sacrifice_steel"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_argon_scope"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_split_chamber"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_infernal_chamber"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_hydraulic_crosshair"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_bullet_spread"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_steel_slash"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_rifle_aptitude"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_shotgun_savvy"
         },
         {
           "type": "minecraft:item",
-          "weight": 1,
+          "weight": 110,
           "name": "tcc:gilded_marksman"
         }
       ]
