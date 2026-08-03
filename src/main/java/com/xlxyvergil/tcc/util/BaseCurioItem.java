@@ -141,13 +141,6 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         applyEffects(entity, stack);
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
     }
-    
-    /**
-     * 使用指定 ItemStack 的融合等级应用效果。供 GunSwitchEventHandler 等外部调用。
-     */
-    public final void applyEffectsWithStack(LivingEntity entity, ItemStack stack) {
-        applyEffects(entity, stack);
-    }
 
     /**
      * 应用效果（子类实现）

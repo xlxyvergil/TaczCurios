@@ -23,8 +23,8 @@ public class GunSwitchEventHandler {
                     for (int i = 0; i < stacksHandler.getSlots(); i++) {
                         ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
                         if (!stack.isEmpty() && stack.getItem() instanceof BaseCurioItem curioItem) {
-                            // 使用 applyEffects 传递 ItemStack 以支持融合等级计算
-                            curioItem.applyEffectsWithStack(player, stack);
+                            // 先移除旧效果再按当前手持枪械类型重新应用，保证属性仅在手持对应枪械时生效
+                            curioItem.refreshEffects(player, stack);
                         }
                     }
                 });
