@@ -141,6 +141,8 @@
   "item.tcc.fusion_vessel.deposit": "- 存入方式：拿起容器右击内融核心",
   "item.tcc.fusion_vessel.deposit_hint": "  （右键饰品将直接转化为对应内融核心）",
   "item.tcc.fusion_vessel.remove": "- 取出方式：拿起容器右击空白槽位",
+  "item.tcc.fusion_vessel.auto_on": "自动吸收模式：自动吸收玩家背包内的内融核心，此模式下禁止取出",
+  "item.tcc.fusion_vessel.auto_off": "自动吸收模式：关闭（主手右键切换）",
   "item.tcc.fusion_vessel.upgrade": "将饰品与融合容器放入合成台，消耗内融核心升级饰品。",
   "item.tcc.kikaku_ichijin.effect": "造成伤害时，以64格内最近的玩家或女仆为祭品，用祭品总血量的倍率乘以伤害，破坏目标周围球形范围的方块，祭品死亡",
   "message.tcc.kikaku_ichijin.self_sacrifice": "%s: Stella",
