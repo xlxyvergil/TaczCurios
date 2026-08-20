@@ -335,6 +335,8 @@ public class TaczCuriosConfig {
         // 虚空万藏配置
         public final ForgeConfigSpec.DoubleValue xukongWancangImaginaryDamage;
         public final ForgeConfigSpec.DoubleValue xukongWancangAmmoRegenPercent;
+        public final ForgeConfigSpec.DoubleValue xukongWancangHeatMax;
+        public final ForgeConfigSpec.DoubleValue xukongWancangHeatCooling;
 
         // 愚戏之匣配置
         public final ForgeConfigSpec.DoubleValue yuxiZhixiaTriggerHpRatio;
@@ -345,6 +347,8 @@ public class TaczCuriosConfig {
         // 启示之键配置
         public final ForgeConfigSpec.DoubleValue qishiZhijianImaginaryDamage;
         public final ForgeConfigSpec.DoubleValue qishiZhijianAmmoRegenPercent;
+        public final ForgeConfigSpec.DoubleValue qishiZhijianHeatMax;
+        public final ForgeConfigSpec.DoubleValue qishiZhijianHeatCooling;
 
         // 螺旋配置
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionInterval;
@@ -355,6 +359,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamage;
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHAmmoRegenPercent;
         public final ForgeConfigSpec.IntValue xukongWancangYZTHInfectionDuration;
+        public final ForgeConfigSpec.DoubleValue xukongWancangYZTHHeatMax;
+        public final ForgeConfigSpec.DoubleValue xukongWancangYZTHHeatCooling;
 
         // 适应系统通用配置
         public final ForgeConfigSpec.IntValue adaptationMaxCount;
@@ -1502,6 +1508,12 @@ public class TaczCuriosConfig {
             xukongWancangAmmoRegenPercent = builder
                     .comment("每秒弹药恢复比例 (默认: 0.05 = 5%)")
                     .defineInRange("ammoRegenPercent", 0.05, 0, 1);
+            xukongWancangHeatMax = builder
+                    .comment("过热上限倍率（基础乘法） (默认: 0.5)")
+                    .defineInRange("heatMax", 0.5, 0.01, 1024.0);
+            xukongWancangHeatCooling = builder
+                    .comment("散热速度倍率（基础乘法） (默认: 0.2)")
+                    .defineInRange("heatCooling", 0.2, 0.01, 1024.0);
             builder.pop();
 
             // 愚戏之匣配置
@@ -1528,6 +1540,12 @@ public class TaczCuriosConfig {
             qishiZhijianAmmoRegenPercent = builder
                     .comment("每秒弹药恢复比例 (默认: 0.1 = 10%)")
                     .defineInRange("ammoRegenPercent", 0.1, 0, 1);
+            qishiZhijianHeatMax = builder
+                    .comment("过热上限倍率（基础乘法） (默认: 0.9)")
+                    .defineInRange("heatMax", 0.9, 0.01, 1024.0);
+            qishiZhijianHeatCooling = builder
+                    .comment("散热速度倍率（基础乘法） (默认: 0.4)")
+                    .defineInRange("heatCooling", 0.4, 0.01, 1024.0);
             builder.pop();
 
             // 螺旋配置
@@ -1554,6 +1572,12 @@ public class TaczCuriosConfig {
             xukongWancangYZTHInfectionDuration = builder
                     .comment("侵染效果持续时间(秒) (默认: 10)")
                     .defineInRange("infectionDuration", 10, 1, 3600);
+            xukongWancangYZTHHeatMax = builder
+                    .comment("过热上限倍率（基础乘法） (默认: 1.5)")
+                    .defineInRange("heatMax", 1.5, 0.01, 1024.0);
+            xukongWancangYZTHHeatCooling = builder
+                    .comment("散热速度倍率（基础乘法） (默认: 0.8)")
+                    .defineInRange("heatCooling", 0.8, 0.01, 1024.0);
             builder.pop();
 
             // 适应系统通用配置

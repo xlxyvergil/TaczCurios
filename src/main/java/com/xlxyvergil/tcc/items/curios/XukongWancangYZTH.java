@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AmmoRegenHelper;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -23,6 +24,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +38,7 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -43,6 +46,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class XukongWancangYZTH extends BaseCurioItem {
 
     private static final String INFECTION_KEY = "tcc_xukongwancang_infection";
+
+    // 过热属性修饰符UUID
+    private static final UUID HEAT_MAX_UUID = UUID.fromString("c3d4e5f6-a7b8-6c7d-0e1f-2a3b4c5d6e21");
+    private static final UUID HEAT_COOLING_UUID = UUID.fromString("c3d4e5f6-a7b8-6c7d-0e1f-2a3b4c5d6e22");
 
     public XukongWancangYZTH(Properties properties) {
         super(properties);
@@ -63,10 +70,23 @@ public class XukongWancangYZTH extends BaseCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        if (matchesRestriction(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEAT_MAX,
+                TaczCuriosConfig.COMMON.xukongWancangYZTHHeatMax.get(), HEAT_MAX_UUID,
+                "tcc.xukong_wancang_yzth.heat_max", AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEAT_COOLING,
+                TaczCuriosConfig.COMMON.xukongWancangYZTHHeatCooling.get(), HEAT_COOLING_UUID,
+                "tcc.xukong_wancang_yzth.heat_cooling", AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEAT_MAX, HEAT_MAX_UUID);
+            AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEAT_COOLING, HEAT_COOLING_UUID);
+        }
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEAT_MAX, HEAT_MAX_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEAT_COOLING, HEAT_COOLING_UUID);
     }
 
     @Override

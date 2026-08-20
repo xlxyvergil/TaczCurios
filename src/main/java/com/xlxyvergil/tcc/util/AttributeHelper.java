@@ -158,6 +158,14 @@ public class AttributeHelper {
     /** 近战距离 */
     public static final Attribute MELEE_DISTANCE = EntityAttributeRegistry.MELEE_DISTANCE.get();
     
+    // ========== TAA 过热体系属性（乘法倍率，默认1.0） ==========
+    
+    /** 过热上限 */
+    public static final Attribute HEAT_MAX = EntityAttributeRegistry.HEAT_MAX.get();
+    
+    /** 散热速度 */
+    public static final Attribute HEAT_COOLING = EntityAttributeRegistry.HEAT_COOLING.get();
+    
     // 具体枪械类型伤害
     public static final Attribute BULLET_GUNDAMAGE_PISTOL = EntityAttributeRegistry.BULLET_GUNDAMAGE_PISTOL.get();
     public static final Attribute BULLET_GUNDAMAGE_RIFLE = EntityAttributeRegistry.BULLET_GUNDAMAGE_RIFLE.get();
