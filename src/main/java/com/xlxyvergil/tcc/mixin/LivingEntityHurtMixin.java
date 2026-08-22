@@ -27,7 +27,9 @@ public abstract class LivingEntityHurtMixin {
                                       Operation<Float> original) {
         Float intended = TccAttributeEvents.peekIntendedDamage(self);
         float result = original.call(self, source, damage);
-        if (intended != null && intended > 0) {
+        // 仅当事件金额被外部 mod（L2D）压到 0 时恢复意图值，避免伤害被吞；
+        // damage > 0 表示已通过虚数抗性减伤（LOWEST 事件已 setAmount 为减伤后值），保留减伤结果
+        if (intended != null && intended > 0 && damage <= 0.0F) {
             return intended;
         }
         return result;
