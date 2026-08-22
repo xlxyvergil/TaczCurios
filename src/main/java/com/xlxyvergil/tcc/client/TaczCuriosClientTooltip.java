@@ -44,6 +44,9 @@ public class TaczCuriosClientTooltip {
         // 奖励物品的成就进度（玩家 NBT 中的累计值）
         AchievementProgressRenderer.appendProgress(stack, tooltip);
 
+        // 按住 Shift：显示下一级进化条件文本
+        AchievementProgressRenderer.appendNextEvolutionCondition(stack, tooltip);
+
         // 逐火之蛾饰品的虚数抗性成长条件
         appendEvolutionCondition(tooltip, stack);
 
@@ -141,7 +144,7 @@ public class TaczCuriosClientTooltip {
         }
     }
 
-    private static String getClientLocale() {
+    public static String getClientLocale() {
         try {
             Minecraft mc = Minecraft.getInstance();
             if (mc != null && mc.getLanguageManager() != null) {

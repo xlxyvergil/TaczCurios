@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -147,7 +146,7 @@ public class BrahmaBeasts extends BaseCurioItem {
     }
 
     private static int getBaseResistance() {
-        return TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
+        return 1;
     }
 
     }

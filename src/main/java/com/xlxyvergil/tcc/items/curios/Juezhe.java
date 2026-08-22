@@ -60,7 +60,7 @@ public class Juezhe extends BaseCurioItem {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof Juezhe);
         CompoundTag tag = equipped.getTag();
-        double total = TaczCuriosConfig.COMMON.suImaginaryResistance.get()
+        double total = 1.0
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             total, IMAGINARY_RESISTANCE_UUID,
@@ -129,7 +129,7 @@ public class Juezhe extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
 
         // 虚数抗性显示
-        double baseValue = TaczCuriosConfig.COMMON.suImaginaryResistance.get();
+        double baseValue = 1.0;
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         double maxHealthReduction = TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100;

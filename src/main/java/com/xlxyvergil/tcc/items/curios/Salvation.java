@@ -222,7 +222,7 @@ public class Salvation extends BaseCurioItem {
     }
 
     private static int getBaseResistance() {
-        return TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
+        return 1;
     }
 
     }

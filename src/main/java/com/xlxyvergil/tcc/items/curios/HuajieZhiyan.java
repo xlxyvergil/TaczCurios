@@ -59,7 +59,7 @@ public class HuajieZhiyan extends BaseCurioItem {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof HuajieZhiyan);
         CompoundTag tag = equipped.getTag();
-        double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
+        double total = 1.0
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             total, IMAGINARY_RESISTANCE_UUID,
@@ -144,7 +144,7 @@ public class HuajieZhiyan extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
 
         // 虚数抗性显示
-        double baseValue = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
+        double baseValue = 1.0;
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         if (level != null && level.isClientSide()) {
             Player player = Minecraft.getInstance().player;

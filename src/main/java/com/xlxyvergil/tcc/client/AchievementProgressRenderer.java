@@ -7,6 +7,7 @@ import net.minecraft.Util;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -48,6 +49,63 @@ public final class AchievementProgressRenderer {
             doAppendProgress(stack, tooltip);
         } catch (Exception ignored) {
             // 防御性：玩家统计数据未就绪、注册表查询异常等情况下不崩溃
+        }
+    }
+
+    /**
+     * 显示当前饰品的下一级进化条件提示与内容。
+     * <p>
+     * 依据 achievement_definitions.json 中 reward 的 item/to 字段判断进化关系：
+     * 找到 {@code reward.type == "evolve"} 且 {@code reward.item}（或 linkedEvolves.item）
+     * 等于当前物品的成就。未按 Shift 时显示「按住Shift显示进化条件」提示，
+     * 按住 Shift 时直接显示其 display.description 文本。
+     * 例如佩戴「格蕾修」按 Shift，会显示「佩戴千界一乘，钓鱼达到200条」。
+     */
+    public static void appendNextEvolutionCondition(ItemStack stack, List<Component> tooltip) {
+        try {
+            ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
+            if (itemId == null) return;
+            String currentId = itemId.toString();
+
+            for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.all()) {
+                if (!def.isEnabled()) continue;
+                AchievementDefinitions.Reward reward = def.reward();
+                if (reward == null || !reward.isEvolve()) continue;
+
+                // 当前物品是否为该成就的进化来源（reward.item 或 linkedEvolves.item）
+                boolean isSource = currentId.equals(reward.item());
+                if (!isSource && reward.linkedEvolves() != null) {
+                    for (AchievementDefinitions.LinkedEvolveRef ref : reward.linkedEvolves()) {
+                        if (ref.item() != null && currentId.equals(ref.item())) {
+                            isSource = true;
+                            break;
+                        }
+                    }
+                }
+                if (!isSource) continue;
+
+                if (def.display() == null || def.display().description() == null) return;
+                tooltip.add(Component.literal(""));
+
+                // 未按 Shift：仅显示提示
+                if (!Screen.hasShiftDown()) {
+                    tooltip.add(Component.translatable("tcc.tooltip.next_evolution_hint")
+                            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+                    return;
+                }
+
+                // 按住 Shift：直接显示条件文本
+                String locale = TaczCuriosClientTooltip.getClientLocale();
+                String text = def.display().description().get(locale);
+                if (text == null) text = def.display().description().get("en_us");
+                if (text == null) return;
+
+                tooltip.add(Component.literal(text)
+                        .withStyle(ChatFormatting.GRAY));
+                return;
+            }
+        } catch (Exception ignored) {
+            // 防御性：注册表未就绪等情况不崩溃
         }
     }
 

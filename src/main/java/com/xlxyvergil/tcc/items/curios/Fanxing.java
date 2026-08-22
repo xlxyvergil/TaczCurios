@@ -61,7 +61,7 @@ public class Fanxing extends BaseCurioItem {
         if (matchesRestriction(livingEntity)) {
             ItemStack equipped = findEquippedStack(livingEntity);
             CompoundTag tag = equipped.getTag();
-            double resistance = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get()
+            double resistance = 1.0
                     + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
             AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
                 resistance, IMAGINARY_RESISTANCE_UUID,
@@ -163,7 +163,7 @@ public class Fanxing extends BaseCurioItem {
 
         // 虚数抗性显示
         CompoundTag tag = stack.getTag();
-        double baseValue = TaczCuriosConfig.COMMON.griseoImaginaryResistance.get();
+        double baseValue = 1.0;
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))

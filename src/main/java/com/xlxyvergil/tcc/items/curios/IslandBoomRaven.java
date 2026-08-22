@@ -60,7 +60,7 @@ public class IslandBoomRaven extends BaseCurioItem {
         if (matchesRestriction(livingEntity)) {
             ItemStack equipped = findEquippedStack(livingEntity);
             CompoundTag tag = equipped.getTag();
-            double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
+            double total = ImaginaryResistanceHelper.calculateTotalResistance(1, tag);
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get(), ARMOR_UUID,
                 "tcc.island_boom_raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -162,7 +162,7 @@ public class IslandBoomRaven extends BaseCurioItem {
         double invisDurationSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0;
 
         CompoundTag tag = stack.getTag();
-        double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(1, tag);
 
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));

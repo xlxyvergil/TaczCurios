@@ -201,7 +201,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue redMovementTagSpeedBoost;
         
         // 希奥拉配置
-        public final ForgeConfigSpec.IntValue xioraBaseResistance;
         public final ForgeConfigSpec.DoubleValue xioraArmorMultiplier;
         public final ForgeConfigSpec.DoubleValue xioraSpeedMultiplier;
 
@@ -221,8 +220,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenAmplifier;
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenRefreshThreshold;
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenDuration;
-        
-        public final ForgeConfigSpec.IntValue summerBeachBaseResistance;
         
         // 救世配置
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
@@ -295,7 +292,6 @@ public class TaczCuriosConfig {
 
         // 格蕾修配置
         public final ForgeConfigSpec.IntValue griseoHurtCooldownTicks;
-        public final ForgeConfigSpec.DoubleValue griseoImaginaryResistance;
 
         // 千界一乘配置
         public final ForgeConfigSpec.IntValue qianjieYichengLuck;
@@ -330,7 +326,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue villVAbsorptionLevel;
         public final ForgeConfigSpec.DoubleValue villVAbsorptionDuration;
         public final ForgeConfigSpec.DoubleValue villVCooldownSeconds;
-        public final ForgeConfigSpec.DoubleValue villVImaginaryResistance;
 
         // 虚空万藏配置
         public final ForgeConfigSpec.DoubleValue xukongWancangImaginaryDamage;
@@ -366,7 +361,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue adaptationMaxCount;
 
         // 千劫配置
-        public final ForgeConfigSpec.DoubleValue kalpasImaginaryResistance;
         public final ForgeConfigSpec.IntValue kalpasMaxSlots;
         public final ForgeConfigSpec.DoubleValue kalpasAdaptFactor;
         public final ForgeConfigSpec.IntValue kalpasDecaySeconds;
@@ -396,7 +390,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue metaMorphLifeStealPerResistance;
 
         // 苏配置
-        public final ForgeConfigSpec.DoubleValue suImaginaryResistance;
         public final ForgeConfigSpec.DoubleValue suMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue suDamageTakenFactor;
 
@@ -421,10 +414,6 @@ public class TaczCuriosConfig {
         // 因果转轮配置
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunAmmoResistanceScale;
-
-        // 怪物虚数抗性Buff配置
-        public final ForgeConfigSpec.DoubleValue mobBuffImaginaryResistance;
-        public final ForgeConfigSpec.BooleanValue mobBuffApplyToPlayers;
 
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
@@ -1183,9 +1172,6 @@ public class TaczCuriosConfig {
             
             // 希奥拉配置
             builder.comment("希奥拉饰品配置").push("xiora");
-            xioraBaseResistance = builder
-                    .comment("希奥拉虚数抗性基础值 (默认: 21)")
-                    .defineInRange("baseResistance", 21, 0, 1000);
             xioraArmorMultiplier = builder
                     .comment("护甲乘数 (默认: -0.2 = 护甲降低20%)")
                     .defineInRange("armorMultiplier", -0.2, -1, 100);
@@ -1243,9 +1229,6 @@ public class TaczCuriosConfig {
             
             // 夏日沙滩配置
             builder.comment("夏日沙滩饰品配置").push("summer_beach");
-            summerBeachBaseResistance = builder
-                    .comment("夏日沙滩虚数抗性基础值 (默认: 41)")
-                    .defineInRange("baseResistance", 41, 0, 1000);
             builder.pop();
             
             // 救世配置
@@ -1408,9 +1391,6 @@ public class TaczCuriosConfig {
             griseoHurtCooldownTicks = builder
                     .comment("受伤冷却基础冷却(tick) (默认: 10 = 0.5秒)")
                     .defineInRange("hurtCooldownTicks", 10, 1, 12000);
-            griseoImaginaryResistance = builder
-                    .comment("虚数抗性基础值 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
             // 千界一乘配置
@@ -1495,9 +1475,6 @@ public class TaczCuriosConfig {
             villVCooldownSeconds = builder
                     .comment("吸收触发冷却时间(秒) (默认: 60)")
                     .defineInRange("cooldownSeconds", 60.0, 1, 3600);
-            villVImaginaryResistance = builder
-                    .comment("虚数抗性基础值 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             builder.pop();
 
             // 虚空万藏配置
@@ -1589,9 +1566,6 @@ public class TaczCuriosConfig {
 
             // 千劫配置
             builder.comment("千劫饰品配置").push("kalpas");
-            kalpasImaginaryResistance = builder
-                    .comment("虚数抗性基础值 (默认: 21.0)")
-                    .defineInRange("imaginaryResistance", 21.0, -100.0, 100.0);
             kalpasMaxSlots = builder
                     .comment("适应最大槽位 (默认: 3)")
                     .defineInRange("maxSlots", 3, 1, 100);
@@ -1667,9 +1641,6 @@ public class TaczCuriosConfig {
 
             // 苏配置
             builder.comment("苏饰品配置").push("su");
-            suImaginaryResistance = builder
-                    .comment("虚数抗性基础值 (默认: 31.0)")
-                    .defineInRange("imaginaryResistance", 31.0, -100.0, 100.0);
             suMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.3)")
                     .defineInRange("maxHealthReduction", -0.3, -1.0, 0.0);
@@ -1732,16 +1703,6 @@ public class TaczCuriosConfig {
             yinguoZhuanlunAmmoResistanceScale = builder
                     .comment("每点虚数抗性提供的弹药恢复系数 (默认: 0.01)")
                     .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
-            builder.pop();
-
-            // 怪物虚数抗性Buff配置
-            builder.comment("怪物虚数抗性Buff配置（非玩家实体生成时自带的正面效果）").push("mob_buff");
-            mobBuffImaginaryResistance = builder
-                    .comment("Buff提供的虚数抗性值 (默认: 30.0)")
-                    .defineInRange("imaginaryResistance", 30.0, -100.0, 100.0);
-            mobBuffApplyToPlayers = builder
-                    .comment("是否对玩家也应用此Buff (默认: false)")
-                    .define("applyToPlayers", false);
             builder.pop();
 
             // 饰品互斥配置

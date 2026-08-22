@@ -59,7 +59,7 @@ public class VillV extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
-        double total = TaczCuriosConfig.COMMON.villVImaginaryResistance.get()
+        double total = 1.0
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             total, IMAGINARY_RESISTANCE_UUID,
@@ -128,7 +128,7 @@ public class VillV extends BaseCurioItem {
 
         // 虚数抗性显示
         CompoundTag tag = stack.getTag();
-        double baseValue = TaczCuriosConfig.COMMON.villVImaginaryResistance.get();
+        double baseValue = 1.0;
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
 

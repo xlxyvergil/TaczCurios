@@ -45,7 +45,7 @@ public class Xiora extends BaseCurioItem {
         if (matchesRestriction(livingEntity)) {
             ItemStack equipped = findEquippedStack(livingEntity);
             CompoundTag tag = equipped.getTag();
-            double total = ImaginaryResistanceHelper.calculateTotalResistance(TaczCuriosConfig.COMMON.xioraBaseResistance.get(), tag);
+            double total = ImaginaryResistanceHelper.calculateTotalResistance(1, tag);
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.xioraArmorMultiplier.get(), ARMOR_UUID,
                 "tcc.xiora.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -114,7 +114,7 @@ public class Xiora extends BaseCurioItem {
 
         CompoundTag tag = stack.getTag();
         double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        double total = TaczCuriosConfig.COMMON.xioraBaseResistance.get() + extra;
+        double total = 1 + extra;
 
         tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));

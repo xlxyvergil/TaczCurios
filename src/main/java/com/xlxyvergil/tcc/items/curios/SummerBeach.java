@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -129,7 +128,7 @@ public class SummerBeach extends BaseCurioItem {
     }
 
     private static int getBaseResistance() {
-        return TaczCuriosConfig.COMMON.summerBeachBaseResistance.get();
+        return 1;
     }
 
     }

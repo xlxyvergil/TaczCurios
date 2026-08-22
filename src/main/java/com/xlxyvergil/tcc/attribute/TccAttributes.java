@@ -18,12 +18,13 @@ public class TccAttributes {
         DeferredRegister.create(Registries.ATTRIBUTE, "tcc");
     
     /**
-     * 虚数伤害抗性 - 范围 -100 到 +100，默认 0
-     * 正值降低虚数伤害，负值增加虚数伤害
+     * 虚数伤害抗性 - 范围 -100 到 +100，默认 30
+     * 正值降低虚数伤害，负值增加虚数伤害。
+     * 玩家与实体通用，生成时基础即为 30 点。
      */
     public static final RegistryObject<Attribute> IMAGINARY_DAMAGE_RESISTANCE = 
         ATTRIBUTES.register("imaginary_damage_resistance", 
-            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 0.0D, -100.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 30.0D, -100.0D, 100.0D).setSyncable(true));
     
     public static void register(IEventBus modEventBus) {
         ATTRIBUTES.register(modEventBus);

@@ -58,7 +58,7 @@ public class AoMie extends BaseCurioItem {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof AoMie);
         CompoundTag tag = equipped.getTag();
-        double total = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get()
+        double total = 1.0
                 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             total, IMAGINARY_RESISTANCE_UUID,
@@ -142,7 +142,7 @@ public class AoMie extends BaseCurioItem {
         CompoundTag tag = stack.getTag();
 
         // 虚数抗性显示
-        double baseValue = TaczCuriosConfig.COMMON.kalpasImaginaryResistance.get();
+        double baseValue = 1.0;
         double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
         tooltip.add(Component.literal(""));
         int maxSlots = TaczCuriosConfig.COMMON.aoMieMaxSlots.get();
