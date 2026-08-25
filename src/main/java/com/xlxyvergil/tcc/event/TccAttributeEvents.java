@@ -33,48 +33,87 @@ import top.theillusivec4.curios.api.CuriosApi;
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
 
-    private static final java.util.concurrent.ConcurrentHashMap<LivingEntity, Float> INTENDED_DAMAGE
-        = new java.util.concurrent.ConcurrentHashMap<>();
-
     /** 虚数侵染来源 attacker UUID，供 ImaginaryCollapseEffect 读取以创建带 attacker 的 DamageSource */
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
 
-    public static void setIntendedDamage(LivingEntity entity, float damage) {
-        INTENDED_DAMAGE.put(entity, damage);
-    }
-    public static Float takeIntendedDamage(LivingEntity entity) {
-        return INTENDED_DAMAGE.remove(entity);
-    }
-    public static Float peekIntendedDamage(LivingEntity entity) {
-        return INTENDED_DAMAGE.get(entity);
-    }
-
+    /**
+     * 虚数伤害统一注入入口（setHealth 直伤方案）。
+     * <p>
+     * 不经过 {@code hurt()}，因此不触发 LivingHurtEvent / 护甲 / 盾牌 / 吸收 / 荆棘等管线，
+     * 是真正无视防御的真伤。倍率结算（抗性/侵染等级/岛爆渡鸦）由
+     * {@link #resolveFinalImaginaryDamage} 内联完成；致死时直接调用 {@code die(source)}
+     * （内部会 post LivingDeathEvent 并生成掉落物/经验，不可再手动 post）。
+     */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
 
         target.invulnerableTime = 0;
 
-        // 亚波伦路径：下界走直伤（修改自定义 HealthData 绕过限伤），非下界退化为清除冷却 + hurt
+        // 亚波伦路径：下界走自定义 HealthData 直伤，完全绕过 RevelationFix 限伤
         if (ApollyonCompat.isRevelationFixApostle(target)) {
             if (target.level().dimension() == Level.NETHER) {
-                // 直伤路径：完全绕过 RevelationFix 限伤
                 float newHealth = ApollyonCompat.applyDirectDamage(target, intendedDamage);
                 if (newHealth <= 0) {
                     target.die(source);
                 }
                 return true;
-            } else {
-                // 非下界：清除冷却后走正常 hurt 路径（仍受 APOLLYON_HURT_LIMIT 限制）
-                ApollyonCompat.clearHitCooldown(target);
+            }
+            // 非下界：同样走 setHealth 直伤（同样不受 APOLLYON_HURT_LIMIT 限制）
+            ApollyonCompat.clearHitCooldown(target);
+        }
+
+        // 内联虚数倍率结算（setHealth 不触发 LivingHurtEvent，原 imaginaryDamageOnAttack 不再生效）
+        float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
+        if (finalDamage <= 0) return false;
+
+        // 击杀归属：保证 killed_by_player 战利品条件、击杀者经验、TACZ 枪杀判定正常
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            target.setLastHurtByMob(attacker);
+        }
+
+        float newHealth = target.getHealth() - finalDamage;
+        if (newHealth <= 0) {
+            target.setHealth(0);
+            // die() 内部会 post LivingDeathEvent 并生成掉落物/经验，不要手动再 post
+            target.die(source);
+            return true;
+        }
+        target.setHealth(newHealth);
+        return true;
+    }
+
+    /**
+     * 虚数伤害倍率结算（原 imaginaryDamageOnAttack 内联逻辑）：
+     * 目标虚数抗性 → 虚数侵染等级倍率 → 岛爆渡鸦加成。
+     * 供 {@link #applyImaginaryDamage}（setHealth 直伤）与
+     * {@link #imaginaryDamageOnAttack}（子弹虚数伤害走 hurt）共用。
+     */
+    private static float resolveFinalImaginaryDamage(LivingEntity target, DamageSource source, float baseDamage) {
+        if (baseDamage <= 0) return 0;
+
+        double resistance = target.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        // 抗性范围 -100~100，正值按百分比减伤，负值按百分比增伤
+        resistance = Math.max(-100.0, Math.min(100.0, resistance));
+
+        float damageAfterResistance = (float) (baseDamage * (1.0 - resistance / 100.0));
+
+        double ampPerLevel = TaczCuriosConfig.COMMON.imaginaryInfectionAmpPerLevel.get();
+        int infectionLevel = 0;
+        var infectionEffect = TccMobEffects.IMAGINARY_INFECTION.get();
+        if (infectionEffect != null) {
+            var effectInstance = target.getEffect(infectionEffect);
+            if (effectInstance != null) {
+                infectionLevel = effectInstance.getAmplifier() + 1;
             }
         }
 
-        setIntendedDamage(target, intendedDamage);
-        try {
-            return target.hurt(source, intendedDamage);
-        } finally {
-            takeIntendedDamage(target);
+        double attackerBonus = 1.0;
+        if (source.getEntity() instanceof LivingEntity attacker && IslandBoomRaven.hasEquipped(attacker)) {
+            double attackerRes = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            attackerBonus = Math.round((1.0 + attackerRes / 100.0) * 10000.0) / 10000.0;
         }
+
+        return (float) ((float) Math.round((damageAfterResistance * (1.0 + infectionLevel * ampPerLevel) * attackerBonus) * 10000.0) / 10000.0);
     }
 
     @SubscribeEvent
@@ -223,6 +262,12 @@ public class TccAttributeEvents {
         }
     }
 
+    /**
+     * 处理 Pathway B（子弹虚数伤害走 hurt）的虚数抗性/侵染倍率结算。
+     * <p>
+     * 注意：applyImaginaryDamage 已改走 setHealth 直伤，不触发此事件，
+     * 其倍率结算由 {@link #resolveFinalImaginaryDamage} 内联完成。
+     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
@@ -231,31 +276,7 @@ public class TccAttributeEvents {
         DamageSource source = event.getSource();
 
         if (source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) {
-            double resistance = target.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            // 抗性范围 -100~100，正值按百分比减伤，负值按百分比增伤
-            resistance = Math.max(-100.0, Math.min(100.0, resistance));
-
-            float originalDamage = event.getAmount();
-            float damageAfterResistance = (float) (originalDamage * (1.0 - resistance / 100.0));
-
-            double ampPerLevel = TaczCuriosConfig.COMMON.imaginaryInfectionAmpPerLevel.get();
-            int infectionLevel = 0;
-            var infectionEffect = TccMobEffects.IMAGINARY_INFECTION.get();
-            if (infectionEffect != null) {
-                var effectInstance = target.getEffect(infectionEffect);
-                if (effectInstance != null) {
-                    infectionLevel = effectInstance.getAmplifier() + 1;
-                }
-            }
-            double attackerBonus = 1.0;
-            if (source.getEntity() instanceof LivingEntity attacker && IslandBoomRaven.hasEquipped(attacker)) {
-                double attackerRes = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                attackerBonus = Math.round((1.0 + attackerRes / 100.0) * 10000.0) / 10000.0;
-            }
-
-            float finalDamage = (float) ((float) Math.round((damageAfterResistance * (1.0 + infectionLevel * ampPerLevel) * attackerBonus) * 10000.0) / 10000.0);
-
-            event.setAmount(finalDamage);
+            event.setAmount(resolveFinalImaginaryDamage(target, source, event.getAmount()));
         }
     }
 

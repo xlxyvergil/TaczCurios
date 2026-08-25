@@ -6,7 +6,6 @@
   "mixins": [
     "DamageResistanceMixin",
     "LivingEntityAccessor",
-    "LivingEntityHurtMixin",
     "PlayerListMixin",
     "ServerStatsCounterMixin",
     "RSCraftingGridBehaviorMixin"
