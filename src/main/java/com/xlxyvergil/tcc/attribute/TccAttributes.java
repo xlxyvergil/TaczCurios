@@ -24,7 +24,7 @@ public class TccAttributes {
      */
     public static final RegistryObject<Attribute> IMAGINARY_DAMAGE_RESISTANCE = 
         ATTRIBUTES.register("imaginary_damage_resistance", 
-            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 30.0D, -100.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 20.0D, -100.0D, 100.0D).setSyncable(true));
     
     public static void register(IEventBus modEventBus) {
         ATTRIBUTES.register(modEventBus);

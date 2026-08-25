@@ -21,7 +21,6 @@ import com.xlxyvergil.tcc.effect.GildedInfernalChamberEffect;
 import com.xlxyvergil.tcc.effect.GildedBulletSpreadEffect;
 import com.xlxyvergil.tcc.effect.GildedArgonScopeKillEffect;
 import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairKillEffect;
-import com.xlxyvergil.tcc.effect.MobBuffEffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
@@ -131,14 +130,5 @@ public class TccMobEffects {
     public static final RegistryObject<MobEffect> GILDED_HYDRAULIC_CROSSHAIR_KILL = MOB_EFFECTS.register(
             "gilded_hydraulic_crosshair_kill",
             GildedHydraulicCrosshairKillEffect::new);
-
-    // ========== 怪物虚数抗性Buff ==========
-
-    /**
-     * 怪物虚数抗性Buff - 非玩家实体生成时自带，提供可配置的虚数抗性加成
-     */
-    public static final RegistryObject<MobEffect> MOB_IMAGINARY_RESISTANCE_BUFF = MOB_EFFECTS.register(
-            "mob_imaginary_resistance_buff",
-            MobBuffEffect::new);
 
 }
