@@ -32,6 +32,8 @@ public class CollapseCrystalData {
 
     private static final String TAG_TRUE_SELF = "tcc_recorded_true_self";
     private static final String TAG_HEIYUAN = "tcc_recorded_heiyuan";
+    /** 水晶绑定的目标组（可能是 true_self 或 heiyuan），记录后只能与该组合成，防止两组混记录导致进度错乱 */
+    private static final String TAG_ACTIVE_GROUP = "tcc_recorded_group";
 
     /** 真我素材（逐火之蛾 tcc_3rd 的 12 个 3 阶饰品） */
     public static final TagKey<Item> TRUE_SELF_MATERIALS = TagKey.create(Registries.ITEM,
@@ -60,6 +62,22 @@ public class CollapseCrystalData {
         CompoundTag tag = stack.getTag();
         if (tag == null) return 0;
         return tag.getList(groupKey(group), Tag.TAG_STRING).size();
+    }
+
+    /** 水晶当前绑定的目标组（null 表示尚未绑定，可任选一组开始记录） */
+    public static TagKey<Item> getBoundGroup(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        if (tag == null || !tag.contains(TAG_ACTIVE_GROUP)) return null;
+        String g = tag.getString(TAG_ACTIVE_GROUP);
+        if ("true_self".equals(g)) return TRUE_SELF_MATERIALS;
+        if ("heiyuan".equals(g)) return HEIYUAN_BAIHUA_MATERIALS;
+        return null;
+    }
+
+    /** 绑定水晶目标组；一旦绑定后续只能与该组合成（初次合成时调用） */
+    public static void bindGroup(ItemStack stack, TagKey<Item> group) {
+        String value = group == TRUE_SELF_MATERIALS ? "true_self" : "heiyuan";
+        stack.getOrCreateTag().putString(TAG_ACTIVE_GROUP, value);
     }
 
     /** 该素材饰品类型是否已被水晶记录 */

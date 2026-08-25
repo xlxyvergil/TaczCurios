@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,8 +23,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
@@ -122,6 +127,7 @@ public class ZhenWo extends BaseCurioItem {
             IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.applyAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
             "tcc.zhen_wo.all_attributes", 0, AttributeModifier.Operation.MULTIPLY_BASE);
+        DamageResistanceHelper.clearDamageCap(livingEntity);
     }
 
     /**
@@ -164,17 +170,10 @@ public class ZhenWo extends BaseCurioItem {
             return;
         }
 
-        // 任意形式血量小于 5% 时触发
+        // 任意形式血量小于 20% 时触发
         double triggerRatio = TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get();
         if (player.getHealth() / player.getMaxHealth() < triggerRatio) {
-            player.setHealth(player.getMaxHealth()); // 立即恢复 100% 血量
-            // 施加 60 秒生命恢复 IX
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION,
-                TaczCuriosConfig.COMMON.zhenWoRegenDurationSeconds.get() * 20,
-                TaczCuriosConfig.COMMON.zhenWoRegenAmplifier.get(), false, false, true));
-            tag.putInt(BARRIER_KEY, TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
-            refreshBarrierBuff(player, TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
-            applyBarrierEffects(player);
+            activateBarrier(player, stack);
         }
     }
 
@@ -213,6 +212,64 @@ public class ZhenWo extends BaseCurioItem {
         }
     }
 
+    /**
+     * 统一触发结界：立即恢复 100% 血量、施加生命恢复、激活结界（施加标记 buff 并对范围内实体生效）。
+     * 供低血量自然触发（{@link #curioTick}）与死亡复活（{@link #onLivingDeath}）共用。
+     */
+    private static void activateBarrier(Player player, ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        int duration = TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20;
+        tag.putInt(BARRIER_KEY, duration);
+        tag.putInt(COOLDOWN_KEY, 0);
+
+        player.setHealth(player.getMaxHealth()); // 立即恢复 100% 血量
+        // 施加生命恢复
+        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION,
+            TaczCuriosConfig.COMMON.zhenWoRegenDurationSeconds.get() * 20,
+            TaczCuriosConfig.COMMON.zhenWoRegenAmplifier.get(), false, false, true));
+
+        refreshBarrierBuff(player, duration);
+        applyBarrierEffects(player);
+    }
+
+    /**
+     * 死亡复活保底：玩家死亡时（含血量直接归零、未触发低血结界的情况），
+     * 在死亡点取消死亡、回满血并立即触发结界效果。
+     */
+    @SubscribeEvent
+    public static void onLivingDeath(LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.level().isClientSide) return;
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player,
+            s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) return;
+
+        // 取消死亡，玩家留在死亡点
+        event.setCanceled(true);
+
+        // 清除受伤/死亡动画状态，防止客户端残留；施加短无敌帧，避免复活瞬间被连续伤害秒杀
+        player.setDeltaMovement(Vec3.ZERO);
+        player.hurtTime = 0;
+        player.deathTime = 0;
+        player.invulnerableTime = 100;
+
+        activateBarrier(player, stack);
+    }
+
+    /**
+     * 减伤（苏同款）：佩戴真我后，每次受到的伤害被限制为原始伤害的 (1 - 减伤比例)。
+     * 通过 {@link DamageResistanceHelper#setDamageCap} 在 setHealth 层面裁剪单次掉血。
+     */
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (!hasEquipped(entity)) return;
+        if (entity.level().isClientSide) return;
+
+        float cap = event.getAmount() * (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
+        DamageResistanceHelper.setDamageCap(entity, cap);
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -228,6 +285,11 @@ public class ZhenWo extends BaseCurioItem {
         double allAttrs = TaczCuriosConfig.COMMON.zhenWoAllAttributesPercent.get() * 100;
         tooltip.add(Component.translatable("item.tcc.zhen_wo.all_attributes",
                 String.format("%.0f", allAttrs))
+            .withStyle(ChatFormatting.GOLD));
+
+        double damageTakenFactor = TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get() * 100;
+        tooltip.add(Component.translatable("tcc.tooltip.damage_reduction",
+                String.format("%.0f", damageTakenFactor))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

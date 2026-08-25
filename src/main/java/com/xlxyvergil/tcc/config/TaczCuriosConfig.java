@@ -427,6 +427,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
         public final ForgeConfigSpec.IntValue zhenWoRegenAmplifier;
         public final ForgeConfigSpec.IntValue zhenWoRegenDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
 
         // 黑渊白花·创灭螺旋配置
         public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
@@ -1814,8 +1815,8 @@ public class TaczCuriosConfig {
                     .comment("全属性提升比例（乘法） (默认: 0.5 = +50%)")
                     .defineInRange("allAttributesPercent", 0.5, -1, 100);
             zhenWoTriggerHpRatio = builder
-                    .comment("触发结界时的血量比例阈值 (默认: 0.05 = 5%)")
-                    .defineInRange("triggerHpRatio", 0.05, 0.0, 1.0);
+                    .comment("触发结界时的血量比例阈值 (默认: 0.20 = 20%)")
+                    .defineInRange("triggerHpRatio", 0.20, 0.0, 1.0);
             zhenWoBarrierRadius = builder
                     .comment("结界影响范围（格） (默认: 128)")
                     .defineInRange("barrierRadius", 128.0, 1.0, 512.0);
@@ -1840,6 +1841,9 @@ public class TaczCuriosConfig {
             zhenWoRegenDurationSeconds = builder
                     .comment("触发后生命恢复持续时间（秒） (默认: 60)")
                     .defineInRange("regenDurationSeconds", 60, 1, 600);
+            zhenWoDamageTakenFactor = builder
+                    .comment("减伤（苏同款）：受到伤害降低比例 (默认: 0.8 = 降低80%)")
+                    .defineInRange("damageTakenFactor", 0.8, 0.0, 1.0);
             builder.pop();
 
             // 黑渊白花·创灭螺旋配置

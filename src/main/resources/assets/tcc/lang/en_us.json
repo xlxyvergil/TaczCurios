@@ -365,6 +365,7 @@
   "item.tcc.collapse_crystal.usage": "§7Keep in inventory. Consumed when attempting to remove a curio from Fire Moth or Divine Key slots",
   "item.tcc.collapse_crystal.progress_true_self": "§dTrue Self record: %1$s/%2$s",
   "item.tcc.collapse_crystal.progress_heiyuan": "§dHeiyuan Baihua record: %1$s/%2$s",
+  "item.tcc.collapse_crystal.select_group": "§7Once first crafted with a Divine Key or Fire Moth, it locks to that group.",
   "tcc.tooltip.requires_collapse_crystal": "After use, requires a Collapse Crystal in inventory to unequip.",
   "// Fire Moth / Divine Key New Curios": "",
   "item.tcc.griseo": "§6Griseo",

@@ -15,12 +15,16 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 崩坏结晶合成配方：1 崩坏结晶 + 1 素材 3 阶饰品 → 记录或产出真我/黑渊白花。
+ * 崩坏结晶合成配方：1 崩坏结晶 + 若干同组 3 阶饰品 → 记录或产出真我/黑渊白花（无序）。
  * <p>
  * 真我（逐火之蛾）与黑渊白花（神之键）各自需要收集 {@link CollapseCrystalData#REQUIRED_COUNT}
- * 种不同的 3 阶饰品。每放入一个未被记录的素材，水晶就记录该类型；
- * 已记录的素材类型无法再次合成（去重）。当某组收集满后，本次合成直接产出真我/黑渊白花。
+ * 种不同的 3 阶饰品。水晶初次合成时绑定目标组，之后只能与该组继续合成（防止两组混记录）。
+ * 每次可放入任意数量的同组素材，未记录的会被记录（去重）；已记录过的素材无法再次贡献进度。
+ * 当某组收集满后，本次合成直接产出真我/黑渊白花。
  */
 public class CollapseCrystalCraftRecipe extends CustomRecipe {
 
@@ -31,7 +35,7 @@ public class CollapseCrystalCraftRecipe extends CustomRecipe {
     @Override
     public boolean matches(CraftingContainer container, Level level) {
         ItemStack crystal = ItemStack.EMPTY;
-        ItemStack material = ItemStack.EMPTY;
+        List<ItemStack> materials = new ArrayList<>();
         for (int i = 0; i < container.getContainerSize(); i++) {
             ItemStack s = container.getItem(i);
             if (s.isEmpty()) continue;
@@ -39,54 +43,69 @@ public class CollapseCrystalCraftRecipe extends CustomRecipe {
                 if (!crystal.isEmpty()) return false; // 只能有 1 颗水晶
                 crystal = s;
             } else if (CollapseCrystalData.groupOf(s) != null) {
-                if (!material.isEmpty()) return false; // 只能有 1 个素材
-                material = s;
+                materials.add(s);
             } else {
                 return false; // 有不认识的物品
             }
         }
-        if (crystal.isEmpty() || material.isEmpty()) return false;
+        if (crystal.isEmpty() || materials.isEmpty()) return false;
 
-        TagKey<Item> group = CollapseCrystalData.groupOf(material);
-        if (group == null) return false;
-        // 已记录过的素材类型无法再次合成
-        return !CollapseCrystalData.isRecorded(crystal, group, material.getItem());
+        // 无序多素材：所有素材必须属于同一组（神之键 或 逐火之蛾），不允许混搭
+        TagKey<Item> group = CollapseCrystalData.groupOf(materials.get(0));
+        for (int i = 1; i < materials.size(); i++) {
+            if (CollapseCrystalData.groupOf(materials.get(i)) != group) return false;
+        }
+
+        // 若水晶已绑定组，素材必须属于该组
+        TagKey<Item> bound = CollapseCrystalData.getBoundGroup(crystal);
+        if (bound != null && bound != group) return false;
+
+        // 至少需要一个未记录的素材才可合成
+        for (ItemStack m : materials) {
+            if (!CollapseCrystalData.isRecorded(crystal, group, m.getItem())) return true;
+        }
+        return false;
     }
 
     @Override
     public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
         ItemStack crystal = ItemStack.EMPTY;
-        ItemStack material = ItemStack.EMPTY;
+        List<ItemStack> materials = new ArrayList<>();
         for (int i = 0; i < container.getContainerSize(); i++) {
             ItemStack s = container.getItem(i);
             if (s.isEmpty()) continue;
             if (CollapseCrystalData.isCrystal(s)) {
                 crystal = s;
             } else if (CollapseCrystalData.groupOf(s) != null) {
-                material = s;
+                materials.add(s);
             }
         }
-        if (crystal.isEmpty() || material.isEmpty()) return ItemStack.EMPTY;
+        if (crystal.isEmpty() || materials.isEmpty()) return ItemStack.EMPTY;
 
-        TagKey<Item> group = CollapseCrystalData.groupOf(material);
+        TagKey<Item> group = CollapseCrystalData.groupOf(materials.get(0));
         if (group == null) return ItemStack.EMPTY;
-        if (CollapseCrystalData.isRecorded(crystal, group, material.getItem())) return ItemStack.EMPTY;
+        TagKey<Item> bound = CollapseCrystalData.getBoundGroup(crystal);
+        if (bound != null && bound != group) return ItemStack.EMPTY;
 
-        if (group == CollapseCrystalData.TRUE_SELF_MATERIALS) {
-            return craftFor(crystal, group, material.getItem(), TccItems.ZEN_WO);
-        }
-        return craftFor(crystal, group, material.getItem(), TccItems.HEIYUAN_BAIHUA);
-    }
-
-    /**
-     * 记录素材到水晶副本；若该组收集满则产出成品饰品，否则返回记录后的水晶。
-     */
-    private ItemStack craftFor(ItemStack crystal, TagKey<Item> group, Item material, Item product) {
         ItemStack updated = crystal.copy();
         updated.setCount(1);
-        CollapseCrystalData.record(updated, group, material);
+
+        // 初次合成时绑定目标组，后续只能与该组继续合成
+        if (bound == null) {
+            CollapseCrystalData.bindGroup(updated, group);
+        }
+
+        // 记录所有未记录的素材（去重）
+        for (ItemStack m : materials) {
+            if (!CollapseCrystalData.isRecorded(updated, group, m.getItem())) {
+                CollapseCrystalData.record(updated, group, m.getItem());
+            }
+        }
+
+        // 若该组收集满则产出成品饰品，否则返回记录后的水晶
         int count = CollapseCrystalData.getRecordedCount(updated, group);
         if (count >= CollapseCrystalData.REQUIRED_COUNT) {
+            Item product = group == CollapseCrystalData.TRUE_SELF_MATERIALS ? TccItems.ZEN_WO : TccItems.HEIYUAN_BAIHUA;
             return new ItemStack(product, 1);
         }
         return updated;
