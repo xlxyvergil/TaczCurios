@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.items.materials;
 
+import com.xlxyvergil.tcc.util.CollapseCrystalData;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,5 +24,15 @@ public class CollapseCrystal extends Item {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.collapse_crystal.usage"));
+
+        int trueSelf = CollapseCrystalData.getRecordedCount(stack, CollapseCrystalData.TRUE_SELF_MATERIALS);
+        int heiyuan = CollapseCrystalData.getRecordedCount(stack, CollapseCrystalData.HEIYUAN_BAIHUA_MATERIALS);
+        int required = CollapseCrystalData.REQUIRED_COUNT;
+
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.collapse_crystal.progress_true_self", trueSelf, required)
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltip.add(Component.translatable("item.tcc.collapse_crystal.progress_heiyuan", heiyuan, required)
+                .withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 }

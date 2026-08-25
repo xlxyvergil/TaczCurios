@@ -425,6 +425,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue zhenWoBarrierDurationSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamagePercent;
         public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
+        public final ForgeConfigSpec.IntValue zhenWoRegenAmplifier;
+        public final ForgeConfigSpec.IntValue zhenWoRegenDurationSeconds;
 
         // 黑渊白花·创灭螺旋配置
         public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
@@ -1832,6 +1834,12 @@ public class TaczCuriosConfig {
             zhenWoCooldownSeconds = builder
                     .comment("结界触发后的冷却时间（秒） (默认: 60)")
                     .defineInRange("cooldownSeconds", 60, 1, 3600);
+            zhenWoRegenAmplifier = builder
+                    .comment("触发期间生命恢复等级（0=生命恢复I，默认: 8 = 生命恢复IX）")
+                    .defineInRange("regenAmplifier", 8, 0, 255);
+            zhenWoRegenDurationSeconds = builder
+                    .comment("触发后生命恢复持续时间（秒） (默认: 60)")
+                    .defineInRange("regenDurationSeconds", 60, 1, 600);
             builder.pop();
 
             // 黑渊白花·创灭螺旋配置

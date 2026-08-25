@@ -22,6 +22,7 @@ import com.xlxyvergil.tcc.effect.GildedBulletSpreadEffect;
 import com.xlxyvergil.tcc.effect.GildedArgonScopeKillEffect;
 import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairKillEffect;
 import com.xlxyvergil.tcc.effect.HonkaiDiseaseEffect;
+import com.xlxyvergil.tcc.effect.ZhenWoBarrierEffect;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
@@ -140,5 +141,12 @@ public class TccMobEffects {
     public static final RegistryObject<MobEffect> HONKAI_DISEASE = MOB_EFFECTS.register(
             "honkai_disease",
             HonkaiDiseaseEffect::new);
+
+    /**
+     * 逐火之蛾「真我」结界标记 - 中性纯标记效果，驱动客户端地面特效渲染
+     */
+    public static final RegistryObject<MobEffect> ZHEN_WO_BARRIER = MOB_EFFECTS.register(
+            "zhen_wo_barrier",
+            ZhenWoBarrierEffect::new);
 
 }

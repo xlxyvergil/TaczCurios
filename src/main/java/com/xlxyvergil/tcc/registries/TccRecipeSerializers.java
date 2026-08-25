@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.registries;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.recipe.CollapseCrystalCraftRecipeSerializer;
 import com.xlxyvergil.tcc.recipe.FusionUpgradeRecipeSerializer;
 import com.xlxyvergil.tcc.recipe.FusionVesselCombineRecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -18,4 +19,7 @@ public class TccRecipeSerializers {
 
     public static final RegistryObject<FusionVesselCombineRecipeSerializer> FUSION_VESSEL_COMBINE =
             RECIPE_SERIALIZERS.register("fusion_vessel_combine", FusionVesselCombineRecipeSerializer::new);
+
+    public static final RegistryObject<CollapseCrystalCraftRecipeSerializer> COLLAPSE_CRYSTAL_CRAFT =
+            RECIPE_SERIALIZERS.register("collapse_crystal_craft", CollapseCrystalCraftRecipeSerializer::new);
 }

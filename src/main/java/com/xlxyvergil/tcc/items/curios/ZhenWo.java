@@ -4,8 +4,8 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.entity.ZhenWoBarrierEntity;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -129,6 +129,7 @@ public class ZhenWo extends BaseCurioItem {
      * 结界激活（倒计时 > 0）→ 施加缓慢 + 每 tick 虚数伤害；
      * 结界结束 → 进入冷却；
      * 冷却结束且血量 < 5% → 再次触发结界。
+     * 结界激活期间维持标记 buff（ZhenWoBarrierEffect），客户端据此渲染脚下地面特效。
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
@@ -145,9 +146,10 @@ public class ZhenWo extends BaseCurioItem {
         if (barrierTicks > 0) {
             barrierTicks--;
             tag.putInt(BARRIER_KEY, barrierTicks);
-            // 保证脚下地面特效存在（跟随玩家）
-            ZhenWoBarrierEntity.ensureActive(player.level(), player, tag,
-                TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
+            // 每 5 tick 以剩余结界时长为 buff 时长续期，客户端据此渲染脚下特效并淡出
+            if (player.tickCount % 5 == 0) {
+                refreshBarrierBuff(player, barrierTicks);
+            }
             if (barrierTicks <= 0) {
                 tag.putInt(COOLDOWN_KEY, TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get() * 20);
                 return;
@@ -166,12 +168,20 @@ public class ZhenWo extends BaseCurioItem {
         double triggerRatio = TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get();
         if (player.getHealth() / player.getMaxHealth() < triggerRatio) {
             player.setHealth(player.getMaxHealth()); // 立即恢复 100% 血量
+            // 施加 60 秒生命恢复 IX
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION,
+                TaczCuriosConfig.COMMON.zhenWoRegenDurationSeconds.get() * 20,
+                TaczCuriosConfig.COMMON.zhenWoRegenAmplifier.get(), false, false, true));
             tag.putInt(BARRIER_KEY, TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
-            // 生成脚下地面特效实体
-            ZhenWoBarrierEntity.ensureActive(player.level(), player, tag,
-                TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
+            refreshBarrierBuff(player, TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
             applyBarrierEffects(player);
         }
+    }
+
+    /** 施加/续期结界标记 buff（时长 = 剩余结界 tick，客户端据此渲染脚下地面特效） */
+    private static void refreshBarrierBuff(Player player, int remainingTicks) {
+        player.addEffect(new MobEffectInstance(TccMobEffects.ZHEN_WO_BARRIER.get(),
+            remainingTicks, 0, false, false, true));
     }
 
     /** 单 tick 结界效果：对结界范围（直径 zhenWoBarrierRadius）内非玩家实体施加缓慢 IX；每 tick 造成最大血量虚数伤害 */
@@ -226,7 +236,9 @@ public class ZhenWo extends BaseCurioItem {
                 TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),
                 TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get(),
                 TaczCuriosConfig.COMMON.zhenWoSlownessAmplifier.get() + 1,
-                TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get())
+                TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get(),
+                TaczCuriosConfig.COMMON.zhenWoRegenDurationSeconds.get(),
+                TaczCuriosConfig.COMMON.zhenWoRegenAmplifier.get() + 1)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));
