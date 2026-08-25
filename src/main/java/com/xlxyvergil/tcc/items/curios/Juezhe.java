@@ -126,17 +126,10 @@ public class Juezhe extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        CompoundTag tag = stack.getTag();
-
-        // 虚数抗性显示
-        double baseValue = 1.0;
-        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        tooltip.add(Component.literal(""));
+        appendImaginaryResistance(stack, tooltip);
         double maxHealthReduction = TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100;
         // 显示降低比例：配置值 × 100
         double damageTakenFactor = TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100;
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
@@ -148,11 +141,6 @@ public class Juezhe extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
 }

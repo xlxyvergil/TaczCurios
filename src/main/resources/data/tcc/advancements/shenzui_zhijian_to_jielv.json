@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:aponia_to_shenzui_zhijian",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.shenzui_zhijian_to_jielv.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:jielv"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.shenzui_zhijian_to_jielv.title"
+                              },
+                    "frame":  "challenge"
+                }
+}

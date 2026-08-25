@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:wangshi_de_huanmeng_grant",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.wangshi_de_huanmeng_to_ye_zhi_tong.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:ye_zhi_tong"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.wangshi_de_huanmeng_to_ye_zhi_tong.title"
+                              },
+                    "frame":  "goal"
+                }
+}

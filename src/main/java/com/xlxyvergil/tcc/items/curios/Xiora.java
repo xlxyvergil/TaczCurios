@@ -112,12 +112,7 @@ public class Xiora extends BaseCurioItem {
         double armorBoost = TaczCuriosConfig.COMMON.xioraArmorMultiplier.get() * 100;
         double speedBoost = TaczCuriosConfig.COMMON.xioraSpeedMultiplier.get() * 100;
 
-        CompoundTag tag = stack.getTag();
-        double extra = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        double total = 1 + extra;
-
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
+        appendImaginaryResistance(stack, tooltip);
 
         tooltip.add(formatModifierTooltip(armorBoost, "%.0f%%", Component.translatable(AttributeHelper.ARMOR.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
@@ -126,11 +121,6 @@ public class Xiora extends BaseCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
 }

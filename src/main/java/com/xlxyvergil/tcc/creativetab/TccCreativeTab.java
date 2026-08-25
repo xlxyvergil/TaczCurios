@@ -178,6 +178,50 @@ public class TccCreativeTab {
 
                 // 添加工作方块
                 output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM);
+
+                // ========== 新系列 36 件 ==========
+                // --- 戒律（霰弹枪）---
+                output.accept(TccItems.APONIA);
+                output.accept(TccItems.SHENZUI_ZHIJIAN);
+                output.accept(TccItems.JIELV);
+                output.accept(TccItems.WANGSHI_DE_KUQIU);
+                output.accept(TccItems.WANGSHI_DE_KUQIU_MINGZHIQI);
+                output.accept(TccItems.SHENEN_JIEJIE);
+                // --- 黄金（手枪）---
+                output.accept(TccItems.EDEN);
+                output.accept(TccItems.CUIYAO_ZHI_GE);
+                output.accept(TccItems.HUANGJIN);
+                output.accept(TccItems.EDEN_STAR);
+                output.accept(TccItems.TUNTIAN_ZHIJIAN);
+                output.accept(TccItems.QIDIAN_CHONGGOU);
+                // --- 旭光（近战）---
+                output.accept(TccItems.KOSMA);
+                output.accept(TccItems.LIMING_ZHI_SHAO);
+                output.accept(TccItems.XUGUANG);
+                output.accept(TccItems.DIZANG_YUHUN);
+                output.accept(TccItems.QINSHI_ZHIJIAN);
+                output.accept(TccItems.YUHUN_SHIXIAN);
+                // --- 无限（轻机枪）---
+                output.accept(TccItems.MEBIUS);
+                output.accept(TccItems.SHIJIE_ZHI_SHE);
+                output.accept(TccItems.WUXIAN);
+                output.accept(TccItems.WANGSHI_DE_SHEYING);
+                output.accept(TccItems.SHESHA);
+                output.accept(TccItems.SI_ZHI_YI);
+                // --- 浮生（近战）---
+                output.accept(TccItems.HUA);
+                output.accept(TccItems.DUCHEN_ZHI_YU);
+                output.accept(TccItems.FUSHENG);
+                output.accept(TccItems.YUDUCHEN);
+                output.accept(TccItems.FANCHEN_NANDU);
+                output.accept(TccItems.BUSHI_SHIWU);
+                // --- 空梦（霰弹枪）---
+                output.accept(TccItems.PADO_PHILIPIS);
+                output.accept(TccItems.LUEJI_ZHI_SHOU);
+                output.accept(TccItems.KONGMENG);
+                output.accept(TccItems.WANGSHI_DE_HUANMENG);
+                output.accept(TccItems.LA_ZHI_YAN);
+                output.accept(TccItems.YE_ZHI_TONG);
             })
             .build());
 }

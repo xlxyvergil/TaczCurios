@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:yuduchen_grant",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.yuduchen_to_fanchen_nandu.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:fanchen_nandu"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.yuduchen_to_fanchen_nandu.title"
+                              },
+                    "frame":  "goal"
+                }
+}

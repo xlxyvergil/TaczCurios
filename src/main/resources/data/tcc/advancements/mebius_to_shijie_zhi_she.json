@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:wangshi_de_sheying_to_si_zhi_yi",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.mebius_to_shijie_zhi_she.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:shijie_zhi_she"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.mebius_to_shijie_zhi_she.title"
+                              },
+                    "frame":  "goal"
+                }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tcc:item/dizang_yuhun",
+    "layer1": "tcc:item/border_rare"
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:eden_grant",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.eden_star_grant.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:eden_star"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.eden_star_grant.title"
+                              },
+                    "frame":  "goal"
+                }
+}

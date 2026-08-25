@@ -67,6 +67,9 @@ public final class AchievementConditionMatcher {
             if (findMatchingKillCondition(killed, c).isEmpty()) return false;
         }
 
+        // Check kill dimension（被击杀实体所在维度，按维度过滤击杀目标）
+        if (!matchesKillDimension(killed, c)) return false;
+
         // Check attributes
         if (c.attributes() != null) {
             for (AchievementDefinitions.AttributeCondition ac : c.attributes()) {
@@ -122,6 +125,9 @@ public final class AchievementConditionMatcher {
             }
             if (!matched) { return false; }
         }
+
+        // Check kill dimension（被击杀实体所在维度，按维度过滤击杀目标）
+        if (!matchesKillDimension(killed, c)) return false;
 
         // Check extra stat thresholds (for achievements requiring multiple stat checks)
         if (c.extraStats() != null && player instanceof ServerPlayer sp2) {
@@ -186,6 +192,18 @@ public final class AchievementConditionMatcher {
         }
 
         return true;
+    }
+
+    /**
+     * 检查被击杀实体所在维度是否满足条件的 dimension 要求。
+     * killed 为 null（部分事件无击杀实体）时维度检查自动放行。
+     */
+    private static boolean matchesKillDimension(LivingEntity killed, AchievementDefinitions.AchievementConditions c) {
+        if (c.dimension() == null || killed == null) return true;
+        ResourceLocation rl = ResourceLocation.tryParse(c.dimension());
+        if (rl == null) return false;
+        ResourceKey<Level> target = ResourceKey.create(Registries.DIMENSION, rl);
+        return killed.level().dimension() == target;
     }
 
     private static boolean compare(double current, String comparator, double expected) {

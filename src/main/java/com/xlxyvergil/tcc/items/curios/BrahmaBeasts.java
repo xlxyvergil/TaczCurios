@@ -112,26 +112,9 @@ public class BrahmaBeasts extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
         
-        CompoundTag tag = stack.getTag();
+        appendImaginaryResistance(stack, tooltip);
         
-        double baseValue = getBaseResistance();
-        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && hasBrahmaBeastsEquipped(player)) {
-                total = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            }
-        }
-        tooltip.add(Component.literal(""));
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
-        
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
         
         tooltip.add(Component.literal(""));
  

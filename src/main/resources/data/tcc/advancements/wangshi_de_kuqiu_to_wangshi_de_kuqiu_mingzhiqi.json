@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:wangshi_de_kuqiu_grant",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:wangshi_de_kuqiu_mingzhiqi"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi.title"
+                              },
+                    "frame":  "goal"
+                }
+}

@@ -9,7 +9,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.EvolutionNbtKeys;
 import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -97,22 +96,9 @@ public class SummerBeach extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.literal(""));
         
-        // NBT
-        CompoundTag tag = stack.getTag();
+        appendImaginaryResistance(stack, tooltip);
         
-        double baseValue = getBaseResistance();
-        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        tooltip.add(Component.literal(""));
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
-        
-        // 绑定信息
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
         
         // 槽位和稀有度
         tooltip.add(Component.literal(""));

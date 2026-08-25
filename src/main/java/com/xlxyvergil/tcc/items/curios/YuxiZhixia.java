@@ -126,19 +126,11 @@ public class YuxiZhixia extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        CompoundTag tag = stack.getTag();
-
-        // 虚数抗性显示
-        double baseValue = 1.0;
-        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        tooltip.add(Component.literal(""));
+        appendImaginaryResistance(stack, tooltip);
 
         double triggerHpRatio = TaczCuriosConfig.COMMON.yuxiZhixiaTriggerHpRatio.get() * 100;
         int absorptionLevel = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionLevel.get();
         int cooldownSeconds = TaczCuriosConfig.COMMON.yuxiZhixiaCooldownSeconds.get().intValue();
-
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
@@ -149,11 +141,6 @@ public class YuxiZhixia extends BaseCurioItem {
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
 }

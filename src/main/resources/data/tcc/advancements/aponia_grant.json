@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:tcc_root",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.aponia_grant.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:aponia"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.aponia_grant.title"
+                              },
+                    "frame":  "task"
+                }
+}

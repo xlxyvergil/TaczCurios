@@ -180,12 +180,6 @@ public class MetaMorph extends BaseCurioItem {
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
 }

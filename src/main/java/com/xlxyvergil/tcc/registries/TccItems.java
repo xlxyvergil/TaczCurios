@@ -92,9 +92,27 @@ import com.xlxyvergil.tcc.items.curios.GildedShotgunSavvy;
 import com.xlxyvergil.tcc.items.curios.GildedMarksman;
 import com.xlxyvergil.tcc.items.curios.ConditionOverload;
 import com.xlxyvergil.tcc.items.curios.AoMie;
+import com.xlxyvergil.tcc.items.curios.Aponia;
+import com.xlxyvergil.tcc.items.curios.BushiShiwu;
+import com.xlxyvergil.tcc.items.curios.CuiyaoZhiGe;
+import com.xlxyvergil.tcc.items.curios.DizangYuhun;
+import com.xlxyvergil.tcc.items.curios.DuchenZhiYu;
+import com.xlxyvergil.tcc.items.curios.Eden;
 import com.xlxyvergil.tcc.items.curios.DominanceKey;
+import com.xlxyvergil.tcc.items.curios.EdenStar;
+import com.xlxyvergil.tcc.items.curios.FanchenNandu;
+import com.xlxyvergil.tcc.items.curios.Fusheng;
+import com.xlxyvergil.tcc.items.curios.Hua;
+import com.xlxyvergil.tcc.items.curios.Huangjin;
+import com.xlxyvergil.tcc.items.curios.Jielv;
 import com.xlxyvergil.tcc.items.curios.Fanxing;
 import com.xlxyvergil.tcc.items.curios.Griseo;
+import com.xlxyvergil.tcc.items.curios.WangshiDeKuqiu;
+import com.xlxyvergil.tcc.items.curios.Kongmeng;
+import com.xlxyvergil.tcc.items.curios.Kosma;
+import com.xlxyvergil.tcc.items.curios.LaZhiYan;
+import com.xlxyvergil.tcc.items.curios.LimingZhiShao;
+import com.xlxyvergil.tcc.items.curios.LuejiZhiShou;
 import com.xlxyvergil.tcc.items.curios.HuajieZhiyan;
 import com.xlxyvergil.tcc.items.curios.HuishiZhijuan;
 import com.xlxyvergil.tcc.items.curios.IslandBoomRaven;
@@ -102,6 +120,12 @@ import com.xlxyvergil.tcc.items.curios.Imer;
 import com.xlxyvergil.tcc.items.curios.JudgementKey;
 import com.xlxyvergil.tcc.items.curios.Juezhe;
 import com.xlxyvergil.tcc.items.curios.Kalpas;
+import com.xlxyvergil.tcc.items.curios.Mebius;
+import com.xlxyvergil.tcc.items.curios.PadoPhilipis;
+import com.xlxyvergil.tcc.items.curios.QidianChonggou;
+import com.xlxyvergil.tcc.items.curios.QinshiZhijian;
+import com.xlxyvergil.tcc.items.curios.ShenenJiejie;
+import com.xlxyvergil.tcc.items.curios.ShenzuiZhijian;
 import com.xlxyvergil.tcc.items.curios.Tianhui;
 import com.xlxyvergil.tcc.items.curios.TingzhiZhijian;
 import com.xlxyvergil.tcc.items.curios.Luoxuan;
@@ -119,7 +143,19 @@ import com.xlxyvergil.tcc.items.curios.YuxiZhixia;
 import com.xlxyvergil.tcc.items.curios.Raven;
 import com.xlxyvergil.tcc.items.curios.SevenThunders;
 import com.xlxyvergil.tcc.items.curios.SevenThundersThunderSeen;
+import com.xlxyvergil.tcc.items.curios.Shesha;
+import com.xlxyvergil.tcc.items.curios.ShijieZhiShe;
+import com.xlxyvergil.tcc.items.curios.SiZhiYi;
+import com.xlxyvergil.tcc.items.curios.TuntianZhijian;
+import com.xlxyvergil.tcc.items.curios.WangshiDeHuanmeng;
+import com.xlxyvergil.tcc.items.curios.WangshiDeSheying;
+import com.xlxyvergil.tcc.items.curios.Wuxian;
 import com.xlxyvergil.tcc.items.curios.Xiora;
+import com.xlxyvergil.tcc.items.curios.Xuguang;
+import com.xlxyvergil.tcc.items.curios.YeZhiTong;
+import com.xlxyvergil.tcc.items.curios.WangshiDeKuqiuMingzhiqi;
+import com.xlxyvergil.tcc.items.curios.YuhunShixian;
+import com.xlxyvergil.tcc.items.curios.Yuduchen;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal; 
 
 import net.minecraft.ChatFormatting;
@@ -739,6 +775,140 @@ public class TccItems {
             .stacksTo(1)
             .rarity(RIFT));
 
+    // ========== 新系列：戒律/黄金/旭光/无限/浮生/空梦（各 6 件） ==========
+
+    // --- 戒律（霰弹枪）：人物线 3rd ---
+    // 阿波尼亚 - 攻击15%概率施加1个随机debuff（15秒）
+    public static final Item APONIA = new Aponia(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 深罪之槛 - 攻击15%概率施加2个随机debuff（15秒）
+    public static final Item SHENZUI_ZHIJIAN = new ShenzuiZhijian(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 戒律 - 攻击15%概率施加3个随机debuff（15秒）
+    public static final Item JIELV = new Jielv(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 戒律（霰弹枪）：神之键线 tdk ---
+    // 往世的苦囚 - 攻击按虚数抗性概率施加崩坏病I级（易伤20%）
+    public static final Item WANGSHI_DE_KUQIU = new WangshiDeKuqiu(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 往世的苦囚·命之契 - 崩坏病II级（易伤40%）
+    public static final Item WANGSHI_DE_KUQIU_MINGZHIQI = new WangshiDeKuqiuMingzhiqi(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 第零额定功率·神恩结界 - 崩坏病III级（易伤60%）+伤害转虚数+侵染
+    public static final Item SHENEN_JIEJIE = new ShenenJiejie(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 黄金（手枪）：人物线 3rd ---
+    // 伊甸 - 36格内玩家每5秒获得1个正面buff（I级）
+    public static final Item EDEN = new Eden(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 璀耀之歌 - 同上（II级）
+    public static final Item CUIYAO_ZHI_GE = new CuiyaoZhiGe(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 黄金 - 同上（III级）
+    public static final Item HUANGJIN = new Huangjin(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 黄金（手枪）：神之键线 tdk ---
+    // 伊甸之星 - 16格内非玩家实体瞬移必定失效
+    public static final Item EDEN_STAR = new EdenStar(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 吞噬之键 - 32格
+    public static final Item TUNTIAN_ZHIJIAN = new TuntianZhijian(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 第三额定功率·奇点重构 - 64格+伤害转虚数+侵染
+    public static final Item QIDIAN_CHONGGOU = new QidianChonggou(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 旭光（近战）：人物线 3rd ---
+    // 科斯魔 - 攻速+8%、攻伤+5%
+    public static final Item KOSMA = new Kosma(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 黎明之哨 - 攻速+15%、攻伤+10%、暴击率+5%
+    public static final Item LIMING_ZHI_SHAO = new LimingZhiShao(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 旭光 - 攻速+25%、攻伤+20%、暴击伤害+30%
+    public static final Item XUGUANG = new Xuguang(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 旭光（近战）：神之键线 tdk ---
+    // 地藏御魂 - 攻击必定削减目标当前护甲/韧性5%（持久）
+    public static final Item DIZANG_YUHUN = new DizangYuhun(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 侵蚀之键 - 削减10%
+    public static final Item QINSHI_ZHIJIAN = new QinshiZhijian(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 御魂示现 - 按虚数抗性百分比削减+伤害转虚数+侵染
+    public static final Item YUHUN_SHIXIAN = new YuhunShixian(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 无限（轻机枪）：人物线 3rd ---
+    // 梅比乌斯 - 每种实体类型击杀累计，全属性+1%
+    public static final Item MEBIUS = new Mebius(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 噬界之蛇 - 全属性+1.5%
+    public static final Item SHIJIE_ZHI_SHE = new ShijieZhiShe(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 无限 - 全属性+2%
+    public static final Item WUXIAN = new Wuxian(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 无限（轻机枪）：神之键线 tdk ---
+    // 往世的蛇影 - 造成伤害10%概率移除目标1个正面buff
+    public static final Item WANGSHI_DE_SHEYING = new WangshiDeSheying(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 舍沙 - 虚数抗性概率+伤害转虚数+侵染
+    public static final Item SHESHA = new Shesha(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+    // 往世的蛇影·死之衣 - 20%概率
+    public static final Item SI_ZHI_YI = new SiZhiYi(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+
+    // --- 浮生（近战）：人物线 3rd ---
+    // 华 - 护甲+20%、护甲韧性+20%
+    public static final Item HUA = new Hua(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 渡尘之羽 - 护甲+50%、护甲韧性+50%
+    public static final Item DUCHEN_ZHI_YU = new DuchenZhiYu(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 浮生 - 护甲/韧性=虚数抗性百分比
+    public static final Item FUSHENG = new Fusheng(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 浮生（近战）：神之键线 tdk ---
+    // 羽渡尘 - 攻击5%概率停止目标AI 5秒
+    public static final Item YUDUCHEN = new Yuduchen(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 凡尘难渡 - 15%概率
+    public static final Item FANCHEN_NANDU = new FanchenNandu(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 不识时务 - 虚数抗性概率+伤害转虚数+侵染
+    public static final Item BUSHI_SHIWU = new BushiShiwu(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 空梦（霰弹枪）：人物线 3rd（三阶效果一致） ---
+    // 帕朵菲利斯 - 钓鱼0.01%获得下界之星/龙蛋+击杀战利品翻倍
+    public static final Item PADO_PHILIPIS = new PadoPhilipis(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 掠集之兽
+    public static final Item LUEJI_ZHI_SHOU = new LuejiZhiShou(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+    // 空梦
+    public static final Item KONGMENG = new Kongmeng(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // --- 空梦（霰弹枪）：神之键线 tdk ---
+    // 往世的幻梦 - 造成伤害概率1.5倍（概率=虚数抗性）
+    public static final Item WANGSHI_DE_HUANMENG = new WangshiDeHuanmeng(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.RARE));
+    // 拉之眼 - 2倍+伤害转虚数+侵染
+    public static final Item LA_ZHI_YAN = new LaZhiYan(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+    // 往世的幻梦·夜之瞳 - 1.8倍
+    public static final Item YE_ZHI_TONG = new YeZhiTong(new Item.Properties()
+            .stacksTo(1).rarity(Rarity.EPIC));
+
     private TccItems() {}
 
     public static void init(IForgeRegistry<Item> registry) {
@@ -862,6 +1032,43 @@ public class TccItems {
         registry.register(id("tingzhi_zhijian"), TINGZHI_ZHIJIAN);
         registry.register(id("tianhui"), TIANHUI);
         registry.register(id("yinguo_zhuanlun"), YINGUO_ZHUANLUN);
+        // ========== 新系列 36 件 ==========
+        registry.register(id("aponia"), APONIA);
+        registry.register(id("shenzui_zhijian"), SHENZUI_ZHIJIAN);
+        registry.register(id("jielv"), JIELV);
+        registry.register(id("wangshi_de_kuqiu"), WANGSHI_DE_KUQIU);
+        registry.register(id("wangshi_de_kuqiu_mingzhiqi"), WANGSHI_DE_KUQIU_MINGZHIQI);
+        registry.register(id("shenen_jiejie"), SHENEN_JIEJIE);
+        registry.register(id("eden"), EDEN);
+        registry.register(id("cuiyao_zhi_ge"), CUIYAO_ZHI_GE);
+        registry.register(id("huangjin"), HUANGJIN);
+        registry.register(id("eden_star"), EDEN_STAR);
+        registry.register(id("tuntian_zhijian"), TUNTIAN_ZHIJIAN);
+        registry.register(id("qidian_chonggou"), QIDIAN_CHONGGOU);
+        registry.register(id("kosma"), KOSMA);
+        registry.register(id("liming_zhi_shao"), LIMING_ZHI_SHAO);
+        registry.register(id("xuguang"), XUGUANG);
+        registry.register(id("dizang_yuhun"), DIZANG_YUHUN);
+        registry.register(id("qinshi_zhijian"), QINSHI_ZHIJIAN);
+        registry.register(id("yuhun_shixian"), YUHUN_SHIXIAN);
+        registry.register(id("mebius"), MEBIUS);
+        registry.register(id("shijie_zhi_she"), SHIJIE_ZHI_SHE);
+        registry.register(id("wuxian"), WUXIAN);
+        registry.register(id("wangshi_de_sheying"), WANGSHI_DE_SHEYING);
+        registry.register(id("shesha"), SHESHA);
+        registry.register(id("si_zhi_yi"), SI_ZHI_YI);
+        registry.register(id("hua"), HUA);
+        registry.register(id("duchen_zhi_yu"), DUCHEN_ZHI_YU);
+        registry.register(id("fusheng"), FUSHENG);
+        registry.register(id("yuduchen"), YUDUCHEN);
+        registry.register(id("fanchen_nandu"), FANCHEN_NANDU);
+        registry.register(id("bushi_shiwu"), BUSHI_SHIWU);
+        registry.register(id("pado_philipis"), PADO_PHILIPIS);
+        registry.register(id("lueji_zhi_shou"), LUEJI_ZHI_SHOU);
+        registry.register(id("kongmeng"), KONGMENG);
+        registry.register(id("wangshi_de_huanmeng"), WANGSHI_DE_HUANMENG);
+        registry.register(id("la_zhi_yan"), LA_ZHI_YAN);
+        registry.register(id("ye_zhi_tong"), YE_ZHI_TONG);
     }
 
     private static ResourceLocation id(String path) {

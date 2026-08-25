@@ -1,6 +1,18 @@
 {
   "replace": false,
   "values": [
-    "tcc:kikaku_ichijin"
+    "tcc:kikaku_ichijin",
+    "tcc:jielv",
+    "tcc:shenen_jiejie",
+    "tcc:huangjin",
+    "tcc:qidian_chonggou",
+    "tcc:xuguang",
+    "tcc:yuhun_shixian",
+    "tcc:wuxian",
+    "tcc:shesha",
+    "tcc:fusheng",
+    "tcc:bushi_shiwu",
+    "tcc:kongmeng",
+    "tcc:la_zhi_yan"
   ]
 }

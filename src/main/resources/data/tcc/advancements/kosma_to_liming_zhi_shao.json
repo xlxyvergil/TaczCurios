@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:dizang_yuhun_to_qinshi_zhijian",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.kosma_to_liming_zhi_shao.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:liming_zhi_shao"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.kosma_to_liming_zhi_shao.title"
+                              },
+                    "frame":  "goal"
+                }
+}

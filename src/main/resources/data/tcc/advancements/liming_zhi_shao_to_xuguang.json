@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:kosma_to_liming_zhi_shao",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.liming_zhi_shao_to_xuguang.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:xuguang"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.liming_zhi_shao_to_xuguang.title"
+                              },
+                    "frame":  "challenge"
+                }
+}

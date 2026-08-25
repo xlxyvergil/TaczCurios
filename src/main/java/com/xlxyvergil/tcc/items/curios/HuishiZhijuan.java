@@ -150,13 +150,7 @@ public class HuishiZhijuan extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        // 虚数抗性显示
-        CompoundTag tag = stack.getTag();
-        double baseValue = 1.0;
-        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        tooltip.add(Component.literal(""));
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
+        appendImaginaryResistance(stack, tooltip);
 
         int computedCooldown = TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get();
         if (level != null && level.isClientSide()) {
@@ -174,12 +168,6 @@ public class HuishiZhijuan extends BaseCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        tag = stack.getTag();
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
 }

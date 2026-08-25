@@ -1,9 +1,12 @@
 package com.xlxyvergil.tcc.util;
 
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.ItemBaseCurio;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -205,6 +208,31 @@ public abstract class BaseCurioItem extends ItemBaseCurio {
         String formatted = String.format(valueFormat, value >= 0 ? value : -value);
         String key = value >= 0 ? "attributeslib.modifier.plus" : "attributeslib.modifier.take";
         return Component.translatable(key, formatted, attrName);
+    }
+
+    /**
+     * 显示当前虚数抗性（含进化规则累积值），与旧系列 tooltip 风格一致。
+     */
+    protected void appendImaginaryResistance(ItemStack stack, List<Component> tooltip) {
+        CompoundTag tag = stack.getTag();
+        double total = 1.0 + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        tooltip.add(Component.literal(""));
+        tooltip.add(formatModifierTooltip(total, "%.0f",
+                Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+    }
+
+    /**
+     * 显示绑定玩家信息（红色），仅对已绑定饰品展示。
+     */
+    protected void appendBoundPlayer(ItemStack stack, List<Component> tooltip) {
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.getBoolean("IsBound")) {
+            String boundPlayerName = tag.getString("BoundPlayerName");
+            tooltip.add(Component.literal(""));
+            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
+                    .withStyle(ChatFormatting.RED));
+        }
     }
 
     /**

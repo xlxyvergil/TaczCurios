@@ -139,18 +139,10 @@ public class AoMie extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        CompoundTag tag = stack.getTag();
-
-        // 虚数抗性显示
-        double baseValue = 1.0;
-        double total = baseValue + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        tooltip.add(Component.literal(""));
+        appendImaginaryResistance(stack, tooltip);
         int maxSlots = TaczCuriosConfig.COMMON.aoMieMaxSlots.get();
         double adaptFactor = TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.aoMieDecaySeconds.get();
-
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 
@@ -177,11 +169,6 @@ public class AoMie extends BaseCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
 }

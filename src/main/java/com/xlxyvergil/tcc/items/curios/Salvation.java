@@ -151,13 +151,7 @@ public class Salvation extends BaseCurioItem {
         // 显示降低比例：配置值 × 100，例如 0.4 显示为降低40%
         double damageReduction = TaczCuriosConfig.COMMON.salvationDamageReduction.get() * 100;
         
-        // 继承抗性
-        CompoundTag tag = stack.getTag();
-        double baseValue = getBaseResistance();
-        double progressValue = ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-        double total = baseValue + progressValue;
-        tooltip.add(formatModifierTooltip(total, "%.0f", Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
-            .withStyle(ChatFormatting.RED));
+        appendImaginaryResistance(stack, tooltip);
         
         // 常驻加成
         tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses")
@@ -169,12 +163,7 @@ public class Salvation extends BaseCurioItem {
         // 槽位和稀有度
         tooltip.add(Component.literal(""));
  
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerName = tag.getString("BoundPlayerName");
-            tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                .withStyle(ChatFormatting.RED));
-        }
+        appendBoundPlayer(stack, tooltip);
     }
     
     

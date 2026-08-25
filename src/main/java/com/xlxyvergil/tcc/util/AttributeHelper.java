@@ -229,4 +229,47 @@ public class AttributeHelper {
             instance.removeModifier(uuid);
         }
     }
+
+    /**
+     * 累加式属性修饰符：在已有修饰符（固定 UUID）基础上叠加 delta，幂等可重入。
+     * <p>
+     * 用于「持久削减」类机制（如旭光神之键削甲）：每次调用在旧值基础上再削减，
+     * 修饰符值不断累加，卸下/死亡前一直持久生效。
+     */
+    public static void applyStackingModifier(LivingEntity entity, Attribute attribute, double delta,
+                                             UUID uuid, String name, AttributeModifier.Operation operation) {
+        AttributeInstance instance = getInstance(entity, attribute);
+        if (instance == null) {
+            return;
+        }
+        double old = 0.0;
+        AttributeModifier oldModifier = instance.getModifier(uuid);
+        if (oldModifier != null) {
+            old = oldModifier.getAmount();
+        }
+        double newValue = old + delta;
+        instance.removeModifier(uuid);
+        if (newValue != 0.0) {
+            instance.addPermanentModifier(new AttributeModifier(uuid, name, newValue, operation));
+        }
+    }
+
+    /**
+     * 遍历全部注册属性，统一添加/移除修饰符（无限系列全属性加成，参考 MoonsTeams nightmarerotten）。
+     * <p>
+     * value = 0 时仅移除修饰符（用于 removeEffects）；否则对每个实例添加 {@code MULTIPLY_BASE} 瞬态修饰符。
+     */
+    public static void applyAllAttributesModifier(LivingEntity entity, UUID uuid, String name,
+                                                  double value, AttributeModifier.Operation operation) {
+        for (Attribute attribute : ForgeRegistries.ATTRIBUTES.getValues()) {
+            AttributeInstance instance = entity.getAttributes().getInstance(attribute);
+            if (instance == null) {
+                continue;
+            }
+            instance.removeModifier(uuid);
+            if (value != 0.0) {
+                instance.addTransientModifier(new AttributeModifier(uuid, name, value, operation));
+            }
+        }
+    }
 }

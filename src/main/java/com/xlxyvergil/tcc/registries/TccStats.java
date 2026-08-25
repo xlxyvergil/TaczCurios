@@ -41,6 +41,14 @@ public final class TccStats {
 
     // ===== 新增统计在此声明 =====
 
+    /** 食用 6 种鱼类食物的累计次数（空梦成就 1：tcc:fish_food_eaten） */
+    public static final ResourceLocation FISH_FOOD_EATEN =
+            new ResourceLocation(TaczCurios.MODID, "fish_food_eaten");
+
+    /** 装备帕朵菲利斯时钓鱼成功次数（空梦成就 2：tcc:fish_caught_while_equipped） */
+    public static final ResourceLocation FISH_CAUGHT_WHILE_EQUIPPED =
+            new ResourceLocation(TaczCurios.MODID, "fish_caught_while_equipped");
+
     private TccStats() {}
 
     /** 注册所有自定义统计到 BuiltInRegistries.CUSTOM_STAT */
@@ -53,6 +61,10 @@ public final class TccStats {
         registerCustom(PLAY_TIME_HUISHI_ZHIJUAN, StatFormatter.DEFAULT);
         registerCustom(PLAY_TIME_FANXING, StatFormatter.DEFAULT);
         registerCustom(PLAY_TIME_QISHI_ZHIJIAN, StatFormatter.DEFAULT);
+
+        // 新系列统计
+        registerCustom(FISH_FOOD_EATEN, StatFormatter.DEFAULT);
+        registerCustom(FISH_CAUGHT_WHILE_EQUIPPED, StatFormatter.DEFAULT);
 
         // ===== 新增统计在此注册 =====
     }
