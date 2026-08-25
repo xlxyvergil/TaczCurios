@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AiStopHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -38,7 +39,9 @@ import java.util.List;
 public class BushiShiwu extends BaseCurioItem {
 
     /** 定身时长（tick） */
-    private static final int STOP_DURATION = 5 * 20;
+    private static int stopDuration() {
+        return TaczCuriosConfig.COMMON.bushiShiwuStopDurationSeconds.get() * 20;
+    }
 
     public BushiShiwu(Properties properties) {
         super(properties);
@@ -130,7 +133,7 @@ public class BushiShiwu extends BaseCurioItem {
         if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
             // 定身概率 = 施加者虚数抗性概率（§0.2）
             if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
-                AiStopHelper.apply(target, STOP_DURATION);
+                AiStopHelper.apply(target, stopDuration());
             }
         }
         // 近战无子弹：direct 侵染

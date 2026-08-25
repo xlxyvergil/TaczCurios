@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AiStopHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -36,9 +37,14 @@ import java.util.List;
 public class Yuduchen extends BaseCurioItem {
 
     /** 定身时长（tick） */
-    private static final int STOP_DURATION = 5 * 20;
+    private static int stopDuration() {
+        return TaczCuriosConfig.COMMON.yuduchenStopDurationSeconds.get() * 20;
+    }
+
     /** 定身概率 */
-    private static final double STOP_CHANCE = 0.05;
+    private static double stopChance() {
+        return TaczCuriosConfig.COMMON.yuduchenStopChance.get();
+    }
 
     public Yuduchen(Properties properties) {
         super(properties);
@@ -114,8 +120,8 @@ public class Yuduchen extends BaseCurioItem {
         }
         Entity hurt = event.getHurtEntity();
         if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            if (attacker.getRandom().nextDouble() < STOP_CHANCE) {
-                AiStopHelper.apply(target, STOP_DURATION);
+            if (attacker.getRandom().nextDouble() < stopChance()) {
+                AiStopHelper.apply(target, stopDuration());
             }
         }
     }
@@ -125,7 +131,7 @@ public class Yuduchen extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.transient.key_effect",
-                String.format("%.0f", STOP_CHANCE * 100))
+                String.format("%.0f", stopChance() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

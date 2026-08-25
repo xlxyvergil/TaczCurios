@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -41,7 +42,9 @@ public class ShijieZhiShe extends BaseCurioItem {
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("a3b4c5d6-4004-4000-8000-000000000001");
 
     /** 每种实体类型的全属性加成 */
-    private static final double PER_TYPE_BONUS = 0.015;
+    private static double perTypeBonus() {
+        return TaczCuriosConfig.COMMON.shijieZhiShePerTypeBonus.get();
+    }
 
     public ShijieZhiShe(Properties properties) {
         super(properties);
@@ -114,7 +117,7 @@ public class ShijieZhiShe extends BaseCurioItem {
             ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                     s -> s.getItem() instanceof ShijieZhiShe);
             int types = getKilledTypeCount(equipped.isEmpty() ? stack : equipped);
-            double bonus = types * PER_TYPE_BONUS;
+            double bonus = types * perTypeBonus();
             AttributeHelper.applyAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
                     "tcc.infinite.all_attributes", bonus, AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
@@ -174,7 +177,7 @@ public class ShijieZhiShe extends BaseCurioItem {
         appendImaginaryResistance(stack, tooltip);
         int types = getKilledTypeCount(stack);
         tooltip.add(Component.translatable("item.tcc.infinite.curio_effect",
-                String.format("%.1f", PER_TYPE_BONUS * 100), types)
+                String.format("%.1f", perTypeBonus() * 100), types)
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

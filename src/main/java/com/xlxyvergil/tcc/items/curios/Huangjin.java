@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.MobEffectPoolHelper;
@@ -37,13 +38,24 @@ import java.util.List;
 public class Huangjin extends BaseCurioItem {
 
     /** 光环范围（格） */
-    private static final double AURA_RANGE = 36.0;
+    private static double auraRange() {
+        return TaczCuriosConfig.COMMON.huangjinAuraRange.get();
+    }
+
     /** 施加间隔（tick） */
-    private static final long INTERVAL = 100;
+    private static long interval() {
+        return (long) TaczCuriosConfig.COMMON.huangjinIntervalSeconds.get() * 20L;
+    }
+
     /** buff 时长（tick） */
-    private static final int BUFF_DURATION = 30 * 20;
+    private static int buffDuration() {
+        return TaczCuriosConfig.COMMON.huangjinBuffDurationSeconds.get() * 20;
+    }
+
     /** buff 等级 */
-    private static final int BUFF_AMPLIFIER = 2;
+    private static int buffAmplifier() {
+        return TaczCuriosConfig.COMMON.huangjinBuffAmplifier.get();
+    }
 
     public Huangjin(Properties properties) {
         super(properties);
@@ -113,7 +125,7 @@ public class Huangjin extends BaseCurioItem {
             return;
         }
         long gameTime = server.overworld().getGameTime();
-        if (gameTime % INTERVAL != 0) {
+        if (gameTime % interval() != 0) {
             return;
         }
         for (ServerLevel level : server.getAllLevels()) {
@@ -128,11 +140,11 @@ public class Huangjin extends BaseCurioItem {
                     continue;
                 }
                 for (ServerPlayer other : players) {
-                    if (player.distanceToSqr(other) > AURA_RANGE * AURA_RANGE) {
+                    if (player.distanceToSqr(other) > auraRange() * auraRange()) {
                         continue;
                     }
                     MobEffect effect = MobEffectPoolHelper.randomBeneficial(player.getRandom());
-                    MobEffectPoolHelper.applyEffect(other, effect, BUFF_DURATION, BUFF_AMPLIFIER, player);
+                    MobEffectPoolHelper.applyEffect(other, effect, buffDuration(), buffAmplifier(), player);
                 }
             }
         }
@@ -144,7 +156,7 @@ public class Huangjin extends BaseCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.golden.curio_effect",
-                (int) AURA_RANGE, BUFF_AMPLIFIER + 1)
+                (int) auraRange(), buffAmplifier() + 1)
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

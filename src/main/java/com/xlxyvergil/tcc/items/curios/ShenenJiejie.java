@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -39,9 +40,14 @@ import java.util.List;
 public class ShenenJiejie extends BaseCurioItem {
 
     /** 崩坏病时长（tick） */
-    private static final int DISEASE_DURATION = 15 * 20;
+    private static int diseaseDuration() {
+        return TaczCuriosConfig.COMMON.shenenJiejieDiseaseDurationSeconds.get() * 20;
+    }
+
     /** 崩坏病等级 */
-    private static final int DISEASE_AMPLIFIER = 2;
+    private static int diseaseAmplifier() {
+        return TaczCuriosConfig.COMMON.shenenJiejieDiseaseAmplifier.get();
+    }
 
     public ShenenJiejie(Properties properties) {
         super(properties);
@@ -137,8 +143,8 @@ public class ShenenJiejie extends BaseCurioItem {
         if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
             target.addEffect(new MobEffectInstance(
                     TccMobEffects.HONKAI_DISEASE.get(),
-                    DISEASE_DURATION,
-                    DISEASE_AMPLIFIER,
+                    diseaseDuration(),
+                    diseaseAmplifier(),
                     false, false, true
             ), attacker);
         }
@@ -151,7 +157,7 @@ public class ShenenJiejie extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.discipline.key_effect",
-                String.format("%.0f", 20.0 * (DISEASE_AMPLIFIER + 1)))
+                String.format("%.0f", 20.0 * (diseaseAmplifier() + 1)))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));

@@ -2,13 +2,11 @@ package com.xlxyvergil.tcc.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.entity.ZhenWoBarrierEntity;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +16,8 @@ import org.joml.Matrix4f;
 /**
  * 结界地面特效渲染器：将 zhenwo.png 平铺在实体脚下的水平面上（固定于玩家脚底），
  * 特效尺寸按结界直径（zhenWoBarrierRadius）缩放，带淡入淡出。
+ * <p>
+ * 顶点直接使用局部坐标 (x, 0, z) 构成水平平面（y=0），无需旋转。
  */
 public class ZhenWoBarrierRenderer extends EntityRenderer<ZhenWoBarrierEntity> {
 
@@ -40,9 +40,9 @@ public class ZhenWoBarrierRenderer extends EntityRenderer<ZhenWoBarrierEntity> {
         // 配置值为结界直径（128），quad 半宽 = 直径 / 2
         float half = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().floatValue() / 2.0F;
         pose.pushPose();
-        // 旋转 90° 将贴图平面从竖直平铺到水平（地面）
-        pose.mulPose(Axis.XP.rotationDegrees(90.0F));
-        VertexConsumer vc = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE));
+        // 顶点 (x, 0, z) 本身即水平平面，直接平铺在地面（y=0，实体已锚定在玩家脚底）。
+        // 使用自定义 RenderType（entityTranslucent 同款 + NO_CULL），从上方俯视不会被剔除。
+        VertexConsumer vc = buffer.getBuffer(TccRenderTypes.barrier(TEXTURE));
         Matrix4f mat = pose.last().pose();
         addVertex(vc, mat, -half, -half, 0.0F, 0.0F, alpha);
         addVertex(vc, mat, -half, half, 0.0F, 1.0F, alpha);

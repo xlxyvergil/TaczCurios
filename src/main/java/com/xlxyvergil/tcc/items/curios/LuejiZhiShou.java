@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.registries.TccStats;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -39,7 +40,9 @@ import java.util.List;
 public class LuejiZhiShou extends BaseCurioItem {
 
     /** 钓鱼特殊战利品概率 */
-    private static final double SPECIAL_FISH_CHANCE = 0.0001;
+    private static double specialFishChance() {
+        return TaczCuriosConfig.COMMON.luejiZhiShouSpecialFishChance.get();
+    }
 
     public LuejiZhiShou(Properties properties) {
         super(properties);
@@ -116,7 +119,7 @@ public class LuejiZhiShou extends BaseCurioItem {
         // 装备掠集之兽时钓鱼计数（自定义 stat）
         player.awardStat(Stats.CUSTOM.get(TccStats.FISH_CAUGHT_WHILE_EQUIPPED));
         // 0.01% 概率获得下界之星 / 龙蛋
-        if (player.getRandom().nextDouble() < SPECIAL_FISH_CHANCE) {
+        if (player.getRandom().nextDouble() < specialFishChance()) {
             ItemStack special = player.getRandom().nextBoolean()
                     ? new ItemStack(Items.NETHER_STAR)
                     : new ItemStack(Items.DRAGON_EGG);

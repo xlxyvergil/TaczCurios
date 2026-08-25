@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
@@ -38,7 +39,9 @@ import java.util.List;
 public class QidianChonggou extends BaseCurioItem {
 
     /** 瞬移拦截范围（格） */
-    private static final double TELEPORT_RANGE = 64.0;
+    private static double teleportRange() {
+        return TaczCuriosConfig.COMMON.qidianChonggouTeleportRange.get();
+    }
 
     public QidianChonggou(Properties properties) {
         super(properties);
@@ -142,7 +145,7 @@ public class QidianChonggou extends BaseCurioItem {
             if (!((QidianChonggou) equipped.getItem()).matchesRestriction(player)) {
                 continue;
             }
-            if (player.distanceToSqr(entity) <= TELEPORT_RANGE * TELEPORT_RANGE) {
+            if (player.distanceToSqr(entity) <= teleportRange() * teleportRange()) {
                 event.setCanceled(true);
                 return;
             }
@@ -187,7 +190,7 @@ public class QidianChonggou extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.golden.key_effect",
-                (int) TELEPORT_RANGE)
+                (int) teleportRange())
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));

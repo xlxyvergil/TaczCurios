@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
@@ -38,7 +39,9 @@ import java.util.List;
 public class SiZhiYi extends BaseCurioItem {
 
     /** 移除正面 buff 的概率 */
-    private static final double REMOVE_CHANCE = 0.20;
+    private static double removeChance() {
+        return TaczCuriosConfig.COMMON.siZhiYiRemoveChance.get();
+    }
 
     public SiZhiYi(Properties properties) {
         super(properties);
@@ -114,7 +117,7 @@ public class SiZhiYi extends BaseCurioItem {
         }
         Entity hurt = event.getHurtEntity();
         if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            if (attacker.getRandom().nextDouble() < REMOVE_CHANCE) {
+            if (attacker.getRandom().nextDouble() < removeChance()) {
                 List<MobEffect> beneficials = new ArrayList<>();
                 for (MobEffectInstance instance : target.getActiveEffects()) {
                     if (instance.getEffect().isBeneficial()) {
@@ -134,7 +137,7 @@ public class SiZhiYi extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.infinite.key_effect",
-                String.format("%.0f", REMOVE_CHANCE * 100))
+                String.format("%.0f", removeChance() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

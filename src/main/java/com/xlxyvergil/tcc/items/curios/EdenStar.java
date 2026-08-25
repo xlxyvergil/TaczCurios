@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
@@ -35,7 +36,9 @@ import java.util.List;
 public class EdenStar extends BaseCurioItem {
 
     /** 瞬移拦截范围（格） */
-    private static final double TELEPORT_RANGE = 16.0;
+    private static double teleportRange() {
+        return TaczCuriosConfig.COMMON.edenStarTeleportRange.get();
+    }
 
     public EdenStar(Properties properties) {
         super(properties);
@@ -139,7 +142,7 @@ public class EdenStar extends BaseCurioItem {
             if (!((EdenStar) equipped.getItem()).matchesRestriction(player)) {
                 continue;
             }
-            if (player.distanceToSqr(entity) <= TELEPORT_RANGE * TELEPORT_RANGE) {
+            if (player.distanceToSqr(entity) <= teleportRange() * teleportRange()) {
                 event.setCanceled(true);
                 return;
             }
@@ -151,7 +154,7 @@ public class EdenStar extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.golden.key_effect",
-                (int) TELEPORT_RANGE)
+                (int) teleportRange())
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

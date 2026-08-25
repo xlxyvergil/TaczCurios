@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -35,10 +36,19 @@ public class Xuguang extends BaseCurioItem {
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000003");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000004");
 
-    private static final double ATTACK_SPEED_PCT = 0.25;
-    private static final double ATTACK_DAMAGE_PCT = 0.20;
+    private static double attackSpeedPct() {
+        return TaczCuriosConfig.COMMON.xuguangAttackSpeedPercent.get();
+    }
+
+    private static double attackDamagePct() {
+        return TaczCuriosConfig.COMMON.xuguangAttackDamagePercent.get();
+    }
+
     private static final double CRIT_CHANCE = 0;
-    private static final double CRIT_DAMAGE = 0.30;
+
+    private static double critDamage() {
+        return TaczCuriosConfig.COMMON.xuguangCritDamagePercent.get();
+    }
 
     public Xuguang(Properties properties) {
         super(properties);
@@ -94,19 +104,19 @@ public class Xuguang extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_SPEED,
-                    ATTACK_SPEED_PCT, ATTACK_SPEED_UUID,
+                    attackSpeedPct(), ATTACK_SPEED_UUID,
                     "tcc.dawn.attack_speed", AttributeModifier.Operation.MULTIPLY_BASE);
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
-                    ATTACK_DAMAGE_PCT, ATTACK_DAMAGE_UUID,
+                    attackDamagePct(), ATTACK_DAMAGE_UUID,
                     "tcc.dawn.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
             if (CRIT_CHANCE > 0) {
                 AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                         CRIT_CHANCE, CRIT_CHANCE_UUID,
                         "tcc.dawn.crit_chance", AttributeModifier.Operation.ADDITION);
             }
-            if (CRIT_DAMAGE > 0) {
+            if (critDamage() > 0) {
                 AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
-                        CRIT_DAMAGE, CRIT_DAMAGE_UUID,
+                        critDamage(), CRIT_DAMAGE_UUID,
                         "tcc.dawn.crit_damage", AttributeModifier.Operation.ADDITION);
             }
         } else {
@@ -132,16 +142,16 @@ public class Xuguang extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
-        tooltip.add(formatModifierTooltip(ATTACK_SPEED_PCT * 100, "%.0f%%", Component.translatable(Attributes.ATTACK_SPEED.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackSpeedPct() * 100, "%.0f%%", Component.translatable(Attributes.ATTACK_SPEED.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(formatModifierTooltip(ATTACK_DAMAGE_PCT * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackDamagePct() * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
         if (CRIT_CHANCE > 0) {
             tooltip.add(formatModifierTooltip(CRIT_CHANCE * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                     .withStyle(ChatFormatting.GOLD));
         }
-        if (CRIT_DAMAGE > 0) {
-            tooltip.add(formatModifierTooltip(CRIT_DAMAGE * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
+        if (critDamage() > 0) {
+            tooltip.add(formatModifierTooltip(critDamage() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                     .withStyle(ChatFormatting.GOLD));
         }
         appendBoundPlayer(stack, tooltip);

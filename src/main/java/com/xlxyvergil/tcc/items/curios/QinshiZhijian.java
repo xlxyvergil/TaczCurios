@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -42,7 +43,9 @@ public class QinshiZhijian extends BaseCurioItem {
     private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("f1c2d3e4-3003-4000-8000-000000000002");
 
     /** 每次攻击削减百分比 */
-    private static final double STRIP_PERCENT = 0.10;
+    private static double stripPercent() {
+        return TaczCuriosConfig.COMMON.qinshiZhijianStripPercent.get();
+    }
 
     public QinshiZhijian(Properties properties) {
         super(properties);
@@ -119,8 +122,8 @@ public class QinshiZhijian extends BaseCurioItem {
         Entity hurt = event.getHurtEntity();
         if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
             // 按当前实际值百分比削减，持久累加，不随时间恢复（归 0 后削 0）
-            double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * STRIP_PERCENT * 100.0) / 100.0;
-            double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * STRIP_PERCENT * 100.0) / 100.0;
+            double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * stripPercent() * 100.0) / 100.0;
+            double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * stripPercent() * 100.0) / 100.0;
             if (stripArmor > 0) {
                 AttributeHelper.applyStackingModifier(target, Attributes.ARMOR,
                         -stripArmor, ARMOR_STRIP_UUID,
@@ -139,7 +142,7 @@ public class QinshiZhijian extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.dawn.key_effect",
-                String.format("%.0f", STRIP_PERCENT * 100))
+                String.format("%.0f", stripPercent() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios;
 
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -34,7 +35,9 @@ public class Hua extends BaseCurioItem {
     private static final UUID TOUGHNESS_UUID = UUID.fromString("b4c5d6e7-5005-4000-8000-000000000002");
 
     /** 护甲 / 韧性加成百分比 */
-    private static final double ARMOR_PCT = 0.20;
+    private static double armorPct() {
+        return TaczCuriosConfig.COMMON.huaArmorPercent.get();
+    }
 
     public Hua(Properties properties) {
         super(properties);
@@ -90,10 +93,10 @@ public class Hua extends BaseCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ARMOR,
-                    ARMOR_PCT, ARMOR_UUID,
+                    armorPct(), ARMOR_UUID,
                     "tcc.transient.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
             AttributeHelper.applyModifier(livingEntity, Attributes.ARMOR_TOUGHNESS,
-                    ARMOR_PCT, TOUGHNESS_UUID,
+                    armorPct(), TOUGHNESS_UUID,
                     "tcc.transient.toughness", AttributeModifier.Operation.MULTIPLY_TOTAL);
         } else {
             removeEffects(livingEntity);
@@ -116,9 +119,9 @@ public class Hua extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
-        tooltip.add(formatModifierTooltip(ARMOR_PCT * 100, "%.0f%%", Component.translatable(Attributes.ARMOR.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(armorPct() * 100, "%.0f%%", Component.translatable(Attributes.ARMOR.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(formatModifierTooltip(ARMOR_PCT * 100, "%.0f%%", Component.translatable(Attributes.ARMOR_TOUGHNESS.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(armorPct() * 100, "%.0f%%", Component.translatable(Attributes.ARMOR_TOUGHNESS.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

@@ -429,6 +429,90 @@ public class TaczCuriosConfig {
         // 黑渊白花·创灭螺旋配置
         public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
 
+        // ========== 新系列饰品配置（戒律/黄金/旭光/无限/浮生/空梦）==========
+
+        // 戒律系列·人物线（tcc_3rd）：随机 debuff
+        public final ForgeConfigSpec.DoubleValue aponiaDebuffChance;
+        public final ForgeConfigSpec.IntValue aponiaDebuffDurationSeconds;
+        public final ForgeConfigSpec.IntValue aponiaDebuffCount;
+        public final ForgeConfigSpec.DoubleValue shenzuiZhijianDebuffChance;
+        public final ForgeConfigSpec.IntValue shenzuiZhijianDebuffDurationSeconds;
+        public final ForgeConfigSpec.IntValue shenzuiZhijianDebuffCount;
+        public final ForgeConfigSpec.DoubleValue jielvDebuffChance;
+        public final ForgeConfigSpec.IntValue jielvDebuffDurationSeconds;
+        public final ForgeConfigSpec.IntValue jielvDebuffCount;
+
+        // 戒律系列·神之键线（tcc_tdk）：崩坏病
+        public final ForgeConfigSpec.IntValue yudaDeShiyueDiseaseDurationSeconds;
+        public final ForgeConfigSpec.IntValue yudaDeShiyueDiseaseAmplifier;
+        public final ForgeConfigSpec.IntValue yueshuZhiJianDiseaseDurationSeconds;
+        public final ForgeConfigSpec.IntValue yueshuZhiJianDiseaseAmplifier;
+        public final ForgeConfigSpec.IntValue shenenJiejieDiseaseDurationSeconds;
+        public final ForgeConfigSpec.IntValue shenenJiejieDiseaseAmplifier;
+
+        // 黄金系列·人物线（tcc_3rd）：友方光环
+        public final ForgeConfigSpec.DoubleValue edenAuraRange;
+        public final ForgeConfigSpec.IntValue edenIntervalSeconds;
+        public final ForgeConfigSpec.IntValue edenBuffDurationSeconds;
+        public final ForgeConfigSpec.IntValue edenBuffAmplifier;
+        public final ForgeConfigSpec.DoubleValue cuiyaoZhiGeAuraRange;
+        public final ForgeConfigSpec.IntValue cuiyaoZhiGeIntervalSeconds;
+        public final ForgeConfigSpec.IntValue cuiyaoZhiGeBuffDurationSeconds;
+        public final ForgeConfigSpec.IntValue cuiyaoZhiGeBuffAmplifier;
+        public final ForgeConfigSpec.DoubleValue huangjinAuraRange;
+        public final ForgeConfigSpec.IntValue huangjinIntervalSeconds;
+        public final ForgeConfigSpec.IntValue huangjinBuffDurationSeconds;
+        public final ForgeConfigSpec.IntValue huangjinBuffAmplifier;
+
+        // 黄金系列·神之键线（tcc_tdk）：瞬移失效
+        public final ForgeConfigSpec.DoubleValue edenStarTeleportRange;
+        public final ForgeConfigSpec.DoubleValue tuntianZhijianTeleportRange;
+        public final ForgeConfigSpec.DoubleValue qidianChonggouTeleportRange;
+
+        // 旭光系列·人物线（tcc_3rd）：攻速攻伤
+        public final ForgeConfigSpec.DoubleValue kosmaAttackSpeedPercent;
+        public final ForgeConfigSpec.DoubleValue kosmaAttackDamagePercent;
+        public final ForgeConfigSpec.DoubleValue limingZhiShaoAttackSpeedPercent;
+        public final ForgeConfigSpec.DoubleValue limingZhiShaoAttackDamagePercent;
+        public final ForgeConfigSpec.DoubleValue limingZhiShaoCritChancePercent;
+        public final ForgeConfigSpec.DoubleValue xuguangAttackSpeedPercent;
+        public final ForgeConfigSpec.DoubleValue xuguangAttackDamagePercent;
+        public final ForgeConfigSpec.DoubleValue xuguangCritDamagePercent;
+
+        // 旭光系列·神之键线（tcc_tdk）：削甲
+        public final ForgeConfigSpec.DoubleValue dizangYuhunStripPercent;
+        public final ForgeConfigSpec.DoubleValue qinshiZhijianStripPercent;
+
+        // 无限系列·人物线（tcc_3rd）：击杀累计
+        public final ForgeConfigSpec.DoubleValue mebiusPerTypeBonus;
+        public final ForgeConfigSpec.DoubleValue shijieZhiShePerTypeBonus;
+        public final ForgeConfigSpec.DoubleValue wuxianPerTypeBonus;
+
+        // 无限系列·神之键线（tcc_tdk）：移除正面 buff
+        public final ForgeConfigSpec.DoubleValue wangshiDeSheyingRemoveChance;
+        public final ForgeConfigSpec.DoubleValue siZhiYiRemoveChance;
+
+        // 浮生系列·人物线（tcc_3rd）：百分比护甲/韧性
+        public final ForgeConfigSpec.DoubleValue huaArmorPercent;
+        public final ForgeConfigSpec.DoubleValue duchenZhiYuArmorPercent;
+
+        // 浮生系列·神之键线（tcc_tdk）：停止 AI
+        public final ForgeConfigSpec.DoubleValue yuduchenStopChance;
+        public final ForgeConfigSpec.IntValue yuduchenStopDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue fanchenNanduStopChance;
+        public final ForgeConfigSpec.IntValue fanchenNanduStopDurationSeconds;
+        public final ForgeConfigSpec.IntValue bushiShiwuStopDurationSeconds;
+
+        // 空梦系列·人物线（tcc_3rd）：钓鱼/战利品
+        public final ForgeConfigSpec.DoubleValue padoPhilipisSpecialFishChance;
+        public final ForgeConfigSpec.DoubleValue luejiZhiShouSpecialFishChance;
+        public final ForgeConfigSpec.DoubleValue kongmengSpecialFishChance;
+
+        // 空梦系列·神之键线（tcc_tdk）：双倍伤害
+        public final ForgeConfigSpec.DoubleValue wangshiDeHuanmengDamageMultiplier;
+        public final ForgeConfigSpec.DoubleValue laZhiYanDamageMultiplier;
+        public final ForgeConfigSpec.DoubleValue yeZhiTongDamageMultiplier;
+
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
@@ -1755,6 +1839,293 @@ public class TaczCuriosConfig {
             heiyuanBaihuaDamagePercent = builder
                     .comment("每次造成伤害时附加佩戴者当前血量的比例 (默认: 1.0 = 100%)")
                     .defineInRange("damagePercent", 1.0, 0.0, 100.0);
+            builder.pop();
+
+            // ========== 新系列饰品配置 ==========
+
+            // 戒律系列·人物线：随机 debuff
+            builder.comment("阿波尼亚饰品配置").push("aponia");
+            aponiaDebuffChance = builder
+                    .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
+                    .defineInRange("debuffChance", 0.15, 0.0, 1.0);
+            aponiaDebuffDurationSeconds = builder
+                    .comment("debuff 时长（秒） (默认: 15)")
+                    .defineInRange("debuffDurationSeconds", 15, 1, 3600);
+            aponiaDebuffCount = builder
+                    .comment("施加 debuff 数量 (默认: 1)")
+                    .defineInRange("debuffCount", 1, 1, 100);
+            builder.pop();
+
+            builder.comment("深罪之槛饰品配置").push("shenzui_zhijian");
+            shenzuiZhijianDebuffChance = builder
+                    .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
+                    .defineInRange("debuffChance", 0.15, 0.0, 1.0);
+            shenzuiZhijianDebuffDurationSeconds = builder
+                    .comment("debuff 时长（秒） (默认: 15)")
+                    .defineInRange("debuffDurationSeconds", 15, 1, 3600);
+            shenzuiZhijianDebuffCount = builder
+                    .comment("施加 debuff 数量 (默认: 2)")
+                    .defineInRange("debuffCount", 2, 1, 100);
+            builder.pop();
+
+            builder.comment("戒律饰品配置").push("jielv");
+            jielvDebuffChance = builder
+                    .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
+                    .defineInRange("debuffChance", 0.15, 0.0, 1.0);
+            jielvDebuffDurationSeconds = builder
+                    .comment("debuff 时长（秒） (默认: 15)")
+                    .defineInRange("debuffDurationSeconds", 15, 1, 3600);
+            jielvDebuffCount = builder
+                    .comment("施加 debuff 数量 (默认: 3)")
+                    .defineInRange("debuffCount", 3, 1, 100);
+            builder.pop();
+
+            // 戒律系列·神之键线：崩坏病（犹大的誓约 / 约束之键 尚未实现，预留配置）
+            builder.comment("犹大的誓约饰品配置（未实现，预留）").push("yuda_de_shiyue");
+            yudaDeShiyueDiseaseDurationSeconds = builder
+                    .comment("崩坏病时长（秒） (默认: 15)")
+                    .defineInRange("diseaseDurationSeconds", 15, 1, 3600);
+            yudaDeShiyueDiseaseAmplifier = builder
+                    .comment("崩坏病等级（0=易伤20%，默认: 0 = I 级）")
+                    .defineInRange("diseaseAmplifier", 0, 0, 255);
+            builder.pop();
+
+            builder.comment("约束之键饰品配置（未实现，预留）").push("yueshu_zhi_jian");
+            yueshuZhiJianDiseaseDurationSeconds = builder
+                    .comment("崩坏病时长（秒） (默认: 15)")
+                    .defineInRange("diseaseDurationSeconds", 15, 1, 3600);
+            yueshuZhiJianDiseaseAmplifier = builder
+                    .comment("崩坏病等级（0=易伤20%，默认: 1 = II 级）")
+                    .defineInRange("diseaseAmplifier", 1, 0, 255);
+            builder.pop();
+
+            builder.comment("第零额定功率·神恩结界饰品配置").push("shenen_jiejie");
+            shenenJiejieDiseaseDurationSeconds = builder
+                    .comment("崩坏病时长（秒） (默认: 15)")
+                    .defineInRange("diseaseDurationSeconds", 15, 1, 3600);
+            shenenJiejieDiseaseAmplifier = builder
+                    .comment("崩坏病等级（0=易伤20%，默认: 2 = III 级）")
+                    .defineInRange("diseaseAmplifier", 2, 0, 255);
+            builder.pop();
+
+            // 黄金系列·人物线：友方光环
+            builder.comment("伊甸饰品配置").push("eden");
+            edenAuraRange = builder
+                    .comment("光环范围（格） (默认: 36)")
+                    .defineInRange("auraRange", 36.0, 1.0, 512.0);
+            edenIntervalSeconds = builder
+                    .comment("buff 施加间隔（秒） (默认: 5)")
+                    .defineInRange("intervalSeconds", 5, 1, 3600);
+            edenBuffDurationSeconds = builder
+                    .comment("buff 持续时长（秒） (默认: 30)")
+                    .defineInRange("buffDurationSeconds", 30, 1, 3600);
+            edenBuffAmplifier = builder
+                    .comment("buff 等级（0=I 级，默认: 0）")
+                    .defineInRange("buffAmplifier", 0, 0, 255);
+            builder.pop();
+
+            builder.comment("璀耀之歌饰品配置").push("cuiyao_zhi_ge");
+            cuiyaoZhiGeAuraRange = builder
+                    .comment("光环范围（格） (默认: 36)")
+                    .defineInRange("auraRange", 36.0, 1.0, 512.0);
+            cuiyaoZhiGeIntervalSeconds = builder
+                    .comment("buff 施加间隔（秒） (默认: 5)")
+                    .defineInRange("intervalSeconds", 5, 1, 3600);
+            cuiyaoZhiGeBuffDurationSeconds = builder
+                    .comment("buff 持续时长（秒） (默认: 30)")
+                    .defineInRange("buffDurationSeconds", 30, 1, 3600);
+            cuiyaoZhiGeBuffAmplifier = builder
+                    .comment("buff 等级（0=I 级，默认: 1 = II 级）")
+                    .defineInRange("buffAmplifier", 1, 0, 255);
+            builder.pop();
+
+            builder.comment("黄金饰品配置").push("huangjin");
+            huangjinAuraRange = builder
+                    .comment("光环范围（格） (默认: 36)")
+                    .defineInRange("auraRange", 36.0, 1.0, 512.0);
+            huangjinIntervalSeconds = builder
+                    .comment("buff 施加间隔（秒） (默认: 5)")
+                    .defineInRange("intervalSeconds", 5, 1, 3600);
+            huangjinBuffDurationSeconds = builder
+                    .comment("buff 持续时长（秒） (默认: 30)")
+                    .defineInRange("buffDurationSeconds", 30, 1, 3600);
+            huangjinBuffAmplifier = builder
+                    .comment("buff 等级（0=I 级，默认: 2 = III 级）")
+                    .defineInRange("buffAmplifier", 2, 0, 255);
+            builder.pop();
+
+            // 黄金系列·神之键线：瞬移失效
+            builder.comment("伊甸之星饰品配置").push("eden_star");
+            edenStarTeleportRange = builder
+                    .comment("瞬移失效范围（格） (默认: 16)")
+                    .defineInRange("teleportRange", 16.0, 1.0, 512.0);
+            builder.pop();
+
+            builder.comment("吞噬之键饰品配置").push("tuntian_zhijian");
+            tuntianZhijianTeleportRange = builder
+                    .comment("瞬移失效范围（格） (默认: 32)")
+                    .defineInRange("teleportRange", 32.0, 1.0, 512.0);
+            builder.pop();
+
+            builder.comment("第三额定功率·奇点重构饰品配置").push("qidian_chonggou");
+            qidianChonggouTeleportRange = builder
+                    .comment("瞬移失效范围（格） (默认: 64)")
+                    .defineInRange("teleportRange", 64.0, 1.0, 512.0);
+            builder.pop();
+
+            // 旭光系列·人物线：攻速攻伤
+            builder.comment("科斯魔饰品配置").push("kosma");
+            kosmaAttackSpeedPercent = builder
+                    .comment("攻击速度加成（小数，默认: 0.08 = +8%）")
+                    .defineInRange("attackSpeedPercent", 0.08, -10.0, 100.0);
+            kosmaAttackDamagePercent = builder
+                    .comment("攻击伤害加成（小数，默认: 0.05 = +5%）")
+                    .defineInRange("attackDamagePercent", 0.05, -10.0, 100.0);
+            builder.pop();
+
+            builder.comment("黎明之哨饰品配置").push("liming_zhi_shao");
+            limingZhiShaoAttackSpeedPercent = builder
+                    .comment("攻击速度加成（小数，默认: 0.15 = +15%）")
+                    .defineInRange("attackSpeedPercent", 0.15, -10.0, 100.0);
+            limingZhiShaoAttackDamagePercent = builder
+                    .comment("攻击伤害加成（小数，默认: 0.10 = +10%）")
+                    .defineInRange("attackDamagePercent", 0.10, -10.0, 100.0);
+            limingZhiShaoCritChancePercent = builder
+                    .comment("暴击率加成（小数，默认: 0.05 = +5%）")
+                    .defineInRange("critChancePercent", 0.05, -10.0, 100.0);
+            builder.pop();
+
+            builder.comment("旭光饰品配置").push("xuguang");
+            xuguangAttackSpeedPercent = builder
+                    .comment("攻击速度加成（小数，默认: 0.25 = +25%）")
+                    .defineInRange("attackSpeedPercent", 0.25, -10.0, 100.0);
+            xuguangAttackDamagePercent = builder
+                    .comment("攻击伤害加成（小数，默认: 0.20 = +20%）")
+                    .defineInRange("attackDamagePercent", 0.20, -10.0, 100.0);
+            xuguangCritDamagePercent = builder
+                    .comment("暴击伤害加成（小数，默认: 0.30 = +30%）")
+                    .defineInRange("critDamagePercent", 0.30, -10.0, 100.0);
+            builder.pop();
+
+            // 旭光系列·神之键线：削甲
+            builder.comment("地藏御魂饰品配置").push("dizang_yuhun");
+            dizangYuhunStripPercent = builder
+                    .comment("攻击削减目标当前护甲/韧性比例 (默认: 0.05 = 5%)")
+                    .defineInRange("stripPercent", 0.05, 0.0, 1.0);
+            builder.pop();
+
+            builder.comment("侵蚀之键饰品配置").push("qinshi_zhijian");
+            qinshiZhijianStripPercent = builder
+                    .comment("攻击削减目标当前护甲/韧性比例 (默认: 0.10 = 10%)")
+                    .defineInRange("stripPercent", 0.10, 0.0, 1.0);
+            builder.pop();
+
+            // 无限系列·人物线：击杀累计
+            builder.comment("梅比乌斯饰品配置").push("mebius");
+            mebiusPerTypeBonus = builder
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.01 = +1%）")
+                    .defineInRange("perTypeBonus", 0.01, 0.0, 100.0);
+            builder.pop();
+
+            builder.comment("噬界之蛇饰品配置").push("shijie_zhi_she");
+            shijieZhiShePerTypeBonus = builder
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.015 = +1.5%）")
+                    .defineInRange("perTypeBonus", 0.015, 0.0, 100.0);
+            builder.pop();
+
+            builder.comment("无限饰品配置").push("wuxian");
+            wuxianPerTypeBonus = builder
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.02 = +2%）")
+                    .defineInRange("perTypeBonus", 0.02, 0.0, 100.0);
+            builder.pop();
+
+            // 无限系列·神之键线：移除正面 buff
+            builder.comment("往世的蛇影饰品配置").push("wangshi_de_sheying");
+            wangshiDeSheyingRemoveChance = builder
+                    .comment("造成伤害移除目标正面 buff 概率 (默认: 0.10 = 10%)")
+                    .defineInRange("removeChance", 0.10, 0.0, 1.0);
+            builder.pop();
+
+            builder.comment("往世的蛇影·死之衣饰品配置").push("si_zhi_yi");
+            siZhiYiRemoveChance = builder
+                    .comment("造成伤害移除目标正面 buff 概率 (默认: 0.20 = 20%)")
+                    .defineInRange("removeChance", 0.20, 0.0, 1.0);
+            builder.pop();
+
+            // 浮生系列·人物线：百分比护甲/韧性
+            builder.comment("华饰品配置").push("hua");
+            huaArmorPercent = builder
+                    .comment("护甲/护甲韧性加成（小数，默认: 0.20 = +20%）")
+                    .defineInRange("armorPercent", 0.20, -10.0, 100.0);
+            builder.pop();
+
+            builder.comment("渡尘之羽饰品配置").push("duchen_zhi_yu");
+            duchenZhiYuArmorPercent = builder
+                    .comment("护甲/护甲韧性加成（小数，默认: 0.50 = +50%）")
+                    .defineInRange("armorPercent", 0.50, -10.0, 100.0);
+            builder.pop();
+
+            // 浮生系列·神之键线：停止 AI
+            builder.comment("羽渡尘饰品配置").push("yuduchen");
+            yuduchenStopChance = builder
+                    .comment("攻击停止目标 AI 概率 (默认: 0.05 = 5%)")
+                    .defineInRange("stopChance", 0.05, 0.0, 1.0);
+            yuduchenStopDurationSeconds = builder
+                    .comment("停止 AI 时长（秒） (默认: 5)")
+                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            builder.pop();
+
+            builder.comment("凡尘难渡饰品配置").push("fanchen_nandu");
+            fanchenNanduStopChance = builder
+                    .comment("攻击停止目标 AI 概率 (默认: 0.15 = 15%)")
+                    .defineInRange("stopChance", 0.15, 0.0, 1.0);
+            fanchenNanduStopDurationSeconds = builder
+                    .comment("停止 AI 时长（秒） (默认: 5)")
+                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            builder.pop();
+
+            builder.comment("不识时务饰品配置").push("bushi_shiwu");
+            bushiShiwuStopDurationSeconds = builder
+                    .comment("停止 AI 时长（秒） (默认: 5)")
+                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            builder.pop();
+
+            // 空梦系列·人物线：钓鱼/战利品
+            builder.comment("帕朵菲利斯饰品配置").push("pado_philipis");
+            padoPhilipisSpecialFishChance = builder
+                    .comment("钓鱼获得下界之星/龙蛋概率 (默认: 0.0001 = 0.01%)")
+                    .defineInRange("specialFishChance", 0.0001, 0.0, 1.0);
+            builder.pop();
+
+            builder.comment("掠集之兽饰品配置").push("lueji_zhi_shou");
+            luejiZhiShouSpecialFishChance = builder
+                    .comment("钓鱼获得下界之星/龙蛋概率 (默认: 0.0001 = 0.01%)")
+                    .defineInRange("specialFishChance", 0.0001, 0.0, 1.0);
+            builder.pop();
+
+            builder.comment("空梦饰品配置").push("kongmeng");
+            kongmengSpecialFishChance = builder
+                    .comment("钓鱼获得下界之星/龙蛋概率 (默认: 0.0001 = 0.01%)")
+                    .defineInRange("specialFishChance", 0.0001, 0.0, 1.0);
+            builder.pop();
+
+            // 空梦系列·神之键线：双倍伤害
+            builder.comment("往世的幻梦饰品配置").push("wangshi_de_huanmeng");
+            wangshiDeHuanmengDamageMultiplier = builder
+                    .comment("造成伤害概率造成额外伤害的倍率 (默认: 1.5 倍)")
+                    .defineInRange("damageMultiplier", 1.5, 0.1, 100.0);
+            builder.pop();
+
+            builder.comment("拉之眼饰品配置").push("la_zhi_yan");
+            laZhiYanDamageMultiplier = builder
+                    .comment("造成伤害概率造成额外伤害的倍率 (默认: 2.0 倍)")
+                    .defineInRange("damageMultiplier", 2.0, 0.1, 100.0);
+            builder.pop();
+
+            builder.comment("往世的幻梦·夜之瞳饰品配置").push("ye_zhi_tong");
+            yeZhiTongDamageMultiplier = builder
+                    .comment("造成伤害概率造成额外伤害的倍率 (默认: 1.8 倍)")
+                    .defineInRange("damageMultiplier", 1.8, 0.1, 100.0);
             builder.pop();
 
             // 饰品互斥配置

@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.MobEffectPoolHelper;
@@ -37,11 +38,19 @@ import java.util.List;
 public class Jielv extends BaseCurioItem {
 
     /** 施加随机 debuff 的概率 */
-    private static final double DEBUFF_CHANCE = 0.15;
+    private static double debuffChance() {
+        return TaczCuriosConfig.COMMON.jielvDebuffChance.get();
+    }
+
     /** debuff 时长（tick） */
-    private static final int DEBUFF_DURATION = 15 * 20;
+    private static int debuffDuration() {
+        return TaczCuriosConfig.COMMON.jielvDebuffDurationSeconds.get() * 20;
+    }
+
     /** 施加 debuff 数量 */
-    private static final int DEBUFF_COUNT = 3;
+    private static int debuffCount() {
+        return TaczCuriosConfig.COMMON.jielvDebuffCount.get();
+    }
 
     public Jielv(Properties properties) {
         super(properties);
@@ -115,16 +124,16 @@ public class Jielv extends BaseCurioItem {
         if (!((Jielv) equipped.getItem()).matchesRestriction(attacker)) {
             return;
         }
-        if (attacker.getRandom().nextDouble() >= DEBUFF_CHANCE) {
+        if (attacker.getRandom().nextDouble() >= debuffChance()) {
             return;
         }
         Entity hurt = event.getHurtEntity();
         if (!(hurt instanceof LivingEntity target) || target.isDeadOrDying()) {
             return;
         }
-        for (int i = 0; i < DEBUFF_COUNT; i++) {
+        for (int i = 0; i < debuffCount(); i++) {
             MobEffect effect = MobEffectPoolHelper.randomHarmful(attacker.getRandom());
-            MobEffectPoolHelper.applyEffect(target, effect, DEBUFF_DURATION, 0, attacker);
+            MobEffectPoolHelper.applyEffect(target, effect, debuffDuration(), 0, attacker);
         }
     }
 
@@ -133,7 +142,7 @@ public class Jielv extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
-        tooltip.add(Component.translatable("item.tcc.discipline.curio_effect", DEBUFF_COUNT)
+        tooltip.add(Component.translatable("item.tcc.discipline.curio_effect", debuffCount())
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

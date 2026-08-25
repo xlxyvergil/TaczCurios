@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -35,7 +36,9 @@ import java.util.List;
 public class WangshiDeHuanmeng extends BaseCurioItem {
 
     /** 伤害倍率 */
-    private static final float DAMAGE_MULTIPLIER = 1.5f;
+    private static float damageMultiplier() {
+        return TaczCuriosConfig.COMMON.wangshiDeHuanmengDamageMultiplier.get().floatValue();
+    }
 
     public WangshiDeHuanmeng(Properties properties) {
         super(properties);
@@ -111,7 +114,7 @@ public class WangshiDeHuanmeng extends BaseCurioItem {
         }
         // 伤害倍率：概率 = 施加者虚数抗性
         if (player.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(player)) {
-            event.setAmount(event.getAmount() * DAMAGE_MULTIPLIER);
+            event.setAmount(event.getAmount() * damageMultiplier());
         }
     }
 
@@ -120,7 +123,7 @@ public class WangshiDeHuanmeng extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.dream.key_effect",
-                String.format("%.1f", DAMAGE_MULTIPLIER))
+                String.format("%.1f", damageMultiplier()))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
