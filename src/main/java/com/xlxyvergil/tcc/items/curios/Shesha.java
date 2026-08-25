@@ -148,7 +148,6 @@ public class Shesha extends BaseCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.infinite.key_effect_resistance")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")

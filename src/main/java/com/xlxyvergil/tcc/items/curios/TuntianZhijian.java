@@ -150,7 +150,6 @@ public class TuntianZhijian extends BaseCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.golden.key_effect",
                 (int) TELEPORT_RANGE)
                 .withStyle(ChatFormatting.GOLD));

@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tcc:item/heiyuan_baihua",
+    "layer1": "tcc:item/border_rift"
+  }
+}

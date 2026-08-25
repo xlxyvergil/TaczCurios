@@ -102,6 +102,7 @@ import com.xlxyvergil.tcc.items.curios.DominanceKey;
 import com.xlxyvergil.tcc.items.curios.EdenStar;
 import com.xlxyvergil.tcc.items.curios.FanchenNandu;
 import com.xlxyvergil.tcc.items.curios.Fusheng;
+import com.xlxyvergil.tcc.items.curios.HeiyuanBaihua;
 import com.xlxyvergil.tcc.items.curios.Hua;
 import com.xlxyvergil.tcc.items.curios.Huangjin;
 import com.xlxyvergil.tcc.items.curios.Jielv;
@@ -156,6 +157,7 @@ import com.xlxyvergil.tcc.items.curios.YeZhiTong;
 import com.xlxyvergil.tcc.items.curios.WangshiDeKuqiuMingzhiqi;
 import com.xlxyvergil.tcc.items.curios.YuhunShixian;
 import com.xlxyvergil.tcc.items.curios.Yuduchen;
+import com.xlxyvergil.tcc.items.curios.ZhenWo;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal; 
 
 import net.minecraft.ChatFormatting;
@@ -909,6 +911,16 @@ public class TccItems {
     public static final Item YE_ZHI_TONG = new YeZhiTong(new Item.Properties()
             .stacksTo(1).rarity(Rarity.EPIC));
 
+    // ========== 最终阶段独立饰品 ==========
+
+    // 逐火之蛾「真我」- tcc_3rd槽，裂隙级，虚数抗性+60，全属性+50%，低血量结界
+    public static final Item ZEN_WO = new ZhenWo(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
+    // 黑渊白花·创灭螺旋 - tcc_tdk槽，裂隙级，每次造成伤害附加自身当前血量100%虚数伤害
+    public static final Item HEIYUAN_BAIHUA = new HeiyuanBaihua(new Item.Properties()
+            .stacksTo(1).rarity(RIFT));
+
     private TccItems() {}
 
     public static void init(IForgeRegistry<Item> registry) {
@@ -1069,6 +1081,9 @@ public class TccItems {
         registry.register(id("wangshi_de_huanmeng"), WANGSHI_DE_HUANMENG);
         registry.register(id("la_zhi_yan"), LA_ZHI_YAN);
         registry.register(id("ye_zhi_tong"), YE_ZHI_TONG);
+        // ========== 最终阶段独立饰品 ==========
+        registry.register(id("zhen_wo"), ZEN_WO);
+        registry.register(id("heiyuan_baihua"), HEIYUAN_BAIHUA);
     }
 
     private static ResourceLocation id(String path) {

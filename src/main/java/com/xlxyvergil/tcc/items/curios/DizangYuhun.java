@@ -138,7 +138,6 @@ public class DizangYuhun extends BaseCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.dawn.key_effect",
                 String.format("%.0f", STRIP_PERCENT * 100))
                 .withStyle(ChatFormatting.GOLD));

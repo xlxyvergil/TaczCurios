@@ -1,15 +1,15 @@
 package com.xlxyvergil.tcc.items.curios;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.EntityTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
@@ -27,17 +28,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 黄金系列·神之键线（tcc_tdk）：伊甸之星。
+ * 神之键·黑渊白花「创灭螺旋」- 最终阶段（tcc_tdk 槽，裂隙级）。
  * <p>
- * 16 格内非玩家实体瞬移必定失效。
+ * 无武器限制：每次造成伤害时，附加等同于佩戴者当前血量 100% 的虚数伤害
+ * （applyImaginaryDamage 直伤，绕过护甲/无敌帧）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class EdenStar extends BaseCurioItem {
+public class HeiyuanBaihua extends BaseCurioItem {
 
-    /** 瞬移拦截范围（格） */
-    private static final double TELEPORT_RANGE = 16.0;
-
-    public EdenStar(Properties properties) {
+    public HeiyuanBaihua(Properties properties) {
         super(properties);
     }
 
@@ -78,81 +77,61 @@ public class EdenStar extends BaseCurioItem {
     }
 
     @Override
+    public List<String> getWeaponTypeRestriction() {
+        return null; // 无武器限制，空手也能触发
+    }
+
+    @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 无常驻属性
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        // 无常驻属性
     }
 
-    @Override
-    public List<String> getWeaponTypeRestriction() {
-        return List.of("pistol");
-    }
-
-    public static boolean isEquipped(LivingEntity entity) {
+    public static boolean hasEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
-                stack -> stack.getItem() instanceof EdenStar).isEmpty();
+                stack -> stack.getItem() instanceof HeiyuanBaihua).isEmpty();
     }
 
-    // ========== 瞬移拦截 ==========
+    /**
+     * 每次佩戴者造成伤害时（LivingHurtEvent，覆盖近战/枪械/爆炸等），
+     * 附加等同于佩戴者当前血量 100% 的虚数伤害。
+     * <p>
+     * applyImaginaryDamage 走 setHealth 直伤，不触发 LivingHurtEvent，因此不会递归。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (event.getEntity().level().isClientSide) return;
 
-    @SubscribeEvent
-    public static void onEnderEntityTeleport(EntityTeleportEvent.EnderEntity event) {
-        handleTeleport(event);
-    }
+        LivingEntity target = event.getEntity();
+        if (target.isDeadOrDying()) return;
 
-    @SubscribeEvent
-    public static void onEnderPearlTeleport(EntityTeleportEvent.EnderPearl event) {
-        handleTeleport(event);
-    }
+        DamageSource source = event.getSource();
+        if (!(source.getEntity() instanceof LivingEntity attacker)) return;
+        if (target == attacker) return; // 排除自伤
+        if (!hasEquipped(attacker)) return;
 
-    @SubscribeEvent
-    public static void onChorusFruitTeleport(EntityTeleportEvent.ChorusFruit event) {
-        handleTeleport(event);
-    }
+        float damage = (float) (attacker.getHealth() * TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get());
+        if (damage <= 0) return;
 
-    @SubscribeEvent
-    public static void onTeleportCommand(EntityTeleportEvent.TeleportCommand event) {
-        handleTeleport(event);
-    }
-
-    @SubscribeEvent
-    public static void onSpreadPlayersCommand(EntityTeleportEvent.SpreadPlayersCommand event) {
-        handleTeleport(event);
-    }
-
-    private static void handleTeleport(EntityTeleportEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof Player) {
-            return; // 仅拦截非玩家实体
-        }
-        if (!(entity.level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        for (ServerPlayer player : serverLevel.players()) {
-            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,
-                    stack -> stack.getItem() instanceof EdenStar);
-            if (equipped.isEmpty()) {
-                continue;
-            }
-            if (!((EdenStar) equipped.getItem()).matchesRestriction(player)) {
-                continue;
-            }
-            if (player.distanceToSqr(entity) <= TELEPORT_RANGE * TELEPORT_RANGE) {
-                event.setCanceled(true);
-                return;
-            }
-        }
+        TccAttributeEvents.applyImaginaryDamage(target,
+            TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(Component.translatable("item.tcc.golden.key_effect",
-                (int) TELEPORT_RANGE)
-                .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.literal(""));
+        tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect",
+                (int) (TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get() * 100))
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);
     }
 }

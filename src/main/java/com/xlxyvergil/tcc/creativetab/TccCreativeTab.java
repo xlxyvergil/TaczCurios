@@ -175,10 +175,7 @@ public class TccCreativeTab {
                 output.accept(TccItems.TINGZHI_ZHIJIAN);
                 output.accept(TccItems.TIANHUI);
                 output.accept(TccItems.YINGUO_ZHUANLUN);
-
-                // 添加工作方块
-                output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM);
-
+                
                 // ========== 新系列 36 件 ==========
                 // --- 戒律（霰弹枪）---
                 output.accept(TccItems.APONIA);
@@ -206,8 +203,8 @@ public class TccCreativeTab {
                 output.accept(TccItems.SHIJIE_ZHI_SHE);
                 output.accept(TccItems.WUXIAN);
                 output.accept(TccItems.WANGSHI_DE_SHEYING);
-                output.accept(TccItems.SHESHA);
                 output.accept(TccItems.SI_ZHI_YI);
+                output.accept(TccItems.SHESHA);
                 // --- 浮生（近战）---
                 output.accept(TccItems.HUA);
                 output.accept(TccItems.DUCHEN_ZHI_YU);
@@ -220,8 +217,13 @@ public class TccCreativeTab {
                 output.accept(TccItems.LUEJI_ZHI_SHOU);
                 output.accept(TccItems.KONGMENG);
                 output.accept(TccItems.WANGSHI_DE_HUANMENG);
-                output.accept(TccItems.LA_ZHI_YAN);
                 output.accept(TccItems.YE_ZHI_TONG);
+                output.accept(TccItems.LA_ZHI_YAN);
+                // 添加最终阶段独立饰品
+                output.accept(TccItems.ZEN_WO);
+                output.accept(TccItems.HEIYUAN_BAIHUA);
+                // 添加工作方块
+                output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM);
             })
             .build());
 }

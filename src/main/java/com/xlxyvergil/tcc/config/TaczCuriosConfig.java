@@ -415,6 +415,20 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunAmmoResistanceScale;
 
+        // 逐火之蛾「真我」配置
+        public final ForgeConfigSpec.DoubleValue zhenWoImaginaryResistance;
+        public final ForgeConfigSpec.DoubleValue zhenWoAllAttributesPercent;
+        public final ForgeConfigSpec.DoubleValue zhenWoTriggerHpRatio;
+        public final ForgeConfigSpec.DoubleValue zhenWoBarrierRadius;
+        public final ForgeConfigSpec.IntValue zhenWoSlownessAmplifier;
+        public final ForgeConfigSpec.IntValue zhenWoSlownessDurationSeconds;
+        public final ForgeConfigSpec.IntValue zhenWoBarrierDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue zhenWoDamagePercent;
+        public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
+
+        // 黑渊白花·创灭螺旋配置
+        public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
+
         // 饰品互斥配置
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
@@ -1703,6 +1717,44 @@ public class TaczCuriosConfig {
             yinguoZhuanlunAmmoResistanceScale = builder
                     .comment("每点虚数抗性提供的弹药恢复系数 (默认: 0.01)")
                     .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
+            builder.pop();
+
+            // 逐火之蛾「真我」配置
+            builder.comment("逐火之蛾「真我」饰品配置").push("zhen_wo");
+            zhenWoImaginaryResistance = builder
+                    .comment("虚数抗性加成 (默认: 60)")
+                    .defineInRange("imaginaryResistance", 60.0, -100, 100);
+            zhenWoAllAttributesPercent = builder
+                    .comment("全属性提升比例（乘法） (默认: 0.5 = +50%)")
+                    .defineInRange("allAttributesPercent", 0.5, -1, 100);
+            zhenWoTriggerHpRatio = builder
+                    .comment("触发结界时的血量比例阈值 (默认: 0.05 = 5%)")
+                    .defineInRange("triggerHpRatio", 0.05, 0.0, 1.0);
+            zhenWoBarrierRadius = builder
+                    .comment("结界影响范围（格） (默认: 128)")
+                    .defineInRange("barrierRadius", 128.0, 1.0, 512.0);
+            zhenWoSlownessAmplifier = builder
+                    .comment("缓慢效果等级（0=缓慢I，默认: 8 = 缓慢IX）")
+                    .defineInRange("slownessAmplifier", 8, 0, 255);
+            zhenWoSlownessDurationSeconds = builder
+                    .comment("缓慢效果持续时间（秒） (默认: 60)")
+                    .defineInRange("slownessDurationSeconds", 60, 1, 600);
+            zhenWoBarrierDurationSeconds = builder
+                    .comment("结界持续时间（秒） (默认: 30)")
+                    .defineInRange("barrierDurationSeconds", 30, 1, 600);
+            zhenWoDamagePercent = builder
+                    .comment("结界每秒对范围内实体造成佩戴者最大血量的比例 (默认: 1.0 = 100%)")
+                    .defineInRange("damagePercent", 1.0, 0.0, 100.0);
+            zhenWoCooldownSeconds = builder
+                    .comment("结界触发后的冷却时间（秒） (默认: 60)")
+                    .defineInRange("cooldownSeconds", 60, 1, 3600);
+            builder.pop();
+
+            // 黑渊白花·创灭螺旋配置
+            builder.comment("黑渊白花·创灭螺旋饰品配置").push("heiyuan_baihua");
+            heiyuanBaihuaDamagePercent = builder
+                    .comment("每次造成伤害时附加佩戴者当前血量的比例 (默认: 1.0 = 100%)")
+                    .defineInRange("damagePercent", 1.0, 0.0, 100.0);
             builder.pop();
 
             // 饰品互斥配置
