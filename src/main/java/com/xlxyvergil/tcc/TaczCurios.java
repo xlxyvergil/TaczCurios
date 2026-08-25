@@ -69,6 +69,7 @@ public class TaczCurios
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
         TccRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        TccEntities.ENTITY_TYPES.register(modEventBus);
 
         
         MinecraftForge.EVENT_BUS.register(this);
@@ -146,6 +147,7 @@ public class TaczCurios
         // 仅在客户端环境中注册客户端事件处理器
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
+            Class.forName("com.xlxyvergil.tcc.client.ClientModEvents");
         }
     }
 

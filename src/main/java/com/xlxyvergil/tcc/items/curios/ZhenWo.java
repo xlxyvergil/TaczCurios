@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.entity.ZhenWoBarrierEntity;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
@@ -144,6 +145,9 @@ public class ZhenWo extends BaseCurioItem {
         if (barrierTicks > 0) {
             barrierTicks--;
             tag.putInt(BARRIER_KEY, barrierTicks);
+            // 保证脚下地面特效存在（跟随玩家）
+            ZhenWoBarrierEntity.ensureActive(player.level(), player, tag,
+                TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
             if (barrierTicks <= 0) {
                 tag.putInt(COOLDOWN_KEY, TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get() * 20);
                 return;
@@ -163,13 +167,16 @@ public class ZhenWo extends BaseCurioItem {
         if (player.getHealth() / player.getMaxHealth() < triggerRatio) {
             player.setHealth(player.getMaxHealth()); // 立即恢复 100% 血量
             tag.putInt(BARRIER_KEY, TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
+            // 生成脚下地面特效实体
+            ZhenWoBarrierEntity.ensureActive(player.level(), player, tag,
+                TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20);
             applyBarrierEffects(player);
         }
     }
 
-    /** 单 tick 结界效果：对 128 格内非玩家实体施加缓慢 IX；每 tick 造成最大血量虚数伤害 */
+    /** 单 tick 结界效果：对结界范围（直径 zhenWoBarrierRadius）内非玩家实体施加缓慢 IX；每 tick 造成最大血量虚数伤害 */
     private static void applyBarrierEffects(Player player) {
-        double radius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get();
+        double radius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get() / 2.0D; // 配置值为直径，÷2 得半径
         double radiusSq = radius * radius;
         List<LivingEntity> targets = player.level().getEntitiesOfClass(LivingEntity.class,
             new AABB(player.blockPosition()).inflate(radius),
