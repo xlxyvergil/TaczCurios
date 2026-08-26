@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class GildedSteelSlash extends BaseCurioItem {
 
-    private static final UUID BASE_CRIT_CHANCE_UUID = UUID.fromString("b1c2d3e4-7011-4000-8000-000000000001");
+    private static final UUID BASE_CRIT_CHANCE_UUID = UUID.fromString("4fa674c5-0f8a-4057-acfd-0388047c63c6");
     private static final String BASE_CRIT_CHANCE_NAME = "tcc.gilded_steel_slash.base_crit_chance";
 
     public GildedSteelSlash(Properties properties) {

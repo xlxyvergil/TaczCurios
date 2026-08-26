@@ -25,7 +25,7 @@ import java.util.UUID;
 public class TandemMagazine extends BaseCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰
-    private static final UUID MAGAZINE_UUID = UUID.fromString("4d1a2d40-9496-4740-b146-ea6b6cdcd123");
+    private static final UUID MAGAZINE_UUID = UUID.fromString("8c001bb6-b378-41c4-92c9-0f1c197f45ed");
 
     // 修饰符名
     private static final String MAGAZINE_NAME = "tcc.tandem_magazine.magazine_capacity";

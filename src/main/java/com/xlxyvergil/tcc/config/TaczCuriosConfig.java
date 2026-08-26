@@ -423,7 +423,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue zhenWoSlownessAmplifier;
         public final ForgeConfigSpec.IntValue zhenWoSlownessDurationSeconds;
         public final ForgeConfigSpec.IntValue zhenWoBarrierDurationSeconds;
-        public final ForgeConfigSpec.DoubleValue zhenWoDamagePercent;
         public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
 
@@ -1830,9 +1829,6 @@ public class TaczCuriosConfig {
             zhenWoBarrierDurationSeconds = builder
                     .comment("结界持续时间（秒） (默认: 30)")
                     .defineInRange("barrierDurationSeconds", 30, 1, 600);
-            zhenWoDamagePercent = builder
-                    .comment("结界每秒对范围内实体造成佩戴者最大血量的比例 (默认: 1.0 = 100%)")
-                    .defineInRange("damagePercent", 1.0, 0.0, 100.0);
             zhenWoCooldownSeconds = builder
                     .comment("结界触发后的冷却时间（秒） (默认: 60)")
                     .defineInRange("cooldownSeconds", 60, 1, 3600);

@@ -34,8 +34,8 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Su extends BaseCurioItem {
 
-    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
-    private static final UUID MAX_HEALTH_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f1234567891");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("90b6f508-6de3-4f7e-913b-ac7c509be823");
+    private static final UUID MAX_HEALTH_UUID = UUID.fromString("3b900565-c385-48b6-8d45-b08b5399d6c5");
 
     public Su(Properties properties) {
         super(properties);

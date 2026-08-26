@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class GildedBulletSpread extends BaseCurioItem {
 
-    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("b1c2d3e4-7010-4000-8000-000000000001");
+    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("55457bc2-72cb-42d8-8918-b9854105386c");
     private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_bullet_spread.base_bullet_count";
 
     public GildedBulletSpread(Properties properties) {

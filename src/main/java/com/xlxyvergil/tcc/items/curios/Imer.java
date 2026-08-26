@@ -26,7 +26,7 @@ import java.util.UUID;
 
 public class Imer extends BaseCurioItem {
 
-    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567891");
+    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("e1880895-3725-430b-b55c-8f4e18f69a20");
 
     public Imer(Properties properties) {
         super(properties);

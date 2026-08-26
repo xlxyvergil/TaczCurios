@@ -23,7 +23,7 @@ import java.util.UUID;
  */
 public class GildedInfernalChamber extends BaseCurioItem {
 
-    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("b1c2d3e4-7008-4000-8000-000000000001");
+    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("e109d5c2-1cfc-49ac-a4ee-49ef0e12cfc1");
     private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_infernal_chamber.base_bullet_count";
 
     public GildedInfernalChamber(Properties properties) {

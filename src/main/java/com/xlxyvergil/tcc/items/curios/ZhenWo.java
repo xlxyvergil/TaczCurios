@@ -59,8 +59,8 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ZhenWo extends BaseCurioItem {
 
-    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("a1b2c3d4-0001-4000-8000-000000000001");
-    private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("a1b2c3d4-0002-4000-8000-000000000002");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2df6423f-42bc-4629-8624-ebb8cf4ff4c8");
+    private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("8f851e69-0217-4e14-af7f-ee655b4a1cc7");
 
     /** 结界倒计时（剩余 tick），存于饰品 NBT，随物品持久 */
     private static final String BARRIER_KEY = "tcc_zhen_wo_barrier";
@@ -185,7 +185,7 @@ public class ZhenWo extends BaseCurioItem {
             return;
         }
 
-        // 任意形式血量小于 20% 时触发
+        // 任意形式血量小于 5% 时触发
         double triggerRatio = TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get();
         if (player.getHealth() / player.getMaxHealth() < triggerRatio) {
             activateBarrier(player, stack);
@@ -241,7 +241,7 @@ public class ZhenWo extends BaseCurioItem {
     /** 光柱持续时长（tick）：20 = 1 秒 */
     private static final int PINK_BEAM_TICKS = 20;
     /** 光柱高度（格） */
-    private static final double PINK_BEAM_HEIGHT = 8.0;
+    private static final double PINK_BEAM_HEIGHT = 32.0;
     /** 粉色粒子颜色（RGB，0~1） */
     private static final Vector3f PINK_BEAM_COLOR = new Vector3f(1.0F, 0.55F, 0.9F);
     /** 进行中的粉色光柱任务，由 {@link #onServerTick} 每 tick 推进并在 1 秒后结算伤害 */
@@ -288,7 +288,9 @@ public class ZhenWo extends BaseCurioItem {
                 it.remove();
                 // 光柱结束，结算伤害：佩戴者仍在场且目标仍存活
                 if (beam.owner != null && beam.owner.isAlive() && !target.isDeadOrDying()) {
-                    float damage = (float) (beam.owner.getMaxHealth() * TaczCuriosConfig.COMMON.zhenWoDamagePercent.get());
+                    // 结界伤害 = 佩戴者虚数伤害抗性 × 最大生命值
+                    float imaginaryResistance = (float) beam.owner.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                    float damage = imaginaryResistance * beam.owner.getMaxHealth();
                     DamageSource source = TccDamageSources.imaginaryDamage(beam.owner.level(), beam.owner);
                     TccAttributeEvents.applyImaginaryDamage(target, source, damage);
                 }

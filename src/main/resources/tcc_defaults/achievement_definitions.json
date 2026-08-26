@@ -2260,6 +2260,41 @@
       "conditions": null,
       "prerequisites": [],
       "reward": null
+    },
+
+    "tcc:zhen_wo": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "真我",
+          "en_us": "True Self"
+        },
+        "icon": "tcc:zhen_wo",
+        "description": {
+          "zh_cn": "完成十二个系列的最终成就，直面真正的自己",
+          "en_us": "Complete the final achievement of each of the twelve series and face your true self"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [
+        "tcc:judgement_key",
+        "tcc:heaven_fire_apocalypse_endless",
+        "tcc:shijie_fanyan_grant",
+        "tcc:meta_morph_grant",
+        "tcc:tingzhi_zhijian_to_yinguo_zhuanlun",
+        "tcc:xukong_wancang_yzth_grant",
+        "tcc:shenen_jiejie_grant",
+        "tcc:qidian_chonggou_grant",
+        "tcc:yuhun_shixian_grant",
+        "tcc:shesha_grant",
+        "tcc:bushi_shiwu_grant",
+        "tcc:la_zhi_yan_grant"
+      ],
+      "reward": null
     }
   }
 }

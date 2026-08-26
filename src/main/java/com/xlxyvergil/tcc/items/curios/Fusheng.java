@@ -33,8 +33,8 @@ import java.util.UUID;
  */
 public class Fusheng extends BaseCurioItem {
 
-    private static final UUID ARMOR_UUID = UUID.fromString("b4c5d6e7-5005-4000-8000-000000000001");
-    private static final UUID TOUGHNESS_UUID = UUID.fromString("b4c5d6e7-5005-4000-8000-000000000002");
+    private static final UUID ARMOR_UUID = UUID.fromString("7108d2bf-ef7c-4c9c-89da-1057deec9c02");
+    private static final UUID TOUGHNESS_UUID = UUID.fromString("9570537d-6e7a-4f40-b31e-3024518fddc1");
 
     public Fusheng(Properties properties) {
         super(properties);

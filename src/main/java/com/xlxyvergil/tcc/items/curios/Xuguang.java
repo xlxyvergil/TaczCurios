@@ -31,10 +31,10 @@ import java.util.UUID;
  */
 public class Xuguang extends BaseCurioItem {
 
-    private static final UUID ATTACK_SPEED_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000001");
-    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000002");
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000003");
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000004");
+    private static final UUID ATTACK_SPEED_UUID = UUID.fromString("161e973d-170a-4654-83d9-c258b7a368d7");
+    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("ca6fabe6-07dd-4cd6-92fe-28c49e9b01b5");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("559c865d-5738-4b33-8d89-eae39b75e4a8");
+    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("71aa144b-16ee-45da-a2fb-f9438400f2e0");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.xuguangAttackSpeedPercent.get();

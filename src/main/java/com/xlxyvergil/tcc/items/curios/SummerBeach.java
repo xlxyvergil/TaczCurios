@@ -36,7 +36,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 public class SummerBeach extends BaseCurioItem {
     // 虚数抗性修饰符的UUID（确保唯一性）
-    private static final UUID IMAGINARY_RESISTANCE_MODIFIER_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+    private static final UUID IMAGINARY_RESISTANCE_MODIFIER_UUID = UUID.fromString("a7ef6d4d-d047-4627-99b7-2bcc32b577a7");
     
     public SummerBeach(Properties properties) {
         super(properties.stacksTo(1).fireResistant());

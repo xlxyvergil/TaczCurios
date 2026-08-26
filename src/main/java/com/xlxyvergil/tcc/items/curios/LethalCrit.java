@@ -23,7 +23,7 @@ import java.util.UUID;
  */
 public class LethalCrit extends BaseCurioItem {
 
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a1b2c3d4-2001-4000-8000-000000000001");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("632a84b6-dcca-41e3-8746-92d783c0d0fe");
 
     private static final String CRIT_CHANCE_NAME = "tcc.lethal_crit.crit_chance";
 

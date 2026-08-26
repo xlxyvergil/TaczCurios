@@ -24,8 +24,8 @@ import java.util.UUID;
  */
 public class CriticalDelay extends BaseCurioItem {
 
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a1b2c3d4-1001-4000-8000-000000000001");
-    private static final UUID FIRE_RATE_UUID = UUID.fromString("a1b2c3d4-1001-4000-8000-000000000002");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("3984a595-15c5-4f27-98f4-7c314aa7b819");
+    private static final UUID FIRE_RATE_UUID = UUID.fromString("e061a849-c50b-4a24-8782-b27bb8782bc7");
 
     private static final String CRIT_CHANCE_NAME = "tcc.critical_delay.crit_chance";
     private static final String FIRE_RATE_NAME = "tcc.critical_delay.fire_rate";

@@ -39,8 +39,8 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class QinshiZhijian extends BaseCurioItem {
 
-    private static final UUID ARMOR_STRIP_UUID = UUID.fromString("f1c2d3e4-3003-4000-8000-000000000001");
-    private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("f1c2d3e4-3003-4000-8000-000000000002");
+    private static final UUID ARMOR_STRIP_UUID = UUID.fromString("d94c75ed-8fa7-4cdd-94a8-13c5df10776e");
+    private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("d94c75ed-8fa7-4cdd-94a8-13c5df10776e");
 
     /** 每次攻击削减百分比 */
     private static double stripPercent() {

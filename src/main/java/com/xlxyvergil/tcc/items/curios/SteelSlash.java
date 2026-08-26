@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class SteelSlash extends BaseCurioItem {
 
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a1b2c3d4-5001-4000-8000-000000000001");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("2b9ae9d2-caa4-499f-a820-4628fa91227b");
 
     private static final String CRIT_CHANCE_NAME = "tcc.steel_slash.crit_chance";
 

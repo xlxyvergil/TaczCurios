@@ -39,8 +39,8 @@ import java.util.UUID;
 public class XukongWancang extends BaseCurioItem {
 
     // 过热属性修饰符UUID
-    private static final UUID HEAT_MAX_UUID = UUID.fromString("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c01");
-    private static final UUID HEAT_COOLING_UUID = UUID.fromString("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c02");
+    private static final UUID HEAT_MAX_UUID = UUID.fromString("b6189169-c010-42a0-ba1e-e774415c6660");
+    private static final UUID HEAT_COOLING_UUID = UUID.fromString("004e2f47-90d9-443e-91d0-70aa327d27b2");
 
     public XukongWancang(Properties properties) {
         super(properties);

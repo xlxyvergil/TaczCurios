@@ -40,8 +40,8 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YuhunShixian extends BaseCurioItem {
 
-    private static final UUID ARMOR_STRIP_UUID = UUID.fromString("f1c2d3e4-3003-4000-8000-000000000001");
-    private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("f1c2d3e4-3003-4000-8000-000000000002");
+    private static final UUID ARMOR_STRIP_UUID = UUID.fromString("388a60d4-6ec8-455a-ac26-8619f5c59c86");
+    private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("91f79641-decf-4cc9-af18-958b9f3a7f45");
 
     public YuhunShixian(Properties properties) {
         super(properties);

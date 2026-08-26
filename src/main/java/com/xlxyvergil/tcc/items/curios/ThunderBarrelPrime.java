@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class ThunderBarrelPrime extends BaseCurioItem {
 
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a1b2c3d4-3004-4000-8000-000000000001");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("3bac9864-dd71-472d-858a-dc6ce2696447");
 
     private static final String CRIT_CHANCE_NAME = "tcc.thunder_barrel_prime.crit_chance";
 

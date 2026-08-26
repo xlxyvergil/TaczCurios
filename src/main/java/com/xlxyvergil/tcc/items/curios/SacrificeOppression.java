@@ -28,8 +28,8 @@ import java.util.UUID;
  */
 public class SacrificeOppression extends BaseCurioItem {
 
-    private static final UUID MELEE_DAMAGE_UUID = UUID.fromString("a1b2c3d4-5003-4000-8000-000000000001");
-    private static final UUID SET_BONUS_UUID = UUID.fromString("a1b2c3d4-5005-4000-8000-000000000001");
+    private static final UUID MELEE_DAMAGE_UUID = UUID.fromString("4eb5ace8-14a3-4f03-8e0c-0a31fe5e4a2c");
+    private static final UUID SET_BONUS_UUID = UUID.fromString("4eb5ace8-14a3-4f03-8e0c-0a31fe5e4a2c");
 
     private static final String MELEE_DAMAGE_NAME = "tcc.sacrifice_oppression.melee_damage";
     private static final String SET_BONUS_NAME = "tcc.sacrifice_oppression.set_bonus";

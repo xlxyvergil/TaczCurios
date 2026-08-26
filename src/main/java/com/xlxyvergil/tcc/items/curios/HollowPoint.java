@@ -23,8 +23,8 @@ import java.util.UUID;
  */
 public class HollowPoint extends BaseCurioItem {
 
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("a1b2c3d4-4003-4000-8000-000000000001");
-    private static final UUID PISTOL_DAMAGE_UUID = UUID.fromString("a1b2c3d4-4003-4000-8000-000000000002");
+    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("56dd9ca3-8c1d-400b-b471-f611876ef639");
+    private static final UUID PISTOL_DAMAGE_UUID = UUID.fromString("75109b44-e547-454e-b88a-91dae3c0bd41");
 
     private static final String CRIT_DAMAGE_NAME = "tcc.hollow_point.crit_damage";
     private static final String PISTOL_DAMAGE_NAME = "tcc.hollow_point.pistol_damage";

@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class WeaknessSense extends BaseCurioItem {
 
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("a1b2c3d4-2002-4000-8000-000000000001");
+    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("c25a363a-2b4f-4c0f-9d9e-8fa0bfcb34b6");
 
     private static final String CRIT_DAMAGE_NAME = "tcc.weakness_sense.crit_damage";
 

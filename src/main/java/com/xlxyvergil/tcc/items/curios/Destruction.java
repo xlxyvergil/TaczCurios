@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class Destruction extends BaseCurioItem {
 
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("a1b2c3d4-3001-4000-8000-000000000001");
+    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("b031fe2c-6fb0-41e5-b1fe-a10687b6ce3a");
 
     private static final String CRIT_DAMAGE_NAME = "tcc.destruction.crit_damage";
 

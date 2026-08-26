@@ -28,8 +28,8 @@ import java.util.UUID;
  */
 public class SacrificeSteel extends BaseCurioItem {
 
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a1b2c3d4-5004-4000-8000-000000000001");
-    private static final UUID SET_BONUS_UUID = UUID.fromString("a1b2c3d4-5006-4000-8000-000000000001");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("55038b53-178f-4171-96cf-ebfd873d5cc6");
+    private static final UUID SET_BONUS_UUID = UUID.fromString("1aea61d9-8d99-4837-a8b1-0806085692c5");
 
     private static final String CRIT_CHANCE_NAME = "tcc.sacrifice_steel.crit_chance";
     private static final String SET_BONUS_NAME = "tcc.sacrifice_steel.set_bonus";

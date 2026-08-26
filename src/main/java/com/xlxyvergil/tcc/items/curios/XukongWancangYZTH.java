@@ -48,8 +48,8 @@ public class XukongWancangYZTH extends BaseCurioItem {
     private static final String INFECTION_KEY = "tcc_xukongwancang_infection";
 
     // 过热属性修饰符UUID
-    private static final UUID HEAT_MAX_UUID = UUID.fromString("c3d4e5f6-a7b8-6c7d-0e1f-2a3b4c5d6e21");
-    private static final UUID HEAT_COOLING_UUID = UUID.fromString("c3d4e5f6-a7b8-6c7d-0e1f-2a3b4c5d6e22");
+    private static final UUID HEAT_MAX_UUID = UUID.fromString("8d1e4345-5ff6-467d-b871-a5fe3906be12");
+    private static final UUID HEAT_COOLING_UUID = UUID.fromString("30f486ba-c5ec-45d8-9439-1610c695d2e0");
 
     public XukongWancangYZTH(Properties properties) {
         super(properties);

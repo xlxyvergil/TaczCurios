@@ -158,7 +158,8 @@ import com.xlxyvergil.tcc.items.curios.WangshiDeKuqiuMingzhiqi;
 import com.xlxyvergil.tcc.items.curios.YuhunShixian;
 import com.xlxyvergil.tcc.items.curios.Yuduchen;
 import com.xlxyvergil.tcc.items.curios.ZhenWo;
-import com.xlxyvergil.tcc.items.materials.CollapseCrystal; 
+import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
+import com.xlxyvergil.tcc.items.materials.JiuChanZhiYuan; 
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.resources.ResourceLocation;
@@ -649,6 +650,10 @@ public class TccItems {
     public static final Item COLLAPSE_CRYSTAL = new CollapseCrystal(new Item.Properties()
             .stacksTo(64));
 
+    // 纠缠之缘 - 与神之键/逐火之蛾饰品合成时生成NBT一致的副本，仅消耗自身
+    public static final Item JIU_CHAN_ZHI_YUAN = new JiuChanZhiYuan(new Item.Properties()
+            .stacksTo(64));
+
     // ========== 逐火之蛾/神之键 新饰品 ==========
 
     // 格蕾修 - 3rd槽位，稀有级，受伤冷却基础10tick，全部枪械类型
@@ -1020,6 +1025,7 @@ public class TccItems {
         registry.register(id("gilded_marksman"), GILDED_MARKSMAN);
         registry.register(id("condition_overload"), CONDITION_OVERLOAD);
         registry.register(id("collapse_crystal"), COLLAPSE_CRYSTAL);
+        registry.register(id("jiu_chan_zhi_yuan"), JIU_CHAN_ZHI_YUAN);
         registry.register(id("griseo"), GRISEO);
         registry.register(id("qianjie_yicheng"), QIANJIE_YICHENG);
         registry.register(id("huishi_zhijuan"), HUISHI_ZHIJUAN);

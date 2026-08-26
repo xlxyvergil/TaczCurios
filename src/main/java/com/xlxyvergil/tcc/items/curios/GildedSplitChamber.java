@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class GildedSplitChamber extends BaseCurioItem {
 
-    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("b1c2d3e4-7006-4000-8000-000000000001");
+    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("0945b121-8315-40ae-8b22-1645c68f4eee");
     private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_split_chamber.base_bullet_count";
 
     public GildedSplitChamber(Properties properties) {

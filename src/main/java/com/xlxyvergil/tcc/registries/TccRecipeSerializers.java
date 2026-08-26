@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.recipe.CollapseCrystalCraftRecipeSerializer;
 import com.xlxyvergil.tcc.recipe.FusionUpgradeRecipeSerializer;
 import com.xlxyvergil.tcc.recipe.FusionVesselCombineRecipeSerializer;
+import com.xlxyvergil.tcc.recipe.JiuChanZhiYuanCraftRecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,4 +23,7 @@ public class TccRecipeSerializers {
 
     public static final RegistryObject<CollapseCrystalCraftRecipeSerializer> COLLAPSE_CRYSTAL_CRAFT =
             RECIPE_SERIALIZERS.register("collapse_crystal_craft", CollapseCrystalCraftRecipeSerializer::new);
+
+    public static final RegistryObject<JiuChanZhiYuanCraftRecipeSerializer> JIU_CHAN_ZHI_YUAN_CRAFT =
+            RECIPE_SERIALIZERS.register("jiu_chan_zhi_yuan_craft", JiuChanZhiYuanCraftRecipeSerializer::new);
 }

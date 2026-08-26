@@ -31,8 +31,8 @@ import java.util.UUID;
  */
 public class DuchenZhiYu extends BaseCurioItem {
 
-    private static final UUID ARMOR_UUID = UUID.fromString("b4c5d6e7-5005-4000-8000-000000000001");
-    private static final UUID TOUGHNESS_UUID = UUID.fromString("b4c5d6e7-5005-4000-8000-000000000002");
+    private static final UUID ARMOR_UUID = UUID.fromString("cfa7072d-d2f0-4ee6-9d79-8ec96a638fe7");
+    private static final UUID TOUGHNESS_UUID = UUID.fromString("431d864e-740c-4b87-b30b-abb21ed73aad");
 
     /** 护甲 / 韧性加成百分比 */
     private static double armorPct() {

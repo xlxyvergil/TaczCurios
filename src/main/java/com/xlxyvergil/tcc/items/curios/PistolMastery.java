@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class PistolMastery extends BaseCurioItem {
 
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a1b2c3d4-4004-4000-8000-000000000001");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("e98804a6-b0b7-4b32-8cb0-7a230d48e387");
 
     private static final String CRIT_CHANCE_NAME = "tcc.pistol_mastery.crit_chance";
 

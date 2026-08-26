@@ -39,7 +39,7 @@ public class Wuxian extends BaseCurioItem {
     /** NBT 击杀计数前缀（后面接实体注册 ID，同类型去重） */
     public static final String KILL_KEY_PREFIX = "tcc_kill_count_";
 
-    private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("a3b4c5d6-4004-4000-8000-000000000001");
+    private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("0a604a5e-227a-44fb-ad3f-2389ef36de85");
 
     /** 每种实体类型的全属性加成 */
     private static double perTypeBonus() {

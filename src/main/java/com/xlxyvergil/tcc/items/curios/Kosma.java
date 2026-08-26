@@ -31,10 +31,10 @@ import java.util.UUID;
  */
 public class Kosma extends BaseCurioItem {
 
-    private static final UUID ATTACK_SPEED_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000001");
-    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000002");
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000003");
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("f1c2d3e4-2002-4000-8000-000000000004");
+    private static final UUID ATTACK_SPEED_UUID = UUID.fromString("e46b57b8-e3ca-436c-bc30-b2015ce7666e");
+    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("9bd59d29-ab0c-4c33-bef6-dd78a678b938");
+    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("783349b7-930b-441d-bb0d-63f0966806ef");
+    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("40490711-89e7-4007-a337-622aaf9769f4");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.kosmaAttackSpeedPercent.get();

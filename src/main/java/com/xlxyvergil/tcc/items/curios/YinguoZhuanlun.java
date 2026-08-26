@@ -41,7 +41,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YinguoZhuanlun extends BaseCurioItem {
 
-    private static final UUID OVERHEAL_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-1234567892");
+    private static final UUID OVERHEAL_UUID = UUID.fromString("2cc110cb-8a9a-4bd9-9739-457cbcc59c83");
 
     public YinguoZhuanlun(Properties properties) {
         super(properties);
