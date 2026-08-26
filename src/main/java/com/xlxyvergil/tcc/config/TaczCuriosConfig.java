@@ -441,6 +441,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue jielvDebuffChance;
         public final ForgeConfigSpec.IntValue jielvDebuffDurationSeconds;
         public final ForgeConfigSpec.IntValue jielvDebuffCount;
+        /** 戒律系列共用负面（非正面）效果池黑名单（效果注册名），命中则不会随机施加 */
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> disciplineHarmfulBuffBlacklist;
 
         // 戒律系列·神之键线（tcc_tdk）：范围虚数侵染光环
         public final ForgeConfigSpec.DoubleValue wangshiDeKuqiuAuraRadius;
@@ -466,6 +468,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue huangjinIntervalSeconds;
         public final ForgeConfigSpec.IntValue huangjinBuffDurationSeconds;
         public final ForgeConfigSpec.IntValue huangjinBuffAmplifier;
+        /** 黄金系列共用正面 buff 池黑名单（效果注册名），命中则不会随机施加 */
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> goldenBeneficialBuffBlacklist;
 
         // 黄金系列·神之键线（tcc_tdk）：瞬移失效
         public final ForgeConfigSpec.DoubleValue edenStarTeleportRange;
@@ -1886,6 +1890,13 @@ public class TaczCuriosConfig {
                     .defineInRange("debuffCount", 3, 1, 100);
             builder.pop();
 
+            // 戒律系列·人物线共用：负面效果池黑名单
+            builder.comment("戒律系列（阿波尼亚/深罪之槛/戒律）负面效果黑名单：命中的效果不会被随机施加，填入效果注册名（如 minecraft:poison）").push("discipline_buff_blacklist");
+            disciplineHarmfulBuffBlacklist = builder
+                    .comment("黑名单中的负面效果注册名列表")
+                    .defineList("effects", List.of(), o -> o instanceof String);
+            builder.pop();
+
             // 戒律系列·神之键线：范围虚数侵染光环
             builder.comment("往世的苦囚饰品配置").push("wangshi_de_kuqiu");
             wangshiDeKuqiuAuraRadius = builder
@@ -1967,6 +1978,13 @@ public class TaczCuriosConfig {
             huangjinBuffAmplifier = builder
                     .comment("buff 等级（0=I 级，默认: 2 = III 级）")
                     .defineInRange("buffAmplifier", 2, 0, 255);
+            builder.pop();
+
+            // 黄金系列·人物线共用：正面 buff 池黑名单
+            builder.comment("黄金系列（伊甸/璀耀之歌/黄金）正面 buff 黑名单：命中的效果不会被随机施加，填入效果注册名（如 minecraft:speed）").push("golden_buff_blacklist");
+            goldenBeneficialBuffBlacklist = builder
+                    .comment("黑名单中的正面效果注册名列表（默认包含天火流血：tcc:heaven_fire_bleeding）")
+                    .defineList("effects", List.of("tcc:heaven_fire_bleeding"), o -> o instanceof String);
             builder.pop();
 
             // 黄金系列·神之键线：瞬移失效

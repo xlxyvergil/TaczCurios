@@ -139,11 +139,12 @@ public class Eden extends BaseCurioItem {
                 if (!((Eden) equipped.getItem()).matchesRestriction(player)) {
                     continue;
                 }
+                // 统一随机：整个光环内所有人获得同一个 buff（避免每人各自独立随机）
+                MobEffect effect = MobEffectPoolHelper.randomBeneficial(player.getRandom());
                 for (ServerPlayer other : players) {
                     if (player.distanceToSqr(other) > auraRange() * auraRange()) {
                         continue;
                     }
-                    MobEffect effect = MobEffectPoolHelper.randomBeneficial(player.getRandom());
                     MobEffectPoolHelper.applyEffect(other, effect, buffDuration(), buffAmplifier(), player);
                 }
             }

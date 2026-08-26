@@ -207,7 +207,9 @@ public class FusionVesselItem extends Item {
             ItemStack coreStack = new ItemStack(TccItems.CORE_FUSION, takeCount);
             slot.safeInsert(coreStack);
 
-            int taken = coreStack.getCount();
+            // safeInsert 会就地扣减 coreStack，未放入的剩余数量留在 coreStack 中；
+            // 实际取出数量 = 期望取出数 - 剩余数
+            int taken = takeCount - coreStack.getCount();
             setFusionCount(vessel, fusionCount - taken);
             if (getFusionCount(vessel) <= 0) {
                 vessel.removeTagKey(TAG_COUNT);
