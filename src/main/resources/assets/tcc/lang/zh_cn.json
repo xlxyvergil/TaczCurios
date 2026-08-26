@@ -365,7 +365,7 @@
   "item.tcc.collapse_crystal.select_group": "§7与神之键或逐火之蛾首次合成后，将锁定为该组收集。",
   "tcc.tooltip.requires_collapse_crystal": "使用后，需要拥有崩坏结晶，才可卸下。",
   "item.tcc.jiu_chan_zhi_yuan": "§d纠缠之缘",
-  "item.tcc.jiu_chan_zhi_yuan.usage": "§7在合成台中与一个神之键/逐火之蛾饰品合成，生成与该饰品NBT一致的副本，不消耗原饰品，仅消耗纠缠之缘。（真我与黑渊白花除外）",
+  "item.tcc.jiu_chan_zhi_yuan.usage": "§7复制神之键/逐火之蛾。（真我与黑渊白花除外）",
   "// 逐火之蛾/神之键 新饰品": "",
   "item.tcc.griseo": "§6格蕾修",
   "item.tcc.griseo.effect": "受伤后进入%1$stick受伤冷却",
