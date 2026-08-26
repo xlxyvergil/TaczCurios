@@ -1,0 +1,23 @@
+{
+  "parent": "tcc:tcc_root",
+  "display": {
+    "description": {
+      "translate": "advancement.tcc.zhen_wo_series.description"
+    },
+    "show_toast": true,
+    "icon": {
+      "item": "tcc:heiyuan_baihua"
+    },
+    "hidden": false,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancement.tcc.zhen_wo_series.title"
+    },
+    "frame": "task"
+  },
+  "criteria": {
+    "step_1": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

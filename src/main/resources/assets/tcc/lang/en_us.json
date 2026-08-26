@@ -477,8 +477,6 @@
   "item.tcc.dream.curio_effect_fish": "0.01%% chance while fishing to obtain Nether Star or Dragon Egg",
   "item.tcc.dream.curio_effect_loot": "Kill loot doubled",
   "item.tcc.dream.key_effect": "Chance to deal %sx damage",
-  "tcc.tooltip.gun_to_imaginary": "Damage converted to imaginary damage",
-  "tcc.tooltip.always_infection": "Applies imaginary infection without level limit",
   "effect.tcc.zhen_wo_barrier": "True Self Barrier",
   "tcc.tooltip.damage_reduction": "Reduces damage taken by %1$s%%",
   "tcc.tooltip.bound": "Bound to: %1$s",
@@ -629,7 +627,9 @@
   "advancement.tcc.la_zhi_yan_grant.title": "Eye of Ra",
   "advancement.tcc.la_zhi_yan_grant.description": "Hmm... the sunlight today is so nice, it makes one want to find a place to take a nap...",
   "advancement.tcc.zhen_wo.title": "True Self",
-  "advancement.tcc.zhen_wo.description": "Complete the final achievement of each of the twelve series and face your true self",
+  "advancement.tcc.zhen_wo.description": "Would you rather call me Miss Fairy or the Messenger of Love? Whatever name you choose, Elysia will always answer your call.",
+  "advancement.tcc.zhen_wo_series.title": "Path of True Self",
+  "advancement.tcc.zhen_wo_series.description": "The twelve series on the path to your true self begin here",
   "stat.tcc.zombie_villager_cured": "Zombie Villagers Cured",
   "stat.tcc.items_crafted": "Items Crafted",
   "stat.tcc.play_time_griseo": "Time played with Griseo (ticks)",
@@ -641,6 +641,5 @@
   "tcc.tooltip.affected_by_imaginary_resistance": "§7Effect is affected by Imaginary Resistance",
   "tcc.tooltip.affected_by_luck": "§7Effect is affected by Luck",
   "tcc.tooltip.affected_by_max_health": "§7Effect is affected by Max Health",
-  "message.tcc.kikaku_ichijin.self_sacrifice": "%s: Stella",
   "message.tcc.kikaku_ichijin.other_sacrifice": "%s: %s, this is a necessary sacrifice, you understand"
 }

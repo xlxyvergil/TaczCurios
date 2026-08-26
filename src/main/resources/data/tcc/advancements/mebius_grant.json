@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:tcc_root",
+    "parent":  "tcc:zhen_wo_series",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.mebius_grant.description"

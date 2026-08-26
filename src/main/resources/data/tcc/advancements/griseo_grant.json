@@ -14,7 +14,7 @@
     "announce_to_chat": true,
     "hidden": false
   },
-  "parent": "tcc:tcc_root",
+  "parent": "tcc:zhen_wo_series",
   "criteria": {
     "step_1": { "trigger": "minecraft:impossible" }
   }
