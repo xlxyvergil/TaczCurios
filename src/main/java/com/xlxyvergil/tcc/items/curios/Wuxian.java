@@ -178,6 +178,9 @@ public class Wuxian extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.infinite.curio_effect",
                 String.format("%.1f", perTypeBonus() * 100))
                 .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.infinite.curio_effect_current",
+                String.format("%.1f", getKilledTypeCount(stack) * perTypeBonus() * 100))
+                .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }
 }

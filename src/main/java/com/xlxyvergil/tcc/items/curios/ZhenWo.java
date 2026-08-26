@@ -472,6 +472,9 @@ public class ZhenWo extends BaseCurioItem {
                 String.format("%.0f", damageTakenFactor))
             .withStyle(ChatFormatting.GOLD));
 
+        tooltip.add(Component.translatable("tcc.tooltip.debuff_immunity")
+            .withStyle(ChatFormatting.GOLD));
+
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger",
                 (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))

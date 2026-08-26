@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.api.items.IBindable;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,15 +28,18 @@ public class ItemBaseCurio extends Item implements ICurioItem, IBindable, Vanish
     }
 
     /**
-     * 检查玩家背包中是否携带崩坏结晶。
+     * 检查玩家背包中是否携带可消耗的崩坏结晶。
+     * <p>
+     * 只有没有记录过 NBT 条目（未参与合成记录素材）的「干净」崩坏结晶才可作为卸下消耗；
+     * 已记录合成进度（带 NBT）的水晶只用于合成，不作为消耗品。
      *
      * @param player 玩家
-     * @return 背包中存在崩坏结晶时返回 {@code true}
+     * @return 背包中存在可消耗崩坏结晶时返回 {@code true}
      */
     protected boolean hasCollapseCrystal(Player player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (stack.getItem() instanceof CollapseCrystal) {
+            if (isConsumableCrystal(stack)) {
                 return true;
             }
         }
@@ -44,17 +48,33 @@ public class ItemBaseCurio extends Item implements ICurioItem, IBindable, Vanish
 
     /**
      * 消耗玩家背包中的一个崩坏结晶。
+     * <p>
+     * 仅消耗没有记录过 NBT 条目（未参与合成记录素材）的「干净」崩坏结晶；
+     * 已记录合成进度（带 NBT）的水晶保留，不会被消耗。
      *
      * @param player 玩家
      */
     protected void consumeCollapseCrystal(Player player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-            if (stack.getItem() instanceof CollapseCrystal) {
+            if (isConsumableCrystal(stack)) {
                 stack.shrink(1);
                 return;
             }
         }
+    }
+
+    /**
+     * 判断崩坏结晶是否为可消耗的「干净」水晶。
+     * <p>
+     * 参与过合成记录素材的水晶会在 NBT 中写入记录条目
+     * （见 {@link CollapseCrystalData}），此类水晶只用于合成，不作为卸下消耗；
+     * 没有 NBT 条目的水晶才可被卸下消耗。
+     */
+    private static boolean isConsumableCrystal(ItemStack stack) {
+        if (!(stack.getItem() instanceof CollapseCrystal)) return false;
+        CompoundTag tag = stack.getTag();
+        return tag == null || tag.isEmpty();
     }
 
     /**
