@@ -175,9 +175,8 @@ public class ShijieZhiShe extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
-        int types = getKilledTypeCount(stack);
         tooltip.add(Component.translatable("item.tcc.infinite.curio_effect",
-                String.format("%.1f", perTypeBonus() * 100), types)
+                String.format("%.1f", perTypeBonus() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

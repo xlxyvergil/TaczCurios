@@ -2,19 +2,23 @@ package com.xlxyvergil.tcc.items.curios;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AiStopHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -33,7 +37,7 @@ import java.util.List;
 /**
  * 浮生系列·神之键线（tcc_tdk）：不识时务。
  * <p>
- * 攻击按施加者虚数抗性概率使目标停止 AI（定身）5 秒 + 伤害转虚数 + 施加虚数侵染。
+ * 攻击按施加者虚数抗性概率使目标停止 AI（定身）5 秒，并附加（虚数抗性值/100 × 护甲值）的虚数伤害。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BushiShiwu extends BaseCurioItem {
@@ -41,6 +45,11 @@ public class BushiShiwu extends BaseCurioItem {
     /** 定身时长（tick） */
     private static int stopDuration() {
         return TaczCuriosConfig.COMMON.bushiShiwuStopDurationSeconds.get() * 20;
+    }
+
+    /** 攻击附加护甲值虚数伤害比例（配合虚数抗性/100） */
+    private static double armorImaginaryScale() {
+        return TaczCuriosConfig.COMMON.bushiShiwuArmorImaginaryScale.get();
     }
 
     public BushiShiwu(Properties properties) {
@@ -101,20 +110,6 @@ public class BushiShiwu extends BaseCurioItem {
                 stack -> stack.getItem() instanceof BushiShiwu).isEmpty();
     }
 
-    @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null) {
-            return;
-        }
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
-                stack -> stack.getItem() instanceof BushiShiwu);
-        if (equipped.isEmpty()) {
-            return;
-        }
-        ImaginaryConversionHelper.convertToImaginary(event);
-    }
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
@@ -135,6 +130,12 @@ public class BushiShiwu extends BaseCurioItem {
             if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
                 AiStopHelper.apply(target, stopDuration());
             }
+            // 攻击时附加（虚数抗性值/100 × 护甲值 × 比例）的虚数伤害
+            double armor = attacker.getAttributeValue(Attributes.ARMOR);
+            double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
+            TccAttributeEvents.applyImaginaryDamage(target,
+                    TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
         }
     }
 
@@ -144,7 +145,17 @@ public class BushiShiwu extends BaseCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.transient.key_effect_resistance")
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
+        double imaginaryDamage = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && isEquipped(player)) {
+                double armor = player.getAttributeValue(Attributes.ARMOR);
+                double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                imaginaryDamage = armor * (resistance / 100.0) * armorImaginaryScale();
+            }
+        }
+        tooltip.add(Component.translatable("item.tcc.transient.key_effect_armor_imaginary_resistance",
+                String.format("%.2f", imaginaryDamage))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);

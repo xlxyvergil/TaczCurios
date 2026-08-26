@@ -3,6 +3,8 @@ package com.xlxyvergil.tcc.items.curios;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AiStopHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -13,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -44,6 +47,11 @@ public class FanchenNandu extends BaseCurioItem {
     /** 定身概率 */
     private static double stopChance() {
         return TaczCuriosConfig.COMMON.fanchenNanduStopChance.get();
+    }
+
+    /** 攻击附加护甲值虚数伤害比例 */
+    private static double armorImaginaryScale() {
+        return TaczCuriosConfig.COMMON.fanchenNanduArmorImaginaryScale.get();
     }
 
     public FanchenNandu(Properties properties) {
@@ -123,6 +131,11 @@ public class FanchenNandu extends BaseCurioItem {
             if (attacker.getRandom().nextDouble() < stopChance()) {
                 AiStopHelper.apply(target, stopDuration());
             }
+            // 攻击时附加（护甲值 × 比例）的虚数伤害
+            double armor = attacker.getAttributeValue(Attributes.ARMOR);
+            float imaginary = (float) (armor * armorImaginaryScale());
+            TccAttributeEvents.applyImaginaryDamage(target,
+                    TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
         }
     }
 
@@ -132,6 +145,9 @@ public class FanchenNandu extends BaseCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.transient.key_effect",
                 String.format("%.0f", stopChance() * 100))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.transient.key_effect_armor_imaginary",
+                String.format("%.0f", armorImaginaryScale() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

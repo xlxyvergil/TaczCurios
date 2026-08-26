@@ -499,12 +499,15 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue huaArmorPercent;
         public final ForgeConfigSpec.DoubleValue duchenZhiYuArmorPercent;
 
-        // 浮生系列·神之键线（tcc_tdk）：停止 AI
+        // 浮生系列·神之键线（tcc_tdk）：停止 AI + 攻击附加护甲值虚数伤害
         public final ForgeConfigSpec.DoubleValue yuduchenStopChance;
         public final ForgeConfigSpec.IntValue yuduchenStopDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue yuduchenArmorImaginaryScale;
         public final ForgeConfigSpec.DoubleValue fanchenNanduStopChance;
         public final ForgeConfigSpec.IntValue fanchenNanduStopDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue fanchenNanduArmorImaginaryScale;
         public final ForgeConfigSpec.IntValue bushiShiwuStopDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue bushiShiwuArmorImaginaryScale;
 
         // 空梦系列·人物线（tcc_3rd）：钓鱼/战利品
         public final ForgeConfigSpec.DoubleValue padoPhilipisSpecialFishChance;
@@ -2085,6 +2088,9 @@ public class TaczCuriosConfig {
             yuduchenStopDurationSeconds = builder
                     .comment("停止 AI 时长（秒） (默认: 5)")
                     .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            yuduchenArmorImaginaryScale = builder
+                    .comment("攻击时附加（护甲值 × 该比例）的虚数伤害 (默认: 0.30 = 30%)")
+                    .defineInRange("armorImaginaryScale", 0.30, 0.0, 100.0);
             builder.pop();
 
             builder.comment("凡尘难渡饰品配置").push("fanchen_nandu");
@@ -2094,12 +2100,18 @@ public class TaczCuriosConfig {
             fanchenNanduStopDurationSeconds = builder
                     .comment("停止 AI 时长（秒） (默认: 5)")
                     .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            fanchenNanduArmorImaginaryScale = builder
+                    .comment("攻击时附加（护甲值 × 该比例）的虚数伤害 (默认: 0.50 = 50%)")
+                    .defineInRange("armorImaginaryScale", 0.50, 0.0, 100.0);
             builder.pop();
 
             builder.comment("不识时务饰品配置").push("bushi_shiwu");
             bushiShiwuStopDurationSeconds = builder
                     .comment("停止 AI 时长（秒） (默认: 5)")
                     .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            bushiShiwuArmorImaginaryScale = builder
+                    .comment("攻击时附加（虚数抗性值/100 × 护甲值 × 该比例）的虚数伤害 (默认: 1.0)")
+                    .defineInRange("armorImaginaryScale", 1.0, 0.0, 100.0);
             builder.pop();
 
             // 空梦系列·人物线：钓鱼/战利品

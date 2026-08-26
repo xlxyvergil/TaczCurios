@@ -1,8 +1,6 @@
 package com.xlxyvergil.tcc.util;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Map;
 import java.util.UUID;
@@ -148,32 +146,10 @@ public final class DamageResistanceHelper {
             float rawDrop = last - now;
             float reducedHealth = last - rawDrop * retain;
             entity.setHealth(reducedHealth);
-            logReconciliation(entity, rawDrop, reducedHealth, retain);
             REDUCTION_BASELINE_MAP.put(id, reducedHealth);
         } else {
             // 血量持平或治疗，更新基线
             REDUCTION_BASELINE_MAP.put(id, now);
         }
-    }
-
-    /** 限伤诊断最近一次输出 tick（节流，防高频刷屏） */
-    private static final Map<UUID, Integer> LAST_LOG_TICK = new ConcurrentHashMap<>();
-
-    /**
-     * 对账减伤诊断：在聊天框向佩戴者（玩家）输出本次削减情况。
-     * 节流——距上次输出不足 5 tick 则跳过，避免高频伤害刷屏。仅服务端向客户端发送。
-     */
-    private static void logReconciliation(LivingEntity entity, float rawDrop, float reducedHealth, float retain) {
-        if (!(entity instanceof Player player) || player.level().isClientSide) return;
-
-        int now = entity.tickCount;
-        Integer last = LAST_LOG_TICK.get(entity.getUUID());
-        if (last != null && now - last < 5) return;
-        LAST_LOG_TICK.put(entity.getUUID(), now);
-
-        float appliedDrop = rawDrop * retain;
-        String msg = String.format("§e[TCC限伤] 原伤害 %.1f → 实际扣血 %.1f（保留因子 %.0f%%）",
-                rawDrop, appliedDrop, retain * 100);
-        player.displayClientMessage(Component.literal(msg), false);
     }
 }

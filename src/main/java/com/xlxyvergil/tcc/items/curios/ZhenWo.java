@@ -12,17 +12,20 @@ import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -33,6 +36,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -53,8 +58,9 @@ import java.util.UUID;
  * 属性：虚数抗性 +60；全属性提升 50%（乘法）；佩戴期间获得创造飞行能力。
  * <p>
  * 特殊效果「结界」：任意形式血量小于 20% 时触发——立即恢复 100% 血量，
- * 持续 30 秒内，对结界（球形）内玩家和车万女仆每秒恢复 100% 血量并免疫 debuff，
- * 对结界内其他非玩家、非女仆实体每 tick 施加缓慢 IX（60 秒）并造成佩戴者最大血量上限的伤害，冷却 60 秒。
+ * 持续 30 秒内，对结界（球形）内玩家和车万女仆每秒恢复 100% 血量，
+ * 对结界内敌对怪物、或对佩戴者产生仇恨/造成过伤害的实体每秒施加缓慢 IX（60 秒）并造成佩戴者最大血量上限的伤害，冷却 60 秒。
+ * 佩戴期间常驻免疫所有有害效果（debuff），与结界是否激活无关。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ZhenWo extends BaseCurioItem {
@@ -201,8 +207,9 @@ public class ZhenWo extends BaseCurioItem {
     /**
      * 单 tick 结界效果（球形范围，半径 zhenWoBarrierRadius）：
      * <ul>
-     *   <li>每秒：对结界内玩家与车万女仆恢复 100% 血量，并清除其所有有害效果（免疫 debuff）。</li>
-     *   <li>每秒：对结界内其他非玩家、非女仆实体施加缓慢 IX，并造成最大血量虚数伤害（不会伤害玩家与车万女仆）。</li>
+     *   <li>每秒：对结界内玩家与车万女仆恢复 100% 血量（debuff 免疫由佩戴常驻 {@link #onEffectApplicable} 提供，结界不再清 debuff）。</li>
+     *   <li>每秒：对结界内敌对怪物、或对佩戴者产生仇恨/造成过伤害的实体（见 {@link #isBarrierTarget}，
+     *   不含玩家与车万女仆）施加缓慢 IX，并造成最大血量虚数伤害。</li>
      * </ul>
      */
     private static void applyBarrierEffects(Player player) {
@@ -210,15 +217,16 @@ public class ZhenWo extends BaseCurioItem {
         double radiusSq = radius * radius;
         AABB sphereBox = new AABB(player.blockPosition()).inflate(radius);
 
-        // 每秒：结界内玩家与车万女仆恢复 100% 血量 + 免疫 debuff
+        // 每秒：结界内玩家与车万女仆恢复 100% 血量
         if (player.tickCount % 20 == 0) {
-            healAndPurgeAllies(player, radiusSq, sphereBox);
+            healAllies(player, radiusSq, sphereBox);
         }
 
-        // 对结界内其他非玩家、非女仆实体：施加缓慢 + 造成虚数伤害
+        // 对结界内敌对怪物、或对佩戴者产生仇恨/造成过伤害的实体：施加缓慢 + 造成虚数伤害
         List<LivingEntity> targets = player.level().getEntitiesOfClass(LivingEntity.class, sphereBox,
             e -> e != player && !(e instanceof Player) && !isMaid(e) && e.isAlive()
-                && e.distanceToSqr(player) <= radiusSq);
+                && e.distanceToSqr(player) <= radiusSq
+                && isBarrierTarget(e, player));
 
         if (targets.isEmpty()) return;
 
@@ -235,6 +243,20 @@ public class ZhenWo extends BaseCurioItem {
                 startPinkBeam(player, target);
             }
         }
+    }
+
+    /**
+     * 判断实体是否应被结界锁定（均为原版判定规则）：
+     * <ul>
+     *   <li>敌对怪物（{@link Enemy}）；</li>
+     *   <li>对佩戴者产生仇恨的实体（{@link Mob#getTarget()} == 佩戴者，含被激怒的中立生物）；</li>
+     *   <li>对佩戴者造成过伤害的实体（{@link LivingEntity#getLastHurtByMob()} == 佩戴者）。</li>
+     * </ul>
+     */
+    private static boolean isBarrierTarget(LivingEntity target, Player player) {
+        if (target instanceof Enemy) return true;
+        if (target instanceof Mob mob && mob.getTarget() == player) return true;
+        return player.getLastHurtByMob() == target;
     }
 
     // ===== 粉色光柱特效 =====
@@ -332,15 +354,14 @@ public class ZhenWo extends BaseCurioItem {
         return false;
     }
 
-    /** 每秒：对结界内玩家与车万女仆恢复 100% 血量，清除其所有有害效果（免疫 debuff），并为玩家回满饱食度 */
-    private static void healAndPurgeAllies(Player player, double radiusSq, AABB sphereBox) {
+    /** 每秒：对结界内玩家与车万女仆恢复 100% 血量，并为玩家回满饱食度（debuff 免疫由佩戴常驻 {@link #onEffectApplicable} 提供） */
+    private static void healAllies(Player player, double radiusSq, AABB sphereBox) {
         List<Player> friendlyPlayers = player.level().getEntitiesOfClass(Player.class, sphereBox,
             p -> p.isAlive() && p.distanceToSqr(player) <= radiusSq);
         for (Player p : friendlyPlayers) {
             p.setHealth(p.getMaxHealth());
             p.getFoodData().setFoodLevel(20);
             p.getFoodData().setSaturation(20.0F);
-            clearHarmfulEffects(p);
         }
 
         if (ModList.get().isLoaded("touhou_little_maid")) {
@@ -348,7 +369,6 @@ public class ZhenWo extends BaseCurioItem {
                 m -> m.isAlive() && m.distanceToSqr(player) <= radiusSq);
             for (EntityMaid maid : maids) {
                 maid.setHealth(maid.getMaxHealth());
-                clearHarmfulEffects(maid);
             }
         }
     }
@@ -358,23 +378,28 @@ public class ZhenWo extends BaseCurioItem {
         return ModList.get().isLoaded("touhou_little_maid") && e instanceof EntityMaid;
     }
 
-    /** 清除实体身上所有有害（HARMFUL）效果，实现结界内 debuff 免疫 */
-    private static void clearHarmfulEffects(LivingEntity e) {
-        Set<MobEffect> harmful = new HashSet<>();
-        for (MobEffect effect : e.getActiveEffectsMap().keySet()) {
-            if (effect.getCategory() == MobEffectCategory.HARMFUL) {
-                harmful.add(effect);
-            }
-        }
-        for (MobEffect effect : harmful) {
-            e.removeEffect(effect);
+    /**
+     * 常驻 debuff 免疫（主动拦截）：
+     * 只要佩戴者装备了真我，其即将受到的有害效果（HARMFUL）在上身前即被拒绝，与结界是否激活无关。
+     * <p>
+     * 仅拦截 HARMFUL 效果；佩戴者的标记 buff（{@code ZhenWoBarrierEffect}，NEUTRAL）不会被误拦。
+     */
+    @SubscribeEvent
+    public static void onEffectApplicable(MobEffectEvent.Applicable event) {
+        LivingEntity entity = event.getEntity();
+        if (entity == null || entity.level().isClientSide) return;
+        MobEffectInstance effect = event.getEffectInstance();
+        if (effect == null) return;
+        if (effect.getEffect().getCategory() != MobEffectCategory.HARMFUL) return;
+        if (!CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo).isEmpty()) {
+            event.setResult(Event.Result.DENY);
         }
     }
 
     /**
      * 统一触发结界：立即恢复 100% 血量、激活结界（施加标记 buff 并对范围内实体生效）。
      * 供低血量自然触发（{@link #curioTick}）与死亡复活（{@link #onLivingDeath}）共用。
-     * 不再施加生命恢复 IX：结界持续期间每秒对结界内玩家/女仆恢复 100% 血量并免疫 debuff。
+     * 不再施加生命恢复 IX：结界持续期间每秒对结界内玩家/女仆恢复 100% 血量（debuff 免疫为佩戴常驻）。
      */
     private static void activateBarrier(Player player, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
@@ -455,8 +480,19 @@ public class ZhenWo extends BaseCurioItem {
                 TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),
                 TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().intValue())
             .withStyle(ChatFormatting.RED));
+        double imaginaryDamage = 0;
+        if (level != null && level.isClientSide()) {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && !CurioSearchHelper.findFirstEquippedStack(player,
+                    s -> s.getItem() instanceof ZhenWo).isEmpty()) {
+                double imaginaryResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
+                imaginaryDamage = imaginaryResistance * maxHealth;
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.damage",
-                TaczCuriosConfig.COMMON.zhenWoSlownessAmplifier.get() + 1)
+                TaczCuriosConfig.COMMON.zhenWoSlownessAmplifier.get() + 1,
+                String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.cooldown",
                 TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get())

@@ -1,10 +1,8 @@
 package com.xlxyvergil.tcc.mixin;
 
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,9 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 玩家减伤 Mixin。
@@ -99,14 +95,12 @@ public abstract class DamageResistanceMixin {
         // catchSetTrueHealth）由 tick 末的强制复活（reviveFully）兜底。
         Float retain = DamageResistanceHelper.DAMAGE_RETAIN_MAP.get(id);
         if (retain != null && retain <= 0.0F) {
-            logDamageLimit(self, -delta, 0.0F, true);
             return current;
         }
 
         // --- 冷却：伤害归零 ---
         Integer cooldown = DamageResistanceHelper.COOLDOWN_MAP.get(id);
         if (cooldown != null && cooldown > 0) {
-            logDamageLimit(self, -delta, 0.0F, true);
             return current; // 血量不变
         }
 
@@ -120,34 +114,9 @@ public abstract class DamageResistanceMixin {
 
         // 实际扣血较原始扣血有削减，说明限伤生效
         if (Math.abs(reducedDelta - delta) > 0.0001F) {
-            logDamageLimit(self, -delta, -(reducedDelta), false);
             return current + reducedDelta;
         }
 
         return health;
-    }
-
-    /** 限伤诊断最近一次输出 tick（节流，防高频刷屏） */
-    private static final Map<UUID, Integer> LAST_LOG_TICK = new ConcurrentHashMap<>();
-
-    /**
-     * 限伤诊断：在聊天框向佩戴者（玩家）输出本次限伤情况。
-     * 节流——距上次输出不足 5 tick 则跳过，避免高频伤害刷屏。仅服务端向客户端发送。
-     */
-    private static void logDamageLimit(LivingEntity self, float rawDamage, float appliedDamage, boolean cooldown) {
-        if (!(self instanceof Player player) || player.level().isClientSide) return;
-
-        int now = self.tickCount;
-        Integer last = LAST_LOG_TICK.get(self.getUUID());
-        if (last != null && now - last < 5) return;
-        LAST_LOG_TICK.put(self.getUUID(), now);
-
-        String msg;
-        if (cooldown) {
-            msg = String.format("§e[TCC限伤] 冷却中，原伤害 %.1f 已归零", rawDamage);
-        } else {
-            msg = String.format("§e[TCC限伤] 原伤害 %.1f → 实际扣血 %.1f", rawDamage, appliedDamage);
-        }
-        player.displayClientMessage(Component.literal(msg), false);
     }
 }

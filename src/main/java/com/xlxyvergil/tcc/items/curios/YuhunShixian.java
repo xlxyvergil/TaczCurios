@@ -6,7 +6,6 @@ import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,7 +34,7 @@ import java.util.UUID;
 /**
  * 旭光系列·神之键线（tcc_tdk）：御魂示现。
  * <p>
- * 攻击按施加者虚数抗性百分比持久削减目标护甲 / 韧性（改 data，不恢复）+ 伤害转虚数 + 施加虚数侵染。
+ * 攻击按施加者虚数抗性百分比持久削减目标护甲 / 韧性（改 data，不恢复）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YuhunShixian extends BaseCurioItem {
@@ -101,20 +100,6 @@ public class YuhunShixian extends BaseCurioItem {
                 stack -> stack.getItem() instanceof YuhunShixian).isEmpty();
     }
 
-    @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null) {
-            return;
-        }
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
-                stack -> stack.getItem() instanceof YuhunShixian);
-        if (equipped.isEmpty()) {
-            return;
-        }
-        ImaginaryConversionHelper.convertToImaginary(event);
-    }
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
@@ -153,8 +138,6 @@ public class YuhunShixian extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.dawn.key_effect_resistance")
-                .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
