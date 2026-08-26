@@ -240,7 +240,6 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 完全复刻 MineFargo MyGoUtil.addEffect 模式：
      * - getActiveEffectsMap().put 直接操作 Map，不触发 onEffectAdded/onEffectUpdated
      * - 不 post MobEffectEvent.Added，避免任何外部监听器干扰
      * - old.update(ins) 在原地刷新时长/等级

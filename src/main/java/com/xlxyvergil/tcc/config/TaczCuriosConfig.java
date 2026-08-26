@@ -425,8 +425,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue zhenWoBarrierDurationSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamagePercent;
         public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
-        public final ForgeConfigSpec.IntValue zhenWoRegenAmplifier;
-        public final ForgeConfigSpec.IntValue zhenWoRegenDurationSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
 
         // 黑渊白花·创灭螺旋配置
@@ -445,13 +443,16 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue jielvDebuffDurationSeconds;
         public final ForgeConfigSpec.IntValue jielvDebuffCount;
 
-        // 戒律系列·神之键线（tcc_tdk）：崩坏病
-        public final ForgeConfigSpec.IntValue yudaDeShiyueDiseaseDurationSeconds;
-        public final ForgeConfigSpec.IntValue yudaDeShiyueDiseaseAmplifier;
-        public final ForgeConfigSpec.IntValue yueshuZhiJianDiseaseDurationSeconds;
-        public final ForgeConfigSpec.IntValue yueshuZhiJianDiseaseAmplifier;
-        public final ForgeConfigSpec.IntValue shenenJiejieDiseaseDurationSeconds;
-        public final ForgeConfigSpec.IntValue shenenJiejieDiseaseAmplifier;
+        // 戒律系列·神之键线（tcc_tdk）：范围虚数侵染光环
+        public final ForgeConfigSpec.DoubleValue wangshiDeKuqiuAuraRadius;
+        public final ForgeConfigSpec.IntValue wangshiDeKuqiuInfectionLevel;
+        public final ForgeConfigSpec.IntValue wangshiDeKuqiuInfectionDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue wangshiDeKuqiuMingzhiqiAuraRadius;
+        public final ForgeConfigSpec.IntValue wangshiDeKuqiuMingzhiqiInfectionLevel;
+        public final ForgeConfigSpec.IntValue wangshiDeKuqiuMingzhiqiInfectionDurationSeconds;
+        public final ForgeConfigSpec.DoubleValue shenenJiejieAuraRadius;
+        public final ForgeConfigSpec.IntValue shenenJiejieInfectionLevel;
+        public final ForgeConfigSpec.IntValue shenenJiejieInfectionDurationSeconds;
 
         // 黄金系列·人物线（tcc_3rd）：友方光环
         public final ForgeConfigSpec.DoubleValue edenAuraRange;
@@ -1815,11 +1816,11 @@ public class TaczCuriosConfig {
                     .comment("全属性提升比例（乘法） (默认: 0.5 = +50%)")
                     .defineInRange("allAttributesPercent", 0.5, -1, 100);
             zhenWoTriggerHpRatio = builder
-                    .comment("触发结界时的血量比例阈值 (默认: 0.20 = 20%)")
-                    .defineInRange("triggerHpRatio", 0.20, 0.0, 1.0);
+                    .comment("触发结界时的血量比例阈值 (默认: 0.05 = 5%)")
+                    .defineInRange("triggerHpRatio", 0.05, 0.0, 1.0);
             zhenWoBarrierRadius = builder
-                    .comment("结界影响范围（格） (默认: 128)")
-                    .defineInRange("barrierRadius", 128.0, 1.0, 512.0);
+                    .comment("结界影响半径（格） (默认: 64)")
+                    .defineInRange("barrierRadius", 64.0, 1.0, 512.0);
             zhenWoSlownessAmplifier = builder
                     .comment("缓慢效果等级（0=缓慢I，默认: 8 = 缓慢IX）")
                     .defineInRange("slownessAmplifier", 8, 0, 255);
@@ -1835,12 +1836,6 @@ public class TaczCuriosConfig {
             zhenWoCooldownSeconds = builder
                     .comment("结界触发后的冷却时间（秒） (默认: 60)")
                     .defineInRange("cooldownSeconds", 60, 1, 3600);
-            zhenWoRegenAmplifier = builder
-                    .comment("触发期间生命恢复等级（0=生命恢复I，默认: 8 = 生命恢复IX）")
-                    .defineInRange("regenAmplifier", 8, 0, 255);
-            zhenWoRegenDurationSeconds = builder
-                    .comment("触发后生命恢复持续时间（秒） (默认: 60)")
-                    .defineInRange("regenDurationSeconds", 60, 1, 600);
             zhenWoDamageTakenFactor = builder
                     .comment("减伤（苏同款）：受到伤害降低比例 (默认: 0.8 = 降低80%)")
                     .defineInRange("damageTakenFactor", 0.8, 0.0, 1.0);
@@ -1892,32 +1887,41 @@ public class TaczCuriosConfig {
                     .defineInRange("debuffCount", 3, 1, 100);
             builder.pop();
 
-            // 戒律系列·神之键线：崩坏病（犹大的誓约 / 约束之键 尚未实现，预留配置）
-            builder.comment("犹大的誓约饰品配置（未实现，预留）").push("yuda_de_shiyue");
-            yudaDeShiyueDiseaseDurationSeconds = builder
-                    .comment("崩坏病时长（秒） (默认: 15)")
-                    .defineInRange("diseaseDurationSeconds", 15, 1, 3600);
-            yudaDeShiyueDiseaseAmplifier = builder
-                    .comment("崩坏病等级（0=易伤20%，默认: 0 = I 级）")
-                    .defineInRange("diseaseAmplifier", 0, 0, 255);
+            // 戒律系列·神之键线：范围虚数侵染光环
+            builder.comment("往世的苦囚饰品配置").push("wangshi_de_kuqiu");
+            wangshiDeKuqiuAuraRadius = builder
+                    .comment("光环影响半径（格） (默认: 64)")
+                    .defineInRange("auraRadius", 64.0, 1.0, 512.0);
+            wangshiDeKuqiuInfectionLevel = builder
+                    .comment("虚数侵染等级（1 级 = amplifier 0，默认: 3）")
+                    .defineInRange("infectionLevel", 3, 1, 99);
+            wangshiDeKuqiuInfectionDurationSeconds = builder
+                    .comment("虚数侵染时长（秒） (默认: 15)")
+                    .defineInRange("infectionDurationSeconds", 15, 1, 3600);
             builder.pop();
 
-            builder.comment("约束之键饰品配置（未实现，预留）").push("yueshu_zhi_jian");
-            yueshuZhiJianDiseaseDurationSeconds = builder
-                    .comment("崩坏病时长（秒） (默认: 15)")
-                    .defineInRange("diseaseDurationSeconds", 15, 1, 3600);
-            yueshuZhiJianDiseaseAmplifier = builder
-                    .comment("崩坏病等级（0=易伤20%，默认: 1 = II 级）")
-                    .defineInRange("diseaseAmplifier", 1, 0, 255);
+            builder.comment("往世的苦囚·命之契饰品配置").push("wangshi_de_kuqiu_mingzhiqi");
+            wangshiDeKuqiuMingzhiqiAuraRadius = builder
+                    .comment("光环影响半径（格） (默认: 64)")
+                    .defineInRange("auraRadius", 64.0, 1.0, 512.0);
+            wangshiDeKuqiuMingzhiqiInfectionLevel = builder
+                    .comment("虚数侵染等级（1 级 = amplifier 0，默认: 6）")
+                    .defineInRange("infectionLevel", 6, 1, 99);
+            wangshiDeKuqiuMingzhiqiInfectionDurationSeconds = builder
+                    .comment("虚数侵染时长（秒） (默认: 15)")
+                    .defineInRange("infectionDurationSeconds", 15, 1, 3600);
             builder.pop();
 
             builder.comment("第零额定功率·神恩结界饰品配置").push("shenen_jiejie");
-            shenenJiejieDiseaseDurationSeconds = builder
-                    .comment("崩坏病时长（秒） (默认: 15)")
-                    .defineInRange("diseaseDurationSeconds", 15, 1, 3600);
-            shenenJiejieDiseaseAmplifier = builder
-                    .comment("崩坏病等级（0=易伤20%，默认: 2 = III 级）")
-                    .defineInRange("diseaseAmplifier", 2, 0, 255);
+            shenenJiejieAuraRadius = builder
+                    .comment("光环影响半径（格） (默认: 64)")
+                    .defineInRange("auraRadius", 64.0, 1.0, 512.0);
+            shenenJiejieInfectionLevel = builder
+                    .comment("虚数侵染等级（1 级 = amplifier 0，默认: 9）")
+                    .defineInRange("infectionLevel", 9, 1, 99);
+            shenenJiejieInfectionDurationSeconds = builder
+                    .comment("虚数侵染时长（秒） (默认: 15)")
+                    .defineInRange("infectionDurationSeconds", 15, 1, 3600);
             builder.pop();
 
             // 黄金系列·人物线：友方光环

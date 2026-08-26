@@ -21,7 +21,6 @@ import com.xlxyvergil.tcc.effect.GildedInfernalChamberEffect;
 import com.xlxyvergil.tcc.effect.GildedBulletSpreadEffect;
 import com.xlxyvergil.tcc.effect.GildedArgonScopeKillEffect;
 import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairKillEffect;
-import com.xlxyvergil.tcc.effect.HonkaiDiseaseEffect;
 import com.xlxyvergil.tcc.effect.ZhenWoBarrierEffect;
 
 import net.minecraft.world.effect.MobEffect;
@@ -134,13 +133,6 @@ public class TccMobEffects {
             GildedHydraulicCrosshairKillEffect::new);
 
     // ========== 新系列：戒律/黄金/旭光/无限/浮生/空梦 ==========
-
-    /**
-     * 崩坏病 - 中性标记效果，易伤增伤由伤害事件统一处理（amplifier 0/1/2 → 20%/40%/60%）
-     */
-    public static final RegistryObject<MobEffect> HONKAI_DISEASE = MOB_EFFECTS.register(
-            "honkai_disease",
-            HonkaiDiseaseEffect::new);
 
     /**
      * 逐火之蛾「真我」结界标记 - 中性纯标记效果，驱动客户端地面特效渲染

@@ -168,23 +168,6 @@ public class QidianChonggou extends BaseCurioItem {
         ImaginaryConversionHelper.convertToImaginary(event);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
-            return;
-        }
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
-                stack -> stack.getItem() instanceof QidianChonggou);
-        if (equipped.isEmpty()) {
-            return;
-        }
-        if (!((QidianChonggou) equipped.getItem()).matchesRestriction(attacker)) {
-            return;
-        }
-        ImaginaryConversionHelper.applyInfection(event, attacker, false);
-    }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -193,8 +176,6 @@ public class QidianChonggou extends BaseCurioItem {
                 (int) teleportRange())
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
-                .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

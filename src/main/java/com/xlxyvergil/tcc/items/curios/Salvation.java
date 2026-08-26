@@ -110,7 +110,7 @@ public class Salvation extends BaseCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
                 1.0, KNOCKBACK_RESISTANCE_UUID, "tcc_salvation_knockback_immunity", AttributeModifier.Operation.ADDITION);
             
-            // 注意：伤害降低通过 HeavenFireHealthListener 中的 LivingHurtEvent 实现（可配置）
+            // 伤害降低：由 onPlayerTick 中维护的常驻比例减伤实现（仅手枪，可配置，对 setHealth 亦生效）
         }
     }
     
@@ -122,8 +122,9 @@ public class Salvation extends BaseCurioItem {
             KNOCKBACK_RESISTANCE_UUID);
         // 移除抗性提升效果
         livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-        // 清除限伤状态
+        // 清除限伤状态（上限 + 常驻比例减伤）
         DamageResistanceHelper.clearDamageCap(livingEntity);
+        DamageResistanceHelper.clearDamageReduction(livingEntity);
     }
 
     @Override
@@ -176,8 +177,16 @@ public class Salvation extends BaseCurioItem {
         if (event.player.level().isClientSide()) return;
         if (!hasSalvationEquipped(event.player)) return;
         // 检查武器类型限制（仅手枪生效）
-        if (!GunTypeChecker.isHoldingPistol(event.player)) return;
-        
+        if (!GunTypeChecker.isHoldingPistol(event.player)) {
+            // 不满足限制时清除常驻限伤
+            DamageResistanceHelper.clearDamageReduction(event.player);
+            return;
+        }
+
+        // 常驻比例减伤（仅手枪）：对标准 hurt 与直接 setHealth 扣血均生效
+        DamageResistanceHelper.setDamageReduction(event.player,
+            (float) (1 - TaczCuriosConfig.COMMON.salvationDamageReduction.get()));
+
         // 每15秒刷新一次抗性提升
         if (event.player.tickCount % 280 == 0) {
             int level = TaczCuriosConfig.COMMON.salvationResistanceLevel.get();

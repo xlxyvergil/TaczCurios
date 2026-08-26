@@ -141,7 +141,6 @@ public class Shesha extends BaseCurioItem {
                 }
             }
         }
-        ImaginaryConversionHelper.applyInfection(event, attacker, false);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -151,8 +150,6 @@ public class Shesha extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.infinite.key_effect_resistance")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
-                .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);

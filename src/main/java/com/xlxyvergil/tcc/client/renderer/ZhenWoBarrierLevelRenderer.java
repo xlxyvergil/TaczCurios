@@ -13,7 +13,6 @@ import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -47,9 +46,8 @@ public class ZhenWoBarrierLevelRenderer {
         MobEffectInstance barrier = player.getEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
         if (barrier == null) return;
 
-        // 淡出：buff 剩余最后 20 tick 逐渐消失；结界结束（buff 消失）后自然不渲染
-        float alpha = 0.4F * Mth.clamp(barrier.getDuration() / 20.0F, 0.0F, 1.0F);
-        if (alpha <= 0.01F) return;
+        // 特效完全不透明显示：不透明度固定为 1.0（取消半透明与淡出）
+        float alpha = 1.0F;
 
         // 中心 = 本地玩家实时渲染位置（零延迟跟随）
         Vec3 center = player.getPosition(event.getPartialTick());
@@ -57,7 +55,7 @@ public class ZhenWoBarrierLevelRenderer {
     }
 
     private static void renderBarrier(Vec3 center, float alpha, PoseStack pose, Vec3 camPos) {
-        float half = 2.0F;
+        float half = 1.0F;
         Vec3 offset = center.add(0.0D, LIFT, 0.0D).subtract(camPos);
 
         pose.pushPose();
@@ -79,8 +77,8 @@ public class ZhenWoBarrierLevelRenderer {
         addVertex(builder, mat, -half, half, 0.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(builder.end());
 
-        // 粉色圆环：沿结界圆周（半径 = 直径 / 2）绘制连续圆环带（内圆 + 外圆）
-        float ringRadius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().floatValue() / 2.0F;
+        // 粉色圆环：沿结界圆周（半径 = 配置值）绘制连续圆环带（内圆 + 外圆）
+        float ringRadius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().floatValue();
         float ringWidth = 1.0F;
         int ringCount = 128;
         RenderSystem.setShader(GameRenderer::getPositionColorShader);

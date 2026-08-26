@@ -3,26 +3,21 @@ package com.xlxyvergil.tcc.items.curios;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
@@ -34,20 +29,10 @@ import java.util.List;
 /**
  * 戒律系列·神之键线（tcc_tdk）：第零额定功率·神恩结界。
  * <p>
- * 攻击时按施加者虚数抗性概率施加「崩坏病」III 级（易伤 60%）+ 伤害转虚数 + 施加虚数侵染。
+ * 攻击时伤害转为虚数伤害；佩戴时每 1 秒对 64 格内非玩家实体施加持续 15 秒的 9 级虚数侵染。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShenenJiejie extends BaseCurioItem {
-
-    /** 崩坏病时长（tick） */
-    private static int diseaseDuration() {
-        return TaczCuriosConfig.COMMON.shenenJiejieDiseaseDurationSeconds.get() * 20;
-    }
-
-    /** 崩坏病等级 */
-    private static int diseaseAmplifier() {
-        return TaczCuriosConfig.COMMON.shenenJiejieDiseaseAmplifier.get();
-    }
 
     public ShenenJiejie(Properties properties) {
         super(properties);
@@ -121,35 +106,31 @@ public class ShenenJiejie extends BaseCurioItem {
         ImaginaryConversionHelper.convertToImaginary(event);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
-            return;
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        Player player = slotContext.entity() instanceof Player p ? p : null;
+        if (player == null || player.level().isClientSide) return;
+        if (player.isDeadOrDying()) return;
+        if (!matchesRestriction(player)) return;
+        // 每 1 秒刷新一次范围内虚数侵染
+        if (player.tickCount % 20 != 0) return;
+        applyInfectionAura(player);
+    }
+
+    /** 每 1 秒：对光环半径内非玩家实体施加持续指定秒数的指定等级虚数侵染 */
+    private void applyInfectionAura(Player player) {
+        double radius = TaczCuriosConfig.COMMON.shenenJiejieAuraRadius.get();
+        double radiusSq = radius * radius;
+        int level = TaczCuriosConfig.COMMON.shenenJiejieInfectionLevel.get();
+        int duration = TaczCuriosConfig.COMMON.shenenJiejieInfectionDurationSeconds.get();
+        List<LivingEntity> targets = player.level().getEntitiesOfClass(LivingEntity.class,
+                new AABB(player.blockPosition()).inflate(radius),
+                e -> e != player && !(e instanceof Player) && e.isAlive()
+                        && e.distanceToSqr(player) <= radiusSq);
+        if (targets.isEmpty()) return;
+        for (LivingEntity target : targets) {
+            ImaginaryConversionHelper.applyInfection(target, player, level, duration);
         }
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
-                stack -> stack.getItem() instanceof ShenenJiejie);
-        if (equipped.isEmpty()) {
-            return;
-        }
-        if (!((ShenenJiejie) equipped.getItem()).matchesRestriction(attacker)) {
-            return;
-        }
-        Entity hurt = event.getHurtEntity();
-        if (!(hurt instanceof LivingEntity target) || target.isDeadOrDying()) {
-            return;
-        }
-        // 施加崩坏病：概率 = 施加者虚数抗性（§0.2）
-        if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
-            target.addEffect(new MobEffectInstance(
-                    TccMobEffects.HONKAI_DISEASE.get(),
-                    diseaseDuration(),
-                    diseaseAmplifier(),
-                    false, false, true
-            ), attacker);
-        }
-        // 3 阶：施加虚数侵染
-        ImaginaryConversionHelper.applyInfection(event, attacker, false);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -157,13 +138,11 @@ public class ShenenJiejie extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("item.tcc.discipline.key_effect",
-                String.format("%.0f", 20.0 * (diseaseAmplifier() + 1)))
+                TaczCuriosConfig.COMMON.shenenJiejieAuraRadius.get().intValue(),
+                TaczCuriosConfig.COMMON.shenenJiejieInfectionLevel.get())
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
-                .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
     }
 }

@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -22,8 +21,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
@@ -75,6 +72,24 @@ public class Juezhe extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
+        DamageResistanceHelper.clearDamageReduction(livingEntity);
+    }
+
+    /**
+     * 常驻比例减伤（仅步枪，可配置）：满足武器限制时设置保留比例，否则清除。
+     * 对标准 hurt 与直接 setHealth 扣血均生效，无需依赖 LivingHurtEvent。
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        super.curioTick(slotContext, stack);
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide) return;
+        if (!matchesRestriction(entity)) {
+            DamageResistanceHelper.clearDamageReduction(entity);
+            return;
+        }
+        DamageResistanceHelper.setDamageReduction(entity,
+            (float) (1 - TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get()));
     }
 
     @Override
@@ -103,17 +118,6 @@ public class Juezhe extends BaseCurioItem {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
             stack -> stack.getItem() instanceof Juezhe).isEmpty();
-    }
-
-    @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
-        if (!GunTypeChecker.isHoldingRifle(entity)) return;
-        if (entity.level().isClientSide()) return;
-
-        float cap = event.getAmount() * (float) (1 - TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get());
-        DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
     @Override

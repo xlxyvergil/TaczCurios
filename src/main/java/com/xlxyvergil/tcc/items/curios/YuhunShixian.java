@@ -146,8 +146,6 @@ public class YuhunShixian extends BaseCurioItem {
                         "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
             }
         }
-        // 近战无子弹：direct 侵染
-        ImaginaryConversionHelper.applyInfection(event, attacker, true);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -157,8 +155,6 @@ public class YuhunShixian extends BaseCurioItem {
         tooltip.add(Component.translatable("item.tcc.dawn.key_effect_resistance")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
-                .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);

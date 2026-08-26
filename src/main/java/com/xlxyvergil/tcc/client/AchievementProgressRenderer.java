@@ -30,7 +30,6 @@ import java.util.List;
  *   <li>stat → "stat名称: current/threshold"</li>
  *   <li>kills → "entity名称: step/value"（单条件）或 "击杀: step/criteriaCount"（多条件）</li>
  *   <li>biome → "群系: name" 或 "群系: ???"</li>
- *   <li>dimension → "维度: name" 或 "维度: ???"</li>
  * </ul>
  * <p>
  * 数据从 {@link TccPlayerDataCapability} 读取，该 Capability 由服务端通过
@@ -253,20 +252,8 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // dimension 条件
-        if (conds.dimension() != null) {
-            hasDisplayable = true;
-            ResourceLocation dimId = ResourceLocation.tryParse(conds.dimension());
-            if (dimId != null) {
-                String name = I18n.get("dimension." + dimId.getPath());
-                boolean visited = TccPlayerDataCapability.hasVisitedDimension(player, dimId.toString());
-                addConditionLine(tooltip,
-                        Component.translatable("tcc.tooltip.achievement_cond_dimension"),
-                        visited ? Component.literal(name).withStyle(ChatFormatting.GREEN)
-                                : Component.translatable("tcc.tooltip.achievement_cond_unknown")
-                                        .withStyle(ChatFormatting.RED));
-            }
-        }
+        // 维度条件：不在进度中单独展示一行（维度信息已由 display.description 文本说明承载），
+        // 服务端在统计击杀次数前仍会按维度过滤。
 
         // 无可显示的进度条件（仅有 equippedCurios/attributes 等二元判定）：显示总体进度
         if (!hasDisplayable) {

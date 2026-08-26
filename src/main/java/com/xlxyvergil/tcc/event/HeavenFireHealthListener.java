@@ -1,11 +1,7 @@
 package com.xlxyvergil.tcc.event;
 
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
-import com.xlxyvergil.tcc.items.curios.Salvation;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -30,12 +26,7 @@ public class HeavenFireHealthListener {
             return;
         }
         
-        // 救世：采用苏的限伤机制，读取降低比例计算保留伤害上限（可配置，默认 0.5 = 降低50%）
-        if (Salvation.hasSalvationEquipped(target) && GunTypeChecker.isHoldingPistol(target)) {
-            float cap = event.getAmount() * (float) (1 - TaczCuriosConfig.COMMON.salvationDamageReduction.get());
-            DamageResistanceHelper.setDamageCap(target, cap);
-        }
-        
+        // 救世的常驻比例减伤已迁移至 Salvation#onPlayerTick（仅手枪，可配置，对 setHealth 亦生效）
         // 通知饰品类处理血量变化
         HeavenFireApocalypse.onHealthChanged(target);
         HeavenFireJudgment.onHealthChanged(target);

@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,8 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
@@ -77,6 +74,38 @@ public class Tianhui extends BaseCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
+        DamageResistanceHelper.clearDamageReduction(livingEntity);
+    }
+
+    /**
+     * 常驻比例减伤（仅步枪）：保留比例由虚数抗性动态计算。
+     * 满足武器限制时每 tick 更新保留比例，否则清除。
+     * 对标准 hurt 与直接 setHealth 扣血均生效，无需依赖 LivingHurtEvent。
+     */
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        super.curioTick(slotContext, stack);
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide) return;
+        if (!matchesRestriction(entity)) {
+            DamageResistanceHelper.clearDamageReduction(entity);
+            return;
+        }
+        DamageResistanceHelper.setDamageReduction(entity, calculateRetainFactor(entity));
+    }
+
+    /** 根据当前虚数抗性动态计算保留伤害比例，受 minFactor 下限约束。 */
+    private static float calculateRetainFactor(LivingEntity entity) {
+        double totalImaginaryResistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double baseFactor = 1.0;
+        double resistanceScale = TaczCuriosConfig.COMMON.tianhuiResistanceScale.get();
+        double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();
+
+        double factor = Math.round((baseFactor - (totalImaginaryResistance * resistanceScale)) * 10000.0) / 10000.0;
+        if (factor < minFactor) {
+            factor = minFactor;
+        }
+        return (float) factor;
     }
 
     @Override
@@ -100,32 +129,6 @@ public class Tianhui extends BaseCurioItem {
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
         return DropRule.ALWAYS_KEEP;
-    }
-
-    public static boolean isEquipped(LivingEntity entity) {
-        return !CurioSearchHelper.findFirstEquippedStack(entity,
-            stack -> stack.getItem() instanceof Tianhui).isEmpty();
-    }
-
-    @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
-        if (!GunTypeChecker.isHoldingRifle(entity)) return;
-        if (entity.level().isClientSide()) return;
-
-        double totalImaginaryResistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double baseFactor = 1.0;
-        double resistanceScale = TaczCuriosConfig.COMMON.tianhuiResistanceScale.get();
-        double minFactor = TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get();
-
-        double factor = Math.round((baseFactor - (totalImaginaryResistance * resistanceScale)) * 10000.0) / 10000.0;
-        if (factor < minFactor) {
-            factor = minFactor;
-        }
-
-        float cap = event.getAmount() * (float) factor;
-        DamageResistanceHelper.setDamageCap(entity, cap);
     }
 
     @Override
