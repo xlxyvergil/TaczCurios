@@ -456,7 +456,7 @@
   "item.tcc.zhen_wo": "§4「真我」",
   "item.tcc.zhen_wo.all_attributes": "全属性提升 %1$s%%",
   "item.tcc.zhen_wo.effect.trigger": "生命值低于%1$s%%时触发结界：立即恢复100%%血量",
-  "item.tcc.zhen_wo.effect.duration": "结界持续%1$s秒，每秒对%2$s格范围内友军恢复100%%血量以及100%饱食度",
+  "item.tcc.zhen_wo.effect.duration": "结界持续%1$s秒，每秒对%2$s格范围内友军恢复100%%血量以及100%%饱食度",
   "item.tcc.zhen_wo.effect.damage": "对范围内敌对目标每秒施加%1$s级缓慢，并造成%2$s点虚数伤害",
   "item.tcc.zhen_wo.effect.cooldown": "冷却%1$s秒",
   "item.tcc.heiyuan_baihua": "§4黑渊白花·创灭螺旋",
