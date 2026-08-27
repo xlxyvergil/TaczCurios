@@ -360,10 +360,19 @@ public final class AchievementDefinitions {
     /**
      * Resolve an entity registry key to its localized display name.
      * Uses Minecraft's built-in translation system so it respects the current Language instance.
+     * <p>以 {@code #} 开头且对应原版 MobType 的键（如 {@code #minecraft:undead}）会显示为对应的本地化名称
+     * （如「亡灵」），而非原始字符串；其余 {@code #} 标签按原样显示。</p>
      */
     public static String entityDisplayName(String entityKey) {
         if (entityKey == null || entityKey.isBlank()) return "?";
         try {
+            if (entityKey.startsWith("#")) {
+                String mobTypeKey = mobTypeTranslationKey(entityKey.substring(1));
+                if (mobTypeKey != null) {
+                    return Language.getInstance().getOrDefault(mobTypeKey, entityKey);
+                }
+                return entityKey;
+            }
             ResourceLocation rl = new ResourceLocation(entityKey);
             EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(rl);
             if (type == null) return entityKey;
@@ -371,6 +380,33 @@ public final class AchievementDefinitions {
             return Language.getInstance().getOrDefault(translationKey, entityKey);
         } catch (Exception e) {
             return entityKey;
+        }
+    }
+
+    /**
+     * 将字符串映射为原版 MobType 的本地化翻译键，大小写不敏感。
+     * 不认识的名称返回 {@code null}，交由调用方按普通 {@code #} 标签原样显示。
+     */
+    private static String mobTypeTranslationKey(String name) {
+        if (name == null) return null;
+        switch (name.toLowerCase()) {
+            case "undead":
+            case "minecraft:undead":
+                return "tcc.mobtype.undead";
+            case "arthropod":
+            case "minecraft:arthropod":
+                return "tcc.mobtype.arthropod";
+            case "illager":
+            case "minecraft:illager":
+                return "tcc.mobtype.illager";
+            case "water":
+            case "minecraft:water":
+                return "tcc.mobtype.water";
+            case "undefined":
+            case "minecraft:undefined":
+                return "tcc.mobtype.undefined";
+            default:
+                return null;
         }
     }
 }

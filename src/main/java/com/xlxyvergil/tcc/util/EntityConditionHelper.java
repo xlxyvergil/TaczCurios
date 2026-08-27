@@ -8,6 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -20,7 +21,9 @@ public final class EntityConditionHelper {
      * 判断实体是否匹配指定的实体键。
      * <ul>
      *   <li>{@code "*"} —— 匹配任意实体</li>
-     *   <li>{@code "#namespace:tag"} —— 匹配实体类型 tag（如 {@code #minecraft:undead}）</li>
+     *   <li>{@code "#<MobType>"} —— 匹配原版 MobType（如 {@code #minecraft:undead}、{@code #undead}、{@code #arthropod}），
+     *       用 {@code getMobType()} 判定，与原版亡灵杀手等附魔语义一致，不依赖会被数据包覆盖的实体类型标签</li>
+     *   <li>{@code "#namespace:tag"} —— 其它值匹配实体类型 tag（如 {@code #minecraft:skeletons}），只要该实体类型属于该 tag 即返回 true</li>
      *   <li>其它值 —— 精确匹配实体类型 ID（如 {@code minecraft:zombie}）</li>
      * </ul>
      */
@@ -28,13 +31,50 @@ public final class EntityConditionHelper {
         if (entityKey == null || entityKey.isEmpty() || entity == null) return false;
         if ("*".equals(entityKey)) return true;
         if (entityKey.startsWith("#")) {
-            ResourceLocation tagId = ResourceLocation.tryParse(entityKey.substring(1));
+            String tagStr = entityKey.substring(1);
+            // 仅支持原版 MobType（如 #minecraft:undead / #undead），用 getMobType() 硬编码判定，
+            // 与原版「亡灵杀手」等附魔语义一致，且不依赖会被数据包覆盖的实体类型标签。
+            MobType mobType = parseMobType(tagStr);
+            if (mobType != null) {
+                return entity instanceof LivingEntity le && le.getMobType() == mobType;
+            }
+            // 非原版 MobType 名称按实体类型 tag 处理（如 #minecraft:skeletons、#goety:xxx）。
+            ResourceLocation tagId = ResourceLocation.tryParse(tagStr);
             if (tagId == null) return false;
             TagKey<EntityType<?>> tag = TagKey.create(Registries.ENTITY_TYPE, tagId);
             return entity.getType().is(tag);
         }
         String entityTypeKey = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).toString();
         return entityTypeKey.equals(entityKey);
+    }
+
+    /**
+     * 将字符串解析为原版 MobType（硬编码的实体分类），大小写不敏感。
+     * <p>支持 {@code undead}、{@code UNDEAD}、{@code minecraft:undead} 等形式，以及 arthropod/illager/water/undefined。
+     * 不认识的名称返回 {@code null}，交由调用方按实体类型 tag 处理。</p>
+     */
+    @Nullable
+    private static MobType parseMobType(String name) {
+        if (name == null) return null;
+        switch (name.toLowerCase()) {
+            case "undead":
+            case "minecraft:undead":
+                return MobType.UNDEAD;
+            case "arthropod":
+            case "minecraft:arthropod":
+                return MobType.ARTHROPOD;
+            case "illager":
+            case "minecraft:illager":
+                return MobType.ILLAGER;
+            case "water":
+            case "minecraft:water":
+                return MobType.WATER;
+            case "undefined":
+            case "minecraft:undefined":
+                return MobType.UNDEFINED;
+            default:
+                return null;
+        }
     }
 
     public static String formatNbtFilterForDisplay(@Nullable String nbtFilter) {
