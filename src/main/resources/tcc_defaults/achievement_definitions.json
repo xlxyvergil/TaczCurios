@@ -821,10 +821,9 @@
         "hidden": false
       },
       "parent": "tcc:wanwu_xiumian_grant",
-      "trigger": "stat_polling",
+      "trigger": "raid_victory",
       "conditions": {
         "equippedCurios": ["tcc:wanwu_xiumian"],
-        "stat": "minecraft:raid_win",
         "criteria_count": 10
       },
       "prerequisites": ["tcc:wanwu_xiumian_grant"],
@@ -1195,10 +1194,9 @@
         "hidden": false
       },
       "parent": "tcc:aponia_to_shenzui_zhijian",
-      "trigger": "stat_polling",
+      "trigger": "raid_victory",
       "conditions": {
         "equippedCurios": ["tcc:shenzui_zhijian"],
-        "stat": "minecraft:raid_win",
         "criteria_count": 5
       },
       "prerequisites": ["tcc:aponia_to_shenzui_zhijian"],
@@ -1418,10 +1416,9 @@
         "hidden": false
       },
       "parent": "tcc:eden_star_grant",
-      "trigger": "stat_polling",
+      "trigger": "raid_victory",
       "conditions": {
         "equippedCurios": ["tcc:eden_star"],
-        "stat": "minecraft:raid_win",
         "criteria_count": 5
       },
       "prerequisites": ["tcc:eden_star_grant"],
@@ -1933,10 +1930,9 @@
         "hidden": false
       },
       "parent": "tcc:hua_grant",
-      "trigger": "stat_polling",
+      "trigger": "raid_victory",
       "conditions": {
         "equippedCurios": ["tcc:hua"],
-        "stat": "minecraft:raid_win",
         "criteria_count": 2
       },
       "prerequisites": ["tcc:hua_grant"],

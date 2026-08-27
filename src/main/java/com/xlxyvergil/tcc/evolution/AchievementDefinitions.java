@@ -228,7 +228,7 @@ public final class AchievementDefinitions {
          *   <ul>
          *     <li>击杀类（OR/单类型）：各 {@link KillCondition#criteriaCount()} 之和</li>
          *     <li>击杀类（AND）：子目标 {@link KillCondition#criteriaCount()} 之和（用于显示）</li>
-         *     <li>stat_polling：{@link AchievementConditions#criteriaCount()}，默认 1</li>
+         *     <li>stat_polling / raid_victory：{@link AchievementConditions#criteriaCount()}，默认 1</li>
          *     <li>其他（biome_visit 等）：1</li>
          *   </ul>
          */
@@ -240,7 +240,7 @@ public final class AchievementDefinitions {
                 }
                 return total;
             }
-            if (conditions != null && conditions.stat() != null) {
+            if (conditions != null && (conditions.stat() != null || RaidVictoryEventHandler.TRIGGER_RAID_VICTORY.equals(trigger))) {
                 return conditions.criteriaCount();
             }
             return 1;
