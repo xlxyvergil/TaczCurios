@@ -14,33 +14,26 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 随机 buff / debuff 池工具。
- * 运行时枚举当前游戏注册的全部效果（ForgeRegistries.MOB_EFFECTS），按 isBeneficial() 分为正面/负面池（中性效果不进正面池）。
- * 正面池支持黑名单过滤（配置 golden_buff_blacklist），命中的效果不会被随机施加。
+ * 运行时枚举全部注册效果（ForgeRegistries.MOB_EFFECTS），按 isBeneficial() 分正面/负面池（中性效果不进正面池）；正面池支持配置 golden_buff_blacklist 黑名单过滤。
  */
 public final class MobEffectPoolHelper {
 
     private MobEffectPoolHelper() {
     }
 
-    /** 全部正面效果池 */
     public static List<MobEffect> getAllBeneficialEffects() {
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
                 .filter(MobEffect::isBeneficial)
                 .toList();
     }
 
-    /** 全部非正面效果池（负面，用于随机 debuff） */
     public static List<MobEffect> getAllHarmfulEffects() {
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
                 .filter(effect -> !effect.isBeneficial())
                 .toList();
     }
 
-    /**
-     * 正面效果池（已过滤黄金系列黑名单）。
-     * 黑名单读取自配置 golden_buff_blacklist，命中的效果不会参与随机抽取。
-     */
+    /** 正面效果池（已过滤 golden_buff_blacklist 黑名单）。 */
     private static List<MobEffect> getAllowedBeneficialEffects() {
         Set<ResourceLocation> blacklist = goldenBeneficialBlacklist();
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
@@ -52,7 +45,6 @@ public final class MobEffectPoolHelper {
                 .toList();
     }
 
-    /** 读取黄金系列正面 buff 黑名单（效果注册名集合） */
     private static Set<ResourceLocation> goldenBeneficialBlacklist() {
         Set<ResourceLocation> set = new HashSet<>();
         List<? extends String> list = TaczCuriosConfig.COMMON.goldenBeneficialBuffBlacklist.get();
@@ -68,17 +60,14 @@ public final class MobEffectPoolHelper {
         return set;
     }
 
-    /** 从正面池（含黑名单过滤）随机抽取 1 个效果，池为空返回 null */
+    /** 从正面池（含黑名单过滤）随机抽 1 个效果，池为空返回 null。 */
     @Nullable
     public static MobEffect randomBeneficial(RandomSource random) {
         List<MobEffect> pool = getAllowedBeneficialEffects();
         return pool.isEmpty() ? null : pool.get(random.nextInt(pool.size()));
     }
 
-    /**
-     * 负面效果池（已过滤戒律系列黑名单）。
-     * 黑名单读取自配置 discipline_buff_blacklist，命中的效果不会参与随机抽取。
-     */
+    /** 负面效果池（已过滤 discipline_buff_blacklist 黑名单）。 */
     private static List<MobEffect> getAllowedHarmfulEffects() {
         Set<ResourceLocation> blacklist = disciplineHarmfulBlacklist();
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
@@ -90,7 +79,6 @@ public final class MobEffectPoolHelper {
                 .toList();
     }
 
-    /** 读取戒律系列负面效果黑名单（效果注册名集合） */
     private static Set<ResourceLocation> disciplineHarmfulBlacklist() {
         Set<ResourceLocation> set = new HashSet<>();
         List<? extends String> list = TaczCuriosConfig.COMMON.disciplineHarmfulBuffBlacklist.get();
@@ -106,7 +94,7 @@ public final class MobEffectPoolHelper {
         return set;
     }
 
-    /** 从负面池（含黑名单过滤）随机抽取 1 个效果，池为空返回 null */
+    /** 从负面池（含黑名单过滤）随机抽 1 个效果，池为空返回 null。 */
     @Nullable
     public static MobEffect randomHarmful(RandomSource random) {
         List<MobEffect> pool = getAllowedHarmfulEffects();

@@ -17,8 +17,7 @@ import java.util.function.Predicate;
 
 /**
  * gun_kill 触发器的成就/属性规则处理器。
- * 击杀判定统一由 GunKillDebugFallbackHandler.onLivingDeath 处理（基于 LivingDeathEvent + 死亡源 tag 校验），
- * 本类不再直接监听 EntityKillByGunEvent，handleGunKill 由 fallback 处理器在确认枪杀后调用。
+ * 击杀判定统一由 GunKillDebugFallbackHandler.onLivingDeath 处理，本类不再监听 EntityKillByGunEvent，handleGunKill 由 fallback 确认枪杀后调用。
  */
 public final class GunKillEventHandler {
     public static final String TRIGGER_GUN_KILL = "gun_kill";

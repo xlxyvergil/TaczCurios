@@ -18,9 +18,7 @@ public final class EntityConditionHelper {
     }
 
     /**
-     * 判断实体是否匹配指定的实体键。
-     * "*" 匹配任意实体；"#<MobType>" 用 getMobType() 判定原版 MobType（与原版亡灵杀手等附魔语义一致）；
-     * "#namespace:tag" 匹配实体类型 tag；其它值精确匹配实体类型 ID。
+     * 判断实体是否匹配指定实体键：* 匹配任意实体；#MobType 按 getMobType() 判定原版 MobType（与原版亡灵杀手等附魔语义一致）；#namespace:tag 匹配实体类型 tag；其它值精确匹配实体类型 ID。
      */
     public static boolean matchesEntityKey(String entityKey, Entity entity) {
         if (entityKey == null || entityKey.isEmpty() || entity == null) return false;
@@ -43,9 +41,7 @@ public final class EntityConditionHelper {
     }
 
     /**
-     * 将字符串解析为原版 MobType（硬编码的实体分类），大小写不敏感。
-     * 支持 undead、UNDEAD、minecraft:undead 等形式，以及 arthropod/illager/water/undefined。
-     * 不认识的名称返回 null，交由调用方按实体类型 tag 处理。
+     * 解析原版 MobType（硬编码），大小写不敏感；支持 undead、minecraft:undead 等形式及 arthropod/illager/water/undefined。未知名称返回 null，交由调用方按实体类型 tag 处理。
      */
     @Nullable
     private static MobType parseMobType(String name) {

@@ -67,7 +67,7 @@ public class CurioCombatEventHandler {
     }
 
     /**
-     * 应用镀层饰品的非叠加Buff，amplifier = fusionLevel，Effect 直接用 amplifier 计算。
+     * amplifier 直接取融合等级（非叠加 Buff）。
      */
     private static void applyGildedBuff(Player player, Item curio, MobEffect effect, int durationSeconds) {
         int level = getCurioFusionLevel(player, curio);
@@ -75,7 +75,7 @@ public class CurioCombatEventHandler {
     }
 
     /**
-     * 应用镀层饰品的叠加Buff，每次叠加 +curioLevel（叠层Effect使用 amplifier × PerLevel 计算数值）。
+     * 每次叠加 +融合等级（叠层 Effect 用 amplifier × PerLevel 计算数值）。
      */
     private static void applyGildedStackingBuff(Player player, Item curio, MobEffect effect, int durationSeconds, int maxStacks) {
         int level = Math.max(1, getCurioFusionLevel(player, curio));
@@ -83,9 +83,6 @@ public class CurioCombatEventHandler {
         applyStackingBuff(player, effect, durationSeconds, maxStackCount, level);
     }
 
-    /**
-     * 爆头命中 — 触发爆头Buff
-     */
     @SubscribeEvent
     public static void onGunHeadshot(EntityHurtByGunEvent.Post event) {
         if (!event.isHeadShot()) return;
@@ -190,9 +187,6 @@ public class CurioCombatEventHandler {
         }
     }
 
-    /**
-     * 实体死亡 — 近战击杀触发Buff
-     */
     @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
@@ -205,9 +199,6 @@ public class CurioCombatEventHandler {
         }
     }
 
-    /**
-     * 有害效果乘算： 在 LivingHurtEvent 直接乘算伤害
-     */
     @SubscribeEvent(priority = net.minecraftforge.eventbus.api.EventPriority.LOW)
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();

@@ -13,9 +13,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.UUID;
 
-/**
- * 属性工具类 - 提供统一的属性访问方式
- */
 public class AttributeHelper {
     
     // 原版属性
@@ -184,16 +181,10 @@ public class AttributeHelper {
         return ForgeRegistries.ATTRIBUTES.getValue(loc);
     }
     
-    /**
-     * 获取属性实例的辅助方法。
-     */
     public static AttributeInstance getInstance(LivingEntity entity, Attribute attribute) {
         return entity.getAttributes().getInstance(attribute);
     }
     
-    /**
-     * 应用属性修饰符。
-     */
     public static void applyModifier(LivingEntity entity, Attribute attribute, double value, UUID uuid, String name, AttributeModifier.Operation operation) {
         AttributeInstance instance = getInstance(entity, attribute);
         
@@ -205,9 +196,6 @@ public class AttributeHelper {
         }
     }
     
-    /**
-     * 移除属性修饰符。
-     */
     public static void removeModifier(LivingEntity entity, Attribute attribute, UUID uuid) {
         AttributeInstance instance = getInstance(entity, attribute);
         
@@ -217,8 +205,7 @@ public class AttributeHelper {
     }
 
     /**
-     * 累加式属性修饰符：在已有修饰符（固定 UUID）基础上叠加 delta，幂等可重入。
-     * 用于「持久削减」类机制（如旭光神之键削甲），修饰符值不断累加，卸下/死亡前一直生效。
+     * 累加式修饰符：在固定 UUID 的已有修饰符上叠加 delta，幂等可重入；用于「持久削减」类机制（如旭光神之键削甲），值不断累加直至卸下/死亡。
      */
     public static void applyStackingModifier(LivingEntity entity, Attribute attribute, double delta,
                                              UUID uuid, String name, AttributeModifier.Operation operation) {
@@ -239,8 +226,7 @@ public class AttributeHelper {
     }
 
     /**
-     * 遍历全部注册属性，统一添加/移除修饰符（无限系列全属性加成，参考 MoonsTeams nightmarerotten）。
-     * value = 0 时仅移除修饰符（用于 removeEffects）；否则对每个实例添加 MULTIPLY_BASE 瞬态修饰符。
+     * 遍历所有注册属性统一增删修饰符（无限系列全属性加成）。value 为 0 时仅移除（removeEffects 用）；否则对每个实例添加 MULTIPLY_BASE 瞬态修饰符。
      */
     public static void applyAllAttributesModifier(LivingEntity entity, UUID uuid, String name,
                                                   double value, AttributeModifier.Operation operation) {

@@ -26,3 +26,10 @@ libs
 
 # Files from Forge MDK
 forge*changelog.txt
+docs/饰品制作指南.md
+docs/进化链与成就制作指南.md
+docs/新系列规划.md
+docs/新系列成就链规划.md
+docs/成就触发条件灵感.md
+docs/MoonsTeams属性提升灵感.md
+.dbg/undead-tag-kill.env

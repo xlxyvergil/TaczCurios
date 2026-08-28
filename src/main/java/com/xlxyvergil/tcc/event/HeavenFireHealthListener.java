@@ -10,14 +10,11 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 天火系列饰品血量变化监听器：仅监听血量变化事件，具体逻辑由饰品类自行处理。
+ * 天火系列饰品血量变化监听：仅监听血量变化事件，具体逻辑由饰品类自行处理。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireHealthListener {
     
-    /**
-     * 监听受伤事件 - 处理救世饰品的伤害降低
-     */
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
@@ -31,9 +28,6 @@ public class HeavenFireHealthListener {
         HeavenFireJudgment.onHealthChanged(target);
     }
     
-    /**
-     * 监听治疗事件
-     */
     @SubscribeEvent
     public static void onLivingHeal(LivingHealEvent event) {
         LivingEntity entity = event.getEntity();

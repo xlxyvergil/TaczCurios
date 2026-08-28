@@ -8,8 +8,7 @@ import net.minecraft.world.item.Rarity;
 import javax.annotation.Nullable;
 
 /**
- * 融合升级工具类 — 集中管理饰品升级的 NBT 读写、公式计算与 Config 读取。
- * 被属性修饰符应用、Tooltip 显示、异况事件处理器统一调用。
+ * 集中管理饰品升级的 NBT 读写、公式计算与 Config 读取；被属性修饰符应用、Tooltip 显示、异况事件处理器统一调用。
  */
 public class FusionUpgradeUtil {
 
@@ -18,7 +17,7 @@ public class FusionUpgradeUtil {
     // NBT 读写
 
     /**
-     * 读取饰品当前等级，无 NBT 标签时默认返回 0（新饰品初始等级）。
+     * 读取饰品当前等级；无 NBT 标签时返回 0（新饰品初始等级）。
      */
     public static int getLevel(ItemStack stack) {
         if (stack.isEmpty()) return 0;
@@ -29,9 +28,6 @@ public class FusionUpgradeUtil {
         return 0;
     }
 
-    /**
-     * 写入饰品等级。
-     */
     public static void setLevel(ItemStack stack, int level) {
         stack.getOrCreateTag().putInt(NBT_KEY_LEVEL, Math.max(0, level));
     }
@@ -43,8 +39,7 @@ public class FusionUpgradeUtil {
     }
 
     /**
-     * 获取指定稀有度的封顶等级。
-     * RIFT / 非 tcc_slot 稀有度返回 0（不参与升级）。
+     * 指定稀有度的封顶等级；RIFT 及非 tcc_slot 稀有度返回 0（不参与升级）。
      */
     public static int getMaxLevel(Rarity rarity) {
         return switch (rarity) {
@@ -57,7 +52,7 @@ public class FusionUpgradeUtil {
     }
 
     /**
-     * 获取指定稀有度的 EBC（基础内融核心消耗）。
+     * 指定稀有度的 EBC（基础内融核心消耗）。
      */
     public static int getEBC(Rarity rarity) {
         return switch (rarity) {
@@ -71,18 +66,14 @@ public class FusionUpgradeUtil {
 
     // 公式计算
 
-    /**
-     * 根据 FusionData 计算实际属性值（便捷重载）。
-     */
     public static double getActualValue(double maxLevelValue, FusionData data) {
         return getActualValue(maxLevelValue, data.level(), data.rarity());
     }
 
     /**
-     * 计算指定等级的实际属性值，截断到 2 位小数。
-     * Config 配置的是满级值，反向推导各等级：实际值 = 满级值 × (1 + 等级 × C) / (1 + 最大等级 × C)。
-     * Lv.0 时为 满级值 / (1 + 最大等级 × C)；Lv.MAX 时为满级值。稀有度不参与升级（maxLevel ≤ 1）时直接返回满级值。
-     * 截断而非四舍五入，确保 7.2% → 7%、-7.2% → -7%，与 tooltip 显示一致。
+     * 按等级反推实际值并截断到 2 位小数：实际值 = 满级值 × (1 + 等级 × C) / (1 + 最大等级 × C)。
+     * Lv.0 为 满级值 / (1 + 最大等级 × C)，Lv.MAX 为满级值；maxLevel ≤ 1（不参与升级）时直接返回满级值。
+     * 截断而非四舍五入，保证 7.2% → 7%、-7.2% → -7%，与 tooltip 显示一致。
      */
     public static double getActualValue(double maxLevelValue, int level, @Nullable Rarity rarity) {
         if (rarity == null) return maxLevelValue;
@@ -95,8 +86,7 @@ public class FusionUpgradeUtil {
     }
 
     /**
-     * 从 0 级升至 targetLevel 所需的内融核心总数。
-     * 公式：Cost = EBC × (2^targetLevel - 1)；targetLevel ≤ 0 时返回 0。
+     * 从 0 级升至 targetLevel 所需内融核心总数：Cost = EBC × (2^targetLevel - 1)；targetLevel ≤ 0 返回 0。
      */
     public static int getUpgradeCost(int targetLevel, Rarity rarity) {
         if (targetLevel <= 0) return 0;
@@ -106,8 +96,7 @@ public class FusionUpgradeUtil {
     }
 
     /**
-     * 计算分解产出 CoreFusion 数量。
-     * COMMON: (10 ÷ 3) × 等级 + 5；UNCOMMON: 7.5 × 等级 + 10；RARE: 12.5 × 等级 + 15；EPIC: (1 + 等级) × 20。
+     * 分解产出 CoreFusion 数量：COMMON 为 (10/3)×等级+5，UNCOMMON 为 7.5×等级+10，RARE 为 12.5×等级+15，EPIC 为 (1+等级)×20。
      */
     public static int getDecompositionOutput(Rarity rarity, int level) {
         return switch (rarity) {

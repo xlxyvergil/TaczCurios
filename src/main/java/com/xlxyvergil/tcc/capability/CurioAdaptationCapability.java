@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * 饰品适应效果 Capability。每个 LivingEntity 持有一份，由饰品 register / unregister 控制；
- * 死亡自动重置，超时无伤自动清空。
+ * 饰品适应效果 Capability：每个 LivingEntity 持有一份，由饰品 register/unregister 控制，
+ * 死亡自动重置、超时无伤自动清空。
  */
 public class CurioAdaptationCapability {
 
@@ -25,7 +25,7 @@ public class CurioAdaptationCapability {
     // 适应实例
 
     /**
-     * 单个适应效果实例。每个饰品注册一个独立实例，互不干扰。
+     * 单个适应效果实例，每个饰品注册一个，互不干扰。
      */
     public static class AdaptInstance {
         final int maxSlots;
@@ -62,7 +62,7 @@ public class CurioAdaptationCapability {
         }
 
         /**
-         * 处理一次伤害。先做衰减检查，再执行适应逻辑。
+         * 处理一次伤害，先做衰减检查再执行适应逻辑。
          */
         void process(String msgId, float[] amountRef, long tick) {
             checkDecay(tick);
@@ -137,7 +137,7 @@ public class CurioAdaptationCapability {
     // Handler
 
     /**
-     * 每个实体的适应数据容器，饰品通过 register / unregister 管理实例。
+     * 每个实体的适应数据容器，饰品通过 register/unregister 管理实例。
      */
     public static class Handler {
         final LivingEntity owner;
@@ -202,7 +202,7 @@ public class CurioAdaptationCapability {
         CapabilityManager.get(new CapabilityToken<>() {});
 
     /**
-     * Capability Provider。挂载在 LivingEntity 上。
+     * 挂载在 LivingEntity 上的 Capability Provider。
      */
     public static class Provider implements ICapabilitySerializable<CompoundTag> {
 

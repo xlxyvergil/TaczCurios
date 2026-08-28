@@ -19,8 +19,8 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
- * 追踪玩家佩戴特定饰品时的存活时长（tick），写入自定义统计，每 tick 检查佩戴状态并递增。
- * griseo / huishi_zhijuan / fanxing 死亡不重置，累计总时长；qishi_zhijian 死亡重置归 0。
+ * 追踪佩戴特定饰品时的存活时长（tick）写入自定义统计；griseo / huishi_zhijuan / fanxing 死亡不重置，
+ * qishi_zhijian 死亡归 0。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class CurioPlaytimeTracker {
@@ -63,18 +63,12 @@ public final class CurioPlaytimeTracker {
         }
     }
 
-    /**
-     * 递增指定自定义统计的值（+1 tick）。
-     */
     private static void incrementStat(ServerPlayer player, ResourceLocation statKey) {
         Stat<ResourceLocation> stat = Stats.CUSTOM.get(statKey);
         int current = player.getStats().getValue(stat);
         player.getStats().setValue(player, stat, current + 1);
     }
 
-    /**
-     * 检查玩家是否佩戴了指定 itemId 的饰品。
-     */
     private static boolean hasCurioEquipped(Player player, String itemId) {
         ICuriosItemHandler inv = CuriosApi.getCuriosInventory(player).orElse(null);
         if (inv == null) return false;

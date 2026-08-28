@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 枪杀数据 Capability，在枪械伤害事件与死亡事件之间传递击杀信息。替代 getPersistentData() NBT 方案，
- * 以兼容重写该方法返回空 NBT 的模组（如 RevelationFix、Apollyon）。
+ * 在枪械伤害事件与死亡事件之间传递击杀信息；替代 getPersistentData() NBT 方案以兼容重写该方法返回空 NBT
+ * 的模组（如 RevelationFix、Apollyon）。
  */
 public final class GunKillDataCapability {
 
@@ -22,7 +22,7 @@ public final class GunKillDataCapability {
     // 数据容器
 
     /**
-     * 单个实体的枪杀数据。数据在写入后保持一段时间，供死亡事件读取。
+     * 单个实体的枪杀数据，写入后保持一段时间供死亡事件读取。
      */
     public static class GunKillData {
         // 枪械伤害数据

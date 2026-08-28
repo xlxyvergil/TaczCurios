@@ -13,8 +13,7 @@ import java.util.List;
 
 /**
  * 事件处理器对 AchievementDefinitions 的薄封装，逻辑完全由 achievement_definitions.json 驱动。
- * 进度记录在玩家的 TccPlayerDataCapability（而非成就条件），成就只有一个 step_1 条件；
- * 当累计进度达到目标数时授予 step_1，从而完成成就。
+ * 进度记录在玩家 Capability（而非成就条件），成就只有一个 step_1 条件；累计进度达到目标时授予 step_1 从而完成。
  */
 public final class RuleAdvancementMapping {
 
@@ -22,7 +21,6 @@ public final class RuleAdvancementMapping {
     private static final String SUB_KEY_SEP = "|";
     private RuleAdvancementMapping() {}
 
-    /** 检查玩家是否已完成该成就。 */
     public static boolean isAdvancementDone(ServerPlayer player, String achievementId) {
         if (player.server == null) return false;
         Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
@@ -30,18 +28,16 @@ public final class RuleAdvancementMapping {
         return player.getAdvancements().getOrStartProgress(adv).isDone();
     }
 
-    /** 从玩家 Capability 获取当前进度。 */
     public static int getProgress(ServerPlayer player, String achievementId) {
         return TccPlayerDataCapability.getAchievementProgress(player, achievementId);
     }
 
-    /** 写入玩家 Capability 中的进度。 */
     private static void setProgress(ServerPlayer player, String achievementId, int progress) {
         TccPlayerDataCapability.setAchievementProgress(player, achievementId, progress);
     }
 
     /**
-     * 通过累计 NBT 进度授予多个「步」。当进度达到目标时授予 step_1，完成进阶并触发 AdvancementEarnEvent。
+     * 按累计进度授予多个「步」；进度达到目标时授予 step_1，完成进阶并触发成就达成事件。
      */
     public static void awardSteps(ServerPlayer player, String achievementId, int target, int steps) {
         if (steps <= 0 || target <= 0) return;
@@ -68,7 +64,7 @@ public final class RuleAdvancementMapping {
     }
 
     /**
-     * 授予下一个条件（1 步）。返回该成就是否已完全完成。
+     * 授予下一个条件（1 步），返回该成就是否已完全完成。
      */
     public static boolean awardNextCriterion(ServerPlayer player, String achievementId, int target) {
         if (target <= 0) return false;
@@ -95,7 +91,7 @@ public final class RuleAdvancementMapping {
         return newProgress >= target;
     }
 
-    /** 一次性授予所有条件（用于 biome_visit 等一次性触发器）。 */
+    /** 一次性授予全部条件（用于 biome_visit 等一次性触发器）。 */
     public static void awardAll(ServerPlayer player, String achievementId, int target) {
         if (target <= 0) return;
         if (player.server == null) return;
@@ -115,9 +111,7 @@ public final class RuleAdvancementMapping {
 
     // 多类型击杀（AND 语义）
 
-    /**
-     * 判断该成就是否使用多类型击杀（AND 语义）。
-     */
+    /** 判断该成就是否使用多类型击杀（AND 语义）。 */
     public static boolean isMultiTypeKill(AchievementDefinitions.AchievementDef def) {
         return def.isMultiTypeKill();
     }
@@ -128,8 +122,8 @@ public final class RuleAdvancementMapping {
     }
 
     /**
-     * 处理多类型击杀的进度更新。每种实体类型的击杀数用复合 key <achievementId>|<entity> 分别追踪。
-     * AND 语义：所有子目标均达到后 award；OR 语义：任一子目标达到后 award。同步总进度（各子进度之和）用于 tooltip 显示。
+     * 多类型击杀的进度更新：每种实体类型的击杀数用复合 key 分别追踪；AND 需全部子目标达标，OR 任一达标。
+     * 同步各子进度（各子进度之和用于 tooltip 显示）。
      */
     public static void awardMultiTypeKill(ServerPlayer player, String achievementId,
                                           AchievementDefinitions.AchievementDef def,
@@ -187,7 +181,6 @@ public final class RuleAdvancementMapping {
         }
     }
 
-    /** 检查成就的所有前置条件是否都已达成。 */
     public static boolean arePrerequisitesMet(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (def.prerequisites() == null || def.prerequisites().isEmpty()) return true;
         for (String prereq : def.prerequisites()) {

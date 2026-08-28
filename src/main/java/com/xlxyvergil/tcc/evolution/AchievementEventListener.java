@@ -11,9 +11,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 监听 AdvancementEarnEvent，执行 achievement_definitions.json 中对应的奖励（发放/进化）。
- * 奖励执行与触发处理器解耦：处理器只授予条件，奖励在成就自然达成时触发；
- * reward 的 autoAchievements 列表会在主奖励执行后自动授予相应子成就。
+ * 监听成就达成事件，执行 achievement_definitions.json 中对应的奖励（发放/进化）。
+ * 奖励与触发处理器解耦：处理器只授予条件，奖励在成就自然达成时触发；主奖励执行后自动授予 autoAchievements 中的子成就。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class AchievementEventListener {

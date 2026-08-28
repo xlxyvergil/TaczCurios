@@ -3,9 +3,8 @@ package com.xlxyvergil.tcc.evolution;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
- * raid_victory 触发器的成就处理器。由 RaidMixin 在袭击胜利时为每个参与玩家调用。
- * 每次袭击胜利 +1 进度，到达 criteria_count 后发放成就；佩戴校验在胜利瞬间进行（matchesStatBiomeConditions）。
- * 结构与 GunKillEventHandler 一致，仅以 criteria_count 代表所需袭击胜利次数。
+ * raid_victory 触发器的成就处理器，由 RaidMixin 在袭击胜利时为每个参与玩家调用。
+ * 每次胜利 +1 进度，达到 criteria_count 后发放成就；佩戴校验在胜利瞬间进行；结构与 GunKillEventHandler 一致。
  */
 public final class RaidVictoryEventHandler {
     public static final String TRIGGER_RAID_VICTORY = "raid_victory";

@@ -6,8 +6,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 天火劫灭延迟标记：扣血后延迟施加流血效果。
- * 持续时间可配置（默认 3 秒），最后 1 秒时施加天火流血。
+ * 天火劫灭延迟标记：扣血后延迟施加流血，最后 1 秒时施加天火流血。
  */
 public class HeavenFireApocalypseDelayEffect extends MobEffect {
 

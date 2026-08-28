@@ -10,9 +10,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * AI 停止（定身）执行器 - 浮生神之键线。
- * 每 tick 检查 persistentData 中的截止时间，未到则对 Mob 停用寻路/追击/攻击等并清空速度；
- * 定身结束时按记录的原始 NoAI 状态恢复，避免误开普通生物原本关闭的 AI。
+ * 每 tick 检查 persistentData 中的截止时间，未到则对 Mob 停用寻路/追击/攻击并清空速度；
+ * 定身结束按记录的原始 NoAI 状态恢复，避免误开原本关闭的 AI。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class AiStopHandler {

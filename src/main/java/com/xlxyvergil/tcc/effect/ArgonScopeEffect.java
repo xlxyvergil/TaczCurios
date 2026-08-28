@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 氩晶瞄具Buff - 爆头触发，暴击几率提升（不叠加）
- */
 public class ArgonScopeEffect extends MobEffect {
     public ArgonScopeEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFFAA44);

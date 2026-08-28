@@ -24,8 +24,7 @@ public final class GunHeadshotEventHandler {
     private GunHeadshotEventHandler() {}
 
     /**
-     * 监听 EntityHurtByGunEvent.Pre：爆头命中时触发 gun_headshot_hit 成就判定，
-     * 并将爆头标记（attacker / time / gunId）写入 GunKillDataCapability 供 onLivingDeath 使用。
+     * 监听爆头命中：触发 gun_headshot_hit 判定，并把爆头标记（attacker / time / gunId）写入 GunKillDataCapability 供 onLivingDeath 使用。
      */
     @SubscribeEvent
     public static void onGunHeadshotHit(EntityHurtByGunEvent.Pre event) {
@@ -46,9 +45,8 @@ public final class GunHeadshotEventHandler {
     }
 
     /**
-     * 统一的爆头击杀判定：监听 LivingDeathEvent，对所有实体处理。
-     * 流程：死亡源 attacker 必须是玩家；从 GunKillDataCapability 读取爆头标记（attacker 匹配且在 2 tick 窗口内）；
-     * 读取 gunId 触发 gun_headshot_kill 判定。用 Capability 而非 NBT，以兼容 getPersistentData() 返回空 NBT 的实体（如 Apollyon）。
+     * 统一的爆头击杀判定：死亡源 attacker 必须是玩家，从 Capability 读取爆头标记（attacker 匹配且在 2 tick 窗口内），
+     * 再读取 gunId 触发 gun_headshot_kill。用 Capability 而非 NBT，以兼容 getPersistentData() 返回空 NBT 的实体（如 Apollyon）。
      */
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
@@ -85,9 +83,6 @@ public final class GunHeadshotEventHandler {
         handleTrigger(player, killed, gunId, TRIGGER_GUN_HEADSHOT_KILL);
     }
 
-    /**
-     * 成就驱动处理器：遍历该触发器的成就，检查条件、授予一个条件，并在完成时执行奖励。
-     */
     private static void handleTrigger(Player player, LivingEntity other,
                                        net.minecraft.resources.ResourceLocation gunId, String trigger) {
         // gun_headshot_kill 必须是枪械击杀，没有 gunId 说明不是枪杀，直接跳过

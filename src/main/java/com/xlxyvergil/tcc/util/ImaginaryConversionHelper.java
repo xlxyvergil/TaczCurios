@@ -14,8 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /**
- * 神之键通用效果工具（§0.1）。
- * 将伤害转为虚数伤害（Pathway B：EntityHurtByGunEvent.Pre 替换伤害源），并同时施加不限等级的虚数侵染。
+ * 将枪械伤害转为虚数伤害（Pre 阶段替换伤害源），并施加不限等级的虚数侵染。
  */
 public final class ImaginaryConversionHelper {
 
@@ -26,9 +25,7 @@ public final class ImaginaryConversionHelper {
     }
 
     /**
-     * 将枪械伤害源替换为虚数伤害，并在子弹上标记侵染。
-     * 3 阶神之键在 EntityHurtByGunEvent.Pre 中调用。
-     * TACZ 近战攻击（枪托等）同样触发该事件，此时 bullet 为 null，伤害源使用无子弹重载。
+     * 替换伤害源为虚数并标记子弹；在 Pre 阶段被 3 阶神之键调用。TACZ 近战（枪托等）也触发该事件，此时 bullet 为 null，改用无子弹重载。
      */
     public static void convertToImaginary(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
@@ -51,9 +48,7 @@ public final class ImaginaryConversionHelper {
     }
 
     /**
-     * 为被击中目标施加不限等级的虚数侵染。
-     * 3 阶神之键在 EntityHurtByGunEvent.Post 中调用。
-     * direct 为 true 时不依赖子弹标记（近战攻击，bullet 为 null），直接施加侵染。
+     * 为被击中目标施加不限等级虚数侵染；Post 阶段被 3 阶神之键调用。direct 为 true（近战，bullet 为 null）时不依赖子弹标记直接施加。
      */
     public static void applyInfection(EntityHurtByGunEvent.Post event, LivingEntity attacker, boolean direct) {
         if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
@@ -79,8 +74,7 @@ public final class ImaginaryConversionHelper {
     }
 
     /**
-     * 为指定目标施加指定等级的虚数侵染（持续 durationSeconds 秒）。
-     * 用于戒律·神之键线的范围光环效果（每 1 秒刷新），高等级需绕过 maxLevel 限制。
+     * 为指定目标施加指定等级虚数侵染（持续 durationSeconds 秒）；用于戒律·神之键线的范围光环（每 1 秒刷新），高等级需绕过 maxLevel 限制。
      */
     public static void applyInfection(@Nullable LivingEntity target, @Nullable LivingEntity source, int level, int durationSeconds) {
         if (target == null || target.isDeadOrDying()) {

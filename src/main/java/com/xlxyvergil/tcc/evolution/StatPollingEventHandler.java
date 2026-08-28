@@ -24,8 +24,7 @@ import java.util.function.Predicate;
 
 /**
  * stat_polling / biome_visit 成就的低频轮询处理器。
- * stat_polling 读取原版 Stats，达到阈值时授予条件；biome_visit 检测玩家当前群系并授予成就。
- * 轮询间隔：stat_polling 每 3 tick（与 FTB Quests 一致），biome_visit 每 20 tick（1 秒）。
+ * stat_polling 读取原版 Stats，达到阈值授予条件；biome_visit 检测当前群系授予成就。轮询间隔 stat_polling 每 3 tick（与 FTB Quests 一致），biome_visit 每 20 tick。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class StatPollingEventHandler {
@@ -119,8 +118,7 @@ public final class StatPollingEventHandler {
     private static final String VISITED_BIOMES_KEY = "tcc_visited_biomes";
 
     /**
-     * 将玩家当前所在的维度和群系记录到玩家 NBT 列表中。
-     * 每 20 tick 调用一次，写入 tcc_visited_dimensions / tcc_visited_biomes。
+     * 每 20 tick 将玩家当前所在维度与群系写入 tcc_visited_dimensions / tcc_visited_biomes 列表。
      */
     private static void recordCurrentBiome(ServerPlayer player) {
         ResourceLocation dimId = player.level().dimension().location();
@@ -132,8 +130,7 @@ public final class StatPollingEventHandler {
     }
 
     /**
-     * 检查目标群系/维度是否在玩家已访问 NBT 列表中。
-     * 对 biome tag（# 前缀）无法通过 NBT 判断，回退到实时检测。
+     * 检查目标群系/维度是否在玩家已访问列表；biome tag（# 前缀）无法通过 NBT 判断，回退到实时检测。
      */
     private static void checkBiome(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (!def.isEnabled()) return;
@@ -160,7 +157,7 @@ public final class StatPollingEventHandler {
     }
 
     /**
-     * 将访问记录写入玩家 Capability，避免重复。
+     * 记录到玩家 Capability 去重；仅首次记录时同步到客户端。
      */
     private static void recordVisit(ServerPlayer player, String nbtKey, String id) {
         boolean added;
@@ -189,10 +186,8 @@ public final class StatPollingEventHandler {
     // ATTRIBUTE 规则（来自 evolution_rules.json）
 
     /**
-     * 处理 stat_polling 的 ATTRIBUTE 规则：按步累积。
-     * statThreshold 作为步间隔（如 48000 tick = 2 游戏日）；每步向进度 NBT 追加 value，至多到 progress.cap。
-     * 每规则的 cap 由 progress.capCounterKey 追踪（唯一），共享的 progress.nbtKey 累计所有规则之和（支持继承）。
-     * 步数存于 StatEvoSteps_<ruleId> NBT key。
+     * stat_polling 的 ATTRIBUTE 规则按步累积：statThreshold 为步间隔（如 48000 tick = 2 游戏日），每步追加 value 至 progress.cap。
+     * 每规则的 cap 由 capCounterKey 追踪（唯一），共享的 nbtKey 累加所有规则之和（支持继承），步数存于 StatEvoSteps_<ruleId>。
      */
     private static void checkStatAttribute(ServerPlayer player, EvolutionRegistry.Rule rule) {
         if (!rule.enabled) return;

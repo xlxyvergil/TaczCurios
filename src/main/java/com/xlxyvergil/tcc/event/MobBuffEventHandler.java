@@ -13,8 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.UUID;
 
 /**
- * 怪物虚数抗性事件处理器。
- * 非玩家实体生成时添加持久化的虚数抗性属性修饰符（不可被牛奶等效果移除）。
+ * 非玩家实体生成时添加持久化虚数抗性修饰符（牛奶等效果不可移除）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class MobBuffEventHandler {

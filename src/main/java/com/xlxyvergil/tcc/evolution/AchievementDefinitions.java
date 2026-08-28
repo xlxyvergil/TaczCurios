@@ -23,7 +23,7 @@ import java.util.*;
 
 /**
  * 从 achievement_definitions.json 加载并管理成就定义。
- * 每个成就定义其显示文案（双语）、触发条件、进度数、前置条件与奖励（发放/进化），以完全可配置的 JSON 系统取代硬编码映射。
+ * 每个定义含显示文案（双语）、触发条件、进度、前置条件与奖励（发放/进化），以完全可配置的 JSON 取代硬编码映射。
  */
 public final class AchievementDefinitions {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -105,8 +105,7 @@ public final class AchievementDefinitions {
     }
 
     /**
-     * 合并默认成就定义到已有配置文件：仅追加新 key，不修改已存在的条目。
-     * 用户自定义的修改和排序得到保留，mod 更新带来的新成就自动追加。
+     * 合并默认定义到已有配置：仅追加新 key，保留用户修改与排序，mod 新增成就自动追加。
      */
     private static boolean mergeDefaults(Path file) {
         try {
@@ -221,9 +220,7 @@ public final class AchievementDefinitions {
         public ResourceLocation idRL() { return new ResourceLocation(id); }
 
         /**
-         * 成就的目标计数：
-         * 击杀类（OR/单类型）为各击杀条件计数之和；击杀类（AND）为子目标计数之和（用于显示）；
-         * stat_polling / raid_victory 为条件计数，默认 1；其他（biome_visit 等）为 1。
+         * 目标计数：击杀类为各击杀条件计数之和（AND 多类型另用于显示）；stat_polling / raid_victory 为条件计数（默认 1）；其余为 1。
          */
         public int targetCount() {
             if (conditions != null && conditions.kills() != null && !conditions.kills().isEmpty()) {
@@ -247,7 +244,6 @@ public final class AchievementDefinitions {
                     && conditions.kills().size() > 1;
         }
 
-        /** 获取指定语言下的成就标题。 */
         public String title(String locale) {
             if (display == null || display.title == null) return id;
             String t = display.title.get(locale);
@@ -255,7 +251,7 @@ public final class AchievementDefinitions {
             return t != null ? t : id;
         }
 
-        /** 获取指定语言下的成就描述，%d 占位符由调用方以（当前, 总数）填充。 */
+        /** 获取指定语言下的成就描述，%d 由调用方以（当前, 总数）填充。 */
         public String description(String locale, int current, int total) {
             if (display == null || display.description == null) return id;
             String fmt = display.description.get(locale);
@@ -347,8 +343,8 @@ public final class AchievementDefinitions {
         String to
     ) {}
     /**
-     * 解析实体注册键为本地化显示名，使用原版翻译系统以尊重当前语言实例。
-     * 以 # 开头且对应原版 MobType 的键（如 #minecraft:undead）会显示为对应本地化名称（如「亡灵」），其余 # 标签按原样显示。
+     * 解析实体注册键为本地化显示名（走原版翻译系统以尊重当前语言实例）。
+     * 以 # 开头且对应原版 MobType 的键（如 #minecraft:undead）显示为本地化名称，其余 # 标签按原样显示。
      */
     public static String entityDisplayName(String entityKey) {
         if (entityKey == null || entityKey.isBlank()) return "?";
@@ -371,8 +367,7 @@ public final class AchievementDefinitions {
     }
 
     /**
-     * 将字符串映射为原版 MobType 的本地化翻译键（大小写不敏感）。
-     * 不认识的名称返回 null，交由调用方按普通 # 标签原样显示。
+     * 将名称映射为原版 MobType 的本地化翻译键（大小写不敏感）；不认识返回 null，由调用方按普通 # 标签显示。
      */
     private static String mobTypeTranslationKey(String name) {
         if (name == null) return null;

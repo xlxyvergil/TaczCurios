@@ -37,9 +37,8 @@ public class TccAttributeEvents {
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
 
     /**
-     * 虚数伤害统一注入入口（setHealth 直伤方案）。
-     * 不经过 hurt()，因此不触发 LivingHurtEvent / 护甲 / 盾牌 / 吸收 / 荆棘等管线，是真正无视防御的真伤。
-     * 倍率结算（抗性/侵染等级/岛爆渡鸦）由 resolveFinalImaginaryDamage 内联完成；致死时调用 die(source)。
+     * 虚数伤害统一注入入口（setHealth 直伤）。不经过 hurt()，故不触发 LivingHurtEvent / 护甲 / 盾牌 / 吸收 /
+     * 荆棘等管线，为无视防御的真伤；倍率结算由 resolveFinalImaginaryDamage 内联完成，致死时调用 die(source)。
      */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
@@ -80,8 +79,8 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 虚数伤害倍率结算（原 imaginaryDamageOnAttack 内联逻辑）：
-     * 目标虚数抗性 → 虚数侵染等级倍率 → 岛爆渡鸦加成，供直伤与 hurt 两条路径共用。
+     * 虚数伤害倍率结算（原 imaginaryDamageOnAttack 内联逻辑）：目标虚数抗性 → 侵染等级倍率 → 岛爆渡鸦加成，
+     * 直伤与 hurt 两条路径共用。
      */
     private static float resolveFinalImaginaryDamage(LivingEntity target, DamageSource source, float baseDamage) {
         if (baseDamage <= 0) return 0;
@@ -129,8 +128,7 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 对目标施加虚数侵染（可叠加，受饰品分级上限约束），供枪械与近战虚数饰品共用。
-     * 仅 canApplyCollapse=true 时额外触发虚数崩解。
+     * 对目标施加虚数侵染（可叠加，受饰品分级上限约束）；仅 canApplyCollapse=true 时额外触发虚数崩解。
      */
     public static void applyInfection(LivingEntity living, LivingEntity attacker, ImaginaryInfectionHelper.InfectionInfo info) {
         if (!info.isValid()) return;
@@ -189,8 +187,7 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 处理 Pathway A 虚数伤害的 overheal。
-     * 子弹为 DamageSource 直接实体时 Apothic 无法原生触发 overheal，此处通过 TACZ Post 事件补足。
+     * 处理 Pathway A 虚数伤害的 overheal：子弹为直接实体时 Apothic 无法原生触发，故通过 TACZ Post 事件补足。
      */
     @SubscribeEvent
     public static void onGunOverheal(EntityHurtByGunEvent.Post event) {
@@ -225,9 +222,6 @@ public class TccAttributeEvents {
         }
     }
 
-    /**
-     * 检查攻击者是否装备了负面效果种数增伤饰品。
-     */
     private static boolean attackerHasHarmfulCurio(LivingEntity attacker) {
         if (!(attacker instanceof Player)) return false;
         return CuriosApi.getCuriosInventory(attacker).resolve()
@@ -240,8 +234,7 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 直接写 getActiveEffectsMap().put 并绕过 MobEffectEvent.Added，避免外部监听器干扰；
-     * old.update(ins) 在原地刷新时长/等级。
+     * 直接写 getActiveEffectsMap().put 并绕过 MobEffectEvent.Added，避免外部监听器干扰；old.update(ins) 原地刷新时长/等级。
      */
     private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
         MobEffect effect = ins.getEffect();
@@ -261,8 +254,8 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 处理 Pathway B（子弹虚数伤害走 hurt）的虚数抗性/侵染倍率结算。
-     * 注意：applyImaginaryDamage 已改走 setHealth 直伤，其倍率结算由 resolveFinalImaginaryDamage 内联完成。
+     * 处理 Pathway B（走 hurt 的子弹虚数伤害）倍率结算；注意 applyImaginaryDamage 已改走 setHealth 直伤，
+     * 其倍率由 resolveFinalImaginaryDamage 内联完成。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
@@ -289,9 +282,8 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 阻止虚空珍珠等拦截至 tcc 效果的添加。
-     * 优先级 LOWEST，在 EnigmaticEventHandler.onApplyPotion(Applicable) 之后执行，用 ALLOW 覆盖其 DENY
-     * （Forge setResult 最后调用者胜出）。
+     * 阻止虚空珍珠等拦截至 tcc 效果的添加；优先级 LOWEST，在 EnigmaticEventHandler.onApplyPotion(Applicable) 之后用
+     * ALLOW 覆盖其 DENY（Forge setResult 最后调用者胜出）。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
@@ -303,7 +295,7 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 阻止 tcc 模组的效果被移除（Forge 事件双重保险），优先级 HIGHEST 最先处理。
+     * 双重保险阻止 tcc 效果被移除，优先级 HIGHEST 最先处理。
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEffectRemove(MobEffectEvent.Remove event) {

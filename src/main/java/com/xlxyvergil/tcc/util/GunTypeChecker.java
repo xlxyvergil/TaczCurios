@@ -43,16 +43,10 @@ public class GunTypeChecker {
         "rpg", "gun_type.tcc.rpg"
     );
     
-    /**
-     * 检查生物是否持有步枪。
-     */
     public static boolean isHoldingRifle(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, RIFLE_GUN_TYPES);
     }
 
-    /**
-     * 将枪械类型列表格式化为可读的显示字符串
-     */
     @net.minecraftforge.api.distmarker.OnlyIn(net.minecraftforge.api.distmarker.Dist.CLIENT)
     public static String formatGunTypes(List<? extends String> gunTypes) {
         return gunTypes.stream()
@@ -66,9 +60,6 @@ public class GunTypeChecker {
             .collect(java.util.stream.Collectors.joining(", "));
     }
     
-    /**
-     * 检查生物是否持有指定类型的枪械。
-     */
     public static boolean isHoldingValidGunType(LivingEntity livingEntity, Set<String> validTypes) {
         ItemStack mainHandItem = livingEntity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(mainHandItem);
@@ -84,52 +75,32 @@ public class GunTypeChecker {
         return false;
     }
     
-    /**
-     * 检查生物是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、重型武器）。
-     */
     public static boolean isHoldingDmgBoostGunType(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, DMG_BOOST_GUN_TYPES);
     }
     
-    /**
-     * 检查生物是否持有霰弹枪。
-     */
     public static boolean isHoldingShotgun(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, SHOTGUN_GUN_TYPES);
     }
     
-    /**
-     * 检查生物是否持有手枪。
-     */
     public static boolean isHoldingPistol(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, PISTOL_GUN_TYPES);
     }
     
-    /**
-     * 检查生物是否持有狙击枪。
-     */
     public static boolean isHoldingSniper(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, SNIPER_GUN_TYPES);
     }
 
-    /**
-     * 检查生物是否持有重型武器（重型武器、机枪）。
-     */
     public static boolean isHoldingHeavyWeapon(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, HEAVY_WEAPON_TYPES);
     }
 
-    /**
-     * 检查生物是否持有任意枪械。
-     */
     public static boolean isHoldingAnyGun(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, ALL_GUN_TYPES);
     }
 
     /**
-     * 检查生物是否持有近战武器。
-     * 满足任一条件即视为近战武器：物品可执行 ToolActions.SWORD_DIG（剑类行为），
-     * 或物品在主手有基础 ATTACK_DAMAGE 属性且值大于 0。
+     * 检查是否持有近战武器：物品可执行 ToolActions.SWORD_DIG（剑类行为），或主手基础 ATTACK_DAMAGE 属性值大于 0，满足任一即视为近战武器。
      */
     public static boolean isHoldingMeleeWeapon(LivingEntity livingEntity) {
         ItemStack mainHand = livingEntity.getMainHandItem();
@@ -140,9 +111,6 @@ public class GunTypeChecker {
                 .anyMatch(m -> m.getAmount() > 0);
     }
     
-    /**
-     * 检查生物手中枪械的当前弹匣是否满弹药。
-     */
     public static boolean isHoldingGunWithFullMagazine(LivingEntity livingEntity) {
         ItemStack mainHandItem = livingEntity.getMainHandItem();
         IGun iGun = IGun.getIGunOrNull(mainHandItem);

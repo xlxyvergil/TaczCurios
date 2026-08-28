@@ -7,13 +7,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-/**
- * 成就完成时执行奖励（发放物品或进化物品）。
- */
 public final class AchievementRewards {
     private AchievementRewards() {}
 
-    /** 执行成就定义中声明的奖励。 */
     public static boolean execute(Player player, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.Reward reward = def.reward();
         if (reward == null) return false;

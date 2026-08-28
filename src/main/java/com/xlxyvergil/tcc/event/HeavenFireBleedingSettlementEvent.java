@@ -16,16 +16,10 @@ public class HeavenFireBleedingSettlementEvent extends Event {
         this.isDead = isDead;
     }
     
-    /**
-     * 获取受影响的实体
-     */
     public LivingEntity getEntity() {
         return entity;
     }
     
-    /**
-     * 判断实体是否死亡
-     */
     public boolean isDead() {
         return isDead;
     }

@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 侵蚀 - 负面增伤饰品命中目标时施加的标记效果。
- * 虚数崩解造成伤害时，检查目标是否有此效果来决定是否计入负面效果数量增益。
+ * 侵蚀标记：虚数崩解结算负面数量增益时据此判定。
  */
 public class ErosionEffect extends MobEffect {
 

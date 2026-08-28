@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 镀层液压准心击杀Buff - 爆头击杀触发，暴击几率叠加（最多60层）
- */
 public class GildedHydraulicCrosshairKillEffect extends MobEffect {
     public GildedHydraulicCrosshairKillEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFFCC44);

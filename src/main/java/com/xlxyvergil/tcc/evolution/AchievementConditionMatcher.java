@@ -17,15 +17,9 @@ import net.minecraft.stats.Stats;
 
 import java.util.Optional;
 
-/**
- * 将成就条件与游戏内事件进行匹配，供各触发器处理器判断玩家是否满足成就进度条件。
- */
 public final class AchievementConditionMatcher {
     private AchievementConditionMatcher() {}
 
-    /**
-     * 检查给定击杀事件是否满足成就的全部条件。
-     */
     public static boolean matchesKillConditions(Player player, LivingEntity killed,
                                                  ResourceLocation gunId, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.AchievementConditions c = def.conditions();
@@ -82,9 +76,6 @@ public final class AchievementConditionMatcher {
         return true;
     }
 
-    /**
-     * 检查死亡事件（无 gunId）是否满足成就条件。
-     */
     public static boolean matchesDeathConditions(Player player, LivingEntity killed,
                                                   Entity otherEntity, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.AchievementConditions c = def.conditions();
@@ -143,7 +134,7 @@ public final class AchievementConditionMatcher {
     }
 
     /**
-     * 检查 stat_polling / biome_visit 事件（无击杀/死亡上下文）的条件：佩戴饰品、属性阈值、维度。
+     * stat_polling / biome_visit 事件（无击杀/死亡上下文）只检查佩戴饰品、属性阈值与维度。
      */
     public static boolean matchesStatBiomeConditions(Player player, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.AchievementConditions c = def.conditions();
@@ -175,8 +166,7 @@ public final class AchievementConditionMatcher {
     }
 
     /**
-     * 检查被击杀实体所在维度是否满足条件的 dimension 要求。
-     * killed 为 null（部分事件无击杀实体）时维度检查自动放行。
+     * 按维度过滤击杀目标；killed 为 null（部分事件无击杀实体）时自动放行。
      */
     private static boolean matchesKillDimension(LivingEntity killed, AchievementDefinitions.AchievementConditions c) {
         if (c.dimension() == null || killed == null) return true;
@@ -199,7 +189,7 @@ public final class AchievementConditionMatcher {
     }
 
     /**
-     * 在成就的击杀条件列表中查找匹配的击杀条件，同时检查实体类型和 NBT 标签。
+     * 在击杀条件列表中查找匹配项，同时校验实体类型与 NBT 标签。
      */
     public static Optional<AchievementDefinitions.KillCondition> findMatchingKillCondition(
             LivingEntity killed, AchievementDefinitions.AchievementConditions conditions) {

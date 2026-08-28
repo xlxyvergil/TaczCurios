@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 镀层地狱弹膛Buff - 击杀触发，弹头数量提升（可叠加60层）
- */
 public class GildedInfernalChamberEffect extends MobEffect {
     public GildedInfernalChamberEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);

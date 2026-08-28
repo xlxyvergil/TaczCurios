@@ -18,10 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 虚数崩解 - 虚数侵染的流血效果。
- * 伤害公式: 目标最大血量 × percentPerLevel × 侵染等级 × (1 + min(debuff数, maxDebuff) × percentPerDebuff)
- * 仅可由天火劫灭/无烬终焉触发。
- * 负面效果数量增益仅在目标同时带有侵蚀效果时生效。
+ * 虚数崩解流血效果：伤害 = 目标最大血量 × percentPerLevel × 侵染等级 × (1 + min(debuff数, maxDebuff) × percentPerDebuff)；
+ * 负面数量增益只在目标带侵蚀时生效。
  */
 public class ImaginaryCollapseEffect extends MobEffect {
 
@@ -79,9 +77,7 @@ public class ImaginaryCollapseEffect extends MobEffect {
     }
 
     /**
-     * 从目标 NBT 读取虚数侵染来源 attacker。
-     * 这样虚数崩击杀时，DamageSource.getEntity() 能返回正确的玩家，
-     * 让 GunKillDebugFallbackHandler.onLivingDeath 的击杀者匹配校验通过。
+     * 从目标 NBT 读取虚数侵染来源，使击杀结算时 DamageSource.getEntity() 能返回正确玩家。
      */
     private static LivingEntity resolveInfectionAttacker(LivingEntity entity) {
         if (!(entity.level() instanceof ServerLevel sl)) return null;

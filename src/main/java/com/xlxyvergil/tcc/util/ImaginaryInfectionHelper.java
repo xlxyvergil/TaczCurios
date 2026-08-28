@@ -11,16 +11,13 @@ import com.xlxyvergil.tcc.items.curios.bound.YinguoZhuanlun;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 虚数侵染饰品等级映射工具。
- * 新增虚数伤害饰品时，只需在此处添加一行即可，无需修改 TccAttributeEvents。
+ * 虚数侵染饰品等级映射；新增虚数伤害饰品时在此加一行即可，无需改动 TccAttributeEvents。
  */
 public final class ImaginaryInfectionHelper {
 
     private ImaginaryInfectionHelper() {}
 
-    /**
-     * 根据攻击者装备的饰品，确定虚数侵染的最大等级和是否可施加崩解。
-     */
+    /** 根据攻击者装备的饰品，确定虚数侵染最大等级及是否可施加崩解。 */
     public static InfectionInfo resolve(LivingEntity attacker) {
         if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
             return new InfectionInfo(

@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 镀层氩晶瞄具爆头Buff - 爆头触发，暴击几率提升（不叠加）
- */
 public class GildedArgonScopeEffect extends MobEffect {
     public GildedArgonScopeEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFFCC66);

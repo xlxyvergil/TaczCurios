@@ -14,8 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.Set;
 
 /**
- * 食用鱼类食物统计（空梦成就 1：tcc:fish_food_eaten）。
- * 6 种鱼类食物：生鳕鱼/熟鳕鱼/生鲑鱼/熟鲑鱼/河豚/热带鱼，吃完计数 +1。
+ * 统计食用鱼类食物（空梦成就 tcc:fish_food_eaten）：生/熟鳕鱼、生/熟鲑鱼、河豚、热带鱼，吃完 +1。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class FishFoodStatHandler {

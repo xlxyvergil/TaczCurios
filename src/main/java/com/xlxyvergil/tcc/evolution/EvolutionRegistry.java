@@ -187,8 +187,7 @@ public final class EvolutionRegistry {
     }
 
     /**
-     * 合并默认规则到已有配置文件：仅追加新 key，不修改已存在的条目。
-     * 用户自定义的修改和排序得到保留，mod 更新带来的新规则自动追加。
+     * 合并默认规则到已有配置：仅追加新 key，保留用户修改与排序，mod 新增规则自动追加。
      */
     private static void mergeDefaults(Path file) {
         try {

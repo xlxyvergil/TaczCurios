@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 雷射瞄具Buff - 爆头触发，暴击几率提升（不叠加）
- */
 public class LaserScopeEffect extends MobEffect {
     public LaserScopeEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF8844);

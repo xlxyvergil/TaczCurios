@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 尖刃弹头Buff - 击杀触发，暴击伤害提升（不叠加）
- */
 public class SharpBulletEffect extends MobEffect {
     public SharpBulletEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);

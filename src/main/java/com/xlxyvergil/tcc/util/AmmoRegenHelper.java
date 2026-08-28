@@ -10,17 +10,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * 统一弹药恢复工具类，所有饰品的弹药恢复逻辑统一调用此方法。
- * 从玩家缓存读取经全部计算后的弹匣容量，再用 AmmoCapacityHelper 兼容链计算最终容量（含 GunsmithLib、KuvaLich 加成），
- * 通过 IGun.setCurrentAmmoCount 写入弹药数，闭膛待击枪械先补膛内子弹。
+ * 统一弹药恢复入口。从玩家缓存读取计算后的弹匣容量，再用 AmmoCapacityHelper 兼容链算最终容量（含 GunsmithLib、KuvaLich 加成）写入弹药数；闭膛待击枪械先补膛内子弹。
  */
 public final class AmmoRegenHelper {
 
     private AmmoRegenHelper() {}
 
-    /**
-     * 恢复手持枪械的弹药。
-     */
     public static void regenAmmo(LivingEntity entity, ItemStack held, IGun iGun, double regenPercent) {
         var gunInfo = TimelessAPI.getCommonGunIndex(iGun.getGunId(held));
         if (gunInfo.isEmpty()) return;

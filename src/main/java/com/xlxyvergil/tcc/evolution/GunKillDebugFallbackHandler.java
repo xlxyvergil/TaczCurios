@@ -16,8 +16,8 @@ import net.minecraftforge.fml.LogicalSide;
 
 
 /**
- * 统一的枪杀判定处理器（fallback）：onGunHurtPre 将枪伤信息写入 GunKillDataCapability，onLivingDeath 统一校验
- * （死亡源限定 tacz:bullets/tcc:imaginary_damage、victim 一致、40 tick 时间窗）。用 Capability 兼容 getPersistentData() 返回空 NBT 的实体。
+ * 统一的枪杀判定处理器（fallback）：onGunHurtPre 把枪伤信息写入 GunKillDataCapability，onLivingDeath 统一校验
+ * （死亡源、victim 一致、40 tick 时间窗）。用 Capability 兼容 getPersistentData() 返回空 NBT 的实体。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillDebugFallbackHandler {
@@ -29,7 +29,7 @@ public final class GunKillDebugFallbackHandler {
     }
 
     /**
-     * 刷新枪杀判定窗口。用于虚数崩等 DoT 效果，确保 DoT 击杀时仍能通过时间窗口校验。
+     * 刷新枪杀判定窗口。用于虚数崩等 DoT 效果，确保 DoT 击杀仍能通过时间窗口校验。
      */
     public static void refreshGunKillWindow(LivingEntity target, ServerPlayer attacker) {
         GunKillDataCapability.setGunData(target,

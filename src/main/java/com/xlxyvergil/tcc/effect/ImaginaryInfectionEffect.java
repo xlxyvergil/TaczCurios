@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 虚数侵染 - 纯标记效果，不直接造成伤害。
- * 每级降低目标虚数抗性（可配置），伤害由虚数崩解独立处理。
+ * 虚数侵染标记：每级降低目标虚数抗性，伤害由虚数崩解独立处理。
  */
 public class ImaginaryInfectionEffect extends MobEffect {
 

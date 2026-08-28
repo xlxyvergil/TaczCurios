@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 玩家数据 Capability，替代 persistentData 方案，自动持久化成就进度、已访问群系与维度集合。
+ * 玩家数据 Capability，替代 persistentData 方案，持久化成就进度、已访问群系与维度集合。
  */
 public final class TccPlayerDataCapability {
 
@@ -76,8 +76,7 @@ public final class TccPlayerDataCapability {
         }
 
         /**
-         * 从另一个 Handler 复制所有数据（用于 PlayerEvent.Clone 死亡复活）。
-         * Forge 的 Capability NBT 持久化在复活流程中不一定可靠，需要显式复制。
+         * 用于 PlayerEvent.Clone 死亡复活；Forge 的 Capability NBT 持久化在复活中不一定可靠，需显式复制。
          */
         public void copyFrom(Handler other) {
             this.achievementProgress.clear();

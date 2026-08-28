@@ -6,9 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-/**
- * 液压准心Buff - 爆头触发，暴击几率提升（不叠加）
- */
 public class HydraulicCrosshairEffect extends MobEffect {
     public HydraulicCrosshairEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF9944);

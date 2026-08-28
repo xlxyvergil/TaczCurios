@@ -11,8 +11,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 监听 LivingConversionEvent.Post，僵尸村民成功转化后递增 ZOMBIE_VILLAGER_CURED 统计。
- * 该事件触发点与原版"僵尸医生"成就判定共享相同执行条件，不受其他模组异常调用 finishConversion 影响。
+ * 监听 LivingConversionEvent.Post，僵尸村民转化成功后递增 ZOMBIE_VILLAGER_CURED 统计；
+ * 触发点与原版"僵尸医生"成就判定共享同一条件，不受其他模组异常调用 finishConversion 影响。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ZombieVillagerCureHandler {

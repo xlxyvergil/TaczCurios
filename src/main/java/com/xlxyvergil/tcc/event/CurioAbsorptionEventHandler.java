@@ -12,9 +12,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import javax.annotation.Nullable;
 
 /**
- * 吸收饰品事件处理器（受击触发式黄心）。
- * 饰品类在 LivingHurtEvent 中调用 tryTriggerAbsorption，检查装备 + 血量阈值 + 冷却后
- * 赋予 ABSORPTION（黄心）并进入冷却；冷却数据存于玩家 PersistentData，由 onLivingTick 自动递减。
+ * 受击触发式黄心：饰品类在 LivingHurtEvent 中调用 tryTriggerAbsorption，
+ * 满足装备+血量阈值+冷却后赋予 ABSORPTION 并进入冷却；冷却存于 PersistentData，由 onLivingTick 递减。
  */
 @net.minecraftforge.fml.common.Mod.EventBusSubscriber(modid = TaczCurios.MODID)
 public class CurioAbsorptionEventHandler {
@@ -22,9 +21,8 @@ public class CurioAbsorptionEventHandler {
     public static final String ABSORPTION_COOLDOWN_KEY = TaczCurios.MODID + ":absorption_cooldown";
 
     /**
-     * 尝试触发吸收效果（黄心），在 LivingHurtEvent 中调用。
-     * 仅当实体装备了指定饰品、血量比例 ≤ 触发阈值、冷却已结束三者同时满足时生效；
-     * 触发后赋予 ABSORPTION 并重新进入冷却（冷却由 onLivingTick 自动递减），返回是否成功触发。
+     * 在 LivingHurtEvent 中触发吸收（黄心）：装备指定饰品、血量比例 ≤ 阈值、冷却结束三者同时满足才生效；
+     * 触发后赋予 ABSORPTION 并重新进入冷却。
      */
     public static boolean tryTriggerAbsorption(
             LivingEntity entity,
@@ -62,16 +60,10 @@ public class CurioAbsorptionEventHandler {
         return true;
     }
 
-    /**
-     * 重置指定实体的吸收冷却（立即允许再次触发）。
-     */
     public static void resetCooldown(LivingEntity entity) {
         entity.getPersistentData().putInt(ABSORPTION_COOLDOWN_KEY, 0);
     }
 
-    /**
-     * 获取当前冷却剩余 tick 数。
-     */
     public static int getCooldown(LivingEntity entity) {
         return entity.getPersistentData().getInt(ABSORPTION_COOLDOWN_KEY);
     }
@@ -79,8 +71,7 @@ public class CurioAbsorptionEventHandler {
     // Tick 事件（冷却倒计时）
 
     /**
-     * 每 tick 对所有在线玩家执行冷却倒计时。
-     * 实际触发逻辑不在本类，而是由具体饰品类调用 tryTriggerAbsorption；这里只负责通用冷却倒计时。
+     * 每 tick 对在线玩家执行冷却倒计时；实际触发逻辑由具体饰品类调用，本类只负责通用倒计时。
      */
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
