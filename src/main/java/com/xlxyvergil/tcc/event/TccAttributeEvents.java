@@ -130,7 +130,15 @@ public class TccAttributeEvents {
         if (!(srcEntity instanceof LivingEntity attacker)) return;
 
         // 通过工具类获取侵染配置（新增饰品只需修改 ImaginaryInfectionHelper）
-        var info = ImaginaryInfectionHelper.resolve(attacker);
+        applyInfection(living, attacker, ImaginaryInfectionHelper.resolve(attacker));
+    }
+
+    /**
+     * 对目标施加虚数侵染（可叠加，受饰品分级上限约束）。
+     * 供枪械 {@link #applyImaginaryInfection} 与近战虚数饰品（如黑渊白花）共用。
+     * 仅 canApplyCollapse=true 时额外触发虚数崩解。
+     */
+    public static void applyInfection(LivingEntity living, LivingEntity attacker, ImaginaryInfectionHelper.InfectionInfo info) {
         if (!info.isValid()) return;
         int maxLevel = info.maxLevel();
         boolean canApplyCollapse = info.canApplyCollapse();

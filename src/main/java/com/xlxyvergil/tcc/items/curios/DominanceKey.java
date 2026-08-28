@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -15,7 +14,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -25,6 +23,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -105,14 +104,13 @@ public class DominanceKey extends BaseCurioItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
+    public static void onLivingHurt(LivingHurtEvent event) {
+        LivingEntity attacker = resolveAttacker(event);
         if (attacker == null || !isEquipped(attacker)) return;
         if (!GunTypeChecker.isHoldingMeleeWeapon(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
 
-        Entity hurtEntity = event.getHurtEntity();
-        if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
+        LivingEntity targetLiving = event.getEntity();
         if (targetLiving.isDeadOrDying()) return;
 
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
@@ -122,6 +120,17 @@ public class DominanceKey extends BaseCurioItem {
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
             imaginaryBonus
         );
+    }
+
+    /** 解析伤害事件中的攻击者（近战直接命中） */
+    private static LivingEntity resolveAttacker(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        if (event.getSource().getDirectEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
     }
 
     @Override

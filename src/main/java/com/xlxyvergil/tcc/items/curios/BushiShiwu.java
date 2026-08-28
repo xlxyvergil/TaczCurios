@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -16,7 +16,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +36,7 @@ import java.util.List;
 /**
  * 浮生系列·神之键线（tcc_tdk）：不识时务。
  * <p>
- * 攻击按施加者虚数抗性概率使目标停止 AI（定身）5 秒，并附加（虚数抗性值/100 × 护甲值）的虚数伤害。
+ * 近战攻击按施加者虚数抗性概率使目标停止 AI（定身）5 秒，并附加（虚数抗性值/100 × 护甲值）的虚数伤害。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BushiShiwu extends BaseCurioItem {
@@ -111,9 +110,12 @@ public class BushiShiwu extends BaseCurioItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getEntity().level() instanceof ServerLevel)) {
+            return;
+        }
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
@@ -124,19 +126,31 @@ public class BushiShiwu extends BaseCurioItem {
         if (!((BushiShiwu) equipped.getItem()).matchesRestriction(attacker)) {
             return;
         }
-        Entity hurt = event.getHurtEntity();
-        if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            // 定身概率 = 施加者虚数抗性概率（§0.2）
-            if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
-                AiStopHelper.apply(target, stopDuration());
-            }
-            // 攻击时附加（虚数抗性值/100 × 护甲值 × 比例）的虚数伤害
-            double armor = attacker.getAttributeValue(Attributes.ARMOR);
-            double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-            float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
-            TccAttributeEvents.applyImaginaryDamage(target,
-                    TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+        LivingEntity target = event.getEntity();
+        if (target.isDeadOrDying()) {
+            return;
         }
+        // 定身概率 = 施加者虚数抗性概率（§0.2）
+        if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
+            AiStopHelper.apply(target, stopDuration());
+        }
+        // 攻击时附加（虚数抗性值/100 × 护甲值 × 比例）的虚数伤害
+        double armor = attacker.getAttributeValue(Attributes.ARMOR);
+        double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
+        TccAttributeEvents.applyImaginaryDamage(target,
+                TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+    }
+
+    /** 解析伤害事件中的攻击者（近战直接命中） */
+    private static LivingEntity resolveAttacker(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        if (event.getSource().getDirectEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
     }
 
     @OnlyIn(Dist.CLIENT)

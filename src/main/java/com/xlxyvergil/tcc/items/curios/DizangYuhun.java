@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -11,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -106,9 +105,12 @@ public class DizangYuhun extends BaseCurioItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getEntity().level() instanceof ServerLevel)) {
+            return;
+        }
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
@@ -119,22 +121,34 @@ public class DizangYuhun extends BaseCurioItem {
         if (!((DizangYuhun) equipped.getItem()).matchesRestriction(attacker)) {
             return;
         }
-        Entity hurt = event.getHurtEntity();
-        if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            // 按当前实际值百分比削减，持久累加，不随时间恢复（归 0 后削 0）
-            double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * stripPercent() * 100.0) / 100.0;
-            double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * stripPercent() * 100.0) / 100.0;
-            if (stripArmor > 0) {
-                AttributeHelper.applyStackingModifier(target, Attributes.ARMOR,
-                        -stripArmor, ARMOR_STRIP_UUID,
-                        "tcc.dawn_key.armor_strip", AttributeModifier.Operation.ADDITION);
-            }
-            if (stripToughness > 0) {
-                AttributeHelper.applyStackingModifier(target, Attributes.ARMOR_TOUGHNESS,
-                        -stripToughness, TOUGHNESS_STRIP_UUID,
-                        "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
-            }
+        LivingEntity target = event.getEntity();
+        if (target.isDeadOrDying()) {
+            return;
         }
+        // 按当前实际值百分比削减，持久累加，不随时间恢复（归 0 后削 0）
+        double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * stripPercent() * 100.0) / 100.0;
+        double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * stripPercent() * 100.0) / 100.0;
+        if (stripArmor > 0) {
+            AttributeHelper.applyStackingModifier(target, Attributes.ARMOR,
+                    -stripArmor, ARMOR_STRIP_UUID,
+                    "tcc.dawn_key.armor_strip", AttributeModifier.Operation.ADDITION);
+        }
+        if (stripToughness > 0) {
+            AttributeHelper.applyStackingModifier(target, Attributes.ARMOR_TOUGHNESS,
+                    -stripToughness, TOUGHNESS_STRIP_UUID,
+                    "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
+        }
+    }
+
+    /** 解析伤害事件中的攻击者（近战直接命中） */
+    private static LivingEntity resolveAttacker(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        if (event.getSource().getDirectEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
     }
 
     @OnlyIn(Dist.CLIENT)

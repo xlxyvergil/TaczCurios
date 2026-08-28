@@ -12,6 +12,9 @@ public final class AiStopHelper {
 
     public static final String AI_STOP_UNTIL_KEY = "tcc_ai_stop_until";
 
+    /** 记录定身前的原始 NoAI 状态，用于定身结束后恢复 */
+    public static final String AI_STOP_PREV_NOAI_KEY = "tcc_ai_stop_prev_noai";
+
     private AiStopHelper() {
     }
 

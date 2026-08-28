@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.BaseCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -119,6 +120,11 @@ public class HeiyuanBaihua extends BaseCurioItem {
 
         TccAttributeEvents.applyImaginaryDamage(target,
             TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
+
+        // 附加虚数侵染效果，最高等级与「天火劫灭·无烬终焉」一致（不触发虚数崩解）
+        TccAttributeEvents.applyInfection(target, attacker,
+            new ImaginaryInfectionHelper.InfectionInfo(
+                TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get(), false));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -129,6 +135,11 @@ public class HeiyuanBaihua extends BaseCurioItem {
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect",
                 (int) (TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get() * 100))
+            .withStyle(ChatFormatting.RED));
+
+        // 附加虚数侵染，最高等级与「天火劫灭·无烬终焉」一致
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
+                String.format("%d", TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get()))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

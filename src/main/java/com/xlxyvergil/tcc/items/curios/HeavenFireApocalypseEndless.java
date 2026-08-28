@@ -170,7 +170,7 @@ public class HeavenFireApocalypseEndless extends BaseCurioItem {
         
         // 虚数侵染上限
         int infectionMax = TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse_endless.inflection_max",
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
                 String.format("%d", infectionMax))
             .withStyle(ChatFormatting.RED));
 

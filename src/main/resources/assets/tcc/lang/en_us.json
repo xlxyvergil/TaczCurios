@@ -41,7 +41,6 @@
   "item.tcc.heaven_fire_apocalypse.inflection_max": "§bImaginary Infection cap: %1$s stacks",
   "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
   "item.tcc.heaven_fire_apocalypse_endless.special": "Provides Heaven Fire Boost III to players within %s blocks for %s seconds Cannot unequip Kept on death",
-  "item.tcc.heaven_fire_apocalypse_endless.inflection_max": "§bImaginary Infection cap: %1$s stacks",
   "item.tcc.heaven_fire_apocalypse_endless.collapse_info": "§5Imaginary Collapse: %1$s%% max HP/sec per infection level, up to %4$s%%",
   "item.tcc.burst_reload": "§9Burst Reload",
   "item.tcc.burst_reload.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",

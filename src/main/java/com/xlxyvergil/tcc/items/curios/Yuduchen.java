@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.items.curios;
 
-import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
@@ -13,7 +13,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +33,7 @@ import java.util.List;
 /**
  * 浮生系列·神之键线（tcc_tdk）：羽渡尘。
  * <p>
- * 攻击 5% 概率使目标停止 AI（定身）5 秒。
+ * 近战攻击 5% 概率使目标停止 AI（定身）5 秒。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Yuduchen extends BaseCurioItem {
@@ -113,9 +112,12 @@ public class Yuduchen extends BaseCurioItem {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getEntity().level() instanceof ServerLevel)) {
+            return;
+        }
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
@@ -126,17 +128,29 @@ public class Yuduchen extends BaseCurioItem {
         if (!((Yuduchen) equipped.getItem()).matchesRestriction(attacker)) {
             return;
         }
-        Entity hurt = event.getHurtEntity();
-        if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            if (attacker.getRandom().nextDouble() < stopChance()) {
-                AiStopHelper.apply(target, stopDuration());
-            }
-            // 攻击时附加（护甲值 × 比例）的虚数伤害
-            double armor = attacker.getAttributeValue(Attributes.ARMOR);
-            float imaginary = (float) (armor * armorImaginaryScale());
-            TccAttributeEvents.applyImaginaryDamage(target,
-                    TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+        LivingEntity target = event.getEntity();
+        if (target.isDeadOrDying()) {
+            return;
         }
+        if (attacker.getRandom().nextDouble() < stopChance()) {
+            AiStopHelper.apply(target, stopDuration());
+        }
+        // 攻击时附加（护甲值 × 比例）的虚数伤害
+        double armor = attacker.getAttributeValue(Attributes.ARMOR);
+        float imaginary = (float) (armor * armorImaginaryScale());
+        TccAttributeEvents.applyImaginaryDamage(target,
+                TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+    }
+
+    /** 解析伤害事件中的攻击者（近战直接命中） */
+    private static LivingEntity resolveAttacker(LivingHurtEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        if (event.getSource().getDirectEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
     }
 
     @OnlyIn(Dist.CLIENT)
