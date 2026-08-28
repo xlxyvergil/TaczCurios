@@ -20,7 +20,6 @@ public class TccCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = 
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, TaczCurios.MODID);
     
-    // 创建TaczCurios模组的创造模式标签页
     public static final RegistryObject<CreativeModeTab> TACZ_CURIO_TAB = CREATIVE_MODE_TABS.register("tacz_curio_tab",
         () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.tcc.tacz_curio_tab"))

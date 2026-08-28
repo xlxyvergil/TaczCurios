@@ -37,7 +37,6 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // 检查玩家身上的效果（Buff）
         if (c.requiredEffects() != null) {
             for (String effectId : c.requiredEffects()) {
                 ResourceLocation effectRl = ResourceLocation.tryParse(effectId);

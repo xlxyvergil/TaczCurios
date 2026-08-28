@@ -25,7 +25,6 @@ public final class RaidVictoryEventHandler {
 
             if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
 
-            // 检查条件（佩戴饰品/属性/维度）
             if (!AchievementConditionMatcher.matchesStatBiomeConditions(serverPlayer, def)) continue;
 
             // 每次袭击胜利授予 1 步进度

@@ -94,11 +94,9 @@ public class FusionUpgradeRecipe extends CustomRecipe {
         if (curioLevel >= maxLevel) return ItemStack.EMPTY;
 
         int vesselCount = FusionVesselItem.getFusionCount(vessel);
-        // 计算当前容器内融合核心最多能升到多少级
         int targetLevel = getMaxAffordableLevel(curioLevel, maxLevel, data.rarity(), vesselCount);
         if (targetLevel <= curioLevel) return ItemStack.EMPTY;
 
-        // 创建升级后的饰品（复制原有 NBT + 直接升到目标等级）
         ItemStack result = curio.copy();
         result.setCount(1);
         FusionUpgradeUtil.setLevel(result, targetLevel);

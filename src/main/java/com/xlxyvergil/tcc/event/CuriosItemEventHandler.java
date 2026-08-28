@@ -66,13 +66,11 @@ public class CuriosItemEventHandler {
         ItemStack mainHandItem = entity.getMainHandItem();
         ItemStack offHandItem = entity.getOffhandItem();
         
-        // 检查主手是否是枪械
         if (mainHandItem.getItem() instanceof IGun) {
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
             return;
         }
         
-        // 检查副手是否是枪械
         if (offHandItem.getItem() instanceof IGun) {
             AttachmentPropertyManager.postChangeEvent(entity, offHandItem);
             return;

@@ -105,7 +105,6 @@ public class TaczCuriosClientTooltip {
         AchievementDefinitions.AchievementDef def = getRewardMap().get(itemId.toString());
         if (def == null) return;
 
-        // 获取当前 locale
         String locale = getClientLocale();
 
         // 从 achievement_definitions.json 读取 display.description

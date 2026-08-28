@@ -56,15 +56,11 @@ public class ClientEventHandler {
         }
     }
     
-    /**
-     * 刷新改装界面
-     */
     private static void refreshRefitScreen() {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && mc.player != null && mc.screen instanceof GunRefitScreen screen) {
             // 重新初始化界面以刷新属性图
             screen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
-            // 刷新配件数据，客户端的
             AttachmentPropertyManager.postChangeEvent(mc.player, mc.player.getMainHandItem());
         }
     }

@@ -158,13 +158,10 @@ public class HeavenFireJudgment extends BoundCurioItem {
                 AchievementDefinitions.get("tcc:judgment_to_apocalypse").orElse(null);
         if (def == null) return;
 
-        // 已进化？
         if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) return;
 
-        // 检查前置条件
         if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) return;
 
-        // 检查条件（如属性）
         if (def.conditions() != null && def.conditions().attributes() != null) {
             double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             for (AchievementDefinitions.AttributeCondition ac : def.conditions().attributes()) {

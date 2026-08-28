@@ -196,7 +196,6 @@ public class GunTypeChecker {
                     }
                 }
                 
-                // 获取当前弹药数
                 int currentAmmo = iGun.getCurrentAmmoCount(mainHandItem);
                 
                 // 确保弹药数不为负数且为有效值

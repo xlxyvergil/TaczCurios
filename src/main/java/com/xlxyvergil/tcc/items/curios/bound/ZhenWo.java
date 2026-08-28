@@ -123,7 +123,6 @@ public class ZhenWo extends BoundCurioItem {
             "tcc.zhen_wo.all_attributes", 0, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
             KNOCKBACK_RESISTANCE_UUID);
-        // 取消创造飞行
         if (livingEntity instanceof Player player) {
             AttributeInstance inst = player.getAttribute(ALObjects.Attributes.CREATIVE_FLIGHT.get());
             if (inst != null) {

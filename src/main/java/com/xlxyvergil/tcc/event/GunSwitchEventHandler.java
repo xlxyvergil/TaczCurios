@@ -17,7 +17,6 @@ public class GunSwitchEventHandler {
     public static void onGunDraw(GunDrawEvent event) {
         // 玩家切换武器后检查所有装备的饰品并应用效果
         if (event.getEntity() instanceof Player player) {
-            // 获取玩家所有的Curios饰品并遍历所有装备的饰品
             CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
                 curiosInventory.getCurios().forEach((slotIdentifier, stacksHandler) -> {
                     for (int i = 0; i < stacksHandler.getSlots(); i++) {

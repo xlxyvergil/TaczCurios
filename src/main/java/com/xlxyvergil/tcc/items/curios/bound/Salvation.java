@@ -89,9 +89,7 @@ public class Salvation extends BoundCurioItem {
             IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
             KNOCKBACK_RESISTANCE_UUID);
-        // 移除抗性提升效果
         livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-        // 清除限伤状态（上限 + 常驻比例减伤）
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
     }
