@@ -1,6 +1,6 @@
 package com.xlxyvergil.tcc.mixin;
 
-import com.xlxyvergil.tcc.items.curios.ZhenWo;
+import com.xlxyvergil.tcc.items.curios.bound.ZhenWo;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

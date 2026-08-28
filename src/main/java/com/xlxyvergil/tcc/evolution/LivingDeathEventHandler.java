@@ -1,6 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
-import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.BuiltInRegistries;

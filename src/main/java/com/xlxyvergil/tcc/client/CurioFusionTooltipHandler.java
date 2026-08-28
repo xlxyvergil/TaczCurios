@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.client;
 
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.core.registries.Registries;
@@ -20,15 +20,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 饰品 Tooltip 统一处理 — 在每个饰品 tooltip 的道具名称下方插入：
- * <ol>
- *   <li>融合等级（仅 tcc_slot 通用槽位饰品）</li>
- *   <li>稀有度</li>
- *   <li>武器类型限制（如有）</li>
- * </ol>
- * 栏位名称由 Curios 自行处理，避免重复。
- * 原有道具自定义信息（效果数值等）保持不动，被顺势下移。
- * 统一适用于 tcc_slot / tcc_tdk / tcc_3rd 所有槽位，融合等级仅 tcc_slot 显示。
+ * 饰品 Tooltip 统一处理：在道具名称下方插入融合等级、稀有度与武器类型限制。
+ * 融合等级仅 tcc_slot 槽位显示，栏位名称由 Curios 自行处理。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CurioFusionTooltipHandler {
@@ -46,7 +39,7 @@ public class CurioFusionTooltipHandler {
 
         FusionData data = FusionData.from(stack);
 
-        // 融合等级（仅 tcc_slot 通用槽位饰品）
+        // 融合等级（仅 tcc_slot）
         String levelText = null;
         if (stack.is(TCC_SLOT) && data.isUpgradeable()) {
             int maxLevel = data.maxLevel();
@@ -85,7 +78,6 @@ public class CurioFusionTooltipHandler {
         if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
             return Component.translatable("tcc.tooltip.restricted_melee");
         }
-        // 全枪械
         if (restriction.equals(GunTypeChecker.ALL_GUN_TYPES_LIST)) {
             return Component.translatable("tcc.tooltip.restricted_all_guns");
         }

@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.event;
 
 import com.tacz.guns.api.event.common.GunDrawEvent;
-import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

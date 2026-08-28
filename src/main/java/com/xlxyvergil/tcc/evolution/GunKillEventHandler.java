@@ -89,7 +89,7 @@ public final class GunKillEventHandler {
                     rule.progress.capCounterKey, rule.progress.cap, k.value);
         }
 
-        if (changed && tracked.getItem() instanceof com.xlxyvergil.tcc.util.BaseCurioItem curio) {
+        if (changed && tracked.getItem() instanceof com.xlxyvergil.tcc.items.BaseCurioItem curio) {
             curio.refreshEffects(player, tracked);
         }
     }

@@ -7,7 +7,7 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
-import com.xlxyvergil.tcc.items.curios.IslandBoomRaven;
+import com.xlxyvergil.tcc.items.curios.bound.IslandBoomRaven;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.resources.ResourceLocation;

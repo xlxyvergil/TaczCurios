@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.event;
 
-import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
-import com.xlxyvergil.tcc.items.curios.HeavenFireJudgment;
+import com.xlxyvergil.tcc.items.curios.bound.HeavenFireApocalypse;
+import com.xlxyvergil.tcc.items.curios.bound.HeavenFireJudgment;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingHealEvent;

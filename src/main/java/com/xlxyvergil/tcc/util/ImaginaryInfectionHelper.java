@@ -1,13 +1,13 @@
 package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypse;
-import com.xlxyvergil.tcc.items.curios.HeavenFireApocalypseEndless;
-import com.xlxyvergil.tcc.items.curios.JudgementKey;
-import com.xlxyvergil.tcc.items.curios.MetaMorph;
-import com.xlxyvergil.tcc.items.curios.ShijieFanyan;
-import com.xlxyvergil.tcc.items.curios.XukongWancangYZTH;
-import com.xlxyvergil.tcc.items.curios.YinguoZhuanlun;
+import com.xlxyvergil.tcc.items.curios.bound.HeavenFireApocalypse;
+import com.xlxyvergil.tcc.items.curios.bound.HeavenFireApocalypseEndless;
+import com.xlxyvergil.tcc.items.curios.bound.JudgementKey;
+import com.xlxyvergil.tcc.items.curios.bound.MetaMorph;
+import com.xlxyvergil.tcc.items.curios.bound.ShijieFanyan;
+import com.xlxyvergil.tcc.items.curios.bound.XukongWancangYZTH;
+import com.xlxyvergil.tcc.items.curios.bound.YinguoZhuanlun;
 import net.minecraft.world.entity.LivingEntity;
 
 /**

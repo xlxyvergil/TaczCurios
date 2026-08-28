@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.client;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
-import com.xlxyvergil.tcc.items.ItemBaseCurio;
+import com.xlxyvergil.tcc.items.BoundCurioItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -51,7 +51,7 @@ public class TaczCuriosClientTooltip {
         appendEvolutionCondition(tooltip, stack);
 
         // 绑定饰品（需要崩坏结晶才能卸下）
-        if (stack.getItem() instanceof ItemBaseCurio curio && curio.requiresCollapseCrystal()) {
+        if (stack.getItem() instanceof BoundCurioItem curio && curio.requiresCollapseCrystal()) {
             tooltip.add(Component.translatable("tcc.tooltip.requires_collapse_crystal")
                     .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC));
         }

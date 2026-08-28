@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.evolution;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.network.NetworkHandler;
-import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

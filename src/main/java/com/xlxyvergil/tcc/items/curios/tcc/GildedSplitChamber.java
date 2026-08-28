@@ -1,0 +1,75 @@
+package com.xlxyvergil.tcc.items.curios.tcc;
+
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.items.TccCurioItem;
+import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.FusionData;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * 镀层分裂膛室 - 步枪饰品（击杀触发Buff，可叠加）
+ * 基础：弹头数量+80%，击杀→Buff额外+30%弹头数量持续10s，可叠加5层）
+ */
+public class GildedSplitChamber extends TccCurioItem {
+
+    private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("0945b121-8315-40ae-8b22-1645c68f4eee");
+    private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_split_chamber.base_bullet_count";
+
+    public GildedSplitChamber(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        if (matchesRestriction(livingEntity)) {
+            double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get());
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, baseBulletCount, BASE_BULLET_COUNT_UUID, BASE_BULLET_COUNT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+        } else {
+            AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
+        }
+    }
+
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BASE_BULLET_COUNT_UUID);
+    }
+
+    @Override
+    public java.util.List<String> getWeaponTypeRestriction() {
+        return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.literal(""));
+        double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountBase.get()) * 100;
+        int fusionLevel = FusionData.from(stack).level();
+        double buffBulletCount = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
+        int duration = TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get();
+        int maxStacks = TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
+        tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect_base",
+                String.format("%+.0f", baseBulletCount))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.tcc.gilded_split_chamber.effect_kill",
+                String.format("%+.0f", buffBulletCount), maxStacks, duration)
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.literal(""));
+        
+    }
+
+
+}

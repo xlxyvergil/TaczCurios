@@ -14,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 
 /**
- * 3 阶神之键通用效果工具（§0.1）：
+ * 神之键通用效果工具（§0.1）：
  * <ol>
  *   <li>伤害转为虚数伤害（Pathway B：{@code EntityHurtByGunEvent.Pre} 替换伤害源）</li>
  *   <li>同时施加虚数侵染（不限等级，直接施加 {@code IMAGINARY_INFECTION}）</li>

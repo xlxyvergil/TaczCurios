@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
-import com.xlxyvergil.tcc.util.BaseCurioItem;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
