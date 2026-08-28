@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
  * tcc 饰品基类，处理可升级（融合等级）饰品的等级效果换算：满级返回满级配置值，低等级按比例衰减。
  */
 public abstract class TccCurioItem extends BaseCurioItem {
-
     public TccCurioItem(Properties properties) {
         super(properties);
     }

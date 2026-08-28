@@ -90,42 +90,42 @@ public class TccCreativeTab {
                 output.accept(TccItems.HEAVEN_FIRE_APOCALYPSE_ENDLESS);
                 
                 // 添加Phase 2 新增饰品 (16个常驻属性饰品)
-                output.accept(TccItems.CRITICAL_DELAY);       // G-01 关键延迟
-                output.accept(TccItems.LETHAL_CRIT);           // R-01 致命一击
-                output.accept(TccItems.WEAKNESS_SENSE);        // R-02 弱点感应
-                output.accept(TccItems.DESTRUCTION);           // S-01 破灭
-                output.accept(TccItems.DESTRUCTION_PRIME);     // S-02 破灭Prime
-                output.accept(TccItems.THUNDER_BARREL);        // S-03 雷筒
-                output.accept(TccItems.THUNDER_BARREL_PRIME);  // S-04 雷筒Prime
-                output.accept(TccItems.WEAKNESS_MASTERY);      // P-01 弱点专精
-                output.accept(TccItems.WEAKNESS_MASTERY_PRIME);// P-02 弱点专精Prime
-                output.accept(TccItems.HOLLOW_POINT);          // P-03 空尖弹
-                output.accept(TccItems.PISTOL_MASTERY);        // P-04 手枪精通
-                output.accept(TccItems.PISTOL_MASTERY_PRIME);  // P-05 手枪精通Prime
-                output.accept(TccItems.STEEL_SLASH);           // M-01 斩铁
-                output.accept(TccItems.DISMEMBERMENT);         // M-02 肢解
-                output.accept(TccItems.SACRIFICE_OPPRESSION);  // M-03 牺牲压迫点
-                output.accept(TccItems.SACRIFICE_STEEL);       // M-04 牺牲斩铁
+                output.accept(TccItems.CRITICAL_DELAY);       // 关键延迟
+                output.accept(TccItems.LETHAL_CRIT);           // 致命一击
+                output.accept(TccItems.WEAKNESS_SENSE);        // 弱点感应
+                output.accept(TccItems.DESTRUCTION);           // 破灭
+                output.accept(TccItems.DESTRUCTION_PRIME);     // 破灭Prime
+                output.accept(TccItems.THUNDER_BARREL);        // 雷筒
+                output.accept(TccItems.THUNDER_BARREL_PRIME);  // 雷筒Prime
+                output.accept(TccItems.WEAKNESS_MASTERY);      // 弱点专精
+                output.accept(TccItems.WEAKNESS_MASTERY_PRIME);// 弱点专精Prime
+                output.accept(TccItems.HOLLOW_POINT);          // 空尖弹
+                output.accept(TccItems.PISTOL_MASTERY);        // 手枪精通
+                output.accept(TccItems.PISTOL_MASTERY_PRIME);  // 手枪精通Prime
+                output.accept(TccItems.STEEL_SLASH);           // 斩铁
+                output.accept(TccItems.DISMEMBERMENT);         // 肢解
+                output.accept(TccItems.SACRIFICE_OPPRESSION);  // 牺牲压迫点
+                output.accept(TccItems.SACRIFICE_STEEL);       // 牺牲斩铁
 
                 // 添加Phase 3 新增饰品 (12个Buff触发饰品)
-                output.accept(TccItems.ARGON_SCOPE);              // R-03 氩晶瞄具
-                output.accept(TccItems.GILDED_ARGON_SCOPE);       // R-04 镀层氩晶瞄具
-                output.accept(TccItems.SHARP_BULLET);             // R-05 尖刃弹头
-                output.accept(TccItems.GILDED_SPLIT_CHAMBER);     // R-07 镀层分裂膛室
-                output.accept(TccItems.LASER_SCOPE);              // S-05 雷射瞄具
-                output.accept(TccItems.FRAGMENT_SHOT);            // S-06 破片射击
-                output.accept(TccItems.GILDED_INFERNAL_CHAMBER);  // S-08 镀层地狱弹膛
-                output.accept(TccItems.HYDRAULIC_CROSSHAIR);      // P-06 液压准心
-                output.accept(TccItems.GILDED_HYDRAULIC_CROSSHAIR);// P-07 镀层液压准心
-                output.accept(TccItems.SHARP_AMMO);               // P-08 尖锐子弹
-                output.accept(TccItems.GILDED_BULLET_SPREAD);     // P-10 镀层弹头扩散
-                output.accept(TccItems.GILDED_STEEL_SLASH);       // M-05 镀层斩铁
+                output.accept(TccItems.ARGON_SCOPE);              // 氩晶瞄具
+                output.accept(TccItems.GILDED_ARGON_SCOPE);       // 镀层氩晶瞄具
+                output.accept(TccItems.SHARP_BULLET);             // 尖刃弹头
+                output.accept(TccItems.GILDED_SPLIT_CHAMBER);     // 镀层分裂膛室
+                output.accept(TccItems.LASER_SCOPE);              // 雷射瞄具
+                output.accept(TccItems.FRAGMENT_SHOT);            // 破片射击
+                output.accept(TccItems.GILDED_INFERNAL_CHAMBER);  // 镀层地狱弹膛
+                output.accept(TccItems.HYDRAULIC_CROSSHAIR);      // 液压准心
+                output.accept(TccItems.GILDED_HYDRAULIC_CROSSHAIR);// 镀层液压准心
+                output.accept(TccItems.SHARP_AMMO);               // 尖锐子弹
+                output.accept(TccItems.GILDED_BULLET_SPREAD);     // 镀层弹头扩散
+                output.accept(TccItems.GILDED_STEEL_SLASH);       // 镀层斩铁
 
                 // 添加Phase 4 新增饰品 (5个特殊饰品)
-                output.accept(TccItems.GILDED_RIFLE_APTITUDE);   // R-06 镀层步枪才能
-                output.accept(TccItems.GILDED_SHOTGUN_SAVVY);    // S-07 镀层通晓霰弹枪
-                output.accept(TccItems.GILDED_MARKSMAN);         // P-09 镀层准确射手
-                output.accept(TccItems.CONDITION_OVERLOAD);      // M-06 异况超量
+                output.accept(TccItems.GILDED_RIFLE_APTITUDE);   // 镀层步枪才能
+                output.accept(TccItems.GILDED_SHOTGUN_SAVVY);    // 镀层通晓霰弹枪
+                output.accept(TccItems.GILDED_MARKSMAN);         // 镀层准确射手
+                output.accept(TccItems.CONDITION_OVERLOAD);      // 异况超量
 
                 // 添加材料物品
                 output.accept(TccItems.CORE_FUSION);

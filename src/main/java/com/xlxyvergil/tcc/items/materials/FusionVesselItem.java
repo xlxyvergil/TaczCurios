@@ -24,12 +24,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 融合容器（Fusion Vessel），存储内融核心（CoreFusion）。
- * 主手右键切换自动吸收模式；右键空格子取出内融核心；右键内融核心格子存入；右键饰品格子按分解公式消耗饰品换取 CoreFusion。
- */
 public class FusionVesselItem extends Item {
-
     private static final String TAG_COUNT = "tcc_fusion_count";
     private static final String TAG_AUTO = "tcc_fusion_auto";
     private static final int MAX_TAKE = 64;

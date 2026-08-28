@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class CollapseCrystal extends Item {
-
     public CollapseCrystal(Properties properties) {
         super(properties
             .stacksTo(64)

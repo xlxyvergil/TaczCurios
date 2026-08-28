@@ -53,19 +53,16 @@ public final class GunHeadshotEventHandler {
         LivingEntity killed = event.getEntity();
         if (killed.level().isClientSide) return;
 
-        // ① 死亡源 attacker 必须是玩家
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
         if (!(sourceEntity instanceof Player player)) return;
 
-        // ② 从 Capability 读取爆头标记
         var cap = killed.getCapability(GunKillDataCapability.CAPABILITY);
         if (!cap.isPresent()) return;
         var data = cap.orElse(null).data();
         if (!player.getStringUUID().equals(data.headshotAttacker)) return;
         if (player.level().getGameTime() - data.headshotTime > DEATH_WINDOW_TICKS) return;
 
-        // ③ 读取 gunId 并触发爆头击杀判定
         net.minecraft.resources.ResourceLocation gunId = null;
         if (!data.headshotGunId.isBlank()) {
             try {

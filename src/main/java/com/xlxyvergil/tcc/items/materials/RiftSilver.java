@@ -21,7 +21,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public class RiftSilver extends Item {
-    
     public RiftSilver(Properties properties) {
         super(properties
             .stacksTo(64));

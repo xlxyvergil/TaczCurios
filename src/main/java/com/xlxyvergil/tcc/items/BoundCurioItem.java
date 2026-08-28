@@ -20,7 +20,6 @@ import java.util.List;
  * 绑定饰品在 tcc_3rd / tcc_tdk 槽位中无法直接卸下，须创造模式或消耗背包中的崩坏结晶才能取下。
  */
 public abstract class BoundCurioItem extends BaseCurioItem implements IBindable {
-
     /** 需要使用崩坏结晶才能卸下的 Curios 槽位标识 */
     private static final String[] BOUND_SLOT_IDS = {"tcc_3rd", "tcc_tdk"};
 

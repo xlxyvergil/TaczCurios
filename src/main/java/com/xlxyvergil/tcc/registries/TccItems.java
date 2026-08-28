@@ -478,166 +478,166 @@ public class TccItems {
     
     // Phase 2: 16个新增常驻属性饰品
     
-    // G-01 关键延迟 - 枪械通用，暴击几率+200%，射速-20%
+    // 关键延迟 - 枪械通用，暴击几率+200%，射速-20%
     public static final Item CRITICAL_DELAY = new CriticalDelay(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));
     
-    // R-01 致命一击 - 步枪类，暴击几率+150%
+    // 致命一击 - 步枪类，暴击几率+150%
     public static final Item LETHAL_CRIT = new LethalCrit(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     
-    // R-02 弱点感应 - 步枪类，暴击伤害+120%
+    // 弱点感应 - 步枪类，暴击伤害+120%
     public static final Item WEAKNESS_SENSE = new WeaknessSense(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));
     
-    // S-01 破灭 - 霰弹枪，暴击伤害+60%
+    // 破灭 - 霰弹枪，暴击伤害+60%
     public static final Item DESTRUCTION = new Destruction(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));
     
-    // S-02 破灭Prime - 霰弹枪，暴击伤害+110%
+    // 破灭Prime - 霰弹枪，暴击伤害+110%
     public static final Item DESTRUCTION_PRIME = new DestructionPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // S-03 雷筒 - 霰弹枪，暴击几率+90%
+    // 雷筒 - 霰弹枪，暴击几率+90%
     public static final Item THUNDER_BARREL = new ThunderBarrel(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     
-    // S-04 雷筒Prime - 霰弹枪，暴击几率+165%
+    // 雷筒Prime - 霰弹枪，暴击几率+165%
     public static final Item THUNDER_BARREL_PRIME = new ThunderBarrelPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // P-01 弱点专精 - 手枪，暴击伤害+60%
+    // 弱点专精 - 手枪，暴击伤害+60%
     public static final Item WEAKNESS_MASTERY = new WeaknessMastery(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
-    // P-02 弱点专精Prime - 手枪，暴击伤害+110%
+    // 弱点专精Prime - 手枪，暴击伤害+110%
     public static final Item WEAKNESS_MASTERY_PRIME = new WeaknessMasteryPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // P-03 空尖弹 - 手枪，暴击伤害+60%，手枪伤害-15%
+    // 空尖弹 - 手枪，暴击伤害+60%，手枪伤害-15%
     public static final Item HOLLOW_POINT = new HollowPoint(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));
     
-    // P-04 手枪精通 - 手枪，暴击几率+120%
+    // 手枪精通 - 手枪，暴击几率+120%
     public static final Item PISTOL_MASTERY = new PistolMastery(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     
-    // P-05 手枪精通Prime - 手枪，暴击几率+187%
+    // 手枪精通Prime - 手枪，暴击几率+187%
     public static final Item PISTOL_MASTERY_PRIME = new PistolMasteryPrime(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // M-01 斩铁 - 近战，暴击几率+120%
+    // 斩铁 - 近战，暴击几率+120%
     public static final Item STEEL_SLASH = new SteelSlash(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     
-    // M-02 肢解 - 近战，暴击伤害+90%
+    // 肢解 - 近战，暴击伤害+90%
     public static final Item DISMEMBERMENT = new Dismemberment(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
     
-    // M-03 牺牲压迫点 - 近战，近战伤害+110%
+    // 牺牲压迫点 - 近战，近战伤害+110%
     public static final Item SACRIFICE_OPPRESSION = new SacrificeOppression(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
     
-    // M-04 牺牲斩铁 - 近战，暴击几率+220%
+    // 牺牲斩铁 - 近战，暴击几率+220%
     public static final Item SACRIFICE_STEEL = new SacrificeSteel(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     // Phase 3: 12个Buff触发饰品
 
-    // R-03 氩晶瞄具 - 步枪，爆头触发Buff
+    // 氩晶瞄具 - 步枪，爆头触发Buff
     public static final Item ARGON_SCOPE = new ArgonScope(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));
 
-    // R-04 镀层氩晶瞄具 - 步枪，爆头/击杀触发Buff（叠加5层）
+    // 镀层氩晶瞄具 - 步枪，爆头/击杀触发Buff（叠加5层）
     public static final Item GILDED_ARGON_SCOPE = new GildedArgonScope(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // R-05 尖刃弹头 - 步枪，击杀触发Buff
+    // 尖刃弹头 - 步枪，击杀触发Buff
     public static final Item SHARP_BULLET = new SharpBullet(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
 
-    // R-07 镀层分裂膛室 - 步枪，击杀触发Buff（叠加5层）
+    // 镀层分裂膛室 - 步枪，击杀触发Buff（叠加5层）
     public static final Item GILDED_SPLIT_CHAMBER = new GildedSplitChamber(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // S-05 雷射瞄具 - 霰弹枪，爆头触发Buff
+    // 雷射瞄具 - 霰弹枪，爆头触发Buff
     public static final Item LASER_SCOPE = new LaserScope(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
 
-    // S-06 破片射击 - 霰弹枪，击杀触发Buff
+    // 破片射击 - 霰弹枪，击杀触发Buff
     public static final Item FRAGMENT_SHOT = new FragmentShot(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
 
-    // S-08 镀层地狱弹膛 - 霰弹枪，击杀触发Buff（叠加5层）
+    // 镀层地狱弹膛 - 霰弹枪，击杀触发Buff（叠加5层）
     public static final Item GILDED_INFERNAL_CHAMBER = new GildedInfernalChamber(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // P-06 液压准心 - 手枪，爆头触发Buff
+    // 液压准心 - 手枪，爆头触发Buff
     public static final Item HYDRAULIC_CROSSHAIR = new HydraulicCrosshair(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.COMMON));
 
-    // P-07 镀层液压准心 - 手枪，爆头/击杀触发Buff（叠加5层）
+    // 镀层液压准心 - 手枪，爆头/击杀触发Buff（叠加5层）
     public static final Item GILDED_HYDRAULIC_CROSSHAIR = new GildedHydraulicCrosshair(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // P-08 尖锐子弹 - 手枪，击杀触发Buff
+    // 尖锐子弹 - 手枪，击杀触发Buff
     public static final Item SHARP_AMMO = new SharpAmmo(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
 
-    // P-10 镀层弹头扩散 - 手枪，击杀触发Buff（叠加4层）
+    // 镀层弹头扩散 - 手枪，击杀触发Buff（叠加4层）
     public static final Item GILDED_BULLET_SPREAD = new GildedBulletSpread(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // M-05 镀层斩铁 - 近战，击杀触发Buff（叠加4层）
+    // 镀层斩铁 - 近战，击杀触发Buff（叠加4层）
     public static final Item GILDED_STEEL_SLASH = new GildedSteelSlash(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     // Phase 4: 5个特殊饰品
 
-    // R-06 镀层步枪才能 - 步枪，击杀触发Buff（有害效果乘算，2层）
+    // 镀层步枪才能 - 步枪，击杀触发Buff（有害效果乘算，2层）
     public static final Item GILDED_RIFLE_APTITUDE = new GildedRifleAptitude(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // S-07 镀层通晓霰弹枪 - 霰弹，击杀触发Buff（有害效果乘算，2层）
+    // 镀层通晓霰弹枪 - 霰弹，击杀触发Buff（有害效果乘算，2层）
     public static final Item GILDED_SHOTGUN_SAVVY = new GildedShotgunSavvy(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // P-09 镀层准确射手 - 手枪，击杀触发Buff（有害效果乘算，3层）
+    // 镀层准确射手 - 手枪，击杀触发Buff（有害效果乘算，3层）
     public static final Item GILDED_MARKSMAN = new GildedMarksman(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // M-06 异况超量 - 近战，目标负面效果种数增伤
+    // 异况超量 - 近战，目标负面效果种数增伤
     public static final Item CONDITION_OVERLOAD = new ConditionOverload(new Item.Properties()
             .stacksTo(1)
             .rarity(Rarity.RARE));

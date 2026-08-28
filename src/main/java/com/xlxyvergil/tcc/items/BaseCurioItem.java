@@ -24,7 +24,6 @@ import java.util.*;
  * 饰品主基类，提供 3rd / tdk / tcc 饰品共有的基础功能（掉落规则、tick、装备/卸载等）。
  */
 public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishable {
-
     // 互斥映射表：物品注册名 -> 互斥的物品注册名集合
     private static final Map<String, Set<String>> CONFLICT_MAP = new HashMap<>();
 
