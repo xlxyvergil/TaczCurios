@@ -20,8 +20,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 /**
- * 饰品升级合成配方：饰品 + 融合容器 → 升级后的饰品 + 融合容器（返还）。
- * 此配方依赖容器 NBT 中的 CoreFusion 数量，合成后扣除对应数量并返还容器。
+ * 饰品升级合成：饰品 + 融合容器 → 升级后的饰品 + 融合容器（返还）。
+ * 依据容器 NBT 中的 CoreFusion 数量升级，合成后扣除对应数量并返还容器。
  */
 public class FusionUpgradeRecipe extends CustomRecipe {
 
@@ -33,10 +33,7 @@ public class FusionUpgradeRecipe extends CustomRecipe {
     }
 
     /**
-     * 检查合成格是否满足条件：
-     * 1. 恰好有 1 个可升级饰品 + 1 个融合容器
-     * 2. 融合容器内 CoreFusion ≥ 升下一级所需
-     * 3. 饰品未达到封顶等级
+     * 匹配条件：恰好 1 个可升级饰品 + 1 个融合容器，容器内 CoreFusion 至少够升 1 级，且饰品未满级。
      */
     @Override
     public boolean matches(CraftingContainer container, Level level) {
@@ -162,9 +159,6 @@ public class FusionUpgradeRecipe extends CustomRecipe {
 
     // 工具方法
 
-    /**
-     * 判断物品是否为可升级的 tcc_slot 饰品。
-     */
     private static boolean isUpgradeableCurio(ItemStack stack) {
         if (stack.isEmpty()) return false;
         if (!stack.is(TCC_SLOT)) return false;

@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 饰品 Tooltip 统一处理：在道具名称下方插入融合等级、稀有度与武器类型限制。
+ * 饰品 Tooltip 统一处理：在道具名称下方插入融合等级、稀有度与武器类型限制；
  * 融合等级仅 tcc_slot 槽位显示，栏位名称由 Curios 自行处理。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -70,7 +70,6 @@ public class CurioFusionTooltipHandler {
         }
     }
 
-    /** 构建武器类型限制的 tooltip 文本 */
     @Nullable
     private static Component buildRestrictionComponent(List<String> restriction) {
         if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
@@ -83,7 +82,6 @@ public class CurioFusionTooltipHandler {
         return Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes);
     }
 
-    /** 根据稀有度返回 tcc.tooltip.rarity.* 翻译键 */
     private static String getRarityKey(Rarity rarity) {
         if (rarity == Rarity.COMMON)    return "tcc.tooltip.rarity.common";
         if (rarity == Rarity.UNCOMMON)  return "tcc.tooltip.rarity.uncommon";

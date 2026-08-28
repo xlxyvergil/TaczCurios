@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 崩坏结晶合成配方：1 崩坏结晶 + 若干同组 3 阶饰品 → 记录进度（去重），集齐后产出真我/黑渊白花（无序）。
+ * 崩坏结晶合成：1 崩坏结晶 + 若干同组 3 阶饰品 → 记录进度（去重），集齐后产出真我/黑渊白花。
  * 真我（逐火之蛾）与黑渊白花（神之键）分属两组，水晶初次合成即绑定组别，防止两组混记。
  */
 public class CollapseCrystalCraftRecipe extends CustomRecipe {

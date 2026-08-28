@@ -33,9 +33,6 @@ public final class AchievementProgressRenderer {
 
     private AchievementProgressRenderer() {}
 
-    /**
-     * 检查物品是否与某个成就关联，若有则读取进度并追加到 tooltip。
-     */
     public static void appendProgress(ItemStack stack, List<Component> tooltip) {
         try {
             doAppendProgress(stack, tooltip);
@@ -45,11 +42,8 @@ public final class AchievementProgressRenderer {
     }
 
     /**
-     * 显示当前饰品的下一级进化条件提示与内容。
-     * 依据 achievement_definitions.json 中 reward 的 item/to 字段判断进化关系：
-     * 找到 reward.type == "evolve" 且 reward.item（或 linkedEvolves.item）
-     * 等于当前物品的成就。未按 Shift 时提示「按住Shift显示进化条件」，
-     * 按住 Shift 时直接显示其 display.description 文本。
+     * 显示当前饰品的下一级进化条件：按 achievement_definitions.json 的 reward.item（或 linkedEvolves.item）
+     * 匹配进化来源；未按 Shift 提示「按住Shift显示进化条件」，按住则直接显示其 display.description 文本。
      */
     public static void appendNextEvolutionCondition(ItemStack stack, List<Component> tooltip) {
         try {
@@ -123,9 +117,6 @@ public final class AchievementProgressRenderer {
         appendConditionProgress(player, def, tooltip);
     }
 
-    /**
-     * 按条件类型逐行显示成就进度。
-     */
     private static void appendConditionProgress(net.minecraft.client.player.LocalPlayer player,
                                                 AchievementDefinitions.AchievementDef def,
                                                 List<Component> tooltip) {
@@ -254,9 +245,7 @@ public final class AchievementProgressRenderer {
         }
     }
 
-    /**
-     * 添加一行条件进度：缩进 + 灰色标签 + 着色值。
-     */
+    /** 添加一行进度：缩进 + 灰色标签 + 着色值。 */
     private static void addConditionLine(List<Component> tooltip, Component label, Component value) {
         tooltip.add(Component.literal("  ")
                 .append(label)
@@ -265,10 +254,7 @@ public final class AchievementProgressRenderer {
                 .withStyle(ChatFormatting.GRAY));
     }
 
-    /**
-     * 通过客户端 advancement 系统判断成就是否已完成。
-     * ClientAdvancements 同时持有从服务端同步的 advancement 树和完成进度。
-     */
+    /** 通过客户端 advancement 系统判断成就是否已完成（ClientAdvancements 持有服务端同步的树与进度）。 */
     private static boolean isAchievementCompleted(AchievementDefinitions.AchievementDef def) {
         var mc = Minecraft.getInstance();
         if (mc == null || mc.player == null || mc.getConnection() == null) return false;
@@ -302,10 +288,7 @@ public final class AchievementProgressRenderer {
         return localized.equals(key) ? statId : localized;
     }
 
-    /**
-     * 从客户端 Statistics 读取 stat 的当前值。
-     * 与服务端 StatPollingEventHandler.checkStat 一致：先通过 CUSTOM_STAT 验证再读取。
-     */
+    /** 从客户端 Statistics 读取 stat 当前值，与服务端 StatPollingEventHandler.checkStat 一致：先经 CUSTOM_STAT 验证。 */
     private static int resolveStatValue(net.minecraft.client.player.LocalPlayer player, String statId) {
         ResourceLocation statRl = ResourceLocation.tryParse(statId);
         if (statRl == null) return 0;

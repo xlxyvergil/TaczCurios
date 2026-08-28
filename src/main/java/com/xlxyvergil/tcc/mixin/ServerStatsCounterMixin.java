@@ -10,9 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 拦截 ServerStatsCounter.setValue()，在每次统计数据变动后主动同步给客户端。
- * 这样 stat_polling 类型的成就进度（以及所有其他统计）在客户端实时可见，
- * 无需等待玩家打开统计信息屏幕触发 REQUEST_STATS。
+ * 拦截 ServerStatsCounter.setValue() 并在每次统计变动后主动同步给客户端，
+ * 使 stat_polling 类型成就进度（及所有统计）实时可见，无需等待玩家打开统计屏幕触发 REQUEST_STATS。
  */
 @Mixin(ServerStatsCounter.class)
 public abstract class ServerStatsCounterMixin {

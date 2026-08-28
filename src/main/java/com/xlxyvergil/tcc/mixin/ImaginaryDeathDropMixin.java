@@ -9,11 +9,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 真我结界范围内实体死亡不产生经验球。
- * 真我结界在堆怪区域持续清怪会产生海量经验球并在区块内长期堆积，拖垮服务端 TPS。
- * 此 Mixin 让「处于任一激活结界球形范围内的实体」死亡时不生成经验球：
- * die HEAD 用 ZhenWo.isInsideActiveBarrier 判断是否在结界内并打标记，dropExperience HEAD 带标记则跳过生成。
- * 仅拦截掉落经验球，不影响物理/其他饰品击杀，也不影响物品/材料掉落。
+ * 真我结界持续清怪会产生海量经验球并在区块内堆积、拖垮服务端 TPS，故处于任一激活结界范围内的实体死亡时不生成经验球。
+ * 仅在死亡瞬间标记（die HEAD），且只拦截经验球掉落（dropExperience），不影响物理击杀与物品/材料掉落。
  */
 @Mixin(LivingEntity.class)
 public abstract class ImaginaryDeathDropMixin {

@@ -29,9 +29,6 @@ public class TaczCuriosClientTooltip {
     /** 奖励物品 ID → 成就定义的懒加载反向映射 */
     private static Map<String, AchievementDefinitions.AchievementDef> rewardToAchievement;
 
-    /**
-     * 监听 ItemTooltipEvent，为所有饰品追加动态信息
-     */
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
@@ -99,7 +96,6 @@ public class TaczCuriosClientTooltip {
         return getRewardMap().get(itemId);
     }
 
-    /** 如果物品是某成就的奖励，追加达成条件描述 */
     private static void appendAchievementCondition(List<Component> tooltip, ItemStack stack) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         AchievementDefinitions.AchievementDef def = getRewardMap().get(itemId.toString());
@@ -118,7 +114,7 @@ public class TaczCuriosClientTooltip {
                 .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
-    /** 如果物品有 ATTRIBUTE 类型的进化规则且包含 description，追加成长条件 */
+    /** 物品有 ATTRIBUTE 型进化规则且含 description 时，追加成长条件文本 */
     private static void appendEvolutionCondition(List<Component> tooltip, ItemStack stack) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         List<EvolutionRegistry.Rule> rules = EvolutionRegistry.getRulesByTypeAndItemOrEmpty(

@@ -40,7 +40,7 @@ public class SetFusionCountFunction extends LootItemConditionalFunction {
         return LootTableEventHandler.SET_FUSION_COUNT;
     }
 
-    // -- Builder --
+    // -- 构造器 --
 
     public static Builder builder(int minCount, int maxCount) {
         return new Builder(minCount, maxCount);
@@ -66,7 +66,7 @@ public class SetFusionCountFunction extends LootItemConditionalFunction {
         }
     }
 
-    // -- Serializer --
+    // -- 序列化 --
 
     public static class Serializer extends LootItemConditionalFunction.Serializer<SetFusionCountFunction> {
         @Override

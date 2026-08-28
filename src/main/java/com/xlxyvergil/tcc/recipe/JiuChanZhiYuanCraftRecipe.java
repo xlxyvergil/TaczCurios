@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 /**
- * 纠缠之缘合成配方：1 纠缠之缘 + 1 任意神之键/逐火之蛾饰品 → 该饰品的完全副本（保留全部 NBT）。
+ * 纠缠之缘合成：1 纠缠之缘 + 1 任意神之键/逐火之蛾饰品 → 该饰品的完全副本。
  * 仅消耗纠缠之缘；真我、黑渊白花不在目标 Tag 内，天然无法参与。
  */
 public class JiuChanZhiYuanCraftRecipe extends CustomRecipe {

@@ -7,9 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.StatFormatter;
 import net.minecraft.stats.Stats;
 
-/**
- * 统一管理 TCC 所有自定义统计信息。
- */
 public final class TccStats {
 
     /** 玩家治愈僵尸村民的累计次数 */

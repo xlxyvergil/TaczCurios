@@ -40,17 +40,14 @@ public final class NetworkHandler {
         CHANNEL.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
-    /** 发送成就进度更新到客户端 */
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {
         sendToPlayer(player, new SyncProgressS2CPacket("progress_" + achievementId, progress));
     }
 
-    /** 发送维度/群系访问记录到客户端 */
     public static void syncVisited(ServerPlayer player, String nbtKey, String id) {
         sendToPlayer(player, new SyncProgressS2CPacket("visited_" + nbtKey + "#" + id, 1));
     }
 
-    /** 玩家登录时全量同步所有进度 */
     public static void syncAllForPlayer(ServerPlayer player) {
         for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.all()) {
             int progress = TccPlayerDataCapability.getAchievementProgress(player, def.id());

@@ -9,10 +9,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 在玩家加入世界后，markAllDirty() 标记所有统计数据为"脏"后，
- * 主动调用 sendStats() 将初始统计数据同步到客户端。
- * 配合 ServerStatsCounterMixin，确保服务端在登录时和每次 stat 变动后
- * 都主动推送给客户端，无需等待客户端的 REQUEST_STATS 请求。
+ * 玩家加入世界后主动调用 sendStats() 同步初始统计，配合 ServerStatsCounterMixin
+ * 让服务端在登录时及每次 stat 变动后都主动推送给客户端，无需等待客户端的 REQUEST_STATS。
  */
 @Mixin(PlayerList.class)
 public abstract class PlayerListMixin {

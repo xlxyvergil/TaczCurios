@@ -21,24 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 修复 Refined Storage 的 onCraftedShift 方法，使 ItemCraftedEvent 每次合成操作触发一次（与 vanilla / AE2 行为一致），
- * 而非整个批次仅触发一次。Required = false：RS 未加载时静默跳过。
+ * 修复 RS 的 onCraftedShift：使 ItemCraftedEvent 每次合成操作触发一次（与 vanilla/AE2 一致），
+ * 而非整个批次仅一次；RS 未加载时静默跳过。
  */
 @Mixin(targets = "com.refinedmods.refinedstorage.apiimpl.network.grid.CraftingGridBehavior", remap = false)
 public abstract class RSCraftingGridBehaviorMixin {
 
     /**
-     * 目标类私有方法 filterDuplicateStacks 的 Shadow 存根。
-     * 运行时此 @Overwrite 方法的字节码在 CraftingGridBehavior 内执行，因此该调用会解析到真正的私有方法。
+     * 目标类私有方法 filterDuplicateStacks 的 Shadow 存根；此 @Overwrite 在目标类内执行，调用会解析到真正的私有方法。
      */
     @Shadow
     private void filterDuplicateStacks(INetwork network, CraftingContainer matrix, IStackList<ItemStack> availableItems) {
         throw new UnsupportedOperationException("Shadow method");
     }
 
-    /**
-     * 重写 onCraftedShift，使 ItemCraftedEvent 每次合成操作触发一次而非整个批次一次。
-     */
     @Overwrite(remap = false)
     public void onCraftedShift(INetworkAwareGrid grid, Player player) {
         CraftingContainer matrix = grid.getCraftingMatrix();

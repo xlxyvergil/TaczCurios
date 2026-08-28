@@ -17,10 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Set;
 
-/**
- * 战利品表事件处理器 — 在下界要塞、堡垒遗迹和末地城战利品箱中
- * 添加融合容器（FusionVessel），内含随机数量的内融核心（CoreFusion）。
- */
+/** 在下界要塞、堡垒遗迹与末地城战利品箱中随机添加融合容器（FusionVessel）。 */
 public class LootTableEventHandler {
 
     private static final Set<ResourceLocation> NETHER_TABLES = Set.of(
@@ -34,7 +31,7 @@ public class LootTableEventHandler {
     private static final ResourceLocation END_CITY_TABLE =
             new ResourceLocation("minecraft:chests/end_city_treasure");
 
-    /** 自定义战利品函数类型 — 类加载时自动注册到 BuiltInRegistries */
+    /** 自定义战利品函数类型，类加载时自动注册到 BuiltInRegistries。 */
     public static final LootItemFunctionType SET_FUSION_COUNT = register(
             "set_fusion_count", new SetFusionCountFunction.Serializer());
 

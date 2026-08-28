@@ -6,7 +6,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
- * 客户端网络数据包处理器。
  * 仅在客户端加载，避免服务端触发 dist 检查错误。
  */
 @OnlyIn(Dist.CLIENT)
@@ -14,9 +13,6 @@ final class ClientPacketHandler {
 
     private ClientPacketHandler() {}
 
-    /**
-     * 处理进度同步数据包，将数据写入客户端 Capability。
-     */
     static void handleSyncProgress(SyncProgressS2CPacket packet) {
         var player = Minecraft.getInstance().player;
         if (player == null) return;

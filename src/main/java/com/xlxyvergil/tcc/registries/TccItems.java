@@ -167,12 +167,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.IForgeRegistry;
 
-/**
- * 在此集中注册所有物品：类加载时静态字段直接实例化，避免复杂的注册系统。
- */
+// 物品在类加载时直接以静态字段实例化，从而避免引入复杂的注册系统。
 public class TccItems {
 
-    /** 裂隙级稀有度 */
     public static final Rarity RIFT = Rarity.create("tcc_rift", ChatFormatting.LIGHT_PURPLE);
     
     // 士兵基础挂牌 - 提供50%所有枪械基础伤害加成

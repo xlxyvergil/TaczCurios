@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix4f;
 
 /**
- * 结界地面特效渲染器（无实体）：以本地玩家位置为中心绘制图标贴图与粉色圆环。
+ * 结界地面特效渲染器（无实体）：以本地玩家位置为中心绘制图标贴图与粉色圆环，
  * 状态由玩家身上的结界标记 buff（ZhenWoBarrierEffect）驱动。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

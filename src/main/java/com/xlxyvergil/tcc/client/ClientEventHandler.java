@@ -14,9 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.event.CurioEquipEvent;
 import top.theillusivec4.curios.api.event.CurioUnequipEvent;
 
-/**
- * 客户端事件处理器：监听饰品装备/卸载事件并刷新枪械属性显示。
- */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEventHandler {
     
@@ -32,9 +29,6 @@ public class ClientEventHandler {
         refreshRefitScreen();
     }
     
-    /**
-     * 刷新手持枪械的Tooltip显示
-     */
     private static void refreshHeldGunTooltip() {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && mc.player != null) {
@@ -65,9 +59,6 @@ public class ClientEventHandler {
         }
     }
     
-    /**
-     * 当屏幕打开时刷新枪械属性
-     */
     @SubscribeEvent
     public static void onScreenOpen(ScreenEvent.Opening event) {
         // 如果打开的是改装界面，强制刷新手持枪械属性

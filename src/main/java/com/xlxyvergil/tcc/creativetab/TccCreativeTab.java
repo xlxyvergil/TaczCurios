@@ -10,10 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
-/**
- * TaczCurios模组的创造模式物品栏标签页
- * 用于在创造模式中组织模组的所有饰品物品
- */
 public class TccCreativeTab {
     
     // 创造模式标签页的注册器

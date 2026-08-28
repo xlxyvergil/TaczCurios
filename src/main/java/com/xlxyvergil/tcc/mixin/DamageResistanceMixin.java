@@ -13,10 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.UUID;
 
 /**
- * 玩家减伤 Mixin。
- * 常驻比例减伤采用「每 tick 血量对账」的通用实现（见 DamageResistanceHelper.reconcileHealth），
- * 每服务端 tick 调用，对任意来源（含绕过 setHealth 的直接写入）的血量下降统一按保留因子削减。
- * 此处的 setHealth 拦截仅保留「受伤冷却」与「单次上限」两类受击触发逻辑，与常驻比例减伤互不干扰。
+ * 玩家减伤 Mixin：常驻比例减伤采用「每 tick 血量对账」（DamageResistanceHelper.reconcileHealth）对任意来源
+ * （含绕过 setHealth 的直接写入）统一按保留因子削减；此处的 setHealth 拦截仅保留「受伤冷却」与「单次上限」两类受击触发逻辑。
  */
 @Mixin(value = LivingEntity.class, priority = 2000)
 public abstract class DamageResistanceMixin {
@@ -57,7 +55,7 @@ public abstract class DamageResistanceMixin {
     }
 
     /**
-     * 完全免伤实体强制复活：清除死亡标记、复位死亡计时、恢复站立姿态并不再受击。
+     * 完全免伤实体强制复活：清除死亡标记、复位死亡计时、恢复站立姿态；
      * 用于兜住绕过 setHealth 直接写血量的第三方伤害（每次把血打到 0 并置死）。
      */
     private void reviveFully(LivingEntity self) {

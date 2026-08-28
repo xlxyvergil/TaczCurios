@@ -531,7 +531,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue collapsePercentPerDebuff;
         public final ForgeConfigSpec.IntValue collapseMaxDebuffCount;
 
-        // 新增33个饰品配置字段(G/R/S/P/M)
         public final ForgeConfigSpec.DoubleValue criticalDelayCritChanceBoost;
         public final ForgeConfigSpec.DoubleValue criticalDelayFireRateReduction;
         public final ForgeConfigSpec.DoubleValue lethalCritCritChance;
@@ -841,8 +840,6 @@ public class TaczCuriosConfig {
             
 
 
-            // 新增33个饰品配置段
-            
             // G-01 关键延迟
             builder.comment("关键延迟饰品配置").push("critical_delay");
             criticalDelayCritChanceBoost = builder.comment("暴击几率加成 (默认: 2.0)").defineInRange("critChanceBoost", 2.0, -1, 100);
