@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 串联弹匣：提升弹匣容量，仅对手枪生效
- */
 public class TandemMagazine extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("8c001bb6-b378-41c4-92c9-0f1c197f45ed");
 

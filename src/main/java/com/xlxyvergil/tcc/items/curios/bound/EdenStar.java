@@ -26,13 +26,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 黄金系列·神之键线（tcc_tdk）：伊甸之星。
- * 16 格内非玩家实体瞬移必定失效。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EdenStar extends BoundCurioItem {
-
     /** 瞬移拦截范围（格） */
     private static double teleportRange() {
         return TaczCuriosConfig.COMMON.edenStarTeleportRange.get();

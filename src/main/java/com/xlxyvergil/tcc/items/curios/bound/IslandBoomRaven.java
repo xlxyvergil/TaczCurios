@@ -32,7 +32,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class IslandBoomRaven extends BoundCurioItem {
-
     private static final UUID ARMOR_UUID = UUID.fromString("2dddf4c2-5d16-4f88-9e08-e5f9131c7b4e");
     private static final UUID MOVE_SPEED_UUID = UUID.fromString("1ed0c2f3-7bcd-4a1e-bc6f-13d1fcb6c7ad");
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("90e98bd7-80b6-4e7f-8b1f-b6a0d74c3f78");

@@ -28,13 +28,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 浮生系列·神之键线（tcc_tdk）：羽渡尘。
- * 近战攻击 5% 概率使目标停止 AI（定身）5 秒。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Yuduchen extends BoundCurioItem {
-
     /** 定身时长（tick） */
     private static int stopDuration() {
         return TaczCuriosConfig.COMMON.yuduchenStopDurationSeconds.get() * 20;

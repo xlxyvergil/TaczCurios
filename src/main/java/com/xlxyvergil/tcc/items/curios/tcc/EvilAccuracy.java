@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 极恶精准：降低50%后坐力，降低36%射速（都加算）
- */
 public class EvilAccuracy extends TccCurioItem {
-    
     private static final UUID RECOIL_UUID = UUID.fromString("98a8e44a-7d8d-4d10-b934-7e1e1c1c8fca");
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("7da86e2a-9c63-4d3f-8237-feda8559638e");
     

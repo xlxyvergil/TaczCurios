@@ -28,13 +28,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 无限系列·人物线（tcc_3rd）：噬界之蛇。
- * 击杀按实体类型名累计（无上限），每种 +1.5% 全属性。击杀计数存于饰品 NBT，随进化继承。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShijieZhiShe extends BoundCurioItem {
-
     /** NBT 击杀计数前缀（后面接实体注册 ID，同类型去重） */
     public static final String KILL_KEY_PREFIX = "tcc_kill_count_";
 

@@ -14,11 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 液压准心：基础暴击几率135%，爆头命中→Buff期间暴击几率提升
- */
 public class HydraulicCrosshair extends TccCurioItem {
-
     public HydraulicCrosshair(Properties properties) {
         super(properties);
     }

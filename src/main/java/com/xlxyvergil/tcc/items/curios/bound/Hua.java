@@ -24,12 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 浮生系列·人物线（tcc_3rd）：华。
- * 护甲 +20%、护甲韧性 +20%。
- */
 public class Hua extends BoundCurioItem {
-
     private static final UUID ARMOR_UUID = UUID.fromString("81963226-818e-4994-84fe-157ec8e60e19");
     private static final UUID TOUGHNESS_UUID = UUID.fromString("d8aedf12-c4f7-4d1d-b3a4-5b53f9897f51");
 

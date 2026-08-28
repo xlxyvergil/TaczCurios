@@ -26,13 +26,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 神之键·黑渊白花「创灭螺旋」- 最终阶段（tcc_tdk 槽，裂隙级）。
- * 无武器限制：每次造成伤害时，附加等同于佩戴者当前血量 100% 的虚数伤害（绕过护甲/无敌帧）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeiyuanBaihua extends BoundCurioItem {
-
     public HeiyuanBaihua(Properties properties) {
         super(properties);
     }

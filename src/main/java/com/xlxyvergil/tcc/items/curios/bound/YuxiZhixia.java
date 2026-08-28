@@ -29,7 +29,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YuxiZhixia extends BoundCurioItem {
-
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("b8c9d0e1-f2a3-4567-bcde-f01234567890");
 
     public YuxiZhixia(Properties properties) {

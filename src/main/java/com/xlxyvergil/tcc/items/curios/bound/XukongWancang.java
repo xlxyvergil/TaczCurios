@@ -35,7 +35,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class XukongWancang extends BoundCurioItem {
-
     private static final UUID HEAT_MAX_UUID = UUID.fromString("b6189169-c010-42a0-ba1e-e774415c6660");
     private static final UUID HEAT_COOLING_UUID = UUID.fromString("004e2f47-90d9-443e-91d0-70aa327d27b2");
 

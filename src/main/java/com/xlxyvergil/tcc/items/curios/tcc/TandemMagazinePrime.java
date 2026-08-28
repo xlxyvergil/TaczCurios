@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 串联弹匣Prime：提升弹匣容量（仅手枪）
- */
 public class TandemMagazinePrime extends TccCurioItem {
-
     private static final UUID MAGAZINE_UUID = UUID.fromString("6f7eb1f1-c846-47cc-bbc7-73813bb57e30");
 
     private static final String MAGAZINE_NAME = "tcc.tandem_magazine_prime.magazine_capacity";

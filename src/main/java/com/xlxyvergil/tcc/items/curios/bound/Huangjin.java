@@ -27,13 +27,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 黄金系列·人物线（tcc_3rd）：黄金。
- * 36 格内玩家每 5 秒获得 1 个随机正面 buff（30 秒，III 级）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Huangjin extends BoundCurioItem {
-
     /** 光环范围（格） */
     private static double auraRange() {
         return TaczCuriosConfig.COMMON.huangjinAuraRange.get();

@@ -18,11 +18,7 @@ import java.util.List;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
-/**
- * 三饰：提供持枪移动速度加成（move_speed）
- */
 public class RedMovementTag extends TccCurioItem {
-    
     private static final UUID MOVE_SPEED_MODIFIER_UUID = UUID.fromString("e3ab07c7-2719-4942-99c7-526d58ba3736");
     
     public RedMovementTag(Properties properties) {

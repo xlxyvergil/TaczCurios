@@ -31,13 +31,8 @@ import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * 掎角一阵 - 裂隙级饰品：造成伤害时以64格内最近的玩家或女仆为祭品，
- * 以祭品血量倍率放大伤害并破坏其周围6*6方块，最后扣除祭品全部血量
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class KikakuIchijin extends TccCurioItem {
-
     public KikakuIchijin(Properties properties) {
         super(properties);
     }

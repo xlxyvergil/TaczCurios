@@ -28,13 +28,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 旭光系列·神之键线（tcc_tdk）：御魂示现。
- * 攻击按施加者虚数抗性百分比持久削减目标护甲 / 韧性（改 data，不恢复）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YuhunShixian extends BoundCurioItem {
-
     private static final UUID ARMOR_STRIP_UUID = UUID.fromString("388a60d4-6ec8-455a-ac26-8619f5c59c86");
     private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("91f79641-decf-4cc9-af18-958b9f3a7f45");
 

@@ -35,10 +35,6 @@ import java.util.UUID;
 
 
 
-/**
- * 天火圣裁 - 我将发动一次牛逼的攻击
- * 血量高于 40% 时提升枪械伤害并扣血流血；血量低于 40% 时全部效果失效。
- */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireJudgment extends BoundCurioItem {
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("daa1ac19-3221-43ba-b951-788015e19255");

@@ -32,13 +32,8 @@ import java.util.UUID;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 天火劫灭·无烬终焉 - 裂隙级，天火劫灭的进化版本
- * 取消满血检测和扣血限制，属性效果完全常驻，伤害100%转为虚数
- */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireApocalypseEndless extends BoundCurioItem {
-    
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
     

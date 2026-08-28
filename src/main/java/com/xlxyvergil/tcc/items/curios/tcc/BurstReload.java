@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 爆发装填：提升装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
- */
 public class BurstReload extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID RELOAD_UUID = UUID.fromString("cf64bdda-7972-4439-ab6a-1fe552c4caa3");
     

@@ -30,13 +30,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 空梦系列·人物线（tcc_3rd）：掠集之兽。
- * 钓鱼 0.01% 获得下界之星/龙蛋；击杀战利品翻倍（概率 = 施加者虚数抗性）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LuejiZhiShou extends BoundCurioItem {
-
     /** 钓鱼特殊战利品概率 */
     private static double specialFishChance() {
         return TaczCuriosConfig.COMMON.luejiZhiShouSpecialFishChance.get();

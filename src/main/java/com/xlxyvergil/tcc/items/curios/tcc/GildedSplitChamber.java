@@ -17,12 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 镀层分裂膛室 - 步枪饰品：击杀触发Buff，可叠加
- * 基础弹头数量+80%，击杀额外+30%持续10s，最多5层
- */
 public class GildedSplitChamber extends TccCurioItem {
-
     private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("0945b121-8315-40ae-8b22-1645c68f4eee");
     private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_split_chamber.base_bullet_count";
 

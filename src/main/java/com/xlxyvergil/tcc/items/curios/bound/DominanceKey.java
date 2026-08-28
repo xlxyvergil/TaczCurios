@@ -35,7 +35,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DominanceKey extends BoundCurioItem {
-
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f1234567892");
 
     public DominanceKey(Properties properties) {

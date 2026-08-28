@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 霰弹扩充Prime：提升弹匣容量（仅霰弹枪）
- */
 public class ShotgunExpansionPrime extends TccCurioItem {
-
     private static final UUID MAGAZINE_UUID = UUID.fromString("8c17e10f-b8fe-41b6-b0e7-ae214bed3dd4");
 
     private static final String MAGAZINE_NAME = "tcc.shotgun_expansion_prime.magazine_capacity";

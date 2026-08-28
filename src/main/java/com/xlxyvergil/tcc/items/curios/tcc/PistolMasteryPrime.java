@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 手枪精通Prime：暴击几率+187%
- */
 public class PistolMasteryPrime extends TccCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("47927b89-287d-4a56-b135-a53405ccbea8");
 
     private static final String CRIT_CHANCE_NAME = "tcc.pistol_mastery_prime.crit_chance";

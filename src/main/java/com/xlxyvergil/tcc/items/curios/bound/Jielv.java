@@ -27,13 +27,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 戒律系列·人物线（tcc_3rd）：戒律。
- * 攻击 15% 概率施加 3 个随机 debuff（15 秒）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Jielv extends BoundCurioItem {
-
     /** 施加随机 debuff 的概率 */
     private static double debuffChance() {
         return TaczCuriosConfig.COMMON.jielvDebuffChance.get();

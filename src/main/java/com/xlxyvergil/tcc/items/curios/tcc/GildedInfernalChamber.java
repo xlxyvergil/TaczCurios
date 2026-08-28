@@ -17,12 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 镀层地狱弹膛 - 霰弹枪饰品：击杀触发Buff，可叠加
- * 基础弹头数量+110%，击杀额外+30%持续10s，最多5层
- */
 public class GildedInfernalChamber extends TccCurioItem {
-
     private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("e109d5c2-1cfc-49ac-a4ee-49ef0e12cfc1");
     private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_infernal_chamber.base_bullet_count";
 

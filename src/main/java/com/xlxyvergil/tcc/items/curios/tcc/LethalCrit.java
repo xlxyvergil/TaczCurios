@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 致命一击：暴击几率+150%
- */
 public class LethalCrit extends TccCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("632a84b6-dcca-41e3-8746-92d783c0d0fe");
 
     private static final String CRIT_CHANCE_NAME = "tcc.lethal_crit.crit_chance";

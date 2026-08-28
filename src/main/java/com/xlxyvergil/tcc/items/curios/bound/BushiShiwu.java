@@ -32,13 +32,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 浮生系列·神之键线（tcc_tdk）：不识时务。
- * 近战攻击按施加者虚数抗性概率使目标停止 AI（定身）5 秒，并附加（虚数抗性值/100 × 护甲值）的虚数伤害。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BushiShiwu extends BoundCurioItem {
-
     /** 定身时长（tick） */
     private static int stopDuration() {
         return TaczCuriosConfig.COMMON.bushiShiwuStopDurationSeconds.get() * 20;

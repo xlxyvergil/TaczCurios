@@ -14,12 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 尖刃弹头 - 步枪饰品：击杀触发Buff期间提升暴击伤害
- * 基础120%，Buff期间额外提升Xs，不叠加
- */
 public class SharpBullet extends TccCurioItem {
-
     public SharpBullet(Properties properties) {
         super(properties);
     }

@@ -17,12 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 镀层斩铁：基础暴击几率+110%
- * 击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
- */
 public class GildedSteelSlash extends TccCurioItem {
-
     private static final UUID BASE_CRIT_CHANCE_UUID = UUID.fromString("4fa674c5-0f8a-4057-acfd-0388047c63c6");
     private static final String BASE_CRIT_CHANCE_NAME = "tcc.gilded_steel_slash.base_crit_chance";
 

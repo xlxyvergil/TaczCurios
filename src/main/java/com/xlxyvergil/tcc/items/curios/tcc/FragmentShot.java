@@ -14,11 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 破片射击：基础暴击伤害+99%，击杀触发Buff期间提升暴击伤害（不叠加）
- */
 public class FragmentShot extends TccCurioItem {
-
     public FragmentShot(Properties properties) {
         super(properties);
     }

@@ -28,13 +28,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 旭光系列·神之键线（tcc_tdk）：地藏御魂。
- * 攻击必定持久削减目标当前护甲 / 韧性 5%（改 data，不恢复）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class DizangYuhun extends BoundCurioItem {
-
     private static final UUID ARMOR_STRIP_UUID = UUID.fromString("1b28a6a4-747b-40aa-887d-2492faca2b99");
     private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("3ad28e89-46d1-4dfd-a3b0-e669ae311df2");
 

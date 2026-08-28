@@ -30,7 +30,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Juezhe extends BoundCurioItem {
-
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-1234567892");
     private static final UUID MAX_HEALTH_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-def4-567890abcdf0");
 

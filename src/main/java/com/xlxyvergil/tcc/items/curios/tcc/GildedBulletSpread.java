@@ -17,12 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 镀层弹头扩散：基础弹头数量+110%
- * 击杀→Buff额外+30%弹头数量持续10s，可叠加4层
- */
 public class GildedBulletSpread extends TccCurioItem {
-
     private static final UUID BASE_BULLET_COUNT_UUID = UUID.fromString("55457bc2-72cb-42d8-8918-b9854105386c");
     private static final String BASE_BULLET_COUNT_NAME = "tcc.gilded_bullet_spread.base_bullet_count";
 

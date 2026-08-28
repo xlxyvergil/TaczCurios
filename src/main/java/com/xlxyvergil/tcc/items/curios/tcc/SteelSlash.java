@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 斩铁：暴击几率+120%
- */
 public class SteelSlash extends TccCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("2b9ae9d2-caa4-499f-a820-4628fa91227b");
 
     private static final String CRIT_CHANCE_NAME = "tcc.steel_slash.crit_chance";

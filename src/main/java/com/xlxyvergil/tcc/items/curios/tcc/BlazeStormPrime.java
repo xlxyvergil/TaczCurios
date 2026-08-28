@@ -19,11 +19,7 @@ import java.util.UUID;
 
 
 
-/**
- * 烈焰风暴Prime饰品：增加爆炸范围与爆炸伤害（乘算）
- */
 public class BlazeStormPrime extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("248f06a5-5144-47a0-b56a-6d830ade21b9");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("76d7748e-2371-4513-90cc-880f469f389a");

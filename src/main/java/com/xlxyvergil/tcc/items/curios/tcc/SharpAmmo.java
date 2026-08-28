@@ -14,11 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 尖锐子弹：基础暴击伤害+75%，击杀触发Buff期间提升暴击伤害（不叠加）
- */
 public class SharpAmmo extends TccCurioItem {
-
     public SharpAmmo(Properties properties) {
         super(properties);
     }

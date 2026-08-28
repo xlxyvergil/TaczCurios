@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Kalpas extends BoundCurioItem {
-
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("25a94141-79e8-48ed-81e2-b3a642763b5e");
     private static final String ADAPT_ID = "kalpas";
     private static final String ADAPT_REGISTERED_KEY = TaczCurios.MODID + ":kalpas_adapt_registered";

@@ -14,12 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 镀层氩晶瞄具：爆头→120%暴击几率Buff持续2s
- * 爆头击杀→40%/层暴击几率Buff持续2s，最多4层
- */
 public class GildedArgonScope extends TccCurioItem {
-
     public GildedArgonScope(Properties properties) {
         super(properties);
     }

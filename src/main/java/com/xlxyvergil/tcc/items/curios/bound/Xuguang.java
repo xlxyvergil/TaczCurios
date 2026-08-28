@@ -22,12 +22,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 旭光系列·人物线（tcc_3rd）：旭光。
- * 攻速 +25%、攻伤 +20%、暴击伤害 +30%。
- */
 public class Xuguang extends BoundCurioItem {
-
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("161e973d-170a-4654-83d9-c258b7a368d7");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("ca6fabe6-07dd-4cd6-92fe-28c49e9b01b5");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("71aa144b-16ee-45da-a2fb-f9438400f2e0");

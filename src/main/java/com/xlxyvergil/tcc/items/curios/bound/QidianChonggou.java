@@ -25,13 +25,8 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 黄金系列·神之键线（tcc_tdk）：第三额定功率·奇点重构。
- * 64 格内非玩家实体瞬移必定失效 + 伤害转虚数 + 施加虚数侵染。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class QidianChonggou extends BoundCurioItem {
-
     /** 瞬移拦截范围（格） */
     private static double teleportRange() {
         return TaczCuriosConfig.COMMON.qidianChonggouTeleportRange.get();

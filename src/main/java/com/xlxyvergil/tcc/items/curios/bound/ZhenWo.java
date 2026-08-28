@@ -53,13 +53,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * 逐火之蛾「真我」- 最终阶段（tcc_3rd 槽，裂隙级）。
- * 虚数抗性+60、全属性+50%、常驻免疫击退与有害效果；血量<20%触发结界（范围回血、敌人受缓慢与虚数伤害，冷却60秒）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ZhenWo extends BoundCurioItem {
-
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2df6423f-42bc-4629-8624-ebb8cf4ff4c8");
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("8f851e69-0217-4e14-af7f-ee655b4a1cc7");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("9b7d1c2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e");

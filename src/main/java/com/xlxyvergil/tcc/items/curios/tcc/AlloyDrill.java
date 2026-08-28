@@ -19,11 +19,7 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
 
-/**
- * 合金钻头：提升护甲穿透能力
- */
 public class AlloyDrill extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID ARMOR_IGNORE_UUID = UUID.fromString("06d45b6d-c8d2-4372-bdfd-b427651a2366");
     

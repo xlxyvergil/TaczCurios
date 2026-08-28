@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 重口径：提升特定枪械伤害并增加不精准度（加算）
- */
 public class HeavyCaliberTag extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("0de3ed5d-9cb1-4c22-8bd1-c9b68ac13e9f"),

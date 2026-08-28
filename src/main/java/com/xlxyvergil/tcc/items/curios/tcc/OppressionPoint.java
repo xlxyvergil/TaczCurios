@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 压迫点：提升近战伤害（加算）
- */
 public class OppressionPoint extends TccCurioItem {
-    
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("1f7eab00-eb00-4941-9404-4fdd3eb10515");
     
     private static final String ATTACK_DAMAGE_NAME = "tcc.oppression_point.attack_damage";

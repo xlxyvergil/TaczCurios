@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class HuajieZhiyan extends BoundCurioItem {
-
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678902");
     private static final UUID MAX_HEALTH_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789024");
     private static final String ADAPT_ID = "huajie_zhiyan";

@@ -19,12 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 牺牲斩铁 - 近战饰品：暴击几率+220%
- * 套装：同时装备牺牲压迫点时额外+25%
- */
 public class SacrificeSteel extends TccCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("55038b53-178f-4171-96cf-ebfd873d5cc6");
     private static final UUID SET_BONUS_UUID = UUID.fromString("1aea61d9-8d99-4837-a8b1-0806085692c5");
 

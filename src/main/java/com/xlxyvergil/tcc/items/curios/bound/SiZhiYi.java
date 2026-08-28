@@ -28,13 +28,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 无限系列·神之键线（tcc_tdk）：往世的蛇影·死之衣。
- * 造成伤害 20% 概率移除目标 1 个正面 buff。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SiZhiYi extends BoundCurioItem {
-
     /** 移除正面 buff 的概率 */
     private static double removeChance() {
         return TaczCuriosConfig.COMMON.siZhiYiRemoveChance.get();

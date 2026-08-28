@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 战术上膛Prime：提升装填速度（仅霰弹枪）
- */
 public class TacticalReloadPrime extends TccCurioItem {
-
     private static final UUID RELOAD_UUID = UUID.fromString("d2f96b0d-cb4b-4cef-a71c-19930ba0ebff");
 
     private static final String RELOAD_NAME = "tcc.tactical_reload_prime.reload_speed";

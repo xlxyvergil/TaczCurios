@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 黄蜂蜇刺：提升手枪伤害（加算）
- */
 public class WaspStinger extends TccCurioItem {
-    
     private static final UUID DAMAGE_UUID = UUID.fromString("e1d2fcde-7ee0-4607-ade2-5b24292f8a52");
     
     private static final String DAMAGE_NAME = "tcc.wasp_stinger.pistol_damage";

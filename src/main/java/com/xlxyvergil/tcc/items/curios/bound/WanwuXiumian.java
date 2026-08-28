@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class WanwuXiumian extends BoundCurioItem {
-
     private static final UUID OVERHEAL_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
 
     public WanwuXiumian(Properties properties) {

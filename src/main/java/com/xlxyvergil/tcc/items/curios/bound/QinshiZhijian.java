@@ -28,13 +28,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 旭光系列·神之键线（tcc_tdk）：侵蚀之键。
- * 攻击必定持久削减目标当前护甲 / 韧性 10%（改 data，不恢复）。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class QinshiZhijian extends BoundCurioItem {
-
     private static final UUID ARMOR_STRIP_UUID = UUID.fromString("d94c75ed-8fa7-4cdd-94a8-13c5df10776e");
     private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("d94c75ed-8fa7-4cdd-94a8-13c5df10776e");
 

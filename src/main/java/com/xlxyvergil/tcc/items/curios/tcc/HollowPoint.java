@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 空尖弹：暴击伤害+60%，手枪伤害-15%
- */
 public class HollowPoint extends TccCurioItem {
-
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("56dd9ca3-8c1d-400b-b471-f611876ef639");
     private static final UUID PISTOL_DAMAGE_UUID = UUID.fromString("75109b44-e547-454e-b88a-91dae3c0bd41");
 

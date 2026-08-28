@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 持续火力：提升装填速度（加算）
- */
 public class SustainedFire extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID RELOAD_UUID = UUID.fromString("45c0a867-83d3-4c7b-a316-20ef80ad857e");
 

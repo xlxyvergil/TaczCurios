@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 爆发装填Prime：提升15%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
- */
 public class BurstReloadPrime extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID RELOAD_UUID = UUID.fromString("4e639098-414e-4541-9118-c92ca4670c52");
 

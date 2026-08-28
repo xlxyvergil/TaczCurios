@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 弹匣增幅：提升弹匣容量（仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效）
- */
 public class MagazineBoost extends TccCurioItem {
-
     private static final UUID MAGAZINE_UUID = UUID.fromString("1b4da84f-2d2a-44e4-bed2-986811a6d6ea");
 
     private static final String MAGAZINE_NAME = "tcc.magazine_boost.magazine_capacity";

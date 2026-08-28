@@ -25,12 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 浮生系列·人物线（tcc_3rd）：浮生。
- * 护甲 / 护甲韧性 = 持有者虚数抗性百分比。
- */
 public class Fusheng extends BoundCurioItem {
-
     private static final UUID ARMOR_UUID = UUID.fromString("7108d2bf-ef7c-4c9c-89da-1057deec9c02");
     private static final UUID TOUGHNESS_UUID = UUID.fromString("9570537d-6e7a-4f40-b31e-3024518fddc1");
 

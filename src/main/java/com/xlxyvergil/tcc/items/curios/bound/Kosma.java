@@ -24,12 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 旭光系列·人物线（tcc_3rd）：科斯魔。
- * 攻速 +8%、攻伤 +5%。
- */
 public class Kosma extends BoundCurioItem {
-
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("e46b57b8-e3ca-436c-bc30-b2015ce7666e");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("9bd59d29-ab0c-4c33-bef6-dd78a678b938");
 

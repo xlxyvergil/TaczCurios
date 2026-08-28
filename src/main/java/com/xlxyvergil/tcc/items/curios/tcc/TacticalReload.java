@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 战术上膛：提升装填速度（加算）
- */
 public class TacticalReload extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID RELOAD_UUID = UUID.fromString("11efa1b9-0f1d-4dcb-bc3f-ff0a5dc42811");
 

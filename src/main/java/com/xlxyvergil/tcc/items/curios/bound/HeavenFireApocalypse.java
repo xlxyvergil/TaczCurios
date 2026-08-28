@@ -30,13 +30,8 @@ import java.util.UUID;
 
 
 
-/**
- * 天火劫灭 - 踏上前来
- * 满血时生效：提升枪械/爆炸伤害，造成伤害后扣除当前生命值，并为周围玩家提供伤害加成。
- */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireApocalypse extends BoundCurioItem {
-    
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
     

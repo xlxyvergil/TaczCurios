@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 弹头扩散：提升120%弹头数量（加算）
- */
 public class BulletSpread extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID BULLET_COUNT_UUID = UUID.fromString("0e7e5d6a-c006-4b94-b5fa-ada36d9f71d2");
     

@@ -19,11 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * 卑劣加速：提升射击速度，但降低通用伤害和7种特定枪械伤害
- */
 public class DespicableAcceleration extends TccCurioItem {
-    
     private static final Map<String, UUID> DAMAGE_UUIDS = new HashMap<>();
     private static final Map<String, String> DAMAGE_NAMES = new HashMap<>();
     

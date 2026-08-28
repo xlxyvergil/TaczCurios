@@ -23,13 +23,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 戒律系列·神之键线（tcc_tdk）：往世的苦囚·命之契。
- * 佩戴时每 1 秒对 64 格内非玩家实体施加持续 15 秒的 6 级虚数侵染。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WangshiDeKuqiuMingzhiqi extends BoundCurioItem {
-
     public WangshiDeKuqiuMingzhiqi(Properties properties) {
         super(properties);
     }

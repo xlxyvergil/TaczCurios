@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 剑风Prime：提升实体交互范围（加算）
- */
 public class SwordWindPrime extends TccCurioItem {
-    
     private static final UUID ENTITY_INTERACTION_RANGE_UUID = UUID.fromString("3a32b0f7-9ef5-4c63-bb08-610762942881");
     
     private static final String ENTITY_INTERACTION_RANGE_NAME = "tcc.sword_wind_prime.entity_interaction_range";

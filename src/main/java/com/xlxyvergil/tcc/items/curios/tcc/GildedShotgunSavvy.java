@@ -14,11 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 镀层通晓霰弹枪：目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
- */
 public class GildedShotgunSavvy extends TccCurioItem {
-
     public GildedShotgunSavvy(Properties properties) {
         super(properties);
     }

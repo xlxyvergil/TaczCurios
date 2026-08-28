@@ -25,13 +25,8 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 戒律系列·神之键线（tcc_tdk）：第零额定功率·神恩结界。
- * 攻击时伤害转为虚数伤害；佩戴时每 1 秒对 64 格内非玩家实体施加持续 15 秒的 9 级虚数侵染。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShenenJiejie extends BoundCurioItem {
-
     public ShenenJiejie(Properties properties) {
         super(properties);
     }

@@ -22,12 +22,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 浮生系列·人物线（tcc_3rd）：渡尘之羽。
- * 护甲 +50%、护甲韧性 +50%。
- */
 public class DuchenZhiYu extends BoundCurioItem {
-
     private static final UUID ARMOR_UUID = UUID.fromString("cfa7072d-d2f0-4ee6-9d79-8ec96a638fe7");
     private static final UUID TOUGHNESS_UUID = UUID.fromString("431d864e-740c-4b87-b30b-abb21ed73aad");
 

@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 雷筒Prime：暴击几率+165%
- */
 public class ThunderBarrelPrime extends TccCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("3bac9864-dd71-472d-858a-dc6ce2696447");
 
     private static final String CRIT_CHANCE_NAME = "tcc.thunder_barrel_prime.crit_chance";

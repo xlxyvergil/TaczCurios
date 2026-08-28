@@ -18,11 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 腐败弹匣：提升66%弹匣容量、降低33%装填速度（加算），仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
- */
 public class CorruptMagazine extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID MAGAZINE_UUID = UUID.fromString("5d489ba1-55da-4f3a-83ea-69096eb4cccb");
     private static final UUID RELOAD_UUID = UUID.fromString("b747742d-1f42-4921-a900-af73409d453f");

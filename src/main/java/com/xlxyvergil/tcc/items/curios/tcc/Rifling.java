@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 膛线：提升特定枪械伤害（加算）
- */
 public class Rifling extends TccCurioItem {
-    
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("8da03d35-138b-4b16-8f58-afd8f296252f"),
         UUID.fromString("fcb27cd7-a90e-4e1c-8316-976ba894dd4a"),

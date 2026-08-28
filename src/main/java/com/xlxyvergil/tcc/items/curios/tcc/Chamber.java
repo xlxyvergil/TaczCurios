@@ -20,12 +20,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 膛室 - 手持狙击枪且弹匣满弹药时提升伤害（乘算）
- * 与ChamberPrime互斥
- */
 public class Chamber extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID DAMAGE_UUID = UUID.fromString("0d407ca4-24c0-4db7-bc3a-f7d92ab8f2ed");
     

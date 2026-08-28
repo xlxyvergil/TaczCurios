@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 压迫点Prime：提升近战伤害（加算）
- */
 public class OppressionPointPrime extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这个修饰符
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("b4763540-e80b-4bab-9e64-a4a2494d9f5e");
     

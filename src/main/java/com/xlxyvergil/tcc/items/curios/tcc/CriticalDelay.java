@@ -18,11 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 关键延迟：暴击几率+200%，射速-20%
- */
 public class CriticalDelay extends TccCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("3984a595-15c5-4f27-98f4-7c314aa7b819");
     private static final UUID FIRE_RATE_UUID = UUID.fromString("e061a849-c50b-4a24-8782-b27bb8782bc7");
 

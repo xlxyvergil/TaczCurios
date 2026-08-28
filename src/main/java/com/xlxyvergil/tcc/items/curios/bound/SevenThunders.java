@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class SevenThunders extends BoundCurioItem {
-
     private static final UUID HEADSHOT_MULTIPLIER_UUID = UUID.fromString("6e2a8b94-6e4f-4f4d-bf5f-0c8fcbcf0b2a");
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("e0c9302a-6b28-4e39-b6f8-7ae8120d2b65");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("a5a91c44-e7a1-46d4-97e8-0b2c2bdbf6c0");

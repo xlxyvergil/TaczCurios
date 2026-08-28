@@ -18,11 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 感染弹匣：提升弹匣容量、降低装填速度（加算）
- */
 public class InfectedMagazine extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("f7d6ce3b-7168-44d0-9637-c4eb2caf0fbc");
     private static final UUID RELOAD_UUID = UUID.fromString("fa325acb-cb87-4288-8d10-c3d637b9242c");

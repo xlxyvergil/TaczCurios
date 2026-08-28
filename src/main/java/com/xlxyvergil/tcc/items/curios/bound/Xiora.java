@@ -22,7 +22,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class Xiora extends BoundCurioItem {
-
     private static final UUID ARMOR_UUID = UUID.fromString("1b0eb9dc-4f2c-4b2f-9e80-cb6c3b0a9b3c");
     private static final UUID MOVE_SPEED_UUID = UUID.fromString("d8a8f4c6-1a12-4c3a-9ee2-7b190f0a0cf7");
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("8f21d12f-2c90-4c8f-a3f0-6bf0f64b4fdf");

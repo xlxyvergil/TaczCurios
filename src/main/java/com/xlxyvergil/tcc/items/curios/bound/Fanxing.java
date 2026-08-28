@@ -34,7 +34,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Fanxing extends BoundCurioItem {
-
     private static final String COOLDOWN_KEY = TaczCurios.MODID + ":fanxing_hurt_cooldown";
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("e1f2a3b4-c5d6-7890-abcd-ef1234567801");
     private static final UUID LUCK_UUID = UUID.fromString("d4e5f6a7-b8c9-0123-defa-123456789004");

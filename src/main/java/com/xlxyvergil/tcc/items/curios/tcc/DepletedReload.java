@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 耗竭装填：降低50%弹匣容量、提升48%装填速度，仅对狙击枪生效
- */
 public class DepletedReload extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID MAGAZINE_UUID = UUID.fromString("17c2b815-8561-4354-a395-d03c4ac4e029");
     private static final UUID RELOAD_UUID = UUID.fromString("68cef118-0938-46f4-881f-698e812abf70");

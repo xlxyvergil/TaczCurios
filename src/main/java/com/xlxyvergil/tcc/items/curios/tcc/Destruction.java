@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 破灭：暴击伤害+60%
- */
 public class Destruction extends TccCurioItem {
-
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("b031fe2c-6fb0-41e5-b1fe-a10687b6ce3a");
 
     private static final String CRIT_DAMAGE_NAME = "tcc.destruction.crit_damage";

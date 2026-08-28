@@ -33,7 +33,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Griseo extends BoundCurioItem {
-
     private static final String COOLDOWN_KEY = TaczCurios.MODID + ":griseo_hurt_cooldown";
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("c8d9e0f1-a2b3-4567-abcd-ef0123456790");
 

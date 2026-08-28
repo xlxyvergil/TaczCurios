@@ -28,7 +28,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TingzhiZhijian extends BoundCurioItem {
-
     private static final UUID OVERHEAL_UUID = UUID.fromString("c78456d7-685c-43b0-bf7a-0c69fd57862e");
 
     public TingzhiZhijian(Properties properties) {

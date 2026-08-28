@@ -22,9 +22,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 梵天百兽 - 提供基础40点虚数抗性，击杀配置列表中的实体获得额外抗性
- */
 public class BrahmaBeasts extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_MODIFIER_UUID = UUID.fromString("b2c3d4e5-f6a7-8901-bcde-f12345678901");
     

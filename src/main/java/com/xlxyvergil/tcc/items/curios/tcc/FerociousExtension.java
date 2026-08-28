@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 凶恶延伸：提高子弹射程（乘算）
- */
 public class FerociousExtension extends TccCurioItem {
-    
     private static final UUID EFFECTIVE_RANGE_UUID = UUID.fromString("2774a4d4-b53c-4799-bb4c-fd7dc117264f");
     
     private static final String EFFECTIVE_RANGE_NAME = "tcc.ferocious_extension.effective_range";

@@ -20,11 +20,7 @@ import java.util.UUID;
 
 
 
-/**
- * 极限速度：提升弹药速度（乘算）
- */
 public class LimitSpeed extends TccCurioItem {
-    
     private static final UUID AMMO_SPEED_UUID = UUID.fromString("ad27e195-8647-4497-8792-9720043e1e95");
     
     private static final String AMMO_SPEED_NAME = "tcc.limit_speed.ammo_speed";

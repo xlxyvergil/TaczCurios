@@ -18,11 +18,7 @@ import java.util.List;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
-/**
- * 士兵基础挂牌：为玩家提供通用枪械伤害加成（乘法）
- */
 public class SoldierBasicTag extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("725a607c-13fd-4aec-874e-07afbc5acaf4");
     

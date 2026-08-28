@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 抵近射击：霰弹枪伤害+90%（加算）
- */
 public class CloseRangeShot extends TccCurioItem {
-    
     private static final UUID DAMAGE_UUID = UUID.fromString("606453a5-947e-4020-8fc8-3f43c2c8cce9");
     
     private static final String DAMAGE_NAME = "tcc.close_range_shot.shotgun_damage";

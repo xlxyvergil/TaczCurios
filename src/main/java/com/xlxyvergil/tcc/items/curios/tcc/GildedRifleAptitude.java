@@ -14,11 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 镀层步枪才能：目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
- */
 public class GildedRifleAptitude extends TccCurioItem {
-
     public GildedRifleAptitude(Properties properties) {
         super(properties);
     }

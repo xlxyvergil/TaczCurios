@@ -40,7 +40,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class XukongWancangYZTH extends BoundCurioItem {
-
     private static final UUID HEAT_MAX_UUID = UUID.fromString("8d1e4345-5ff6-467d-b871-a5fe3906be12");
     private static final UUID HEAT_COOLING_UUID = UUID.fromString("30f486ba-c5ec-45d8-9439-1610c695d2e0");
 

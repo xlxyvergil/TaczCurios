@@ -18,11 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 恶性扩散：提高霰弹枪伤害（加算），提高不精准度（加算）
- */
 public class MalignantSpread extends TccCurioItem {
-    
     private static final UUID DAMAGE_UUID = UUID.fromString("5bfabff0-b8df-48cd-9ecb-95027aafbf69");
     private static final UUID INACCURACY_UUID = UUID.fromString("03755bb2-350f-47ee-821f-db51a2a7f149");
     

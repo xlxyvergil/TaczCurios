@@ -22,7 +22,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class YongjieZhijian extends BoundCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("a81d5c7e-9b3f-4e62-b8d5-3c7a1f6e8d2b");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("c92e6f8d-1a4b-5f73-c9e6-4d8b2f7a0e3c");
     private static final UUID LUCK_UUID = UUID.fromString("8acb73d0-e2be-4b76-ab94-aeab82337608");

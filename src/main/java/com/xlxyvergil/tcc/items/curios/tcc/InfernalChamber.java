@@ -18,11 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 地狱弹膛：提升弹头数量（加算）
- */
 public class InfernalChamber extends TccCurioItem {
-
     private static final UUID BULLET_COUNT_UUID = UUID.fromString("50d58834-a161-4b25-a13d-e56a375cd970");
 
     private static final String BULLET_COUNT_NAME = "tcc.infernal_chamber.bullet_count";

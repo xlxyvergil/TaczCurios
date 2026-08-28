@@ -38,7 +38,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShijieFanyan extends BoundCurioItem {
-
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("d94e7f8a-2c5d-6a84-d0f7-5e9c2f8b1a4d");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("e05f8a9b-3d6e-7b95-e1f8-6a0d3f9c2b5e");
     private static final UUID LUCK_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789003");

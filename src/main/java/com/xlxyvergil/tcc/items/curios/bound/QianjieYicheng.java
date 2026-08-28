@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class QianjieYicheng extends BoundCurioItem {
-
     private static final UUID LUCK_UUID = UUID.fromString("d94c75ed-8fa7-4cdd-94a8-13c5df10776e");
 
     public QianjieYicheng(Properties properties) {

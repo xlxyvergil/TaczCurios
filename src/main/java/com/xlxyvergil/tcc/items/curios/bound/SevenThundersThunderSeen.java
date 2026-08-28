@@ -31,7 +31,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class SevenThundersThunderSeen extends BoundCurioItem {
-
     private static final UUID HEADSHOT_MULTIPLIER_UUID = UUID.fromString("de0a7b0e-ec6f-45e5-8e3a-7f2d8f159f15");
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("e6e6a5a6-5b3b-4d79-8dbd-9b9c31a6f0f4");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("0f7f3eaa-8db2-4f8c-9f51-f06c9c0b0f17");

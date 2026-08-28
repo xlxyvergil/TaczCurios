@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 霰弹扩充：提升弹匣容量，仅对霰弹枪生效
- */
 public class ShotgunExpansion extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("462a2a97-e617-46fc-87af-d9f3b1e38837");
 

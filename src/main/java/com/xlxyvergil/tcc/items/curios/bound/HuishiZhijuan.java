@@ -34,7 +34,6 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HuishiZhijuan extends BoundCurioItem {
-
     private static final String COOLDOWN_KEY = TaczCurios.MODID + ":huishi_hurt_cooldown";
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("a7b8c9d0-e1f2-3456-abcd-ef0123456789");
 

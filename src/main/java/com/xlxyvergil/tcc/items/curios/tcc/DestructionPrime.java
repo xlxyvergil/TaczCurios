@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 破灭Prime：增加暴击伤害（+110%）
- */
 public class DestructionPrime extends TccCurioItem {
-
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("8cc13ec8-4188-4733-98d5-ae1b011cc983");
 
     private static final String CRIT_DAMAGE_NAME = "tcc.destruction_prime.crit_damage";

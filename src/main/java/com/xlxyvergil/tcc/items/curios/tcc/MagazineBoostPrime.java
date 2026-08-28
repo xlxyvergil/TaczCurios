@@ -16,11 +16,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 弹匣增幅Prime：提升5%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
- */
 public class MagazineBoostPrime extends TccCurioItem {
-
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("ba7337bb-f1f8-47c4-85fb-db0eef257283");
 

@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Imer extends BoundCurioItem {
-
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("e1880895-3725-430b-b55c-8f4e18f69a20");
 
     public Imer(Properties properties) {

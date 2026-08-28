@@ -19,11 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 过载弹匣：提升弹匣容量（加算），降低装填速度（加算）
- */
 public class OverloadedMagazine extends TccCurioItem {
-
     private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("ac732131-54e3-4205-addf-96167a044710");
     private static final UUID RELOAD_UUID = UUID.fromString("9cd14129-3da2-47a1-bff1-b78ab747b9e9");
 

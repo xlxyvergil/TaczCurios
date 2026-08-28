@@ -20,11 +20,7 @@ import java.util.UUID;
 
 
 
-/**
- * 预言契约：提升手枪伤害（+90%，加算）
- */
 public class ProphecyPact extends TccCurioItem {
-    
     private static final UUID DAMAGE_UUID = UUID.fromString("6edbaedf-2502-4fe0-8e2c-9054d6a9ecc1");
     
     private static final String DAMAGE_NAME = "tcc.prophecy_pact.pistol_damage";

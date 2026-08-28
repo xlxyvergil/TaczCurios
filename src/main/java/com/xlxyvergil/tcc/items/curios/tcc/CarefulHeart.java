@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 我小心海也绝非鳝类：重型武器伤害、爆炸伤害、爆炸范围各+300%
- */
 public class CarefulHeart extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID LAUNCHER_DAMAGE_UUID = UUID.fromString("81343572-fe9a-4cf2-bdf9-253af5a153c1");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("2fd98843-cf54-4ca7-949d-e8d50e295c86");

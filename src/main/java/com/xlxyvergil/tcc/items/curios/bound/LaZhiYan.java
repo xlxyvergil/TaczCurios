@@ -25,13 +25,8 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 空梦系列·神之键线（tcc_tdk）：拉之眼。
- * 造成伤害概率造成 2 倍伤害（概率 = 施加者虚数抗性）+ 伤害转虚数 + 施加虚数侵染。
- */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LaZhiYan extends BoundCurioItem {
-
     /** 伤害倍率 */
     private static float damageMultiplier() {
         return TaczCuriosConfig.COMMON.laZhiYanDamageMultiplier.get().floatValue();

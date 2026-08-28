@@ -18,11 +18,7 @@ import java.util.List;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
-/**
- * 乌拉尔银狼：提供爆头倍率加成（通过headshot_multiplier属性实现）
- */
 public class UralWolfTag extends TccCurioItem {
-    
     private static final UUID HEADSHOT_MULTIPLIER_MODIFIER_UUID = UUID.fromString("96a4146f-8ea4-4c23-be07-d007e222c5f6");
     
     public UralWolfTag(Properties properties) {

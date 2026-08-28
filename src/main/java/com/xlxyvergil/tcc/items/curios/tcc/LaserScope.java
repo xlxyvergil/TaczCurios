@@ -14,11 +14,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-/**
- * 雷射瞄具：基础暴击几率120%，爆头命中→Buff期间暴击几率提升
- */
 public class LaserScope extends TccCurioItem {
-
     public LaserScope(Properties properties) {
         super(properties);
     }

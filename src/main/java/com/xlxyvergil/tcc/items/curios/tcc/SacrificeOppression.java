@@ -19,12 +19,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 牺牲压迫点 - 近战饰品：近战伤害+110%
- * 套装：同时装备牺牲斩铁时额外+25%
- */
 public class SacrificeOppression extends TccCurioItem {
-
     private static final UUID MELEE_DAMAGE_UUID = UUID.fromString("4eb5ace8-14a3-4f03-8e0c-0a31fe5e4a2c");
     private static final UUID SET_BONUS_UUID = UUID.fromString("4eb5ace8-14a3-4f03-8e0c-0a31fe5e4a2c");
 

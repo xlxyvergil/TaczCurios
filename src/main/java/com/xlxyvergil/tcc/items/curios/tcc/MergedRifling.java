@@ -21,11 +21,7 @@ import java.util.UUID;
 
 
 
-/**
- * 并合膛线：提升特定枪械伤害（加算），提高持枪移动速度（加算）
- */
 public class MergedRifling extends TccCurioItem {
-    
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("f36f64c9-c3ec-4faf-b233-1d3ae64ef940"),
         UUID.fromString("32254b9b-364b-44de-bbf2-352df3726ac5"),

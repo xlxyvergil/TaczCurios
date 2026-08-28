@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class Luoxuan extends BoundCurioItem {
-
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("f2a3b4c5-d6e7-8901-bcde-f12345678902");
 
     public Luoxuan(Properties properties) {

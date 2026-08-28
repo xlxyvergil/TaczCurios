@@ -17,11 +17,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 弱点专精：暴击伤害+60%
- */
 public class WeaknessMastery extends TccCurioItem {
-
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("be6ceb26-b908-4ce6-8319-3593b27dc542");
 
     private static final String CRIT_DAMAGE_NAME = "tcc.weakness_mastery.crit_damage";

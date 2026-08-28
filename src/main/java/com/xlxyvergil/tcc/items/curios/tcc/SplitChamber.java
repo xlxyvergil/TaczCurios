@@ -18,11 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 分裂膛室：提升弹头数量（加算），仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
- */
 public class SplitChamber extends TccCurioItem {
-    
     // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID AMMO_UUID = UUID.fromString("7ee8eee4-ae89-490c-83d1-1392a6a71aa7");
     
