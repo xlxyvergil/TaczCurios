@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -22,16 +20,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 过载弹匣 - 提升弹匣容量，降低装填速度
- * 效果：提升弹匣容量（加算），降低装填速度（加算）
+ * 过载弹匣：提升弹匣容量（加算），降低装填速度（加算）
  */
 public class OverloadedMagazine extends TccCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID MAGAZINE_CAPACITY_UUID = UUID.fromString("ac732131-54e3-4205-addf-96167a044710");
     private static final UUID RELOAD_UUID = UUID.fromString("9cd14129-3da2-47a1-bff1-b78ab747b9e9");
 
-    // 修饰符名
     private static final String MAGAZINE_CAPACITY_NAME = "tcc.overloaded_magazine.magazine_capacity";
     private static final String RELOAD_NAME = "tcc.overloaded_magazine.reload";
 
@@ -39,10 +34,6 @@ public class OverloadedMagazine extends TccCurioItem {
         super(properties);
     }
 
-    /**
-     * 应用过载弹匣效果
-     * 提升弹匣容量（加算）和降低装填速度（加算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -54,9 +45,6 @@ public class OverloadedMagazine extends TccCurioItem {
         }
     }
 
-    /**
-     * 移除过载弹匣效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_CAPACITY_UUID);
@@ -68,28 +56,19 @@ public class OverloadedMagazine extends TccCurioItem {
         return java.util.List.of("shotgun");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.overloadedMagazineCapacityBoost.get() ) * 100;
         double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.overloadedMagazineReloadSpeedReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.overloaded_magazine.effect", 
                 String.format("%+.0f", magazineCapacityBoost), String.format("%+.0f", reloadDebuff))
             .withStyle(ChatFormatting.GOLD));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
     

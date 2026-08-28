@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 爆发装填Prime - 提升装填速度
- * 效果：提升15%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
+ * 爆发装填Prime：提升15%装填速度，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
  */
 public class BurstReloadPrime extends TccCurioItem {
 
@@ -52,26 +51,17 @@ public class BurstReloadPrime extends TccCurioItem {
         return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.burst_reload_prime.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.WHITE));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
 

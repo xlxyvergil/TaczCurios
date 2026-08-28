@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,12 +19,10 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
 /**
- * 乌拉尔银狼饰品 - 提供爆头倍率加成
- * 通过TaczAttributeAdd的headshot_multiplier属性实现
+ * 乌拉尔银狼：提供爆头倍率加成（通过headshot_multiplier属性实现）
  */
 public class UralWolfTag extends TccCurioItem {
     
-    // 爆头倍率修饰符的UUID（确保唯一性）
     private static final UUID HEADSHOT_MULTIPLIER_MODIFIER_UUID = UUID.fromString("96a4146f-8ea4-4c23-be07-d007e222c5f6");
     
     public UralWolfTag(Properties properties) {
@@ -50,24 +47,16 @@ public class UralWolfTag extends TccCurioItem {
         return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果
         double multiplierBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.ural_wolf_tag.effect", String.format("%+.0f", multiplierBoost))
             .withStyle(ChatFormatting.AQUA));
         
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
         
     }
     

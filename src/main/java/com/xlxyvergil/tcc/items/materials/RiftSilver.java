@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
@@ -28,13 +27,9 @@ public class RiftSilver extends Item {
             .stacksTo(64));
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        // 添加使用效果说明
         tooltip.add(Component.translatable("item.tcc.rift_silver.usage"));
     }
     
@@ -42,11 +37,9 @@ public class RiftSilver extends Item {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         
-        // 增加使用统计
         player.awardStat(Stats.ITEM_USED.get(this));
         
         if (!world.isClientSide && world instanceof ServerLevel serverLevel) {
-            // 先检查战利品表是否可用，确保可以获取物品
             LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(
                 new ResourceLocation("tcc", "rift_silver_curios")
             );
@@ -59,10 +52,8 @@ public class RiftSilver extends Item {
                 LootParams lootParams = builder.create(LootContextParamSets.CHEST);
                 java.util.List<ItemStack> loot = lootTable.getRandomItems(lootParams);
                 
-                // 查找一个合适的TCC物品
                 ItemStack selectedStack = null;
                 for (ItemStack lootStack : loot) {
-                    // 检查是否为TCC模组物品且物品有效
                     if (lootStack.getItem().getDescriptionId().contains("tcc") && !lootStack.isEmpty()) {
                         selectedStack = lootStack.copy();
                         break;
@@ -71,10 +62,8 @@ public class RiftSilver extends Item {
                 
                 // 只有在找到合适物品时才消耗裂隙碎银
                 if (selectedStack != null && !selectedStack.isEmpty()) {
-                    // 直接将物品添加到玩家背包
                     player.getInventory().placeItemBackInInventory(selectedStack);
                     
-                    // 消耗掉使用的裂隙碎银
                     if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
@@ -84,7 +73,6 @@ public class RiftSilver extends Item {
             } 
         }
         
-        // 无法获取物品或在客户端，返回pass
         return InteractionResultHolder.pass(stack);
     }
 }

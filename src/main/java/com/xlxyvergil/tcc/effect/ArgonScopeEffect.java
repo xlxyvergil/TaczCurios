@@ -14,7 +14,7 @@ public class ArgonScopeEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFFAA44);
         double baseValue = TaczCuriosConfig.COMMON.argonScopeBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            "c1d2e3f4-6001-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "a46002d7-028e-4b39-b90c-c7f949aee441", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

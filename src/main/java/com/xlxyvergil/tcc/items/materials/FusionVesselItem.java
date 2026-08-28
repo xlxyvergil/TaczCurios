@@ -24,16 +24,9 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
- /**
- * 融合容器（Fusion Vessel）
- * <p>用于存储大量内融核心（CoreFusion）。
- * 交互方式：</p>
- * <ul>
- *   <li>主手右键 → 切换自动吸收模式（auto:true 时自动吸收玩家背包内的内融核心）</li>
- *   <li>右键空格子 → 取出一组（64个）内融核心，不足取全部剩余（auto 模式下禁止取出）</li>
- *   <li>右键内融核心格子 → 整组存入容器</li>
- *   <li>右键饰品格子 → 按分解公式消耗饰品，等量 CoreFusion 存入容器</li>
- * </ul>
+/**
+ * 融合容器（Fusion Vessel），存储内融核心（CoreFusion）。
+ * 主手右键切换自动吸收模式；右键空格子取出内融核心；右键内融核心格子存入；右键饰品格子按分解公式消耗饰品换取 CoreFusion。
  */
 public class FusionVesselItem extends Item {
 
@@ -48,7 +41,7 @@ public class FusionVesselItem extends Item {
     private static final TagKey<Item> TCC_SLOT = TagKey.create(Registries.ITEM,
             new ResourceLocation("curios", "tcc_slot"));
 
-    // ========== 容量 ==========
+    // 容量
 
     /**
      * 获取融合容器容量上限（从 Config 读取）。
@@ -57,7 +50,7 @@ public class FusionVesselItem extends Item {
         return TaczCuriosConfig.COMMON.fusionVesselCapacity.get();
     }
 
-    // ========== NBT 读写 ==========
+    // NBT 读写
 
     public static int getFusionCount(ItemStack stack) {
         CompoundTag tag = stack.getTag();
@@ -84,7 +77,7 @@ public class FusionVesselItem extends Item {
         }
     }
 
-    // ========== 耐久条（= 存储进度条） ==========
+    // 耐久条（= 存储进度条）
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
@@ -108,7 +101,7 @@ public class FusionVesselItem extends Item {
         return (r << 16) | (g << 8) | 0x44;
     }
 
-    // ========== Tooltip ==========
+    // Tooltip
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -128,7 +121,7 @@ public class FusionVesselItem extends Item {
         tooltip.add(Component.translatable("item.tcc.fusion_vessel.upgrade").withStyle(ChatFormatting.GRAY));
     }
 
-    // ========== 主手右键切换自动吸收模式 ==========
+    // 主手右键切换自动吸收模式
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -188,7 +181,7 @@ public class FusionVesselItem extends Item {
         }
     }
 
-    // ========== overrideStackedOnOther ==========
+    // overrideStackedOnOther
 
     @Override
     public boolean overrideStackedOnOther(ItemStack vessel, Slot slot, ClickAction action, Player player) {
@@ -202,7 +195,6 @@ public class FusionVesselItem extends Item {
             if (isAutoMode(vessel)) return false;
             if (fusionCount <= 0) return false;
 
-            // 最多取 64 个，不足则取全部
             int takeCount = Math.min(MAX_TAKE, fusionCount);
             ItemStack coreStack = new ItemStack(TccItems.CORE_FUSION, takeCount);
             slot.safeInsert(coreStack);
@@ -237,7 +229,6 @@ public class FusionVesselItem extends Item {
             int output = FusionUpgradeUtil.getDecompositionOutput(data.rarity(), level);
             if (output <= 0) return false;
 
-            // 消耗 1 个饰品
             ItemStack taken = slot.safeTake(1, 1, player);
             if (taken.isEmpty()) return false;
 

@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  * 无限系列·神之键线（tcc_tdk）：往世的蛇影。
- * <p>
  * 造成伤害 10% 概率移除目标 1 个正面 buff。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

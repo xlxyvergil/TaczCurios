@@ -20,8 +20,7 @@ import java.util.UUID;
 
 
 /**
- * 合金钻头 - 提升穿透能力
- * 效果：穿透能力加成
+ * 合金钻头：提升护甲穿透能力
  */
 public class AlloyDrill extends TccCurioItem {
     
@@ -37,10 +36,6 @@ public class AlloyDrill extends TccCurioItem {
     
 
     
-    /**
-     * 应用钻头效果
-     * 提升护甲忽略能力
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -48,10 +43,7 @@ public class AlloyDrill extends TccCurioItem {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, armorIgnoreBoost, ARMOR_IGNORE_UUID, ARMOR_IGNORE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         }
     }
-    
-    /**
-     * 移除钻头效果
-     */
+
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, ARMOR_IGNORE_UUID);
@@ -65,21 +57,15 @@ public class AlloyDrill extends TccCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
-        
-        // 添加空行分隔
+
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double armorIgnoreBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.alloy_drill.effect", String.format("%+.0f", armorIgnoreBoost))
             .withStyle(ChatFormatting.GOLD));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
-        // 添加稀有度提示
+
     }
     
 }

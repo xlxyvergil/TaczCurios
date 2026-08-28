@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -24,12 +22,10 @@ import java.util.UUID;
 
 
 /**
- * 并合膛线 - 提升特定枪械伤害，提高持枪移动速度
- * 效果：特定枪械伤害加成（加算），持枪移动速度加成（加算）
+ * 并合膛线：提升特定枪械伤害（加算），提高持枪移动速度（加算）
  */
 public class MergedRifling extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("f36f64c9-c3ec-4faf-b233-1d3ae64ef940"),
         UUID.fromString("32254b9b-364b-44de-bbf2-352df3726ac5"),
@@ -39,7 +35,6 @@ public class MergedRifling extends TccCurioItem {
     };
     private static final UUID MOVEMENT_SPEED_UUID = UUID.fromString("6967f153-c8f1-4f6c-9752-bd2f5e5253c2");
     
-    // 修饰符名称
     private static final String[] DAMAGE_NAMES = {
         "tcc.merged_rifling.rifle_damage",
         "tcc.merged_rifling.sniper_damage",
@@ -53,10 +48,6 @@ public class MergedRifling extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用膛线效果
-     * 提升特定枪械伤害和持枪移动速度（都使用加算
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get());
@@ -73,9 +64,6 @@ public class MergedRifling extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除膛线效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, DAMAGE_UUIDS[0]);
@@ -92,29 +80,20 @@ public class MergedRifling extends TccCurioItem {
         return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() ) * 100;
         double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
                 String.format("%+.0f", damageBoost), String.format("%+.0f", speedBoost))
             .withStyle(ChatFormatting.WHITE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 }

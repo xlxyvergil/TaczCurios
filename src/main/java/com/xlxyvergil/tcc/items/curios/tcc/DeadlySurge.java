@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,16 +18,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 致命洪流 - 提升60%射速和60%弹头数量
- * 效果：提升30%射速（加算），提升60%弹头数量（加算）
+ * 致命洪流：提升射速和弹头数量（加算）
  */
 public class DeadlySurge extends TccCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识修饰符
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("d8e4852c-2b0c-4a77-a9b3-a2a84683ae93");
     private static final UUID BULLET_COUNT_UUID = UUID.fromString("b00e1320-1674-4bdb-8456-6fe4b80791fc");
 
-    // 修饰符名称
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.deadly_surge.rounds_per_minute";
     private static final String BULLET_COUNT_NAME = "tcc.deadly_surge.bullet_count";
 
@@ -37,13 +32,8 @@ public class DeadlySurge extends TccCurioItem {
         super(properties);
     }
 
-    /**
-     * 应用致命洪流效果
-     * 提升射速（加算）和弹头数量（加算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 检查生物是否持有手枪，只有持有手枪时才应用加成
         if (matchesRestriction(livingEntity)) {
             double roundsPerMinuteBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get());
             double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get());
@@ -52,9 +42,6 @@ public class DeadlySurge extends TccCurioItem {
         }
     }
 
-    /**
-     * 移除致命洪流效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, ROUNDS_PER_MINUTE_UUID);
@@ -67,27 +54,18 @@ public class DeadlySurge extends TccCurioItem {
         return java.util.List.of("pistol");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double roundsPerMinuteBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() ) * 100;
         double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.deadly_surge.effect", String.format("%+.0f", roundsPerMinuteBoost), String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
     

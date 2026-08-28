@@ -20,9 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 客户端 Tooltip 工具类
- * 仅处理需要访问 Minecraft.getInstance().player 的动态计算逻辑，
- * 避免在物品类（服务端也会加载）中出现客户端类的字节码引用。
+ * 客户端 Tooltip 工具类：处理需要访问 Minecraft.getInstance().player 的动态计算逻辑。
+ * 这样在物品类（服务端也会加载）中即可避免出现客户端类的字节码引用。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TaczCuriosClientTooltip {
@@ -57,7 +56,7 @@ public class TaczCuriosClientTooltip {
         }
     }
 
-    // ==================== 成就达成方式 tooltip ====================
+    // 成就达成方式 Tooltip
 
     /** 构建奖励/佩戴物品 → 成就定义的映射 */
     private static Map<String, AchievementDefinitions.AchievementDef> getRewardMap() {
@@ -115,7 +114,6 @@ public class TaczCuriosClientTooltip {
         if (text == null) text = def.display().description().get("en_us");
         if (text == null) return;
 
-        // 追加到 tooltip
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.how_to_obtain", def.title(locale), text)
                 .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));

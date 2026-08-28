@@ -9,7 +9,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +27,6 @@ import java.util.List;
 
 /**
  * 空梦系列·神之键线（tcc_tdk）：拉之眼。
- * <p>
  * 造成伤害概率造成 2 倍伤害（概率 = 施加者虚数抗性）+ 伤害转虚数 + 施加虚数侵染。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

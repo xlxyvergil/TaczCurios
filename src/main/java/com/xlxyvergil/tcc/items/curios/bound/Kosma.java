@@ -26,15 +26,12 @@ import java.util.UUID;
 
 /**
  * 旭光系列·人物线（tcc_3rd）：科斯魔。
- * <p>
  * 攻速 +8%、攻伤 +5%。
  */
 public class Kosma extends BoundCurioItem {
 
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("e46b57b8-e3ca-436c-bc30-b2015ce7666e");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("9bd59d29-ab0c-4c33-bef6-dd78a678b938");
-    private static final UUID CRIT_CHANCE_UUID = UUID.fromString("783349b7-930b-441d-bb0d-63f0966806ef");
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("40490711-89e7-4007-a337-622aaf9769f4");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.kosmaAttackSpeedPercent.get();
@@ -43,9 +40,6 @@ public class Kosma extends BoundCurioItem {
     private static double attackDamagePct() {
         return TaczCuriosConfig.COMMON.kosmaAttackDamagePercent.get();
     }
-
-    private static final double CRIT_CHANCE = 0;
-    private static final double CRIT_DAMAGE = 0;
 
     public Kosma(Properties properties) {
         super(properties);
@@ -93,16 +87,6 @@ public class Kosma extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                     attackDamagePct(), ATTACK_DAMAGE_UUID,
                     "tcc.dawn.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
-            if (CRIT_CHANCE > 0) {
-                AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
-                        CRIT_CHANCE, CRIT_CHANCE_UUID,
-                        "tcc.dawn.crit_chance", AttributeModifier.Operation.ADDITION);
-            }
-            if (CRIT_DAMAGE > 0) {
-                AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
-                        CRIT_DAMAGE, CRIT_DAMAGE_UUID,
-                        "tcc.dawn.crit_damage", AttributeModifier.Operation.ADDITION);
-            }
         } else {
             removeEffects(livingEntity);
         }
@@ -112,8 +96,6 @@ public class Kosma extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
     }
 
     @Override
@@ -130,14 +112,6 @@ public class Kosma extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(attackDamagePct() * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        if (CRIT_CHANCE > 0) {
-            tooltip.add(formatModifierTooltip(CRIT_CHANCE * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
-                    .withStyle(ChatFormatting.GOLD));
-        }
-        if (CRIT_DAMAGE > 0) {
-            tooltip.add(formatModifierTooltip(CRIT_DAMAGE * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
-                    .withStyle(ChatFormatting.GOLD));
-        }
         appendBoundPlayer(stack, tooltip);
     }
 }

@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
-import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
@@ -66,7 +65,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(livingEntity, List.of("pistol"))) return;
         
-        // 使用可配置的数值
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.endlessExplosionDamage.get();
 
@@ -76,14 +74,12 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         double totalDamageBoost = damageBoost + resistanceBoost;
 
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, totalDamageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-        // 无烬终焉：移除爆炸范围和爆炸启用
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
     }
     
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
-        // 无烬终焉：不移除爆炸范围和爆炸启用（因为未添加）
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
     }
     

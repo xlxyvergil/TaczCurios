@@ -15,8 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 异况超量 - 近战饰品
- * 手持近战武器时，目标每有一种负面效果，伤害+80%（LivingHurtEvent直接乘算）
+ * 异况超量：目标每有一种负面效果，伤害+80%（LivingHurtEvent直接乘算）
  */
 public class ConditionOverload extends TccCurioItem {
 

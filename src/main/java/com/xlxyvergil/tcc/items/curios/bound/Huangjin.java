@@ -29,7 +29,6 @@ import java.util.List;
 
 /**
  * 黄金系列·人物线（tcc_3rd）：黄金。
- * <p>
  * 36 格内玩家每 5 秒获得 1 个随机正面 buff（30 秒，III 级）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

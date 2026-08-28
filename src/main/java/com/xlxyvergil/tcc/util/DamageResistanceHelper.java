@@ -7,18 +7,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 减伤工具类（非 Mixin），提供常驻比例减伤的公共 API。
- * <p>
- * 常驻比例减伤为「通用（source-agnostic）」实现：
- * 不同于只在 {@code LivingEntity.setHealth} 层面拦截的旧方案，
- * 这里采用「每 tick 血量对账（reconcile）」——对佩戴者每 tick 实际发生的血量下降
- * 重新按保留因子修正。这样无论伤害是通过标准 {@code hurt()}、{@code setHealth()}，
- * 还是绕过 {@code setHealth} 直接写入 {@link net.minecraft.network.syncher.SynchedEntityData}
- * 血量的第三方实现（如经 {@code ActuallyHurt} 的 {@code catchSetTrueHealth}），
- * 只要最终血量下降，都会被统一削减，无需针对任何特定 Mod。
- * <p>
- * 对账逻辑在 {@link com.xlxyvergil.tcc.mixin.DamageResistanceMixin} 的 tick 中每服务端 tick 调用
- * {@link #reconcileHealth(LivingEntity)}。
+ * 减伤工具类（非 Mixin），提供常驻比例减伤（source-agnostic）的公共 API。
+ * 采用「每 tick 血量对账（reconcile）」实现：对佩戴者每 tick 实际发生的血量下降按保留因子统一削减，
+ * 无论伤害来自标准 hurt()/setHealth()，还是绕过 setHealth 直接写血量的第三方实现，都会生效。
+ * 对账逻辑由 DamageResistanceMixin 每服务端 tick 调用 reconcileHealth(LivingEntity)。
  */
 public final class DamageResistanceHelper {
 
@@ -34,7 +26,7 @@ public final class DamageResistanceHelper {
     private DamageResistanceHelper() {}
 
     /**
-     * 设置受伤冷却（受击触发式）。调用后该实体在 {@code cooldownTicks} 内受到的所有血量下降都会被拦截归零。
+     * 设置受伤冷却（受击触发式）。调用后该实体在 cooldownTicks 内受到的所有血量下降都会被拦截归零。
      */
     public static void setDamageCooldown(LivingEntity entity, int cooldownTicks) {
         if (entity == null || cooldownTicks <= 0) return;
@@ -49,7 +41,7 @@ public final class DamageResistanceHelper {
     }
 
     /**
-     * 设置单次受伤上限（受击触发式）。限制单次 setHealth 扣血不超过 {@code maxDamage}。
+     * 设置单次受伤上限（受击触发式）。限制单次 setHealth 扣血不超过 maxDamage。
      */
     public static void setDamageCap(LivingEntity entity, float maxDamage) {
         if (entity == null || maxDamage <= 0) return;
@@ -76,10 +68,8 @@ public final class DamageResistanceHelper {
 
     /**
      * 设置常驻比例减伤（通用减伤）。
-     * 该方法会将每 tick 实际发生的血量下降按 {@code retainedFactor} 保留（0~1），
-     * 例如 0.2 表示减伤 80%，0 表示减伤 100%（完全免伤）。
-     * 对任意来源的扣血均生效（标准 hurt/setHealth 或绕过 setHealth 的直接写入），无需受击触发。
-     * 卸下饰品时应调用 {@link #clearDamageReduction} 清除。
+     * 每 tick 实际发生的血量下降按 retainedFactor 保留（0~1），如 0.2 表示减伤 80%，0 表示完全免伤。
+     * 对任意来源的扣血均生效，无需受击触发；卸下饰品时应调用 clearDamageReduction 清除。
      */
     public static void setDamageReduction(LivingEntity entity, float retainedFactor) {
         if (entity == null || retainedFactor < 0.0F) return;
@@ -90,8 +80,7 @@ public final class DamageResistanceHelper {
         UUID id = entity.getUUID();
         boolean wasProtected = DAMAGE_RETAIN_MAP.containsKey(id);
         DAMAGE_RETAIN_MAP.put(id, retainedFactor);
-        // 仅当实体首次进入保护状态时重置基线；持续佩戴/结界切换减伤比例时不重置，
-        // 否则每 tick 清零基线会导致对账无从比较，伤害无法被削减。
+        // 仅首次进入保护时重置基线；持续佩戴/切换比例时不重置，否则每 tick 清零基线会使对账无从比较。
         if (!wasProtected) {
             REDUCTION_BASELINE_MAP.remove(id);
         }
@@ -108,13 +97,8 @@ public final class DamageResistanceHelper {
 
     /**
      * 服务端每 tick 对常驻比例减伤实体执行一次血量对账（通用方法）。
-     * <p>
-     * 在实体本 tick 结束时，将其当前血量与上一 tick 结束时记录的对账基线比较：
-     * <ul>
-     *   <li>血量下降 → 该下降量即为本 tick 累计的原始扣血，按保留因子削减后回写；</li>
-     *   <li>血量持平/上升（治疗）→ 仅更新基线。</li>
-     * </ul>
-     * 因此即使伤害绕过了 {@code setHealth}，只要最终血量下降，也会被统一削减。
+     * 将当前血量与上一 tick 结束时记录的基线比较：下降量即本 tick 累计原始扣血，按保留因子削减后回写；
+     * 血量持平/上升（治疗）则仅更新基线。即使伤害绕过了 setHealth，只要最终血量下降也会被统一削减。
      */
     public static void reconcileHealth(LivingEntity entity) {
         if (entity == null || entity.level().isClientSide) return;
@@ -127,9 +111,8 @@ public final class DamageResistanceHelper {
 
         float now = entity.getHealth();
 
-        // 血量归零致死的处理：仅在「非完全减伤」时让位给饰品自身的死亡取消/复活流程。
-        // 完全减伤（retain <= 0，如真我结界期间 100%）时仍按对账回写血量，避免任何来源
-        // （含绕过 setHealth 直接写血量的第三方实现）把玩家直接打死。
+        // 血量归零致死处理：非完全减伤时让位给饰品自身的死亡取消/复活流程；
+        // 完全减伤（retain <= 0）时仍按对账回写血量，避免任何来源把玩家直接打死。
         if (entity.isDeadOrDying() && now <= 0.0F && retain > 0.0F) {
             REDUCTION_BASELINE_MAP.remove(id);
             return;

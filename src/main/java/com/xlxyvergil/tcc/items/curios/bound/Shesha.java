@@ -28,7 +28,6 @@ import java.util.List;
 
 /**
  * 无限系列·神之键线（tcc_tdk）：舍沙。
- * <p>
  * 造成伤害按施加者虚数抗性概率移除目标 1 个正面 buff + 伤害转虚数 + 施加虚数侵染。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

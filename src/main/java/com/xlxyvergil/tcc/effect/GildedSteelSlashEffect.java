@@ -14,7 +14,7 @@ public class GildedSteelSlashEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF8866);
         double perLevelValue = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            "c1d2e3f4-6104-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "f7508ebd-4a0e-461c-a9cc-97c658ad7364", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
 }

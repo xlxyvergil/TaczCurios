@@ -64,9 +64,8 @@ public class Tianhui extends BoundCurioItem {
     }
 
     /**
-     * 常驻比例减伤（仅步枪）：保留比例由虚数抗性动态计算。
-     * 满足武器限制时每 tick 更新保留比例，否则清除。
-     * 对标准 hurt 与直接 setHealth 扣血均生效，无需依赖 LivingHurtEvent。
+     * 常驻比例减伤（仅步枪），保留比例随虚数抗性动态计算。
+     * 对标准伤害与直接 setHealth 扣血均生效，无需依赖 LivingHurtEvent。
      */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {

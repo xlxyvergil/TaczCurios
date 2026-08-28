@@ -52,7 +52,6 @@ public final class NetworkHandler {
 
     /** 玩家登录时全量同步所有进度 */
     public static void syncAllForPlayer(ServerPlayer player) {
-        // 同步所有成就进度
         for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.all()) {
             int progress = TccPlayerDataCapability.getAchievementProgress(player, def.id());
             if (progress > 0) {
@@ -60,13 +59,11 @@ public final class NetworkHandler {
             }
         }
 
-        // 同步已访问维度
         var handler = player.getCapability(TccPlayerDataCapability.CAPABILITY).orElse(null);
         if (handler != null) {
             for (String dim : handler.getVisitedDimensions()) {
                 syncVisited(player, VISITED_DIMENSIONS_KEY, dim);
             }
-            // 同步已访问群系
             for (String biome : handler.getVisitedBiomes()) {
                 syncVisited(player, VISITED_BIOMES_KEY, biome);
             }

@@ -14,8 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 /**
- * 融合容器合并配方：将多个融合容器在工作台合并为一个，
- * 合成后的容器内融核心数量为参与合成的容器数量之和。
+ * 融合容器合并配方：将多个容器合并为一个，内融核心数量为各容器之和。
  */
 public class FusionVesselCombineRecipe extends CustomRecipe {
 

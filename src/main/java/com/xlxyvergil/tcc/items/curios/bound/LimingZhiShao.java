@@ -26,7 +26,6 @@ import java.util.UUID;
 
 /**
  * 旭光系列·人物线（tcc_3rd）：黎明之哨。
- * <p>
  * 攻速 +15%、攻伤 +10%、暴击率 +5%。
  */
 public class LimingZhiShao extends BoundCurioItem {
@@ -34,7 +33,6 @@ public class LimingZhiShao extends BoundCurioItem {
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("4a08b49f-20ce-49db-a565-6debdef40c3e");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("1df8d94e-edfc-4cf3-8169-9330116aa8d0");
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("07a0819e-c85f-42a6-bdd3-295d9c64b79d");
-    private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("24b7f022-165c-4cb8-a17c-e4cf111a11ba");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.limingZhiShaoAttackSpeedPercent.get();
@@ -47,8 +45,6 @@ public class LimingZhiShao extends BoundCurioItem {
     private static double critChance() {
         return TaczCuriosConfig.COMMON.limingZhiShaoCritChancePercent.get();
     }
-
-    private static final double CRIT_DAMAGE = 0;
 
     public LimingZhiShao(Properties properties) {
         super(properties);
@@ -101,11 +97,6 @@ public class LimingZhiShao extends BoundCurioItem {
                         critChance(), CRIT_CHANCE_UUID,
                         "tcc.dawn.crit_chance", AttributeModifier.Operation.ADDITION);
             }
-            if (CRIT_DAMAGE > 0) {
-                AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
-                        CRIT_DAMAGE, CRIT_DAMAGE_UUID,
-                        "tcc.dawn.crit_damage", AttributeModifier.Operation.ADDITION);
-            }
         } else {
             removeEffects(livingEntity);
         }
@@ -116,7 +107,6 @@ public class LimingZhiShao extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
-        AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
     }
 
     @Override
@@ -135,10 +125,6 @@ public class LimingZhiShao extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         if (critChance() > 0) {
             tooltip.add(formatModifierTooltip(critChance() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
-                    .withStyle(ChatFormatting.GOLD));
-        }
-        if (CRIT_DAMAGE > 0) {
-            tooltip.add(formatModifierTooltip(CRIT_DAMAGE * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                     .withStyle(ChatFormatting.GOLD));
         }
         appendBoundPlayer(stack, tooltip);

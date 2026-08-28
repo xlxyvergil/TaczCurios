@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 重口- 提升特定枪械伤害，增加不精准
- * 效果：提升特定枪械伤害（加算），增加不精准度（加算）
+ * 重口径：提升特定枪械伤害并增加不精准度（加算）
  */
 public class HeavyCaliberTag extends TccCurioItem {
     
@@ -48,28 +47,22 @@ public class HeavyCaliberTag extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用重口径效     * 提升特定枪械伤害（加算）和不精准度（加算     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get());
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get());
-        
-        // 应用特定枪械伤害提升（加算）
+
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, damageBoost, DAMAGE_UUIDS[0], DAMAGE_NAMES[0], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, damageBoost, DAMAGE_UUIDS[1], DAMAGE_NAMES[1], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SMG, damageBoost, DAMAGE_UUIDS[2], DAMAGE_NAMES[2], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LMG, damageBoost, DAMAGE_UUIDS[3], DAMAGE_NAMES[3], AttributeModifier.Operation.ADDITION);
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, damageBoost, DAMAGE_UUIDS[4], DAMAGE_NAMES[4], AttributeModifier.Operation.ADDITION);
-        
-        // 应用不精准度提升（加算）
+
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.INACCURACY, inaccuracyBoost, INACCURACY_UUID, INACCURACY_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
     
-    /**
-     * 移除重口径效     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, DAMAGE_UUIDS[0]);
@@ -86,30 +79,20 @@ public class HeavyCaliberTag extends TccCurioItem {
         return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get() ) * 100;
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect", 
                 String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
-    
 
 }

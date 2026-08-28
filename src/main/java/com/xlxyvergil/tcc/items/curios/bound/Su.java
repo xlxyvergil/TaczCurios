@@ -8,9 +8,7 @@ import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -116,7 +114,6 @@ public class Su extends BoundCurioItem {
 
         appendImaginaryResistance(stack, tooltip);
         double maxHealthReduction = TaczCuriosConfig.COMMON.suMaxHealthReduction.get() * 100;
-        // 显示降低比例：配置值 × 100
         double damageTakenFactor = TaczCuriosConfig.COMMON.suDamageTakenFactor.get() * 100;
         tooltip.add(Component.literal(""));
 

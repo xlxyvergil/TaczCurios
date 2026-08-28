@@ -23,17 +23,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Low-frequency polling handler for stat_polling and biome_visit achievements.
- * <p>
- * stat_polling: reads Minecraft's built-in Stats (player.getStats().getValue())
- * and awards criteria when the stat value reaches the configured threshold.
- * <p>
- * biome_visit: checks the player's current biome (player.level().getBiome())
- * and awards the achievement when the player stands in the target biome.
- * <p>
- * Polling interval:
- * - stat_polling: every 3 ticks (same as FTB Quests)
- * - biome_visit: every 20 ticks (1 second)
+ * stat_polling / biome_visit 成就的低频轮询处理器。
+ * stat_polling 读取原版 Stats，达到阈值时授予条件；biome_visit 检测玩家当前群系并授予成就。
+ * 轮询间隔：stat_polling 每 3 tick（与 FTB Quests 一致），biome_visit 每 20 tick（1 秒）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class StatPollingEventHandler {
@@ -42,7 +34,7 @@ public final class StatPollingEventHandler {
     private static final String TRIGGER_BIOME = "biome_visit";
     private static final String APPLIED_NBT_PREFIX = "StatEvoApplied_";
 
-    // Cached after first access (lists don't change at runtime)
+    // 首次访问后缓存（运行时列表不变）
     private static List<AchievementDefinitions.AchievementDef> statDefs;
     private static List<AchievementDefinitions.AchievementDef> biomeDefs;
     private static List<EvolutionRegistry.Rule> statAttrRules;
@@ -59,7 +51,7 @@ public final class StatPollingEventHandler {
 
         long t = player.level().getGameTime();
 
-        // stat_polling: every 3 ticks
+        // stat_polling：每 3 tick
         if (t % 3 == 0) {
             if (statDefs != null) {
                 for (var def : statDefs) {
@@ -73,7 +65,7 @@ public final class StatPollingEventHandler {
             }
         }
 
-        // biome_visit: every 20 ticks
+        // biome_visit：每 20 tick
         if (t % 20 == 0) {
             // 记录当前维度/群系到玩家 NBT（通用，与成就/规则解耦）
             recordCurrentBiome(player);
@@ -91,7 +83,7 @@ public final class StatPollingEventHandler {
         }
     }
 
-    // ===================== stat_polling =====================
+    // stat_polling
 
     private static void checkStat(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (!def.isEnabled()) return;
@@ -106,10 +98,9 @@ public final class StatPollingEventHandler {
         ResourceLocation statId = ResourceLocation.tryParse(conds.stat());
         if (statId == null) return;
 
-        // Look up in BuiltInRegistries.CUSTOM_STAT
         ResourceLocation registered = BuiltInRegistries.CUSTOM_STAT.get(statId);
         if (registered == null) {
-            // Try path-only fallback (for mod stats registered in vanilla namespace)
+            // 若未注册，尝试仅按 path 查找（兜底在 vanilla 命名空间注册的 mod 统计）
             registered = BuiltInRegistries.CUSTOM_STAT.get(new ResourceLocation(statId.getPath()));
         }
         if (registered == null) return;
@@ -118,12 +109,11 @@ public final class StatPollingEventHandler {
         int target = def.targetCount();
 
         if (current >= target) {
-            // Stat value meets or exceeds target, complete the achievement
             RuleAdvancementMapping.awardAll(player, def.id(), target);
         }
     }
 
-    // ===================== biome_visit =====================
+    // biome_visit
 
     private static final String VISITED_DIMENSIONS_KEY = "tcc_visited_dimensions";
     private static final String VISITED_BIOMES_KEY = "tcc_visited_biomes";
@@ -142,8 +132,8 @@ public final class StatPollingEventHandler {
     }
 
     /**
-     * Check if the target biome/dimension is in the player's visited NBT list.
-     * 对 biome tag（#前缀）无法通过 NBT 判断，回退到实时检测。
+     * 检查目标群系/维度是否在玩家已访问 NBT 列表中。
+     * 对 biome tag（# 前缀）无法通过 NBT 判断，回退到实时检测。
      */
     private static void checkBiome(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (!def.isEnabled()) return;
@@ -159,7 +149,7 @@ public final class StatPollingEventHandler {
         if (conds.biome() != null) {
             matched = isInNbtList(player, VISITED_BIOMES_KEY, conds.biome());
         }
-        // Dimension-only: no biome field but has dimension
+        // 仅维度：无 biome 字段但有 dimension
         if (!matched && conds.biome() == null && conds.dimension() != null) {
             matched = isInNbtList(player, VISITED_DIMENSIONS_KEY, conds.dimension());
         }
@@ -196,17 +186,13 @@ public final class StatPollingEventHandler {
         return false;
     }
 
-    // ===================== ATTRIBUTE rules (evolution_rules.json) =====================
+    // ATTRIBUTE 规则（来自 evolution_rules.json）
 
     /**
-     * Handle stat_polling ATTRIBUTE rule: step-based accumulation.
-     * <p>
-     * {@code statThreshold} acts as the interval between steps (e.g., 48000 ticks = 2 in-game days).
-     * Each step adds {@code value} to progress NBT, up to {@code progress.cap}.
-     * <p>
-     * Per-rule cap is tracked via {@code progress.capCounterKey} (unique per rule),
-     * while the shared {@code progress.nbtKey} accumulates total from all rules (inheritance support).
-     * Step count is stored as int in {@code StatEvoSteps_<ruleId>} NBT key.
+     * 处理 stat_polling 的 ATTRIBUTE 规则：按步累积。
+     * statThreshold 作为步间隔（如 48000 tick = 2 游戏日）；每步向进度 NBT 追加 value，至多到 progress.cap。
+     * 每规则的 cap 由 progress.capCounterKey 追踪（唯一），共享的 progress.nbtKey 累计所有规则之和（支持继承）。
+     * 步数存于 StatEvoSteps_<ruleId> NBT key。
      */
     private static void checkStatAttribute(ServerPlayer player, EvolutionRegistry.Rule rule) {
         if (!rule.enabled) return;
@@ -234,11 +220,11 @@ public final class StatPollingEventHandler {
 
         CompoundTag tag = tracked.getOrCreateTag();
 
-        // Already capped for this rule?
+        // 该规则已达上限？
         double perRuleCap = rule.progress.cap > 0 ? rule.progress.cap : Double.MAX_VALUE;
         if (tag.getDouble(rule.progress.capCounterKey) >= perRuleCap) return;
 
-        // Available steps from current stat value
+        // 当前统计值可获得的步数
         int availableSteps = current / rule.statThreshold;
         String stepKey = APPLIED_NBT_PREFIX + "Steps_" + rule.ruleId.replace(':', '_');
         int appliedSteps = tag.getInt(stepKey);
@@ -261,8 +247,7 @@ public final class StatPollingEventHandler {
     }
 
     /**
-     * Handle biome_visit ATTRIBUTE rule: when player enters the target biome,
-     * grant a one-time progress increment to the tracked curio.
+     * 处理 biome_visit 的 ATTRIBUTE 规则：玩家进入目标群系时，为追踪的饰品授予一次性进度增量。
      */
     private static void checkBiomeAttribute(ServerPlayer player, EvolutionRegistry.Rule rule) {
         if (!rule.enabled) return;
@@ -295,7 +280,7 @@ public final class StatPollingEventHandler {
         }
     }
 
-    // ===================== Helpers =====================
+    // 辅助方法
 
     private static ItemStack findFirstEquippedStack(Player player, Predicate<ItemStack> predicate) {
         if (player == null) return ItemStack.EMPTY;
@@ -319,7 +304,7 @@ public final class StatPollingEventHandler {
         return key != null ? key.toString() : "";
     }
 
-    // ===================== Cache =====================
+    // Cache
 
     private static void buildCache() {
         if (cacheBuilt) return;
@@ -329,7 +314,7 @@ public final class StatPollingEventHandler {
         statDefs = AchievementDefinitions.getByTrigger(TRIGGER_STAT);
         biomeDefs = AchievementDefinitions.getByTrigger(TRIGGER_BIOME);
 
-        // Also cache ATTRIBUTE rules with stat_polling / biome_visit triggers
+        // 同时缓存 stat_polling / biome_visit 触发器的 ATTRIBUTE 规则
         var allAttrRules = EvolutionRegistry.getRulesByType(EvolutionRegistry.RuleType.ATTRIBUTE);
         statAttrRules = allAttrRules.stream()
                 .filter(r -> TRIGGER_STAT.equals(r.trigger))
@@ -341,7 +326,7 @@ public final class StatPollingEventHandler {
         cacheBuilt = true;
     }
 
-    /** Reset cache after config reload — call from reload listener */
+    /** 配置重载后重置缓存 — 由 reload 监听器调用 */
     public static void invalidateCache() {
         cacheBuilt = false;
         statDefs = null;

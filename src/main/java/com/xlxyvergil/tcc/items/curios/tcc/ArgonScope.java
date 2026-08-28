@@ -15,8 +15,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 氩晶瞄具 - 步枪饰品（爆头触发Buff期间）
- * 基础：暴击几率135%，爆头命中→Buff期间暴击几率额外提升Xs，不叠加
+ * 氩晶瞄具 - 步枪饰品：爆头命中触发Buff期间提升暴击几率
+ * 基础135%，Buff额外提升Xs，不叠加
  */
 public class ArgonScope extends TccCurioItem {
 

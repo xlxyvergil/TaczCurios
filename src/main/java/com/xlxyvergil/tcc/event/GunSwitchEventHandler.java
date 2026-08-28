@@ -38,9 +38,7 @@ public class GunSwitchEventHandler {
     }
     
     /**
-     * 更新TACZ缓存
-     * 当枪械切换时调用此方法触发属性重新计算
-     * @param player 玩家实体
+     * 更新 TACZ 缓存：枪械切换时触发属性重新计算。
      */
     private static void updateTaczCache(ServerPlayer player) {
         // 触发TACZ的附件属性变更事件，强制重新计算属性

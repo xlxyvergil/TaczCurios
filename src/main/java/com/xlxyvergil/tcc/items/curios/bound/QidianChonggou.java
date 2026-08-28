@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -28,7 +27,6 @@ import java.util.List;
 
 /**
  * 黄金系列·神之键线（tcc_tdk）：第三额定功率·奇点重构。
- * <p>
  * 64 格内非玩家实体瞬移必定失效 + 伤害转虚数 + 施加虚数侵染。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -66,7 +64,7 @@ public class QidianChonggou extends BoundCurioItem {
                 stack -> stack.getItem() instanceof QidianChonggou).isEmpty();
     }
 
-    // ========== 瞬移拦截 ==========
+    // 瞬移拦截
 
     @SubscribeEvent
     public static void onEnderEntityTeleport(EntityTeleportEvent.EnderEntity event) {
@@ -117,7 +115,7 @@ public class QidianChonggou extends BoundCurioItem {
         }
     }
 
-    // ========== 3 阶：伤害转虚数 + 侵染 ==========
+    // 3 阶：伤害转虚数 + 侵染
 
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {

@@ -14,22 +14,18 @@ import java.util.UUID;
 
 /**
  * 玩家减伤 Mixin。
- * <p>
- * 常驻比例减伤采用「每 tick 血量对账」的通用实现（见
- * {@link DamageResistanceHelper#reconcileHealth(LivingEntity)}），该方法每服务端 tick 调用，
- * 对任意来源（含绕过 setHealth 的直接写入）的血量下降统一按保留因子削减。
- * <p>
- * 这里的 {@code setHealth} 拦截仅保留「受伤冷却」与「单次上限」两类受击触发逻辑，
- * 与常驻比例减伤互不干扰（对账逻辑会读取 setHealth 之后的血量变化）。
+ * 常驻比例减伤采用「每 tick 血量对账」的通用实现（见 DamageResistanceHelper.reconcileHealth），
+ * 每服务端 tick 调用，对任意来源（含绕过 setHealth 的直接写入）的血量下降统一按保留因子削减。
+ * 此处的 setHealth 拦截仅保留「受伤冷却」与「单次上限」两类受击触发逻辑，与常驻比例减伤互不干扰。
  */
 @Mixin(value = LivingEntity.class, priority = 2000)
 public abstract class DamageResistanceMixin {
 
-    /** 直接访问合并目标 {@link LivingEntity#dead} 字段，供「完全免伤」时强制复活清除死亡标记。 */
+    /** 直接访问合并目标 LivingEntity.dead 字段，供「完全免伤」时强制复活清除死亡标记。 */
     @Accessor("dead")
     abstract void tcc$setDead(boolean dead);
 
-    // ==================== tick：冷却递减 + 常驻比例减伤对账 + 完全免伤兜底复活 ====================
+    // ---- tick：冷却递减 + 常驻比例减伤对账 + 完全免伤兜底复活 ----
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void tcc$tickCooldown(CallbackInfo ci) {
@@ -50,12 +46,10 @@ public abstract class DamageResistanceMixin {
         // 常驻比例减伤：每 tick 对账一次，统一削减任意来源的血量下降
         DamageResistanceHelper.reconcileHealth(self);
 
-        // 佩戴真我且有常驻减伤保护（retain map 存在）的实体：对「绕过死亡事件取消」的强制死亡仍复活。
-        // 普通可取消死亡已在 LivingDeathEvent 中被 ZhenWo.onLivingDeath 取消并回满血（dead 不会置真），
-        // 因此这里的 isDeadOrDying() 只会命中「忽略事件取消、直接写血/置死」的绕过实现
-        // （如亚波伦 RevelationFix 的 special die：catchSetTrueHealth(0) + setDead(true)）。
-        // 这也顺带兜住了结界期间（retain <= 0，100% 免伤）经 catchSetTrueHealth 直接写血致死的场景，
-        // 使真我佩戴者在面对这类必杀时真正不死。
+        // 佩戴真我且有常驻减伤保护的实体：对「绕过死亡事件取消」的强制死亡仍复活。
+        // 普通可取消死亡已在 LivingDeathEvent 中被 ZhenWo.onLivingDeath 取消并回满血，因此这里的
+        // isDeadOrDying() 只会命中「忽略事件取消、直接写血/置死」的绕过实现（如亚波伦 RevelationFix），
+        // 也顺带兜住结界期间经 catchSetTrueHealth 直接写血致死的场景，使真我佩戴者真正不死。
         Float retain = DamageResistanceHelper.DAMAGE_RETAIN_MAP.get(id);
         if (retain != null && self.isDeadOrDying()) {
             reviveFully(self);
@@ -64,7 +58,7 @@ public abstract class DamageResistanceMixin {
 
     /**
      * 完全免伤实体强制复活：清除死亡标记、复位死亡计时、恢复站立姿态并不再受击。
-     * 用于兜住绕过 {@code setHealth} 直接写血量的第三方伤害（每次都会把血打到 0 并置死）。
+     * 用于兜住绕过 setHealth 直接写血量的第三方伤害（每次把血打到 0 并置死）。
      */
     private void reviveFully(LivingEntity self) {
         self.setHealth(self.getMaxHealth());
@@ -76,7 +70,7 @@ public abstract class DamageResistanceMixin {
         self.setDeltaMovement(self.getDeltaMovement().multiply(0, 0, 0));
     }
 
-    // ==================== setHealth 拦截（仅冷却 / 单次上限） ====================
+    // ---- setHealth 拦截（仅冷却 / 单次上限） ----
 
     @ModifyVariable(method = "setHealth", at = @At("HEAD"), argsOnly = true)
     private float tcc$modifySetHealth(float health) {
@@ -90,9 +84,8 @@ public abstract class DamageResistanceMixin {
 
         UUID id = self.getUUID();
 
-        // --- 完全免伤（retain <= 0，如真我结界期间 100%）：setHealth 层任何扣血都保留当前血量 ---
-        // 此时血不允许被 setHealth 打低；绕过 setHealth 直接写血量的第三方伤害（如亚波伦
-        // catchSetTrueHealth）由 tick 末的强制复活（reviveFully）兜底。
+        // 完全免伤（retain <= 0，如真我结界期间 100%）：setHealth 层任何扣血都保留当前血量；
+        // 绕过 setHealth 直接写血的第三方伤害由 tick 末的强制复活（reviveFully）兜底。
         Float retain = DamageResistanceHelper.DAMAGE_RETAIN_MAP.get(id);
         if (retain != null && retain <= 0.0F) {
             return current;

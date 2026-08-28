@@ -15,14 +15,12 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerLevel;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -39,8 +37,7 @@ import java.util.UUID;
 
 /**
  * 天火圣裁 - 我将发动一次牛逼的攻击
- * 效果：玩家血量高于40%时，提升玩家325%的bullet_gundamage，造成伤害后玩家立即扣除30%血量，
- * 然后施加流血效果，每秒消耗最大HP的配置比例，持续配置的秒数。玩家血量低于40%时，此饰品的全部效果都不生效。
+ * 血量高于 40% 时提升枪械伤害并扣血流血；血量低于 40% 时全部效果失效。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireJudgment extends BoundCurioItem {
@@ -72,9 +69,6 @@ public class HeavenFireJudgment extends BoundCurioItem {
     
 
     
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public List<String> getWeaponTypeRestriction() {
         return List.of("pistol");
@@ -102,22 +96,18 @@ public class HeavenFireJudgment extends BoundCurioItem {
         appendBoundPlayer(stack, tooltip);
     }
     
-    /**
-     * 监听 TACZ 枪械伤害事件（Post），处理扣血和持续伤害标记
-     */
+    /** 扣血并施加天火流血标记（Post 事件） */
     @SubscribeEvent
     public static void onGunHurt(EntityHurtByGunEvent.Post event) {
-        // 使用工具类检查并获取攻击者
         LivingEntity attacker = TacDamageHelper.getAttacker(event);
         if (attacker == null) {
             return;
         }
-        
-        // 检查攻击者是否装备了天火圣裁
+
         if (!hasHeavenFireJudgmentEquipped(attacker)) {
             return;
         }
-        
+
         if (!(attacker.level() instanceof ServerLevel)) {
             return;
         }
@@ -126,13 +116,11 @@ public class HeavenFireJudgment extends BoundCurioItem {
             return;
         }
 
-        // 检查血量是否大于40%
         float healthPercentage = attacker.getHealth() / attacker.getMaxHealth();
         if (healthPercentage <= 0.4) {
             return;  // 血量不满足条件，不触发扣血
         }
-        
-        // 获取配置中的生命值扣除比例
+
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get();
 
         // 立即扣除配置的生命值比例（使用setHealth直接设置，可触发不死图腾）
@@ -157,7 +145,7 @@ public class HeavenFireJudgment extends BoundCurioItem {
     
     /**
      * 监听天火流血结算事件：虚数抗性≥40且未死亡时，天火圣裁进化为天火劫灭。
-     * Now driven by achievement_definitions.json (tcc:judgment_to_apocalypse).
+     * 由 achievement_definitions.json (tcc:judgment_to_apocalypse) 驱动。
      */
     @SubscribeEvent
     public static void onBleedingSettlement(HeavenFireBleedingSettlementEvent event) {
@@ -170,13 +158,13 @@ public class HeavenFireJudgment extends BoundCurioItem {
                 AchievementDefinitions.get("tcc:judgment_to_apocalypse").orElse(null);
         if (def == null) return;
 
-        // Already evolved?
+        // 已进化？
         if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) return;
 
-        // Check prerequisites
+        // 检查前置条件
         if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) return;
 
-        // Check conditions (attributes, etc.)
+        // 检查条件（如属性）
         if (def.conditions() != null && def.conditions().attributes() != null) {
             double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             for (AchievementDefinitions.AttributeCondition ac : def.conditions().attributes()) {
@@ -195,29 +183,21 @@ public class HeavenFireJudgment extends BoundCurioItem {
             }
         }
 
-        // Award achievement
+        // 授予成就
         RuleAdvancementMapping.awardNextCriterion(
                 serverPlayer, def.id(), def.targetCount());
     }
     
-    /**
-     * 检查实体是否装备了天火圣裁
-     */
     public static boolean hasHeavenFireJudgmentEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
     
-    /**
-     * 从天火饰品槽位中查找已装备的天火圣裁实例
-     * @return 已装备的 ItemStack，未装备返回 ItemStack.EMPTY
-     */
+    /** 从天火饰品槽位中查找已装备的天火圣裁实例 */
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireJudgment);
     }
     
-    /**
-     * 血量变化回调 - 由 HeavenFireHealthListener 调用
-     */
+    /** 血量变化回调（由 HeavenFireHealthListener 调用） */
     public static void onHealthChanged(LivingEntity entity) {
         ItemStack equippedStack = findEquippedStack(entity);
         if (equippedStack.isEmpty()) {

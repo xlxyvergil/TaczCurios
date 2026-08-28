@@ -26,7 +26,6 @@ import java.util.UUID;
 
 /**
  * 浮生系列·人物线（tcc_3rd）：华。
- * <p>
  * 护甲 +20%、护甲韧性 +20%。
  */
 public class Hua extends BoundCurioItem {

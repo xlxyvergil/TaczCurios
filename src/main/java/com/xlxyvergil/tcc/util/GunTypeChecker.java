@@ -44,9 +44,7 @@ public class GunTypeChecker {
     );
     
     /**
-     * 检查生物是否持有步枪
-     * @param livingEntity 生物实体
-     * @return 如果生物持有步枪返回true，否则返回false
+     * 检查生物是否持有步枪。
      */
     public static boolean isHoldingRifle(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, RIFLE_GUN_TYPES);
@@ -69,10 +67,7 @@ public class GunTypeChecker {
     }
     
     /**
-     * 检查生物是否持有指定类型的枪械
-     * @param livingEntity 生物实体
-     * @param validTypes 有效的枪械类型集合
-     * @return 如果生物持有指定类型的枪械返回true，否则返回false
+     * 检查生物是否持有指定类型的枪械。
      */
     public static boolean isHoldingValidGunType(LivingEntity livingEntity, Set<String> validTypes) {
         ItemStack mainHandItem = livingEntity.getMainHandItem();
@@ -90,54 +85,42 @@ public class GunTypeChecker {
     }
     
     /**
-     * 检查生物是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、重型武器）
-     * @param livingEntity 生物实体
-     * @return 如果生物持有支持伤害加成的枪械类型返回true，否则返回false
+     * 检查生物是否持有支持伤害加成的枪械类型（步枪、狙击枪、冲锋枪、机枪、重型武器）。
      */
     public static boolean isHoldingDmgBoostGunType(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, DMG_BOOST_GUN_TYPES);
     }
     
     /**
-     * 检查生物是否持有霰弹枪
-     * @param livingEntity 生物实体
-     * @return 如果生物持有霰弹枪返回true，否则返回false
+     * 检查生物是否持有霰弹枪。
      */
     public static boolean isHoldingShotgun(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, SHOTGUN_GUN_TYPES);
     }
     
-    /**taa:magazine_capacity
-     * 检查生物是否持有手枪
-     * @param livingEntity 生物实体
-     * @return 如果生物持有手枪返回true，否则返回false
+    /**
+     * 检查生物是否持有手枪。
      */
     public static boolean isHoldingPistol(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, PISTOL_GUN_TYPES);
     }
     
     /**
-     * 检查生物是否持有狙击枪
-     * @param livingEntity 生物实体
-     * @return 如果生物持有狙击枪返回true，否则返回false
+     * 检查生物是否持有狙击枪。
      */
     public static boolean isHoldingSniper(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, SNIPER_GUN_TYPES);
     }
 
     /**
-     * 检查生物是否持有重型武器（重型武器、机枪）
-     * @param livingEntity 生物实体
-     * @return 如果生物持有重型武器返回true，否则返回false
+     * 检查生物是否持有重型武器（重型武器、机枪）。
      */
     public static boolean isHoldingHeavyWeapon(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, HEAVY_WEAPON_TYPES);
     }
 
     /**
-     * 检查生物是否持有任意枪械
-     * @param livingEntity 生物实体
-     * @return 如果生物持有任意枪械返回true，否则返回false
+     * 检查生物是否持有任意枪械。
      */
     public static boolean isHoldingAnyGun(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, ALL_GUN_TYPES);
@@ -145,12 +128,8 @@ public class GunTypeChecker {
 
     /**
      * 检查生物是否持有近战武器。
-     * 满足以下任一条件即视为近战武器：
-     * 1. 物品可以执行 {@code ToolActions.SWORD_DIG}（剑类行为）
-     * 2. 物品在主手有基础 ATTACK_DAMAGE 属性且值大于 0
-     *
-     * @param livingEntity 生物实体
-     * @return 如果生物持有近战武器返回 true，否则返回 false
+     * 满足任一条件即视为近战武器：物品可执行 ToolActions.SWORD_DIG（剑类行为），
+     * 或物品在主手有基础 ATTACK_DAMAGE 属性且值大于 0。
      */
     public static boolean isHoldingMeleeWeapon(LivingEntity livingEntity) {
         ItemStack mainHand = livingEntity.getMainHandItem();
@@ -162,9 +141,7 @@ public class GunTypeChecker {
     }
     
     /**
-     * 检查生物手中枪械的当前弹匣是否满弹药
-     * @param livingEntity 生物实体
-     * @return 如果生物持有枪械且弹匣满弹药返回true，否则返回false
+     * 检查生物手中枪械的当前弹匣是否满弹药。
      */
     public static boolean isHoldingGunWithFullMagazine(LivingEntity livingEntity) {
         ItemStack mainHandItem = livingEntity.getMainHandItem();
@@ -182,7 +159,7 @@ public class GunTypeChecker {
                 int ammoAmount = index.getGunData().getAmmoAmount() + barrelBulletAmount;
                 
                 // 获取修改后的最大弹药数（与GunPropertyDiagramsMixin相同的逻辑）
-                int maxAmmoCount = ammoAmount; // 默认值
+                int maxAmmoCount = ammoAmount;
                 
                 // 检查是否为背包供弹模式，如果是则不修改
                 boolean isUsingInventoryAsMagazine = index.getGunData().getReloadData() != null && 
@@ -198,7 +175,7 @@ public class GunTypeChecker {
                             if (cache != null) {
                                 Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
                                 if (modifiedAmmoCount != null) {
-                                    maxAmmoCount = modifiedAmmoCount; // 使用缓存值并加上枪管中的子弹
+                                    maxAmmoCount = modifiedAmmoCount;
                                 }
                             }
                         }
@@ -212,7 +189,7 @@ public class GunTypeChecker {
                             if (cache != null) {
                                 Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
                                 if (modifiedAmmoCount != null) {
-                                    maxAmmoCount = modifiedAmmoCount; // 使用缓存值并加上枪管中的子弹
+                                    maxAmmoCount = modifiedAmmoCount;
                                 }
                             }
                         }

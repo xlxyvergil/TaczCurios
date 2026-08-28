@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 弹匣增幅Prime - 提升弹匣容量
- * 效果：提5%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
+ * 弹匣增幅Prime：提升5%弹匣容量，仅对步枪、狙击枪、冲锋枪、机枪、重型武器生效
  */
 public class MagazineBoostPrime extends TccCurioItem {
 
@@ -33,10 +32,6 @@ public class MagazineBoostPrime extends TccCurioItem {
             .stacksTo(1));
     }
 
-    /**
-     * 应用弹匣增幅Prime效果
-     * 提升弹匣容量
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -45,9 +40,6 @@ public class MagazineBoostPrime extends TccCurioItem {
         }
     }
 
-    /**
-     * 移除弹匣增幅Prime效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_UUID);
@@ -59,26 +51,17 @@ public class MagazineBoostPrime extends TccCurioItem {
         return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.magazine_boost_prime.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.WHITE));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
     

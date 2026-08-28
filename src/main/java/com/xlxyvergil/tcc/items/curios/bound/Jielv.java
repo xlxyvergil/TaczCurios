@@ -29,7 +29,6 @@ import java.util.List;
 
 /**
  * 戒律系列·人物线（tcc_3rd）：戒律。
- * <p>
  * 攻击 15% 概率施加 3 个随机 debuff（15 秒）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

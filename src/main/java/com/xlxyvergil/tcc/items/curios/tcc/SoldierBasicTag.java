@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +19,7 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
 /**
- * 士兵基础挂牌 - 提供所有枪械基础伤害加成
- * 效果：为玩家提供通用枪械伤害加成（乘法）
+ * 士兵基础挂牌：为玩家提供通用枪械伤害加成（乘法）
  */
 public class SoldierBasicTag extends TccCurioItem {
     
@@ -53,27 +51,18 @@ public class SoldierBasicTag extends TccCurioItem {
         return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.soldierBasicTagDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.soldier_basic_tag.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.BLUE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 

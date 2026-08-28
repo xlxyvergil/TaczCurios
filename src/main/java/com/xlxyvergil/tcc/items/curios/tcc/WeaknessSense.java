@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 弱点感应 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/重型武器）
- * 效果：暴击伤害+120%
+ * 弱点感应：暴击伤害+120%
  */
 public class WeaknessSense extends TccCurioItem {
 

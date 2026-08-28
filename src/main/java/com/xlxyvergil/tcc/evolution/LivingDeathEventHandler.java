@@ -60,7 +60,7 @@ public final class LivingDeathEventHandler {
                 TRIGGER_LIVING_DEATH, playerKilled, ignoreEnabled);
     }
 
-    // ===== API for external callers (scripting) =====
+    // 供外部调用方（脚本）使用的 API
 
     public static boolean tryGrantRule(Player player, Entity otherEntity, DamageSource source,
                                         String achievementId) {
@@ -102,14 +102,14 @@ public final class LivingDeathEventHandler {
         return changed;
     }
 
-    // ===== Core handler =====
+    // 核心处理器
 
     private static void handleTrigger(Player player, LivingEntity killed, String killedKey,
                                        Entity otherEntity, DamageSource source, String trigger,
                                        boolean playerKilled, boolean ignoreEnabled) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
 
-        // ===== Achievement-driven GRANT (death trigger) =====
+        // 成就驱动的发放（死亡触发器）
         if (serverPlayer != null) {
             var defs = AchievementDefinitions.getByTrigger(trigger);
             for (AchievementDefinitions.AchievementDef def : defs) {
@@ -125,7 +125,7 @@ public final class LivingDeathEventHandler {
             }
         }
 
-        // ===== ATTRIBUTE rules (from evolution_rules.json) =====
+        // 属性规则（来自 evolution_rules.json）
         for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTriggerOrEmpty(trigger)) {
             if (!ignoreEnabled && !rule.enabled) continue;
             if (rule.playerKilled != playerKilled) continue;
@@ -153,7 +153,7 @@ public final class LivingDeathEventHandler {
 
     }
 
-    // ===== Utility methods (public/shared) =====
+    // 工具方法（公共/共享）
 
     static void bindToPlayer(ItemStack stack, Player player) {
         CompoundTag tag = stack.getOrCreateTag();
@@ -207,7 +207,7 @@ public final class LivingDeathEventHandler {
         return true;
     }
 
-    // ===== Private helpers =====
+    // 私有辅助方法
 
     private static ItemStack findFirstEquippedStack(LivingEntity livingEntity, Predicate<ItemStack> predicate) {
         if (livingEntity == null) return ItemStack.EMPTY;

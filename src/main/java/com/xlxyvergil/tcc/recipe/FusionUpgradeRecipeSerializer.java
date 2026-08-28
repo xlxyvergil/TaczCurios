@@ -6,8 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 /**
- * 饰品升级配方的序列化器。
- * 配方无固定参数，所有逻辑在 {@link FusionUpgradeRecipe} 中动态判断。
+ * 饰品升级配方的序列化器；配方无固定参数，逻辑由配方类动态判断。
  */
 public class FusionUpgradeRecipeSerializer implements RecipeSerializer<FusionUpgradeRecipe> {
 

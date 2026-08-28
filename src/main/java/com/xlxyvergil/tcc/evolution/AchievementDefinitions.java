@@ -22,11 +22,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 /**
- * Loads and manages achievement definitions from achievement_definitions.json.
- * <p>
- * This replaces the hardcoded mapping in RuleAdvancementMapping with a fully
- * JSON-configurable system. Each achievement defines its display (bilingual),
- * trigger conditions, criteria count, prerequisites, and reward (grant/evolve).
+ * 从 achievement_definitions.json 加载并管理成就定义。
+ * 每个成就定义其显示文案（双语）、触发条件、进度数、前置条件与奖励（发放/进化），以完全可配置的 JSON 系统取代硬编码映射。
  */
 public final class AchievementDefinitions {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -40,7 +37,7 @@ public final class AchievementDefinitions {
 
     private AchievementDefinitions() {}
 
-    // ===== Public API =====
+    // 公共 API
 
     public static Optional<AchievementDef> get(String achievementId) {
         loadOnce();
@@ -62,7 +59,7 @@ public final class AchievementDefinitions {
         return ACHIEVEMENTS.size();
     }
 
-    // ===== Loading =====
+    // 加载
 
     public static void loadOnce() {
         if (loadAttempted) return;
@@ -169,7 +166,7 @@ public final class AchievementDefinitions {
                     AchievementDef fixed = new AchievementDef(id, def);
                     ACHIEVEMENTS.put(id, fixed);
                 } catch (Exception e) {
-                    // skip malformed entry
+                    // 跳过格式错误的条目
                 }
             }
         } catch (Exception e) {
@@ -189,7 +186,7 @@ public final class AchievementDefinitions {
         return true;
     }
 
-    // ===== Data Model =====
+    // 数据模型
 
     public record AchievementDef(
         String id,
@@ -202,7 +199,7 @@ public final class AchievementDefinitions {
         Reward reward,
         @SerializedName("enabled") Boolean enabled
     ) {
-        /** Construct with explicit id (key from JSON map) */
+        /** 使用 JSON map 的 key 作为显式 id 构造。 */
         AchievementDef(String explicitId, AchievementDef fromJson) {
             this(
                 explicitId,
@@ -217,20 +214,16 @@ public final class AchievementDefinitions {
             );
         }
 
-        /** @return 该成就是否启用，默认为 true */
+        /** 该成就是否启用（默认 true）。 */
         public boolean isEnabled() { return enabled == null || enabled; }
 
         public boolean isPlayerKilled() { return playerKilled != null && playerKilled; }
         public ResourceLocation idRL() { return new ResourceLocation(id); }
 
         /**
-         * @return 成就的目标计数。
-         *   <ul>
-         *     <li>击杀类（OR/单类型）：各 {@link KillCondition#criteriaCount()} 之和</li>
-         *     <li>击杀类（AND）：子目标 {@link KillCondition#criteriaCount()} 之和（用于显示）</li>
-         *     <li>stat_polling / raid_victory：{@link AchievementConditions#criteriaCount()}，默认 1</li>
-         *     <li>其他（biome_visit 等）：1</li>
-         *   </ul>
+         * 成就的目标计数：
+         * 击杀类（OR/单类型）为各击杀条件计数之和；击杀类（AND）为子目标计数之和（用于显示）；
+         * stat_polling / raid_victory 为条件计数，默认 1；其他（biome_visit 等）为 1。
          */
         public int targetCount() {
             if (conditions != null && conditions.kills() != null && !conditions.kills().isEmpty()) {
@@ -254,7 +247,7 @@ public final class AchievementDefinitions {
                     && conditions.kills().size() > 1;
         }
 
-        /** Get display title for a locale */
+        /** 获取指定语言下的成就标题。 */
         public String title(String locale) {
             if (display == null || display.title == null) return id;
             String t = display.title.get(locale);
@@ -262,8 +255,7 @@ public final class AchievementDefinitions {
             return t != null ? t : id;
         }
 
-        /** Get display description for a locale, from display.description map.
-         *  The %d placeholders are filled by caller with (current, total). */
+        /** 获取指定语言下的成就描述，%d 占位符由调用方以（当前, 总数）填充。 */
         public String description(String locale, int current, int total) {
             if (display == null || display.description == null) return id;
             String fmt = display.description.get(locale);
@@ -297,12 +289,12 @@ public final class AchievementDefinitions {
         // --- biome_visit ---
         String biome,
         String dimension,
-        // --- extra stats (for kill/death achievements that require multiple stat checks) ---
+        // --- 额外统计（击杀/死亡成就需要多项统计检查时用） ---
         @SerializedName("extraStats") List<StatCondition> extraStats,
-        // --- health range (current HP check, e.g. healthMin: 0, healthMax: 4) ---
+        // --- 生命值区间（当前 HP 检查，如 healthMin: 0, healthMax: 4） ---
         @SerializedName("healthMin") Double healthMin,
         @SerializedName("healthMax") Double healthMax,
-        // --- Y-coordinate minimum (both killer & killed must be above this) ---
+        // --- Y 坐标下限（击杀者与被击杀者都需高于该值） ---
         @SerializedName("minHeight") Double minHeight
     ) {
         /** 统计目标计数，若 JSON 未设置则默认 1 */
@@ -321,7 +313,7 @@ public final class AchievementDefinitions {
         List<String> nbt,
         @SerializedName("criteria_count") int criteriaCount
     ) {
-        /** @return 该击杀条件要求的总计数，默认为 1 */
+        /** 该击杀条件要求的总计数（默认 1）。 */
         public int criteriaCount() { return criteriaCount > 0 ? criteriaCount : 1; }
     }
 
@@ -354,14 +346,9 @@ public final class AchievementDefinitions {
         String item,
         String to
     ) {}
-
-    // ===== Entity name resolution =====
-
     /**
-     * Resolve an entity registry key to its localized display name.
-     * Uses Minecraft's built-in translation system so it respects the current Language instance.
-     * <p>以 {@code #} 开头且对应原版 MobType 的键（如 {@code #minecraft:undead}）会显示为对应的本地化名称
-     * （如「亡灵」），而非原始字符串；其余 {@code #} 标签按原样显示。</p>
+     * 解析实体注册键为本地化显示名，使用原版翻译系统以尊重当前语言实例。
+     * 以 # 开头且对应原版 MobType 的键（如 #minecraft:undead）会显示为对应本地化名称（如「亡灵」），其余 # 标签按原样显示。
      */
     public static String entityDisplayName(String entityKey) {
         if (entityKey == null || entityKey.isBlank()) return "?";
@@ -384,8 +371,8 @@ public final class AchievementDefinitions {
     }
 
     /**
-     * 将字符串映射为原版 MobType 的本地化翻译键，大小写不敏感。
-     * 不认识的名称返回 {@code null}，交由调用方按普通 {@code #} 标签原样显示。
+     * 将字符串映射为原版 MobType 的本地化翻译键（大小写不敏感）。
+     * 不认识的名称返回 null，交由调用方按普通 # 标签原样显示。
      */
     private static String mobTypeTranslationKey(String name) {
         if (name == null) return null;

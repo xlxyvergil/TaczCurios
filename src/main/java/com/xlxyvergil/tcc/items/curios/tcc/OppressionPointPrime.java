@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -19,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 压迫点Prime - 提升近战伤害
- * 效果：提升近战伤害（加算）
+ * 压迫点Prime：提升近战伤害（加算）
  */
 public class OppressionPointPrime extends TccCurioItem {
     
@@ -34,10 +32,6 @@ public class OppressionPointPrime extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用压迫点Prime效果
-     * 给生物添加近战伤害加成（加算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -45,36 +39,24 @@ public class OppressionPointPrime extends TccCurioItem {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, damageBoost, ATTACK_DAMAGE_UUID, ATTACK_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         }
     }
-    
-    /**
-     * 移除压迫点Prime效果
-     */
+
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.oppressionPointPrimeMeleeDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.oppression_point_prime.effect", String.format("%+.0f", meleeDamageBoost))
             .withStyle(ChatFormatting.WHITE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
 
     @Override

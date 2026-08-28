@@ -7,8 +7,7 @@ import javax.annotation.Nullable;
 
 /**
  * 融合数据 — 轻量级不可变快照，封装饰品当前的融合等级与稀有度。
- * <p>通过 {@link #from(ItemStack)} 工厂方法从道具 NBT 读取生成。</p>
- * <p>写入 NBT 仍通过 {@link FusionUpgradeUtil#setLevel} 完成。</p>
+ * 通过 from(ItemStack) 工厂方法从道具 NBT 读取生成；写入 NBT 仍通过 FusionUpgradeUtil.setLevel 完成。
  */
 public record FusionData(int level, @Nullable Rarity rarity) {
 
@@ -27,14 +26,14 @@ public record FusionData(int level, @Nullable Rarity rarity) {
         return FusionUpgradeUtil.getMaxLevel(rarity);
     }
 
-    /** 是否可升级（封顶等级 &gt; 0）。 */
+    /** 是否可升级（封顶等级 > 0）。 */
     public boolean isUpgradeable() {
         return maxLevel() > 0;
     }
 
     /**
      * 根据满级 Config 值反推当前等级的实际值。
-     * <p>等价于 {@link FusionUpgradeUtil#getActualValue(double, int, Rarity)}。</p>
+     * 等价于 FusionUpgradeUtil.getActualValue(double, int, Rarity)。
      */
     public double getActualValue(double maxLevelValue) {
         return FusionUpgradeUtil.getActualValue(maxLevelValue, level, rarity);

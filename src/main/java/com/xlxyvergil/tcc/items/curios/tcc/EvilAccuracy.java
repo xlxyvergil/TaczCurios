@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
@@ -19,16 +18,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 极恶精准饰品
- * 效果：降低50%后坐力，降低36%射速（都加算）
+ * 极恶精准：降低50%后坐力，降低36%射速（都加算）
  */
 public class EvilAccuracy extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID RECOIL_UUID = UUID.fromString("98a8e44a-7d8d-4d10-b934-7e1e1c1c8fca");
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("7da86e2a-9c63-4d3f-8237-feda8559638e");
     
-    // 修饰符名称
     private static final String RECOIL_NAME = "tcc.evil_accuracy.recoil";
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.evil_accuracy.rounds_per_minute";
     
@@ -36,10 +32,6 @@ public class EvilAccuracy extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用所有效果加成
-     * 降低配置中的后坐力和射速（都加算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -51,9 +43,6 @@ public class EvilAccuracy extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除所有效果加成
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RECOIL, RECOIL_UUID);
@@ -66,28 +55,19 @@ public class EvilAccuracy extends TccCurioItem {
     }
     
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果
         double recoilReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get() ) * 100;
         double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.evil_accuracy.effect", 
                 String.format("%+.0f", recoilReduction), String.format("%+.0f", fireRateReduction))
             .withStyle(ChatFormatting.GOLD));
         
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
         
     }
     

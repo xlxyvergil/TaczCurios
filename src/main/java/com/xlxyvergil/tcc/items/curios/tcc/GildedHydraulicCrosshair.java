@@ -2,8 +2,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -17,9 +15,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层液压准心 - 手枪饰品（爆头→爆头击杀触发不同Buff期间）
- * 爆头→120%暴击几率Buff持续2s，不叠加
- * 爆头击杀→40%/层暴击几率Buff持续2s，最多4层）
+ * 镀层液压准心：爆头→120%暴击几率Buff持续2s，不叠加
+ * 爆头击杀→40%/层暴击几率Buff持续2s，最多4层
  */
 public class GildedHydraulicCrosshair extends TccCurioItem {
 

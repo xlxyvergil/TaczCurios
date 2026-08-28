@@ -27,7 +27,6 @@ import java.util.UUID;
 
 /**
  * 浮生系列·人物线（tcc_3rd）：浮生。
- * <p>
  * 护甲 / 护甲韧性 = 持有者虚数抗性百分比。
  */
 public class Fusheng extends BoundCurioItem {

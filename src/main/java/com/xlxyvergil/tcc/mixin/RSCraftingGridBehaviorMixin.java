@@ -21,20 +21,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mixin to fix Refined Storage's {@code onCraftedShift} method so that
- * {@link net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent}
- * fires per craft operation (matching vanilla / AE2 behavior) instead of
- * once for the entire batch.
- * <p>
- * Required = false: silently skipped when RS is not loaded.
+ * 修复 Refined Storage 的 onCraftedShift 方法，使 ItemCraftedEvent 每次合成操作触发一次（与 vanilla / AE2 行为一致），
+ * 而非整个批次仅触发一次。Required = false：RS 未加载时静默跳过。
  */
 @Mixin(targets = "com.refinedmods.refinedstorage.apiimpl.network.grid.CraftingGridBehavior", remap = false)
 public abstract class RSCraftingGridBehaviorMixin {
 
     /**
-     * Shadow stub for the private {@code filterDuplicateStacks} method on the target class.
-     * At runtime the bytecode from this {@code @Overwrite} method runs inside
-     * {@code CraftingGridBehavior}, so this call resolves to the real private method.
+     * 目标类私有方法 filterDuplicateStacks 的 Shadow 存根。
+     * 运行时此 @Overwrite 方法的字节码在 CraftingGridBehavior 内执行，因此该调用会解析到真正的私有方法。
      */
     @Shadow
     private void filterDuplicateStacks(INetwork network, CraftingContainer matrix, IStackList<ItemStack> availableItems) {
@@ -42,8 +37,7 @@ public abstract class RSCraftingGridBehaviorMixin {
     }
 
     /**
-     * Rewrites {@code onCraftedShift} to fire {@code ItemCraftedEvent}
-     * once per craft operation instead of once for the entire batch.
+     * 重写 onCraftedShift，使 ItemCraftedEvent 每次合成操作触发一次而非整个批次一次。
      */
     @Overwrite(remap = false)
     public void onCraftedShift(INetworkAwareGrid grid, Player player) {
@@ -89,7 +83,7 @@ public abstract class RSCraftingGridBehaviorMixin {
                 Containers.dropItemStack(player.getCommandSenderWorld(), player.getX(), player.getY(), player.getZ(), remainder);
             }
 
-            // Fire event per craft operation (matches vanilla/AE2 behavior)
+            // 每次合成操作触发事件（与 vanilla/AE2 行为一致）
             craftedItem.onCraftedBy(player.level(), player, craftedItem.getCount());
             ForgeEventFactory.firePlayerCraftingEvent(player, craftedItem.copy(), grid.getCraftingMatrix());
         }

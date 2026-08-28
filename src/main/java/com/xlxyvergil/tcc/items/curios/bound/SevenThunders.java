@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,9 +60,6 @@ public class SevenThunders extends BoundCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        String stHeadshotStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100);
-        String stCritChanceStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100);
-        String stCritDamageStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100);
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))

@@ -12,9 +12,6 @@ import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -35,13 +32,11 @@ import java.util.UUID;
 
 /**
  * 天火劫灭 - 踏上前来
- * 效果：玩家血量为100%，buff生效，提升1000%的bullet_gundamage，+10explosion_radius，提升1000%的explosion_damage，
- * 造成伤害后对玩家造成当前生命值100%的伤害（使用setHealth），同时对玩家周围的其他玩家提供15秒的100%bullet_gundamage加成（加算）。
+ * 满血时生效：提升枪械/爆炸伤害，造成伤害后扣除当前生命值，并为周围玩家提供伤害加成。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireApocalypse extends BoundCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
     private static final UUID EXPLOSION_DAMAGE_UUID = UUID.fromString("3de85a73-816c-49c0-bc43-4c7dec18c951");
     
@@ -53,9 +48,6 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         super(properties);
     }
     
-    /**
-     * 当饰品被装备时调用
-     */
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         super.onEquip(slotContext, prevStack, stack);
@@ -68,9 +60,6 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         return true;
     }
     
-    /**
-     * 应用所有效果加成
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -88,9 +77,6 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
     }
     
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public List<String> getWeaponTypeRestriction() {
         return List.of("pistol");
@@ -101,17 +87,9 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
-        // 根据语言文件中的占位符顺序调整参数传递顺序：
-        // %1$s - damageBoost (通用枪械伤害加成)
-        // %2$s - explosionDamageBoost (爆炸伤害加成)
-        // %3$s - healthCost (当前生命值扣除)
-        // %5$s - nearbyPlayerRadius (周围玩家范围)
-        // %6$s - nearbyPlayerDamageBoost (周围玩家伤害加成, 药水等级+1%)
-        // %7$s - nearbyPlayerDuration (持续时间)
+
+        // 参数顺序需与语言文件占位符一一对应（枪伤/爆伤/扣血/范围/加成/时长）
         double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get() * 100;
         double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get() * 100;
         double healthCost = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get() * 100;
@@ -140,17 +118,12 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
                 String.format("%d", infectionMax))
             .withStyle(ChatFormatting.RED));
-        
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
-        
+
         appendBoundPlayer(stack, tooltip);
     }
     
-    /**
-     * 监听 TACZ 枪械伤害事件（Pre），将伤害转换为虚数伤害
-     */
+    /** 将 TACZ 枪械伤害转换为虚数伤害（Pre 事件） */
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
@@ -167,18 +140,14 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         ImaginaryConversionHelper.convertToImaginary(event);
     }
     
-    /**
-     * 监听 TACZ 枪械伤害事件（Post），处理扣血和周围玩家加成
-     */
+    /** 扣血并为周围玩家提供加成（Post 事件） */
     @SubscribeEvent
     public static void onGunHurt(EntityHurtByGunEvent.Post event) {
-        // 使用工具类检查并获取攻击者
         LivingEntity attacker = TacDamageHelper.getAttacker(event);
         if (attacker == null) {
             return;
         }
-        
-        // 检查攻击者是否装备了天火劫灭
+
         if (!hasHeavenFireApocalypseEquipped(attacker)) {
             return;
         }
@@ -200,13 +169,12 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         // 检查是否装备了梵天百兽，如果是则减少扣血比例
         if (BrahmaBeasts.hasBrahmaBeastsEquipped(attacker)) {
             double reduction = TaczCuriosConfig.COMMON.brahmaBeastsHealthCostReduction.get();
-            healthCostConfig += reduction;  // -1.0 + 0.6 = -0.4
+            healthCostConfig += reduction;
         }
-        
+
         // 限制扣血比例：最高99%（至少保留1%血量）
         double clampedHealthCost = Math.min(-healthCostConfig, 0.99);
-        
-        // 计算剩余血量比例
+
         double remainingHealthRatio = 1.0 - clampedHealthCost;
         float newHealth = (float) ((float) Math.round(attacker.getMaxHealth() * remainingHealthRatio * 10000.0) / 10000.0);
         
@@ -228,7 +196,6 @@ public class HeavenFireApocalypse extends BoundCurioItem {
             true    // 显示图标
         ));
         
-        // 获取配置中的影响范围
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
         
         // 对周围的其他玩家提供配置中持续时间和伤害加成的bullet_gundamage加成（加算）
@@ -245,31 +212,20 @@ public class HeavenFireApocalypse extends BoundCurioItem {
                 false, false, true));
         }
     }
-    /**
-     * 每tick检查并移除周围玩家的加成效果
-     */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
     }
 
-    /**
-     * 检查生物是否装备了天火劫灭
-     */
     public static boolean hasHeavenFireApocalypseEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
     
-    /**
-     * 从天火饰品槽位中查找已装备的天火劫灭实例
-     * @return 已装备的 ItemStack，未装备返回 ItemStack.EMPTY
-     */
+    /** 从天火饰品槽位中查找已装备的天火劫灭实例 */
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireApocalypse);
     }
     
-    /**
-     * 血量变化回调 - 由 HeavenFireHealthListener 调用
-     */
+    /** 血量变化回调（由 HeavenFireHealthListener 调用） */
     public static void onHealthChanged(LivingEntity entity) {
         ItemStack equippedStack = findEquippedStack(entity);
         if (equippedStack.isEmpty()) {

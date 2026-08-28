@@ -12,18 +12,9 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.List;
 
 /**
- * Thin wrapper around AchievementDefinitions for the event handlers.
- * <p>
- * All mapping and logic is driven by achievement_definitions.json.
- * This class provides convenience methods for:
- * - Checking if an achievement is done
- * - Awarding criteria (advancing progress via Capability tracking)
- * - Checking prerequisites
- * <p>
- * Progress is tracked in the player's {@link TccPlayerDataCapability}, not in the advancement
- * criteria. Achievements only have a single {@code step_1} criterion.
- * When the accumulated progress reaches the target count,
- * {@code step_1} is awarded, completing the achievement.
+ * 事件处理器对 AchievementDefinitions 的薄封装，逻辑完全由 achievement_definitions.json 驱动。
+ * 进度记录在玩家的 TccPlayerDataCapability（而非成就条件），成就只有一个 step_1 条件；
+ * 当累计进度达到目标数时授予 step_1，从而完成成就。
  */
 public final class RuleAdvancementMapping {
 
@@ -31,7 +22,7 @@ public final class RuleAdvancementMapping {
     private static final String SUB_KEY_SEP = "|";
     private RuleAdvancementMapping() {}
 
-    /** Check if the player has completed the achievement for this achievement ID. */
+    /** 检查玩家是否已完成该成就。 */
     public static boolean isAdvancementDone(ServerPlayer player, String achievementId) {
         if (player.server == null) return false;
         Advancement adv = player.server.getAdvancements().getAdvancement(new ResourceLocation(achievementId));
@@ -39,20 +30,18 @@ public final class RuleAdvancementMapping {
         return player.getAdvancements().getOrStartProgress(adv).isDone();
     }
 
-    /** Get current progress from player Capability. */
+    /** 从玩家 Capability 获取当前进度。 */
     public static int getProgress(ServerPlayer player, String achievementId) {
         return TccPlayerDataCapability.getAchievementProgress(player, achievementId);
     }
 
-    /** Set progress in player Capability. */
+    /** 写入玩家 Capability 中的进度。 */
     private static void setProgress(ServerPlayer player, String achievementId, int progress) {
         TccPlayerDataCapability.setAchievementProgress(player, achievementId, progress);
     }
 
     /**
-     * Award multiple "steps" by accumulating NBT progress.
-     * When progress reaches target, {@code step_1} is awarded,
-     * completing the advancement and triggering {@code AdvancementEarnEvent}.
+     * 通过累计 NBT 进度授予多个「步」。当进度达到目标时授予 step_1，完成进阶并触发 AdvancementEarnEvent。
      */
     public static void awardSteps(ServerPlayer player, String achievementId, int target, int steps) {
         if (steps <= 0 || target <= 0) return;
@@ -79,8 +68,7 @@ public final class RuleAdvancementMapping {
     }
 
     /**
-     * Award the next criterion (1 step).
-     * @return true if the achievement is now fully complete
+     * 授予下一个条件（1 步）。返回该成就是否已完全完成。
      */
     public static boolean awardNextCriterion(ServerPlayer player, String achievementId, int target) {
         if (target <= 0) return false;
@@ -107,7 +95,7 @@ public final class RuleAdvancementMapping {
         return newProgress >= target;
     }
 
-    /** Award all criteria at once (for one-time triggers like biome_visit). */
+    /** 一次性授予所有条件（用于 biome_visit 等一次性触发器）。 */
     public static void awardAll(ServerPlayer player, String achievementId, int target) {
         if (target <= 0) return;
         if (player.server == null) return;
@@ -125,7 +113,7 @@ public final class RuleAdvancementMapping {
         NetworkHandler.syncAchievementProgress(player, achievementId, target);
     }
 
-    // ===== Multi-type kill (AND semantics) =====
+    // 多类型击杀（AND 语义）
 
     /**
      * 判断该成就是否使用多类型击杀（AND 语义）。
@@ -140,15 +128,8 @@ public final class RuleAdvancementMapping {
     }
 
     /**
-     * 处理多类型击杀的进度更新。
-     * <p>
-     * 每种实体类型的击杀数使用复合 key {@code <achievementId>|<entity>} 分别追踪。
-     * AND 语义：所有子目标均达到后 award。
-     * OR 语义：任一子目标达到后 award。
-     * <p>
-     * 同步总进度（各子进度之和）用于 tooltip 显示。
-     *
-     * @param killed 被击杀的实体（支持 #tag 匹配）
+     * 处理多类型击杀的进度更新。每种实体类型的击杀数用复合 key <achievementId>|<entity> 分别追踪。
+     * AND 语义：所有子目标均达到后 award；OR 语义：任一子目标达到后 award。同步总进度（各子进度之和）用于 tooltip 显示。
      */
     public static void awardMultiTypeKill(ServerPlayer player, String achievementId,
                                           AchievementDefinitions.AchievementDef def,
@@ -159,7 +140,6 @@ public final class RuleAdvancementMapping {
         List<KillCondition> kills = def.conditions().kills();
         if (kills == null || kills.isEmpty()) return;
 
-        // 更新被击杀实体的子进度
         for (KillCondition kc : kills) {
             if (!EntityConditionHelper.matchesEntityKey(kc.entity(), killed)) continue;
 
@@ -207,7 +187,7 @@ public final class RuleAdvancementMapping {
         }
     }
 
-    /** Check if ALL prerequisites for an achievement are complete. */
+    /** 检查成就的所有前置条件是否都已达成。 */
     public static boolean arePrerequisitesMet(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (def.prerequisites() == null || def.prerequisites().isEmpty()) return true;
         for (String prereq : def.prerequisites()) {

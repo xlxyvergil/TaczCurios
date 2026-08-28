@@ -14,7 +14,7 @@ public class GildedBulletSpreadEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
         double perLevelValue = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get();
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
-            "c1d2e3f4-6203-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "78e5804f-3c3c-4563-a6e9-589d540f52ee", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
 }

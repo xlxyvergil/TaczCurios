@@ -6,8 +6,8 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 天火劫灭延迟标记 - 用于在扣血后延迟施加流血效果
- * 持续时间可配置(默认3秒), 最后1秒时施加天火流血
+ * 天火劫灭延迟标记：扣血后延迟施加流血效果。
+ * 持续时间可配置（默认 3 秒），最后 1 秒时施加天火流血。
  */
 public class HeavenFireApocalypseDelayEffect extends MobEffect {
 
@@ -22,9 +22,9 @@ public class HeavenFireApocalypseDelayEffect extends MobEffect {
         
         int remainingDuration = effectInstance.getDuration();
         
-        // 剩余时间恰好为 1秒(20tick) 时施加天火流血（每轮延迟只施加一次）。
+        // 剩余时间恰好 1 秒（20 tick）时施加天火流血（每轮只施加一次）。
         // 不能用 <= 20 并依赖 removeEffect 移除自身：CoreEffectProtectionHandler 会阻止本效果被移除，
-        // 导致最后1秒内每 tick 重复施加流血并刷新其持续时间为200，使流血伤害(200 % 40 == 0)每 tick 触发，表现为无间隔。
+        // 否则最后 1 秒内每 tick 重复施加流血并刷新持续时间为 200，使流血伤害每 tick 触发。
         if (remainingDuration == 20) {
             entity.addEffect(new net.minecraft.world.effect.MobEffectInstance(
                 TccMobEffects.HEAVEN_FIRE_BLEEDING.get(),

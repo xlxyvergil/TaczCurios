@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -19,15 +18,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 黄蜂蜇刺 - 提升手枪伤害
- * 效果：手枪伤害加成（加算）
+ * 黄蜂蜇刺：提升手枪伤害（加算）
  */
 public class WaspStinger extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("e1d2fcde-7ee0-4607-ade2-5b24292f8a52");
     
-    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.wasp_stinger.pistol_damage";
     
     public WaspStinger(Properties properties) {
@@ -52,27 +48,18 @@ public class WaspStinger extends TccCurioItem {
         return java.util.List.of("pistol");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.waspStingerDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.wasp_stinger.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.AQUA));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 

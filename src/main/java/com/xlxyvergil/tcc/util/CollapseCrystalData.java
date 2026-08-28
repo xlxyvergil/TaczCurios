@@ -14,16 +14,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * 崩坏结晶的收集记录数据工具。
- * <p>
- * 崩坏结晶用于合成真我（逐火之蛾）与黑渊白花（神之键）；
- * 通过吸收（记录）素材饰品类型来累计，凑满 {@link #REQUIRED_COUNT} 种不同饰品即可合成。
- * 每种素材饰品类型只被记录一次（已记录的无法再次合成）。
- * <p>
- * NBT 存两组记录集合（ListTag&lt;String&gt;，存物品注册 ID）：
- * <ul>
- *   <li>{@link #TRUE_SELF_MATERIALS} → 真我素材（tcc_3rd 的 12 个 3 阶饰品），记录到 {@link #TAG_TRUE_SELF}</li>
- *   <li>{@link #HEIYUAN_BAIHUA_MATERIALS} → 黑渊白花素材（tcc_tdk 的 12 个 3 阶饰品），记录到 {@link #TAG_HEIYUAN}</li>
- * </ul>
+ * 崩坏结晶通过吸收素材饰品类型累计，凑满 REQUIRED_COUNT 种不同饰品即可合成（每种只记录一次）。
+ * NBT 以 ListTag&lt;String&gt; 存物品注册 ID，分两组：TRUE_SELF_MATERIALS（真我素材，tcc_3rd 的 12 个 3 阶饰品）与
+ * HEIYUAN_BAIHUA_MATERIALS（黑渊白花素材，tcc_tdk 的 12 个 3 阶饰品），分别记录到 TAG_TRUE_SELF / TAG_HEIYUAN。
  */
 public class CollapseCrystalData {
 

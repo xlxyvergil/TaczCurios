@@ -15,8 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 液压准心 - 手枪饰品（爆头触发Buff期间）
- * 基础：暴击几率135%，爆头命中→Buff期间暴击几率提升Xs，不叠加
+ * 液压准心：基础暴击几率135%，爆头命中→Buff期间暴击几率提升
  */
 public class HydraulicCrosshair extends TccCurioItem {
 

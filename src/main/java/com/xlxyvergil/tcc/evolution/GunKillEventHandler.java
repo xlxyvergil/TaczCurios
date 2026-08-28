@@ -17,11 +17,8 @@ import java.util.function.Predicate;
 
 /**
  * gun_kill 触发器的成就/属性规则处理器。
- *
- * 架构说明：
- * 击杀判定统一由 {@link GunKillDebugFallbackHandler#onLivingDeath} 处理（基于 LivingDeathEvent
- * + 死亡源 tag 校验 + NBT 枪伤记录）。本类不再直接监听 {@code EntityKillByGunEvent}，
- * {@link #handleGunKill} 由 fallback 处理器在确认枪杀后调用。
+ * 击杀判定统一由 GunKillDebugFallbackHandler.onLivingDeath 处理（基于 LivingDeathEvent + 死亡源 tag 校验），
+ * 本类不再直接监听 EntityKillByGunEvent，handleGunKill 由 fallback 处理器在确认枪杀后调用。
  */
 public final class GunKillEventHandler {
     public static final String TRIGGER_GUN_KILL = "gun_kill";
@@ -31,26 +28,21 @@ public final class GunKillEventHandler {
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
 
-        // ===== Achievement-driven GRANT / EVOLVE =====
+        // 成就驱动的发放 / 进化
         if (serverPlayer != null) {
 
             for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(TRIGGER_GUN_KILL)) {
-                // Only handle grant and evolve types
                 if (def.reward() == null) continue;
 
-                // Skip disabled achievements
                 if (!def.isEnabled()) continue;
 
-                // Check prerequisites
                 if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
 
-                // Already completed?
                 if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
 
-                // Check conditions
                 if (!AchievementConditionMatcher.matchesKillConditions(player, killed, gunId, def)) continue;
 
-                // Award criterion(s) — 1 step per kill
+                // 每次击杀授予 1 步进度
                 var kills = def.conditions() != null ? def.conditions().kills() : null;
                 if (kills != null && kills.size() > 1) {
                     RuleAdvancementMapping.awardMultiTypeKill(
@@ -62,7 +54,7 @@ public final class GunKillEventHandler {
             }
         }
 
-        // ===== ATTRIBUTE rules (unchanged, from evolution_rules.json) =====
+        // 属性规则（来自 evolution_rules.json）
         for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTriggerOrEmpty(TRIGGER_GUN_KILL)) {
             if (!rule.enabled) continue;
             if (rule.playerKilled) continue;

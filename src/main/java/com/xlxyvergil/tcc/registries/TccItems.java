@@ -168,8 +168,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /**
- * 直接在这里注册所有物品，避免复杂的注册系统。
- * 类加载时静态字段直接 new FooItem()，在 RegisterEvent&lt;BLOCK&gt; 时批量注册。
+ * 在此集中注册所有物品：类加载时静态字段直接实例化，避免复杂的注册系统。
  */
 public class TccItems {
 
@@ -480,7 +479,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(RIFT));
     
-    // ========== Phase 2: 16个新增常驻属性饰品 ==========
+    // Phase 2: 16个新增常驻属性饰品
     
     // G-01 关键延迟 - 枪械通用，暴击几率+200%，射速-20%
     public static final Item CRITICAL_DELAY = new CriticalDelay(new Item.Properties()
@@ -562,7 +561,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // ========== Phase 3: 12个Buff触发饰品 ==========
+    // Phase 3: 12个Buff触发饰品
 
     // R-03 氩晶瞄具 - 步枪，爆头触发Buff
     public static final Item ARGON_SCOPE = new ArgonScope(new Item.Properties()
@@ -624,7 +623,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(Rarity.EPIC));
 
-    // ========== Phase 4: 5个特殊饰品 ==========
+    // Phase 4: 5个特殊饰品
 
     // R-06 镀层步枪才能 - 步枪，击杀触发Buff（有害效果乘算，2层）
     public static final Item GILDED_RIFLE_APTITUDE = new GildedRifleAptitude(new Item.Properties()
@@ -654,7 +653,7 @@ public class TccItems {
     public static final Item JIU_CHAN_ZHI_YUAN = new JiuChanZhiYuan(new Item.Properties()
             .stacksTo(64));
 
-    // ========== 逐火之蛾/神之键 新饰品 ==========
+    // 逐火之蛾/神之键 新饰品
 
     // 格蕾修 - 3rd槽位，稀有级，受伤冷却基础10tick，全部枪械类型
     public static final Item GRISEO = new Griseo(new Item.Properties()
@@ -686,7 +685,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(RIFT));
 
-    // ========== 重型武器系列饰品 ==========
+    // 重型武器系列饰品
 
     // 维尔薇 - 3rd槽位，稀有级，HP<20%黄心Lv1 60s冷却，重型武器
     public static final Item VILL_V = new VillV(new Item.Properties()
@@ -718,7 +717,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(RIFT));
 
-    // ========== 千劫/伊默尔系列饰品 ==========
+    // 千劫/伊默尔系列饰品
 
     // 千劫 - 3rd槽位，稀有级，+21虚数抗性+适应3/0.8/20s，全部枪械类型
     public static final Item KALPAS = new Kalpas(new Item.Properties()
@@ -750,7 +749,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(RIFT));
 
-    // ========== 苏系列饰品 ==========
+    // 苏系列饰品
 
     // 苏 - 3rd槽位，稀有级，+31虚数抗性-30%HP-dmg10%减伤，步枪
     public static final Item SU = new Su(new Item.Properties()
@@ -782,7 +781,7 @@ public class TccItems {
             .stacksTo(1)
             .rarity(RIFT));
 
-    // ========== 新系列：戒律/黄金/旭光/无限/浮生/空梦（各 6 件） ==========
+    // 新系列：戒律/黄金/旭光/无限/浮生/空梦（各 6 件）
 
     // --- 戒律（霰弹枪）：人物线 3rd ---
     // 阿波尼亚 - 攻击15%概率施加1个随机debuff（15秒）
@@ -916,7 +915,7 @@ public class TccItems {
     public static final Item YE_ZHI_TONG = new YeZhiTong(new Item.Properties()
             .stacksTo(1).rarity(Rarity.EPIC));
 
-    // ========== 最终阶段独立饰品 ==========
+    // 最终阶段独立饰品
 
     // 逐火之蛾「真我」- tcc_3rd槽，裂隙级，虚数抗性+60，全属性+50%，低血量结界
     public static final Item ZEN_WO = new ZhenWo(new Item.Properties()
@@ -1050,7 +1049,6 @@ public class TccItems {
         registry.register(id("tingzhi_zhijian"), TINGZHI_ZHIJIAN);
         registry.register(id("tianhui"), TIANHUI);
         registry.register(id("yinguo_zhuanlun"), YINGUO_ZHUANLUN);
-        // ========== 新系列 36 件 ==========
         registry.register(id("aponia"), APONIA);
         registry.register(id("shenzui_zhijian"), SHENZUI_ZHIJIAN);
         registry.register(id("jielv"), JIELV);
@@ -1087,7 +1085,6 @@ public class TccItems {
         registry.register(id("wangshi_de_huanmeng"), WANGSHI_DE_HUANMENG);
         registry.register(id("la_zhi_yan"), LA_ZHI_YAN);
         registry.register(id("ye_zhi_tong"), YE_ZHI_TONG);
-        // ========== 最终阶段独立饰品 ==========
         registry.register(id("zhen_wo"), ZEN_WO);
         registry.register(id("heiyuan_baihua"), HEIYUAN_BAIHUA);
     }

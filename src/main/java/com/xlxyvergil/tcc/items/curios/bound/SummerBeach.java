@@ -1,19 +1,12 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.EntityConditionHelper;
-import com.xlxyvergil.tcc.util.EvolutionNbtKeys;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,9 +16,7 @@ import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -99,8 +90,7 @@ public class SummerBeach extends BoundCurioItem {
         appendImaginaryResistance(stack, tooltip);
         
         appendBoundPlayer(stack, tooltip);
-        
-        // 槽位和稀有度
+
         tooltip.add(Component.literal(""));
  
     }

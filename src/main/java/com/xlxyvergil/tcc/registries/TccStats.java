@@ -9,7 +9,6 @@ import net.minecraft.stats.Stats;
 
 /**
  * 统一管理 TCC 所有自定义统计信息。
- * 新增统计只需：1) 在下方声明 ResourceLocation 常量  2) 在 {@link #register()} 中调用 registerCustom
  */
 public final class TccStats {
 
@@ -21,7 +20,7 @@ public final class TccStats {
     public static final ResourceLocation ITEMS_CRAFTED =
             new ResourceLocation(TaczCurios.MODID, "items_crafted");
 
-    // ===== 饰品佩戴存活时长统计 =====
+    // 饰品佩戴存活时长统计
 
     /** 佩戴 griseo 所生存的时间（tick），死亡不重置 */
     public static final ResourceLocation PLAY_TIME_GRISEO =
@@ -39,7 +38,7 @@ public final class TccStats {
     public static final ResourceLocation PLAY_TIME_QISHI_ZHIJIAN =
             new ResourceLocation(TaczCurios.MODID, "play_time_qishi_zhijian");
 
-    // ===== 新增统计在此声明 =====
+    // 新增统计在此声明
 
     /** 食用 6 种鱼类食物的累计次数（空梦成就 1：tcc:fish_food_eaten） */
     public static final ResourceLocation FISH_FOOD_EATEN =
@@ -66,7 +65,7 @@ public final class TccStats {
         registerCustom(FISH_FOOD_EATEN, StatFormatter.DEFAULT);
         registerCustom(FISH_CAUGHT_WHILE_EQUIPPED, StatFormatter.DEFAULT);
 
-        // ===== 新增统计在此注册 =====
+        // 新增统计在此注册
     }
 
     private static void registerCustom(ResourceLocation key, StatFormatter formatter) {

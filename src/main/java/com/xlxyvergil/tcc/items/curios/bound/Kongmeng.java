@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * 空梦系列·人物线（tcc_3rd）：空梦。
- * <p>
  * 钓鱼 0.01% 获得下界之星/龙蛋；击杀战利品翻倍（概率 = 施加者虚数抗性）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

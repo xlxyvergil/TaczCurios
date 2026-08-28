@@ -192,14 +192,12 @@ public final class EvolutionRegistry {
      */
     private static void mergeDefaults(Path file) {
         try {
-            // 读取默认 JSON
             JsonObject defaultRoot;
             try (InputStream in = EvolutionRegistry.class.getResourceAsStream(DEFAULT_RESOURCE)) {
                 if (in == null) return;
                 defaultRoot = JsonParser.parseReader(new java.io.InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
             }
 
-            // 读取用户 JSON
             String userJson = Files.readString(file, StandardCharsets.UTF_8);
             JsonObject userRoot = JsonParser.parseString(userJson).getAsJsonObject();
 

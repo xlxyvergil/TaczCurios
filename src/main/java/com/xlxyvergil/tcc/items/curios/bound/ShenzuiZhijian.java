@@ -29,7 +29,6 @@ import java.util.List;
 
 /**
  * 戒律系列·人物线（tcc_3rd）：深罪之槛。
- * <p>
  * 攻击 15% 概率施加 2 个随机 debuff（15 秒）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

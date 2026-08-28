@@ -23,11 +23,8 @@ import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix4f;
 
 /**
- * 结界地面特效渲染器（无实体）。
- * <p>
- * 状态由玩家身上的结界标记 buff（ZhenWoBarrierEffect）驱动：服务端在结界激活期间
- * 施加/续期该 buff，客户端检测到后直接以本地玩家的实时渲染位置为特效中心绘制
- * 标记 buff 图标平铺贴图 + 粉色范围圆环。特效中心取自本地玩家，无实体位置插值延迟。
+ * 结界地面特效渲染器（无实体）：以本地玩家位置为中心绘制图标贴图与粉色圆环。
+ * 状态由玩家身上的结界标记 buff（ZhenWoBarrierEffect）驱动。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ZhenWoBarrierLevelRenderer {
@@ -77,7 +74,7 @@ public class ZhenWoBarrierLevelRenderer {
         addVertex(builder, mat, -half, half, 0.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(builder.end());
 
-        // 粉色圆环：沿结界圆周（半径 = 配置值）绘制连续圆环带（内圆 + 外圆）
+        // 粉色圆环：沿结界圆周（半径 = 配置值）绘制内圆 + 外圆连续圆环带
         float ringRadius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().floatValue();
         float ringWidth = 1.0F;
         int ringCount = 128;

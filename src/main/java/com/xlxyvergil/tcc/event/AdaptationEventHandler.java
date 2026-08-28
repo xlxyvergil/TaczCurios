@@ -10,12 +10,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 饰品适应效果的事件处理。
- * <ul>
- *   <li>{@link LivingHurtEvent} — 对所有活跃的适应实例执行减免</li>
- *   <li>{@link LivingDeathEvent} — 死亡时清空适应数据</li>
- *   <li>{@link PlayerEvent.Clone} — 玩家死亡复活时清空适应数据</li>
- * </ul>
+ * 饰品适应效果的事件处理：
+ * LivingHurtEvent 对活跃适应实例执行减免，死亡时清空适应数据。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AdaptationEventHandler {
@@ -49,8 +45,7 @@ public class AdaptationEventHandler {
     }
 
     /**
-     * 玩家死亡复活时，Capability 数据在 Clone 事件触发前已被 Forge 自动复制。
-     * 这里清空新实体的数据，确保适应记忆随死亡重置。
+     * 玩家死亡复活时 Capability 数据已被 Forge 自动复制，这里清空新实体的数据，确保适应记忆随死亡重置。
      */
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {

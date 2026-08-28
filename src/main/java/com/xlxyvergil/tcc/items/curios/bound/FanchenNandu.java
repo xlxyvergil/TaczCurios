@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  * 浮生系列·神之键线（tcc_tdk）：凡尘难渡。
- * <p>
  * 近战攻击 15% 概率使目标停止 AI（定身）5 秒。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

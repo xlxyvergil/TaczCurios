@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 /**
- * 崩坏结晶合成配方的序列化器 — 配方无固定参数，所有逻辑在 {@link CollapseCrystalCraftRecipe} 中动态判断。
+ * 崩坏结晶合成配方的序列化器；配方无固定参数，逻辑由配方类动态判断。
  */
 public class CollapseCrystalCraftRecipeSerializer implements RecipeSerializer<CollapseCrystalCraftRecipe> {
 

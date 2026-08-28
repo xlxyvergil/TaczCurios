@@ -18,12 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 抵近射击Prime饰品 - 提供165%霰弹枪伤害加成
- * 效果：为玩家提供165%的霰弹枪伤害加成
+ * 抵近射击Prime：霰弹枪伤害+165%
  */
 public class CloseCombatPrime extends TccCurioItem {
     
-    // 霰弹枪伤害属性的UUID和配置
     private static final UUID SHOTGUN_DAMAGE_UUID = UUID.fromString("fa19535c-5dcb-4c3c-833f-53ea1c9bc5b0");
     private static final String SHOTGUN_DAMAGE_NAME = "tcc.close_combat_prime.shotgun_damage";
     
@@ -31,10 +29,6 @@ public class CloseCombatPrime extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用霰弹枪伤害加成
-     * 给生物添加霰弹枪伤害加成（加法）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -43,37 +37,24 @@ public class CloseCombatPrime extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除霰弹枪伤害加成
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, SHOTGUN_DAMAGE_UUID);
     }
     
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeCombatPrimeShotgunDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.close_combat_prime.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.WHITE));
-        
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
 
     @Override

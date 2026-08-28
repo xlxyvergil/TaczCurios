@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 关键延迟 - 枪械通用饰品
- * 效果：暴击几率+200%，射速-20%
+ * 关键延迟：暴击几率+200%，射速-20%
  */
 public class CriticalDelay extends TccCurioItem {
 

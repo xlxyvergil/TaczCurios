@@ -10,15 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 枪杀数据 Capability。
- * 用于在 EntityHurtByGunEvent.Pre 和 LivingDeathEvent 之间传递枪械击杀信息，
- * 替代 {@code getPersistentData()} NBT 方案，以兼容 RevelationFix 等
- * 重写 {@code getPersistentData()} 返回空 NBT 的模组（如 Apollyon）。
- *
- * <pre>
- * 写入：EntityHurtByGunEvent.Pre → GunKillDataCapability.setGunData(hurt, player, gunId)
- * 读取：LivingDeathEvent         → GunKillDataCapability.getGunData(killed)
- * </pre>
+ * 枪杀数据 Capability，在枪械伤害事件与死亡事件之间传递击杀信息。替代 getPersistentData() NBT 方案，
+ * 以兼容重写该方法返回空 NBT 的模组（如 RevelationFix、Apollyon）。
  */
 public final class GunKillDataCapability {
 
@@ -26,7 +19,7 @@ public final class GunKillDataCapability {
 
     private GunKillDataCapability() {}
 
-    // ==================== 数据容器 ====================
+    // 数据容器
 
     /**
      * 单个实体的枪杀数据。数据在写入后保持一段时间，供死亡事件读取。
@@ -95,7 +88,7 @@ public final class GunKillDataCapability {
         }
     }
 
-    // ==================== Handler ====================
+    // Handler
 
     public static class Handler {
         private final GunKillData data = new GunKillData();
@@ -115,7 +108,7 @@ public final class GunKillDataCapability {
         }
     }
 
-    // ==================== Forge Capability 注册 ====================
+    // Forge Capability 注册
 
     public static final Capability<Handler> CAPABILITY =
         CapabilityManager.get(new CapabilityToken<>() {});
@@ -142,23 +135,20 @@ public final class GunKillDataCapability {
         }
     }
 
-    // ==================== 便捷静态方法 ====================
+    // 便捷静态方法
 
-    /** 写入枪械伤害数据 */
     public static void setGunData(LivingEntity target, String attackerUuid, String gunIdStr,
                                    long gameTime, String victimUuid) {
         target.getCapability(CAPABILITY).ifPresent(h ->
             h.data().setGunData(attackerUuid, gunIdStr, gameTime, victimUuid));
     }
 
-    /** 写入爆头数据 */
     public static void setHeadshotData(LivingEntity target, String attackerUuid,
                                         long gameTime, String gunIdStr) {
         target.getCapability(CAPABILITY).ifPresent(h ->
             h.data().setHeadshotData(attackerUuid, gameTime, gunIdStr));
     }
 
-    /** 读取枪杀数据（返回复制的数据，避免外部修改） */
     @Nullable
     public static GunKillData getData(LivingEntity target) {
         var opt = target.getCapability(CAPABILITY);
@@ -169,7 +159,6 @@ public final class GunKillDataCapability {
         return null;
     }
 
-    /** 清空数据 */
     public static void clearData(LivingEntity target) {
         target.getCapability(CAPABILITY).ifPresent(h -> h.data().clear());
     }

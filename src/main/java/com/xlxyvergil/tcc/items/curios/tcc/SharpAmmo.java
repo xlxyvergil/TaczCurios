@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -16,8 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 尖锐子弹 - 手枪饰品（击杀触发Buff期间）
- * 基础：暴击伤害75%，击杀→Buff期间暴击伤害提升Xs，不叠加
+ * 尖锐子弹：基础暴击伤害+75%，击杀触发Buff期间提升暴击伤害（不叠加）
  */
 public class SharpAmmo extends TccCurioItem {
 

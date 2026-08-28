@@ -16,17 +16,8 @@ import net.minecraftforge.fml.LogicalSide;
 
 
 /**
- * 统一的枪杀判定处理器。
- *
- * 架构说明：
- * - {@link #onGunHurtPre} 监听 {@link EntityHurtByGunEvent.Pre}，将枪伤信息
- *   (attacker UUID / gunId / tick / victim UUID) 写入 GunKillDataCapability。
- * - {@link #onLivingDeath} 监听 {@link LivingDeathEvent}，对所有实体统一判定：
- *     1. 死亡源校验：只接受 tacz:bullets（枪械直伤）或 tcc:imaginary_damage（虚数伤害）；
- *     2. GunKillDataCapability 校验：确认死亡前曾被枪械伤害，且 victim 一致；
- *     3. 时间窗口（40 tick）：枪伤与死亡的时间差。
- * - 使用 Capability 而非 NBT，以兼容 {@code getPersistentData()} 被重写返回空 NBT 的实体
- *   （如 RevelationFix 的 Apollyon）。
+ * 统一的枪杀判定处理器（fallback）：onGunHurtPre 将枪伤信息写入 GunKillDataCapability，onLivingDeath 统一校验
+ * （死亡源限定 tacz:bullets/tcc:imaginary_damage、victim 一致、40 tick 时间窗）。用 Capability 兼容 getPersistentData() 返回空 NBT 的实体。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillDebugFallbackHandler {
@@ -77,18 +68,18 @@ public final class GunKillDebugFallbackHandler {
         }
         LivingEntity killed = event.getEntity();
 
-        // ① 检查 Capability 中的枪伤记录（由 onGunHurtPre 写入）
+        //  检查 Capability 中的枪伤记录（由 onGunHurtPre 写入）
         GunKillDataCapability.GunKillData data = GunKillDataCapability.getData(killed);
         if (data == null) {
             return;
         }
 
-        // ② victim 一致性校验
+        //  victim 一致性校验
         if (!killed.getStringUUID().equals(data.victim)) {
             return;
         }
 
-        // ③ 死亡源校验：击杀者必须是 Capability 中记录的枪伤来源玩家
+        //  死亡源校验：击杀者必须是 Capability 中记录的枪伤来源玩家
         String attackerUuid = data.attacker;
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
@@ -99,13 +90,13 @@ public final class GunKillDebugFallbackHandler {
             return;
         }
 
-        // ④ 时间窗口校验
+        // 时间窗口校验
         long now = level.getGameTime();
         if (now - data.tick > DEATH_WINDOW_TICKS) {
             return;
         }
 
-        // ⑤ 解析 gunId
+        //  解析 gunId
         ResourceLocation gunId = null;
         if (!data.gunId.isBlank()) {
             try {

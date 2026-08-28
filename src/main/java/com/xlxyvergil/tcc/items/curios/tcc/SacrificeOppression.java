@@ -4,8 +4,6 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -22,9 +20,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 牺牲压迫点 - 近战饰品
- * 效果：近战伤害+110%
- * 套装：同时装备牺牲斩铁时，额外+25%
+ * 牺牲压迫点 - 近战饰品：近战伤害+110%
+ * 套装：同时装备牺牲斩铁时额外+25%
  */
 public class SacrificeOppression extends TccCurioItem {
 
@@ -38,9 +35,6 @@ public class SacrificeOppression extends TccCurioItem {
         super(properties);
     }
 
-    /**
-     * 检测是否同时装备了牺牲斩铁（Curios API）
-     */
     private static boolean hasSacrificeSteel(LivingEntity entity) {
         return CuriosApi.getCuriosInventory(entity).resolve()
             .map(inv -> inv.findFirstCurio(TccItems.SACRIFICE_STEEL).isPresent())
@@ -81,7 +75,6 @@ public class SacrificeOppression extends TccCurioItem {
                 String.format("%+.0f", meleeDamageBoost))
             .withStyle(ChatFormatting.WHITE));
 
-        // 套装提示
         double setBonusPct = (FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get()) - 1.0) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.set_bonus",
                 String.format("%+.0f", setBonusPct))

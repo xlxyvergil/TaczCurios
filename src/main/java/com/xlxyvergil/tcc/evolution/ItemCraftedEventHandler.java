@@ -10,15 +10,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Listens for {@link PlayerEvent.ItemCraftedEvent} and increments a custom stat
- * ({@link TccStats#ITEMS_CRAFTED}) by 1 for each crafting operation.
- * <p>
- * This replaces the vanilla {@code minecraft:interact_with_crafting_table} stat,
- * which only counts opening the crafting table GUI rather than actual crafting.
- * One event firing = one craft operation, regardless of the output stack size.
- * <p>
- * Note: Refined Storage's shift-click batch crafting fires this event only once
- * for the entire batch, so batch crafts from RS may be undercounted.
+ * 监听 ItemCraftedEvent，每次合成操作使自定义统计 ITEMS_CRAFTED +1。
+ * 替代原版 minecraft:interact_with_crafting_table（只统计打开合成台界面而非实际合成）。
+ * 注意：Refined Storage 的 shift 批量合成只触发一次该事件，可能被低估。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ItemCraftedEventHandler {

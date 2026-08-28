@@ -14,7 +14,7 @@ public class HydraulicCrosshairEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF9944);
         double baseValue = TaczCuriosConfig.COMMON.hydraulicCrosshairBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            "c1d2e3f4-6004-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "f32f9e0d-9078-4da4-985b-c3ac3636b349", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

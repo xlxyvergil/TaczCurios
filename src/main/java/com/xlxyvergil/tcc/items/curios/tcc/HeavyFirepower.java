@@ -18,16 +18,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 重装火力 - 提升165%手枪伤害，提5%不精准度
- * 效果：提65%手枪伤害（加算），提5%不精准度（加算）
+ * 重装火力：提升手枪伤害（加算），提升不精准度（加算）
  */
 public class HeavyFirepower extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("401a1d7b-9724-4602-a956-ff32a991648f");
     private static final UUID INACCURACY_UUID = UUID.fromString("5c03b799-4491-4c9c-ab68-7678a42a9b4a");
     
-    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.heavy_firepower.damage";
     private static final String INACCURACY_NAME = "tcc.heavy_firepower.inaccuracy";
     
@@ -35,26 +32,19 @@ public class HeavyFirepower extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用重装火力效果
-     * 提升手枪伤害（加算）和不精准度（乘算     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get());
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get());
         
-        // 直接应用手枪伤害加成，无需检查是否手持手
+        // 手枪伤害加成无需检查武器限制，直接应用
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
         
-        // 应用不精准度提升（加算）
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.INACCURACY, inaccuracyBoost, INACCURACY_UUID, INACCURACY_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
     
-    /**
-     * 移除重装火力效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, DAMAGE_UUID);
@@ -67,28 +57,19 @@ public class HeavyFirepower extends TccCurioItem {
         return java.util.List.of("pistol");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get() ) * 100;
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.heavy_firepower.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 }

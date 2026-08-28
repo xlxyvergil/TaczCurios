@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层斩铁 - 近战饰品（击杀触发Buff，可叠加）
- * 基础：暴击几率+110%，击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
+ * 镀层斩铁：基础暴击几率+110%
+ * 击杀→Buff暴击伤害+30%/层（20s，可叠加4层）
  */
 public class GildedSteelSlash extends TccCurioItem {
 

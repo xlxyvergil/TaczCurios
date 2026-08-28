@@ -24,16 +24,9 @@ import java.util.List;
 
 /**
  * 客户端专用：在饰品 tooltip 中显示玩家当前的成就进度。
- * <p>
  * 第一行显示 "进度：" 标题，后续每行显示一个条件的进度：
- * <ul>
- *   <li>stat → "stat名称: current/threshold"</li>
- *   <li>kills → "entity名称: step/value"（单条件）或 "击杀: step/criteriaCount"（多条件）</li>
- *   <li>biome → "群系: name" 或 "群系: ???"</li>
- * </ul>
- * <p>
- * 数据从 {@link TccPlayerDataCapability} 读取，该 Capability 由服务端通过
- * {@link com.xlxyvergil.tcc.network.SyncProgressS2CPacket} 同步至客户端。
+ * stat → "stat名称: current/threshold"、kills → "entity名称: step/value"、
+ * biome → "群系: name"。数据从 TccPlayerDataCapability 读取，由服务端同步至客户端。
  */
 @OnlyIn(Dist.CLIENT)
 public final class AchievementProgressRenderer {
@@ -53,12 +46,10 @@ public final class AchievementProgressRenderer {
 
     /**
      * 显示当前饰品的下一级进化条件提示与内容。
-     * <p>
      * 依据 achievement_definitions.json 中 reward 的 item/to 字段判断进化关系：
-     * 找到 {@code reward.type == "evolve"} 且 {@code reward.item}（或 linkedEvolves.item）
-     * 等于当前物品的成就。未按 Shift 时显示「按住Shift显示进化条件」提示，
+     * 找到 reward.type == "evolve" 且 reward.item（或 linkedEvolves.item）
+     * 等于当前物品的成就。未按 Shift 时提示「按住Shift显示进化条件」，
      * 按住 Shift 时直接显示其 display.description 文本。
-     * 例如佩戴「格蕾修」按 Shift，会显示「佩戴千界一乘，钓鱼达到200条」。
      */
     public static void appendNextEvolutionCondition(ItemStack stack, List<Component> tooltip) {
         try {
@@ -174,7 +165,6 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // kills 条件
         if (conds.kills() != null && !conds.kills().isEmpty()) {
             hasDisplayable = true;
 
@@ -304,8 +294,7 @@ public final class AchievementProgressRenderer {
 
     /**
      * 解析 stat 的本地化名称（stat.minecraft.damage_dealt → "伤害造成"）。
-     * 与 Minecraft {@link net.minecraft.stats.Stat#getDisplayName()} 一致，
-     * 将 ResourceLocation 中的 {@code ':'} 替换为 {@code '.'} 构造翻译键。
+     * 与 Minecraft Stat.getDisplayName() 一致，把 ResourceLocation 中的 ':' 替换为 '.' 构造翻译键。
      */
     private static String resolveStatName(String statId) {
         String key = "stat." + statId.replace(':', '.');

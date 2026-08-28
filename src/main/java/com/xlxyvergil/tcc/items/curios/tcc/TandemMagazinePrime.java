@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,15 +17,12 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 串联弹匣Prime - 提升弹匣容量
- * 效果：提升弹匣容量，仅对手枪生效
+ * 串联弹匣Prime：提升弹匣容量（仅手枪）
  */
 public class TandemMagazinePrime extends TccCurioItem {
 
-    // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID MAGAZINE_UUID = UUID.fromString("6f7eb1f1-c846-47cc-bbc7-73813bb57e30");
 
-    // 修饰符名
     private static final String MAGAZINE_NAME = "tcc.tandem_magazine_prime.magazine_capacity";
 
     public TandemMagazinePrime(Properties properties) {
@@ -52,26 +47,17 @@ public class TandemMagazinePrime extends TccCurioItem {
         return java.util.List.of("pistol");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.tandemMagazinePrimeCapacityBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.tandem_magazine_prime.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.WHITE));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
 

@@ -14,7 +14,7 @@ public class GildedHydraulicCrosshairEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFFBB66);
         double perLevelValue = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            "c1d2e3f4-6005-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "2a51f151-cd51-4617-8192-af104611e7aa", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
 }

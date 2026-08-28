@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 手枪精通 - 手枪饰品
- * 效果：暴击几率+120%
+ * 手枪精通：暴击几率+120%
  */
 public class PistolMastery extends TccCurioItem {
 

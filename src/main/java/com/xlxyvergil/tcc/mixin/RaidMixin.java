@@ -16,11 +16,9 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 监听袭击胜利事件：在 {@code Raid.status} 被写入为 VICTORY 后，遍历
- * {@code heroesOfTheVillage}（原版自己维护的"完成袭击的英雄"集合）逐人派发
- * {@link RaidVictoryEventHandler#handleRaidVictory(ServerPlayer)}。
- *
- * 注入点与同版本已验证的 Mod 一致，仅通过 {@code isVictory()} 进行守卫。
+ * 监听袭击胜利事件：在 Raid.status 被写入为 VICTORY 后，遍历 heroesOfTheVillage
+ * （原版维护的"完成袭击的英雄"集合）逐人派发 RaidVictoryEventHandler.handleRaidVictory。
+ * 注入点与同版本已验证的 Mod 一致，仅通过 isVictory() 进行守卫。
  */
 @Mixin(Raid.class)
 public abstract class RaidMixin {

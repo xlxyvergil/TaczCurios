@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -21,17 +20,14 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 卑劣加速 - 提升射击速度，但降低通用伤害和全7种特定枪械伤害
- * 效果：射击速度+X%，通用伤害-Y%，特定枪械伤害Y%
+ * 卑劣加速：提升射击速度，但降低通用伤害和7种特定枪械伤害
  */
 public class DespicableAcceleration extends TccCurioItem {
     
-    // 7种特定枪械伤害属性的UUID和配置
     private static final Map<String, UUID> DAMAGE_UUIDS = new HashMap<>();
     private static final Map<String, String> DAMAGE_NAMES = new HashMap<>();
     
     static {
-        // 初始化7种特定枪械的UUID和名称
         DAMAGE_UUIDS.put("pistol", UUID.fromString("ca7ca83d-5439-4fde-a7bf-236d257d5430"));
         DAMAGE_UUIDS.put("rifle", UUID.fromString("7821adde-57d1-42e8-a873-91612b86c24b"));
         DAMAGE_UUIDS.put("shotgun", UUID.fromString("bc3c2aee-ea60-4c98-8f2b-7f7d89523ccc"));
@@ -49,11 +45,9 @@ public class DespicableAcceleration extends TccCurioItem {
         DAMAGE_NAMES.put("launcher", "tcc.despicable_acceleration.launcher_damage");
     }
     
-    // 射击速度和通用伤害的属性修饰符
     private static final UUID FIRING_SPEED_UUID = UUID.fromString("46acf410-597b-4388-a0c2-9f39f5934831");
     private static final UUID GENERAL_DAMAGE_UUID = UUID.fromString("adfdea37-0701-41c8-b042-59f7453b0cde");
     
-    // 修饰符名称
     private static final String FIRING_SPEED_NAME = "tcc.despicable_acceleration.firing_speed";
     private static final String GENERAL_DAMAGE_NAME = "tcc.despicable_acceleration.general_damage";
     
@@ -61,10 +55,6 @@ public class DespicableAcceleration extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用加速效果
-     * 提升射击速度，降低通用伤害和7种特定枪械伤害
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -74,7 +64,6 @@ public class DespicableAcceleration extends TccCurioItem {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, firingSpeedBoost, FIRING_SPEED_UUID, FIRING_SPEED_NAME, AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageReduction, GENERAL_DAMAGE_UUID, GENERAL_DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
             
-            // 应用7种特定枪械伤害降低
             for (String gunType : DAMAGE_UUIDS.keySet()) {
                 var attribute = getAttributeByType(gunType);
                 if (attribute != null) {
@@ -84,15 +73,11 @@ public class DespicableAcceleration extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除加速效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, FIRING_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GENERAL_DAMAGE_UUID);
         
-        // 移除7种特定枪械伤害降低
         for (String gunType : DAMAGE_UUIDS.keySet()) {
             var attribute = getAttributeByType(gunType);
             if (attribute != null) {
@@ -107,9 +92,6 @@ public class DespicableAcceleration extends TccCurioItem {
     }
     
 
-    /**
-     * 根据枪械类型获取对应的属性
-     */
     private net.minecraft.world.entity.ai.attributes.Attribute getAttributeByType(String gunType) {
         return switch (gunType) {
             case "pistol" -> AttributeHelper.BULLET_GUNDAMAGE_PISTOL;
@@ -124,28 +106,19 @@ public class DespicableAcceleration extends TccCurioItem {
     }
     
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         
-
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
         
-        // 添加装备效果
         double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() ) * 100;
         double damageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
                 String.format("%+.0f", firingSpeedBoost), String.format("%+.0f", damageReduction))
             .withStyle(ChatFormatting.GOLD));
         
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
         
     }
     

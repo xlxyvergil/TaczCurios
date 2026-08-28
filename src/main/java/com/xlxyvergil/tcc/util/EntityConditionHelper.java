@@ -19,21 +19,15 @@ public final class EntityConditionHelper {
 
     /**
      * 判断实体是否匹配指定的实体键。
-     * <ul>
-     *   <li>{@code "*"} —— 匹配任意实体</li>
-     *   <li>{@code "#<MobType>"} —— 匹配原版 MobType（如 {@code #minecraft:undead}、{@code #undead}、{@code #arthropod}），
-     *       用 {@code getMobType()} 判定，与原版亡灵杀手等附魔语义一致，不依赖会被数据包覆盖的实体类型标签</li>
-     *   <li>{@code "#namespace:tag"} —— 其它值匹配实体类型 tag（如 {@code #minecraft:skeletons}），只要该实体类型属于该 tag 即返回 true</li>
-     *   <li>其它值 —— 精确匹配实体类型 ID（如 {@code minecraft:zombie}）</li>
-     * </ul>
+     * "*" 匹配任意实体；"#<MobType>" 用 getMobType() 判定原版 MobType（与原版亡灵杀手等附魔语义一致）；
+     * "#namespace:tag" 匹配实体类型 tag；其它值精确匹配实体类型 ID。
      */
     public static boolean matchesEntityKey(String entityKey, Entity entity) {
         if (entityKey == null || entityKey.isEmpty() || entity == null) return false;
         if ("*".equals(entityKey)) return true;
         if (entityKey.startsWith("#")) {
             String tagStr = entityKey.substring(1);
-            // 仅支持原版 MobType（如 #minecraft:undead / #undead），用 getMobType() 硬编码判定，
-            // 与原版「亡灵杀手」等附魔语义一致，且不依赖会被数据包覆盖的实体类型标签。
+            // 仅支持原版 MobType，用 getMobType() 硬编码判定，与原版「亡灵杀手」等附魔语义一致。
             MobType mobType = parseMobType(tagStr);
             if (mobType != null) {
                 return entity instanceof LivingEntity le && le.getMobType() == mobType;
@@ -50,8 +44,8 @@ public final class EntityConditionHelper {
 
     /**
      * 将字符串解析为原版 MobType（硬编码的实体分类），大小写不敏感。
-     * <p>支持 {@code undead}、{@code UNDEAD}、{@code minecraft:undead} 等形式，以及 arthropod/illager/water/undefined。
-     * 不认识的名称返回 {@code null}，交由调用方按实体类型 tag 处理。</p>
+     * 支持 undead、UNDEAD、minecraft:undead 等形式，以及 arthropod/illager/water/undefined。
+     * 不认识的名称返回 null，交由调用方按实体类型 tag 处理。
      */
     @Nullable
     private static MobType parseMobType(String name) {

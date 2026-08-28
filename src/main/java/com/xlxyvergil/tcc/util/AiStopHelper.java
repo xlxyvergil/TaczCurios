@@ -4,8 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 /**
  * AI 停止（定身）工具 - 浮生神之键线。
- * <p>
- * 通过实体 persistentData 写入停止截止时间，由 {@code AiStopHandler} 每 tick 执行定身。
+ * 通过实体 persistentData 写入停止截止时间，由 AiStopHandler 每 tick 执行定身。
  * 目标死亡/卸载后 NBT 自动清空，效果不跨生命周期。
  */
 public final class AiStopHelper {

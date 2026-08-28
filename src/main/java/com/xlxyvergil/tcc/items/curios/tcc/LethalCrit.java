@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 致命一击 - 步枪类饰品（步枪/狙击枪/冲锋枪/机枪/重型武器）
- * 效果：暴击几率+150%
+ * 致命一击：暴击几率+150%
  */
 public class LethalCrit extends TccCurioItem {
 

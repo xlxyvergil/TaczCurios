@@ -20,9 +20,6 @@ public final class ImaginaryInfectionHelper {
 
     /**
      * 根据攻击者装备的饰品，确定虚数侵染的最大等级和是否可施加崩解。
-     *
-     * @param attacker 攻击者
-     * @return 侵染配置信息
      */
     public static InfectionInfo resolve(LivingEntity attacker) {
         if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {

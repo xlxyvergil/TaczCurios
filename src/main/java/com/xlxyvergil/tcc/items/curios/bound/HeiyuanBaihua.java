@@ -28,9 +28,7 @@ import java.util.List;
 
 /**
  * 神之键·黑渊白花「创灭螺旋」- 最终阶段（tcc_tdk 槽，裂隙级）。
- * <p>
- * 无武器限制：每次造成伤害时，附加等同于佩戴者当前血量 100% 的虚数伤害
- * （applyImaginaryDamage 直伤，绕过护甲/无敌帧）。
+ * 无武器限制：每次造成伤害时，附加等同于佩戴者当前血量 100% 的虚数伤害（绕过护甲/无敌帧）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeiyuanBaihua extends BoundCurioItem {
@@ -70,10 +68,8 @@ public class HeiyuanBaihua extends BoundCurioItem {
     }
 
     /**
-     * 每次佩戴者造成伤害时（LivingHurtEvent，覆盖近战/枪械/爆炸等），
-     * 附加等同于佩戴者当前血量 100% 的虚数伤害。
-     * <p>
-     * applyImaginaryDamage 走 setHealth 直伤，不触发 LivingHurtEvent，因此不会递归。
+     * 佩戴者每次造成伤害时（覆盖近战/枪械/爆炸等），附加等同于当前血量 100% 的虚数伤害。
+     * applyImaginaryDamage 走 setHealth 直伤，不触发本事件，因此不会递归。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {

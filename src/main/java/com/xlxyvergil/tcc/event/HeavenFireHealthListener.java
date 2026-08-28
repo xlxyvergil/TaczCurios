@@ -10,8 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 天火系列饰品血量变化监听器
- * 仅负责监听血量变化事件，具体逻辑由饰品类自行处理
+ * 天火系列饰品血量变化监听器：仅监听血量变化事件，具体逻辑由饰品类自行处理。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireHealthListener {

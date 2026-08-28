@@ -14,7 +14,7 @@ public class GildedSplitChamberEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
         double perLevelValue = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get();
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
-            "c1d2e3f4-6201-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "0f372759-929e-4699-b253-dc73336e8a01", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
 }

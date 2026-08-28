@@ -10,11 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 /**
  * 自定义 RenderType：结界地面特效平铺贴图用（纯客户端类）。
- * <p>
- * 与 entityTranslucent 同款（POSITION_COLOR_TEX_LIGHTMAP + 实体半透明 shader），
- * 但将 CullFace 改为 NO_CULL（避免俯视平面被背面剔除），
- * 并将 DepthTest 改为 GL_ALWAYS（强制通过深度测试，避免贴地 quad 被地面深度遮挡）。
- * 状态写入 RenderType 而非全局 GL，不污染渲染管线。
+ * 基于 entityTranslucent，但将 CullFace 改为 NO_CULL（避免俯视平面被背面剔除），
+ * DepthTest 改为 GL_ALWAYS（避免贴地 quad 被地面深度遮挡），状态写入 RenderType 而不污染全局 GL。
  */
 @OnlyIn(Dist.CLIENT)
 public class TccRenderTypes extends RenderType {

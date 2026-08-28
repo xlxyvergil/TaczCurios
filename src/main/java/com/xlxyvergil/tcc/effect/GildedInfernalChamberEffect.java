@@ -14,7 +14,7 @@ public class GildedInfernalChamberEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
         double perLevelValue = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get();
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
-            "c1d2e3f4-6202-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "d64182ae-c6b7-43b3-a451-f6844b197823", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
 }

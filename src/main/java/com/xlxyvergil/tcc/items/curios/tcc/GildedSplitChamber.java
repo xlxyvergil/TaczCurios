@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 镀层分裂膛室 - 步枪饰品（击杀触发Buff，可叠加）
- * 基础：弹头数量+80%，击杀→Buff额外+30%弹头数量持续10s，可叠加5层）
+ * 镀层分裂膛室 - 步枪饰品：击杀触发Buff，可叠加
+ * 基础弹头数量+80%，击杀额外+30%持续10s，最多5层
  */
 public class GildedSplitChamber extends TccCurioItem {
 

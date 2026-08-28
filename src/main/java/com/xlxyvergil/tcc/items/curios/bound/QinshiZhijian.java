@@ -30,7 +30,6 @@ import java.util.UUID;
 
 /**
  * 旭光系列·神之键线（tcc_tdk）：侵蚀之键。
- * <p>
  * 攻击必定持久削减目标当前护甲 / 韧性 10%（改 data，不恢复）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

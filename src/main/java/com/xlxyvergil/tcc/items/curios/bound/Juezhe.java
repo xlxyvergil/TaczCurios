@@ -105,7 +105,6 @@ public class Juezhe extends BoundCurioItem {
 
         appendImaginaryResistance(stack, tooltip);
         double maxHealthReduction = TaczCuriosConfig.COMMON.juezheMaxHealthReduction.get() * 100;
-        // 显示降低比例：配置值 × 100
         double damageTakenFactor = TaczCuriosConfig.COMMON.juezheDamageTakenFactor.get() * 100;
 
         tooltip.add(Component.literal(""));

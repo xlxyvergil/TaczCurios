@@ -7,7 +7,6 @@ import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
@@ -173,8 +172,6 @@ public class ShijieFanyan extends BoundCurioItem {
                     + (actualLuck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get()) * 100;
             }
         }
-        String sfCritChanceStr = String.format("%.0f%%", critChance * 100);
-        String sfCritDamageStr = String.format("%.0f%%", critDamage * 100);
         String sfCollapseStr = String.format("%.1f", collapseChance);
         tooltip.add(formatModifierTooltip(luck, "%.0f", Component.translatable(AttributeHelper.LUCK.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));

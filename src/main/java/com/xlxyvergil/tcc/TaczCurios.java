@@ -41,11 +41,9 @@ public class TaczCurios
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // 注册commonSetup方法用于模组加载
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::intermodStuff);
 
-        // 注册 Capability
         modEventBus.addListener((RegisterCapabilitiesEvent e) -> {
             e.register(CurioAdaptationCapability.Handler.class);
             e.register(GunKillDataCapability.Handler.class);
@@ -53,7 +51,6 @@ public class TaczCurios
         });
 
         // 在 RegisterEvent<BLOCK> 时统一注册方块、物品、POI 类型和村民职业
-        // 一个事件处理所有注册
         modEventBus.addListener((RegisterEvent event) -> {
             if (!event.getRegistryKey().equals(Registries.BLOCK)) {
                 return;
@@ -64,7 +61,6 @@ public class TaczCurios
             TccVillagers.init();
         });
 
-        // 注册 Deferred Register
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
@@ -79,8 +75,7 @@ public class TaczCurios
             }
         });
         // 注册玩家死亡复活/维度切换事件（复制 Capability + 延迟同步到客户端）
-        // PlayerEvent.Clone 在死亡复活 (isWasDeath=true) 和维度切换 (isWasDeath=false) 时都会触发，
-        // 两种情况下都需要复制 Capability 数据并同步客户端
+        // PlayerEvent.Clone 在死亡复活与维度切换时都会触发，两种情况下都需复制数据并同步客户端
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.Clone event) -> {
             Player original = event.getOriginal();
             Player entity = event.getEntity();
@@ -97,13 +92,10 @@ public class TaczCurios
                     NetworkHandler.syncAllForPlayer(sp));
             }
         });
-        // 注册天火流血结算事件处理器
         MinecraftForge.EVENT_BUS.register(new HeavenFireSettlementHandler());
         
-        // 注册配置文件
         TaczCuriosConfig.registerConfigs();
         
-        // 安全地注册客户端事件处理器
         registerClientEventsSafely();
         
     }
@@ -116,11 +108,9 @@ public class TaczCurios
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
 
-            // 注册所有自定义统计
             TccStats.register();
         });
 
-        // 注册网络通道
         NetworkHandler.init();
     }
 
@@ -143,7 +133,6 @@ public class TaczCurios
     }
     
     private void registerClientEventsSafely() throws ClassNotFoundException {
-        // 仅在客户端环境中注册客户端事件处理器
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
             Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLevelRenderer");

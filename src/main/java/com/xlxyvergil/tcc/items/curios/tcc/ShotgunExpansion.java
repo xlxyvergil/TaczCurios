@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -19,8 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 霰弹扩充 - 提升弹匣容量
- * 效果：提升弹匣容量，仅对霰弹枪生效 */
+ * 霰弹扩充：提升弹匣容量，仅对霰弹枪生效
+ */
 public class ShotgunExpansion extends TccCurioItem {
 
     // 属性修饰符UUID - 用于唯一标识这些修饰
@@ -51,26 +49,17 @@ public class ShotgunExpansion extends TccCurioItem {
         return java.util.List.of("shotgun");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.shotgunExpansionCapacityBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.shotgun_expansion.effect", String.format("%+.0f", magazineBoost))
             .withStyle(ChatFormatting.BLUE));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
 

@@ -11,11 +11,8 @@ import net.minecraftforge.fml.common.Mod;
 
 /**
  * AI 停止（定身）执行器 - 浮生神之键线。
- * <p>
- * 每 tick 检查实体 persistentData 中的 {@link AiStopHelper#AI_STOP_UNTIL_KEY}，
- * 未到截止时间则对 {@link Mob} 调用 {@code setNoAi(true)} 暂停其 goalSelector
- * （停止寻路/追击/攻击/施法等 AI），并在每 tick 清空速度，达到「真·停止 AI」效果。
- * 定身结束时依据之前记录的原始 NoAI 状态恢复，避免误开普通生物原本关闭的 AI。
+ * 每 tick 检查 persistentData 中的截止时间，未到则对 Mob 停用寻路/追击/攻击等并清空速度；
+ * 定身结束时按记录的原始 NoAI 状态恢复，避免误开普通生物原本关闭的 AI。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class AiStopHandler {

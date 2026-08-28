@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 破灭Prime - 霰弹枪饰品
- * 效果：暴击伤害+110%
+ * 破灭Prime：增加暴击伤害（+110%）
  */
 public class DestructionPrime extends TccCurioItem {
 

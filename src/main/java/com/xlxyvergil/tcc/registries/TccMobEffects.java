@@ -72,7 +72,7 @@ public class TccMobEffects {
             "heaven_fire_apocalypse_delay",
             HeavenFireApocalypseDelayEffect::new);
 
-    // ========== Phase 3: 新增Buff效果 ==========
+    // Phase 3: 新增Buff效果
 
     public static final RegistryObject<MobEffect> ARGON_SCOPE = MOB_EFFECTS.register(
             "argon_scope",
@@ -122,7 +122,7 @@ public class TccMobEffects {
             "gilded_bullet_spread",
             GildedBulletSpreadEffect::new);
 
-    // ========== Phase 3.5: 镀层饰品爆头击杀Buff（叠层） ==========
+    // Phase 3.5: 镀层饰品爆头击杀Buff（叠层）
 
     public static final RegistryObject<MobEffect> GILDED_ARGON_SCOPE_KILL = MOB_EFFECTS.register(
             "gilded_argon_scope_kill",
@@ -132,7 +132,7 @@ public class TccMobEffects {
             "gilded_hydraulic_crosshair_kill",
             GildedHydraulicCrosshairKillEffect::new);
 
-    // ========== 新系列：戒律/黄金/旭光/无限/浮生/空梦 ==========
+    // 新系列：戒律/黄金/旭光/无限/浮生/空梦
 
     /**
      * 逐火之蛾「真我」结界标记 - 中性纯标记效果，驱动客户端地面特效渲染

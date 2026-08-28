@@ -18,29 +18,26 @@ import net.minecraft.stats.Stats;
 import java.util.Optional;
 
 /**
- * Matches achievement conditions against in-game events.
- * Used by all trigger handlers to check if a player meets
- * the requirements for advancing an achievement's progress.
+ * 将成就条件与游戏内事件进行匹配，供各触发器处理器判断玩家是否满足成就进度条件。
  */
 public final class AchievementConditionMatcher {
     private AchievementConditionMatcher() {}
 
     /**
-     * Check if ALL conditions for an achievement are met for a kill event.
+     * 检查给定击杀事件是否满足成就的全部条件。
      */
     public static boolean matchesKillConditions(Player player, LivingEntity killed,
                                                  ResourceLocation gunId, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.AchievementConditions c = def.conditions();
         if (c == null) return true;
 
-        // Check equipped curios
         if (c.equippedCurios() != null) {
             for (String curio : c.equippedCurios()) {
                 if (!LivingDeathEventHandler.hasEquipped(player, curio)) return false;
             }
         }
 
-        // Check required effects（实时检测玩家身上的 Buff）
+        // 检查玩家身上的效果（Buff）
         if (c.requiredEffects() != null) {
             for (String effectId : c.requiredEffects()) {
                 ResourceLocation effectRl = ResourceLocation.tryParse(effectId);
@@ -50,27 +47,23 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check gun type
         if (c.holdingGunTypes() != null && !c.holdingGunTypes().isEmpty()) {
             if (gunId == null) return false;
             if (!GunTypeChecker.matchesGunTypes(gunId, c.holdingGunTypes())) return false;
         }
 
-        // Check min distance
         if (c.minDistance() != null && killed != null) {
             double min = c.minDistance();
             if (player.distanceToSqr(killed) < min * min) return false;
         }
 
-        // Check kill entity type (with NBT)
         if (c.kills() != null && !c.kills().isEmpty() && killed != null) {
             if (findMatchingKillCondition(killed, c).isEmpty()) return false;
         }
 
-        // Check kill dimension（被击杀实体所在维度，按维度过滤击杀目标）
+        // 按被击杀实体所在维度过滤击杀目标
         if (!matchesKillDimension(killed, c)) return false;
 
-        // Check attributes
         if (c.attributes() != null) {
             for (AchievementDefinitions.AttributeCondition ac : c.attributes()) {
                 Attribute attr = AttributeHelper.resolveAttribute(ac.attribute());
@@ -80,10 +73,8 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check health max (player health must be <= healthMax)
         if (c.healthMax() != null && player.getHealth() > c.healthMax()) return false;
 
-        // Check min height (both player and killed entity Y > minHeight)
         if (c.minHeight() != null && killed != null) {
             double minH = c.minHeight();
             if (player.getY() < minH || killed.getY() < minH) return false;
@@ -93,14 +84,13 @@ public final class AchievementConditionMatcher {
     }
 
     /**
-     * Check conditions for a kill event (no gunId).
+     * 检查死亡事件（无 gunId）是否满足成就条件。
      */
     public static boolean matchesDeathConditions(Player player, LivingEntity killed,
                                                   Entity otherEntity, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.AchievementConditions c = def.conditions();
         if (c == null) return true;
 
-        // Check equipped curios
         if (c.equippedCurios() != null) {
             for (String curio : c.equippedCurios()) {
                 boolean has = LivingDeathEventHandler.hasEquipped(player, curio);
@@ -108,13 +98,11 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check killer entity type (who killed the player, supports #tag)
         if (c.killer() != null) {
             if (otherEntity == null) { return false; }
             if (!EntityConditionHelper.matchesEntityKey(c.killer(), otherEntity)) { return false; }
         }
 
-        // Check killed entity (what the player killed, supports #tag, for melee kills)
         if (c.kills() != null && !c.kills().isEmpty() && killed != null) {
             boolean matched = false;
             for (AchievementDefinitions.KillCondition kc : c.kills()) {
@@ -126,10 +114,9 @@ public final class AchievementConditionMatcher {
             if (!matched) { return false; }
         }
 
-        // Check kill dimension（被击杀实体所在维度，按维度过滤击杀目标）
+        // 按被击杀实体所在维度过滤击杀目标
         if (!matchesKillDimension(killed, c)) return false;
 
-        // Check extra stat thresholds (for achievements requiring multiple stat checks)
         if (c.extraStats() != null && player instanceof ServerPlayer sp2) {
             for (AchievementDefinitions.StatCondition sc : c.extraStats()) {
                 ResourceLocation key = ResourceLocation.tryParse(sc.stat());
@@ -142,7 +129,6 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check attributes
         if (c.attributes() != null) {
             for (AchievementDefinitions.AttributeCondition ac : c.attributes()) {
                 Attribute attr = AttributeHelper.resolveAttribute(ac.attribute());
@@ -152,28 +138,24 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check health max (player health must be <= healthMax)
         if (c.healthMax() != null && player.getHealth() > c.healthMax()) return false;
 
         return true;
     }
 
     /**
-     * Check conditions for a stat_polling / biome_visit event (no kill/death context).
-     * Checks equipped curios, attribute thresholds, and dimension.
+     * 检查 stat_polling / biome_visit 事件（无击杀/死亡上下文）的条件：佩戴饰品、属性阈值、维度。
      */
     public static boolean matchesStatBiomeConditions(Player player, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.AchievementConditions c = def.conditions();
         if (c == null) return true;
 
-        // Check equipped curios
         if (c.equippedCurios() != null) {
             for (String curio : c.equippedCurios()) {
                 if (!LivingDeathEventHandler.hasEquipped(player, curio)) return false;
             }
         }
 
-        // Check attributes
         if (c.attributes() != null) {
             for (AchievementDefinitions.AttributeCondition ac : c.attributes()) {
                 Attribute attr = AttributeHelper.resolveAttribute(ac.attribute());
@@ -183,7 +165,6 @@ public final class AchievementConditionMatcher {
             }
         }
 
-        // Check dimension
         if (c.dimension() != null) {
             ResourceLocation rl = ResourceLocation.tryParse(c.dimension());
             if (rl == null) return false;
@@ -219,9 +200,7 @@ public final class AchievementConditionMatcher {
     }
 
     /**
-     * 在成就的击杀条件列表中查找匹配的 {@link KillCondition}。
-     * 同时检查实体类型和 NBT 标签。
-     * @return 匹配到的 KillCondition；若未匹配则返回 {@link Optional#empty()}
+     * 在成就的击杀条件列表中查找匹配的击杀条件，同时检查实体类型和 NBT 标签。
      */
     public static Optional<AchievementDefinitions.KillCondition> findMatchingKillCondition(
             LivingEntity killed, AchievementDefinitions.AchievementConditions conditions) {

@@ -11,15 +11,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Listens for Minecraft's native AdvancementEarnEvent
- * and executes the corresponding reward (grant/evolve) from achievement_definitions.json.
- * <p>
- * This decouples reward execution from the trigger handlers:
- * handlers only award criteria; rewards fire when the advancement is naturally earned.
- * <p>
- * Also handles "auto" trigger achievements:
- * when a reward's autoAchievements list contains child achievement IDs,
- * those achievements are automatically awarded after the main reward executes.
+ * 监听 AdvancementEarnEvent，执行 achievement_definitions.json 中对应的奖励（发放/进化）。
+ * 奖励执行与触发处理器解耦：处理器只授予条件，奖励在成就自然达成时触发；
+ * reward 的 autoAchievements 列表会在主奖励执行后自动授予相应子成就。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class AchievementEventListener {
@@ -41,11 +35,9 @@ public final class AchievementEventListener {
 
         ServerPlayer player = (ServerPlayer) event.getEntity();
 
-        // Execute reward (grant/evolve)
         if (def.reward() != null) {
             AchievementRewards.execute(player, def);
 
-            // Award any auto achievements from reward
             if (def.reward().autoAchievements() != null) {
                 for (String autoId : def.reward().autoAchievements()) {
                     awardAutoAchievement(player, autoId);

@@ -30,7 +30,6 @@ import java.util.UUID;
 
 /**
  * 旭光系列·神之键线（tcc_tdk）：御魂示现。
- * <p>
  * 攻击按施加者虚数抗性百分比持久削减目标护甲 / 韧性（改 data，不恢复）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

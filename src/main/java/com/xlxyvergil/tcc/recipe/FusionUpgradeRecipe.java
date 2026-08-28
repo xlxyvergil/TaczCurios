@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.recipe;
 
-import com.google.gson.JsonObject;
 import com.xlxyvergil.tcc.items.materials.FusionVesselItem;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccRecipeSerializers;
@@ -9,7 +8,6 @@ import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -22,9 +20,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 /**
- * 饰品升级合成配方：饰品 + 融合容器 → 升级后的饰品 + 融合容器（返还）
- * <p>与普通合成配方不同，此配方依赖融合容器 NBT 中的 CoreFusion 数量，
- * 并在合成后扣除容器内 CoreFusion 并返还容器。</p>
+ * 饰品升级合成配方：饰品 + 融合容器 → 升级后的饰品 + 融合容器（返还）。
+ * 此配方依赖容器 NBT 中的 CoreFusion 数量，合成后扣除对应数量并返还容器。
  */
 public class FusionUpgradeRecipe extends CustomRecipe {
 
@@ -165,7 +162,7 @@ public class FusionUpgradeRecipe extends CustomRecipe {
         return remaining;
     }
 
-    // ========== 工具方法 ==========
+    // 工具方法
 
     /**
      * 判断物品是否为可升级的 tcc_slot 饰品。
@@ -184,13 +181,7 @@ public class FusionUpgradeRecipe extends CustomRecipe {
     }
 
     /**
-     * 计算当前容器内融合核心最多能升到多少级。
-     *
-     * @param currentLevel 饰品当前等级
-     * @param maxLevel     饰品封顶等级
-     * @param rarity       饰品稀有度
-     * @param vesselCount  容器内融合核心数量
-     * @return 能升到的最高等级（不会超过 maxLevel）
+     * 计算当前容器内融合核心最多能升到多少级（不会超过 maxLevel）。
      */
     public static int getMaxAffordableLevel(int currentLevel, int maxLevel, Rarity rarity, int vesselCount) {
         int totalCost = 0;

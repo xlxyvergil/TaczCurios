@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -22,15 +21,12 @@ import java.util.UUID;
 
 
 /**
- * 预言契约 - 提升手枪90%伤害
- * 效果：手枪伤90%（加算）
+ * 预言契约：提升手枪伤害（+90%，加算）
  */
 public class ProphecyPact extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("6edbaedf-2502-4fe0-8e2c-9054d6a9ecc1");
     
-    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.prophecy_pact.pistol_damage";
     
     public ProphecyPact(Properties properties) {
@@ -49,9 +45,6 @@ public class ProphecyPact extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, DAMAGE_UUID);
@@ -62,26 +55,18 @@ public class ProphecyPact extends TccCurioItem {
         return java.util.List.of("pistol");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.BLUE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 }

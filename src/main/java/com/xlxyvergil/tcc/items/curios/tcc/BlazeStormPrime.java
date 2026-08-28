@@ -20,8 +20,7 @@ import java.util.UUID;
 
 
 /**
- * 烈焰风暴Prime饰品
- * 效果：增加爆炸范围（乘算），增加爆炸伤害（乘算）
+ * 烈焰风暴Prime饰品：增加爆炸范围与爆炸伤害（乘算）
  */
 public class BlazeStormPrime extends TccCurioItem {
     
@@ -42,60 +41,44 @@ public class BlazeStormPrime extends TccCurioItem {
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
-            // 获取配置中的爆炸范围、爆炸伤害和爆炸启用属性
             double explosionRadiusBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get());
             double explosionDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get());
             double explosionEnabled = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionEnabled.get());
-            
-            // 应用爆炸范围加成
+
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, explosionRadiusBoost, EXPLOSION_RADIUS_UUID, EXPLOSION_RADIUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-            
-            // 应用爆炸伤害加成
+
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
-            
-            // 应用爆炸启用属性
+
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, explosionEnabled, EXPLOSION_ENABLED_UUID, EXPLOSION_ENABLED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
         }
     }
-    
-    /**
-     * 移除所有效果加成
-     */
+
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, EXPLOSION_RADIUS_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, EXPLOSION_ENABLED_UUID);
     }
-    
+
     @Override
     public java.util.List<String> getWeaponTypeRestriction() {
         return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
-    
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double explosionRadiusBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get() ) * 100;
         double explosionDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.blaze_storm_prime.effect", 
                 String.format("%+.0f", explosionRadiusBoost), String.format("%+.0f", explosionDamageBoost))
             .withStyle(ChatFormatting.WHITE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
-    
+
 }

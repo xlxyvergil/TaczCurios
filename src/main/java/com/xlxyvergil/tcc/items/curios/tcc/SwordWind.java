@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -19,18 +18,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 剑风 - 提升实体交互范围
- * 效果：提升实体交互范围（加算） */
+ * 剑风：提升实体交互范围（加算）
+ */
 public class SwordWind extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这个修饰
     private static final UUID ENTITY_INTERACTION_RANGE_UUID = UUID.fromString("3f7ed736-62d3-4835-bc94-2834d4b91832");
     
-    // 修饰符名
     private static final String ENTITY_INTERACTION_RANGE_NAME = "tcc.sword_wind.entity_interaction_range";
     
-    // 效果参数
-    // private static final double MELEE_DISTANCE_BOOST = 1.1; // 1.1加成 - 现在从配置文件读
+    // 加成数值现从配置文件读取
     
     public SwordWind(Properties properties) {
         super(properties);
@@ -38,10 +34,6 @@ public class SwordWind extends TccCurioItem {
     
 
     
-    /**
-     * 应用剑风效果
-     * 给实体添加实体交互范围加成（加算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -50,35 +42,23 @@ public class SwordWind extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除剑风效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ENTITY_REACH, ENTITY_INTERACTION_RANGE_UUID);
     }
     
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindMeleeRangeBoost.get();
         tooltip.add(Component.translatable("item.tcc.sword_wind.effect", String.format("%.1f", meleeDistanceBoost))
             .withStyle(ChatFormatting.BLUE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
 
     @Override

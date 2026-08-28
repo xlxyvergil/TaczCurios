@@ -8,12 +8,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * Executes rewards (grant item or evolve item) when an achievement is completed.
+ * 成就完成时执行奖励（发放物品或进化物品）。
  */
 public final class AchievementRewards {
     private AchievementRewards() {}
 
-    /** Execute the reward defined in an achievement definition. */
+    /** 执行成就定义中声明的奖励。 */
     public static boolean execute(Player player, AchievementDefinitions.AchievementDef def) {
         AchievementDefinitions.Reward reward = def.reward();
         if (reward == null) return false;
@@ -54,7 +54,6 @@ public final class AchievementRewards {
                     }
                 }, true);
 
-        // Execute linked evolves
         if (ok && reward.linkedEvolves() != null) {
             for (AchievementDefinitions.LinkedEvolveRef linked : reward.linkedEvolves()) {
                 if (linked.to() == null || linked.item() == null) continue;

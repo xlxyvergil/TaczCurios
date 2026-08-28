@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 弹头扩散 - 提升120%弹头数量
- * 效果：提升120%弹头数量（加算）
+ * 弹头扩散：提升120%弹头数量（加算）
  */
 public class BulletSpread extends TccCurioItem {
     
@@ -33,22 +32,14 @@ public class BulletSpread extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用弹头扩散效果
-     * 提升弹头数量（加算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 检查生物是否持有手枪，只有持有手枪时才应用加成
         if (matchesRestriction(livingEntity)) {
             double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, bulletCountBoost, BULLET_COUNT_UUID, BULLET_COUNT_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
-    
-    /**
-     * 移除弹头扩散效果
-     */
+
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, BULLET_COUNT_UUID);
@@ -61,27 +52,18 @@ public class BulletSpread extends TccCurioItem {
         return java.util.List.of("pistol");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.bullet_spread.effect", String.format("%+.0f", bulletCountBoost))
             .withStyle(ChatFormatting.GOLD));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
-        
+
     }
-    
+
 }

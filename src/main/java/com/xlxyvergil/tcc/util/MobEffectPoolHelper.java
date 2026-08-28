@@ -15,11 +15,8 @@ import java.util.Set;
 
 /**
  * 随机 buff / debuff 池工具。
- * <p>
- * 运行时动态枚举当前游戏注册的全部效果（ForgeRegistries.MOB_EFFECTS），
- * 按 {@link MobEffect#isBeneficial()} 分为正面池 / 负面池（中性效果不进入正面池）。
- * <p>
- * 正面池支持黑名单过滤（配置 {@code golden_buff_blacklist}）：黑名单内的正面效果不会被随机施加。
+ * 运行时枚举当前游戏注册的全部效果（ForgeRegistries.MOB_EFFECTS），按 isBeneficial() 分为正面/负面池（中性效果不进正面池）。
+ * 正面池支持黑名单过滤（配置 golden_buff_blacklist），命中的效果不会被随机施加。
  */
 public final class MobEffectPoolHelper {
 
@@ -42,8 +39,7 @@ public final class MobEffectPoolHelper {
 
     /**
      * 正面效果池（已过滤黄金系列黑名单）。
-     * <p>
-     * 黑名单读取自配置 {@code golden_buff_blacklist}，命中的效果不会参与随机抽取。
+     * 黑名单读取自配置 golden_buff_blacklist，命中的效果不会参与随机抽取。
      */
     private static List<MobEffect> getAllowedBeneficialEffects() {
         Set<ResourceLocation> blacklist = goldenBeneficialBlacklist();
@@ -81,8 +77,7 @@ public final class MobEffectPoolHelper {
 
     /**
      * 负面效果池（已过滤戒律系列黑名单）。
-     * <p>
-     * 黑名单读取自配置 {@code discipline_buff_blacklist}，命中的效果不会参与随机抽取。
+     * 黑名单读取自配置 discipline_buff_blacklist，命中的效果不会参与随机抽取。
      */
     private static List<MobEffect> getAllowedHarmfulEffects() {
         Set<ResourceLocation> blacklist = disciplineHarmfulBlacklist();
@@ -120,10 +115,6 @@ public final class MobEffectPoolHelper {
 
     /**
      * 向目标施加效果（隐藏粒子）。
-     *
-     * @param durationTicks 时长（tick）
-     * @param amplifier     等级（0 = I 级）
-     * @param source        施加来源（可为 null）
      */
     public static void applyEffect(LivingEntity target, MobEffect effect, int durationTicks, int amplifier, @Nullable LivingEntity source) {
         if (target == null || effect == null) {

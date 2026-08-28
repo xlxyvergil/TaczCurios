@@ -93,24 +93,24 @@ public class CurioCombatEventHandler {
         if (!(attacker instanceof Player player)) return;
         if (player.level().isClientSide) return;
 
-        // R-03 氩晶瞄具
+        // 氩晶瞄具
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.ARGON_SCOPE)) {
             applyNonStackingBuff(player, TccMobEffects.ARGON_SCOPE.get(), TaczCuriosConfig.COMMON.argonScopeDuration.get());
         }
-        // R-04 镀层氩晶瞄具：爆头→nonStacking(爆头buff)
+        // 镀层氩晶瞄具：爆头→nonStacking(爆头buff)
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_ARGON_SCOPE)) {
             applyGildedBuff(player, TccItems.GILDED_ARGON_SCOPE, TccMobEffects.GILDED_ARGON_SCOPE.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get());
         }
-        // S-05 雷射瞄具
+        // 雷射瞄具
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.LASER_SCOPE)) {
             applyNonStackingBuff(player, TccMobEffects.LASER_SCOPE.get(), TaczCuriosConfig.COMMON.laserScopeDuration.get());
         }
-        // P-06 液压准心
+        // 液压准心
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.HYDRAULIC_CROSSHAIR)) {
             applyNonStackingBuff(player, TccMobEffects.HYDRAULIC_CROSSHAIR.get(), TaczCuriosConfig.COMMON.hydraulicCrosshairDuration.get());
         }
-        // P-07 镀层液压准心：爆头→nonStacking(爆头buff)
+        // 镀层液压准心：爆头→nonStacking(爆头buff)
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_HYDRAULIC_CROSSHAIR)) {
             applyGildedBuff(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get());
@@ -146,43 +146,43 @@ public class CurioCombatEventHandler {
             }
         }
 
-        // R-04 镀层氩晶瞄具: 爆头击杀→stacking(击杀buff)
+        // 镀层氩晶瞄具: 爆头击杀→stacking(击杀buff)
         if (event.isHeadShot() && hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_ARGON_SCOPE)) {
             applyGildedStackingBuff(player, TccItems.GILDED_ARGON_SCOPE, TccMobEffects.GILDED_ARGON_SCOPE_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get(),
                 TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get());
         }
-        // P-07 镀层液压准心: 爆头击杀→stacking(击杀buff)
+        // 镀层液压准心: 爆头击杀→stacking(击杀buff)
         if (event.isHeadShot() && hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_HYDRAULIC_CROSSHAIR)) {
             applyGildedStackingBuff(player, TccItems.GILDED_HYDRAULIC_CROSSHAIR, TccMobEffects.GILDED_HYDRAULIC_CROSSHAIR_KILL.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get(),
                 TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get());
         }
-        // R-05 尖刃弹头
+        // 尖刃弹头
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.SHARP_BULLET)) {
             applyNonStackingBuff(player, TccMobEffects.SHARP_BULLET.get(), TaczCuriosConfig.COMMON.sharpBulletDuration.get());
         }
-        // R-07 镀层分裂膛室
+        // 镀层分裂膛室
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_SPLIT_CHAMBER)) {
             applyGildedStackingBuff(player, TccItems.GILDED_SPLIT_CHAMBER, TccMobEffects.GILDED_SPLIT_CHAMBER.get(),
                 TaczCuriosConfig.COMMON.gildedSplitChamberDuration.get(),
                 TaczCuriosConfig.COMMON.gildedSplitChamberMaxStacks.get());
         }
-        // S-06 破片射击
+        // 破片射击
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.FRAGMENT_SHOT)) {
             applyNonStackingBuff(player, TccMobEffects.FRAGMENT_SHOT.get(), TaczCuriosConfig.COMMON.fragmentShotDuration.get());
         }
-        // S-08 镀层地狱弹膛
+        // 镀层地狱弹膛
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_INFERNAL_CHAMBER)) {
             applyGildedStackingBuff(player, TccItems.GILDED_INFERNAL_CHAMBER, TccMobEffects.GILDED_INFERNAL_CHAMBER.get(),
                 TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get(),
                 TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get());
         }
-        // P-08 尖锐子弹
+        // 尖锐子弹
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.SHARP_AMMO)) {
             applyNonStackingBuff(player, TccMobEffects.SHARP_AMMO.get(), TaczCuriosConfig.COMMON.sharpAmmoDuration.get());
         }
-        // P-10 镀层弹头扩散
+        // 镀层弹头扩散
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_BULLET_SPREAD)) {
             applyGildedStackingBuff(player, TccItems.GILDED_BULLET_SPREAD, TccMobEffects.GILDED_BULLET_SPREAD.get(),
                 TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get(),
@@ -197,7 +197,7 @@ public class CurioCombatEventHandler {
     public static void onDeath(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         if (player.level().isClientSide) return;
-        // M-05 镀层斩铁
+        // 镀层斩铁
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_STEEL_SLASH)) {
             applyGildedStackingBuff(player, TccItems.GILDED_STEEL_SLASH, TccMobEffects.GILDED_STEEL_SLASH.get(),
                 TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get(),
@@ -206,7 +206,7 @@ public class CurioCombatEventHandler {
     }
 
     /**
-     * 有害效果乘算：R-06/S-07/P-09/M-06 在 LivingHurtEvent 直接乘算伤害
+     * 有害效果乘算： 在 LivingHurtEvent 直接乘算伤害
      */
     @SubscribeEvent(priority = net.minecraftforge.eventbus.api.EventPriority.LOW)
     public static void onLivingHurt(LivingHurtEvent event) {
@@ -222,7 +222,7 @@ public class CurioCombatEventHandler {
 
         if (harmfulCount == 0) return;
 
-        // R-06 镀层步枪才能: 每负面效果直接乘算
+        // 镀层步枪才能: 每负面效果直接乘算
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_RIFLE_APTITUDE)) {
             ItemStack curioStack = findCurioStack(player, TccItems.GILDED_RIFLE_APTITUDE);
             FusionData data = FusionData.from(curioStack);
@@ -231,7 +231,7 @@ public class CurioCombatEventHandler {
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
-        // S-07 镀层通晓霰弹枪: 每负面效果直接乘算
+        // 镀层通晓霰弹枪: 每负面效果直接乘算
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_SHOTGUN_SAVVY)) {
             ItemStack curioStack = findCurioStack(player, TccItems.GILDED_SHOTGUN_SAVVY);
             FusionData data = FusionData.from(curioStack);
@@ -240,7 +240,7 @@ public class CurioCombatEventHandler {
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
-        // P-09 镀层准确射手: 每负面效果直接乘算
+        // 镀层准确射手: 每负面效果直接乘算
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.GILDED_MARKSMAN)) {
             ItemStack curioStack = findCurioStack(player, TccItems.GILDED_MARKSMAN);
             FusionData data = FusionData.from(curioStack);
@@ -249,7 +249,7 @@ public class CurioCombatEventHandler {
             event.setAmount(event.getAmount() * (float)multiplier);
         }
 
-        // M-06 异况超量: 每负面效果直接乘算
+        // 异况超量: 每负面效果直接乘算
         if (hasCurioWithRestriction(player, (BaseCurioItem) TccItems.CONDITION_OVERLOAD)) {
             ItemStack curioStack = findCurioStack(player, TccItems.CONDITION_OVERLOAD);
             FusionData data = FusionData.from(curioStack);

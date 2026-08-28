@@ -38,11 +38,8 @@ public class TccAttributeEvents {
 
     /**
      * 虚数伤害统一注入入口（setHealth 直伤方案）。
-     * <p>
-     * 不经过 {@code hurt()}，因此不触发 LivingHurtEvent / 护甲 / 盾牌 / 吸收 / 荆棘等管线，
-     * 是真正无视防御的真伤。倍率结算（抗性/侵染等级/岛爆渡鸦）由
-     * {@link #resolveFinalImaginaryDamage} 内联完成；致死时直接调用 {@code die(source)}
-     * （内部会 post LivingDeathEvent 并生成掉落物/经验，不可再手动 post）。
+     * 不经过 hurt()，因此不触发 LivingHurtEvent / 护甲 / 盾牌 / 吸收 / 荆棘等管线，是真正无视防御的真伤。
+     * 倍率结算（抗性/侵染等级/岛爆渡鸦）由 resolveFinalImaginaryDamage 内联完成；致死时调用 die(source)。
      */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
@@ -84,9 +81,7 @@ public class TccAttributeEvents {
 
     /**
      * 虚数伤害倍率结算（原 imaginaryDamageOnAttack 内联逻辑）：
-     * 目标虚数抗性 → 虚数侵染等级倍率 → 岛爆渡鸦加成。
-     * 供 {@link #applyImaginaryDamage}（setHealth 直伤）与
-     * {@link #imaginaryDamageOnAttack}（子弹虚数伤害走 hurt）共用。
+     * 目标虚数抗性 → 虚数侵染等级倍率 → 岛爆渡鸦加成，供直伤与 hurt 两条路径共用。
      */
     private static float resolveFinalImaginaryDamage(LivingEntity target, DamageSource source, float baseDamage) {
         if (baseDamage <= 0) return 0;
@@ -134,8 +129,7 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 对目标施加虚数侵染（可叠加，受饰品分级上限约束）。
-     * 供枪械 {@link #applyImaginaryInfection} 与近战虚数饰品（如黑渊白花）共用。
+     * 对目标施加虚数侵染（可叠加，受饰品分级上限约束），供枪械与近战虚数饰品共用。
      * 仅 canApplyCollapse=true 时额外触发虚数崩解。
      */
     public static void applyInfection(LivingEntity living, LivingEntity attacker, ImaginaryInfectionHelper.InfectionInfo info) {
@@ -144,7 +138,6 @@ public class TccAttributeEvents {
         boolean canApplyCollapse = info.canApplyCollapse();
         int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
 
-        // 施加虚数侵染（可叠加，受饰品分级上限约束）
         var imaginaryInfection = TccMobEffects.IMAGINARY_INFECTION.get();
         MobEffectInstance existingEffect = living.getEffect(imaginaryInfection);
         int newAmplifier = 0;
@@ -197,8 +190,7 @@ public class TccAttributeEvents {
 
     /**
      * 处理 Pathway A 虚数伤害的 overheal。
-     * 当子弹为 DamageSource 直接实体时，Apothic 的 getDirectEntity() instanceof LivingEntity 检查不通过，
-     * 无法原生触发 overheal。此处通过 TACZ Post 事件补足。
+     * 子弹为 DamageSource 直接实体时 Apothic 无法原生触发 overheal，此处通过 TACZ Post 事件补足。
      */
     @SubscribeEvent
     public static void onGunOverheal(EntityHurtByGunEvent.Post event) {
@@ -248,9 +240,8 @@ public class TccAttributeEvents {
     }
 
     /**
-     * - getActiveEffectsMap().put 直接操作 Map，不触发 onEffectAdded/onEffectUpdated
-     * - 不 post MobEffectEvent.Added，避免任何外部监听器干扰
-     * - old.update(ins) 在原地刷新时长/等级
+     * 直接写 getActiveEffectsMap().put 并绕过 MobEffectEvent.Added，避免外部监听器干扰；
+     * old.update(ins) 在原地刷新时长/等级。
      */
     private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
         MobEffect effect = ins.getEffect();
@@ -271,9 +262,7 @@ public class TccAttributeEvents {
 
     /**
      * 处理 Pathway B（子弹虚数伤害走 hurt）的虚数抗性/侵染倍率结算。
-     * <p>
-     * 注意：applyImaginaryDamage 已改走 setHealth 直伤，不触发此事件，
-     * 其倍率结算由 {@link #resolveFinalImaginaryDamage} 内联完成。
+     * 注意：applyImaginaryDamage 已改走 setHealth 直伤，其倍率结算由 resolveFinalImaginaryDamage 内联完成。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
@@ -301,8 +290,8 @@ public class TccAttributeEvents {
 
     /**
      * 阻止虚空珍珠等拦截至 tcc 效果的添加。
-     * 优先级 LOWEST，在 EnigmaticEventHandler.onApplyPotion(Applicable) 之后执行，
-     * 对 tcc 效果用 ALLOW 覆盖其 DENY（Forge setResult 最后调用者胜出）。
+     * 优先级 LOWEST，在 EnigmaticEventHandler.onApplyPotion(Applicable) 之后执行，用 ALLOW 覆盖其 DENY
+     * （Forge setResult 最后调用者胜出）。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
@@ -314,8 +303,7 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 阻止 tcc 模组的效果被移除（Forge 事件双重保险）。
-     * 优先级 HIGHEST 确保最先处理，在其他监听器之前拦截。
+     * 阻止 tcc 模组的效果被移除（Forge 事件双重保险），优先级 HIGHEST 最先处理。
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEffectRemove(MobEffectEvent.Remove event) {

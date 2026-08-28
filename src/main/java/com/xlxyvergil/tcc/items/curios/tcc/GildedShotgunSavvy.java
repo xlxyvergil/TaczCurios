@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -16,8 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层通晓霰弹枪 - 霰弹饰品
- * 手持霰弹枪时，目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
+ * 镀层通晓霰弹枪：目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
  */
 public class GildedShotgunSavvy extends TccCurioItem {
 

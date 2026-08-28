@@ -15,8 +15,7 @@ import top.theillusivec4.curios.api.event.CurioEquipEvent;
 import top.theillusivec4.curios.api.event.CurioUnequipEvent;
 
 /**
- * 客户端事件处理器
- * 用于监听饰品装备/卸载事件并刷新枪械属性显示
+ * 客户端事件处理器：监听饰品装备/卸载事件并刷新枪械属性显示。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEventHandler {
@@ -46,14 +45,12 @@ public class ClientEventHandler {
             // 如果主手是枪械，强制刷新其属性缓存
             if (mainHandItem.getItem() instanceof IGun) {
                 mainHandItem.setPopTime(1);
-                // 更新属性缓存
                 AttachmentPropertyManager.postChangeEvent(player, mainHandItem);
             }
             
             // 如果副手是枪械，强制刷新其属性缓存
             if (offHandItem.getItem() instanceof IGun) {
                 offHandItem.setPopTime(1);
-                // 更新属性缓存
                 AttachmentPropertyManager.postChangeEvent(player, offHandItem);
             }
         }

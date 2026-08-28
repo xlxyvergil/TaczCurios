@@ -14,7 +14,6 @@ public class TccPoiTypes {
 
     public static PoiType TESHIN_WORKBENCH_POI;
 
-    // 注册Teshin工作台POI类型
     public static void init() {
         TESHIN_WORKBENCH_POI = new PoiType(
             ImmutableSet.copyOf(TccBlocks.TESHIN_WORKBENCH.getStateDefinition().getPossibleStates()), 1, 1);

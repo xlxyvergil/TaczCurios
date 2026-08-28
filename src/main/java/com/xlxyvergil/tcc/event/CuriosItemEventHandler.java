@@ -11,8 +11,7 @@ import top.theillusivec4.curios.api.event.CurioEquipEvent;
 import top.theillusivec4.curios.api.event.CurioUnequipEvent;
 
 /**
- * Curios饰品事件处理器
- * 用于监听饰品装备/卸载事件并更新TACZ缓存
+ * Curios 饰品事件处理器：监听饰品装备/卸载事件并更新 TACZ 缓存。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CuriosItemEventHandler {
@@ -54,17 +53,14 @@ public class CuriosItemEventHandler {
     }
     
     /**
-     * 当GunSwitchEventHandler被调用时触发的方法
-     * 由GunSwitchEventHandler调用
+     * 由 GunSwitchEventHandler 调用：枪械切换时更新 TACZ 缓存。
      */
     public static void onGunSwitchEvent(LivingEntity entity) {
         updateTacZCache(entity);
     }
     
     /**
-     * 更新TACZ缓存
-     * 当饰品状态发生变化时调用此方法触发缓存更新
-     * @param entity 持有者实体（支持玩家、女仆等所有LivingEntity）
+     * 更新 TACZ 缓存：饰品状态变化时触发属性重新计算（支持玩家、女仆等所有 LivingEntity）。
      */
     private static void updateTacZCache(LivingEntity entity) {
         ItemStack mainHandItem = entity.getMainHandItem();

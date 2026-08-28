@@ -28,7 +28,6 @@ import java.util.List;
 
 /**
  * 黄金系列·神之键线（tcc_tdk）：吞噬之键。
- * <p>
  * 32 格内非玩家实体瞬移必定失效。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -71,7 +70,7 @@ public class TuntianZhijian extends BoundCurioItem {
                 stack -> stack.getItem() instanceof TuntianZhijian).isEmpty();
     }
 
-    // ========== 瞬移拦截 ==========
+    // 瞬移拦截
 
     @SubscribeEvent
     public static void onEnderEntityTeleport(EntityTeleportEvent.EnderEntity event) {

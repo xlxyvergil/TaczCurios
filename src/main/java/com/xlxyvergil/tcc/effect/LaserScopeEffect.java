@@ -14,7 +14,7 @@ public class LaserScopeEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF8844);
         double baseValue = TaczCuriosConfig.COMMON.laserScopeBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            "c1d2e3f4-6003-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "b9fb5573-bd2f-4c82-98e4-8eeb2b6b6169", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

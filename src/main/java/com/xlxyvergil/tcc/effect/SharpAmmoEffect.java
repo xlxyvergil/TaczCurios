@@ -14,7 +14,7 @@ public class SharpAmmoEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
         double baseValue = TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            "c1d2e3f4-6103-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "7ebabc7f-2ccd-4217-8602-ea39b9263673", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

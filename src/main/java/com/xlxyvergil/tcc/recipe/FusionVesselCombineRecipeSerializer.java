@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 /**
- * 融合容器合并配方的序列化器 — 无额外参数，所有逻辑在 {@link FusionVesselCombineRecipe} 中动态判断。
+ * 融合容器合并配方的序列化器；无额外参数，逻辑由配方类动态判断。
  */
 public class FusionVesselCombineRecipeSerializer implements RecipeSerializer<FusionVesselCombineRecipe> {
 

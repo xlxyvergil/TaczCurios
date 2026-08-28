@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 我小心海也绝非鳝类 - 提升300%重型武器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
- * 效果：重型武器伤害+300%，爆炸伤害+300%，爆炸范围+300%
+ * 我小心海也绝非鳝类：重型武器伤害、爆炸伤害、爆炸范围各+300%
  */
 public class CarefulHeart extends TccCurioItem {
     
@@ -39,10 +38,6 @@ public class CarefulHeart extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用心海效果
-     * 提升重型武器伤害、爆炸伤害和爆炸范围
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
@@ -61,9 +56,6 @@ public class CarefulHeart extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除心海效果
-     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, LAUNCHER_DAMAGE_UUID);
@@ -79,19 +71,12 @@ public class CarefulHeart extends TccCurioItem {
     
 
     
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double launcherDamageBoost = FusionData.from(stack).getActualValue(
                 TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get()) * 100;
         double explosionDamageBoost = FusionData.from(stack).getActualValue(
@@ -101,14 +86,9 @@ public class CarefulHeart extends TccCurioItem {
         tooltip.add(Component.translatable("item.tcc.careful_heart.effect", 
                 String.format("%+.0f", launcherDamageBoost), String.format("%+.0f", explosionDamageBoost), String.format("%+.0f", explosionRadiusBoost))
             .withStyle(ChatFormatting.WHITE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
-    
-    /**
-     * 当玩家切换武器时应用效果
-     */
+
 }

@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 空尖弹 - 手枪饰品
- * 效果：暴击伤害+60%，手枪伤害-15%
+ * 空尖弹：暴击伤害+60%，手枪伤害-15%
  */
 public class HollowPoint extends TccCurioItem {
 

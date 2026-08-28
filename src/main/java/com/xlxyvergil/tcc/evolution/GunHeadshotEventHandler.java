@@ -24,9 +24,8 @@ public final class GunHeadshotEventHandler {
     private GunHeadshotEventHandler() {}
 
     /**
-     * 监听 {@link EntityHurtByGunEvent.Pre}：
-     * 1. 爆头命中时触发 gun_headshot_hit 成就判定；
-     * 2. 将爆头标记（attacker / time / gunId）写入 GunKillDataCapability，供 {@link #onLivingDeath} 使用。
+     * 监听 EntityHurtByGunEvent.Pre：爆头命中时触发 gun_headshot_hit 成就判定，
+     * 并将爆头标记（attacker / time / gunId）写入 GunKillDataCapability 供 onLivingDeath 使用。
      */
     @SubscribeEvent
     public static void onGunHeadshotHit(EntityHurtByGunEvent.Pre event) {
@@ -47,15 +46,9 @@ public final class GunHeadshotEventHandler {
     }
 
     /**
-     * 统一的爆头击杀判定：监听 {@link LivingDeathEvent}，对所有实体处理。
-     *
-     * 流程：
-     * 1. 死亡源 attacker 必须是玩家；
-     * 2. 从 GunKillDataCapability 读取爆头标记：attacker 匹配，且在 2 tick 窗口内；
-     * 3. 读取 gunId，触发 gun_headshot_kill 成就判定。
-     *
-     * 使用 Capability 而非 NBT，以兼容 {@code getPersistentData()} 被重写返回空 NBT 的实体
-     * （如 RevelationFix 的 Apollyon）。
+     * 统一的爆头击杀判定：监听 LivingDeathEvent，对所有实体处理。
+     * 流程：死亡源 attacker 必须是玩家；从 GunKillDataCapability 读取爆头标记（attacker 匹配且在 2 tick 窗口内）；
+     * 读取 gunId 触发 gun_headshot_kill 判定。用 Capability 而非 NBT，以兼容 getPersistentData() 返回空 NBT 的实体（如 Apollyon）。
      */
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
@@ -93,9 +86,7 @@ public final class GunHeadshotEventHandler {
     }
 
     /**
-     * Achievement-driven handler:
-     * For each achievement with this trigger, check conditions,
-     * award a criterion, and execute reward on completion.
+     * 成就驱动处理器：遍历该触发器的成就，检查条件、授予一个条件，并在完成时执行奖励。
      */
     private static void handleTrigger(Player player, LivingEntity other,
                                        net.minecraft.resources.ResourceLocation gunId, String trigger) {
@@ -105,19 +96,15 @@ public final class GunHeadshotEventHandler {
         if (serverPlayer == null) return;
 
         for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(trigger)) {
-            // Skip disabled achievements
             if (!def.isEnabled()) continue;
 
-            // Check prerequisites
             if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
 
-            // Already completed?
             if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
 
-            // Check kill conditions
             if (!AchievementConditionMatcher.matchesKillConditions(player, other, gunId, def)) continue;
 
-            // Award criterion(s) — 1 step per kill
+            // 每次击杀授予 1 步进度
             var kills = def.conditions() != null ? def.conditions().kills() : null;
             if (kills != null && kills.size() > 1) {
                 if (other == null) continue;

@@ -34,7 +34,6 @@ import java.util.List;
 
 /**
  * 浮生系列·神之键线（tcc_tdk）：不识时务。
- * <p>
  * 近战攻击按施加者虚数抗性概率使目标停止 AI（定身）5 秒，并附加（虚数抗性值/100 × 护甲值）的虚数伤害。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

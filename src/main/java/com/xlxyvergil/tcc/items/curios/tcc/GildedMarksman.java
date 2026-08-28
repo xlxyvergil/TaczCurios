@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -16,8 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * 镀层准确射手 - 手枪饰品
- * 手持手枪时，目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
+ * 镀层准确射手：目标每有一种负面效果，伤害直接乘算（LivingHurtEvent处理）
  */
 public class GildedMarksman extends TccCurioItem {
 

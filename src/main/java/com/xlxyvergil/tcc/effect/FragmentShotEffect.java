@@ -14,7 +14,7 @@ public class FragmentShotEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
         double baseValue = TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            "c1d2e3f4-6102-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "05ef1a76-86f4-492f-adc0-3d78e54e52fd", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

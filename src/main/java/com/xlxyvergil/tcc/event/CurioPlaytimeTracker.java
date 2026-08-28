@@ -19,12 +19,8 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
- * 追踪玩家佩戴特定饰品时的存活时长（tick），写入自定义统计。
- * 每个饰品对应一个独立的自定义统计，每 tick 检查佩戴状态并递增。
- * <ul>
- *   <li>griseo / huishi_zhijuan / fanxing — 死亡不重置，累计总时长</li>
- *   <li>qishi_zhijian — 死亡重置归 0，等同于"佩戴时的自上次死亡以来"</li>
- * </ul>
+ * 追踪玩家佩戴特定饰品时的存活时长（tick），写入自定义统计，每 tick 检查佩戴状态并递增。
+ * griseo / huishi_zhijuan / fanxing 死亡不重置，累计总时长；qishi_zhijian 死亡重置归 0。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class CurioPlaytimeTracker {

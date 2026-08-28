@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 public class AttributeHelper {
     
-    // ========== 原版属性 ==========
+    // 原版属性
     
     /** 攻击伤害 */
     public static final Attribute ATTACK_DAMAGE = Attributes.ATTACK_DAMAGE;
@@ -35,7 +35,7 @@ public class AttributeHelper {
     /** 幸运值 - minecraft:generic.luck */
     public static final Attribute LUCK = Attributes.LUCK;
     
-    // ========== Forge 属性 ==========
+    // Forge 属性
     
     /** 实体交互范围（攻击范围） */
     public static final Attribute ENTITY_REACH = ForgeMod.ENTITY_REACH.get();
@@ -43,7 +43,7 @@ public class AttributeHelper {
     /** 方块交互范围 */
     public static final Attribute BLOCK_REACH = ForgeMod.BLOCK_REACH.get();
     
-    // ========== Apothic-Attributes 暴击属性 ==========
+    // Apothic-Attributes 暴击属性
     
     /** 暴击几率 (PercentBasedAttribute, base=0.05, range=[0,10]) */
     public static final Attribute CRIT_CHANCE = ALObjects.Attributes.CRIT_CHANCE.get();
@@ -57,7 +57,7 @@ public class AttributeHelper {
     /** 过量治疗 (PercentBasedAttribute) */
     public static final Attribute OVERHEAL = ALObjects.Attributes.OVERHEAL.get();
     
-    // ========== TAA 枪械属性 ==========
+    // TAA 枪械属性
     
     /** 通用枪械伤害 */
     public static final Attribute BULLET_GUNDAMAGE = EntityAttributeRegistry.BULLET_GUNDAMAGE.get();
@@ -158,7 +158,7 @@ public class AttributeHelper {
     /** 近战距离 */
     public static final Attribute MELEE_DISTANCE = EntityAttributeRegistry.MELEE_DISTANCE.get();
     
-    // ========== TAA 过热体系属性（乘法倍率，默认1.0） ==========
+    // TAA 过热体系属性（乘法倍率，默认1.0）
     
     /** 过热上限 */
     public static final Attribute HEAT_MAX = EntityAttributeRegistry.HEAT_MAX.get();
@@ -185,42 +185,28 @@ public class AttributeHelper {
     }
     
     /**
-     * 获取属性实例的辅助方法
-     * @param entity 实体
-     * @param attribute 属性对象
-     * @return 属性实例
+     * 获取属性实例的辅助方法。
      */
     public static AttributeInstance getInstance(LivingEntity entity, Attribute attribute) {
         return entity.getAttributes().getInstance(attribute);
     }
     
     /**
-     * 应用属性修饰符
-     * @param entity 实体
-     * @param attribute 属性
-     * @param value 修饰符值
-     * @param uuid 修饰符UUID
-     * @param name 修饰符名称
-     * @param operation 操作类型
+     * 应用属性修饰符。
      */
     public static void applyModifier(LivingEntity entity, Attribute attribute, double value, UUID uuid, String name, AttributeModifier.Operation operation) {
         AttributeInstance instance = getInstance(entity, attribute);
         
         if (instance != null) {
-            // 移除旧修饰符
             instance.removeModifier(uuid);
             
-            // 添加新修饰符
             AttributeModifier modifier = new AttributeModifier(uuid, name, value, operation);
             instance.addPermanentModifier(modifier);
         }
     }
     
     /**
-     * 移除属性修饰符
-     * @param entity 实体
-     * @param attribute 属性
-     * @param uuid 修饰符UUID
+     * 移除属性修饰符。
      */
     public static void removeModifier(LivingEntity entity, Attribute attribute, UUID uuid) {
         AttributeInstance instance = getInstance(entity, attribute);
@@ -232,9 +218,7 @@ public class AttributeHelper {
 
     /**
      * 累加式属性修饰符：在已有修饰符（固定 UUID）基础上叠加 delta，幂等可重入。
-     * <p>
-     * 用于「持久削减」类机制（如旭光神之键削甲）：每次调用在旧值基础上再削减，
-     * 修饰符值不断累加，卸下/死亡前一直持久生效。
+     * 用于「持久削减」类机制（如旭光神之键削甲），修饰符值不断累加，卸下/死亡前一直生效。
      */
     public static void applyStackingModifier(LivingEntity entity, Attribute attribute, double delta,
                                              UUID uuid, String name, AttributeModifier.Operation operation) {
@@ -256,8 +240,7 @@ public class AttributeHelper {
 
     /**
      * 遍历全部注册属性，统一添加/移除修饰符（无限系列全属性加成，参考 MoonsTeams nightmarerotten）。
-     * <p>
-     * value = 0 时仅移除修饰符（用于 removeEffects）；否则对每个实例添加 {@code MULTIPLY_BASE} 瞬态修饰符。
+     * value = 0 时仅移除修饰符（用于 removeEffects）；否则对每个实例添加 MULTIPLY_BASE 瞬态修饰符。
      */
     public static void applyAllAttributesModifier(LivingEntity entity, UUID uuid, String name,
                                                   double value, AttributeModifier.Operation operation) {

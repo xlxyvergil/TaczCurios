@@ -9,7 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
@@ -17,11 +16,8 @@ import top.theillusivec4.curios.api.SlotContext;
 import java.util.List;
 
 /**
- * 3rd / tdk 饰品基类 - 负责绑定玩家信息、显示当前虚数抗性（含进化规则累积值），
- * 与旧系列 tooltip 风格一致，以及 3rd / tdk 饰品的专有功能。
- * <p>
- * 绑定饰品（{@link #isBoundItem()} 返回 {@code true}）在 tcc_3rd 或 tcc_tdk
- * 槽位中将无法直接卸下，只有创造模式或消耗背包中的崩坏结晶才能取下。
+ * 3rd / tdk 饰品基类，负责绑定玩家信息、显示当前虚数抗性（含进化规则累积值）。
+ * 绑定饰品在 tcc_3rd / tcc_tdk 槽位中无法直接卸下，须创造模式或消耗背包中的崩坏结晶才能取下。
  */
 public abstract class BoundCurioItem extends BaseCurioItem implements IBindable {
 
@@ -53,7 +49,6 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         return false;
     }
 
-    /** 检查玩家背包中是否携带可消耗的崩坏结晶。 */
     private boolean hasCollapseCrystal(Player player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
@@ -76,10 +71,8 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     /**
-     * 判断崩坏结晶是否为可消耗的「干净」水晶。
-     * <p>
-     * 参与过合成记录素材的水晶会在 NBT 中写入记录条目，此类水晶只用于合成，
-     * 不作为卸下消耗；没有 NBT 条目的水晶才可被卸下消耗。
+     * 判断崩坏结晶是否为可消耗的「干净」水晶：参与过合成记录的水晶会在 NBT 写入记录条目，只用于合成，
+     * 不能作为卸下消耗；无 NBT 条目者才可被消耗。
      */
     private static boolean isConsumableCrystal(ItemStack stack) {
         if (!(stack.getItem() instanceof CollapseCrystal)) return false;
@@ -88,12 +81,7 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     /**
-     * 绑定饰品是否可以卸下：
-     * <ul>
-     *   <li>创造模式 — 始终允许卸下</li>
-     *   <li>绑定槽位 + 背包有崩坏结晶 — 允许卸下</li>
-     *   <li>其他情况 — 禁止卸下</li>
-     * </ul>
+     * 绑定饰品是否可以卸下：创造模式始终允许；绑定槽位 + 背包有崩坏结晶允许；其他情况禁止。
      */
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {

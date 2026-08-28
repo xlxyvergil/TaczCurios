@@ -14,7 +14,7 @@ public class SharpBulletEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
         double baseValue = TaczCuriosConfig.COMMON.sharpBulletBaseCritDamage.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            "c1d2e3f4-6101-4000-8000-000000000001", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "7de1fac5-2f2f-4462-b6b2-1ab5d1b88194", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override

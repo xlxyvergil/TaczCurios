@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -21,16 +19,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 恶性扩- 提升165%霰弹枪伤害，提高55%不精准度
- * 效果：提65%霰弹枪伤害（加算），提高55%不精准度（加算）
+ * 恶性扩散：提高霰弹枪伤害（加算），提高不精准度（加算）
  */
 public class MalignantSpread extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识修饰
     private static final UUID DAMAGE_UUID = UUID.fromString("5bfabff0-b8df-48cd-9ecb-95027aafbf69");
     private static final UUID INACCURACY_UUID = UUID.fromString("03755bb2-350f-47ee-821f-db51a2a7f149");
     
-    // 修饰符名
     private static final String DAMAGE_NAME = "tcc.malignant_spread.damage";
     private static final String INACCURACY_NAME = "tcc.malignant_spread.inaccuracy";
     
@@ -39,9 +34,6 @@ public class MalignantSpread extends TccCurioItem {
         super(properties);
     }
     
-    /**
-     * 应用恶性扩散效     * 提升霰弹枪伤害（加算）和不精准度（乘算）
-     */
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get());
@@ -54,8 +46,6 @@ public class MalignantSpread extends TccCurioItem {
         }
     }
     
-    /**
-     * 移除恶性扩散效     */
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN, DAMAGE_UUID);
@@ -68,28 +58,19 @@ public class MalignantSpread extends TccCurioItem {
         return java.util.List.of("shotgun");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() ) * 100;
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.malignant_spread.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
             .withStyle(ChatFormatting.GOLD));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 }

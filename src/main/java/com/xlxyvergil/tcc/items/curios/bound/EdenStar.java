@@ -28,7 +28,6 @@ import java.util.List;
 
 /**
  * 黄金系列·神之键线（tcc_tdk）：伊甸之星。
- * <p>
  * 16 格内非玩家实体瞬移必定失效。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -71,7 +70,7 @@ public class EdenStar extends BoundCurioItem {
                 stack -> stack.getItem() instanceof EdenStar).isEmpty();
     }
 
-    // ========== 瞬移拦截 ==========
+    // 瞬移拦截
 
     @SubscribeEvent
     public static void onEnderEntityTeleport(EntityTeleportEvent.EnderEntity event) {

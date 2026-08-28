@@ -30,7 +30,6 @@ import java.util.UUID;
 
 /**
  * 无限系列·人物线（tcc_3rd）：梅比乌斯。
- * <p>
  * 击杀按实体类型名累计（无上限），每种 +1% 全属性。击杀计数存于饰品 NBT，随进化继承。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

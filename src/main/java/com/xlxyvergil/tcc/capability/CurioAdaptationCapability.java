@@ -15,21 +15,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * 饰品适应效果 Capability。
- * 每个 LivingEntity 持有一份，由饰品通过 {@link #register} / {@link #unregister} 控制。
- * 死亡自动重置（Capability 随实体销毁），超时无伤自动清空（惰性检查）。
- *
- * <pre>
- * 饰品侧调用：
- *   entity.getCapability(CurioAdaptationCapability.CAPABILITY)
- *       .ifPresent(h -> h.register("my_id", maxSlots, adaptFactor, decaySeconds));
- * </pre>
+ * 饰品适应效果 Capability。每个 LivingEntity 持有一份，由饰品 register / unregister 控制；
+ * 死亡自动重置，超时无伤自动清空。
  */
 public class CurioAdaptationCapability {
 
     public static final ResourceLocation ID = new ResourceLocation("tcc", "adaptation");
 
-    // ==================== 适应实例 ====================
+    // 适应实例
 
     /**
      * 单个适应效果实例。每个饰品注册一个独立实例，互不干扰。
@@ -56,9 +49,7 @@ public class CurioAdaptationCapability {
             this.maxAdaptCount = maxAdaptCount;
         }
 
-        /**
-         * @return 是否因超时而被清空
-         */
+        /** 返回是否因超时而被清空。 */
         boolean checkDecay(long currentTick) {
             if (lastHitTick < 0) return false;
             if (currentTick - lastHitTick > decayTicks) {
@@ -72,10 +63,6 @@ public class CurioAdaptationCapability {
 
         /**
          * 处理一次伤害。先做衰减检查，再执行适应逻辑。
-         *
-         * @param msgId     DamageSource.getMsgId()
-         * @param amountRef 伤害值引用（会被修改）
-         * @param tick      当前游戏刻
          */
         void process(String msgId, float[] amountRef, long tick) {
             checkDecay(tick);
@@ -103,7 +90,7 @@ public class CurioAdaptationCapability {
             }
         }
 
-        // ==================== NBT 序列化 ====================
+        // NBT 序列化
 
         CompoundTag serialize() {
             CompoundTag tag = new CompoundTag();
@@ -147,10 +134,10 @@ public class CurioAdaptationCapability {
         }
     }
 
-    // ==================== Handler ====================
+    // Handler
 
     /**
-     * 每个实体的适应数据容器。饰品通过 {@link #register} / {@link #unregister} 管理实例。
+     * 每个实体的适应数据容器，饰品通过 register / unregister 管理实例。
      */
     public static class Handler {
         final LivingEntity owner;
@@ -179,7 +166,6 @@ public class CurioAdaptationCapability {
             return !instances.isEmpty();
         }
 
-        /** 对所有实例执行适应逻辑 */
         public void processAll(String msgId, float[] amountRef) {
             long tick = owner.level().getGameTime();
             for (AdaptInstance inst : instances.values()) {
@@ -187,7 +173,7 @@ public class CurioAdaptationCapability {
             }
         }
 
-        // ==================== NBT ====================
+        // NBT
 
         CompoundTag serializeNBT() {
             CompoundTag tag = new CompoundTag();
@@ -210,7 +196,7 @@ public class CurioAdaptationCapability {
         }
     }
 
-    // ==================== Forge Capability 注册 ====================
+    // Forge Capability 注册
 
     public static final Capability<Handler> CAPABILITY =
         CapabilityManager.get(new CapabilityToken<>() {});

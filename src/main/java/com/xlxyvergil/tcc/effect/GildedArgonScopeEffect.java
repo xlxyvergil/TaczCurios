@@ -14,7 +14,7 @@ public class GildedArgonScopeEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFFCC66);
         double perLevelValue = TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            "c1d2e3f4-6002-4000-8000-000000000001", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "cf77490e1-6c8f-41b6-b363-3faa0a08474c", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
 }

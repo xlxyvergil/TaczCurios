@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -19,11 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 膛线 - 提升特定枪械伤害
- * 效果：特定枪械伤害加成（加算） */
+ * 膛线：提升特定枪械伤害（加算）
+ */
 public class Rifling extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID[] DAMAGE_UUIDS = {
         UUID.fromString("8da03d35-138b-4b16-8f58-afd8f296252f"),
         UUID.fromString("fcb27cd7-a90e-4e1c-8316-976ba894dd4a"),
@@ -32,7 +30,6 @@ public class Rifling extends TccCurioItem {
         UUID.fromString("35741afc-9a1f-458d-89f0-ffd97d2a4832")
     };
     
-    // 修饰符名
     private static final String[] DAMAGE_NAMES = {
         "tcc.rifling.rifle_damage",
         "tcc.rifling.sniper_damage",
@@ -72,27 +69,18 @@ public class Rifling extends TccCurioItem {
         return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.riflingDamageBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.rifling.effect", String.format("%+.0f", damageBoost))
             .withStyle(ChatFormatting.AQUA));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 }

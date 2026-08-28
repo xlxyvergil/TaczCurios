@@ -47,7 +47,6 @@ public class TccCreativeTab {
                 output.accept(TccItems.SEVEN_THUNDERS);
                 output.accept(TccItems.SEVEN_THUNDERS_THUNDER_SEEN);
                 output.accept(TccItems.JUDGEMENT_KEY);
-                // 新增的饰品
                 output.accept(TccItems.BLAZE_STORM);
                 output.accept(TccItems.BLAZE_STORM_PRIME);
                 output.accept(TccItems.RIPPING_PRIME);
@@ -55,7 +54,6 @@ public class TccCreativeTab {
                 output.accept(TccItems.EVIL_ACCURACY);
                 output.accept(TccItems.LIMIT_SPEED);
                 output.accept(TccItems.FEROCIOUS_EXTENSION);
-                // 新增饰品
                 output.accept(TccItems.RIFLING);
                 output.accept(TccItems.CLOSE_RANGE_SHOT);
                 output.accept(TccItems.HEAVY_FIREPOWER);
@@ -64,7 +62,6 @@ public class TccCreativeTab {
                 output.accept(TccItems.MALIGNANT_SPREAD);
                 output.accept(TccItems.CHAMBER);
                 output.accept(TccItems.CHAMBER_PRIME);
-                // 新增的三个饰品
                 output.accept(TccItems.BURST_RELOAD);
                 output.accept(TccItems.CORRUPT_MAGAZINE);
                 output.accept(TccItems.SPLIT_CHAMBER);
@@ -77,13 +74,11 @@ public class TccCreativeTab {
                 output.accept(TccItems.INFECTED_MAGAZINE);
                 output.accept(TccItems.DEADLY_SURGE);
                 output.accept(TccItems.BULLET_SPREAD);
-                // 添加新增的饰品
                 output.accept(TccItems.OPPRESSION_POINT);
                 output.accept(TccItems.OPPRESSION_POINT_PRIME);
                 output.accept(TccItems.SWORD_WIND);
                 output.accept(TccItems.SWORD_WIND_PRIME);
                 
-                // 添加新饰品
                 output.accept(TccItems.DEPLETED_RELOAD);
                 output.accept(TccItems.BURST_RELOAD_PRIME);
                 output.accept(TccItems.TACTICAL_RELOAD_PRIME);
@@ -91,7 +86,6 @@ public class TccCreativeTab {
                 output.accept(TccItems.MAGAZINE_BOOST_PRIME);
                 output.accept(TccItems.TANDEM_MAGAZINE_PRIME);
                 
-                // 添加新的普通饰品
                 output.accept(TccItems.SHOTGUN_EXPANSION);
                 output.accept(TccItems.MAGAZINE_BOOST);
                 output.accept(TccItems.TANDEM_MAGAZINE);
@@ -176,7 +170,7 @@ public class TccCreativeTab {
                 output.accept(TccItems.TIANHUI);
                 output.accept(TccItems.YINGUO_ZHUANLUN);
                 
-                // ========== 新系列 36 件 ==========
+                // 新系列 36 件
                 // --- 戒律（霰弹枪）---
                 output.accept(TccItems.APONIA);
                 output.accept(TccItems.SHENZUI_ZHIJIAN);

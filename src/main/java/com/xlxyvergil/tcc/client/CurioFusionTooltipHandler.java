@@ -47,13 +47,12 @@ public class CurioFusionTooltipHandler {
                     Math.min(data.level(), maxLevel), maxLevel).getString();
         }
 
-        // 稀有度
         String rarityKey = getRarityKey(data.rarity());
         String rarityName = rarityKey != null
                 ? Component.translatable(rarityKey).getString()
                 : null;
 
-        // 从 index 1 开始插入（index 0 是道具名称）
+        // 从 index 1 插入（index 0 是道具名称）
         int insertIdx = 1;
         if (levelText != null) {
             tooltip.add(insertIdx++, Component.literal(levelText));
@@ -62,7 +61,6 @@ public class CurioFusionTooltipHandler {
             tooltip.add(insertIdx++, Component.literal(rarityName));
         }
 
-        // 武器类型限制
         List<String> restriction = curioItem.getWeaponTypeRestriction();
         if (restriction != null && !restriction.isEmpty()) {
             Component restrictionText = buildRestrictionComponent(restriction);

@@ -11,8 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Capability 挂载事件处理。
- * 将所有 TCC 所需的自定义 Capability 挂载到 LivingEntity / Player 上。
+ * Capability 挂载事件处理：将所有 TCC 自定义 Capability 挂载到 LivingEntity / Player 上。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CapabilityAttachHandler {

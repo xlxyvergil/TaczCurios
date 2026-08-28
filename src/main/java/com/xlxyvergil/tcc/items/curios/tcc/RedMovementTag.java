@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,12 +19,10 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
 /**
- * 三饰- 提供持枪移动速度加成
- * 通过TaczAttributeAdd的move_speed属性实现
+ * 三饰：提供持枪移动速度加成（move_speed）
  */
 public class RedMovementTag extends TccCurioItem {
     
-    // 移动速度修饰符的UUID（确保唯一性）
     private static final UUID MOVE_SPEED_MODIFIER_UUID = UUID.fromString("e3ab07c7-2719-4942-99c7-526d58ba3736");
     
     public RedMovementTag(Properties properties) {
@@ -50,25 +47,17 @@ public class RedMovementTag extends TccCurioItem {
         return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.red_movement_tag.effect", String.format("%+.0f", speedBoost))
             .withStyle(ChatFormatting.AQUA));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 }

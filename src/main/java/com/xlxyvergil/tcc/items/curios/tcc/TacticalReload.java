@@ -3,8 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
-import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -20,8 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 战术上膛 - 提升装填速度
- * 效果：提升装填速度（加算）
+ * 战术上膛：提升装填速度（加算）
  */
 public class TacticalReload extends TccCurioItem {
 
@@ -53,26 +50,17 @@ public class TacticalReload extends TccCurioItem {
         return java.util.List.of("shotgun");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-
-
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
 
-        // 添加装备效果
         double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get() ) * 100;
         tooltip.add(Component.translatable("item.tcc.tactical_reload.effect", String.format("%+.0f", reloadBoost))
             .withStyle(ChatFormatting.AQUA));
 
-        // 添加饰品槽位信息
         tooltip.add(Component.literal(""));
-        
 
     }
     

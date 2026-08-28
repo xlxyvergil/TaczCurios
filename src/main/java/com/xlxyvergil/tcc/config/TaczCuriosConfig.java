@@ -234,7 +234,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue endlessNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
 
-        // ==== 吸收饰品通用配置 ====
+        // 吸收饰品通用配置
         /** 吸收饰品触发血量阈值 (0~1, 默认 0.25 = 25%) */
         public final ForgeConfigSpec.DoubleValue curioAbsorptionTriggerHp;
         /** 吸收效果等级 (默认 4 = ABSORPTION IV) */
@@ -288,7 +288,7 @@ public class TaczCuriosConfig {
         
 
 
-        // ========== 逐火之蛾/神之键 新饰品配置 ==========
+        // 逐火之蛾/神之键 新饰品配置
 
         // 格蕾修配置
         public final ForgeConfigSpec.IntValue griseoHurtCooldownTicks;
@@ -319,7 +319,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue shijieFanyanCollapseBaseChance;
         public final ForgeConfigSpec.DoubleValue shijieFanyanCollapsePerLuck;
 
-        // ========== 重型武器系列饰品配置 ==========
+        // 重型武器系列饰品配置
 
         // 维尔薇配置
         public final ForgeConfigSpec.DoubleValue villVTriggerHpRatio;
@@ -429,7 +429,7 @@ public class TaczCuriosConfig {
         // 黑渊白花·创灭螺旋配置
         public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
 
-        // ========== 新系列饰品配置（戒律/黄金/旭光/无限/浮生/空梦）==========
+        // 新系列饰品配置（戒律/黄金/旭光/无限/浮生/空梦）
 
         // 戒律系列·人物线（tcc_3rd）：随机 debuff
         public final ForgeConfigSpec.DoubleValue aponiaDebuffChance;
@@ -531,7 +531,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue collapsePercentPerDebuff;
         public final ForgeConfigSpec.IntValue collapseMaxDebuffCount;
 
-        // ========== 新增33个饰品配置字段(G/R/S/P/M) ==========
+        // 新增33个饰品配置字段(G/R/S/P/M)
         public final ForgeConfigSpec.DoubleValue criticalDelayCritChanceBoost;
         public final ForgeConfigSpec.DoubleValue criticalDelayFireRateReduction;
         public final ForgeConfigSpec.DoubleValue lethalCritCritChance;
@@ -841,7 +841,7 @@ public class TaczCuriosConfig {
             
 
 
-            // ========== 新增33个饰品配置段 ==========
+            // 新增33个饰品配置段
             
             // G-01 关键延迟
             builder.comment("关键延迟饰品配置").push("critical_delay");
@@ -1478,7 +1478,7 @@ public class TaczCuriosConfig {
                     .define("destroyNormalBlocks", false);
             builder.pop();
             
-            // ==== 吸收饰品通用配置 ====
+            // 吸收饰品通用配置
             builder.comment("吸收饰品通用配置（低血量触发黄心）").push("curio_absorption");
             curioAbsorptionTriggerHp = builder
                     .comment("触发血量阈值 (0~1, 默认: 0.25 = 25%)")
@@ -1851,7 +1851,7 @@ public class TaczCuriosConfig {
                     .defineInRange("damagePercent", 1.0, 0.0, 100.0);
             builder.pop();
 
-            // ========== 新系列饰品配置 ==========
+            // 新系列饰品配置
 
             // 戒律系列·人物线：随机 debuff
             builder.comment("阿波尼亚饰品配置").push("aponia");
@@ -2204,7 +2204,7 @@ public class TaczCuriosConfig {
                         o -> o instanceof String);
             builder.pop();
 
-            // ==== 融合升级配置 ====
+            // 融合升级配置
             builder.comment("融合升级系统配置（饰品等级升级）").push("fusion_upgrade");
             fusionGrowthCoefficient = builder
                     .comment("属性增长系数 C。（1）正向饰品（buff/Effect）：实际值 = 基础值 × (1 + 等级 × C)，满级值受 C 影响。（2）反向饰品（属性修饰符）：配置存满级值，公式 = 满级值 × (1 + 等级 × C) / (1 + 最大等级 × C)，满级值锁定为配置值（默认: 0.6)")
@@ -2238,7 +2238,7 @@ public class TaczCuriosConfig {
                     .defineInRange("fusionVesselCapacity", 655200, 1, Integer.MAX_VALUE);
             builder.pop();
 
-            // ==== 融合容器战利品配置 ====
+            // 融合容器战利品配置
             builder.comment("融合容器战利品生成配置").push("fusion_vessel_loot");
             fusionVesselNetherMin = builder
                     .comment("下界要塞/堡垒遗迹中融合容器包含的内融核心最小数量（默认: 200）")

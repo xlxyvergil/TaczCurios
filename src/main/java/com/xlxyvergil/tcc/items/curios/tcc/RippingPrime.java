@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.items.curios.tcc;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
-import com.xlxyvergil.tcc.util.FusionUpgradeUtil;
 import com.xlxyvergil.tcc.util.FusionData;
 
 import net.minecraft.ChatFormatting;
@@ -18,15 +17,13 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 撕裂Prime饰品
- * 效果：增加55%射速（乘算），增加0.2穿透（加算） */
+ * 撕裂Prime：射速+55%（乘算），穿透+0.2（加算）
+ */
 public class RippingPrime extends TccCurioItem {
     
-    // 属性修饰符UUID - 用于唯一标识这些修饰
     private static final UUID ROUNDS_PER_MINUTE_UUID = UUID.fromString("e3eb5b32-fdfc-47ca-988c-a82d9d8173a7");
     private static final UUID PIERCE_UUID = UUID.fromString("269dbf48-02f5-43f9-a4f2-50bf03aa10a6");
     
-    // 修饰符名
     private static final String ROUNDS_PER_MINUTE_NAME = "tcc.ripping_prime.rounds_per_minute";
     private static final String PIERCE_NAME = "tcc.ripping_prime.pierce";
     
@@ -56,29 +53,20 @@ public class RippingPrime extends TccCurioItem {
         return java.util.List.of("rifle", "sniper", "smg", "mg", "rpg");
     }
 
-    /**
-     * 添加物品的悬浮提示信息（鼠标悬停时显示）
-     */
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-        
 
-        
-        // 添加空行分隔
         tooltip.add(Component.literal(""));
-        
-        // 添加装备效果
+
         double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get() ) * 100;
         double penetrationBoost = TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get();
         tooltip.add(Component.translatable("item.tcc.ripping_prime.effect", 
                 String.format("%+.0f", fireRateBoost), String.format("%.1f", penetrationBoost))
             .withStyle(ChatFormatting.WHITE));
-        
-        // 添加饰品槽位信息
+
         tooltip.add(Component.literal(""));
-        
-        
+
     }
     
 
