@@ -52,9 +52,8 @@ public class TccJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(new ItemStack(TccItems.COLLAPSE_CRYSTAL), CollapseCrystalRecipeCategory.TYPE);
-        for (EvolutionRecipe recipe : getEvolutionRecipes()) {
-            registration.addRecipeCatalyst(recipe.to(), EvolutionRecipeCategory.TYPE);
-        }
+        // 进化路径只注册一个代表性催化剂，避免左侧催化剂栏堆叠过多物品
+        registration.addRecipeCatalyst(new ItemStack(TccItems.SHIJIE_FANYAN), EvolutionRecipeCategory.TYPE);
     }
 
     private List<EvolutionRecipe> getEvolutionRecipes() {

@@ -3,12 +3,11 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.registries.TccStats;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.stats.Stats;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,8 +70,7 @@ public class LuejiZhiShou extends BoundCurioItem {
 
     @SubscribeEvent
     public static void onItemFished(ItemFishedEvent event) {
-        Player player = event.getEntity();
-        if (player.level().isClientSide) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,
@@ -80,11 +78,6 @@ public class LuejiZhiShou extends BoundCurioItem {
         if (equipped.isEmpty()) {
             return;
         }
-        if (!((LuejiZhiShou) equipped.getItem()).matchesRestriction(player)) {
-            return;
-        }
-        // 装备掠集之兽时钓鱼计数（自定义 stat）
-        player.awardStat(Stats.CUSTOM.get(TccStats.FISH_CAUGHT_WHILE_EQUIPPED));
         // 0.01% 概率获得下界之星 / 龙蛋
         if (player.getRandom().nextDouble() < specialFishChance()) {
             ItemStack special = player.getRandom().nextBoolean()

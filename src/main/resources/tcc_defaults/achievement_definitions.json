@@ -2086,9 +2086,8 @@
         "hidden": false
       },
       "parent": "tcc:tcc_root",
-      "trigger": "stat_polling",
+      "trigger": "fish_food_eaten",
       "conditions": {
-        "stat": "tcc:fish_food_eaten",
         "criteria_count": 333
       },
       "prerequisites": [],
@@ -2116,10 +2115,9 @@
         "hidden": false
       },
       "parent": "tcc:pado_philipis_grant",
-      "trigger": "stat_polling",
+      "trigger": "fish_caught",
       "conditions": {
         "equippedCurios": ["tcc:pado_philipis"],
-        "stat": "tcc:fish_caught_while_equipped",
         "criteria_count": 300
       },
       "prerequisites": ["tcc:pado_philipis_grant"],

@@ -31,7 +31,7 @@ public class EvolutionRecipeCategory implements IRecipeCategory<EvolutionRecipe>
 
     public EvolutionRecipeCategory(IGuiHelper guiHelper) {
         this.arrow = guiHelper.getRecipeArrow();
-        this.icon = guiHelper.createDrawableItemStack(new ItemStack(TccItems.SEVEN_THUNDERS));
+        this.icon = guiHelper.createDrawableItemStack(new ItemStack(TccItems.SHIJIE_FANYAN));
     }
 
     @Override

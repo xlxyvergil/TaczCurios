@@ -35,6 +35,9 @@ public final class AchievementDefinitions {
     private static final Map<String, AchievementDef> ACHIEVEMENTS = new LinkedHashMap<>();
     private static final Map<String, List<AchievementDef>> BY_TRIGGER = new HashMap<>();
 
+    public static final String TRIGGER_FISH_CAUGHT = "fish_caught";
+    public static final String TRIGGER_FISH_FOOD_EATEN = "fish_food_eaten";
+
     private AchievementDefinitions() {}
 
     // 公共 API
@@ -219,9 +222,7 @@ public final class AchievementDefinitions {
         public boolean isPlayerKilled() { return playerKilled != null && playerKilled; }
         public ResourceLocation idRL() { return new ResourceLocation(id); }
 
-        /**
-         * 目标计数：击杀类为各击杀条件计数之和（AND 多类型另用于显示）；stat_polling / raid_victory 为条件计数（默认 1）；其余为 1。
-         */
+        /** 目标计数：击杀类为各击杀条件之和，其余按条件计数，缺省 1。 */
         public int targetCount() {
             if (conditions != null && conditions.kills() != null && !conditions.kills().isEmpty()) {
                 int total = 0;
@@ -230,7 +231,10 @@ public final class AchievementDefinitions {
                 }
                 return total;
             }
-            if (conditions != null && (conditions.stat() != null || RaidVictoryEventHandler.TRIGGER_RAID_VICTORY.equals(trigger))) {
+            if (conditions != null && (conditions.stat() != null
+                    || RaidVictoryEventHandler.TRIGGER_RAID_VICTORY.equals(trigger)
+                    || TRIGGER_FISH_CAUGHT.equals(trigger)
+                    || TRIGGER_FISH_FOOD_EATEN.equals(trigger))) {
                 return conditions.criteriaCount();
             }
             return 1;
