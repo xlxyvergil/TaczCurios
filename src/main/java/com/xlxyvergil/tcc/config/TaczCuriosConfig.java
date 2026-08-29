@@ -18,6 +18,10 @@ public class TaczCuriosConfig {
     }
     
     public static class Common {
+        // 鱼类统计配置（空梦成就 tcc:fish_food_eaten）
+        /** 统计为食用鱼类的物品注册名列表（如 minecraft:cod），吃完 +1 */
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> fishFoodItems;
+
         // 天火圣裁配置
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
@@ -617,7 +621,18 @@ public class TaczCuriosConfig {
         
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
-            
+
+            // 鱼类统计配置（空梦成就 tcc:fish_food_eaten）
+            builder.comment("统计为食用鱼类的物品注册名列表（如 minecraft:cod），吃到该列表中的物品后 tcc:fish_food_eaten +1").push("fish_food_items");
+            fishFoodItems = builder
+                    .comment("鱼类物品注册名列表")
+                    .defineList("items", List.of(
+                            "minecraft:cod", "minecraft:cooked_cod",
+                            "minecraft:salmon", "minecraft:cooked_salmon",
+                            "minecraft:pufferfish", "minecraft:tropical_fish"
+                    ), o -> o instanceof String);
+            builder.pop();
+
             // 天火圣裁配置
             builder.comment("天火圣裁饰品配置").push("heaven_fire_judgment");
             heavenFireJudgmentDamageBoost = builder
