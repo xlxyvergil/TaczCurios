@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
-import dev.shadowsoffire.attributeslib.api.ALObjects;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -24,7 +23,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
@@ -58,10 +56,6 @@ public class ZhenWo extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2df6423f-42bc-4629-8624-ebb8cf4ff4c8");
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("8f851e69-0217-4e14-af7f-ee655b4a1cc7");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("9b7d1c2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e");
-    private static final UUID CREATIVE_FLIGHT_UUID = UUID.fromString("0a1e2b3c-4d5e-6f70-8192-a3b4c5d6e7f8");
-    /** 创造飞行修饰符名（attributeslib 布尔属性） */
-    private static final String CREATIVE_FLIGHT_MODIFIER = "tcc.zhen_wo.creative_flight";
-
     /** 结界倒计时（剩余 tick），存于饰品 NBT，随物品持久 */
     private static final String BARRIER_KEY = "tcc_zhen_wo_barrier";
     /** 冷却倒计时（剩余 tick） */
@@ -94,14 +88,6 @@ public class ZhenWo extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
                 1.0, KNOCKBACK_RESISTANCE_UUID, "tcc.zhen_wo.knockback_resistance",
                 AttributeModifier.Operation.ADDITION);
-            // 佩戴获得创造飞行（attributeslib 布尔属性，ADDITION +1.0 启用）
-            if (livingEntity instanceof Player player) {
-                AttributeInstance inst = player.getAttribute(ALObjects.Attributes.CREATIVE_FLIGHT.get());
-                if (inst != null && inst.getModifier(CREATIVE_FLIGHT_UUID) == null) {
-                    inst.addTransientModifier(new AttributeModifier(CREATIVE_FLIGHT_UUID,
-                        () -> CREATIVE_FLIGHT_MODIFIER, 1.0, AttributeModifier.Operation.ADDITION));
-                }
-            }
             // 常驻比例减伤：佩戴期间始终保留此比例伤害，对标准 hurt 与直接 setHealth 扣血均生效
             DamageResistanceHelper.setDamageReduction(livingEntity,
                 (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
@@ -118,12 +104,6 @@ public class ZhenWo extends BoundCurioItem {
             "tcc.zhen_wo.all_attributes", 0, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
             KNOCKBACK_RESISTANCE_UUID);
-        if (livingEntity instanceof Player player) {
-            AttributeInstance inst = player.getAttribute(ALObjects.Attributes.CREATIVE_FLIGHT.get());
-            if (inst != null) {
-                inst.removeModifier(CREATIVE_FLIGHT_UUID);
-            }
-        }
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
     }
@@ -427,11 +407,6 @@ public class ZhenWo extends BoundCurioItem {
         // 击退抗性 100%（免疫击退），属性修饰符统一展示
         tooltip.add(formatModifierTooltip(1.0, "%.0f",
                 Component.translatable(Attributes.KNOCKBACK_RESISTANCE.getDescriptionId()))
-            .withStyle(ChatFormatting.GOLD));
-
-        // 创造飞行（attributeslib 布尔属性）
-        tooltip.add(formatModifierTooltip(1.0, "%.0f",
-                Component.translatable(ALObjects.Attributes.CREATIVE_FLIGHT.get().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         double damageTakenFactor = TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get() * 100;
