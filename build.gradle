@@ -138,6 +138,22 @@ repositories {
         }
     }
 
+    // JEI official maven (and ModMaven mirror) for optional JEI API dependency
+    maven {
+        name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+        content {
+            includeGroup "mezz.jei"
+        }
+    }
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+        content {
+            includeGroup "mezz.jei"
+        }
+    }
+
     // If you have mod jar dependencies in ./libs, you can declare them as a repository like so.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:flat_dir_resolver
     flatDir {
@@ -173,6 +189,12 @@ dependencies {
     compileOnly fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
     // Iron's Spells 'n Spellbooks (optional, for true_invisibility effect)
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
+
+    // JEI (optional, compile only) - 用于显示饰品进化路径与崩坏结晶合成
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    // runtime 提供完整 JEI，便于开发环境测试；发布时不打包
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
     // RevelationFix (optional, compile only) - 本地依赖
     compileOnly fg.deobf(files("libs/[Forge]RevelationFix-1.20.1-4.4.jar"))

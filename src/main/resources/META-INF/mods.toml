@@ -84,3 +84,10 @@ mandatory=false
 versionRange="*"
 ordering="AFTER"
 side="BOTH"
+
+[[dependencies.tcc]]
+modId="jei"
+mandatory=false
+versionRange="*"
+ordering="AFTER"
+side="CLIENT"

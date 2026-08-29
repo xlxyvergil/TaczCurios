@@ -647,5 +647,9 @@
   "tcc.tooltip.affected_by_imaginary_resistance": "§7Effect is affected by Imaginary Resistance",
   "tcc.tooltip.affected_by_luck": "§7Effect is affected by Luck",
   "tcc.tooltip.affected_by_max_health": "§7Effect is affected by Max Health",
-  "message.tcc.kikaku_ichijin.other_sacrifice": "%s: %s, this is a necessary sacrifice, you understand"
+  "message.tcc.kikaku_ichijin.other_sacrifice": "%s: %s, this is a necessary sacrifice, you understand",
+  "jei.tcc.category.evolution": "Curio Evolution Path",
+  "jei.tcc.category.collapse": "Collapse Crystal Synthesis",
+  "jei.tcc.collapse.complete": "Materials %1$s/%2$s",
+  "jei.tcc.collapse.hint": "Consumed on unequip"
 }

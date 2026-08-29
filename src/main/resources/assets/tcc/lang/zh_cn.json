@@ -644,5 +644,9 @@
   "stat.tcc.fish_caught_while_equipped": "装备帕朵菲利斯钓鱼次数",
   "tcc.tooltip.affected_by_imaginary_resistance": "效果受到虚数抗性影响",
   "tcc.tooltip.affected_by_luck": "效果受到幸运值影响",
-  "tcc.tooltip.affected_by_max_health": "效果受到最大生命值影响"
+  "tcc.tooltip.affected_by_max_health": "效果受到最大生命值影响",
+  "jei.tcc.category.evolution": "饰品进化路径",
+  "jei.tcc.category.collapse": "崩坏结晶合成",
+  "jei.tcc.collapse.complete": "素材 %1$s/%2$s 种",
+  "jei.tcc.collapse.hint": "取下饰品时消耗"
 }
