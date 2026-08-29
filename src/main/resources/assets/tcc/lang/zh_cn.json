@@ -478,6 +478,7 @@
   "item.tcc.dream.curio_effect_loot": "击杀有战利品翻倍",
   "item.tcc.dream.key_effect": "概率造成伤害造成 %s 倍伤害",
   "tcc.tooltip.gun_to_imaginary": "伤害转化为虚数伤害",
+  "tcc.tooltip.always_infection": "攻击必定触发侵染",
   "effect.tcc.zhen_wo_barrier": "真我结界",
   "// 逐火之蛾系列饰品": "",
   "tcc.tooltip.damage_reduction": "降低受到的伤害%1$s%%",
