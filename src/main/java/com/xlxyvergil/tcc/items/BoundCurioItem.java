@@ -99,13 +99,14 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
      */
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
-        Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
-        if (player == null) {
+        // 仅当佩戴实体是已死亡的女仆（生成墓碑）时才允许取出并转入墓碑，此时不再校验崩坏结晶。
+        // 其余实体（玩家、普通生物）死亡时均不因死亡放行取出。
+        // MaidCompat.isMaid() 内置 ModList.isLoaded 判定，女仆模组未安装时返回 false，保证可选兼容。
+        if (MaidCompat.isMaid(slotContext.entity()) && slotContext.entity().isDeadOrDying()) {
             return true;
         }
-        // 佩戴实体死亡（如女仆死亡生成墓碑）时允许取出，否则绑定饰品会因 ALWAYS_KEEP 且无法
-        // 提取而随实体一并消失。此时不再校验崩坏结晶。
-        if (slotContext.entity() == null || slotContext.entity().isDeadOrDying()) {
+        Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
+        if (player == null) {
             return true;
         }
         if (player.isCreative()) {
@@ -120,10 +121,10 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     /** 绑定饰品在绑定槽位中非创造模式卸下时，自动消耗（主人背包中的）一个崩坏结晶。 */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        // 佩戴实体死亡时（如女仆死亡转入墓碑）不消耗崩坏结晶，避免主人被无形扣掉结晶。
-        boolean deadOrDying = slotContext.entity() == null || slotContext.entity().isDeadOrDying();
+        // 仅女仆死亡转入墓碑时不消耗崩坏结晶，避免主人被无形扣掉结晶。
+        boolean maidDead = MaidCompat.isMaid(slotContext.entity()) && slotContext.entity().isDeadOrDying();
         Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
-        if (player != null && !player.isCreative() && isBoundSlot(slotContext) && !deadOrDying) {
+        if (player != null && !player.isCreative() && isBoundSlot(slotContext) && !maidDead) {
             consumeCollapseCrystal(player);
         }
         super.onUnequip(slotContext, newStack, stack);
