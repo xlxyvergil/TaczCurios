@@ -1,7 +1,9 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -88,8 +90,8 @@ public class QidianChonggou extends BoundCurioItem {
 
     private static void handleTeleport(EntityTeleportEvent event) {
         Entity entity = event.getEntity();
-        if (entity instanceof Player) {
-            return; // 仅拦截非玩家实体
+        if (entity instanceof Player || MaidCompat.isMaid(entity)) {
+            return; // 仅拦截非玩家、非女仆实体
         }
         if (!(entity.level() instanceof ServerLevel serverLevel)) {
             return;
@@ -104,6 +106,21 @@ public class QidianChonggou extends BoundCurioItem {
                 continue;
             }
             if (player.distanceToSqr(entity) <= teleportRange() * teleportRange()) {
+                event.setCanceled(true);
+                return;
+            }
+        }
+        // 女仆佩戴者同样可以拦截
+        for (EntityMaid maid : MaidCompat.getMaidsNear(serverLevel, entity.blockPosition(), teleportRange())) {
+            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(maid,
+                    stack -> stack.getItem() instanceof QidianChonggou);
+            if (equipped.isEmpty()) {
+                continue;
+            }
+            if (!((QidianChonggou) equipped.getItem()).matchesRestriction(maid)) {
+                continue;
+            }
+            if (maid.distanceToSqr(entity) <= teleportRange() * teleportRange()) {
                 event.setCanceled(true);
                 return;
             }

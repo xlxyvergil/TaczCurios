@@ -9,13 +9,12 @@ import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -142,10 +141,10 @@ public class Fanxing extends BoundCurioItem {
         int computedLuck = 0;
         int computedCooldown = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get();
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                int luck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null) {
+                resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                int luck = (int) wearer.getAttributeValue(AttributeHelper.LUCK);
                 computedLuck = (int)(resistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get());
                 computedCooldown = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get()
                     + (luck / 2) * TaczCuriosConfig.COMMON.fanxingLuckPerTick.get();

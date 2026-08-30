@@ -5,12 +5,10 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -41,19 +39,6 @@ public class QianjieYicheng extends BoundCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_UUID);
-    }
-
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerUUID = tag.getString("BoundPlayer");
-            if (slotContext.entity() instanceof Player player) {
-                return player.getStringUUID().equals(boundPlayerUUID);
-            }
-            return false;
-        }
-        return super.canEquip(slotContext, stack);
     }
 
     @Override

@@ -14,7 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -23,32 +24,39 @@ import net.minecraftforge.fml.common.Mod;
 import org.joml.Matrix4f;
 
 /**
- * 结界地面特效渲染器（无实体）：以本地玩家位置为中心绘制图标贴图与粉色圆环，
- * 状态由玩家身上的结界标记 buff（ZhenWoBarrierEffect）驱动。
+ * 结界地面特效渲染器（无实体）：以「实际携带结界标记 buff（ZhenWoBarrierEffect）的实体」位置为中心
+ * 绘制图标贴图与粉色圆环。无论是玩家还是车万女仆佩戴，都在其所在位置渲染。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ZhenWoBarrierLevelRenderer {
 
     /** 地面特效贴图 = 结界标记 buff 图标（mob_effect/zhen_wo_barrier.png） */
     private static final ResourceLocation TEXTURE = new ResourceLocation(TaczCurios.MODID, "textures/mob_effect/zhen_wo_barrier.png");
-    /** 特效平面悬浮在玩家脚底上方的高度 */
+    /** 特效平面悬浮在实体脚底上方的高度 */
     private static final double LIFT = 0.05D;
 
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null || mc.player == null) return;
-        Player player = mc.player;
-        MobEffectInstance barrier = player.getEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
-        if (barrier == null) return;
+        if (mc.level == null) return;
 
         // 特效完全不透明显示：不透明度固定为 1.0（取消半透明与淡出）
         float alpha = 1.0F;
+        Vec3 camPos = event.getCamera().getPosition();
 
-        // 中心 = 本地玩家实时渲染位置（零延迟跟随）
-        Vec3 center = player.getPosition(event.getPartialTick());
-        renderBarrier(center, alpha, event.getPoseStack(), event.getCamera().getPosition());
+        // 以「携带结界标记 buff 的实体」为中心（玩家或女仆），而非固定本地玩家
+        for (Entity entity : mc.level.entitiesForRendering()) {
+            if (!(entity instanceof LivingEntity living)) {
+                continue;
+            }
+            MobEffectInstance barrier = living.getEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
+            if (barrier == null) {
+                continue;
+            }
+            Vec3 center = living.getPosition(event.getPartialTick());
+            renderBarrier(center, alpha, event.getPoseStack(), camPos);
+        }
     }
 
     private static void renderBarrier(Vec3 center, float alpha, PoseStack pose, Vec3 camPos) {

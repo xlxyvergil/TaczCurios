@@ -1,7 +1,9 @@
 package com.xlxyvergil.tcc.util;
 
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
+import com.xlxyvergil.tcc.api.items.IBindable;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -31,9 +33,23 @@ public final class CurioGrantHelper {
             return false;
         }
 
+        // 3rd / tdk 等绑定类饰品：发放即绑定到接收玩家。
+        // 即使溢出到背包（未触发 onEquip），物品也已标记归属，非归属玩家无法再装备。
+        if (stack.getItem() instanceof IBindable) {
+            bindToPlayer(stack, player);
+        }
+
         return CuriosApi.getCuriosInventory(player)
                 .map(inv -> give(inv, player, stack, overflowMode))
                 .orElse(false);
+    }
+
+    /** 将绑定类饰品写入归属玩家信息（与 BoundCurioItem.bindIfNeeded 保持一致）。 */
+    private static void bindToPlayer(ItemStack stack, Player player) {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putBoolean("IsBound", true);
+        tag.putString("BoundPlayer", player.getStringUUID());
+        tag.putString("BoundPlayerName", player.getName().getString());
     }
 
     private static boolean give(ICuriosItemHandler inv, Player player, ItemStack stack, OverflowMode overflowMode) {

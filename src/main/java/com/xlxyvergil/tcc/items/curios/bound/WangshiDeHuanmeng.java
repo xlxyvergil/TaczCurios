@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -68,7 +67,7 @@ public class WangshiDeHuanmeng extends BoundCurioItem {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
         Entity attackerEntity = event.getSource().getEntity();
-        if (!(attackerEntity instanceof Player player) || player.level().isClientSide) {
+        if (!(attackerEntity instanceof LivingEntity player) || player.level().isClientSide) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,

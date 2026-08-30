@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
@@ -93,8 +94,8 @@ public class KikakuIchijin extends TccCurioItem {
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(
                 Component.translatable("message.tcc.kikaku_ichijin.self_sacrifice", attacker.getName()), false);
         } else {
-            Component sacrificeName = sacrifice instanceof EntityMaid maid
-                ? maid.getDisplayName()
+            Component sacrificeName = MaidCompat.isMaid(sacrifice)
+                ? ((EntityMaid) sacrifice).getDisplayName()
                 : sacrifice.getName();
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(
                 Component.translatable("message.tcc.kikaku_ichijin.sacrifice", attacker.getName(), sacrificeName), false);
@@ -131,7 +132,7 @@ public class KikakuIchijin extends TccCurioItem {
     private static LivingEntity findSacrifice(LivingEntity attacker, ServerLevel level) {
         AABB searchBox = attacker.getBoundingBox().inflate(64.0);
 
-        if (attacker instanceof EntityMaid) {
+        if (MaidCompat.isMaid(attacker)) {
             // 女仆装备者：献祭最近的玩家
             List<Player> nearbyPlayers = level.getEntitiesOfClass(
                 Player.class, searchBox,

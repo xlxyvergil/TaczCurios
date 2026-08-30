@@ -9,6 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -43,6 +44,14 @@ public final class LivingDeathEventHandler {
         // 击杀者可能是玩家本体，也可能是佩戴者（主人）的女仆，统一归一化为主人玩家来计数
         Player killerPlayer = MaidCompat.resolveOwnerPlayer(sourceEntity);
         if (killerPlayer != null) {
+            // 女仆击杀：把击杀计入主人玩家的原版 mob_kills 统计。
+            // 这样 stat_polling 与 living_death 的 extraStats 中依赖 minecraft:mob_kills 的成就
+            //（如 huajie_zhiyan、huajie_to_aomie）也能被女仆击杀推进。
+            // 玩家本体击杀由原版自行统计，此处不重复发放。
+            if (MaidCompat.isMaid(sourceEntity) && !(killed instanceof Player)
+                    && killerPlayer instanceof ServerPlayer sp) {
+                sp.awardStat(Stats.CUSTOM.get(Stats.MOB_KILLS));
+            }
             String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
             handleTrigger(killerPlayer, killed, killedKey, sourceEntity, source,
                     TRIGGER_LIVING_DEATH, false, false);

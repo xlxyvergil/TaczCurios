@@ -8,13 +8,11 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -70,19 +68,6 @@ public class TingzhiZhijian extends BoundCurioItem {
     }
 
     @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerUUID = tag.getString("BoundPlayer");
-            if (slotContext.entity() instanceof Player player) {
-                return player.getStringUUID().equals(boundPlayerUUID);
-            }
-            return false;
-        }
-        return super.canEquip(slotContext, stack);
-    }
-
-    @Override
     protected boolean isBoundItem() {
         return true;
     }
@@ -108,9 +93,9 @@ public class TingzhiZhijian extends BoundCurioItem {
 
         double resistance = 0;
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null) {
+                resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             }
         }
         double basePercent = TaczCuriosConfig.COMMON.tingzhiZhijianAmmoBasePercent.get();

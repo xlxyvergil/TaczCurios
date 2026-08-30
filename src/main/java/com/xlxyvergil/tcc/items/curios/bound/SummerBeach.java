@@ -9,11 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -65,20 +63,7 @@ public class SummerBeach extends BoundCurioItem {
     public java.util.List<String> getWeaponTypeRestriction() {
         return java.util.List.of("pistol");
     }
-    
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerUUID = tag.getString("BoundPlayer");
-            if (slotContext.entity() instanceof Player player) {
-                return player.getStringUUID().equals(boundPlayerUUID);
-            }
-            return false;
-        }
-        return super.canEquip(slotContext, stack);
-    }
-    
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {

@@ -13,7 +13,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,7 +22,6 @@ import net.minecraft.world.entity.LivingEntity;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -156,10 +155,10 @@ public class XukongWancangYZTH extends BoundCurioItem {
 
         double computedImaginaryDamage = 0;
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                double attackDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null) {
+                double attackDamage = wearer.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                 computedImaginaryDamage = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get()
                     + attackDamage * (resistance / 100.0);
             }

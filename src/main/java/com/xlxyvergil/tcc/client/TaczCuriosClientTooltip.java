@@ -1,14 +1,18 @@
 package com.xlxyvergil.tcc.client;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -145,5 +149,30 @@ public class TaczCuriosClientTooltip {
             }
         } catch (Exception ignored) {}
         return "en_us";
+    }
+
+    /**
+     * 解析「真正佩戴该饰品的实体」，用于 tooltip 展示佩戴者的真实数值。
+     * 优先级：佩戴该饰品的女仆 > 佩戴该饰品的本地玩家 > 本地玩家（兜底）。
+     * 仅在客户端调用。
+     */
+    public static LivingEntity resolveWearer(ItemStack stack) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc == null || mc.level == null) {
+            return null;
+        }
+        // 1. 优先显示佩戴者：佩戴该饰品的女仆
+        LivingEntity maidWearer = MaidCompat.findWearingMaid(mc.level, s -> ItemStack.isSameItem(s, stack));
+        if (maidWearer != null) {
+            return maidWearer;
+        }
+        Player player = mc.player;
+        // 2. 其次：佩戴该饰品的本地玩家
+        if (player != null
+                && !CurioSearchHelper.findFirstEquippedStack(player, s -> ItemStack.isSameItem(s, stack)).isEmpty()) {
+            return player;
+        }
+        // 3. 无佩戴者时兜底：本地玩家
+        return player;
     }
 }

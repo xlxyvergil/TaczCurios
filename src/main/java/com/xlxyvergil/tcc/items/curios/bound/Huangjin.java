@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -114,23 +116,31 @@ public class Huangjin extends BoundCurioItem {
         for (ServerLevel level : server.getAllLevels()) {
             List<ServerPlayer> players = level.players();
             for (ServerPlayer player : players) {
-                ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,
-                        stack -> stack.getItem() instanceof Huangjin);
-                if (equipped.isEmpty()) {
-                    continue;
-                }
-                if (!((Huangjin) equipped.getItem()).matchesRestriction(player)) {
-                    continue;
-                }
-                // 统一随机：整个光环内所有人获得同一个 buff（避免每人各自独立随机）
-                MobEffect effect = MobEffectPoolHelper.randomBeneficial(player.getRandom());
-                for (ServerPlayer other : players) {
-                    if (player.distanceToSqr(other) > auraRange() * auraRange()) {
-                        continue;
-                    }
-                    MobEffectPoolHelper.applyEffect(other, effect, buffDuration(), buffAmplifier(), player);
-                }
+                applyAura(players, player);
             }
+            for (EntityMaid maid : MaidCompat.getMaids(level)) {
+                applyAura(players, maid);
+            }
+        }
+    }
+
+    /** 以单个佩戴者（玩家或女仆）为中心，为其光环范围内的玩家统一施加同一个随机增益 buff。 */
+    private static void applyAura(List<ServerPlayer> players, LivingEntity wearer) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(wearer,
+                stack -> stack.getItem() instanceof Huangjin);
+        if (equipped.isEmpty()) {
+            return;
+        }
+        if (!((Huangjin) equipped.getItem()).matchesRestriction(wearer)) {
+            return;
+        }
+        // 统一随机：整个光环内所有人获得同一个 buff（避免每人各自独立随机）
+        MobEffect effect = MobEffectPoolHelper.randomBeneficial(wearer.getRandom());
+        for (ServerPlayer other : players) {
+            if (wearer.distanceToSqr(other) > auraRange() * auraRange()) {
+                continue;
+            }
+            MobEffectPoolHelper.applyEffect(other, effect, buffDuration(), buffAmplifier(), wearer);
         }
     }
 

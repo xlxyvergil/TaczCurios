@@ -16,7 +16,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
@@ -106,7 +105,7 @@ public class PadoPhilipis extends BoundCurioItem {
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
         Entity attacker = event.getSource().getEntity();
-        if (!(attacker instanceof Player player) || player.level().isClientSide) {
+        if (!(attacker instanceof LivingEntity player) || player.level().isClientSide) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,

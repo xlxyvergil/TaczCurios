@@ -13,7 +13,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -38,19 +37,6 @@ public class Hua extends BoundCurioItem {
 
     public Hua(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.getBoolean("IsBound")) {
-            String boundPlayerUUID = tag.getString("BoundPlayer");
-            if (slotContext.entity() instanceof Player player) {
-                return player.getStringUUID().equals(boundPlayerUUID);
-            }
-            return false;
-        }
-        return super.canEquip(slotContext, stack);
     }
 
     @Override

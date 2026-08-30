@@ -10,7 +10,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,7 +19,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -162,9 +161,9 @@ public class ShijieFanyan extends BoundCurioItem {
         double critDamage = 0;
         double collapseChance = 0;
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                int actualLuck = (int) player.getAttributeValue(AttributeHelper.LUCK);
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null) {
+                int actualLuck = (int) wearer.getAttributeValue(AttributeHelper.LUCK);
                 critChance = actualLuck * TaczCuriosConfig.COMMON.shijieFanyanCritChancePerLuck.get();
                 critDamage = actualLuck * TaczCuriosConfig.COMMON.shijieFanyanCritDamagePerLuck.get();
                 collapseChance = (TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()

@@ -12,7 +12,7 @@ import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -115,9 +115,8 @@ public class ZhenWo extends BoundCurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
-        if (!(entity instanceof Player player)) return;
 
-        if (player.isDeadOrDying()) return;
+        if (entity.isDeadOrDying()) return;
 
         CompoundTag tag = stack.getOrCreateTag();
         int barrierTicks = tag.getInt(BARRIER_KEY);
@@ -126,21 +125,21 @@ public class ZhenWo extends BoundCurioItem {
         // 真我结界持续期间减伤 100%（保留比例为 0）；其余时间维持配置的减伤比例
         float retain = barrierTicks > 0 ? 0.0F
             : (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
-        DamageResistanceHelper.setDamageReduction(player, retain);
+        DamageResistanceHelper.setDamageReduction(entity, retain);
 
         // 结界进行中
         if (barrierTicks > 0) {
             barrierTicks--;
             tag.putInt(BARRIER_KEY, barrierTicks);
             // 每 5 tick 以剩余结界时长为 buff 时长续期，客户端据此渲染脚下特效并淡出
-            if (player.tickCount % 5 == 0) {
-                refreshBarrierBuff(player, barrierTicks);
+            if (entity.tickCount % 5 == 0) {
+                refreshBarrierBuff(entity, barrierTicks);
             }
             if (barrierTicks <= 0) {
                 tag.putInt(COOLDOWN_KEY, TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get() * 20);
                 return;
             }
-            applyBarrierEffects(player);
+            applyBarrierEffects(entity);
             return;
         }
 
@@ -152,13 +151,13 @@ public class ZhenWo extends BoundCurioItem {
 
         // 任意形式血量小于 5% 时触发
         double triggerRatio = TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get();
-        if (player.getHealth() / player.getMaxHealth() < triggerRatio) {
-            activateBarrier(player, stack);
+        if (entity.getHealth() / entity.getMaxHealth() < triggerRatio) {
+            activateBarrier(entity, stack);
         }
     }
 
     /** 施加/续期结界标记 buff（时长 = 剩余结界 tick，客户端据此渲染脚下地面特效） */
-    private static void refreshBarrierBuff(Player player, int remainingTicks) {
+    private static void refreshBarrierBuff(LivingEntity player, int remainingTicks) {
         player.addEffect(new MobEffectInstance(TccMobEffects.ZHEN_WO_BARRIER.get(),
             remainingTicks, 0, false, false, true));
     }
@@ -167,7 +166,7 @@ public class ZhenWo extends BoundCurioItem {
      * 单 tick 结界效果（球形范围，半径 zhenWoBarrierRadius）：
      * 每秒为范围内玩家与车万女仆回满血，并对敌人（含仇恨者/伤害者）施加缓慢与最大血量虚数伤害。
      */
-    private static void applyBarrierEffects(Player player) {
+    private static void applyBarrierEffects(LivingEntity player) {
         double radius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get(); // 配置值即为生效半径
         double radiusSq = radius * radius;
         AABB sphereBox = new AABB(player.blockPosition()).inflate(radius);
@@ -203,7 +202,7 @@ public class ZhenWo extends BoundCurioItem {
     /**
      * 判断实体是否应被结界锁定（原版判定规则）：敌对怪物、仇恨佩戴者、或曾对佩戴者造成伤害的实体。
      */
-    private static boolean isBarrierTarget(LivingEntity target, Player player) {
+    private static boolean isBarrierTarget(LivingEntity target, LivingEntity player) {
         if (target instanceof Enemy) return true;
         if (target instanceof Mob mob && mob.getTarget() == player) return true;
         return player.getLastHurtByMob() == target;
@@ -221,18 +220,18 @@ public class ZhenWo extends BoundCurioItem {
 
     /** 粉色光柱任务：记录佩戴者、伤害目标与已推进的 tick 数。 */
     private static final class PinkBeam {
-        final Player owner;
+        final LivingEntity owner;
         final LivingEntity target;
         int age;
 
-        PinkBeam(Player owner, LivingEntity target) {
+        PinkBeam(LivingEntity owner, LivingEntity target) {
             this.owner = owner;
             this.target = target;
         }
     }
 
     /** 登记一道粉色光柱：1 秒（PINK_BEAM_TICKS tick）后对目标结算佩戴者最大血量虚数伤害 */
-    private static void startPinkBeam(Player owner, LivingEntity target) {
+    private static void startPinkBeam(LivingEntity owner, LivingEntity target) {
         ACTIVE_BEAMS.add(new PinkBeam(owner, target));
     }
 
@@ -289,20 +288,33 @@ public class ZhenWo extends BoundCurioItem {
         Vec3 pos = entity.position();
 
         for (Player player : level.players()) {
-            if (player == null || !player.isAlive()) continue;
-            ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player,
-                s -> s.getItem() instanceof ZhenWo);
-            if (stack.isEmpty()) continue;
-            if (stack.getOrCreateTag().getInt(BARRIER_KEY) <= 0) continue;
-            if (player.distanceToSqr(pos) <= radiusSq) {
+            if (isActiveBarrierWearer(player, pos, radiusSq)) {
                 return true;
+            }
+        }
+        if (ModList.get().isLoaded("touhou_little_maid")) {
+            for (EntityMaid maid : level.getEntitiesOfClass(EntityMaid.class,
+                    new AABB(pos, pos).inflate(radius), m -> m.isAlive())) {
+                if (isActiveBarrierWearer(maid, pos, radiusSq)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
+    /** 判断某个佩戴者（玩家或女仆）是否正处于激活结界球形范围内。 */
+    private static boolean isActiveBarrierWearer(LivingEntity wearer, Vec3 pos, double radiusSq) {
+        if (wearer == null || !wearer.isAlive()) return false;
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(wearer,
+            s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) return false;
+        if (stack.getOrCreateTag().getInt(BARRIER_KEY) <= 0) return false;
+        return wearer.distanceToSqr(pos) <= radiusSq;
+    }
+
     /** 每秒：对结界内玩家与车万女仆回满血，并为玩家回满饱食度 */
-    private static void healAllies(Player player, double radiusSq, AABB sphereBox) {
+    private static void healAllies(LivingEntity player, double radiusSq, AABB sphereBox) {
         List<Player> friendlyPlayers = player.level().getEntitiesOfClass(Player.class, sphereBox,
             p -> p.isAlive() && p.distanceToSqr(player) <= radiusSq);
         for (Player p : friendlyPlayers) {
@@ -343,7 +355,7 @@ public class ZhenWo extends BoundCurioItem {
     /**
      * 统一触发结界：立即回满血并激活结界（施加标记 buff 并对范围内实体生效）。供低血量自然触发与死亡复活共用。
      */
-    private static void activateBarrier(Player player, ItemStack stack) {
+    private static void activateBarrier(LivingEntity player, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
         int duration = TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20;
         tag.putInt(BARRIER_KEY, duration);
@@ -360,7 +372,7 @@ public class ZhenWo extends BoundCurioItem {
      */
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        LivingEntity player = event.getEntity();
         if (player.level().isClientSide) return;
         ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player,
             s -> s.getItem() instanceof ZhenWo);
@@ -427,11 +439,11 @@ public class ZhenWo extends BoundCurioItem {
             .withStyle(ChatFormatting.RED));
         double imaginaryDamage = 0;
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && !CurioSearchHelper.findFirstEquippedStack(player,
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null && !CurioSearchHelper.findFirstEquippedStack(wearer,
                     s -> s.getItem() instanceof ZhenWo).isEmpty()) {
-                double imaginaryResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
+                double imaginaryResistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                double maxHealth = wearer.getAttributeValue(Attributes.MAX_HEALTH);
                 imaginaryDamage = imaginaryResistance * maxHealth;
             }
         }

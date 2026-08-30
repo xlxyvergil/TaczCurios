@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items;
 
 import com.xlxyvergil.tcc.api.items.IBindable;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
@@ -80,29 +81,30 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     /**
-     * 绑定饰品是否可以卸下：创造模式始终允许；绑定槽位 + 背包有崩坏结晶允许；其他情况禁止。
+     * 绑定饰品是否可以卸下：创造模式始终允许；绑定槽位 + （主人）背包有崩坏结晶允许；其他情况禁止。
+     * 佩戴者为玩家本人或其女仆时同样约束（女仆归一化为其主人玩家，结晶从主人背包消耗）。
      */
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
-        if (isBoundItem() && slotContext.entity() instanceof Player player) {
-            if (player.isCreative()) {
-                return true;
-            }
-            if (isBoundSlot(slotContext) && hasCollapseCrystal(player)) {
-                return true;
-            }
-            return false;
+        Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
+        if (player == null) {
+            return true;
         }
-        return true;
+        if (player.isCreative()) {
+            return true;
+        }
+        if (isBoundSlot(slotContext) && hasCollapseCrystal(player)) {
+            return true;
+        }
+        return false;
     }
 
-    /** 绑定饰品在绑定槽位中非创造模式卸下时，自动消耗一个崩坏结晶。 */
+    /** 绑定饰品在绑定槽位中非创造模式卸下时，自动消耗（主人背包中的）一个崩坏结晶。 */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (isBoundItem() && slotContext.entity() instanceof Player player && !player.isCreative()) {
-            if (isBoundSlot(slotContext)) {
-                consumeCollapseCrystal(player);
-            }
+        Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
+        if (player != null && !player.isCreative() && isBoundSlot(slotContext)) {
+            consumeCollapseCrystal(player);
         }
         super.onUnequip(slotContext, newStack, stack);
     }
@@ -121,14 +123,16 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         tag.putString("BoundPlayerName", player.getGameProfile().getName());
     }
 
-    /** 绑定物品仅允许归属玩家装备；尚未绑定时允许任意玩家装备。 */
+    /** 绑定物品允许归属玩家本人或其女仆装备；尚未绑定时允许任意实体装备。 */
     private boolean canEquipOwner(SlotContext slotContext, ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null || !tag.getBoolean("IsBound")) {
             return true;
         }
         String bound = tag.getString("BoundPlayer");
-        return slotContext.entity() instanceof Player player && player.getStringUUID().equals(bound);
+        // 玩家本人，或该玩家的女仆（resolveOwnerPlayer 会把女仆归一化为其主人）。
+        Player boundOwner = MaidCompat.resolveOwnerPlayer(slotContext.entity());
+        return boundOwner != null && boundOwner.getStringUUID().equals(bound);
     }
 
     @Override

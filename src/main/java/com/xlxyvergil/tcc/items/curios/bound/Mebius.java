@@ -12,7 +12,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -115,7 +114,7 @@ public class Mebius extends BoundCurioItem {
             return;
         }
         Entity attacker = source.getEntity();
-        if (!(attacker instanceof Player player)) {
+        if (!(attacker instanceof LivingEntity player)) {
             return;
         }
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,

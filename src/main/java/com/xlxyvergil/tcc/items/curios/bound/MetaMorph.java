@@ -11,15 +11,13 @@ import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -129,14 +127,14 @@ public class MetaMorph extends BoundCurioItem {
         double lifeStealFromResistance = 0;
         double imaginaryDamage = 0;
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null && isEquipped(player)) {
-                double maxHealth = player.getAttributeValue(Attributes.MAX_HEALTH);
-                double resistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null && isEquipped(wearer)) {
+                double maxHealth = wearer.getAttributeValue(Attributes.MAX_HEALTH);
+                double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                 attackFromHealth = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
                     + resistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
                 lifeStealFromResistance = resistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
-                imaginaryDamage = player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                imaginaryDamage = wearer.getAttributeValue(Attributes.ATTACK_DAMAGE);
             }
         }
         tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))

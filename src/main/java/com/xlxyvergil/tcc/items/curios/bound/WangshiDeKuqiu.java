@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -52,28 +53,28 @@ public class WangshiDeKuqiu extends BoundCurioItem {
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        Player player = slotContext.entity() instanceof Player p ? p : null;
-        if (player == null || player.level().isClientSide) return;
-        if (player.isDeadOrDying()) return;
-        if (!matchesRestriction(player)) return;
+        LivingEntity host = slotContext.entity();
+        if (!(host instanceof LivingEntity) || host.level().isClientSide) return;
+        if (host.isDeadOrDying()) return;
+        if (!matchesRestriction(host)) return;
         // 每 1 秒刷新一次范围内虚数侵染
-        if (player.tickCount % 20 != 0) return;
-        applyInfectionAura(player);
+        if (host.tickCount % 20 != 0) return;
+        applyInfectionAura(host);
     }
 
     /** 每 1 秒：对光环半径内非玩家实体施加持续指定秒数的指定等级虚数侵染 */
-    private void applyInfectionAura(Player player) {
+    private void applyInfectionAura(LivingEntity host) {
         double radius = TaczCuriosConfig.COMMON.wangshiDeKuqiuAuraRadius.get();
         double radiusSq = radius * radius;
         int level = TaczCuriosConfig.COMMON.wangshiDeKuqiuInfectionLevel.get();
         int duration = TaczCuriosConfig.COMMON.wangshiDeKuqiuInfectionDurationSeconds.get();
-        List<LivingEntity> targets = player.level().getEntitiesOfClass(LivingEntity.class,
-                new AABB(player.blockPosition()).inflate(radius),
-                e -> e != player && !(e instanceof Player) && e.isAlive()
-                        && e.distanceToSqr(player) <= radiusSq);
+        List<LivingEntity> targets = host.level().getEntitiesOfClass(LivingEntity.class,
+                new AABB(host.blockPosition()).inflate(radius),
+                e -> e != host && !(e instanceof Player) && !MaidCompat.isMaid(e) && e.isAlive()
+                        && e.distanceToSqr(host) <= radiusSq);
         if (targets.isEmpty()) return;
         for (LivingEntity target : targets) {
-            ImaginaryConversionHelper.applyInfection(target, player, level, duration);
+            ImaginaryConversionHelper.applyInfection(target, host, level, duration);
         }
     }
 

@@ -1,9 +1,19 @@
 package com.xlxyvergil.tcc.compat.maid;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.border.WorldBorder;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fml.ModList;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * 东方女仆（Touhou Little Maid）兼容工具类。
@@ -21,6 +31,42 @@ public final class MaidCompat {
      */
     public static boolean isMaid(Entity entity) {
         return isLoaded() && entity instanceof EntityMaid;
+    }
+
+    /**
+     * 获取某一维度内所有加载中的女仆（仅当女仆模组加载时，否则返回空列表）。
+     * 用于遍历「女仆作为饰品佩戴者」的光环/范围效果。
+     */
+    public static List<EntityMaid> getMaids(Level level) {
+        if (!isLoaded()) return List.of();
+        WorldBorder border = level.getWorldBorder();
+        double cx = border.getCenterX(), cz = border.getCenterZ();
+        double r = Math.max(border.getSize(), 32.0D) / 2.0D;
+        AABB box = new AABB(cx - r, level.getMinBuildHeight(), cz - r,
+                cx + r, level.getMaxBuildHeight(), cz + r);
+        return level.getEntitiesOfClass(EntityMaid.class, box, LivingEntity::isAlive);
+    }
+
+    /**
+     * 获取以某个坐标为中心、给定半径内的女仆（用于瞬移拦截等以佩戴者为中心的局部判定）。
+     */
+    public static List<EntityMaid> getMaidsNear(Level level, BlockPos center, double radius) {
+        if (!isLoaded()) return List.of();
+        return level.getEntitiesOfClass(EntityMaid.class,
+                new AABB(center).inflate(radius), LivingEntity::isAlive);
+    }
+
+    /**
+     * 查找佩戴满足条件饰品的女仆（用于客户端 tooltip 展示「佩戴者的真实数值」）。
+     */
+    public static LivingEntity findWearingMaid(Level level, Predicate<ItemStack> predicate) {
+        if (!isLoaded()) return null;
+        for (EntityMaid maid : getMaids(level)) {
+            if (!CurioSearchHelper.findFirstEquippedStack(maid, predicate).isEmpty()) {
+                return maid;
+            }
+        }
+        return null;
     }
 
     /**

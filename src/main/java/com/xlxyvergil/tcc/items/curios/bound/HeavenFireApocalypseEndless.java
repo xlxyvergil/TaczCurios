@@ -11,7 +11,7 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -108,9 +108,9 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get() * 100;
         double resistanceBonus = 0;
         if (level != null && level.isClientSide()) {
-            Player player = Minecraft.getInstance().player;
-            if (player != null) {
-                double imaginaryResistance = player.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null) {
+                double imaginaryResistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                 resistanceBonus = imaginaryResistance * TaczCuriosConfig.COMMON.endlessImaginaryResistanceDamagePerPoint.get();
             }
         }
