@@ -288,10 +288,17 @@ public final class AchievementProgressRenderer {
         return localized.equals(key) ? statId : localized;
     }
 
-    /** 从客户端 Statistics 读取 stat 当前值，与服务端 StatPollingEventHandler.checkStat 一致：先经 CUSTOM_STAT 验证。 */
+    /**
+     * 解析 stat 当前值：tcc 命名空间自定义统计读取玩家 Capability；
+     * 其余读取客户端 Statistics，与 StatPollingEventHandler.readStatValue 逻辑一致。
+     */
     private static int resolveStatValue(net.minecraft.client.player.LocalPlayer player, String statId) {
         ResourceLocation statRl = ResourceLocation.tryParse(statId);
         if (statRl == null) return 0;
+
+        if ("tcc".equals(statRl.getNamespace())) {
+            return TccPlayerDataCapability.getCustomStat(player, statRl.toString());
+        }
 
         ResourceLocation registered = BuiltInRegistries.CUSTOM_STAT.get(statRl);
         if (registered == null) {

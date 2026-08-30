@@ -34,6 +34,11 @@ public final class NetworkHandler {
                 SyncProgressS2CPacket::decode,
                 SyncProgressS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, PacketSyncPlayTime.class,
+                PacketSyncPlayTime::encode,
+                PacketSyncPlayTime::decode,
+                PacketSyncPlayTime::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
@@ -42,6 +47,20 @@ public final class NetworkHandler {
 
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {
         sendToPlayer(player, new SyncProgressS2CPacket("progress_" + achievementId, progress));
+    }
+
+    public static void syncCustomStat(ServerPlayer player, String statKey, int value) {
+        sendToPlayer(player, new SyncProgressS2CPacket("stat_" + statKey, value));
+    }
+
+    /** 一次性推送全部佩戴时长统计。 */
+    public static void syncPlayTime(ServerPlayer player) {
+        sendToPlayer(player, new PacketSyncPlayTime(
+                TccPlayerDataCapability.getPlayTimeGriseo(player),
+                TccPlayerDataCapability.getPlayTimeHuishiZhijuan(player),
+                TccPlayerDataCapability.getPlayTimeFanxing(player),
+                TccPlayerDataCapability.getPlayTimeQishiZhijian(player)
+        ));
     }
 
     public static void syncVisited(ServerPlayer player, String nbtKey, String id) {
@@ -64,6 +83,18 @@ public final class NetworkHandler {
             for (String biome : handler.getVisitedBiomes()) {
                 syncVisited(player, VISITED_BIOMES_KEY, biome);
             }
+        }
+
+        syncEventStat(player, "tcc:zombie_villager_cured");
+        syncEventStat(player, "tcc:items_crafted");
+        syncPlayTime(player);
+    }
+
+    /** 推送单个事件统计（仅在非零时发送，避免客户端显示 0 覆盖历史）。 */
+    private static void syncEventStat(ServerPlayer player, String statKey) {
+        int value = TccPlayerDataCapability.getCustomStat(player, statKey);
+        if (value > 0) {
+            syncCustomStat(player, statKey, value);
         }
     }
 }

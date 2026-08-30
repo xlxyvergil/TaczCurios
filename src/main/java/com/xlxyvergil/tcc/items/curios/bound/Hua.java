@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -27,6 +29,7 @@ import java.util.UUID;
 public class Hua extends BoundCurioItem {
     private static final UUID ARMOR_UUID = UUID.fromString("81963226-818e-4994-84fe-157ec8e60e19");
     private static final UUID TOUGHNESS_UUID = UUID.fromString("d8aedf12-c4f7-4d1d-b3a4-5b53f9897f51");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("3a6f8c1e-9d4b-4e2f-b7a5-8c2e1d6f4b09");
 
     /** 护甲 / 韧性加成百分比 */
     private static double armorPct() {
@@ -72,6 +75,14 @@ public class Hua extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof Hua);
+        CompoundTag tag = equipped.getTag();
+        double total = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.hua.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ARMOR,
                     armorPct(), ARMOR_UUID,
@@ -86,6 +97,7 @@ public class Hua extends BoundCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR, ARMOR_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR_TOUGHNESS, TOUGHNESS_UUID);
     }

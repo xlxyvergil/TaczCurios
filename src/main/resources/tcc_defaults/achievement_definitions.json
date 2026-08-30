@@ -790,7 +790,7 @@
         "hidden": false
       },
       "parent": "tcc:su_grant",
-      "trigger": "stat_polling",
+      "trigger": "zombie_villager_cured",
       "conditions": {
         "equippedCurios": ["tcc:su"],
         "stat": "tcc:zombie_villager_cured",
@@ -944,7 +944,7 @@
         "hidden": false
       },
       "parent": "tcc:tcc_root",
-      "trigger": "stat_polling",
+      "trigger": "items_crafted",
       "conditions": {
         "stat": "tcc:items_crafted",
         "criteria_count": 1200
@@ -1071,7 +1071,7 @@
         "hidden": false
       },
       "parent": "tcc:qishi_zhijian_grant",
-      "trigger": "stat_polling",
+      "trigger": "play_time",
       "conditions": {
         "equippedCurios": ["tcc:qishi_zhijian"],
         "stat": "tcc:play_time_qishi_zhijian",

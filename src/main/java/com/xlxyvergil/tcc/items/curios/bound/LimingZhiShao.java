@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -28,6 +30,7 @@ public class LimingZhiShao extends BoundCurioItem {
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("4a08b49f-20ce-49db-a565-6debdef40c3e");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("1df8d94e-edfc-4cf3-8169-9330116aa8d0");
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("07a0819e-c85f-42a6-bdd3-295d9c64b79d");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("6f4b2c9e-7a1d-4e8f-b3c6-9d2e1f4a7b35");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.limingZhiShaoAttackSpeedPercent.get();
@@ -80,6 +83,14 @@ public class LimingZhiShao extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof LimingZhiShao);
+        CompoundTag tag = equipped.getTag();
+        double total = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.liming_zhi_shao.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_SPEED,
                     attackSpeedPct(), ATTACK_SPEED_UUID,
@@ -99,6 +110,7 @@ public class LimingZhiShao extends BoundCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);

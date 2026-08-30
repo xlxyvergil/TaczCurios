@@ -7,9 +7,7 @@
     "DamageResistanceMixin",
     "ImaginaryDeathDropMixin",
     "LivingEntityAccessor",
-    "PlayerListMixin",
     "RaidMixin",
-    "ServerStatsCounterMixin",
     "RSCraftingGridBehaviorMixin"
   ],
   "injectors": {

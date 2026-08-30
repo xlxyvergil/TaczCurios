@@ -107,8 +107,6 @@ public class TaczCurios
             MinecraftForge.EVENT_BUS.addListener(LootTableEventHandler::onLootTableLoad);
             EvolutionRegistry.loadOnce();
             AchievementDefinitions.loadOnce();
-
-            TccStats.register();
         });
 
         NetworkHandler.init();

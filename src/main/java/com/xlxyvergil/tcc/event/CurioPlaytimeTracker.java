@@ -1,11 +1,13 @@
 package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.registries.TccStats;
+import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
+import com.xlxyvergil.tcc.evolution.AchievementConditionMatcher;
+import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
+import com.xlxyvergil.tcc.evolution.RuleAdvancementMapping;
+import com.xlxyvergil.tcc.network.NetworkHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.Stat;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
@@ -19,11 +21,17 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 /**
- * 追踪佩戴特定饰品时的存活时长（tick）写入自定义统计；griseo / huishi_zhijuan / fanxing 死亡不重置，
- * qishi_zhijian 死亡归 0。
+ * 追踪佩戴特定饰品时的存活时长（tick），按饰品独立 long 字段计数写入 Capability；
+ * griseo / huishi_zhijuan / fanxing 死亡不重置，qishi_zhijian 死亡归 0。
+ * 各饰品独立计数，不再写入原版统计系统。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class CurioPlaytimeTracker {
+
+    /** 饰品时长计数同步到客户端的间隔（tick） */
+    private static final int SYNC_INTERVAL = 100;
+    /** play_time 成就的检查间隔（tick） */
+    private static final int ACHIEVEMENT_CHECK_INTERVAL = 20;
 
     private CurioPlaytimeTracker() {}
 
@@ -32,41 +40,66 @@ public final class CurioPlaytimeTracker {
         if (event.phase != TickEvent.Phase.END) return;
         if (!(event.player instanceof ServerPlayer player)) return;
 
-        // 每 tick 检查并递增
+        long t = player.level().getGameTime();
+        boolean wearing = false;
+
         if (hasCurioEquipped(player, "tcc:griseo")) {
-            incrementStat(player, TccStats.PLAY_TIME_GRISEO);
+            TccPlayerDataCapability.incrementPlayTimeGriseo(player);
+            wearing = true;
         }
         if (hasCurioEquipped(player, "tcc:huishi_zhijuan")) {
-            incrementStat(player, TccStats.PLAY_TIME_HUISHI_ZHIJUAN);
+            TccPlayerDataCapability.incrementPlayTimeHuishiZhijuan(player);
+            wearing = true;
         }
         if (hasCurioEquipped(player, "tcc:fanxing")) {
-            incrementStat(player, TccStats.PLAY_TIME_FANXING);
+            TccPlayerDataCapability.incrementPlayTimeFanxing(player);
+            wearing = true;
         }
         if (hasCurioEquipped(player, "tcc:qishi_zhijian")) {
-            incrementStat(player, TccStats.PLAY_TIME_QISHI_ZHIJIAN);
+            TccPlayerDataCapability.incrementPlayTimeQishiZhijian(player);
+            wearing = true;
+        }
+
+        if (wearing && t % SYNC_INTERVAL == 0) {
+            NetworkHandler.syncPlayTime(player);
+        }
+        if (t % ACHIEVEMENT_CHECK_INTERVAL == 0) {
+            awardPlaytimeAchievements(player);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            // qishi_zhijian：死亡重置归 0
-            player.getStats().setValue(player, Stats.CUSTOM.get(TccStats.PLAY_TIME_QISHI_ZHIJIAN), 0);
+            resetQishiPlaytime(player);
         }
     }
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (event.isWasDeath() && event.getEntity() instanceof ServerPlayer player) {
-            // 死亡复活后，确保 qishi_zhijian 统计保持归零（防止被克隆覆盖）
-            player.getStats().setValue(player, Stats.CUSTOM.get(TccStats.PLAY_TIME_QISHI_ZHIJIAN), 0);
+            resetQishiPlaytime(player);
         }
     }
 
-    private static void incrementStat(ServerPlayer player, ResourceLocation statKey) {
-        Stat<ResourceLocation> stat = Stats.CUSTOM.get(statKey);
-        int current = player.getStats().getValue(stat);
-        player.getStats().setValue(player, stat, current + 1);
+    private static void resetQishiPlaytime(ServerPlayer player) {
+        TccPlayerDataCapability.setPlayTimeQishiZhijian(player, 0);
+        NetworkHandler.syncPlayTime(player);
+    }
+
+    private static void awardPlaytimeAchievements(ServerPlayer player) {
+        for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(AchievementDefinitions.TRIGGER_PLAY_TIME)) {
+            if (!def.isEnabled()) continue;
+            if (RuleAdvancementMapping.isAdvancementDone(player, def.id())) continue;
+            if (!RuleAdvancementMapping.arePrerequisitesMet(player, def)) continue;
+            if (!AchievementConditionMatcher.matchesStatBiomeConditions(player, def)) continue;
+
+            AchievementDefinitions.AchievementConditions conds = def.conditions();
+            if (conds == null || conds.stat() == null) continue;
+            if (TccPlayerDataCapability.getCustomStat(player, conds.stat()) >= def.targetCount()) {
+                RuleAdvancementMapping.awardAll(player, def.id(), def.targetCount());
+            }
+        }
     }
 
     private static boolean hasCurioEquipped(Player player, String itemId) {

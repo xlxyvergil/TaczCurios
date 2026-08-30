@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -27,6 +29,7 @@ import java.util.UUID;
 public class Kosma extends BoundCurioItem {
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("e46b57b8-e3ca-436c-bc30-b2015ce7666e");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("9bd59d29-ab0c-4c33-bef6-dd78a678b938");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("b8d1e4a6-2f9c-4e7b-a5d3-1c6e8f4b2d90");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.kosmaAttackSpeedPercent.get();
@@ -75,6 +78,14 @@ public class Kosma extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof Kosma);
+        CompoundTag tag = equipped.getTag();
+        double total = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.kosma.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_SPEED,
                     attackSpeedPct(), ATTACK_SPEED_UUID,
@@ -89,6 +100,7 @@ public class Kosma extends BoundCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
     }

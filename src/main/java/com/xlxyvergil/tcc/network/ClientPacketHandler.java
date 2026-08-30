@@ -23,6 +23,9 @@ final class ClientPacketHandler {
         if (key.startsWith("progress_")) {
             String achievementId = key.substring("progress_".length());
             TccPlayerDataCapability.setAchievementProgress(player, achievementId, value);
+        } else if (key.startsWith("stat_")) {
+            String statKey = key.substring("stat_".length());
+            TccPlayerDataCapability.setCustomStat(player, statKey, value);
         } else if (key.startsWith("visited_")) {
             String rest = key.substring("visited_".length());
             int hashIdx = rest.indexOf('#');
@@ -36,5 +39,14 @@ final class ClientPacketHandler {
                 }
             }
         }
+    }
+
+    static void handlePlayTime(PacketSyncPlayTime packet) {
+        var player = Minecraft.getInstance().player;
+        if (player == null) return;
+        TccPlayerDataCapability.setPlayTimeGriseo(player, packet.griseo());
+        TccPlayerDataCapability.setPlayTimeHuishiZhijuan(player, packet.huishiZhijuan());
+        TccPlayerDataCapability.setPlayTimeFanxing(player, packet.fanxing());
+        TccPlayerDataCapability.setPlayTimeQishiZhijian(player, packet.qishiZhijian());
     }
 }

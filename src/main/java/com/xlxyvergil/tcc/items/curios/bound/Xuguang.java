@@ -1,10 +1,13 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +29,7 @@ public class Xuguang extends BoundCurioItem {
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("161e973d-170a-4654-83d9-c258b7a368d7");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("ca6fabe6-07dd-4cd6-92fe-28c49e9b01b5");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("71aa144b-16ee-45da-a2fb-f9438400f2e0");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("5c1e9b7f-3a6d-4e8c-b2f4-7d9a1e5c4b28");
 
     private static double attackSpeedPct() {
         return TaczCuriosConfig.COMMON.xuguangAttackSpeedPercent.get();
@@ -65,6 +69,14 @@ public class Xuguang extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof Xuguang);
+        CompoundTag tag = equipped.getTag();
+        double total = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.xuguang.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_SPEED,
                     attackSpeedPct(), ATTACK_SPEED_UUID,
@@ -84,6 +96,7 @@ public class Xuguang extends BoundCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);

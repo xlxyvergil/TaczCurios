@@ -97,14 +97,7 @@ public final class StatPollingEventHandler {
         ResourceLocation statId = ResourceLocation.tryParse(conds.stat());
         if (statId == null) return;
 
-        ResourceLocation registered = BuiltInRegistries.CUSTOM_STAT.get(statId);
-        if (registered == null) {
-            // 若未注册，尝试仅按 path 查找（兜底在 vanilla 命名空间注册的 mod 统计）
-            registered = BuiltInRegistries.CUSTOM_STAT.get(new ResourceLocation(statId.getPath()));
-        }
-        if (registered == null) return;
-
-        int current = player.getStats().getValue(Stats.CUSTOM.get(registered));
+        int current = readStatValue(player, statId);
         int target = def.targetCount();
 
         if (current >= target) {
@@ -199,13 +192,7 @@ public final class StatPollingEventHandler {
         ResourceLocation statId = ResourceLocation.tryParse(rule.stat);
         if (statId == null) return;
 
-        ResourceLocation registered = BuiltInRegistries.CUSTOM_STAT.get(statId);
-        if (registered == null) {
-            registered = BuiltInRegistries.CUSTOM_STAT.get(new ResourceLocation(statId.getPath()));
-        }
-        if (registered == null) return;
-
-        int current = player.getStats().getValue(Stats.CUSTOM.get(registered));
+        int current = readStatValue(player, statId);
         if (current < rule.statThreshold) return;
 
         if (!LivingDeathEventHandler.passesExtraRequirements(player, null, rule.requirements)) return;
@@ -276,6 +263,22 @@ public final class StatPollingEventHandler {
     }
 
     // 辅助方法
+
+    /**
+     * 读取自定义统计值：tcc 命名空间读取玩家 Capability，其余读取原版 Stats。
+     * 原版统计可能未被注册（如 tcc 自定义统计已迁移到 Capability），此时返回 0。
+     */
+    private static int readStatValue(ServerPlayer player, ResourceLocation statId) {
+        if (TaczCurios.MODID.equals(statId.getNamespace())) {
+            return TccPlayerDataCapability.getCustomStat(player, statId.toString());
+        }
+        ResourceLocation registered = BuiltInRegistries.CUSTOM_STAT.get(statId);
+        if (registered == null) {
+            registered = BuiltInRegistries.CUSTOM_STAT.get(new ResourceLocation(statId.getPath()));
+        }
+        if (registered == null) return 0;
+        return player.getStats().getValue(Stats.CUSTOM.get(registered));
+    }
 
     private static ItemStack findFirstEquippedStack(Player player, Predicate<ItemStack> predicate) {
         if (player == null) return ItemStack.EMPTY;

@@ -37,6 +37,9 @@ public final class AchievementDefinitions {
 
     public static final String TRIGGER_FISH_CAUGHT = "fish_caught";
     public static final String TRIGGER_FISH_FOOD_EATEN = "fish_food_eaten";
+    public static final String TRIGGER_ZOMBIE_VILLAGER_CURED = "zombie_villager_cured";
+    public static final String TRIGGER_ITEMS_CRAFTED = "items_crafted";
+    public static final String TRIGGER_PLAY_TIME = "play_time";
 
     private AchievementDefinitions() {}
 
@@ -234,7 +237,10 @@ public final class AchievementDefinitions {
             if (conditions != null && (conditions.stat() != null
                     || RaidVictoryEventHandler.TRIGGER_RAID_VICTORY.equals(trigger)
                     || TRIGGER_FISH_CAUGHT.equals(trigger)
-                    || TRIGGER_FISH_FOOD_EATEN.equals(trigger))) {
+                    || TRIGGER_FISH_FOOD_EATEN.equals(trigger)
+                    || TRIGGER_ZOMBIE_VILLAGER_CURED.equals(trigger)
+                    || TRIGGER_ITEMS_CRAFTED.equals(trigger)
+                    || TRIGGER_PLAY_TIME.equals(trigger))) {
                 return conditions.criteriaCount();
             }
             return 1;

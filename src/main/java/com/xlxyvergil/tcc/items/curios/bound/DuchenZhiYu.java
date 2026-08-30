@@ -1,10 +1,13 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,6 +28,7 @@ import java.util.UUID;
 public class DuchenZhiYu extends BoundCurioItem {
     private static final UUID ARMOR_UUID = UUID.fromString("cfa7072d-d2f0-4ee6-9d79-8ec96a638fe7");
     private static final UUID TOUGHNESS_UUID = UUID.fromString("431d864e-740c-4b87-b30b-abb21ed73aad");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("8f3b6d2e-1a9c-4e7b-a5d2-6c1e8a4b3d79");
 
     /** 护甲 / 韧性加成百分比 */
     private static double armorPct() {
@@ -57,6 +61,14 @@ public class DuchenZhiYu extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof DuchenZhiYu);
+        CompoundTag tag = equipped.getTag();
+        double total = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                total, IMAGINARY_RESISTANCE_UUID,
+                "tcc.duchen_zhi_yu.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, Attributes.ARMOR,
                     armorPct(), ARMOR_UUID,
@@ -71,6 +83,7 @@ public class DuchenZhiYu extends BoundCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR, ARMOR_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR_TOUGHNESS, TOUGHNESS_UUID);
     }
