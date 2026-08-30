@@ -82,7 +82,7 @@ public class TccVillagers {
         sellForNetheriteScrap(5, TccItems.BULLET_SPREAD, 48, 1, 64, 50);
         sellForNetheriteScrap(5, TccItems.WEAKNESS_SENSE, 48, 1, 64, 50);
         sellForNetheriteScrap(5, TccItems.DESTRUCTION, 48, 1, 64, 50);
-        sellForNetheriteScrap(5, TccItems.RIFT_SILVER, 48, 1, 64, 50);
+        sellForNetheriteScrap(5, TccItems.RIFT_SILVER, 64, 1, 64, 50);
     }
 
     private static void sellForNetheriteScrap(int minLevel, Item soldItem, int scrapCost, int numberOfItems, int maxUses, int xp) {
