@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -96,11 +95,6 @@ public class HuajieZhiyan extends BoundCurioItem {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
             stack -> stack.getItem() instanceof HuajieZhiyan).isEmpty();
-    }
-
-    @Override
-    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return DropRule.ALWAYS_KEEP;
     }
 
     @Override

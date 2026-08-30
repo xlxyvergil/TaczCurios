@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.LivingEntity;
-import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -68,11 +67,6 @@ public class BrahmaBeasts extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
-    }
-
-    @Override
-    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return DropRule.ALWAYS_KEEP;
     }
 
     @OnlyIn(Dist.CLIENT)

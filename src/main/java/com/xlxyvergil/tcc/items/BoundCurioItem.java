@@ -10,9 +10,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import java.util.List;
 
@@ -31,6 +34,16 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     /** 3rd / tdk 系列饰品默认均为绑定物品。 */
     protected boolean isBoundItem() {
         return true;
+    }
+
+    /**
+     * 3rd / tdk 绑定饰品统一死亡不掉落（ALWAYS_KEEP）。
+     * 死亡时物品保留在饰品槽位中：玩家直接保留；女仆死亡则交由墓碑机制提取。
+     * 需要在基类统一处理，各子类无需再覆写 getDropRule。
+     */
+    @Override
+    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+        return DropRule.ALWAYS_KEEP;
     }
 
     /** 公开判断当前饰品是否为绑定物品（需要崩坏结晶才能卸下），用于客户端 tooltip 展示。 */
@@ -90,6 +103,11 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         if (player == null) {
             return true;
         }
+        // 佩戴实体死亡（如女仆死亡生成墓碑）时允许取出，否则绑定饰品会因 ALWAYS_KEEP 且无法
+        // 提取而随实体一并消失。此时不再校验崩坏结晶。
+        if (slotContext.entity() == null || slotContext.entity().isDeadOrDying()) {
+            return true;
+        }
         if (player.isCreative()) {
             return true;
         }
@@ -102,8 +120,10 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     /** 绑定饰品在绑定槽位中非创造模式卸下时，自动消耗（主人背包中的）一个崩坏结晶。 */
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        // 佩戴实体死亡时（如女仆死亡转入墓碑）不消耗崩坏结晶，避免主人被无形扣掉结晶。
+        boolean deadOrDying = slotContext.entity() == null || slotContext.entity().isDeadOrDying();
         Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
-        if (player != null && !player.isCreative() && isBoundSlot(slotContext)) {
+        if (player != null && !player.isCreative() && isBoundSlot(slotContext) && !deadOrDying) {
             consumeCollapseCrystal(player);
         }
         super.onUnequip(slotContext, newStack, stack);

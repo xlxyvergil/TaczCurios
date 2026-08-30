@@ -17,7 +17,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerLevel;
-import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,11 +42,6 @@ public class HeavenFireJudgment extends BoundCurioItem {
     
     public HeavenFireJudgment(Properties properties) {
         super(properties);
-    }
-    
-    @Override
-    public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return DropRule.ALWAYS_KEEP;
     }
 
     @Override
