@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.items.curios.bound.IslandBoomRaven;
 import com.xlxyvergil.tcc.registries.TccItems;
@@ -44,6 +45,13 @@ public class TccAttributeEvents {
         if (intendedDamage <= 0) return false;
 
         target.invulnerableTime = 0;
+
+        // 吃到攻击者实体属性上的 TAA 枪械增伤：BULLET_GUNDAMAGE × BULLET_COUNT（默认均为 1.0，无加成时不改变伤害）。
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            double damageMult = attacker.getAttributeValue(AttributeHelper.BULLET_GUNDAMAGE);
+            double bulletCountMult = attacker.getAttributeValue(AttributeHelper.BULLET_COUNT);
+            intendedDamage = (float) (intendedDamage * damageMult * bulletCountMult);
+        }
 
         // 亚波伦路径：下界走自定义 HealthData 直伤，完全绕过 RevelationFix 限伤
         if (ApollyonCompat.isRevelationFixApostle(target)) {
