@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +31,9 @@ public final class GunHeadshotEventHandler {
     public static void onGunHeadshotHit(EntityHurtByGunEvent.Pre event) {
         if (!event.isHeadShot()) return;
         LivingEntity attacker = event.getAttacker();
-        if (!(attacker instanceof Player player)) return;
+        // 攻击者可以是玩家本体，也可以是佩戴者（主人）的女仆，统一归属到主人玩家
+        Player player = MaidCompat.resolveOwnerPlayer(attacker);
+        if (player == null) return;
         if (player.level().isClientSide) return;
 
         LivingEntity hurt = resolveHurt(event);
@@ -55,7 +58,9 @@ public final class GunHeadshotEventHandler {
 
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
-        if (!(sourceEntity instanceof Player player)) return;
+        // 女仆爆头击杀时归属到其主人玩家，玩家爆头时归属玩家本体
+        Player player = MaidCompat.resolveOwnerPlayer(sourceEntity);
+        if (player == null) return;
 
         var cap = killed.getCapability(GunKillDataCapability.CAPABILITY);
         if (!cap.isPresent()) return;

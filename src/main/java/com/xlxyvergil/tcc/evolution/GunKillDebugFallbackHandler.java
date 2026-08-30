@@ -3,12 +3,14 @@ package com.xlxyvergil.tcc.evolution;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,10 +44,14 @@ public final class GunKillDebugFallbackHandler {
             return;
         }
         LivingEntity attacker = event.getAttacker();
-        if (!(attacker instanceof ServerPlayer player)) {
+        if (attacker == null) {
             return;
         }
-        if (!(player.level() instanceof ServerLevel)) {
+        // 攻击者可以是玩家本体，也可以是佩戴者（主人）的女仆
+        if (!(attacker instanceof ServerPlayer) && !MaidCompat.isMaid(attacker)) {
+            return;
+        }
+        if (!(attacker.level() instanceof ServerLevel)) {
             return;
         }
 
@@ -54,10 +60,11 @@ public final class GunKillDebugFallbackHandler {
             return;
         }
 
+        // 女仆击杀时记女仆 UUID（其本体即死亡源实体），玩家击杀时记玩家 UUID
         GunKillDataCapability.setGunData(hurt,
-            player.getStringUUID(),
+            MaidCompat.resolveAttackerUuid(attacker),
             event.getGunId() != null ? event.getGunId().toString() : "",
-            player.level().getGameTime(),
+            attacker.level().getGameTime(),
             hurt.getStringUUID());
     }
 
@@ -79,14 +86,16 @@ public final class GunKillDebugFallbackHandler {
             return;
         }
 
-        //  死亡源校验：击杀者必须是 Capability 中记录的枪伤来源玩家
+        //  死亡源校验：击杀者必须是 Capability 中记录的枪伤来源（玩家或佩戴者的女仆）
         String attackerUuid = data.attacker;
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
         if (sourceEntity == null || !sourceEntity.getUUID().toString().equals(attackerUuid)) {
             return;
         }
-        if (!(sourceEntity instanceof ServerPlayer player)) {
+        //  女仆击杀时归属到其主人玩家，玩家击杀时归属玩家本体
+        Player player = MaidCompat.resolveOwnerPlayer(sourceEntity);
+        if (!(player instanceof ServerPlayer)) {
             return;
         }
 

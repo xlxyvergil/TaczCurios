@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.items.BaseCurioItem;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
@@ -39,7 +40,9 @@ public final class LivingDeathEventHandler {
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
 
-        if (sourceEntity instanceof Player killerPlayer) {
+        // 击杀者可能是玩家本体，也可能是佩戴者（主人）的女仆，统一归一化为主人玩家来计数
+        Player killerPlayer = MaidCompat.resolveOwnerPlayer(sourceEntity);
+        if (killerPlayer != null) {
             String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
             handleTrigger(killerPlayer, killed, killedKey, sourceEntity, source,
                     TRIGGER_LIVING_DEATH, false, false);
