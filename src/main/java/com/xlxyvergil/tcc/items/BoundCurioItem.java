@@ -123,7 +123,11 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         tag.putString("BoundPlayerName", player.getGameProfile().getName());
     }
 
-    /** 绑定物品允许归属玩家本人或其女仆装备；尚未绑定时允许任意实体装备。 */
+    /**
+     * 绑定物品允许归属玩家本人或其女仆装备；尚未绑定时允许任意实体装备。
+     * 仅在能明确解析出归属玩家时才强制校验；暂时解析不到主人（如女仆经魂符放出、
+     * 实体 NBT 恢复槽位阶段 owner 尚未写入）时放行，避免绑定饰品被误判为无效栈而丢弃。
+     */
     private boolean canEquipOwner(SlotContext slotContext, ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null || !tag.getBoolean("IsBound")) {
@@ -132,7 +136,10 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         String bound = tag.getString("BoundPlayer");
         // 玩家本人，或该玩家的女仆（resolveOwnerPlayer 会把女仆归一化为其主人）。
         Player boundOwner = MaidCompat.resolveOwnerPlayer(slotContext.entity());
-        return boundOwner != null && boundOwner.getStringUUID().equals(bound);
+        if (boundOwner == null) {
+            return true;
+        }
+        return boundOwner.getStringUUID().equals(bound);
     }
 
     @Override
