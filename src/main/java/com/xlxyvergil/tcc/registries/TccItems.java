@@ -167,760 +167,760 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.IForgeRegistry;
 
-// 物品在类加载时直接以静态字段实例化，从而避免引入复杂的注册系统。
+// 鐗╁搧鍦ㄧ被鍔犺浇鏃剁洿鎺ヤ互闈欐€佸瓧娈靛疄渚嬪寲锛屼粠鑰岄伩鍏嶅紩鍏ュ鏉傜殑娉ㄥ唽绯荤粺銆?
 public class TccItems {
 
     public static final Rarity RIFT = Rarity.create("tcc_rift", ChatFormatting.LIGHT_PURPLE);
     
-    // 士兵基础挂牌 - 提供50%所有枪械基础伤害加成
+    // 澹叺鍩虹鎸傜墝 - 鎻愪緵50%鎵€鏈夋灙姊板熀纭€浼ゅ鍔犳垚
     public static final Item SOLDIER_BASIC_TAG = new SoldierBasicTag(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 士兵特定挂牌 - 提供50%特定枪械伤害加成（狙击枪）
+    // 澹叺鐗瑰畾鎸傜墝 - 鎻愪緵50%鐗瑰畾鏋浼ゅ鍔犳垚锛堢嫏鍑绘灙锛?
     public static final Item SOLDIER_SPECIFIC_TAG = new SoldierSpecificTag(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 重口径 - 提升165%步枪、狙击枪、冲锋枪、机枪、重型武器伤害，增加55%不精准度
+    // 閲嶅彛寰?- 鎻愬崌165%姝ユ灙銆佺嫏鍑绘灙銆佸啿閿嬫灙銆佹満鏋€侀噸鍨嬫鍣ㄤ激瀹筹紝澧炲姞55%涓嶇簿鍑嗗害
     public static final Item HEAVY_CALIBER_TAG = new HeavyCaliberTag(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 红-有-三 - 提供50%持枪移动速度加成
+    // 绾?鏈?涓?- 鎻愪緵50%鎸佹灙绉诲姩閫熷害鍔犳垚
     public static final Item RED_MOVEMENT_TAG = new RedMovementTag(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 夏日沙滩 - 提供20点虚数抗性
+    // 澶忔棩娌欐哗 - 鎻愪緵20鐐硅櫄鏁版姉鎬?
     public static final Item SUMMER_BEACH = new SummerBeach(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 梵天百兽 - 提供40点虚数抗性，增强天火饰品效果
+    // 姊靛ぉ鐧惧吔 - 鎻愪緵40鐐硅櫄鏁版姉鎬э紝澧炲己澶╃伀楗板搧鏁堟灉
     public static final Item BRAHMA_BEASTS = new BrahmaBeasts(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 救世 - 裂隙级饰品
+    // 鏁戜笘 - 瑁傞殭绾чグ鍝?
     public static final Item SALVATION = new Salvation(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
     public static final Item XIORA = new Xiora(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
     public static final Item RAVEN = new Raven(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
     public static final Item ISLAND_BOOM_RAVEN = new IslandBoomRaven(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
     
-    // 天火劫灭·无烬终焉 - 裂隙级
+    // 澶╃伀鍔伃路鏃犵儸缁堢剦 - 瑁傞殭绾?
     public static final Item HEAVEN_FIRE_APOCALYPSE_ENDLESS = new HeavenFireApocalypseEndless(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
     public static final Item SEVEN_THUNDERS = new SevenThunders(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
     public static final Item SEVEN_THUNDERS_THUNDER_SEEN = new SevenThundersThunderSeen(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
     public static final Item JUDGEMENT_KEY = new JudgementKey(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
     
-    // 乌拉尔银狼 - 提供150%爆头倍率加成
+    // 涔屾媺灏旈摱鐙?- 鎻愪緵150%鐖嗗ご鍊嶇巼鍔犳垚
     public static final Item URAL_WOLF_TAG = new UralWolfTag(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 天火圣裁 - 以玩家生命值50%提升伤害，造成伤害后扣除50%生命值
+    // 澶╃伀鍦ｈ - 浠ョ帺瀹剁敓鍛藉€?0%鎻愬崌浼ゅ锛岄€犳垚浼ゅ鍚庢墸闄?0%鐢熷懡鍊?
     public static final Item HEAVEN_FIRE_JUDGMENT = new HeavenFireJudgment(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 天火劫灭 - 以玩家生命值100%提升伤害、爆炸范围和爆炸伤害，造成伤害后扣除100%生命值
+    // 澶╃伀鍔伃 - 浠ョ帺瀹剁敓鍛藉€?00%鎻愬崌浼ゅ銆佺垎鐐歌寖鍥村拰鐖嗙偢浼ゅ锛岄€犳垚浼ゅ鍚庢墸闄?00%鐢熷懡鍊?
     public static final Item HEAVEN_FIRE_APOCALYPSE = new HeavenFireApocalypse(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
     
-    // 卑劣加速 - 提升90%射击速度，但降低15%通用伤害和全部特定枪械伤害
+    // 鍗戝姡鍔犻€?- 鎻愬崌90%灏勫嚮閫熷害锛屼絾闄嶄綆15%閫氱敤浼ゅ鍜屽叏閮ㄧ壒瀹氭灙姊颁激瀹?
     public static final Item DESPICABLE_ACCELERATION = new DespicableAcceleration(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 并合膛线 - 提升155%通用伤害和25%持枪移动速度
+    // 骞跺悎鑶涚嚎 - 鎻愬崌155%閫氱敤浼ゅ鍜?5%鎸佹灙绉诲姩閫熷害
     public static final Item MERGED_RIFLING = new MergedRifling(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 合金钻头 - 提升200%穿透能力
+    // 鍚堥噾閽诲ご - 鎻愬崌200%绌块€忚兘鍔?
     public static final Item ALLOY_DRILL = new AlloyDrill(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 我小心海也绝非鳝类 - 提升300%重型武器伤害加成，300%爆炸伤害加成，300%爆炸范围加成
+    // 鎴戝皬蹇冩捣涔熺粷闈為碀绫?- 鎻愬崌300%閲嶅瀷姝﹀櫒浼ゅ鍔犳垚锛?00%鐖嗙偢浼ゅ鍔犳垚锛?00%鐖嗙偢鑼冨洿鍔犳垚
     public static final Item CAREFUL_HEART = new CarefulHeart(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 烈焰风暴 - 增加24%爆炸范围（乘算），增加24%爆炸伤害（乘算）
+    // 鐑堢劙椋庢毚 - 澧炲姞24%鐖嗙偢鑼冨洿锛堜箻绠楋級锛屽鍔?4%鐖嗙偢浼ゅ锛堜箻绠楋級
     public static final Item BLAZE_STORM = new BlazeStorm(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 烈焰风暴Prime - 增加66%爆炸范围（乘算），增加66%爆炸伤害（乘算）
+    // 鐑堢劙椋庢毚Prime - 澧炲姞66%鐖嗙偢鑼冨洿锛堜箻绠楋級锛屽鍔?6%鐖嗙偢浼ゅ锛堜箻绠楋級
     public static final Item BLAZE_STORM_PRIME = new BlazeStormPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 撕裂Prime - 增加55%射速（乘算）增加2.2穿透（加算）
+    // 鎾曡Prime - 澧炲姞55%灏勯€燂紙涔樼畻锛夊鍔?.2绌块€忥紙鍔犵畻锛?
     public static final Item RIPPING_PRIME = new RippingPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 抵近射击Prime - 增加165%特定枪械伤害属性（乘算）
+    // 鎶佃繎灏勫嚮Prime - 澧炲姞165%鐗瑰畾鏋浼ゅ灞炴€э紙涔樼畻锛?
     public static final Item CLOSE_COMBAT_PRIME = new CloseCombatPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 极恶精准 - 降低90%后坐力，降低36%射速（都加算）
+    // 鏋佹伓绮惧噯 - 闄嶄綆90%鍚庡潗鍔涳紝闄嶄綆36%灏勯€燂紙閮藉姞绠楋級
     public static final Item EVIL_ACCURACY = new EvilAccuracy(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 极限速度 - 提高60%弹药速度（加算）
+    // 鏋侀檺閫熷害 - 鎻愰珮60%寮硅嵂閫熷害锛堝姞绠楋級
     public static final Item LIMIT_SPEED = new LimitSpeed(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 凶恶延伸 - 提高120%子弹射程（乘算）
+    // 鍑舵伓寤朵几 - 鎻愰珮120%瀛愬脊灏勭▼锛堜箻绠楋級
     public static final Item FEROCIOUS_EXTENSION = new FerociousExtension(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 膛线 - 提升165%特定枪械伤害
+    // 鑶涚嚎 - 鎻愬崌165%鐗瑰畾鏋浼ゅ
     public static final Item RIFLING = new Rifling(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 抵近射击 - 提升90%霰弹枪伤害
+    // 鎶佃繎灏勫嚮 - 鎻愬崌90%闇板脊鏋激瀹?
     public static final Item CLOSE_RANGE_SHOT = new CloseRangeShot(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 重装火力 - 提升165%手枪伤害，提高55%不精准度
+    // 閲嶈鐏姏 - 鎻愬崌165%鎵嬫灙浼ゅ锛屾彁楂?5%涓嶇簿鍑嗗害
     public static final Item HEAVY_FIREPOWER = new HeavyFirepower(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 黄蜂蜇刺 - 提升220%手枪伤害
+    // 榛勮渹铚囧埡 - 鎻愬崌220%鎵嬫灙浼ゅ
     public static final Item WASP_STINGER = new WaspStinger(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 预言契约 - 提升90%手枪伤害
+    // 棰勮█濂戠害 - 鎻愬崌90%鎵嬫灙浼ゅ
     public static final Item PROPHECY_PACT = new ProphecyPact(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 恶性扩散 - 提升165%霰弹枪伤害，提高55%不精准度
+    // 鎭舵€ф墿鏁?- 鎻愬崌165%闇板脊鏋激瀹筹紝鎻愰珮55%涓嶇簿鍑嗗害
     public static final Item MALIGNANT_SPREAD = new MalignantSpread(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 膛室 - 当玩家手持狙击枪且弹夹满子弹时，第一发子弹提升40%伤害
+    // 鑶涘 - 褰撶帺瀹舵墜鎸佺嫏鍑绘灙涓斿脊澶规弧瀛愬脊鏃讹紝绗竴鍙戝瓙寮规彁鍗?0%浼ゅ
     public static final Item CHAMBER = new Chamber(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 膛室Prime - 当玩家手持狙击枪且弹夹满子弹时，第一发子弹提升100%伤害
+    // 鑶涘Prime - 褰撶帺瀹舵墜鎸佺嫏鍑绘灙涓斿脊澶规弧瀛愬脊鏃讹紝绗竴鍙戝瓙寮规彁鍗?00%浼ゅ
     public static final Item CHAMBER_PRIME = new ChamberPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 爆发装填 - 提升30%装填速度
+    // 鐖嗗彂瑁呭～ - 鎻愬崌30%瑁呭～閫熷害
     public static final Item BURST_RELOAD = new BurstReload(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 腐败弹匣 - 提升66%弹匣容量，降低33%装填速度
+    // 鑵愯触寮瑰專 - 鎻愬崌66%寮瑰專瀹归噺锛岄檷浣?3%瑁呭～閫熷害
     public static final Item CORRUPT_MAGAZINE = new CorruptMagazine(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 分裂膛室 - 提升90%弹头数量
+    // 鍒嗚鑶涘 - 鎻愬崌90%寮瑰ご鏁伴噺
     public static final Item SPLIT_CHAMBER = new SplitChamber(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 战术上膛 - 提升60%装填速度（仅限霰弹枪）
+    // 鎴樻湳涓婅啗 - 鎻愬崌60%瑁呭～閫熷害锛堜粎闄愰湴寮规灙锛?
     public static final Item TACTICAL_RELOAD = new TacticalReload(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 过载弹匣 - 提升60%弹匣容量，降低18%装填速度（仅限霰弹枪）
+    // 杩囪浇寮瑰專 - 鎻愬崌60%寮瑰專瀹归噺锛岄檷浣?8%瑁呭～閫熷害锛堜粎闄愰湴寮规灙锛?
     public static final Item OVERLOADED_MAGAZINE = new OverloadedMagazine(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 地狱弹膛 - 提升120%弹头数量（仅限霰弹枪）
+    // 鍦扮嫳寮硅啗 - 鎻愬崌120%寮瑰ご鏁伴噺锛堜粎闄愰湴寮规灙锛?
     public static final Item INFERNAL_CHAMBER = new InfernalChamber(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 持续火力 - 提升48%装填速度（仅限手枪）
+    // 鎸佺画鐏姏 - 鎻愬崌48%瑁呭～閫熷害锛堜粎闄愭墜鏋級
     public static final Item SUSTAINED_FIRE = new SustainedFire(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 感染弹匣 - 提升60%弹匣容量，降低30%装填速度（仅限手枪）
+    // 鎰熸煋寮瑰專 - 鎻愬崌60%寮瑰專瀹归噺锛岄檷浣?0%瑁呭～閫熷害锛堜粎闄愭墜鏋級
     public static final Item INFECTED_MAGAZINE = new InfectedMagazine(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 致命洪流 - 提升60%射速和60%弹头数量（仅限手枪）
+    // 鑷村懡娲祦 - 鎻愬崌60%灏勯€熷拰60%寮瑰ご鏁伴噺锛堜粎闄愭墜鏋級
     public static final Item DEADLY_SURGE = new DeadlySurge(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 弹头扩散 - 提升120%弹头数量（仅限手枪）
+    // 寮瑰ご鎵╂暎 - 鎻愬崌120%寮瑰ご鏁伴噺锛堜粎闄愭墜鏋級
     public static final Item BULLET_SPREAD = new BulletSpread(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 内融核心 - 通过熔炉燃烧饰品获得
+    // 鍐呰瀺鏍稿績 - 閫氳繃鐔旂倝鐕冪儳楗板搧鑾峰緱
     public static final Item CORE_FUSION = new CoreFusion(new Item.Properties());
     
-    // 裂隙碎银 - 用于随机抽取饰品
+    // 瑁傞殭纰庨摱 - 鐢ㄤ簬闅忔満鎶藉彇楗板搧
     public static final Item RIFT_SILVER = new RiftSilver(new Item.Properties());
     
-    // 融合容器 - 用于存储 CoreFusion 和饰品升级
+    // 铻嶅悎瀹瑰櫒 - 鐢ㄤ簬瀛樺偍 CoreFusion 鍜岄グ鍝佸崌绾?
     public static final Item FUSION_VESSEL = new FusionVesselItem(new Item.Properties()
-            .stacksTo(1));
+            .stacksTo(64));
     
-    // 压迫点 - 提升120%近战伤害
+    // 鍘嬭揩鐐?- 鎻愬崌120%杩戞垬浼ゅ
     public static final Item OPPRESSION_POINT = new OppressionPoint(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 压迫点Prime - 提升165%近战伤害
+    // 鍘嬭揩鐐筆rime - 鎻愬崌165%杩戞垬浼ゅ
     public static final Item OPPRESSION_POINT_PRIME = new OppressionPointPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 剑风 - 提升1.1近战距离
+    // 鍓戦 - 鎻愬崌1.1杩戞垬璺濈
     public static final Item SWORD_WIND = new SwordWind(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 剑风Prime - 提升3近战距离
+    // 鍓戦Prime - 鎻愬崌3杩戞垬璺濈
     public static final Item SWORD_WIND_PRIME = new SwordWindPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 耗竭装填 - 降低60%弹匣容量，提升48%装填速度（仅限狙击枪）
+    // 鑰楃瑁呭～ - 闄嶄綆60%寮瑰專瀹归噺锛屾彁鍗?8%瑁呭～閫熷害锛堜粎闄愮嫏鍑绘灙锛?
     public static final Item DEPLETED_RELOAD = new DepletedReload(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 爆发装填Prime - 提升55%装填速度（仅限步枪、狙击枪、冲锋枪、机枪、重型武器）
+    // 鐖嗗彂瑁呭～Prime - 鎻愬崌55%瑁呭～閫熷害锛堜粎闄愭鏋€佺嫏鍑绘灙銆佸啿閿嬫灙銆佹満鏋€侀噸鍨嬫鍣級
     public static final Item BURST_RELOAD_PRIME = new BurstReloadPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 战术上膛Prime - 提升100%装填速度（仅限霰弹枪）
+    // 鎴樻湳涓婅啗Prime - 鎻愬崌100%瑁呭～閫熷害锛堜粎闄愰湴寮规灙锛?
     public static final Item TACTICAL_RELOAD_PRIME = new TacticalReloadPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 霰弹扩充Prime - 提升110%弹匣容量（仅限霰弹枪）
+    // 闇板脊鎵╁厖Prime - 鎻愬崌110%寮瑰專瀹归噺锛堜粎闄愰湴寮规灙锛?
     public static final Item SHOTGUN_EXPANSION_PRIME = new ShotgunExpansionPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 弹匣增幅Prime - 提升55%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、重型武器）
+    // 寮瑰專澧炲箙Prime - 鎻愬崌55%寮瑰專瀹归噺锛堜粎闄愭鏋€佺嫏鍑绘灙銆佸啿閿嬫灙銆佹満鏋€侀噸鍨嬫鍣級
     public static final Item MAGAZINE_BOOST_PRIME = new MagazineBoostPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 串联弹匣Prime - 提升55%弹匣容量（仅限手枪）
+    // 涓茶仈寮瑰專Prime - 鎻愬崌55%寮瑰專瀹归噺锛堜粎闄愭墜鏋級
     public static final Item TANDEM_MAGAZINE_PRIME = new TandemMagazinePrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 霰弹扩充 - 提升60%弹匣容量（仅限霰弹枪）
+    // 闇板脊鎵╁厖 - 鎻愬崌60%寮瑰專瀹归噺锛堜粎闄愰湴寮规灙锛?
     public static final Item SHOTGUN_EXPANSION = new ShotgunExpansion(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 弹匣增幅 - 提升30%弹匣容量（仅限步枪、狙击枪、冲锋枪、机枪、重型武器）
+    // 寮瑰專澧炲箙 - 鎻愬崌30%寮瑰專瀹归噺锛堜粎闄愭鏋€佺嫏鍑绘灙銆佸啿閿嬫灙銆佹満鏋€侀噸鍨嬫鍣級
     public static final Item MAGAZINE_BOOST = new MagazineBoost(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 串联弹匣 - 提升30%弹匣容量（仅限手枪）
+    // 涓茶仈寮瑰專 - 鎻愬崌30%寮瑰專瀹归噺锛堜粎闄愭墜鏋級
     public static final Item TANDEM_MAGAZINE = new TandemMagazine(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 掎角一阵 - 裂隙级饰品
+    // 鎺庤涓€闃?- 瑁傞殭绾чグ鍝?
     public static final Item KIKAKU_ICHIJIN = new KikakuIchijin(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
     
-    // Phase 2: 16个新增常驻属性饰品
+    // Phase 2: 16涓柊澧炲父椹诲睘鎬чグ鍝?
     
-    // 关键延迟 - 枪械通用，暴击几率+200%，射速-20%
+    // 鍏抽敭寤惰繜 - 鏋閫氱敤锛屾毚鍑诲嚑鐜?200%锛屽皠閫?20%
     public static final Item CRITICAL_DELAY = new CriticalDelay(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 致命一击 - 步枪类，暴击几率+150%
+    // 鑷村懡涓€鍑?- 姝ユ灙绫伙紝鏆村嚮鍑犵巼+150%
     public static final Item LETHAL_CRIT = new LethalCrit(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 弱点感应 - 步枪类，暴击伤害+120%
+    // 寮辩偣鎰熷簲 - 姝ユ灙绫伙紝鏆村嚮浼ゅ+120%
     public static final Item WEAKNESS_SENSE = new WeaknessSense(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 破灭 - 霰弹枪，暴击伤害+60%
+    // 鐮寸伃 - 闇板脊鏋紝鏆村嚮浼ゅ+60%
     public static final Item DESTRUCTION = new Destruction(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 破灭Prime - 霰弹枪，暴击伤害+110%
+    // 鐮寸伃Prime - 闇板脊鏋紝鏆村嚮浼ゅ+110%
     public static final Item DESTRUCTION_PRIME = new DestructionPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 雷筒 - 霰弹枪，暴击几率+90%
+    // 闆风瓛 - 闇板脊鏋紝鏆村嚮鍑犵巼+90%
     public static final Item THUNDER_BARREL = new ThunderBarrel(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 雷筒Prime - 霰弹枪，暴击几率+165%
+    // 闆风瓛Prime - 闇板脊鏋紝鏆村嚮鍑犵巼+165%
     public static final Item THUNDER_BARREL_PRIME = new ThunderBarrelPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 弱点专精 - 手枪，暴击伤害+60%
+    // 寮辩偣涓撶簿 - 鎵嬫灙锛屾毚鍑讳激瀹?60%
     public static final Item WEAKNESS_MASTERY = new WeaknessMastery(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
     
-    // 弱点专精Prime - 手枪，暴击伤害+110%
+    // 寮辩偣涓撶簿Prime - 鎵嬫灙锛屾毚鍑讳激瀹?110%
     public static final Item WEAKNESS_MASTERY_PRIME = new WeaknessMasteryPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 空尖弹 - 手枪，暴击伤害+60%，手枪伤害-15%
+    // 绌哄皷寮?- 鎵嬫灙锛屾毚鍑讳激瀹?60%锛屾墜鏋激瀹?15%
     public static final Item HOLLOW_POINT = new HollowPoint(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
     
-    // 手枪精通 - 手枪，暴击几率+120%
+    // 鎵嬫灙绮鹃€?- 鎵嬫灙锛屾毚鍑诲嚑鐜?120%
     public static final Item PISTOL_MASTERY = new PistolMastery(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 手枪精通Prime - 手枪，暴击几率+187%
+    // 鎵嬫灙绮鹃€歅rime - 鎵嬫灙锛屾毚鍑诲嚑鐜?187%
     public static final Item PISTOL_MASTERY_PRIME = new PistolMasteryPrime(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 斩铁 - 近战，暴击几率+120%
+    // 鏂╅搧 - 杩戞垬锛屾毚鍑诲嚑鐜?120%
     public static final Item STEEL_SLASH = new SteelSlash(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 肢解 - 近战，暴击伤害+90%
+    // 鑲㈣В - 杩戞垬锛屾毚鍑讳激瀹?90%
     public static final Item DISMEMBERMENT = new Dismemberment(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
     
-    // 牺牲压迫点 - 近战，近战伤害+110%
+    // 鐗虹壊鍘嬭揩鐐?- 杩戞垬锛岃繎鎴樹激瀹?110%
     public static final Item SACRIFICE_OPPRESSION = new SacrificeOppression(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
     
-    // 牺牲斩铁 - 近战，暴击几率+220%
+    // 鐗虹壊鏂╅搧 - 杩戞垬锛屾毚鍑诲嚑鐜?220%
     public static final Item SACRIFICE_STEEL = new SacrificeSteel(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // Phase 3: 12个Buff触发饰品
+    // Phase 3: 12涓狟uff瑙﹀彂楗板搧
 
-    // 氩晶瞄具 - 步枪，爆头触发Buff
+    // 姘╂櫠鐬勫叿 - 姝ユ灙锛岀垎澶磋Е鍙態uff
     public static final Item ARGON_SCOPE = new ArgonScope(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 镀层氩晶瞄具 - 步枪，爆头/击杀触发Buff（叠加5层）
+    // 闀€灞傛癌鏅剁瀯鍏?- 姝ユ灙锛岀垎澶?鍑绘潃瑙﹀彂Buff锛堝彔鍔?灞傦級
     public static final Item GILDED_ARGON_SCOPE = new GildedArgonScope(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 尖刃弹头 - 步枪，击杀触发Buff
+    // 灏栧垉寮瑰ご - 姝ユ灙锛屽嚮鏉€瑙﹀彂Buff
     public static final Item SHARP_BULLET = new SharpBullet(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
 
-    // 镀层分裂膛室 - 步枪，击杀触发Buff（叠加5层）
+    // 闀€灞傚垎瑁傝啗瀹?- 姝ユ灙锛屽嚮鏉€瑙﹀彂Buff锛堝彔鍔?灞傦級
     public static final Item GILDED_SPLIT_CHAMBER = new GildedSplitChamber(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 雷射瞄具 - 霰弹枪，爆头触发Buff
+    // 闆峰皠鐬勫叿 - 闇板脊鏋紝鐖嗗ご瑙﹀彂Buff
     public static final Item LASER_SCOPE = new LaserScope(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
 
-    // 破片射击 - 霰弹枪，击杀触发Buff
+    // 鐮寸墖灏勫嚮 - 闇板脊鏋紝鍑绘潃瑙﹀彂Buff
     public static final Item FRAGMENT_SHOT = new FragmentShot(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
 
-    // 镀层地狱弹膛 - 霰弹枪，击杀触发Buff（叠加5层）
+    // 闀€灞傚湴鐙卞脊鑶?- 闇板脊鏋紝鍑绘潃瑙﹀彂Buff锛堝彔鍔?灞傦級
     public static final Item GILDED_INFERNAL_CHAMBER = new GildedInfernalChamber(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 液压准心 - 手枪，爆头触发Buff
+    // 娑插帇鍑嗗績 - 鎵嬫灙锛岀垎澶磋Е鍙態uff
     public static final Item HYDRAULIC_CROSSHAIR = new HydraulicCrosshair(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.COMMON));
 
-    // 镀层液压准心 - 手枪，爆头/击杀触发Buff（叠加5层）
+    // 闀€灞傛恫鍘嬪噯蹇?- 鎵嬫灙锛岀垎澶?鍑绘潃瑙﹀彂Buff锛堝彔鍔?灞傦級
     public static final Item GILDED_HYDRAULIC_CROSSHAIR = new GildedHydraulicCrosshair(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 尖锐子弹 - 手枪，击杀触发Buff
+    // 灏栭攼瀛愬脊 - 鎵嬫灙锛屽嚮鏉€瑙﹀彂Buff
     public static final Item SHARP_AMMO = new SharpAmmo(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.UNCOMMON));
 
-    // 镀层弹头扩散 - 手枪，击杀触发Buff（叠加4层）
+    // 闀€灞傚脊澶存墿鏁?- 鎵嬫灙锛屽嚮鏉€瑙﹀彂Buff锛堝彔鍔?灞傦級
     public static final Item GILDED_BULLET_SPREAD = new GildedBulletSpread(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 镀层斩铁 - 近战，击杀触发Buff（叠加4层）
+    // 闀€灞傛柀閾?- 杩戞垬锛屽嚮鏉€瑙﹀彂Buff锛堝彔鍔?灞傦級
     public static final Item GILDED_STEEL_SLASH = new GildedSteelSlash(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // Phase 4: 5个特殊饰品
+    // Phase 4: 5涓壒娈婇グ鍝?
 
-    // 镀层步枪才能 - 步枪，击杀触发Buff（有害效果乘算，2层）
+    // 闀€灞傛鏋墠鑳?- 姝ユ灙锛屽嚮鏉€瑙﹀彂Buff锛堟湁瀹虫晥鏋滀箻绠楋紝2灞傦級
     public static final Item GILDED_RIFLE_APTITUDE = new GildedRifleAptitude(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 镀层通晓霰弹枪 - 霰弹，击杀触发Buff（有害效果乘算，2层）
+    // 闀€灞傞€氭檽闇板脊鏋?- 闇板脊锛屽嚮鏉€瑙﹀彂Buff锛堟湁瀹虫晥鏋滀箻绠楋紝2灞傦級
     public static final Item GILDED_SHOTGUN_SAVVY = new GildedShotgunSavvy(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 镀层准确射手 - 手枪，击杀触发Buff（有害效果乘算，3层）
+    // 闀€灞傚噯纭皠鎵?- 鎵嬫灙锛屽嚮鏉€瑙﹀彂Buff锛堟湁瀹虫晥鏋滀箻绠楋紝3灞傦級
     public static final Item GILDED_MARKSMAN = new GildedMarksman(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 异况超量 - 近战，目标负面效果种数增伤
+    // 寮傚喌瓒呴噺 - 杩戞垬锛岀洰鏍囪礋闈㈡晥鏋滅鏁板浼?
     public static final Item CONDITION_OVERLOAD = new ConditionOverload(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 崩坏结晶 - 用于卸下3rd和tdk槽位的饰品
+    // 宕╁潖缁撴櫠 - 鐢ㄤ簬鍗镐笅3rd鍜宼dk妲戒綅鐨勯グ鍝?
     public static final Item COLLAPSE_CRYSTAL = new CollapseCrystal(new Item.Properties()
             .stacksTo(64));
 
-    // 纠缠之缘 - 与神之键/逐火之蛾饰品合成时生成NBT一致的副本，仅消耗自身
+    // 绾犵紶涔嬬紭 - 涓庣涔嬮敭/閫愮伀涔嬭浘楗板搧鍚堟垚鏃剁敓鎴怤BT涓€鑷寸殑鍓湰锛屼粎娑堣€楄嚜韬?
     public static final Item JIU_CHAN_ZHI_YUAN = new JiuChanZhiYuan(new Item.Properties()
             .stacksTo(64));
 
-    // 逐火之蛾/神之键 新饰品
+    // 閫愮伀涔嬭浘/绁炰箣閿?鏂伴グ鍝?
 
-    // 格蕾修 - 3rd槽位，稀有级，受伤冷却基础10tick，全部枪械类型
+    // 鏍艰暰淇?- 3rd妲戒綅锛岀█鏈夌骇锛屽彈浼ゅ喎鍗村熀纭€10tick锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item GRISEO = new Griseo(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 千界一乘 - tdk槽位，稀有级，+20幸运值，全部枪械类型
+    // 鍗冪晫涓€涔?- tdk妲戒綅锛岀█鏈夌骇锛?20骞歌繍鍊硷紝鍏ㄩ儴鏋绫诲瀷
     public static final Item QIANJIE_YICHENG = new QianjieYicheng(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 绘世之卷 - 3rd槽位，传说级，受伤冷却基础10tick+幸运缩放上限40tick，全部枪械类型
+    // 缁樹笘涔嬪嵎 - 3rd妲戒綅锛屼紶璇寸骇锛屽彈浼ゅ喎鍗村熀纭€10tick+骞歌繍缂╂斁涓婇檺40tick锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item HUISHI_ZHIJUAN = new HuishiZhijuan(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 永劫之键 - tdk槽位，传说级，+20幸运+幸运缩放暴击，全部枪械类型
+    // 姘稿姭涔嬮敭 - tdk妲戒綅锛屼紶璇寸骇锛?20骞歌繍+骞歌繍缂╂斁鏆村嚮锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item YONGJIE_ZHIJIAN = new YongjieZhijian(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 繁星 - 3rd槽位，裂隙级，受伤冷却基础20tick+幸运缩放上限120tick，全部枪械类型
+    // 绻佹槦 - 3rd妲戒綅锛岃闅欑骇锛屽彈浼ゅ喎鍗村熀纭€20tick+骞歌繍缂╂斁涓婇檺120tick锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item FANXING = new Fanxing(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 视界反演 - tdk槽位，裂隙级，+40幸运+暴击+虚数崩解+侵染+虚数伤害转换，全部枪械类型
+    // 瑙嗙晫鍙嶆紨 - tdk妲戒綅锛岃闅欑骇锛?40骞歌繍+鏆村嚮+铏氭暟宕╄В+渚垫煋+铏氭暟浼ゅ杞崲锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item SHIJIE_FANYAN = new ShijieFanyan(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 重型武器系列饰品
+    // 閲嶅瀷姝﹀櫒绯诲垪楗板搧
 
-    // 维尔薇 - 3rd槽位，稀有级，HP<20%黄心Lv1 60s冷却，重型武器
+    // 缁村皵钖?- 3rd妲戒綅锛岀█鏈夌骇锛孒P<20%榛勫績Lv1 60s鍐峰嵈锛岄噸鍨嬫鍣?
     public static final Item VILL_V = new VillV(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 虚空万藏 - tdk槽位，稀有级，+10虚数伤害+5%/s弹药恢复，重型武器
+    // 铏氱┖涓囪棌 - tdk妲戒綅锛岀█鏈夌骇锛?10铏氭暟浼ゅ+5%/s寮硅嵂鎭㈠锛岄噸鍨嬫鍣?
     public static final Item XUKONG_WANCANG = new XukongWancang(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 愚戏之匣 - 3rd槽位，传说级，HP<30%黄心Lv2 60s冷却，重型武器
+    // 鎰氭垙涔嬪專 - 3rd妲戒綅锛屼紶璇寸骇锛孒P<30%榛勫績Lv2 60s鍐峰嵈锛岄噸鍨嬫鍣?
     public static final Item YUXI_ZHIXIA = new YuxiZhixia(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 启示之键 - tdk槽位，传说级，+20虚数伤害+10%/s弹药恢复，重型武器
+    // 鍚ず涔嬮敭 - tdk妲戒綅锛屼紶璇寸骇锛?20铏氭暟浼ゅ+10%/s寮硅嵂鎭㈠锛岄噸鍨嬫鍣?
     public static final Item QISHI_ZHIJIAN = new QishiZhijian(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 螺旋 - 3rd槽位，裂隙级，每30s黄心Lv3，重型武器
+    // 铻烘棆 - 3rd妲戒綅锛岃闅欑骇锛屾瘡30s榛勫績Lv3锛岄噸鍨嬫鍣?
     public static final Item LUOXUAN = new Luoxuan(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 虚空万藏·雨众天华 - tdk槽位，裂隙级，+20+atk*0.1虚数伤害+20%/s弹药恢复+虚数转换+必定侵染，重型武器
+    // 铏氱┖涓囪棌路闆ㄤ紬澶╁崕 - tdk妲戒綅锛岃闅欑骇锛?20+atk*0.1铏氭暟浼ゅ+20%/s寮硅嵂鎭㈠+铏氭暟杞崲+蹇呭畾渚垫煋锛岄噸鍨嬫鍣?
     public static final Item XUKONG_WANCANG_YZTH = new XukongWancangYZTH(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 千劫/伊默尔系列饰品
+    // 鍗冨姭/浼婇粯灏旂郴鍒楅グ鍝?
 
-    // 千劫 - 3rd槽位，稀有级，+21虚数抗性+适应3/0.8/20s，全部枪械类型
+    // 鍗冨姭 - 3rd妲戒綅锛岀█鏈夌骇锛?21铏氭暟鎶楁€?閫傚簲3/0.8/20s锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item KALPAS = new Kalpas(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 伊默尔 - tdk槽位，稀有级，最大生命值→攻击力，全部枪械类型
+    // 浼婇粯灏?- tdk妲戒綅锛岀█鏈夌骇锛屾渶澶х敓鍛藉€尖啋鏀诲嚮鍔涳紝鍏ㄩ儴鏋绫诲瀷
     public static final Item IMER = new Imer(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 坏劫之焱 - 3rd槽位，传说级，+21虚数抗性+适应4/0.7/20s+抗性→生命值，全部枪械类型
+    // 鍧忓姭涔嬬劚 - 3rd妲戒綅锛屼紶璇寸骇锛?21铏氭暟鎶楁€?閫傚簲4/0.7/20s+鎶楁€р啋鐢熷懡鍊硷紝鍏ㄩ儴鏋绫诲瀷
     public static final Item HUAJIE_ZHIYAN = new HuajieZhiyan(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 支配之键 - tdk槽位，传说级，最大生命值→攻击力+atk*0.3虚数伤害，全部枪械类型
+    // 鏀厤涔嬮敭 - tdk妲戒綅锛屼紶璇寸骇锛屾渶澶х敓鍛藉€尖啋鏀诲嚮鍔?atk*0.3铏氭暟浼ゅ锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item DOMINANCE_KEY = new DominanceKey(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 鏖灭 - 3rd槽位，裂隙级，+21虚数抗性+适应6/0.5/20s+抗性→生命值，全部枪械类型
+    // 閺栫伃 - 3rd妲戒綅锛岃闅欑骇锛?21铏氭暟鎶楁€?閫傚簲6/0.5/20s+鎶楁€р啋鐢熷懡鍊硷紝鍏ㄩ儴鏋绫诲瀷
     public static final Item AOMIE = new AoMie(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // Meta-Morph - tdk槽位，裂隙级，最大生命值→攻击力+atk虚数伤害+抗性→生命偷取，全部枪械类型
+    // Meta-Morph - tdk妲戒綅锛岃闅欑骇锛屾渶澶х敓鍛藉€尖啋鏀诲嚮鍔?atk铏氭暟浼ゅ+鎶楁€р啋鐢熷懡鍋峰彇锛屽叏閮ㄦ灙姊扮被鍨?
     public static final Item META_MORPH = new MetaMorph(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 苏系列饰品
+    // 鑻忕郴鍒楅グ鍝?
 
-    // 苏 - 3rd槽位，稀有级，+31虚数抗性-30%HP-dmg10%减伤，步枪
+    // 鑻?- 3rd妲戒綅锛岀█鏈夌骇锛?31铏氭暟鎶楁€?30%HP-dmg10%鍑忎激锛屾鏋?
     public static final Item SU = new Su(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 万物休眠 - tdk槽位，稀有级，overheal0.3+5%/s弹药，步枪
+    // 涓囩墿浼戠湢 - tdk妲戒綅锛岀█鏈夌骇锛宱verheal0.3+5%/s寮硅嵂锛屾鏋?
     public static final Item WANWU_XIUMIAN = new WanwuXiumian(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.RARE));
 
-    // 觉者 - 3rd槽位，传说级，+31虚数抗性-40%HP-dmg30%减伤，步枪
+    // 瑙夎€?- 3rd妲戒綅锛屼紶璇寸骇锛?31铏氭暟鎶楁€?40%HP-dmg30%鍑忎激锛屾鏋?
     public static final Item JUEZHE = new Juezhe(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 停滞之键 - tdk槽位，传说级，overheal0.5+弹药(10+res/200)%，步枪
+    // 鍋滄粸涔嬮敭 - tdk妲戒綅锛屼紶璇寸骇锛宱verheal0.5+寮硅嵂(10+res/200)%锛屾鏋?
     public static final Item TINGZHI_ZHIJIAN = new TingzhiZhijian(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(Rarity.EPIC));
 
-    // 天慧 - 3rd槽位，裂隙级，+31虚数抗性-50%HP-dmg(0.7-res/100)减伤，步枪
+    // 澶╂収 - 3rd妲戒綅锛岃闅欑骇锛?31铏氭暟鎶楁€?50%HP-dmg(0.7-res/100)鍑忎激锛屾鏋?
     public static final Item TIANHUI = new Tianhui(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 因果转轮 - tdk槽位，裂隙级，overheal1+弹药res/100%+虚数伤害，步枪
+    // 鍥犳灉杞疆 - tdk妲戒綅锛岃闅欑骇锛宱verheal1+寮硅嵂res/100%+铏氭暟浼ゅ锛屾鏋?
     public static final Item YINGUO_ZHUANLUN = new YinguoZhuanlun(new Item.Properties()
-            .stacksTo(1)
+            .stacksTo(64)
             .rarity(RIFT));
 
-    // 新系列：戒律/黄金/旭光/无限/浮生/空梦（各 6 件）
+    // 鏂扮郴鍒楋細鎴掑緥/榛勯噾/鏃厜/鏃犻檺/娴敓/绌烘ⅵ锛堝悇 6 浠讹級
 
-    // --- 戒律（霰弹枪）：人物线 3rd ---
-    // 阿波尼亚 - 攻击15%概率施加1个随机debuff（15秒）
+    // --- 鎴掑緥锛堥湴寮规灙锛夛細浜虹墿绾?3rd ---
+    // 闃挎尝灏间簹 - 鏀诲嚮15%姒傜巼鏂藉姞1涓殢鏈篸ebuff锛?5绉掞級
     public static final Item APONIA = new Aponia(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 深罪之槛 - 攻击15%概率施加2个随机debuff（15秒）
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 娣辩姜涔嬫 - 鏀诲嚮15%姒傜巼鏂藉姞2涓殢鏈篸ebuff锛?5绉掞級
     public static final Item SHENZUI_ZHIJIAN = new ShenzuiZhijian(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 戒律 - 攻击15%概率施加3个随机debuff（15秒）
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 鎴掑緥 - 鏀诲嚮15%姒傜巼鏂藉姞3涓殢鏈篸ebuff锛?5绉掞級
     public static final Item JIELV = new Jielv(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 戒律（霰弹枪）：神之键线 tdk ---
-    // 往世的苦囚 - 攻击按虚数抗性概率施加崩坏病I级（易伤20%）
+    // --- 鎴掑緥锛堥湴寮规灙锛夛細绁炰箣閿嚎 tdk ---
+    // 寰€涓栫殑鑻﹀洑 - 鏀诲嚮鎸夎櫄鏁版姉鎬ф鐜囨柦鍔犲穿鍧忕梾I绾э紙鏄撲激20%锛?
     public static final Item WANGSHI_DE_KUQIU = new WangshiDeKuqiu(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 往世的苦囚·命之契 - 崩坏病II级（易伤40%）
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 寰€涓栫殑鑻﹀洑路鍛戒箣濂?- 宕╁潖鐥匢I绾э紙鏄撲激40%锛?
     public static final Item WANGSHI_DE_KUQIU_MINGZHIQI = new WangshiDeKuqiuMingzhiqi(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 第零额定功率·神恩结界 - 崩坏病III级（易伤60%）+伤害转虚数+侵染
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 绗浂棰濆畾鍔熺巼路绁炴仼缁撶晫 - 宕╁潖鐥匢II绾э紙鏄撲激60%锛?浼ゅ杞櫄鏁?渚垫煋
     public static final Item SHENEN_JIEJIE = new ShenenJiejie(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 黄金（手枪）：人物线 3rd ---
-    // 伊甸 - 36格内玩家每5秒获得1个正面buff（I级）
+    // --- 榛勯噾锛堟墜鏋級锛氫汉鐗╃嚎 3rd ---
+    // 浼婄敻 - 36鏍煎唴鐜╁姣?绉掕幏寰?涓闈uff锛圛绾э級
     public static final Item EDEN = new Eden(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 璀耀之歌 - 同上（II级）
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鐠€鑰€涔嬫瓕 - 鍚屼笂锛圛I绾э級
     public static final Item CUIYAO_ZHI_GE = new CuiyaoZhiGe(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 黄金 - 同上（III级）
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 榛勯噾 - 鍚屼笂锛圛II绾э級
     public static final Item HUANGJIN = new Huangjin(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 黄金（手枪）：神之键线 tdk ---
-    // 伊甸之星 - 16格内非玩家实体瞬移必定失效
+    // --- 榛勯噾锛堟墜鏋級锛氱涔嬮敭绾?tdk ---
+    // 浼婄敻涔嬫槦 - 16鏍煎唴闈炵帺瀹跺疄浣撶灛绉诲繀瀹氬け鏁?
     public static final Item EDEN_STAR = new EdenStar(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 吞噬之键 - 32格
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鍚炲櫖涔嬮敭 - 32鏍?
     public static final Item TUNTIAN_ZHIJIAN = new TuntianZhijian(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 第三额定功率·奇点重构 - 64格+伤害转虚数+侵染
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 绗笁棰濆畾鍔熺巼路濂囩偣閲嶆瀯 - 64鏍?浼ゅ杞櫄鏁?渚垫煋
     public static final Item QIDIAN_CHONGGOU = new QidianChonggou(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 旭光（近战）：人物线 3rd ---
-    // 科斯魔 - 攻速+8%、攻伤+5%
+    // --- 鏃厜锛堣繎鎴橈級锛氫汉鐗╃嚎 3rd ---
+    // 绉戞柉榄?- 鏀婚€?8%銆佹敾浼?5%
     public static final Item KOSMA = new Kosma(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 黎明之哨 - 攻速+15%、攻伤+10%、暴击率+5%
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 榛庢槑涔嬪摠 - 鏀婚€?15%銆佹敾浼?10%銆佹毚鍑荤巼+5%
     public static final Item LIMING_ZHI_SHAO = new LimingZhiShao(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 旭光 - 攻速+25%、攻伤+20%、暴击伤害+30%
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 鏃厜 - 鏀婚€?25%銆佹敾浼?20%銆佹毚鍑讳激瀹?30%
     public static final Item XUGUANG = new Xuguang(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 旭光（近战）：神之键线 tdk ---
-    // 地藏御魂 - 攻击必定削减目标当前护甲/韧性5%（持久）
+    // --- 鏃厜锛堣繎鎴橈級锛氱涔嬮敭绾?tdk ---
+    // 鍦拌棌寰￠瓊 - 鏀诲嚮蹇呭畾鍓婂噺鐩爣褰撳墠鎶ょ敳/闊ф€?%锛堟寔涔咃級
     public static final Item DIZANG_YUHUN = new DizangYuhun(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 侵蚀之键 - 削减10%
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 渚佃殌涔嬮敭 - 鍓婂噺10%
     public static final Item QINSHI_ZHIJIAN = new QinshiZhijian(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 御魂示现 - 按虚数抗性百分比削减+伤害转虚数+侵染
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 寰￠瓊绀虹幇 - 鎸夎櫄鏁版姉鎬х櫨鍒嗘瘮鍓婂噺+浼ゅ杞櫄鏁?渚垫煋
     public static final Item YUHUN_SHIXIAN = new YuhunShixian(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 无限（轻机枪）：人物线 3rd ---
-    // 梅比乌斯 - 每种实体类型击杀累计，全属性+1%
+    // --- 鏃犻檺锛堣交鏈烘灙锛夛細浜虹墿绾?3rd ---
+    // 姊呮瘮涔屾柉 - 姣忕瀹炰綋绫诲瀷鍑绘潃绱锛屽叏灞炴€?1%
     public static final Item MEBIUS = new Mebius(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 噬界之蛇 - 全属性+1.5%
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鍣晫涔嬭泧 - 鍏ㄥ睘鎬?1.5%
     public static final Item SHIJIE_ZHI_SHE = new ShijieZhiShe(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 无限 - 全属性+2%
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 鏃犻檺 - 鍏ㄥ睘鎬?2%
     public static final Item WUXIAN = new Wuxian(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 无限（轻机枪）：神之键线 tdk ---
-    // 往世的蛇影 - 造成伤害10%概率移除目标1个正面buff
+    // --- 鏃犻檺锛堣交鏈烘灙锛夛細绁炰箣閿嚎 tdk ---
+    // 寰€涓栫殑铔囧奖 - 閫犳垚浼ゅ10%姒傜巼绉婚櫎鐩爣1涓闈uff
     public static final Item WANGSHI_DE_SHEYING = new WangshiDeSheying(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 舍沙 - 虚数抗性概率+伤害转虚数+侵染
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鑸嶆矙 - 铏氭暟鎶楁€ф鐜?浼ゅ杞櫄鏁?渚垫煋
     public static final Item SHESHA = new Shesha(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
-    // 往世的蛇影·死之衣 - 20%概率
+            .stacksTo(64).rarity(RIFT));
+    // 寰€涓栫殑铔囧奖路姝讳箣琛?- 20%姒傜巼
     public static final Item SI_ZHI_YI = new SiZhiYi(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
+            .stacksTo(64).rarity(Rarity.EPIC));
 
-    // --- 浮生（近战）：人物线 3rd ---
-    // 华 - 护甲+20%、护甲韧性+20%
+    // --- 娴敓锛堣繎鎴橈級锛氫汉鐗╃嚎 3rd ---
+    // 鍗?- 鎶ょ敳+20%銆佹姢鐢查煣鎬?20%
     public static final Item HUA = new Hua(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 渡尘之羽 - 护甲+50%、护甲韧性+50%
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 娓″皹涔嬬窘 - 鎶ょ敳+50%銆佹姢鐢查煣鎬?50%
     public static final Item DUCHEN_ZHI_YU = new DuchenZhiYu(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 浮生 - 护甲/韧性=虚数抗性百分比
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 娴敓 - 鎶ょ敳/闊ф€?铏氭暟鎶楁€х櫨鍒嗘瘮
     public static final Item FUSHENG = new Fusheng(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 浮生（近战）：神之键线 tdk ---
-    // 羽渡尘 - 攻击5%概率停止目标AI 5秒
+    // --- 娴敓锛堣繎鎴橈級锛氱涔嬮敭绾?tdk ---
+    // 缇芥浮灏?- 鏀诲嚮5%姒傜巼鍋滄鐩爣AI 5绉?
     public static final Item YUDUCHEN = new Yuduchen(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 凡尘难渡 - 15%概率
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鍑″皹闅炬浮 - 15%姒傜巼
     public static final Item FANCHEN_NANDU = new FanchenNandu(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 不识时务 - 虚数抗性概率+伤害转虚数+侵染
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 涓嶈瘑鏃跺姟 - 铏氭暟鎶楁€ф鐜?浼ゅ杞櫄鏁?渚垫煋
     public static final Item BUSHI_SHIWU = new BushiShiwu(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 空梦（霰弹枪）：人物线 3rd（三阶效果一致） ---
-    // 帕朵菲利斯 - 钓鱼0.01%获得下界之星/龙蛋+击杀战利品翻倍
+    // --- 绌烘ⅵ锛堥湴寮规灙锛夛細浜虹墿绾?3rd锛堜笁闃舵晥鏋滀竴鑷达級 ---
+    // 甯曟湹鑿插埄鏂?- 閽撻奔0.01%鑾峰緱涓嬬晫涔嬫槦/榫欒泲+鍑绘潃鎴樺埄鍝佺炕鍊?
     public static final Item PADO_PHILIPIS = new PadoPhilipis(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 掠集之兽
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鎺犻泦涔嬪吔
     public static final Item LUEJI_ZHI_SHOU = new LuejiZhiShou(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
-    // 空梦
+            .stacksTo(64).rarity(Rarity.EPIC));
+    // 绌烘ⅵ
     public static final Item KONGMENG = new Kongmeng(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // --- 空梦（霰弹枪）：神之键线 tdk ---
-    // 往世的幻梦 - 造成伤害概率1.5倍（概率=虚数抗性）
+    // --- 绌烘ⅵ锛堥湴寮规灙锛夛細绁炰箣閿嚎 tdk ---
+    // 寰€涓栫殑骞绘ⅵ - 閫犳垚浼ゅ姒傜巼1.5鍊嶏紙姒傜巼=铏氭暟鎶楁€э級
     public static final Item WANGSHI_DE_HUANMENG = new WangshiDeHuanmeng(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.RARE));
-    // 拉之眼 - 2倍+伤害转虚数+侵染
+            .stacksTo(64).rarity(Rarity.RARE));
+    // 鎷変箣鐪?- 2鍊?浼ゅ杞櫄鏁?渚垫煋
     public static final Item LA_ZHI_YAN = new LaZhiYan(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
-    // 往世的幻梦·夜之瞳 - 1.8倍
+            .stacksTo(64).rarity(RIFT));
+    // 寰€涓栫殑骞绘ⅵ路澶滀箣鐬?- 1.8鍊?
     public static final Item YE_ZHI_TONG = new YeZhiTong(new Item.Properties()
-            .stacksTo(1).rarity(Rarity.EPIC));
+            .stacksTo(64).rarity(Rarity.EPIC));
 
-    // 最终阶段独立饰品
+    // 鏈€缁堥樁娈电嫭绔嬮グ鍝?
 
-    // 逐火之蛾「真我」- tcc_3rd槽，裂隙级，虚数抗性+60，全属性+50%，低血量结界
+    // 閫愮伀涔嬭浘銆岀湡鎴戙€? tcc_3rd妲斤紝瑁傞殭绾э紝铏氭暟鎶楁€?60锛屽叏灞炴€?50%锛屼綆琛€閲忕粨鐣?
     public static final Item ZEN_WO = new ZhenWo(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
-    // 黑渊白花·创灭螺旋 - tcc_tdk槽，裂隙级，每次造成伤害附加自身当前血量100%虚数伤害
+    // 榛戞笂鐧借姳路鍒涚伃铻烘棆 - tcc_tdk妲斤紝瑁傞殭绾э紝姣忔閫犳垚浼ゅ闄勫姞鑷韩褰撳墠琛€閲?00%铏氭暟浼ゅ
     public static final Item HEIYUAN_BAIHUA = new HeiyuanBaihua(new Item.Properties()
-            .stacksTo(1).rarity(RIFT));
+            .stacksTo(64).rarity(RIFT));
 
     private TccItems() {}
 

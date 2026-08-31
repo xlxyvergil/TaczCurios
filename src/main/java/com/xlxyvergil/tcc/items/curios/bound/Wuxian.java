@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -12,6 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -108,15 +110,20 @@ public class Wuxian extends BoundCurioItem {
             return;
         }
         Entity attacker = source.getEntity();
-        if (!(attacker instanceof LivingEntity player)) {
+        if (!(attacker instanceof LivingEntity)) {
             return;
         }
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(player,
+        // 归一化击杀归属：玩家击杀记玩家；女仆击杀归主人，使女仆造成的击杀同样累加到主人佩戴的「无限」饰品上。
+        Player owner = MaidCompat.resolveOwnerPlayer(attacker);
+        if (owner == null) {
+            return;
+        }
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(owner,
                 stack -> stack.getItem() instanceof Wuxian);
         if (equipped.isEmpty()) {
             return;
         }
-        if (!((Wuxian) equipped.getItem()).matchesRestriction(player)) {
+        if (!((Wuxian) equipped.getItem()).matchesRestriction(owner)) {
             return;
         }
         String encodeId = killed.getEncodeId();
@@ -127,7 +134,7 @@ public class Wuxian extends BoundCurioItem {
         String key = KILL_KEY_PREFIX + encodeId;
         if (!tag.contains(key)) {
             tag.putString(key, encodeId);
-            ((BoundCurioItem) equipped.getItem()).refreshEffects(player, equipped);
+            ((BoundCurioItem) equipped.getItem()).refreshEffects(owner, equipped);
         }
     }
 

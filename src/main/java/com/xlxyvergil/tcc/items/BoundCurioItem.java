@@ -37,12 +37,16 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     /**
-     * 3rd / tdk 绑定饰品统一死亡不掉落（ALWAYS_KEEP）。
-     * 死亡时物品保留在饰品槽位中：玩家直接保留；女仆死亡则交由墓碑机制提取。
-     * 需要在基类统一处理，各子类无需再覆写 getDropRule。
+     * 3rd / tdk 绑定饰品死亡不掉落策略：
+     * - 玩家佩戴：死亡保留在饰品槽（ALWAYS_KEEP），满足「绑定饰品不因玩家死亡丢失」。
+     * - 女仆佩戴回退为默认掉落（DEFAULT）：女仆死亡时墓碑机制会 extractItem 提取进墓碑（可由 canUnequip 放行）；
+     *   即便放行失败，也会按默认规则掉落到地面可拾回，避免因 ALWAYS_KEEP 且墓碑提取失败而随实体消失。
      */
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+        if (MaidCompat.isMaid(slotContext.entity())) {
+            return DropRule.DEFAULT;
+        }
         return DropRule.ALWAYS_KEEP;
     }
 

@@ -63,6 +63,14 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     }
 
     /**
+     * 掉落饰品实体不因任何伤害源被销毁（仙人掌 / 岩浆 / 爆炸等一律忽略）。
+     */
+    @Override
+    public boolean canBeHurtBy(DamageSource source) {
+        return false;
+    }
+
+    /**
      * 饰品每 tick 调用（默认无操作，子类按需覆写）
      */
     @Override
