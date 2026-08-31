@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -81,8 +80,8 @@ public class Wuxian extends BoundCurioItem {
                     s -> s.getItem() instanceof Wuxian);
             int types = getKilledTypeCount(equipped.isEmpty() ? stack : equipped);
             double bonus = types * perTypeBonus();
-            AttributeHelper.applyAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
-                    "tcc.infinite.all_attributes", bonus, AttributeModifier.Operation.MULTIPLY_BASE);
+            AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
+                    "tcc.infinite.all_attributes", bonus);
         } else {
             removeEffects(livingEntity);
         }
@@ -90,8 +89,8 @@ public class Wuxian extends BoundCurioItem {
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        AttributeHelper.applyAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
-                "tcc.infinite.all_attributes", 0, AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
+                "tcc.infinite.all_attributes", 0);
     }
 
     @Override

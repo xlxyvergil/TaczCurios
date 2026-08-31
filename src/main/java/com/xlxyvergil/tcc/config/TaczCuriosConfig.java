@@ -499,6 +499,9 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue shijieZhiShePerTypeBonus;
         public final ForgeConfigSpec.DoubleValue wuxianPerTypeBonus;
 
+        // 饰品加成属性黑名单（属性注册ID，如 taa:recoil），黑名单内的属性不参与饰品的全属性加成增益
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> attributeBonusBlacklist;
+
         // 无限系列·神之键线（tcc_tdk）：移除正面 buff
         public final ForgeConfigSpec.DoubleValue wangshiDeSheyingRemoveChance;
         public final ForgeConfigSpec.DoubleValue siZhiYiRemoveChance;
@@ -2082,6 +2085,19 @@ public class TaczCuriosConfig {
             wuxianPerTypeBonus = builder
                     .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.02 = +2%）")
                     .defineInRange("perTypeBonus", 0.02, 0.0, 100.0);
+            builder.pop();
+
+            // 饰品加成属性黑名单
+            builder.comment("饰品加成属性黑名单：这些属性不会收到饰品的全属性加成增益（如无限系列、真我等）。因为有些属性是越小越好（如后坐力、扩散、击退），有些是布尔/阈值属性（如点燃、爆炸启用），不应被增益。").push("attribute_bonus_blacklist");
+            attributeBonusBlacklist = builder
+                    .comment("黑名单中的属性注册名列表（格式：命名空间:属性名，如 taa:recoil）")
+                    .defineList("attributes", List.of(
+                            "taa:explosion_knockbacknew", "taa:explosion_enabled",
+                            "taa:ignitefire", "taa:inaccuracy", "taa:inaccuracy_stand",
+                            "taa:inaccuracy_move", "taa:inaccuracy_sneak", "taa:inaccuracy_lie",
+                            "taa:inaccuracy_aim", "taa:knockback", "taa:recoil",
+                            "taa:recoil_pitch", "taa:recoil_yaw", "taa:silencenew"
+                    ), o -> o instanceof String);
             builder.pop();
 
             // 无限系列·神之键线：移除正面 buff

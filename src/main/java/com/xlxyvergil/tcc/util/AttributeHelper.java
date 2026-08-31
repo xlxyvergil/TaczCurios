@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.taa.attribute.EntityAttributeRegistry;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import dev.shadowsoffire.attributeslib.api.ALObjects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Collection;
 import java.util.UUID;
 
 public class AttributeHelper {
@@ -226,11 +228,34 @@ public class AttributeHelper {
     }
 
     /**
-     * 遍历所有注册属性统一增删修饰符（无限系列全属性加成）。value 为 0 时仅移除（removeEffects 用）；否则对每个实例添加 MULTIPLY_BASE 瞬态修饰符。
+     * 遍历所有注册属性统一增删修饰符（全属性加成），并应用共享的黑名单，黑名单内的属性不参与增益。
+     * value 为 0 时仅移除（removeEffects 用）；否则对每个实例添加指定 operation 的瞬态修饰符。
      */
     public static void applyAllAttributesModifier(LivingEntity entity, UUID uuid, String name,
                                                   double value, AttributeModifier.Operation operation) {
+        Collection<? extends String> blacklist = TaczCuriosConfig.COMMON.attributeBonusBlacklist.get();
+        applyAllAttributesModifier(entity, uuid, name, value, operation, blacklist);
+    }
+
+    /**
+     * 无限系列全属性加成：遍历所有注册属性统一增删修饰符，并按「饰品加成属性黑名单」过滤，黑名单内的属性不参与增益，
+     * 并使用 MULTIPLY_TOTAL（整体乘法）操作。value 为 0 时仅移除（removeEffects 用）。
+     */
+    public static void applyInfiniteAllAttributesModifier(LivingEntity entity, UUID uuid, String name, double value) {
+        Collection<? extends String> blacklist = TaczCuriosConfig.COMMON.attributeBonusBlacklist.get();
+        applyAllAttributesModifier(entity, uuid, name, value, AttributeModifier.Operation.MULTIPLY_TOTAL, blacklist);
+    }
+
+    private static void applyAllAttributesModifier(LivingEntity entity, UUID uuid, String name,
+                                                   double value, AttributeModifier.Operation operation,
+                                                   Collection<? extends String> blacklist) {
         for (Attribute attribute : ForgeRegistries.ATTRIBUTES.getValues()) {
+            if (blacklist != null && !blacklist.isEmpty()) {
+                ResourceLocation key = ForgeRegistries.ATTRIBUTES.getKey(attribute);
+                if (key != null && blacklist.contains(key.toString())) {
+                    continue;
+                }
+            }
             AttributeInstance instance = entity.getAttributes().getInstance(attribute);
             if (instance == null) {
                 continue;
