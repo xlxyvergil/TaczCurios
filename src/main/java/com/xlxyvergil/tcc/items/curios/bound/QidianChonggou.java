@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
-import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
@@ -29,7 +28,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class QidianChonggou extends BoundCurioItem {
-    /** 瞬移拦截范围（格） */
     private static double teleportRange() {
         return TaczCuriosConfig.COMMON.qidianChonggouTeleportRange.get();
     }
@@ -61,8 +59,6 @@ public class QidianChonggou extends BoundCurioItem {
                 stack -> stack.getItem() instanceof QidianChonggou).isEmpty();
     }
 
-    // 瞬移拦截
-
     @SubscribeEvent
     public static void onEnderEntityTeleport(EntityTeleportEvent.EnderEntity event) {
         handleTeleport(event);
@@ -91,7 +87,7 @@ public class QidianChonggou extends BoundCurioItem {
     private static void handleTeleport(EntityTeleportEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Player || MaidCompat.isMaid(entity)) {
-            return; // 仅拦截非玩家、非女仆实体
+            return;
         }
         if (!(entity.level() instanceof ServerLevel serverLevel)) {
             return;
@@ -110,8 +106,7 @@ public class QidianChonggou extends BoundCurioItem {
                 return;
             }
         }
-        // 女仆佩戴者同样可以拦截
-        for (EntityMaid maid : MaidCompat.getMaidsNear(serverLevel, entity.blockPosition(), teleportRange())) {
+        for (LivingEntity maid : MaidCompat.getMaidsNear(serverLevel, entity.blockPosition(), teleportRange())) {
             ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(maid,
                     stack -> stack.getItem() instanceof QidianChonggou);
             if (equipped.isEmpty()) {
@@ -126,8 +121,6 @@ public class QidianChonggou extends BoundCurioItem {
             }
         }
     }
-
-    // 3 阶：伤害转虚数 + 侵染
 
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {

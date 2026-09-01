@@ -41,13 +41,13 @@ public final class LivingDeathEventHandler {
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
 
-        // 击杀者可能是玩家本体，也可能是佩戴者（主人）的女仆，统一归一化为主人玩家来计数
+        
         Player killerPlayer = MaidCompat.resolveOwnerPlayer(sourceEntity);
         if (killerPlayer != null) {
-            // 女仆击杀：把击杀计入主人玩家的原版 mob_kills 统计。
-            // 这样 stat_polling 与 living_death 的 extraStats 中依赖 minecraft:mob_kills 的成就
-            //（如 huajie_zhiyan、huajie_to_aomie）也能被女仆击杀推进。
-            // 玩家本体击杀由原版自行统计，此处不重复发放。
+            
+            
+            
+            
             if (MaidCompat.isMaid(sourceEntity) && !(killed instanceof Player)
                     && killerPlayer instanceof ServerPlayer sp) {
                 sp.awardStat(Stats.CUSTOM.get(Stats.MOB_KILLS));
@@ -72,7 +72,7 @@ public final class LivingDeathEventHandler {
                 TRIGGER_LIVING_DEATH, playerKilled, ignoreEnabled);
     }
 
-    // 供外部调用方（脚本）使用的 API
+    
 
     public static boolean tryGrantRule(Player player, Entity otherEntity, DamageSource source,
                                         String achievementId) {
@@ -114,14 +114,14 @@ public final class LivingDeathEventHandler {
         return changed;
     }
 
-    // 核心处理器
+    
 
     private static void handleTrigger(Player player, LivingEntity killed, String killedKey,
                                        Entity otherEntity, DamageSource source, String trigger,
                                        boolean playerKilled, boolean ignoreEnabled) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
 
-        // 成就驱动的发放（死亡触发器）
+        
         if (serverPlayer != null) {
             var defs = AchievementDefinitions.getByTrigger(trigger);
             for (AchievementDefinitions.AchievementDef def : defs) {
@@ -137,7 +137,7 @@ public final class LivingDeathEventHandler {
             }
         }
 
-        // 属性规则（来自 evolution_rules.json）
+        
         for (EvolutionRegistry.Rule rule : EvolutionRegistry.getRulesByTriggerOrEmpty(trigger)) {
             if (!ignoreEnabled && !rule.enabled) continue;
             if (rule.playerKilled != playerKilled) continue;
@@ -165,7 +165,7 @@ public final class LivingDeathEventHandler {
 
     }
 
-    // 工具方法（公共/共享）
+    
 
     static void bindToPlayer(ItemStack stack, Player player) {
         CompoundTag tag = stack.getOrCreateTag();
@@ -219,7 +219,7 @@ public final class LivingDeathEventHandler {
         return true;
     }
 
-    // 私有辅助方法
+    
 
     private static ItemStack findFirstEquippedStack(LivingEntity livingEntity, Predicate<ItemStack> predicate) {
         if (livingEntity == null) return ItemStack.EMPTY;

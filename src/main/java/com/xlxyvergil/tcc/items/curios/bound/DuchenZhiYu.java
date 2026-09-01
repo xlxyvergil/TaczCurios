@@ -9,7 +9,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,7 +28,6 @@ public class DuchenZhiYu extends BoundCurioItem {
     private static final UUID TOUGHNESS_UUID = UUID.fromString("431d864e-740c-4b87-b30b-abb21ed73aad");
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("8f3b6d2e-1a9c-4e7b-a5d2-6c1e8a4b3d79");
 
-    /** 护甲 / 韧性加成百分比 */
     private static double armorPct() {
         return TaczCuriosConfig.COMMON.duchenZhiYuArmorPercent.get();
     }

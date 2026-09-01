@@ -20,7 +20,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,17 +37,15 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
     @Override
     public List<String> getWeaponTypeRestriction() {
-        return null; // 无武器限制，空手也能触发
+        return null;
     }
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 无常驻属性
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
-        // 无常驻属性
     }
 
     public static boolean hasEquipped(LivingEntity entity) {
@@ -56,10 +53,6 @@ public class HeiyuanBaihua extends BoundCurioItem {
                 stack -> stack.getItem() instanceof HeiyuanBaihua).isEmpty();
     }
 
-    /**
-     * 佩戴者每次造成伤害时（覆盖近战/枪械/爆炸等），附加等同于当前血量 100% 的虚数伤害。
-     * applyImaginaryDamage 走 setHealth 直伤，不触发本事件，因此不会递归。
-     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
         if (event.getEntity().level().isClientSide) return;
@@ -69,7 +62,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
         DamageSource source = event.getSource();
         if (!(source.getEntity() instanceof LivingEntity attacker)) return;
-        if (target == attacker) return; // 排除自伤
+        if (target == attacker) return;
         if (!hasEquipped(attacker)) return;
 
         float damage = (float) (attacker.getHealth() * TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get());
@@ -78,7 +71,6 @@ public class HeiyuanBaihua extends BoundCurioItem {
         TccAttributeEvents.applyImaginaryDamage(target,
             TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
 
-        // 附加虚数侵染效果，最高等级与「天火劫灭·无烬终焉」一致（不触发虚数崩解）
         TccAttributeEvents.applyInfection(target, attacker,
             new ImaginaryInfectionHelper.InfectionInfo(
                 TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get(), false));
@@ -94,7 +86,6 @@ public class HeiyuanBaihua extends BoundCurioItem {
                 (int) (TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get() * 100))
             .withStyle(ChatFormatting.RED));
 
-        // 附加虚数侵染，最高等级与「天火劫灭·无烬终焉」一致
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
                 String.format("%d", TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get()))
             .withStyle(ChatFormatting.RED));

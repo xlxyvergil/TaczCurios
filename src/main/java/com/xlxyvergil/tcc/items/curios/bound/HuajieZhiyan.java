@@ -12,7 +12,6 @@ import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +20,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -39,7 +37,6 @@ public class HuajieZhiyan extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 被动常驻：虚数抗性和生命值 — 不依赖武器类型
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof HuajieZhiyan);
         CompoundTag tag = equipped.getTag();
@@ -55,7 +52,6 @@ public class HuajieZhiyan extends BoundCurioItem {
             healthBoost, MAX_HEALTH_UUID,
             "tcc.huajie_zhiyan.max_health", AttributeModifier.Operation.ADDITION);
 
-        // 近战限定：适应性系统
         if (matchesRestriction(livingEntity)) {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {

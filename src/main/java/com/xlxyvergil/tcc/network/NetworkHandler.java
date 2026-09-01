@@ -53,7 +53,7 @@ public final class NetworkHandler {
         sendToPlayer(player, new SyncProgressS2CPacket("stat_" + statKey, value));
     }
 
-    /** 一次性推送全部佩戴时长统计。 */
+    
     public static void syncPlayTime(ServerPlayer player) {
         sendToPlayer(player, new PacketSyncPlayTime(
                 TccPlayerDataCapability.getPlayTimeGriseo(player),
@@ -90,7 +90,7 @@ public final class NetworkHandler {
         syncPlayTime(player);
     }
 
-    /** 推送单个事件统计（仅在非零时发送，避免客户端显示 0 覆盖历史）。 */
+    
     private static void syncEventStat(ServerPlayer player, String statKey) {
         int value = TccPlayerDataCapability.getCustomStat(player, statKey);
         if (value > 0) {

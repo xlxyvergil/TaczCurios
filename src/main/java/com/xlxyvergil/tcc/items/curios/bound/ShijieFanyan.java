@@ -13,7 +13,6 @@ import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -99,7 +98,6 @@ public class ShijieFanyan extends BoundCurioItem {
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingAnyGun(attacker)) return;
 
-        // 所有枪械伤害转为虚数伤害（并标记侵染）
         ImaginaryConversionHelper.convertToImaginary(event);
     }
 
@@ -117,10 +115,8 @@ public class ShijieFanyan extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        // 攻击必定触发侵染
         ImaginaryConversionHelper.applyInfection(event, attacker, false);
 
-        // 虚数崩解触发概率：基础5% + 每10点幸运值+1%
         int luck = (int) attacker.getAttributeValue(AttributeHelper.LUCK);
         double collapseChance = Math.round((TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()
             + (luck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get()) * 10000.0) / 10000.0;

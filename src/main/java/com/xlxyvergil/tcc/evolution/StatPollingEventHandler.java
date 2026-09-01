@@ -22,10 +22,7 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import java.util.List;
 import java.util.function.Predicate;
 
-/**
- * stat_polling / biome_visit 成就的低频轮询处理器。
- * stat_polling 读取原版 Stats，达到阈值授予条件；biome_visit 检测当前群系授予成就。轮询间隔 stat_polling 每 3 tick（与 FTB Quests 一致），biome_visit 每 20 tick。
- */
+
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class StatPollingEventHandler {
 
@@ -33,7 +30,7 @@ public final class StatPollingEventHandler {
     private static final String TRIGGER_BIOME = "biome_visit";
     private static final String APPLIED_NBT_PREFIX = "StatEvoApplied_";
 
-    // 首次访问后缓存（运行时列表不变）
+    
     private static List<AchievementDefinitions.AchievementDef> statDefs;
     private static List<AchievementDefinitions.AchievementDef> biomeDefs;
     private static List<EvolutionRegistry.Rule> statAttrRules;
@@ -50,7 +47,7 @@ public final class StatPollingEventHandler {
 
         long t = player.level().getGameTime();
 
-        // stat_polling：每 3 tick
+        
         if (t % 3 == 0) {
             if (statDefs != null) {
                 for (var def : statDefs) {
@@ -64,9 +61,9 @@ public final class StatPollingEventHandler {
             }
         }
 
-        // biome_visit：每 20 tick
+        
         if (t % 20 == 0) {
-            // 记录当前维度/群系到玩家 NBT（通用，与成就/规则解耦）
+            
             recordCurrentBiome(player);
 
             if (biomeDefs != null) {
@@ -110,9 +107,7 @@ public final class StatPollingEventHandler {
     private static final String VISITED_DIMENSIONS_KEY = "tcc_visited_dimensions";
     private static final String VISITED_BIOMES_KEY = "tcc_visited_biomes";
 
-    /**
-     * 每 20 tick 将玩家当前所在维度与群系写入 tcc_visited_dimensions / tcc_visited_biomes 列表。
-     */
+    
     private static void recordCurrentBiome(ServerPlayer player) {
         ResourceLocation dimId = player.level().dimension().location();
         recordVisit(player, VISITED_DIMENSIONS_KEY, dimId.toString());
@@ -122,9 +117,7 @@ public final class StatPollingEventHandler {
                 recordVisit(player, VISITED_BIOMES_KEY, key.location().toString()));
     }
 
-    /**
-     * 检查目标群系/维度是否在玩家已访问列表；biome tag（# 前缀）无法通过 NBT 判断，回退到实时检测。
-     */
+    
     private static void checkBiome(ServerPlayer player, AchievementDefinitions.AchievementDef def) {
         if (!def.isEnabled()) return;
         if (RuleAdvancementMapping.isAdvancementDone(player, def.id())) return;
@@ -139,7 +132,7 @@ public final class StatPollingEventHandler {
         if (conds.biome() != null) {
             matched = isInNbtList(player, VISITED_BIOMES_KEY, conds.biome());
         }
-        // 仅维度：无 biome 字段但有 dimension
+        
         if (!matched && conds.biome() == null && conds.dimension() != null) {
             matched = isInNbtList(player, VISITED_DIMENSIONS_KEY, conds.dimension());
         }
@@ -149,9 +142,7 @@ public final class StatPollingEventHandler {
         }
     }
 
-    /**
-     * 记录到玩家 Capability 去重；仅首次记录时同步到客户端。
-     */
+    
     private static void recordVisit(ServerPlayer player, String nbtKey, String id) {
         boolean added;
         if (VISITED_BIOMES_KEY.equals(nbtKey)) {
@@ -162,7 +153,7 @@ public final class StatPollingEventHandler {
             return;
         }
         if (added) {
-            // 仅首次记录时同步到客户端
+            
             NetworkHandler.syncVisited(player, nbtKey, id);
         }
     }
@@ -176,12 +167,9 @@ public final class StatPollingEventHandler {
         return false;
     }
 
-    // ATTRIBUTE 规则（来自 evolution_rules.json）
+    
 
-    /**
-     * stat_polling 的 ATTRIBUTE 规则按步累积：statThreshold 为步间隔（如 48000 tick = 2 游戏日），每步追加 value 至 progress.cap。
-     * 每规则的 cap 由 capCounterKey 追踪（唯一），共享的 nbtKey 累加所有规则之和（支持继承），步数存于 StatEvoSteps_<ruleId>。
-     */
+    
     private static void checkStatAttribute(ServerPlayer player, EvolutionRegistry.Rule rule) {
         if (!rule.enabled) return;
         if (rule.playerKilled) return;
@@ -202,11 +190,11 @@ public final class StatPollingEventHandler {
 
         CompoundTag tag = tracked.getOrCreateTag();
 
-        // 该规则已达上限？
+        
         double perRuleCap = rule.progress.cap > 0 ? rule.progress.cap : Double.MAX_VALUE;
         if (tag.getDouble(rule.progress.capCounterKey) >= perRuleCap) return;
 
-        // 当前统计值可获得的步数
+        
         int availableSteps = current / rule.statThreshold;
         String stepKey = APPLIED_NBT_PREFIX + "Steps_" + rule.ruleId.replace(':', '_');
         int appliedSteps = tag.getInt(stepKey);
@@ -228,9 +216,7 @@ public final class StatPollingEventHandler {
         }
     }
 
-    /**
-     * 处理 biome_visit 的 ATTRIBUTE 规则：玩家进入目标群系时，为追踪的饰品授予一次性进度增量。
-     */
+    
     private static void checkBiomeAttribute(ServerPlayer player, EvolutionRegistry.Rule rule) {
         if (!rule.enabled) return;
         if (rule.playerKilled) return;
@@ -262,12 +248,9 @@ public final class StatPollingEventHandler {
         }
     }
 
-    // 辅助方法
+    
 
-    /**
-     * 读取自定义统计值：tcc 命名空间读取玩家 Capability，其余读取原版 Stats。
-     * 原版统计可能未被注册（如 tcc 自定义统计已迁移到 Capability），此时返回 0。
-     */
+    
     private static int readStatValue(ServerPlayer player, ResourceLocation statId) {
         if (TaczCurios.MODID.equals(statId.getNamespace())) {
             return TccPlayerDataCapability.getCustomStat(player, statId.toString());
@@ -312,7 +295,7 @@ public final class StatPollingEventHandler {
         statDefs = AchievementDefinitions.getByTrigger(TRIGGER_STAT);
         biomeDefs = AchievementDefinitions.getByTrigger(TRIGGER_BIOME);
 
-        // 同时缓存 stat_polling / biome_visit 触发器的 ATTRIBUTE 规则
+        
         var allAttrRules = EvolutionRegistry.getRulesByType(EvolutionRegistry.RuleType.ATTRIBUTE);
         statAttrRules = allAttrRules.stream()
                 .filter(r -> TRIGGER_STAT.equals(r.trigger))
@@ -324,7 +307,7 @@ public final class StatPollingEventHandler {
         cacheBuilt = true;
     }
 
-    /** 配置重载后重置缓存 — 由 reload 监听器调用 */
+    
     public static void invalidateCache() {
         cacheBuilt = false;
         statDefs = null;

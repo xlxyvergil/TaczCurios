@@ -63,7 +63,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get();
         double explosionDamageBoost = TaczCuriosConfig.COMMON.endlessExplosionDamage.get();
 
-        // 根据虚数抗性提升 BULLET_GUNDAMAGE：每点虚数抗性 + perPoint% 枪械伤害
         double imaginaryResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double resistanceBoost = imaginaryResistance * TaczCuriosConfig.COMMON.endlessImaginaryResistanceDamagePerPoint.get() / 100.0;
         double totalDamageBoost = damageBoost + resistanceBoost;
@@ -80,7 +79,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
     
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        // 每tick刷新，虚数抗性变化时 BULLET_GUNDAMAGE 加成实时更新
         applyEffects(slotContext.entity(), stack);
     }
 
@@ -96,7 +94,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         
         tooltip.add(Component.literal(""));
         
-        // 使用无烬终焉自身的配置值（damageBoost和explosionDamage），无爆炸范围
         double explosionDamageBoost = TaczCuriosConfig.COMMON.endlessExplosionDamage.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get();
         double perLevelBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100;
@@ -104,7 +101,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         int totalNearbyPlayerDamageBoost = (int)(perLevelBoost * (potionAmplifier + 1));
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();
         
-        // BULLET_GUNDAMAGE：基础配置加成 + 根据虚数抗性提升的数值，合并显示（客户端实时读取当前抗性）
         double damageBoost = TaczCuriosConfig.COMMON.endlessDamageBoost.get() * 100;
         double resistanceBonus = 0;
         if (level != null && level.isClientSide()) {
@@ -127,9 +123,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
                 String.format("%d", nearbyPlayerDuration))
             .withStyle(ChatFormatting.RED));
         
-        // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
-        
-        // 虚数侵染上限
         int infectionMax = TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get();
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
                 String.format("%d", infectionMax))
@@ -156,7 +149,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
 
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
 
-        // 100%转换为虚数伤害
         ImaginaryConversionHelper.convertToImaginary(event);
     }
     
@@ -177,7 +169,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
 
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
 
-        // 无烬终焉：不扣血，直接施加BUFF给周围玩家
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get();
         List<Player> nearbyPlayers = attacker.level().getEntitiesOfClass(Player.class, attacker.getBoundingBox().inflate(nearbyPlayerRadius));
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.endlessNearbyPlayerDuration.get();

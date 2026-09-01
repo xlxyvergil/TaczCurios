@@ -207,10 +207,6 @@ public class HeavenFireApocalypse extends BoundCurioItem {
                 false, false, true));
         }
     }
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-    }
-
     public static boolean hasHeavenFireApocalypseEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }

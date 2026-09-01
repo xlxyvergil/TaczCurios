@@ -12,7 +12,6 @@ import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -87,7 +86,6 @@ public class DominanceKey extends BoundCurioItem {
         );
     }
 
-    /** 解析伤害事件中的攻击者（近战直接命中） */
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity living) {
             return living;

@@ -18,27 +18,27 @@ public class TaczCuriosConfig {
     }
     
     public static class Common {
-        // 鱼类统计配置（空梦成就 tcc:fish_food_eaten）
-        /** 统计为食用鱼类的物品注册名列表（如 minecraft:cod），吃完 +1 */
+        
+        
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> fishFoodItems;
 
-        // 天火圣裁配置
+        
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
         
-        // 天火流血效果配置（两个饰品共用）
+        
         public final ForgeConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
         public final ForgeConfigSpec.IntValue heavenFireBleedingMaxLevel;
         public final ForgeConfigSpec.IntValue heavenFireBleedingDuration;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
-        // 虚数侵染效果配置
+        
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
         
-        // 按饰品分级的虚数侵染上限
+        
         public final ForgeConfigSpec.IntValue judgementKeyImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
@@ -47,26 +47,26 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue metaMorphImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue yinguoZhuanlunImaginaryInfectionMaxLevel;
 
-        // 裁决之键配置
+        
         public final ForgeConfigSpec.DoubleValue judgementProcChance;
         public final ForgeConfigSpec.DoubleValue judgementDirectDamagePercent;
         public final ForgeConfigSpec.DoubleValue judgementCollapseProcChance;
         public final ForgeConfigSpec.DoubleValue judgementKeyCritChance;
         public final ForgeConfigSpec.DoubleValue judgementKeyCritDamage;
 
-        // 涤罪七雷配置
+        
         public final ForgeConfigSpec.DoubleValue sevenThundersHeadshotMultiplier;
         public final ForgeConfigSpec.DoubleValue sevenThundersCritChance;
         public final ForgeConfigSpec.DoubleValue sevenThundersCritDamage;
 
-        // 雷鸣见（涤罪七雷·雷见）配置
+        
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenHeadshotMultiplier;
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenCritChance;
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenCritDamage;
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenProcChance;
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenExtraHpDamage;
 
-        // 天火劫灭配置
+        
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionRadius;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionDamage;
@@ -77,145 +77,145 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerRadius;
         
-        // 膛线配置
+        
         public final ForgeConfigSpec.DoubleValue riflingDamageBoost;
         
-        // 分裂膛室配置
+        
         public final ForgeConfigSpec.DoubleValue splitChamberBulletCountBoost;
         
-        // 卑劣加速配置
+        
         public final ForgeConfigSpec.DoubleValue despicableAccelerationFireRateBoost;
         public final ForgeConfigSpec.DoubleValue despicableAccelerationDamageReduction;
         
-        // 并合膛线配置
+        
         public final ForgeConfigSpec.DoubleValue mergedRiflingDamageBoost;
         public final ForgeConfigSpec.DoubleValue mergedRiflingMovementSpeedBoost;
         
-        // 合金钻头配置
+        
         public final ForgeConfigSpec.DoubleValue alloyDrillArmorPenetrationBoost;
         
-        // 我小心海也绝非鳝类配置
+        
         public final ForgeConfigSpec.DoubleValue carefulHeartLauncherDamageBoost;
         public final ForgeConfigSpec.DoubleValue carefulHeartExplosionDamageBoost;
         public final ForgeConfigSpec.DoubleValue carefulHeartExplosionRadiusBoost;
         public final ForgeConfigSpec.DoubleValue carefulHeartExplosionEnabled;
         
-        // 烈焰风暴配置
+        
         public final ForgeConfigSpec.DoubleValue blazeStormExplosionRadiusBoost;
         public final ForgeConfigSpec.DoubleValue blazeStormExplosionDamageBoost;
         public final ForgeConfigSpec.DoubleValue blazeStormExplosionEnabled;
         
-        // 烈焰风暴Prime配置
+        
         public final ForgeConfigSpec.DoubleValue blazeStormPrimeExplosionRadiusBoost;
         public final ForgeConfigSpec.DoubleValue blazeStormPrimeExplosionDamageBoost;
         public final ForgeConfigSpec.DoubleValue blazeStormPrimeExplosionEnabled;
         
         
-        // 撕裂Prime配置
+        
         public final ForgeConfigSpec.DoubleValue rippingPrimeFireRateBoost;
         public final ForgeConfigSpec.DoubleValue rippingPrimePenetrationBoost;
         
-        // 抵近射击Prime配置
+        
         public final ForgeConfigSpec.DoubleValue closeCombatPrimeShotgunDamageBoost;
         
-        // 极恶精准配置
+        
         public final ForgeConfigSpec.DoubleValue evilAccuracyRecoilReduction;
         public final ForgeConfigSpec.DoubleValue evilAccuracyFireRateReduction;
         
-        // 极限速度配置
+        
         public final ForgeConfigSpec.DoubleValue limitSpeedBulletSpeedBoost;
         
-        // 凶恶延伸配置
+        
         public final ForgeConfigSpec.DoubleValue ferociousExtensionRangeBoost;
         
-        // 抵近射击配置
+        
         public final ForgeConfigSpec.DoubleValue closeRangeShotDamageBoost;
         
-        // 重装火力配置
+        
         public final ForgeConfigSpec.DoubleValue heavyFirepowerDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavyFirepowerAccuracyReduction;
         
-        // 黄蜂蜇刺配置
+        
         public final ForgeConfigSpec.DoubleValue waspStingerDamageBoost;
         
-        // 预言契约配置
+        
         public final ForgeConfigSpec.DoubleValue prophecyPactDamageBoost;
         
-        // 恶性扩散配置
+        
         public final ForgeConfigSpec.DoubleValue malignantSpreadDamageBoost;
         public final ForgeConfigSpec.DoubleValue malignantSpreadAccuracyReduction;
         
-        // 膛室配置
+        
         public final ForgeConfigSpec.DoubleValue chamberSniperDamageBoost;
         
-        // 膛室Prime配置
+        
         public final ForgeConfigSpec.DoubleValue chamberPrimeSniperDamageBoost;
         
-        // 战术上膛配置
+        
         public final ForgeConfigSpec.DoubleValue tacticalReloadSpeedBoost;
         
-        // 过载弹匣配置
+        
         public final ForgeConfigSpec.DoubleValue overloadedMagazineCapacityBoost;
         public final ForgeConfigSpec.DoubleValue overloadedMagazineReloadSpeedReduction;
         
-        // 地狱弹膛配置
+        
         public final ForgeConfigSpec.DoubleValue infernalChamberBulletCountBoost;
         
-        // 持续火力配置
+        
         public final ForgeConfigSpec.DoubleValue sustainedFireReloadSpeedBoost;
         
-        // 感染弹匣配置
+        
         public final ForgeConfigSpec.DoubleValue infectedMagazineCapacityBoost;
         public final ForgeConfigSpec.DoubleValue infectedMagazineReloadSpeedReduction;
         
-        // 致命洪流配置
+        
         public final ForgeConfigSpec.DoubleValue deadlySurgeFireRateBoost;
         public final ForgeConfigSpec.DoubleValue deadlySurgeBulletCountBoost;
         
-        // 弹头扩散配置
+        
         public final ForgeConfigSpec.DoubleValue bulletSpreadBulletCountBoost;
         
-        // 压迫点配置
+        
         public final ForgeConfigSpec.DoubleValue oppressionPointMeleeDamageBoost;
         
-        // 压迫点Prime配置
+        
         public final ForgeConfigSpec.DoubleValue oppressionPointPrimeMeleeDamageBoost;
         
-        // 爆发装填配置
+        
         public final ForgeConfigSpec.DoubleValue burstReloadReloadSpeedBoost;
         
-        // 剑风配置
+        
         public final ForgeConfigSpec.DoubleValue swordWindMeleeRangeBoost;
         
-        // 剑风Prime配置
+        
         public final ForgeConfigSpec.DoubleValue swordWindPrimeMeleeRangeBoost;
         
-        // 腐败弹匣配置
+        
         public final ForgeConfigSpec.DoubleValue corruptMagazineCapacityBoost;
         public final ForgeConfigSpec.DoubleValue corruptMagazineReloadSpeedReduction;
         
-        // 重口径配置
+        
         public final ForgeConfigSpec.DoubleValue heavyCaliberTagDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavyCaliberTagInaccuracyBoost;
         
-        // 弹匣增幅配置
+        
         public final ForgeConfigSpec.DoubleValue magazineBoostReloadSpeedBoost;
         
-        // 红-有-三配置
+        
         public final ForgeConfigSpec.DoubleValue redMovementTagSpeedBoost;
         
-        // 希奥拉配置
+        
         public final ForgeConfigSpec.DoubleValue xioraArmorMultiplier;
         public final ForgeConfigSpec.DoubleValue xioraSpeedMultiplier;
 
-        // 夜袭渡鸦配置
+        
         public final ForgeConfigSpec.DoubleValue ravenArmorMultiplier;
         public final ForgeConfigSpec.DoubleValue ravenSpeedMultiplier;
         public final ForgeConfigSpec.IntValue ravenInvisRefreshInterval;
         public final ForgeConfigSpec.IntValue ravenInvisDuration;
         public final ForgeConfigSpec.IntValue ravenInvisBreakDelay;
 
-        // 岛爆渡鸦配置
+        
         public final ForgeConfigSpec.DoubleValue islandBoomRavenArmorMultiplier;
         public final ForgeConfigSpec.DoubleValue islandBoomRavenSpeedMultiplier;
         public final ForgeConfigSpec.IntValue islandBoomRavenInvisRefreshInterval;
@@ -225,11 +225,11 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenRefreshThreshold;
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenDuration;
         
-        // 救世配置
+        
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
         public final ForgeConfigSpec.IntValue salvationResistanceLevel;
         
-        // 无烬终焉配置
+        
         public final ForgeConfigSpec.DoubleValue endlessDamageBoost;
         public final ForgeConfigSpec.DoubleValue endlessExplosionDamage;
         public final ForgeConfigSpec.DoubleValue endlessImaginaryResistanceDamagePerPoint;
@@ -238,188 +238,188 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue endlessNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
 
-        // 吸收饰品通用配置
-        /** 吸收饰品触发血量阈值 (0~1, 默认 0.25 = 25%) */
+        
+        
         public final ForgeConfigSpec.DoubleValue curioAbsorptionTriggerHp;
-        /** 吸收效果等级 (默认 4 = ABSORPTION IV) */
+        
         public final ForgeConfigSpec.IntValue curioAbsorptionLevel;
-        /** 吸收效果持续时间(秒) (默认 60) */
+        
         public final ForgeConfigSpec.DoubleValue curioAbsorptionDuration;
-        /** 吸收效果冷却(秒) (默认 180) */
+        
         public final ForgeConfigSpec.DoubleValue curioAbsorptionCooldown;
 
-        // 士兵基础挂牌配置
+        
         public final ForgeConfigSpec.DoubleValue soldierBasicTagDamageBoost;
         
-        // 士兵特定挂牌配置
+        
         public final ForgeConfigSpec.DoubleValue soldierSpecificTagDamageBoost;
         
-        // 乌拉尔银狼配置
+        
         public final ForgeConfigSpec.DoubleValue uralWolfTagHeadshotMultiplierBoost;
         
-        // 耗竭装填配置
+        
         public final ForgeConfigSpec.DoubleValue depletedReloadMagazineCapacityPenalty;
         public final ForgeConfigSpec.DoubleValue depletedReloadReloadSpeedBoost;
         
-        // 爆发装填Prime配置
+        
         public final ForgeConfigSpec.DoubleValue burstReloadPrimeReloadSpeedBoost;
         
-        // 战术上膛Prime配置
+        
         public final ForgeConfigSpec.DoubleValue tacticalReloadPrimeReloadSpeedBoost;
         
-        // 霰弹扩充Prime配置
+        
         public final ForgeConfigSpec.DoubleValue shotgunExpansionPrimeCapacityBoost;
         
-        // 弹匣增幅Prime配置
+        
         public final ForgeConfigSpec.DoubleValue magazineBoostPrimeCapacityBoost;
         
-        // 串联弹匣Prime配置
+        
         public final ForgeConfigSpec.DoubleValue tandemMagazinePrimeCapacityBoost;
         
-        // 霰弹扩充配置
+        
         public final ForgeConfigSpec.DoubleValue shotgunExpansionCapacityBoost;
         
-        // 弹匣增幅配置
+        
         public final ForgeConfigSpec.DoubleValue magazineBoostCapacityBoost;
         
-        // 串联弹匣配置
+        
         public final ForgeConfigSpec.DoubleValue tandemMagazineCapacityBoost;
         
-        // 掎角一阵配置
+        
         public final ForgeConfigSpec.DoubleValue kikakuIchijinHealthMultiplier;
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyUnbreakableBlocks;
         public final ForgeConfigSpec.BooleanValue kikakuIchijinDestroyNormalBlocks;
         
 
 
-        // 逐火之蛾/神之键 新饰品配置
+        
 
-        // 格蕾修配置
+        
         public final ForgeConfigSpec.IntValue griseoHurtCooldownTicks;
 
-        // 千界一乘配置
+        
         public final ForgeConfigSpec.IntValue qianjieYichengLuck;
 
-        // 绘世之卷配置
+        
         public final ForgeConfigSpec.IntValue huishiZhijuanBaseCooldown;
         public final ForgeConfigSpec.IntValue huishiZhijuanLuckPerTick;
         public final ForgeConfigSpec.IntValue huishiZhijuanMaxCooldown;
 
-        // 永劫之键配置
+        
         public final ForgeConfigSpec.IntValue yongjieZhijianLuck;
         public final ForgeConfigSpec.DoubleValue yongjieZhijianCritChancePerLuck;
         public final ForgeConfigSpec.DoubleValue yongjieZhijianCritDamagePerLuck;
 
-        // 繁星配置
+        
         public final ForgeConfigSpec.IntValue fanxingBaseCooldown;
         public final ForgeConfigSpec.IntValue fanxingLuckPerTick;
         public final ForgeConfigSpec.IntValue fanxingMaxCooldown;
         public final ForgeConfigSpec.DoubleValue fanxingLuckPerResistance;
 
-        // 视界反演配置
+        
         public final ForgeConfigSpec.IntValue shijieFanyanLuck;
         public final ForgeConfigSpec.DoubleValue shijieFanyanCritChancePerLuck;
         public final ForgeConfigSpec.DoubleValue shijieFanyanCritDamagePerLuck;
         public final ForgeConfigSpec.DoubleValue shijieFanyanCollapseBaseChance;
         public final ForgeConfigSpec.DoubleValue shijieFanyanCollapsePerLuck;
 
-        // 重型武器系列饰品配置
+        
 
-        // 维尔薇配置
+        
         public final ForgeConfigSpec.DoubleValue villVTriggerHpRatio;
         public final ForgeConfigSpec.IntValue villVAbsorptionLevel;
         public final ForgeConfigSpec.DoubleValue villVAbsorptionDuration;
         public final ForgeConfigSpec.DoubleValue villVCooldownSeconds;
 
-        // 虚空万藏配置
+        
         public final ForgeConfigSpec.DoubleValue xukongWancangImaginaryDamage;
         public final ForgeConfigSpec.DoubleValue xukongWancangAmmoRegenPercent;
         public final ForgeConfigSpec.DoubleValue xukongWancangHeatMax;
         public final ForgeConfigSpec.DoubleValue xukongWancangHeatCooling;
 
-        // 愚戏之匣配置
+        
         public final ForgeConfigSpec.DoubleValue yuxiZhixiaTriggerHpRatio;
         public final ForgeConfigSpec.IntValue yuxiZhixiaAbsorptionLevel;
         public final ForgeConfigSpec.DoubleValue yuxiZhixiaAbsorptionDuration;
         public final ForgeConfigSpec.DoubleValue yuxiZhixiaCooldownSeconds;
 
-        // 启示之键配置
+        
         public final ForgeConfigSpec.DoubleValue qishiZhijianImaginaryDamage;
         public final ForgeConfigSpec.DoubleValue qishiZhijianAmmoRegenPercent;
         public final ForgeConfigSpec.DoubleValue qishiZhijianHeatMax;
         public final ForgeConfigSpec.DoubleValue qishiZhijianHeatCooling;
 
-        // 螺旋配置
+        
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionInterval;
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionLevel;
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionDuration;
 
-        // 虚空万藏·雨众天华配置
+        
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamage;
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHAmmoRegenPercent;
         public final ForgeConfigSpec.IntValue xukongWancangYZTHInfectionDuration;
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHHeatMax;
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHHeatCooling;
 
-        // 适应系统通用配置
+        
         public final ForgeConfigSpec.IntValue adaptationMaxCount;
 
-        // 千劫配置
+        
         public final ForgeConfigSpec.IntValue kalpasMaxSlots;
         public final ForgeConfigSpec.DoubleValue kalpasAdaptFactor;
         public final ForgeConfigSpec.IntValue kalpasDecaySeconds;
 
-        // 伊默尔配置
+        
         public final ForgeConfigSpec.DoubleValue imerAttackDamageBonus;
 
-        // 坏劫之焱配置
+        
         public final ForgeConfigSpec.IntValue huajieZhiyanMaxSlots;
         public final ForgeConfigSpec.DoubleValue huajieZhiyanAdaptFactor;
         public final ForgeConfigSpec.IntValue huajieZhiyanDecaySeconds;
         public final ForgeConfigSpec.DoubleValue huajieZhiyanHealthPerResistance;
 
-        // 支配之键配置
+        
         public final ForgeConfigSpec.DoubleValue dominanceKeyHealthToAttackPercent;
         public final ForgeConfigSpec.DoubleValue dominanceKeyImaginaryDamageScale;
 
-        // 鏖灭配置
+        
         public final ForgeConfigSpec.IntValue aoMieMaxSlots;
         public final ForgeConfigSpec.DoubleValue aoMieAdaptFactor;
         public final ForgeConfigSpec.IntValue aoMieDecaySeconds;
         public final ForgeConfigSpec.DoubleValue aoMieHealthPerResistance;
 
-        // Meta-Morph配置
+        
         public final ForgeConfigSpec.DoubleValue metaMorphHealthToAttackPercent;
         public final ForgeConfigSpec.DoubleValue metaMorphResistanceToAttackPercent;
         public final ForgeConfigSpec.DoubleValue metaMorphLifeStealPerResistance;
 
-        // 苏配置
+        
         public final ForgeConfigSpec.DoubleValue suMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue suDamageTakenFactor;
 
-        // 万物休眠配置
+        
         public final ForgeConfigSpec.DoubleValue wanwuXiumianOverheal;
         public final ForgeConfigSpec.DoubleValue wanwuXiumianAmmoRegenPercent;
 
-        // 觉者配置
+        
         public final ForgeConfigSpec.DoubleValue juezheMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue juezheDamageTakenFactor;
 
-        // 停滞之键配置
+        
         public final ForgeConfigSpec.DoubleValue tingzhiZhijianOverheal;
         public final ForgeConfigSpec.DoubleValue tingzhiZhijianAmmoBasePercent;
         public final ForgeConfigSpec.DoubleValue tingzhiZhijianAmmoResistanceScale;
 
-        // 天慧配置
+        
         public final ForgeConfigSpec.DoubleValue tianhuiMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue tianhuiResistanceScale;
         public final ForgeConfigSpec.DoubleValue tianhuiMinDamageFactor;
 
-        // 因果转轮配置
+        
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunAmmoResistanceScale;
 
-        // 逐火之蛾「真我」配置
+        
         public final ForgeConfigSpec.DoubleValue zhenWoImaginaryResistance;
         public final ForgeConfigSpec.DoubleValue zhenWoAllAttributesPercent;
         public final ForgeConfigSpec.DoubleValue zhenWoTriggerHpRatio;
@@ -430,12 +430,12 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
 
-        // 黑渊白花·创灭螺旋配置
+        
         public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
 
-        // 新系列饰品配置（戒律/黄金/旭光/无限/浮生/空梦）
+        
 
-        // 戒律系列·人物线（tcc_3rd）：随机 debuff
+        
         public final ForgeConfigSpec.DoubleValue aponiaDebuffChance;
         public final ForgeConfigSpec.IntValue aponiaDebuffDurationSeconds;
         public final ForgeConfigSpec.IntValue aponiaDebuffCount;
@@ -445,10 +445,10 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue jielvDebuffChance;
         public final ForgeConfigSpec.IntValue jielvDebuffDurationSeconds;
         public final ForgeConfigSpec.IntValue jielvDebuffCount;
-        /** 戒律系列共用负面（非正面）效果池黑名单（效果注册名），命中则不会随机施加 */
+        
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> disciplineHarmfulBuffBlacklist;
 
-        // 戒律系列·神之键线（tcc_tdk）：范围虚数侵染光环
+        
         public final ForgeConfigSpec.DoubleValue wangshiDeKuqiuAuraRadius;
         public final ForgeConfigSpec.IntValue wangshiDeKuqiuInfectionLevel;
         public final ForgeConfigSpec.IntValue wangshiDeKuqiuInfectionDurationSeconds;
@@ -459,7 +459,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue shenenJiejieInfectionLevel;
         public final ForgeConfigSpec.IntValue shenenJiejieInfectionDurationSeconds;
 
-        // 黄金系列·人物线（tcc_3rd）：友方光环
+        
         public final ForgeConfigSpec.DoubleValue edenAuraRange;
         public final ForgeConfigSpec.IntValue edenIntervalSeconds;
         public final ForgeConfigSpec.IntValue edenBuffDurationSeconds;
@@ -472,15 +472,15 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue huangjinIntervalSeconds;
         public final ForgeConfigSpec.IntValue huangjinBuffDurationSeconds;
         public final ForgeConfigSpec.IntValue huangjinBuffAmplifier;
-        /** 黄金系列共用正面 buff 池黑名单（效果注册名），命中则不会随机施加 */
+        
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> goldenBeneficialBuffBlacklist;
 
-        // 黄金系列·神之键线（tcc_tdk）：瞬移失效
+        
         public final ForgeConfigSpec.DoubleValue edenStarTeleportRange;
         public final ForgeConfigSpec.DoubleValue tuntianZhijianTeleportRange;
         public final ForgeConfigSpec.DoubleValue qidianChonggouTeleportRange;
 
-        // 旭光系列·人物线（tcc_3rd）：攻速攻伤
+        
         public final ForgeConfigSpec.DoubleValue kosmaAttackSpeedPercent;
         public final ForgeConfigSpec.DoubleValue kosmaAttackDamagePercent;
         public final ForgeConfigSpec.DoubleValue limingZhiShaoAttackSpeedPercent;
@@ -490,27 +490,27 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue xuguangAttackDamagePercent;
         public final ForgeConfigSpec.DoubleValue xuguangCritDamagePercent;
 
-        // 旭光系列·神之键线（tcc_tdk）：削甲
+        
         public final ForgeConfigSpec.DoubleValue dizangYuhunStripPercent;
         public final ForgeConfigSpec.DoubleValue qinshiZhijianStripPercent;
 
-        // 无限系列·人物线（tcc_3rd）：击杀累计
+        
         public final ForgeConfigSpec.DoubleValue mebiusPerTypeBonus;
         public final ForgeConfigSpec.DoubleValue shijieZhiShePerTypeBonus;
         public final ForgeConfigSpec.DoubleValue wuxianPerTypeBonus;
 
-        // 饰品加成属性黑名单（属性注册ID，如 taa:recoil），黑名单内的属性不参与饰品的全属性加成增益
+        
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> attributeBonusBlacklist;
 
-        // 无限系列·神之键线（tcc_tdk）：移除正面 buff
+        
         public final ForgeConfigSpec.DoubleValue wangshiDeSheyingRemoveChance;
         public final ForgeConfigSpec.DoubleValue siZhiYiRemoveChance;
 
-        // 浮生系列·人物线（tcc_3rd）：百分比护甲/韧性
+        
         public final ForgeConfigSpec.DoubleValue huaArmorPercent;
         public final ForgeConfigSpec.DoubleValue duchenZhiYuArmorPercent;
 
-        // 浮生系列·神之键线（tcc_tdk）：停止 AI + 攻击附加护甲值虚数伤害
+        
         public final ForgeConfigSpec.DoubleValue yuduchenStopChance;
         public final ForgeConfigSpec.IntValue yuduchenStopDurationSeconds;
         public final ForgeConfigSpec.DoubleValue yuduchenArmorImaginaryScale;
@@ -520,20 +520,20 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue bushiShiwuStopDurationSeconds;
         public final ForgeConfigSpec.DoubleValue bushiShiwuArmorImaginaryScale;
 
-        // 空梦系列·人物线（tcc_3rd）：钓鱼/战利品
+        
         public final ForgeConfigSpec.DoubleValue padoPhilipisSpecialFishChance;
         public final ForgeConfigSpec.DoubleValue luejiZhiShouSpecialFishChance;
         public final ForgeConfigSpec.DoubleValue kongmengSpecialFishChance;
 
-        // 空梦系列·神之键线（tcc_tdk）：双倍伤害
+        
         public final ForgeConfigSpec.DoubleValue wangshiDeHuanmengDamageMultiplier;
         public final ForgeConfigSpec.DoubleValue laZhiYanDamageMultiplier;
         public final ForgeConfigSpec.DoubleValue yeZhiTongDamageMultiplier;
 
-        // 饰品互斥配置
+        
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> curioConflicts;
 
-        // 虚数崩解配置
+        
         public final ForgeConfigSpec.DoubleValue collapsePercentPerLevel;
         public final ForgeConfigSpec.DoubleValue collapsePercentPerDebuff;
         public final ForgeConfigSpec.IntValue collapseMaxDebuffCount;
@@ -611,13 +611,13 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue fusionMaxLevelEpic;
         public final ForgeConfigSpec.IntValue fusionVesselCapacity;
 
-        // 融合容器战利品配置
+        
         public final ForgeConfigSpec.IntValue fusionVesselNetherMin;
         public final ForgeConfigSpec.IntValue fusionVesselNetherMax;
         public final ForgeConfigSpec.IntValue fusionVesselEndMin;
         public final ForgeConfigSpec.IntValue fusionVesselEndMax;
 
-        // 融合容器战利品出现几率
+        
         public final ForgeConfigSpec.DoubleValue fusionVesselNetherChance;
         public final ForgeConfigSpec.DoubleValue fusionVesselEndChance;
 
@@ -625,7 +625,7 @@ public class TaczCuriosConfig {
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
 
-            // 鱼类统计配置（空梦成就 tcc:fish_food_eaten）
+            
             builder.comment("统计为食用鱼类的物品注册名列表（如 minecraft:cod），吃到该列表中的物品后 tcc:fish_food_eaten +1").push("fish_food_items");
             fishFoodItems = builder
                     .comment("鱼类物品注册名列表")
@@ -636,7 +636,7 @@ public class TaczCuriosConfig {
                     ), o -> o instanceof String);
             builder.pop();
 
-            // 天火圣裁配置
+            
             builder.comment("天火圣裁饰品配置").push("heaven_fire_judgment");
             heavenFireJudgmentDamageBoost = builder
                     .comment("通用枪械伤害加成 (默认: 0.5 = 50%)")
@@ -646,7 +646,7 @@ public class TaczCuriosConfig {
                     .defineInRange("healthCost", -0.3, -1, 1);
             builder.pop();
             
-            // 天火流血效果配置（两个饰品共用）
+            
             builder.comment("天火流血效果配置（两个饰品共用）").push("heaven_fire_bleeding");
             heavenFireBleedingDamagePerLevel = builder
                     .comment("每级流血效果造成的最大生命值比例伤害 (默认: -0.1 = -10% maxHP/级)")
@@ -662,7 +662,7 @@ public class TaczCuriosConfig {
                     .defineInRange("delayDuration", 3, 1, 60);
             builder.pop();
             
-            // 虚数侵染效果配置
+            
             builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤计算公式：最终伤害 = 伤害 × (1 + 层数 × ampPerLevel)）").push("imaginary_infection");
             imaginaryInfectionAmpPerLevel = builder
                     .comment("每层虚数侵染的增伤比例 (默认: 0.1 = 10%/层)")
@@ -679,7 +679,7 @@ public class TaczCuriosConfig {
             builder.pop();
             
 
-            // 虚数崩解配置
+            
             builder.comment("虚数崩解配置（虚数崩解基于虚数侵染层数和负面效果种数造成额外伤害）").push("imaginary_collapse");
             collapsePercentPerLevel = builder
                     .comment("每层虚数侵染的崩解增伤比例 (默认: 0.01 = 1%/层)")
@@ -692,7 +692,7 @@ public class TaczCuriosConfig {
                     .defineInRange("maxDebuffCount", 5, 1, 20);
             builder.pop();
 
-            // 按饰品分级的虚数侵染上限
+            
             builder.comment("按饰品分级的虚数侵染上限（当攻击者携带对应饰品时，目标虚数侵染不会超过此等级）").push("imaginary_infection_per_curio");
             judgementKeyImaginaryInfectionMaxLevel = builder
                     .comment("裁决之键的虚数侵染上限 (默认: 9)")
@@ -717,7 +717,7 @@ public class TaczCuriosConfig {
                     .defineInRange("yinguoZhuanlunMaxLevel", 9, 1, 99);
             builder.pop();
             
-            // 裁决之键配置
+            
             builder.comment("裁决之键饰品配置").push("judgement_key");
             judgementProcChance = builder
                     .comment("爆头时触发额外伤害的几率 (默认: 0.1 = 10%)")
@@ -736,7 +736,7 @@ public class TaczCuriosConfig {
                     .defineInRange("critDamage", 1.5, -1, 100);
             builder.pop();
 
-            // 涤罪七雷配置
+            
             builder.comment("涤罪七雷饰品配置").push("seven_thunders");
             sevenThundersHeadshotMultiplier = builder
                     .comment("爆头倍率加成 (默认: 2.0 = +200%)")
@@ -749,7 +749,7 @@ public class TaczCuriosConfig {
                     .defineInRange("critDamage", 0.5, -1, 100);
             builder.pop();
 
-            // 雷鸣见配置
+            
             builder.comment("雷鸣见（涤罪七雷·雷见）饰品配置").push("seven_thunders_thunder_seen");
             sevenThundersThunderSeenHeadshotMultiplier = builder
                     .comment("爆头倍率加成 (默认: 2.0 = +200%)")
@@ -768,7 +768,7 @@ public class TaczCuriosConfig {
                     .defineInRange("extraHpDamage", 0.05, 0, 1);
             builder.pop();
             
-            // 天火劫灭配置
+            
             builder.comment("天火劫灭饰品配置").push("heaven_fire_apocalypse");
             heavenFireApocalypseDamageBoost = builder
                     .comment("通用枪械伤害加成 (默认: 1.0 = 100%)")
@@ -799,21 +799,21 @@ public class TaczCuriosConfig {
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
             builder.pop();
             
-            // 膛线配置
+            
             builder.comment("膛线饰品配置").push("rifling");
             riflingDamageBoost = builder
                     .comment("特定枪械伤害加成 (默认: 1.65 = 165%)")
                     .defineInRange("damageBoost", 1.65, -1, 100);
             builder.pop();
             
-            // 分裂膛室配置
+            
             builder.comment("分裂膛室饰品配置").push("split_chamber");
             splitChamberBulletCountBoost = builder
                     .comment("弹头数量加成 (默认: 0.9 = 90%)")
                     .defineInRange("bulletCountBoost", 0.9, -1, 100);
             builder.pop();
             
-            // 卑劣加速配置
+            
             builder.comment("卑劣加速饰品配置").push("despicable_acceleration");
             despicableAccelerationFireRateBoost = builder
                     .comment("射击速度加成 (默认: +0.9 = +90%)")
@@ -823,7 +823,7 @@ public class TaczCuriosConfig {
                     .defineInRange("damageReduction", -0.15, -1, 0);
             builder.pop();
             
-            // 并合膛线配置
+            
             builder.comment("并合膛线饰品配置").push("merged_rifling");
             mergedRiflingDamageBoost = builder
                     .comment("特定枪械伤害加成 (默认: 1.55 = 155%)")
@@ -833,14 +833,14 @@ public class TaczCuriosConfig {
                     .defineInRange("movementSpeedBoost", 0.25, -1, 100);
             builder.pop();
             
-            // 合金钻头配置
+            
             builder.comment("合金钻头饰品配置").push("alloy_drill");
             alloyDrillArmorPenetrationBoost = builder
                     .comment("护甲穿透加成 (默认: 2.0 = 200%)")
                     .defineInRange("armorPenetrationBoost", 2.0, -1, 100);
             builder.pop();
             
-            // 我小心海也绝非鳝类配置
+            
             builder.comment("我小心海也绝非鳝类饰品配置").push("careful_heart");
             carefulHeartLauncherDamageBoost = builder
                     .comment("重型武器伤害加成 (默认: 1.5 = 150%)")
@@ -858,29 +858,29 @@ public class TaczCuriosConfig {
             
 
 
-            // 关键延迟
+            
             builder.comment("关键延迟饰品配置").push("critical_delay");
             criticalDelayCritChanceBoost = builder.comment("暴击几率加成 (默认: 2.0)").defineInRange("critChanceBoost", 2.0, -1, 100);
             criticalDelayFireRateReduction = builder.comment("射速降低 (默认: -0.2)").defineInRange("fireRateReduction", -0.2, -1, 0);
             builder.pop();
             
-            // 致命一击
+            
             builder.comment("致命一击饰品配置").push("lethal_crit");
             lethalCritCritChance = builder.comment("暴击几率加成 (默认: 1.5)").defineInRange("critChance", 1.5, -1, 100);
             builder.pop();
             
-            // 弱点感应
+            
             builder.comment("弱点感应饰品配置").push("weakness_sense");
             weaknessSenseCritDamage = builder.comment("暴击伤害加成 (默认: 1.2)").defineInRange("critDamage", 1.2, -1, 100);
             builder.pop();
             
-            // 氩晶瞄具
+            
             builder.comment("氩晶瞄具饰品配置").push("argon_scope");
             argonScopeBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.15)").defineInRange("baseCritChance", 0.15, -1, 100);
             argonScopeDuration = builder.comment("Buff持续时间(秒) (基础值: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
-            // 镀层氩晶瞄具
+            
             builder.comment("镀层氩晶瞄具饰品配置").push("gilded_argon_scope");
             gildedArgonScopeBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.11)").defineInRange("baseCritChance", 0.11, -1, 100);
             gildedArgonScopeCritChancePerLevel = builder.comment("叠层Buff每级暴击几率 (基础值: 0.033, 满级: +40%/级)").defineInRange("critChancePerLevel", 0.033, -1, 100);
@@ -889,18 +889,18 @@ public class TaczCuriosConfig {
             gildedArgonScopeMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
-            // 尖刃弹头
+            
             builder.comment("尖刃弹头饰品配置").push("sharp_bullet");
             sharpBulletBaseCritDamage = builder.comment("基础暴击伤害 (基础值: 0.13)").defineInRange("baseCritDamage", 0.13, -1, 100);
             sharpBulletDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
-            // 镀层步枪才能
+            
             builder.comment("镀层步枪才能饰品配置").push("gilded_rifle_aptitude");
             gildedRifleAptitudePerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
             builder.pop();
             
-            // 镀层分裂膛室
+            
             builder.comment("镀层分裂膛室饰品配置").push("gilded_split_chamber");
             gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 0.8)").defineInRange("bulletCountBase", 0.8, -1, 100);
             gildedSplitChamberBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
@@ -908,44 +908,44 @@ public class TaczCuriosConfig {
             gildedSplitChamberMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
-            // 破灭
+            
             builder.comment("破灭饰品配置").push("destruction");
             destructionCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
             builder.pop();
             
-            // 破灭Prime
+            
             builder.comment("破灭Prime饰品配置").push("destruction_prime");
             destructionPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 1.1, -1, 100);
             builder.pop();
             
-            // 雷筒
+            
             builder.comment("雷筒饰品配置").push("thunder_barrel");
             thunderBarrelCritChance = builder.comment("暴击几率加成 (默认: 0.9)").defineInRange("critChance", 0.9, -1, 100);
             builder.pop();
             
-            // 雷筒Prime
+            
             builder.comment("雷筒Prime饰品配置").push("thunder_barrel_prime");
             thunderBarrelPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.65)").defineInRange("critChance", 1.65, -1, 100);
             builder.pop();
             
-            // 雷射瞄具
+            
             builder.comment("雷射瞄具饰品配置").push("laser_scope");
             laserScopeBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.13)").defineInRange("baseCritChance", 0.13, -1, 100);
             laserScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
-            // 破片射击
+            
             builder.comment("破片射击饰品配置").push("fragment_shot");
             fragmentShotBaseCritDamage = builder.comment("基础暴击伤害 (基础值: 0.11)").defineInRange("baseCritDamage", 0.11, -1, 100);
             fragmentShotDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
-            // 镀层通晓霰弹枪
+            
             builder.comment("镀层通晓霰弹枪饰品配置").push("gilded_shotgun_savvy");
             gildedShotgunSavvyPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
             builder.pop();
             
-            // 镀层地狱弹膛
+            
             builder.comment("镀层地狱弹膛饰品配置").push("gilded_infernal_chamber");
             gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
             gildedInfernalChamberBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
@@ -953,39 +953,39 @@ public class TaczCuriosConfig {
             gildedInfernalChamberMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
-            // 弱点专精
+            
             builder.comment("弱点专精饰品配置").push("weakness_mastery");
             weaknessMasteryCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
             builder.pop();
             
-            // 弱点专精Prime
+            
             builder.comment("弱点专精Prime饰品配置").push("weakness_mastery_prime");
             weaknessMasteryPrimeCritDamage = builder.comment("暴击伤害加成 (默认: 1.1)").defineInRange("critDamage", 1.1, -1, 100);
             builder.pop();
             
-            // 空尖弹
+            
             builder.comment("空尖弹饰品配置").push("hollow_point");
             hollowPointCritDamage = builder.comment("暴击伤害加成 (默认: 0.6)").defineInRange("critDamage", 0.6, -1, 100);
             hollowPointPistolDamageReduction = builder.comment("手枪伤害降低 (默认: -0.15)").defineInRange("pistolDamageReduction", -0.15, -1, 0);
             builder.pop();
             
-            // 手枪精通
+            
             builder.comment("手枪精通饰品配置").push("pistol_mastery");
             pistolMasteryCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 1.2, -1, 100);
             builder.pop();
             
-            // 手枪精通Prime
+            
             builder.comment("手枪精通Prime饰品配置").push("pistol_mastery_prime");
             pistolMasteryPrimeCritChance = builder.comment("暴击几率加成 (默认: 1.87)").defineInRange("critChance", 1.87, -1, 100);
             builder.pop();
             
-            // 液压准心
+            
             builder.comment("液压准心饰品配置").push("hydraulic_crosshair");
             hydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.15)").defineInRange("baseCritChance", 0.15, -1, 100);
             hydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
-            // 镀层液压准心
+            
             builder.comment("镀层液压准心饰品配置").push("gilded_hydraulic_crosshair");
             gildedHydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.11)").defineInRange("baseCritChance", 0.11, -1, 100);
             gildedHydraulicCrosshairCritChancePerLevel = builder.comment("叠层Buff每级暴击几率 (基础值: 0.033, 满级: +40%/级)").defineInRange("critChancePerLevel", 0.033, -1, 100);
@@ -994,18 +994,18 @@ public class TaczCuriosConfig {
             gildedHydraulicCrosshairMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
             
-            // 尖锐子弹
+            
             builder.comment("尖锐子弹饰品配置").push("sharp_ammo");
             sharpAmmoBaseCritDamage = builder.comment("基础暴击伤害 (基础值: 0.08)").defineInRange("baseCritDamage", 0.08, -1, 100);
             sharpAmmoDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
-            // 镀层准确射手
+            
             builder.comment("镀层准确射手饰品配置").push("gilded_marksman");
             gildedMarksmanPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.4)").defineInRange("perHarmful", 0.4, -1, 100);
             builder.pop();
             
-            // 镀层弹头扩散
+            
             builder.comment("镀层弹头扩散饰品配置").push("gilded_bullet_spread");
             gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
             gildedBulletSpreadBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
@@ -1013,27 +1013,27 @@ public class TaczCuriosConfig {
             gildedBulletSpreadMaxStacks = builder.comment("最大buff等级 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
             builder.pop();
             
-            // 斩铁
+            
             builder.comment("斩铁饰品配置").push("steel_slash");
             steelSlashCritChance = builder.comment("暴击几率加成 (默认: 1.2)").defineInRange("critChance", 1.2, -1, 100);
             builder.pop();
             
-            // 肢解
+            
             builder.comment("肢解饰品配置").push("dismemberment");
             dismembermentCritDamage = builder.comment("暴击伤害加成 (默认: 0.9)").defineInRange("critDamage", 0.9, -1, 100);
             builder.pop();
             
-            // 牺牲压迫点
+            
             builder.comment("牺牲压迫点饰品配置").push("sacrifice_oppression");
             sacrificeOppressionMeleeDamage = builder.comment("近战伤害加成 (默认: 1.1)").defineInRange("meleeDamage", 1.1, -1, 100);
             builder.pop();
             
-            // 牺牲斩铁
+            
             builder.comment("牺牲斩铁饰品配置").push("sacrifice_steel");
             sacrificeSteelCritChance = builder.comment("暴击几率加成 (默认: 2.2)").defineInRange("critChance", 2.2, -1, 100);
             builder.pop();
             
-            // 镀层斩铁
+            
             builder.comment("镀层斩铁饰品配置").push("gilded_steel_slash");
             gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (基础值: 1.1)").defineInRange("critChanceBase", 1.1, -1, 100);
             gildedSteelSlashCritDamagePerLevel = builder.comment("叠层Buff每级暴击伤害 (基础值: 0.025, 满级: +30%/级)").defineInRange("critDamagePerLevel", 0.025, -1, 100);
@@ -1041,17 +1041,17 @@ public class TaczCuriosConfig {
             gildedSteelSlashMaxStacks = builder.comment("最大buff等级 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
             builder.pop();
             
-            // 异况超量
+            
             builder.comment("异况超量饰品配置").push("condition_overload");
             conditionOverloadPerHarmful = builder.comment("每负面效果种数增伤比例 (默认: 0.8)").defineInRange("perHarmful", 0.8, -1, 100);
             builder.pop();
             
-            // 牺牲套装组合
+            
             builder.comment("牺牲套装组合配置").push("sacrifice_set");
             sacrificeSetBonus = builder.comment("套装加成倍率 (默认: 1.25)").defineInRange("setBonus", 1.25, -1, 100);
             builder.pop();
 
-            // 虚数崩解配置
+            
         builder.comment("烈焰风暴饰品配置").push("blaze_storm");
         blazeStormExplosionRadiusBoost = builder
                 .comment("爆炸范围加成 (默认: 0.24 = 24%)")
@@ -1064,7 +1064,7 @@ public class TaczCuriosConfig {
                 .defineInRange("explosionEnabled", 2.0, -1, 100);
         builder.pop();
         
-        // 烈焰风暴Prime配置
+        
         builder.comment("烈焰风暴Prime饰品配置").push("blaze_storm_prime");
         blazeStormPrimeExplosionRadiusBoost = builder
                 .comment("爆炸范围加成 (默认: 0.66 = 66%)")
@@ -1077,7 +1077,7 @@ public class TaczCuriosConfig {
                 .defineInRange("explosionEnabled", 2.0, -1, 100);
         builder.pop();
             
-            // 撕裂Prime配置
+            
             builder.comment("撕裂Prime饰品配置").push("ripping_prime");
             rippingPrimeFireRateBoost = builder
                     .comment("射速加成 (默认: 0.55 = 55%)")
@@ -1087,14 +1087,14 @@ public class TaczCuriosConfig {
                     .defineInRange("penetrationBoost", 2.2, -1, 100);
             builder.pop();
             
-            // 抵近射击Prime配置
+            
             builder.comment("抵近射击Prime饰品配置").push("close_combat_prime");
             closeCombatPrimeShotgunDamageBoost = builder
                     .comment("霰弹枪伤害加成 (默认: 1.65 = 165%)")
                     .defineInRange("shotgunDamageBoost", 1.65, -1, 100);
             builder.pop();
             
-            // 极恶精准配置
+            
             builder.comment("极恶精准饰品配置").push("evil_accuracy");
             evilAccuracyRecoilReduction = builder
                     .comment("后坐力降低 (默认: -0.9 = -90%)")
@@ -1104,28 +1104,28 @@ public class TaczCuriosConfig {
                     .defineInRange("fireRateReduction", -0.36, -1, 0);
             builder.pop();
             
-            // 极限速度配置
+            
             builder.comment("极限速度饰品配置").push("limit_speed");
             limitSpeedBulletSpeedBoost = builder
                     .comment("弹药速度加成 (默认: 0.6 = 60%)")
                     .defineInRange("bulletSpeedBoost", 0.6, -1, 100);
             builder.pop();
             
-            // 凶恶延伸配置
+            
             builder.comment("凶恶延伸饰品配置").push("ferocious_extension");
             ferociousExtensionRangeBoost = builder
                     .comment("子弹射程加成 (默认: 1.2 = 120%)")
                     .defineInRange("rangeBoost", 1.2, -1, 100);
             builder.pop();
             
-            // 抵近射击配置
+            
             builder.comment("抵近射击饰品配置").push("close_range_shot");
             closeRangeShotDamageBoost = builder
                     .comment("霰弹枪伤害加成 (默认: 0.9 = 90%)")
                     .defineInRange("damageBoost", 0.9, -1, 100);
             builder.pop();
             
-            // 重装火力配置
+            
             builder.comment("重装火力饰品配置").push("heavy_firepower");
             heavyFirepowerDamageBoost = builder
                     .comment("手枪伤害加成 (默认: +1.65 = +165%)")
@@ -1135,21 +1135,21 @@ public class TaczCuriosConfig {
                     .defineInRange("accuracyReduction", 0.55, -1, 1);
             builder.pop();
             
-            // 黄蜂蜇刺配置
+            
             builder.comment("黄蜂蜇刺饰品配置").push("wasp_stinger");
             waspStingerDamageBoost = builder
                     .comment("手枪伤害加成 (默认: 2.2 = 220%)")
                     .defineInRange("damageBoost", 2.2, -1, 100);
             builder.pop();
             
-            // 预言契约配置
+            
             builder.comment("预言契约饰品配置").push("prophecy_pact");
             prophecyPactDamageBoost = builder
                     .comment("手枪伤害加成 (默认: 0.9 = 90%)")
                     .defineInRange("damageBoost", 0.9, -1, 100);
             builder.pop();
             
-            // 恶性扩散配置
+            
             builder.comment("恶性扩散饰品配置").push("malignant_spread");
             malignantSpreadDamageBoost = builder
                     .comment("霰弹枪伤害加成 (默认: +1.65 = +165%)")
@@ -1159,28 +1159,28 @@ public class TaczCuriosConfig {
                     .defineInRange("accuracyReduction", 0.55, -1, 1);
             builder.pop();
             
-            // 膛室配置
+            
             builder.comment("膛室饰品配置").push("chamber");
             chamberSniperDamageBoost = builder
                     .comment("狙击枪伤害加成 (默认: 0.4 = 40%)")
                     .defineInRange("sniperDamageBoost", 0.4, -1, 100);
             builder.pop();
             
-            // 膛室Prime配置
+            
             builder.comment("膛室Prime饰品配置").push("chamber_prime");
             chamberPrimeSniperDamageBoost = builder
                     .comment("狙击枪伤害加成 (默认: 1.0 = 100%)")
                     .defineInRange("sniperDamageBoost", 1.0, -1, 100);
             builder.pop();
             
-            // 战术上膛配置
+            
             builder.comment("战术上膛饰品配置").push("tactical_reload");
             tacticalReloadSpeedBoost = builder
                     .comment("霰弹枪装填时间加成 (默认: -0.6 = -60%)")
                     .defineInRange("reloadSpeedBoost", -0.6, -1, 100);
             builder.pop();
             
-            // 过载弹匣配置
+            
             builder.comment("过载弹匣饰品配置").push("overloaded_magazine");
             overloadedMagazineCapacityBoost = builder
                     .comment("霰弹枪弹匣容量加成 (默认: +0.6 = +60%)")
@@ -1190,21 +1190,21 @@ public class TaczCuriosConfig {
                     .defineInRange("reloadSpeedReduction", 0.18, -1, 1);
             builder.pop();
             
-            // 地狱弹膛配置
+            
             builder.comment("地狱弹膛饰品配置").push("infernal_chamber");
             infernalChamberBulletCountBoost = builder
                     .comment("霰弹枪弹头数量加成 (默认: 1.2 = 120%)")
                     .defineInRange("bulletCountBoost", 1.2, -1, 100);
             builder.pop();
             
-            // 持续火力配置
+            
             builder.comment("持续火力饰品配置").push("sustained_fire");
             sustainedFireReloadSpeedBoost = builder
                     .comment("手枪装填时间加成 (默认: -0.48 = -48%)")
                     .defineInRange("reloadSpeedBoost", -0.48, -1, 100);
             builder.pop();
             
-            // 感染弹匣配置
+            
             builder.comment("感染弹匣饰品配置").push("infected_magazine");
             infectedMagazineCapacityBoost = builder
                     .comment("手枪弹匣容量加成 (默认: +0.6 = +60%)")
@@ -1214,7 +1214,7 @@ public class TaczCuriosConfig {
                     .defineInRange("reloadSpeedReduction", 0.3, -1, 1);
             builder.pop();
             
-            // 致命洪流配置
+            
             builder.comment("致命洪流饰品配置").push("deadly_surge");
             deadlySurgeFireRateBoost = builder
                     .comment("手枪射速加成 (默认: 0.6 = 60%)")
@@ -1224,49 +1224,49 @@ public class TaczCuriosConfig {
                     .defineInRange("bulletCountBoost", 0.6, -1, 100);
             builder.pop();
             
-            // 弹头扩散配置
+            
             builder.comment("弹头扩散饰品配置").push("bullet_spread");
             bulletSpreadBulletCountBoost = builder
                     .comment("手枪弹头数量加成 (默认: 1.2 = 120%)")
                     .defineInRange("bulletCountBoost", 1.2, -1, 100);
             builder.pop();
             
-            // 压迫点配置
+            
             builder.comment("压迫点饰品配置").push("oppression_point");
             oppressionPointMeleeDamageBoost = builder
                     .comment("近战伤害加成 (默认: 1.2 = 120%)")
                     .defineInRange("meleeDamageBoost", 1.2, -1, 100);
             builder.pop();
             
-            // 压迫点Prime配置
+            
             builder.comment("压迫点Prime饰品配置").push("oppression_point_prime");
             oppressionPointPrimeMeleeDamageBoost = builder
                     .comment("近战伤害加成 (默认: 1.65 = 165%)")
                     .defineInRange("meleeDamageBoost", 1.65, -1, 100);
             builder.pop();
             
-            // 爆发装填配置
+            
             builder.comment("爆发装填饰品配置").push("burst_reload");
             burstReloadReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.3 = -30%)")
                     .defineInRange("reloadSpeedBoost",-0.3, -1, 100);
             builder.pop();
             
-            // 剑风配置
+            
             builder.comment("剑风饰品配置").push("sword_wind");
             swordWindMeleeRangeBoost = builder
                     .comment("近战距离加成 (默认: 1.1)")
                     .defineInRange("meleeRangeBoost", 1.1, -1, 100);
             builder.pop();
             
-            // 剑风Prime配置
+            
             builder.comment("剑风Prime饰品配置").push("sword_wind_prime");
             swordWindPrimeMeleeRangeBoost = builder
                     .comment("近战距离加成 (默认: 3)")
                     .defineInRange("meleeRangeBoost", 3.0, -1, 100);
             builder.pop();
             
-            // 腐败弹匣配置
+            
             builder.comment("腐败弹匣饰品配置").push("corrupt_magazine");
             corruptMagazineCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: +0.66 = +66%)")
@@ -1276,7 +1276,7 @@ public class TaczCuriosConfig {
                     .defineInRange("reloadSpeedReduction", 0.33, -1, 1);
             builder.pop();
             
-            // 重口径配置
+            
             builder.comment("重口径饰品配置").push("heavy_caliber_tag");
             heavyCaliberTagDamageBoost = builder
                     .comment("特定枪械伤害加成 (默认: +1.65 = +165%)")
@@ -1286,14 +1286,14 @@ public class TaczCuriosConfig {
                     .defineInRange("inaccuracyBoost", 0.55, -1, 100);
             builder.pop();
             
-            // 红-有-三配置
+            
             builder.comment("红-有-三饰品配置").push("red_movement_tag");
             redMovementTagSpeedBoost = builder
                     .comment("移动速度加成 (默认: 1.5 = 150%)")
                     .defineInRange("speedBoost", 1.5, -1, 100);
             builder.pop();
             
-            // 希奥拉配置
+            
             builder.comment("希奥拉饰品配置").push("xiora");
             xioraArmorMultiplier = builder
                     .comment("护甲乘数 (默认: -0.2 = 护甲降低20%)")
@@ -1303,7 +1303,7 @@ public class TaczCuriosConfig {
                     .defineInRange("speedMultiplier", 0.5, -1, 100);
             builder.pop();
 
-            // 夜袭渡鸦配置
+            
             builder.comment("夜袭渡鸦饰品配置").push("raven");
             ravenArmorMultiplier = builder
                     .comment("护甲乘数 (默认: -0.4 = 护甲降低40%)")
@@ -1322,7 +1322,7 @@ public class TaczCuriosConfig {
                     .defineInRange("invisBreakDelay", 100, 0, 12000);
             builder.pop();
 
-            // 岛爆渡鸦配置
+            
             builder.comment("岛爆渡鸦饰品配置").push("island_boom_raven");
             islandBoomRavenArmorMultiplier = builder
                     .comment("护甲乘数 (默认: -0.4 = 护甲降低40%)")
@@ -1350,11 +1350,11 @@ public class TaczCuriosConfig {
                     .defineInRange("regenDuration", 120, 1, 12000);
             builder.pop();
             
-            // 夏日沙滩配置
+            
             builder.comment("夏日沙滩饰品配置").push("summer_beach");
             builder.pop();
             
-            // 救世配置
+            
             builder.comment("救世饰品配置").push("salvation");
             salvationDamageReduction = builder
                     .comment("救世伤害减免比例 (默认: 0.5 = 减免50%)")
@@ -1364,7 +1364,7 @@ public class TaczCuriosConfig {
                     .defineInRange("resistanceLevel", 2, 0, 10);
             builder.pop();
             
-            // 无烬终焉配置
+            
             builder.comment("无烬终焉饰品配置").push("endless");
             endlessDamageBoost = builder
                     .comment("无烬终焉通用枪械伤害加成 (默认: 1.0 = 100%)")
@@ -1389,14 +1389,14 @@ public class TaczCuriosConfig {
                     .defineInRange("nearbyPlayerRadius", 32.0, -1, 100);
             builder.pop();
             
-            // 士兵基础挂牌配置
+            
             builder.comment("士兵基础挂牌饰品配置").push("soldier_basic_tag");
             soldierBasicTagDamageBoost = builder
                     .comment("通用枪械伤害加成 (默认: 0.3 = 30%)")
                     .defineInRange("damageBoost", 0.3, -1, 100);
             builder.pop();
             
-            // 弹匣增幅配置
+            
             builder.comment("弹匣增幅饰品配置").push("magazine_boost");
             magazineBoostReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.3 = -30%)")
@@ -1406,21 +1406,21 @@ public class TaczCuriosConfig {
                     .defineInRange("capacityBoost", 0.3, -1, 100);
             builder.pop();
             
-            // 士兵特定挂牌配置
+            
             builder.comment("士兵特定挂牌饰品配置").push("soldier_specific_tag");
             soldierSpecificTagDamageBoost = builder
                     .comment("通用枪械伤害加成 (默认: 0.55 = 55%)")
                     .defineInRange("damageBoost", 0.55, -1, 100);
             builder.pop();
             
-            // 乌拉尔银狼配置
+            
             builder.comment("乌拉尔银狼饰品配置").push("ural_wolf_tag");
             uralWolfTagHeadshotMultiplierBoost = builder
                     .comment("爆头倍率加成 (默认: 1.5 = 150%)")
                     .defineInRange("headshotMultiplierBoost", 1.5, -1, 100);
             builder.pop();
             
-            // 耗竭装填配置
+            
             builder.comment("耗竭装填饰品配置").push("depleted_reload");
             depletedReloadMagazineCapacityPenalty = builder
                     .comment("弹匣容量减少 (默认: -0.6 = -60%)")
@@ -1430,42 +1430,42 @@ public class TaczCuriosConfig {
                     .defineInRange("reloadSpeedBoost", -0.48, -1, 100);
             builder.pop();
             
-            // 爆发装填Prime配置
+            
             builder.comment("爆发装填Prime饰品配置").push("burst_reload_prime");
             burstReloadPrimeReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.55 = -55%)")
                     .defineInRange("reloadSpeedBoost", -0.55, -1, 100);
             builder.pop();
             
-            // 战术上膛Prime配置
+            
             builder.comment("战术上膛Prime饰品配置").push("tactical_reload_prime");
             tacticalReloadPrimeReloadSpeedBoost = builder
                     .comment("装填时间加成 (默认: -0.9 = -90%)")
                     .defineInRange("reloadSpeedBoost", -0.9, -1, 100);
             builder.pop();
             
-            // 霰弹扩充Prime配置
+            
             builder.comment("霰弹扩充Prime饰品配置").push("shotgun_expansion_prime");
             shotgunExpansionPrimeCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 1.1 = 110%)")
                     .defineInRange("capacityBoost", 1.1, -1, 100);
             builder.pop();
             
-            // 弹匣增幅Prime配置
+            
             builder.comment("弹匣增幅Prime饰品配置").push("magazine_boost_prime");
             magazineBoostPrimeCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.55 = 55%)")
                     .defineInRange("capacityBoost", 0.55, -1, 100);
             builder.pop();
             
-            // 串联弹匣Prime配置
+            
             builder.comment("串联弹匣Prime饰品配置").push("tandem_magazine_prime");
             tandemMagazinePrimeCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.55 = 55%)")
                     .defineInRange("capacityBoost", 0.55, -1, 100);
             builder.pop();
             
-            // 霰弹扩充配置
+            
             builder.comment("霰弹扩充饰品配置").push("shotgun_expansion");
             shotgunExpansionCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.6 = 60%)")
@@ -1473,14 +1473,14 @@ public class TaczCuriosConfig {
             builder.pop();
             
 
-            // 串联弹匣配置
+            
             builder.comment("串联弹匣饰品配置").push("tandem_magazine");
             tandemMagazineCapacityBoost = builder
                     .comment("弹匣容量加成 (默认: 0.3 = 30%)")
                     .defineInRange("capacityBoost", 0.3, -1, 100);
             builder.pop();
             
-            // 掎角一阵配置
+            
             builder.comment("掎角一阵饰品配置").push("kikaku_ichijin");
             kikakuIchijinHealthMultiplier = builder
                     .comment("伤害倍率，基于祭品总血量的比例 (默认: 0.2 = 20%，范围: 0.2-1.0)")
@@ -1493,7 +1493,7 @@ public class TaczCuriosConfig {
                     .define("destroyNormalBlocks", false);
             builder.pop();
             
-            // 吸收饰品通用配置
+            
             builder.comment("吸收饰品通用配置（低血量触发黄心）").push("curio_absorption");
             curioAbsorptionTriggerHp = builder
                     .comment("触发血量阈值 (0~1, 默认: 0.25 = 25%)")
@@ -1509,21 +1509,21 @@ public class TaczCuriosConfig {
                     .defineInRange("cooldown", 180.0, 0, 2147483647);
             builder.pop();
 
-            // 格蕾修配置
+            
             builder.comment("格蕾修饰品配置").push("griseo");
             griseoHurtCooldownTicks = builder
                     .comment("受伤冷却基础冷却(tick) (默认: 10 = 0.5秒)")
                     .defineInRange("hurtCooldownTicks", 10, 1, 12000);
             builder.pop();
 
-            // 千界一乘配置
+            
             builder.comment("千界一乘饰品配置").push("qianjie_yicheng");
             qianjieYichengLuck = builder
                     .comment("幸运值加成 (默认: 20)")
                     .defineInRange("luck", 20, 0, 1000);
             builder.pop();
 
-            // 绘世之卷配置
+            
             builder.comment("绘世之卷饰品配置").push("huishi_zhijuan");
             huishiZhijuanBaseCooldown = builder
                     .comment("受伤冷却基础冷却(tick) (默认: 10)")
@@ -1536,7 +1536,7 @@ public class TaczCuriosConfig {
                     .defineInRange("maxCooldown", 40, 1, 12000);
             builder.pop();
 
-            // 永劫之键配置
+            
             builder.comment("永劫之键饰品配置").push("yongjie_zhijian");
             yongjieZhijianLuck = builder
                     .comment("幸运值加成 (默认: 20)")
@@ -1549,7 +1549,7 @@ public class TaczCuriosConfig {
                     .defineInRange("critDamagePerLuck", 0.02, 0, 100);
             builder.pop();
 
-            // 繁星配置
+            
             builder.comment("繁星饰品配置").push("fanxing");
             fanxingBaseCooldown = builder
                     .comment("受伤冷却基础冷却(tick) (默认: 20)")
@@ -1565,7 +1565,7 @@ public class TaczCuriosConfig {
                     .defineInRange("luckPerResistance", 1.0, 0.0, 100.0);
             builder.pop();
 
-            // 视界反演配置
+            
             builder.comment("视界反演饰品配置").push("shijie_fanyan");
             shijieFanyanLuck = builder
                     .comment("幸运值加成 (默认: 40)")
@@ -1584,7 +1584,7 @@ public class TaczCuriosConfig {
                     .defineInRange("collapsePerLuck", 0.01, 0, 1);
             builder.pop();
 
-            // 维尔薇配置
+            
             builder.comment("维尔薇饰品配置").push("vill_v");
             villVTriggerHpRatio = builder
                     .comment("触发吸收效果的血量阈值 (默认: 0.2 = 20%)")
@@ -1600,7 +1600,7 @@ public class TaczCuriosConfig {
                     .defineInRange("cooldownSeconds", 60.0, 1, 3600);
             builder.pop();
 
-            // 虚空万藏配置
+            
             builder.comment("虚空万藏饰品配置").push("xukong_wancang");
             xukongWancangImaginaryDamage = builder
                     .comment("攻击触发额外虚数伤害 (默认: 10.0)")
@@ -1616,7 +1616,7 @@ public class TaczCuriosConfig {
                     .defineInRange("heatCooling", 0.2, 0.01, 1024.0);
             builder.pop();
 
-            // 愚戏之匣配置
+            
             builder.comment("愚戏之匣饰品配置").push("yuxi_zhixia");
             yuxiZhixiaTriggerHpRatio = builder
                     .comment("触发吸收效果的血量阈值 (默认: 0.3 = 30%)")
@@ -1632,7 +1632,7 @@ public class TaczCuriosConfig {
                     .defineInRange("cooldownSeconds", 60.0, 1, 3600);
             builder.pop();
 
-            // 启示之键配置
+            
             builder.comment("启示之键饰品配置").push("qishi_zhijian");
             qishiZhijianImaginaryDamage = builder
                     .comment("攻击触发额外虚数伤害 (默认: 20.0)")
@@ -1648,7 +1648,7 @@ public class TaczCuriosConfig {
                     .defineInRange("heatCooling", 0.4, 0.01, 1024.0);
             builder.pop();
 
-            // 螺旋配置
+            
             builder.comment("螺旋饰品配置").push("luoxuan");
             luoxuanAbsorptionInterval = builder
                     .comment("吸收效果施加间隔(秒) (默认: 30)")
@@ -1661,7 +1661,7 @@ public class TaczCuriosConfig {
                     .defineInRange("absorptionDuration", 30, 1, 3600);
             builder.pop();
 
-            // 虚空万藏·雨众天华配置
+            
             builder.comment("虚空万藏·雨众天华饰品配置").push("xukong_wancang_yzth");
             xukongWancangYZTHImaginaryDamage = builder
                     .comment("基础额外虚数伤害 (默认: 20.0)")
@@ -1680,14 +1680,14 @@ public class TaczCuriosConfig {
                     .defineInRange("heatCooling", 0.8, 0.01, 1024.0);
             builder.pop();
 
-            // 适应系统通用配置
+            
             builder.comment("适应系统通用配置").push("adaptation");
             adaptationMaxCount = builder
                     .comment("同类型伤害适应最大叠加次数 (默认: 4，范围: 1~1000)")
                     .defineInRange("maxCount", 4, 1, 1000);
             builder.pop();
 
-            // 千劫配置
+            
             builder.comment("千劫饰品配置").push("kalpas");
             kalpasMaxSlots = builder
                     .comment("适应最大槽位 (默认: 3)")
@@ -1700,14 +1700,14 @@ public class TaczCuriosConfig {
                     .defineInRange("decaySeconds", 20, 1, 3600);
             builder.pop();
 
-            // 伊默尔配置
+            
             builder.comment("伊默尔饰品配置").push("imer");
             imerAttackDamageBonus = builder
                     .comment("攻击伤害加成 (默认: 0.1 = 10%，MULTIPLY_BASE)")
                     .defineInRange("attackDamageBonus", 0.1, 0.0, 10.0);
             builder.pop();
 
-            // 坏劫之焱配置
+            
             builder.comment("坏劫之焱饰品配置").push("huajie_zhiyan");
             huajieZhiyanMaxSlots = builder
                     .comment("适应最大槽位 (默认: 4)")
@@ -1723,7 +1723,7 @@ public class TaczCuriosConfig {
                     .defineInRange("healthPerResistance", 1.0, 0.0, 1000.0);
             builder.pop();
 
-            // 支配之键配置
+            
             builder.comment("支配之键饰品配置").push("dominance_key");
             dominanceKeyHealthToAttackPercent = builder
                     .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%，攻击加成 = 最大生命值 * 此值 / 100)")
@@ -1733,7 +1733,7 @@ public class TaczCuriosConfig {
                     .defineInRange("imaginaryDamageScale", 0.3, 0.0, 10.0);
             builder.pop();
 
-            // 鏖灭配置
+            
             builder.comment("鏖灭饰品配置").push("aomie");
             aoMieMaxSlots = builder
                     .comment("适应最大槽位 (默认: 6)")
@@ -1749,7 +1749,7 @@ public class TaczCuriosConfig {
                     .defineInRange("healthPerResistance", 2.0, 0.0, 1000.0);
             builder.pop();
 
-            // Meta-Morph配置
+            
             builder.comment("Meta-Morph饰品配置").push("meta_morph");
             metaMorphHealthToAttackPercent = builder
                     .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%)")
@@ -1762,7 +1762,7 @@ public class TaczCuriosConfig {
                     .defineInRange("lifeStealPerResistance", 0.01, 0.0, 1.0);
             builder.pop();
 
-            // 苏配置
+            
             builder.comment("苏饰品配置").push("su");
             suMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.3)")
@@ -1772,7 +1772,7 @@ public class TaczCuriosConfig {
                     .defineInRange("damageTakenFactor", 0.1, 0.0, 1.0);
             builder.pop();
 
-            // 万物休眠配置
+            
             builder.comment("万物休眠饰品配置").push("wanwu_xiumian");
             wanwuXiumianOverheal = builder
                     .comment("超量治疗值 (默认: 0.3)")
@@ -1782,7 +1782,7 @@ public class TaczCuriosConfig {
                     .defineInRange("ammoRegenPercent", 0.05, 0.0, 1.0);
             builder.pop();
 
-            // 觉者配置
+            
             builder.comment("觉者饰品配置").push("juezhe");
             juezheMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.4)")
@@ -1792,7 +1792,7 @@ public class TaczCuriosConfig {
                     .defineInRange("damageTakenFactor", 0.3, 0.0, 1.0);
             builder.pop();
 
-            // 停滞之键配置
+            
             builder.comment("停滞之键饰品配置").push("tingzhi_zhijian");
             tingzhiZhijianOverheal = builder
                     .comment("超量治疗值 (默认: 0.5)")
@@ -1805,7 +1805,7 @@ public class TaczCuriosConfig {
                     .defineInRange("ammoResistanceScale", 0.005, 0.0, 1.0);
             builder.pop();
 
-            // 天慧配置
+            
             builder.comment("天慧饰品配置").push("tianhui");
             tianhuiMaxHealthReduction = builder
                     .comment("最大生命值减少比例 (默认: -0.5)")
@@ -1818,7 +1818,7 @@ public class TaczCuriosConfig {
                     .defineInRange("minDamageFactor", 0.1, 0.0, 1.0);
             builder.pop();
 
-            // 因果转轮配置
+            
             builder.comment("因果转轮饰品配置").push("yinguo_zhuanlun");
             yinguoZhuanlunOverheal = builder
                     .comment("超量治疗值 (默认: 1.0)")
@@ -1828,7 +1828,7 @@ public class TaczCuriosConfig {
                     .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
             builder.pop();
 
-            // 逐火之蛾「真我」配置
+            
             builder.comment("逐火之蛾「真我」饰品配置").push("zhen_wo");
             zhenWoImaginaryResistance = builder
                     .comment("虚数抗性加成 (默认: 60)")
@@ -1859,16 +1859,16 @@ public class TaczCuriosConfig {
                     .defineInRange("damageTakenFactor", 0.8, 0.0, 1.0);
             builder.pop();
 
-            // 黑渊白花·创灭螺旋配置
+            
             builder.comment("黑渊白花·创灭螺旋饰品配置").push("heiyuan_baihua");
             heiyuanBaihuaDamagePercent = builder
                     .comment("每次造成伤害时附加佩戴者当前血量的比例 (默认: 1.0 = 100%)")
                     .defineInRange("damagePercent", 1.0, 0.0, 100.0);
             builder.pop();
 
-            // 新系列饰品配置
+            
 
-            // 戒律系列·人物线：随机 debuff
+            
             builder.comment("阿波尼亚饰品配置").push("aponia");
             aponiaDebuffChance = builder
                     .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
@@ -1905,14 +1905,14 @@ public class TaczCuriosConfig {
                     .defineInRange("debuffCount", 3, 1, 100);
             builder.pop();
 
-            // 戒律系列·人物线共用：负面效果池黑名单
+            
             builder.comment("戒律系列（阿波尼亚/深罪之槛/戒律）负面效果黑名单：命中的效果不会被随机施加，填入效果注册名（如 minecraft:poison）").push("discipline_buff_blacklist");
             disciplineHarmfulBuffBlacklist = builder
                     .comment("黑名单中的负面效果注册名列表")
                     .defineList("effects", List.of(), o -> o instanceof String);
             builder.pop();
 
-            // 戒律系列·神之键线：范围虚数侵染光环
+            
             builder.comment("往世的苦囚饰品配置").push("wangshi_de_kuqiu");
             wangshiDeKuqiuAuraRadius = builder
                     .comment("光环影响半径（格） (默认: 64)")
@@ -1949,7 +1949,7 @@ public class TaczCuriosConfig {
                     .defineInRange("infectionDurationSeconds", 15, 1, 3600);
             builder.pop();
 
-            // 黄金系列·人物线：友方光环
+            
             builder.comment("伊甸饰品配置").push("eden");
             edenAuraRange = builder
                     .comment("光环范围（格） (默认: 36)")
@@ -1995,14 +1995,14 @@ public class TaczCuriosConfig {
                     .defineInRange("buffAmplifier", 2, 0, 255);
             builder.pop();
 
-            // 黄金系列·人物线共用：正面 buff 池黑名单
+            
             builder.comment("黄金系列（伊甸/璀耀之歌/黄金）正面 buff 黑名单：命中的效果不会被随机施加，填入效果注册名（如 minecraft:speed）").push("golden_buff_blacklist");
             goldenBeneficialBuffBlacklist = builder
                     .comment("黑名单中的正面效果注册名列表（默认包含天火流血：tcc:heaven_fire_bleeding）")
                     .defineList("effects", List.of("tcc:heaven_fire_bleeding"), o -> o instanceof String);
             builder.pop();
 
-            // 黄金系列·神之键线：瞬移失效
+            
             builder.comment("伊甸之星饰品配置").push("eden_star");
             edenStarTeleportRange = builder
                     .comment("瞬移失效范围（格） (默认: 16)")
@@ -2021,7 +2021,7 @@ public class TaczCuriosConfig {
                     .defineInRange("teleportRange", 64.0, 1.0, 512.0);
             builder.pop();
 
-            // 旭光系列·人物线：攻速攻伤
+            
             builder.comment("科斯魔饰品配置").push("kosma");
             kosmaAttackSpeedPercent = builder
                     .comment("攻击速度加成（小数，默认: 0.08 = +8%）")
@@ -2055,7 +2055,7 @@ public class TaczCuriosConfig {
                     .defineInRange("critDamagePercent", 0.30, -10.0, 100.0);
             builder.pop();
 
-            // 旭光系列·神之键线：削甲
+            
             builder.comment("地藏御魂饰品配置").push("dizang_yuhun");
             dizangYuhunStripPercent = builder
                     .comment("攻击削减目标当前护甲/韧性比例 (默认: 0.05 = 5%)")
@@ -2068,7 +2068,7 @@ public class TaczCuriosConfig {
                     .defineInRange("stripPercent", 0.10, 0.0, 1.0);
             builder.pop();
 
-            // 无限系列·人物线：击杀累计
+            
             builder.comment("梅比乌斯饰品配置").push("mebius");
             mebiusPerTypeBonus = builder
                     .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.01 = +1%）")
@@ -2087,7 +2087,7 @@ public class TaczCuriosConfig {
                     .defineInRange("perTypeBonus", 0.01, 0.0, 100.0);
             builder.pop();
 
-            // 饰品加成属性黑名单
+            
             builder.comment("饰品加成属性黑名单：这些属性不会收到饰品的全属性加成增益（如无限系列、真我等）。因为有些属性是越小越好（如后坐力、扩散、击退），有些是布尔/阈值属性（如点燃、爆炸启用），不应被增益。").push("attribute_bonus_blacklist");
             attributeBonusBlacklist = builder
                     .comment("黑名单中的属性注册名列表（格式：命名空间:属性名，如 taa:recoil）")
@@ -2101,7 +2101,7 @@ public class TaczCuriosConfig {
                     ), o -> o instanceof String);
             builder.pop();
 
-            // 无限系列·神之键线：移除正面 buff
+            
             builder.comment("往世的蛇影饰品配置").push("wangshi_de_sheying");
             wangshiDeSheyingRemoveChance = builder
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.10 = 10%)")
@@ -2114,7 +2114,7 @@ public class TaczCuriosConfig {
                     .defineInRange("removeChance", 0.20, 0.0, 1.0);
             builder.pop();
 
-            // 浮生系列·人物线：百分比护甲/韧性
+            
             builder.comment("华饰品配置").push("hua");
             huaArmorPercent = builder
                     .comment("护甲/护甲韧性加成（小数，默认: 0.20 = +20%）")
@@ -2127,7 +2127,7 @@ public class TaczCuriosConfig {
                     .defineInRange("armorPercent", 0.50, -10.0, 100.0);
             builder.pop();
 
-            // 浮生系列·神之键线：停止 AI
+            
             builder.comment("羽渡尘饰品配置").push("yuduchen");
             yuduchenStopChance = builder
                     .comment("攻击停止目标 AI 概率 (默认: 0.05 = 5%)")
@@ -2161,7 +2161,7 @@ public class TaczCuriosConfig {
                     .defineInRange("armorImaginaryScale", 1.0, 0.0, 100.0);
             builder.pop();
 
-            // 空梦系列·人物线：钓鱼/战利品
+            
             builder.comment("帕朵菲利斯饰品配置").push("pado_philipis");
             padoPhilipisSpecialFishChance = builder
                     .comment("钓鱼获得下界之星/龙蛋概率 (默认: 0.0001 = 0.01%)")
@@ -2180,7 +2180,7 @@ public class TaczCuriosConfig {
                     .defineInRange("specialFishChance", 0.0001, 0.0, 1.0);
             builder.pop();
 
-            // 空梦系列·神之键线：双倍伤害
+            
             builder.comment("往世的幻梦饰品配置").push("wangshi_de_huanmeng");
             wangshiDeHuanmengDamageMultiplier = builder
                     .comment("造成伤害概率造成额外伤害的倍率 (默认: 1.5 倍)")
@@ -2199,7 +2199,7 @@ public class TaczCuriosConfig {
                     .defineInRange("damageMultiplier", 1.8, 0.1, 100.0);
             builder.pop();
 
-            // 饰品互斥配置
+            
             builder.comment("饰品互斥配置（格式：物品1,物品2 表示互斥）").push("curio_conflicts");
             curioConflicts = builder
                     .comment("互斥饰品组列表，每组用逗号分隔的物品注册名表示互斥关系")
@@ -2233,7 +2233,7 @@ public class TaczCuriosConfig {
                         o -> o instanceof String);
             builder.pop();
 
-            // 融合升级配置
+            
             builder.comment("融合升级系统配置（饰品等级升级）").push("fusion_upgrade");
             fusionGrowthCoefficient = builder
                     .comment("属性增长系数 C。（1）正向饰品（buff/Effect）：实际值 = 基础值 × (1 + 等级 × C)，满级值受 C 影响。（2）反向饰品（属性修饰符）：配置存满级值，公式 = 满级值 × (1 + 等级 × C) / (1 + 最大等级 × C)，满级值锁定为配置值（默认: 0.6)")
@@ -2267,7 +2267,7 @@ public class TaczCuriosConfig {
                     .defineInRange("fusionVesselCapacity", 655200, 1, Integer.MAX_VALUE);
             builder.pop();
 
-            // 融合容器战利品配置
+            
             builder.comment("融合容器战利品生成配置").push("fusion_vessel_loot");
             fusionVesselNetherMin = builder
                     .comment("下界要塞/堡垒遗迹中融合容器包含的内融核心最小数量（默认: 200）")

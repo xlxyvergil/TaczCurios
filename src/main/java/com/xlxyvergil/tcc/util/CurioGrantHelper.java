@@ -33,8 +33,8 @@ public final class CurioGrantHelper {
             return false;
         }
 
-        // 3rd / tdk 等绑定类饰品：发放即绑定到接收玩家。
-        // 即使溢出到背包（未触发 onEquip），物品也已标记归属，非归属玩家无法再装备。
+        
+        
         if (stack.getItem() instanceof IBindable) {
             bindToPlayer(stack, player);
         }
@@ -44,7 +44,7 @@ public final class CurioGrantHelper {
                 .orElse(false);
     }
 
-    /** 将绑定类饰品写入归属玩家信息（与 BoundCurioItem.bindIfNeeded 保持一致）。 */
+    
     private static void bindToPlayer(ItemStack stack, Player player) {
         CompoundTag tag = stack.getOrCreateTag();
         tag.putBoolean("IsBound", true);

@@ -14,7 +14,6 @@ import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -81,12 +79,10 @@ public class JudgementKey extends BoundCurioItem {
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
-        // 始终转换为虚数伤害（触发虚数侵染 + 虚数抗性计算）
         ImaginaryConversionHelper.convertToImaginary(event);
 
         if (!event.isHeadShot()) return;
 
-        // 始终记录伤害数据，Post 事件独立掷 setHealth 和崩解几率
         if (event.getBullet() != null) {
             event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
             float damage = event.getBaseAmount();
@@ -115,7 +111,6 @@ public class JudgementKey extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        // 1. 独立掷 setHealth 直接真伤
         double setHealthProc = TaczCuriosConfig.COMMON.judgementProcChance.get();
         if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
             double directPercent = TaczCuriosConfig.COMMON.judgementDirectDamagePercent.get();
@@ -123,7 +118,6 @@ public class JudgementKey extends BoundCurioItem {
             TccAttributeEvents.applyImaginaryDamage(targetLiving, TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), directDamage);
         }
 
-        // 2. 独立掷虚数崩解
         double collapseProc = TaczCuriosConfig.COMMON.judgementCollapseProcChance.get();
         var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
         if (!targetLiving.hasEffect(collapse) && attacker.getRandom().nextDouble() < collapseProc) {
@@ -167,10 +161,6 @@ public class JudgementKey extends BoundCurioItem {
         appendBoundPlayer(stack, tooltip);
     }
 
-    /**
-     * 与崩解完全一致的 forceAddEffect 模式：
-     * 直接操作 activeEffectsMap，绕过 MobEffectEvent.Added，确保效果不被外部监听器干扰。
-     */
     private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
         MobEffect effect = ins.getEffect();
         MobEffectInstance old = e.getActiveEffectsMap().get(effect);

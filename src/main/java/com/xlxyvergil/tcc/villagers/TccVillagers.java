@@ -37,7 +37,7 @@ public class TccVillagers {
     public static void init() {
         ForgeRegistries.VILLAGER_PROFESSIONS.register(ID, PROFESSION);
 
-        // 第1级：普通级饰品/内融核心 - 2个下界合金碎片 购得1个
+        
         sellForNetheriteScrap(1, TccItems.CORE_FUSION, 2, 1, 64, 2);
         sellForNetheriteScrap(1, TccItems.PROPHECY_PACT, 2, 1, 64, 2);
         sellForNetheriteScrap(1, TccItems.BURST_RELOAD, 2, 1, 64, 2);
@@ -48,7 +48,7 @@ public class TccVillagers {
         sellForNetheriteScrap(1, TccItems.MAGAZINE_BOOST, 2, 1, 64, 2);
         sellForNetheriteScrap(1, TccItems.TANDEM_MAGAZINE, 2, 1, 64, 2);
 
-        // 第2级：普通级暴击/Buff饰品 - 6个下界合金碎片 购得1个
+        
         sellForNetheriteScrap(2, TccItems.LETHAL_CRIT, 6, 1, 64, 10);
         sellForNetheriteScrap(2, TccItems.THUNDER_BARREL, 6, 1, 64, 10);
         sellForNetheriteScrap(2, TccItems.PISTOL_MASTERY, 6, 1, 64, 10);
@@ -57,7 +57,7 @@ public class TccVillagers {
         sellForNetheriteScrap(2, TccItems.FRAGMENT_SHOT, 6, 1, 64, 10);
         sellForNetheriteScrap(2, TccItems.HYDRAULIC_CROSSHAIR, 6, 1, 64, 10);
 
-        // 第3级：少见级通用饰品 - 12个下界合金碎片 购得1个
+        
         sellForNetheriteScrap(3, TccItems.RIFLING, 12, 1, 64, 20);
         sellForNetheriteScrap(3, TccItems.CLOSE_RANGE_SHOT, 12, 1, 64, 20);
         sellForNetheriteScrap(3, TccItems.WASP_STINGER, 12, 1, 64, 20);
@@ -68,13 +68,13 @@ public class TccVillagers {
         sellForNetheriteScrap(3, TccItems.FEROCIOUS_EXTENSION, 12, 1, 64, 20);
         sellForNetheriteScrap(3, TccItems.TACTICAL_RELOAD, 12, 1, 64, 20);
 
-        // 第4级：少见级暴击/Buff饰品 - 24个下界合金碎片 购得1个
+        
         sellForNetheriteScrap(4, TccItems.WEAKNESS_MASTERY, 24, 1, 64, 35);
         sellForNetheriteScrap(4, TccItems.SHARP_BULLET, 24, 1, 64, 35);
         sellForNetheriteScrap(4, TccItems.LASER_SCOPE, 24, 1, 64, 35);
         sellForNetheriteScrap(4, TccItems.SHARP_AMMO, 24, 1, 64, 35);
 
-        // 第5级：稀有级饰品 - 48个下界合金碎片 购得1个
+        
         sellForNetheriteScrap(5, TccItems.ALLOY_DRILL, 48, 1, 64, 50);
         sellForNetheriteScrap(5, TccItems.EVIL_ACCURACY, 48, 1, 64, 50);
         sellForNetheriteScrap(5, TccItems.CHAMBER, 48, 1, 64, 50);

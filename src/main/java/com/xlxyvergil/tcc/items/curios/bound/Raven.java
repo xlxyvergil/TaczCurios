@@ -10,7 +10,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -77,15 +76,12 @@ public class Raven extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        // 仅手持狙击枪时保持隐身
         if (!matchesRestriction(entity)) return;
 
-        // 每N秒重新施加隐身（持续刷新）
         if (entity.tickCount % TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() == 0) {
             int duration = TaczCuriosConfig.COMMON.ravenInvisDuration.get();
             entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, duration, 0, false, false, true));
 
-            // 如果加载了铁魔法，同时施加真实隐身（完全阻止怪物追踪）
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
                 if (trueInvis != null) {
@@ -94,7 +90,6 @@ public class Raven extends BoundCurioItem {
             }
         }
 
-        // 攻击后N秒破除隐身
         int lastHurtTs = entity.getLastHurtMobTimestamp();
         int breakDelay = TaczCuriosConfig.COMMON.ravenInvisBreakDelay.get();
         if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == breakDelay) {

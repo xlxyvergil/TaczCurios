@@ -11,7 +11,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -59,10 +58,6 @@ public class Su extends BoundCurioItem {
         DamageResistanceHelper.clearDamageReduction(livingEntity);
     }
 
-    /**
-     * 常驻比例减伤（仅步枪，可配置）：满足武器限制时设置保留比例，否则清除。
-     * 对标准 hurt 与直接 setHealth 扣血均生效，无需依赖 LivingHurtEvent。
-     */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         super.curioTick(slotContext, stack);

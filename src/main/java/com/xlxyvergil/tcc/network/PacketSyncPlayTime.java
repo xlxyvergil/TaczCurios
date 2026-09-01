@@ -7,9 +7,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-/**
- * 服务端 → 客户端：一次性携带全部饰品佩戴时长统计（tcc:play_time_*）。
- */
+
 public record PacketSyncPlayTime(long griseo, long huishiZhijuan, long fanxing, long qishiZhijian) {
 
     public void encode(FriendlyByteBuf buf) {

@@ -11,7 +11,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -22,24 +21,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class FanchenNandu extends BoundCurioItem {
-    /** 定身时长（tick） */
     private static int stopDuration() {
         return TaczCuriosConfig.COMMON.fanchenNanduStopDurationSeconds.get() * 20;
     }
 
-    /** 定身概率 */
     private static double stopChance() {
         return TaczCuriosConfig.COMMON.fanchenNanduStopChance.get();
     }
 
-    /** 攻击附加护甲值虚数伤害比例 */
     private static double armorImaginaryScale() {
         return TaczCuriosConfig.COMMON.fanchenNanduArmorImaginaryScale.get();
     }
@@ -95,14 +90,12 @@ public class FanchenNandu extends BoundCurioItem {
         if (attacker.getRandom().nextDouble() < stopChance()) {
             AiStopHelper.apply(target, stopDuration());
         }
-        // 攻击时附加（护甲值 × 比例）的虚数伤害
         double armor = attacker.getAttributeValue(Attributes.ARMOR);
         float imaginary = (float) (armor * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
                 TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
     }
 
-    /** 解析伤害事件中的攻击者（近战直接命中） */
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity living) {
             return living;

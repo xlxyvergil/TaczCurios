@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
-import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -10,7 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -22,14 +20,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityTeleportEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EdenStar extends BoundCurioItem {
-    /** 瞬移拦截范围（格） */
     private static double teleportRange() {
         return TaczCuriosConfig.COMMON.edenStarTeleportRange.get();
     }
@@ -61,8 +57,6 @@ public class EdenStar extends BoundCurioItem {
                 stack -> stack.getItem() instanceof EdenStar).isEmpty();
     }
 
-    // 瞬移拦截
-
     @SubscribeEvent
     public static void onEnderEntityTeleport(EntityTeleportEvent.EnderEntity event) {
         handleTeleport(event);
@@ -91,7 +85,7 @@ public class EdenStar extends BoundCurioItem {
     private static void handleTeleport(EntityTeleportEvent event) {
         Entity entity = event.getEntity();
         if (entity instanceof Player || MaidCompat.isMaid(entity)) {
-            return; // 仅拦截非玩家、非女仆实体
+            return;
         }
         if (!(entity.level() instanceof ServerLevel serverLevel)) {
             return;
@@ -110,8 +104,7 @@ public class EdenStar extends BoundCurioItem {
                 return;
             }
         }
-        // 女仆佩戴者同样可以拦截
-        for (EntityMaid maid : MaidCompat.getMaidsNear(serverLevel, entity.blockPosition(), teleportRange())) {
+        for (LivingEntity maid : MaidCompat.getMaidsNear(serverLevel, entity.blockPosition(), teleportRange())) {
             ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(maid,
                     stack -> stack.getItem() instanceof EdenStar);
             if (equipped.isEmpty()) {

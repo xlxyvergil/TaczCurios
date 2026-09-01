@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -81,10 +80,8 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
-        // 伤害完全转为虚数伤害（狙击枪命中即转换，不限制爆头）
         ImaginaryConversionHelper.convertToImaginary(event);
 
-        // 爆头时概率触发额外虚数伤害
         if (event.isHeadShot()
             && attacker.getRandom().nextFloat() < TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()
             && event.getBullet() != null) {

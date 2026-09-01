@@ -22,12 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-/**
- * 客户端专用：在饰品 tooltip 中显示玩家当前的成就进度。
- * 第一行显示 "进度：" 标题，后续每行显示一个条件的进度：
- * stat → "stat名称: current/threshold"、kills → "entity名称: step/value"、
- * biome → "群系: name"。数据从 TccPlayerDataCapability 读取，由服务端同步至客户端。
- */
+
 @OnlyIn(Dist.CLIENT)
 public final class AchievementProgressRenderer {
 
@@ -37,14 +32,11 @@ public final class AchievementProgressRenderer {
         try {
             doAppendProgress(stack, tooltip);
         } catch (Exception ignored) {
-            // 防御性：玩家统计数据未就绪、注册表查询异常等情况下不崩溃
+            
         }
     }
 
-    /**
-     * 显示当前饰品的下一级进化条件：按 achievement_definitions.json 的 reward.item（或 linkedEvolves.item）
-     * 匹配进化来源；未按 Shift 提示「按住Shift显示进化条件」，按住则直接显示其 display.description 文本。
-     */
+    
     public static void appendNextEvolutionCondition(ItemStack stack, List<Component> tooltip) {
         try {
             ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
@@ -56,7 +48,7 @@ public final class AchievementProgressRenderer {
                 AchievementDefinitions.Reward reward = def.reward();
                 if (reward == null || !reward.isEvolve()) continue;
 
-                // 当前物品是否为该成就的进化来源（reward.item 或 linkedEvolves.item）
+                
                 boolean isSource = currentId.equals(reward.item());
                 if (!isSource && reward.linkedEvolves() != null) {
                     for (AchievementDefinitions.LinkedEvolveRef ref : reward.linkedEvolves()) {
@@ -71,14 +63,14 @@ public final class AchievementProgressRenderer {
                 if (def.display() == null || def.display().description() == null) return;
                 tooltip.add(Component.literal(""));
 
-                // 未按 Shift：仅显示提示
+                
                 if (!Screen.hasShiftDown()) {
                     tooltip.add(Component.translatable("tcc.tooltip.next_evolution_hint")
                             .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
                     return;
                 }
 
-                // 按住 Shift：直接显示条件文本
+                
                 String locale = TaczCuriosClientTooltip.getClientLocale();
                 String text = def.display().description().get(locale);
                 if (text == null) text = def.display().description().get("en_us");
@@ -89,7 +81,7 @@ public final class AchievementProgressRenderer {
                 return;
             }
         } catch (Exception ignored) {
-            // 防御性：注册表未就绪等情况不崩溃
+            
         }
     }
 
@@ -102,18 +94,18 @@ public final class AchievementProgressRenderer {
         if (def.targetCount() <= 0) return;
         if (def.reward() == null) return;
 
-        // 成就达成后不再显示进度
+        
         if (isAchievementCompleted(def)) return;
 
         var player = Minecraft.getInstance().player;
         if (player == null) return;
 
-        // 第一行：进度标题
+        
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("tcc.tooltip.achievement_progress")
                 .withStyle(ChatFormatting.GRAY));
 
-        // 第二行起：各条件进度
+        
         appendConditionProgress(player, def, tooltip);
     }
 
@@ -123,7 +115,7 @@ public final class AchievementProgressRenderer {
         AchievementDefinitions.AchievementConditions conds = def.conditions();
         int nbtStep = TccPlayerDataCapability.getAchievementProgress(player, def.id());
 
-        // 无显式条件：显示总体进度
+        
         if (conds == null) {
             addConditionLine(tooltip,
                     Component.translatable("tcc.tooltip.achievement_cond_progress"),
@@ -134,7 +126,7 @@ public final class AchievementProgressRenderer {
 
         boolean hasDisplayable = false;
 
-        // stat 条件（仅显示当前值，不显示阈值）
+        
         if (conds.stat() != null) {
             hasDisplayable = true;
             int current = resolveStatValue(player, conds.stat());
@@ -144,7 +136,7 @@ public final class AchievementProgressRenderer {
                             .withStyle(ChatFormatting.GREEN));
         }
 
-        // extraStats 条件（仅显示当前值）
+        
         if (conds.extraStats() != null) {
             hasDisplayable = true;
             for (AchievementDefinitions.StatCondition sc : conds.extraStats()) {
@@ -160,7 +152,7 @@ public final class AchievementProgressRenderer {
             hasDisplayable = true;
 
             if (conds.kills().size() == 1) {
-                // 单类型：直接显示进度
+                
                 AchievementDefinitions.KillCondition kc = conds.kills().get(0);
                 String entityName = "*".equals(kc.entity())
                         ? Component.translatable("tcc.tooltip.achievement_cond_any_entity").getString()
@@ -170,7 +162,7 @@ public final class AchievementProgressRenderer {
                         Component.literal(String.valueOf(nbtStep))
                                 .withStyle(ChatFormatting.GREEN));
             } else if ("and".equals(conds.mode())) {
-                // AND 多类型击杀：逐类型显示子进度
+                
                 for (var kc : conds.kills()) {
                     String subKey = def.id() + "|" + kc.entity();
                     int sub = TccPlayerDataCapability.getAchievementProgress(player, subKey);
@@ -185,7 +177,7 @@ public final class AchievementProgressRenderer {
                                     .withStyle(ChatFormatting.GREEN));
                 }
             } else {
-                // OR 多类型击杀：逐类型显示独立子进度
+                
                 for (var kc : conds.kills()) {
                     String subKey = def.id() + "|" + kc.entity();
                     int sub = TccPlayerDataCapability.getAchievementProgress(player, subKey);
@@ -202,7 +194,7 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // biome 条件
+        
         if (conds.biome() != null) {
             hasDisplayable = true;
             ResourceLocation biomeId = ResourceLocation.tryParse(conds.biome());
@@ -217,7 +209,7 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // attributes 条件（显示当前属性修饰符总值）
+        
         if (conds.attributes() != null && !conds.attributes().isEmpty()) {
             hasDisplayable = true;
             for (AchievementDefinitions.AttributeCondition ac : conds.attributes()) {
@@ -233,10 +225,10 @@ public final class AchievementProgressRenderer {
             }
         }
 
-        // 维度条件：不在进度中单独展示一行（维度信息已由 display.description 文本说明承载），
-        // 服务端在统计击杀次数前仍会按维度过滤。
+        
+        
 
-        // 无可显示的进度条件（仅有 equippedCurios/attributes 等二元判定）：显示总体进度
+        
         if (!hasDisplayable) {
             addConditionLine(tooltip,
                     Component.translatable("tcc.tooltip.achievement_cond_progress"),
@@ -245,7 +237,7 @@ public final class AchievementProgressRenderer {
         }
     }
 
-    /** 添加一行进度：缩进 + 灰色标签 + 着色值。 */
+    
     private static void addConditionLine(List<Component> tooltip, Component label, Component value) {
         tooltip.add(Component.literal("  ")
                 .append(label)
@@ -254,7 +246,7 @@ public final class AchievementProgressRenderer {
                 .withStyle(ChatFormatting.GRAY));
     }
 
-    /** 通过客户端 advancement 系统判断成就是否已完成（ClientAdvancements 持有服务端同步的树与进度）。 */
+    
     private static boolean isAchievementCompleted(AchievementDefinitions.AchievementDef def) {
         var mc = Minecraft.getInstance();
         if (mc == null || mc.player == null || mc.getConnection() == null) return false;
@@ -264,34 +256,28 @@ public final class AchievementProgressRenderer {
             if (id == null) return false;
 
             ClientAdvancements manager = mc.getConnection().getAdvancements();
-            // ClientAdvancements.getAdvancements() 返回 AdvancementList
+            
             Advancement adv = manager.getAdvancements().get(id);
             if (adv == null) return false;
 
-            // ClientAdvancements.progress 字段通过 Access Transformer 暴露，
-            // 持有从服务端同步的 AdvancementProgress
+            
+            
             AdvancementProgress progress = manager.progress.get(adv);
             return progress != null && progress.isDone();
         } catch (Exception ignored) {
-            // 防御性：advancement 未同步、注册表未就绪等情况
+            
             return false;
         }
     }
 
-    /**
-     * 解析 stat 的本地化名称（stat.minecraft.damage_dealt → "伤害造成"）。
-     * 与 Minecraft Stat.getDisplayName() 一致，把 ResourceLocation 中的 ':' 替换为 '.' 构造翻译键。
-     */
+    
     private static String resolveStatName(String statId) {
         String key = "stat." + statId.replace(':', '.');
         String localized = I18n.get(key);
         return localized.equals(key) ? statId : localized;
     }
 
-    /**
-     * 解析 stat 当前值：tcc 命名空间自定义统计读取玩家 Capability；
-     * 其余读取客户端 Statistics，与 StatPollingEventHandler.readStatValue 逻辑一致。
-     */
+    
     private static int resolveStatValue(net.minecraft.client.player.LocalPlayer player, String statId) {
         ResourceLocation statRl = ResourceLocation.tryParse(statId);
         if (statRl == null) return 0;

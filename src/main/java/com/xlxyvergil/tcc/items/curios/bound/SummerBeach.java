@@ -21,7 +21,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class SummerBeach extends BoundCurioItem {
-    // 虚数抗性修饰符的UUID（确保唯一性）
     private static final UUID IMAGINARY_RESISTANCE_MODIFIER_UUID = UUID.fromString("a7ef6d4d-d047-4627-99b7-2bcc32b577a7");
     
     public SummerBeach(Properties properties) {

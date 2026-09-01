@@ -11,7 +11,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -61,10 +60,6 @@ public class Tianhui extends BoundCurioItem {
         DamageResistanceHelper.clearDamageReduction(livingEntity);
     }
 
-    /**
-     * 常驻比例减伤（仅步枪），保留比例随虚数抗性动态计算。
-     * 对标准伤害与直接 setHealth 扣血均生效，无需依赖 LivingHurtEvent。
-     */
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         super.curioTick(slotContext, stack);
@@ -77,7 +72,6 @@ public class Tianhui extends BoundCurioItem {
         DamageResistanceHelper.setDamageReduction(entity, calculateRetainFactor(entity));
     }
 
-    /** 根据当前虚数抗性动态计算保留伤害比例，受 minFactor 下限约束。 */
     private static float calculateRetainFactor(LivingEntity entity) {
         double totalImaginaryResistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double baseFactor = 1.0;

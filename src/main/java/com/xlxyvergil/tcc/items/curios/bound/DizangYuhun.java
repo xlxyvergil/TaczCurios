@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +20,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -32,7 +30,6 @@ public class DizangYuhun extends BoundCurioItem {
     private static final UUID ARMOR_STRIP_UUID = UUID.fromString("1b28a6a4-747b-40aa-887d-2492faca2b99");
     private static final UUID TOUGHNESS_STRIP_UUID = UUID.fromString("3ad28e89-46d1-4dfd-a3b0-e669ae311df2");
 
-    /** 每次攻击削减百分比 */
     private static double stripPercent() {
         return TaczCuriosConfig.COMMON.dizangYuhunStripPercent.get();
     }
@@ -85,7 +82,6 @@ public class DizangYuhun extends BoundCurioItem {
         if (target.isDeadOrDying()) {
             return;
         }
-        // 按当前实际值百分比削减，持久累加，不随时间恢复（归 0 后削 0）
         double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * stripPercent() * 100.0) / 100.0;
         double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * stripPercent() * 100.0) / 100.0;
         if (stripArmor > 0) {
@@ -100,7 +96,6 @@ public class DizangYuhun extends BoundCurioItem {
         }
     }
 
-    /** 解析伤害事件中的攻击者（近战直接命中） */
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity living) {
             return living;

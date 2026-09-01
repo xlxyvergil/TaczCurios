@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -21,7 +20,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -80,7 +78,6 @@ public class YuhunShixian extends BoundCurioItem {
         if (target.isDeadOrDying()) {
             return;
         }
-        // 按当前实际值百分比削减（百分比 = 施加者虚数抗性），持久累加，不随时间恢复
         double pct = ImaginaryResistanceHelper.getResistanceValue(attacker) / 100.0;
         double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * pct * 100.0) / 100.0;
         double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * pct * 100.0) / 100.0;
@@ -96,7 +93,6 @@ public class YuhunShixian extends BoundCurioItem {
         }
     }
 
-    /** 解析伤害事件中的攻击者（近战直接命中） */
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
         if (event.getSource().getEntity() instanceof LivingEntity living) {
             return living;

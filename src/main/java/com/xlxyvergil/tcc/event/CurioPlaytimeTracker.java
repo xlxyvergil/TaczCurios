@@ -20,17 +20,13 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
-/**
- * 追踪佩戴特定饰品时的存活时长（tick），按饰品独立 long 字段计数写入 Capability；
- * griseo / huishi_zhijuan / fanxing 死亡不重置，qishi_zhijian 死亡归 0。
- * 各饰品独立计数，不再写入原版统计系统。
- */
+
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class CurioPlaytimeTracker {
 
-    /** 饰品时长计数同步到客户端的间隔（tick） */
+    
     private static final int SYNC_INTERVAL = 100;
-    /** play_time 成就的检查间隔（tick） */
+    
     private static final int ACHIEVEMENT_CHECK_INTERVAL = 20;
 
     private CurioPlaytimeTracker() {}

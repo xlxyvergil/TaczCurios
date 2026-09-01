@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
-import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
@@ -38,9 +36,7 @@ public class KikakuIchijin extends TccCurioItem {
         super(properties);
     }
 
-    /**
-     * 掎角一阵没有属性效果，只有事件触发逻辑
-     */
+    
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
     }
@@ -75,7 +71,7 @@ public class KikakuIchijin extends TccCurioItem {
             stack -> stack.getItem() instanceof KikakuIchijin).isEmpty();
         if (!hasKikaku) return;
 
-        // 寻找祭品（根据装备者类型决定搜索逻辑）
+        
         LivingEntity sacrifice = findSacrifice(attacker, serverLevel);
 
         float healthMultiplier = TaczCuriosConfig.COMMON.kikakuIchijinHealthMultiplier.get().floatValue();
@@ -84,7 +80,7 @@ public class KikakuIchijin extends TccCurioItem {
 
         destroyBlocksAroundVictim(serverLevel, event.getEntity());
 
-        // 击杀祭品——多重方式依次执行确保死亡（应对不同实体的死亡保护机制）
+        
         sacrifice.dead = true;
         sacrifice.die(sacrifice.damageSources().genericKill());
         sacrifice.kill();
@@ -94,17 +90,13 @@ public class KikakuIchijin extends TccCurioItem {
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(
                 Component.translatable("message.tcc.kikaku_ichijin.self_sacrifice", attacker.getName()), false);
         } else {
-            Component sacrificeName = MaidCompat.isMaid(sacrifice)
-                ? ((EntityMaid) sacrifice).getDisplayName()
-                : sacrifice.getName();
+            Component sacrificeName = MaidCompat.getDisplayName(sacrifice);
             serverLevel.getServer().getPlayerList().broadcastSystemMessage(
                 Component.translatable("message.tcc.kikaku_ichijin.sacrifice", attacker.getName(), sacrificeName), false);
         }
     }
 
-    /**
-     * 解析伤害事件的真正攻击者（支持弹射物、法术、驯服生物等间接来源）
-     */
+    
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
         DamageSource source = event.getSource();
         LivingEntity attacker = resolveFromEntity(source.getEntity());
@@ -126,14 +118,12 @@ public class KikakuIchijin extends TccCurioItem {
         return null;
     }
 
-    /**
-     * 寻找祭品：女仆装备者献祭最近玩家，玩家装备者优先女仆再玩家，其他装备者献祭自己
-     */
+    
     private static LivingEntity findSacrifice(LivingEntity attacker, ServerLevel level) {
         AABB searchBox = attacker.getBoundingBox().inflate(64.0);
 
         if (MaidCompat.isMaid(attacker)) {
-            // 女仆装备者：献祭最近的玩家
+            
             List<Player> nearbyPlayers = level.getEntitiesOfClass(
                 Player.class, searchBox,
                 player -> player != attacker && player.isAlive()
@@ -147,17 +137,13 @@ public class KikakuIchijin extends TccCurioItem {
         }
 
         if (attacker instanceof Player) {
-            // 玩家装备者：优先女仆，其次玩家
-            if (ModList.get().isLoaded("touhou_little_maid")) {
-                List<EntityMaid> nearbyMaids = level.getEntitiesOfClass(
-                    EntityMaid.class, searchBox,
-                    maid -> maid != attacker && maid.isAlive()
-                );
-                if (!nearbyMaids.isEmpty()) {
-                    return nearbyMaids.stream()
-                        .min(Comparator.comparingDouble(m -> m.distanceToSqr(attacker)))
-                        .get();
-                }
+            
+            List<LivingEntity> nearbyMaids = MaidCompat.getMaidsNear(level, searchBox,
+                maid -> maid != attacker && maid.isAlive());
+            if (!nearbyMaids.isEmpty()) {
+                return nearbyMaids.stream()
+                    .min(Comparator.comparingDouble(m -> m.distanceToSqr(attacker)))
+                    .get();
             }
             List<Player> nearbyPlayers = level.getEntitiesOfClass(
                 Player.class, searchBox,
@@ -171,13 +157,11 @@ public class KikakuIchijin extends TccCurioItem {
             return attacker;
         }
 
-        // 既不是玩家也不是女仆（如亚波伦）→ 献祭自己
+        
         return attacker;
     }
 
-    /**
-     * 破坏目标周围6格球形范围内的方块（根据配置决定是否破坏不可破坏与普通方块）
-     */
+    
     private static void destroyBlocksAroundVictim(ServerLevel level, LivingEntity victim) {
         BlockPos center = victim.blockPosition();
         int radius = 6;

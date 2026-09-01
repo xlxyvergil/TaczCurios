@@ -50,7 +50,7 @@ public class TaczCurios
             e.register(TccPlayerDataCapability.Handler.class);
         });
 
-        // 在 RegisterEvent<BLOCK> 时统一注册方块、物品、POI 类型和村民职业
+        
         modEventBus.addListener((RegisterEvent event) -> {
             if (!event.getRegistryKey().equals(Registries.BLOCK)) {
                 return;
@@ -68,34 +68,34 @@ public class TaczCurios
 
         
         MinecraftForge.EVENT_BUS.register(this);
-        // 注册玩家登录事件（用于同步成就进度到客户端）
+        
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
                 NetworkHandler.syncAllForPlayer(sp);
             }
         });
-        // 注册玩家死亡复活事件（复制 Capability + 延迟同步到客户端）
-        // PlayerEvent.Clone 只在死亡复活时触发；维度切换不触发 Clone，需在下方 PlayerChangedDimensionEvent 里单独同步
+        
+        
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.Clone event) -> {
             Player original = event.getOriginal();
             Player entity = event.getEntity();
             original.reviveCaps();
-            // 显式复制数据（Forge NBT 持久化在客户端复活流程中不一定可靠）
+            
             var oldHandler = original.getCapability(TccPlayerDataCapability.CAPABILITY).orElse(null);
             if (oldHandler != null) {
                 entity.getCapability(TccPlayerDataCapability.CAPABILITY).ifPresent(newHandler ->
                     newHandler.copyFrom(oldHandler));
             }
-            // 延迟同步到下一 tick，确保 respawn packet 先到客户端创建新玩家
+            
             if (entity instanceof ServerPlayer sp) {
                 sp.server.execute(() ->
                     NetworkHandler.syncAllForPlayer(sp));
             }
         });
-        // 维度切换：Clone 不会触发，客户端重新加载玩家后进度缓存为空，需主动重新同步，避免进度显示归 0
+        
         MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerChangedDimensionEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
-                // 延迟到下一 tick，确保维度切换 packet 先到客户端创建新玩家后再推送进度
+                
                 sp.server.execute(() ->
                     NetworkHandler.syncAllForPlayer(sp));
             }

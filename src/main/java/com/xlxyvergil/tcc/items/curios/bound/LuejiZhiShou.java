@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -22,14 +21,12 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LuejiZhiShou extends BoundCurioItem {
-    /** 钓鱼特殊战利品概率 */
     private static double specialFishChance() {
         return TaczCuriosConfig.COMMON.luejiZhiShouSpecialFishChance.get();
     }
@@ -71,7 +68,6 @@ public class LuejiZhiShou extends BoundCurioItem {
         if (equipped.isEmpty()) {
             return;
         }
-        // 0.01% 概率获得下界之星 / 龙蛋
         if (player.getRandom().nextDouble() < specialFishChance()) {
             ItemStack special = player.getRandom().nextBoolean()
                     ? new ItemStack(Items.NETHER_STAR)
@@ -94,7 +90,6 @@ public class LuejiZhiShou extends BoundCurioItem {
         if (!((LuejiZhiShou) equipped.getItem()).matchesRestriction(player)) {
             return;
         }
-        // 击杀战利品翻倍：概率 = 施加者虚数抗性
         if (player.getRandom().nextDouble() >= ImaginaryResistanceHelper.getResistanceProbability(player)) {
             return;
         }

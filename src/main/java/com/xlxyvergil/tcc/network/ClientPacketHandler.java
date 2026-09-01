@@ -5,9 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-/**
- * 仅在客户端加载，避免服务端触发 dist 检查错误。
- */
+
 @OnlyIn(Dist.CLIENT)
 final class ClientPacketHandler {
 

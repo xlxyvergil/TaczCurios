@@ -23,14 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 客户端 Tooltip 工具类：处理需要访问 Minecraft.getInstance().player 的动态计算逻辑。
- * 这样在物品类（服务端也会加载）中即可避免出现客户端类的字节码引用。
- */
+
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TaczCuriosClientTooltip {
 
-    /** 奖励物品 ID → 成就定义的懒加载反向映射 */
+    
     private static Map<String, AchievementDefinitions.AchievementDef> rewardToAchievement;
 
     @SubscribeEvent
@@ -38,28 +35,28 @@ public class TaczCuriosClientTooltip {
         ItemStack stack = event.getItemStack();
         List<Component> tooltip = event.getToolTip();
 
-        // 奖励物品的成就达成方式
+        
         appendAchievementCondition(tooltip, stack);
 
-        // 奖励物品的成就进度（玩家 NBT 中的累计值）
+        
         AchievementProgressRenderer.appendProgress(stack, tooltip);
 
-        // 按住 Shift：显示下一级进化条件文本
+        
         AchievementProgressRenderer.appendNextEvolutionCondition(stack, tooltip);
 
-        // 逐火之蛾饰品的虚数抗性成长条件
+        
         appendEvolutionCondition(tooltip, stack);
 
-        // 绑定饰品（需要崩坏结晶才能卸下）
+        
         if (stack.getItem() instanceof BoundCurioItem curio && curio.requiresCollapseCrystal()) {
             tooltip.add(Component.translatable("tcc.tooltip.requires_collapse_crystal")
                     .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC));
         }
     }
 
-    // 成就达成方式 Tooltip
+    
 
-    /** 构建奖励/佩戴物品 → 成就定义的映射 */
+    
     private static Map<String, AchievementDefinitions.AchievementDef> getRewardMap() {
         if (rewardToAchievement == null) {
             rewardToAchievement = new HashMap<>();
@@ -68,15 +65,15 @@ public class TaczCuriosClientTooltip {
                 AchievementDefinitions.Reward reward = def.reward();
                 if (reward == null) continue;
 
-                // grant → 用 reward.item 匹配
+                
                 if (reward.isGrant() && reward.item() != null) {
                     rewardToAchievement.put(reward.item(), def);
                 }
-                // evolve → 用 reward.to 匹配
+                
                 if (reward.isEvolve() && reward.to() != null) {
                     rewardToAchievement.put(reward.to(), def);
                 }
-                // linkedEvolves 的 to 也映射到该成就
+                
                 if (reward.linkedEvolves() != null) {
                     for (AchievementDefinitions.LinkedEvolveRef ref : reward.linkedEvolves()) {
                         if (ref.to() != null) {
@@ -84,7 +81,7 @@ public class TaczCuriosClientTooltip {
                         }
                     }
                 }
-                // equippedCurios → 佩戴物品也映射到该成就（用于在任务道具上显示进度）
+                
                 if (def.conditions() != null && def.conditions().equippedCurios() != null) {
                     for (String curio : def.conditions().equippedCurios()) {
                         rewardToAchievement.putIfAbsent(curio, def);
@@ -95,7 +92,7 @@ public class TaczCuriosClientTooltip {
         return rewardToAchievement;
     }
 
-    /** 公开访问：根据物品 ID 获取关联的成就定义（用于进度读取等场景） */
+    
     public static AchievementDefinitions.AchievementDef getAchievementForItem(String itemId) {
         return getRewardMap().get(itemId);
     }
@@ -107,7 +104,7 @@ public class TaczCuriosClientTooltip {
 
         String locale = getClientLocale();
 
-        // 从 achievement_definitions.json 读取 display.description
+        
         if (def.display() == null || def.display().description() == null) return;
         String text = def.display().description().get(locale);
         if (text == null) text = def.display().description().get("en_us");
@@ -118,7 +115,7 @@ public class TaczCuriosClientTooltip {
                 .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
     }
 
-    /** 物品有 ATTRIBUTE 型进化规则且含 description 时，追加成长条件文本 */
+    
     private static void appendEvolutionCondition(List<Component> tooltip, ItemStack stack) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         List<EvolutionRegistry.Rule> rules = EvolutionRegistry.getRulesByTypeAndItemOrEmpty(
@@ -151,28 +148,24 @@ public class TaczCuriosClientTooltip {
         return "en_us";
     }
 
-    /**
-     * 解析「真正佩戴该饰品的实体」，用于 tooltip 展示佩戴者的真实数值。
-     * 优先级：佩戴该饰品的女仆 > 佩戴该饰品的本地玩家 > 本地玩家（兜底）。
-     * 仅在客户端调用。
-     */
+    
     public static LivingEntity resolveWearer(ItemStack stack) {
         Minecraft mc = Minecraft.getInstance();
         if (mc == null || mc.level == null) {
             return null;
         }
-        // 1. 优先显示佩戴者：佩戴该饰品的女仆
+        
         LivingEntity maidWearer = MaidCompat.findWearingMaid(mc.level, s -> ItemStack.isSameItem(s, stack));
         if (maidWearer != null) {
             return maidWearer;
         }
         Player player = mc.player;
-        // 2. 其次：佩戴该饰品的本地玩家
+        
         if (player != null
                 && !CurioSearchHelper.findFirstEquippedStack(player, s -> ItemStack.isSameItem(s, stack)).isEmpty()) {
             return player;
         }
-        // 3. 无佩戴者时兜底：本地玩家
+        
         return player;
     }
 }

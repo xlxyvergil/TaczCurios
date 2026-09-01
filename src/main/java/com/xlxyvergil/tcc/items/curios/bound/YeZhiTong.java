@@ -24,7 +24,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YeZhiTong extends BoundCurioItem {
-    /** 伤害倍率 */
     private static float damageMultiplier() {
         return TaczCuriosConfig.COMMON.yeZhiTongDamageMultiplier.get().floatValue();
     }
@@ -70,7 +69,6 @@ public class YeZhiTong extends BoundCurioItem {
         if (!((YeZhiTong) equipped.getItem()).matchesRestriction(player)) {
             return;
         }
-        // 伤害倍率：概率 = 施加者虚数抗性
         if (player.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(player)) {
             event.setAmount(event.getAmount() * damageMultiplier());
         }

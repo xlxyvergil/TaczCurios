@@ -29,12 +29,10 @@ import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ShijieZhiShe extends BoundCurioItem {
-    /** NBT 击杀计数前缀（后面接实体注册 ID，同类型去重） */
     public static final String KILL_KEY_PREFIX = "tcc_kill_count_";
 
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("a3560a57-f063-4a1a-bf55-b6349d0d7918");
 
-    /** 每种实体类型的全属性加成 */
     private static double perTypeBonus() {
         return TaczCuriosConfig.COMMON.shijieZhiShePerTypeBonus.get();
     }
@@ -58,7 +56,6 @@ public class ShijieZhiShe extends BoundCurioItem {
                 stack -> stack.getItem() instanceof ShijieZhiShe).isEmpty();
     }
 
-    /** 已累计的实体类型种数 */
     public static int getKilledTypeCount(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null) {
@@ -112,7 +109,6 @@ public class ShijieZhiShe extends BoundCurioItem {
         if (!(attacker instanceof LivingEntity)) {
             return;
         }
-        // 归一化击杀归属：玩家击杀记玩家；女仆击杀归主人，使女仆造成的击杀同样累加到主人佩戴的「无限」饰品上。
         Player owner = MaidCompat.resolveOwnerPlayer(attacker);
         if (owner == null) {
             return;

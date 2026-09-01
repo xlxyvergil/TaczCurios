@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -58,12 +57,10 @@ public class WangshiDeKuqiuMingzhiqi extends BoundCurioItem {
         if (!(host instanceof LivingEntity) || host.level().isClientSide) return;
         if (host.isDeadOrDying()) return;
         if (!matchesRestriction(host)) return;
-        // 每 1 秒刷新一次范围内虚数侵染
         if (host.tickCount % 20 != 0) return;
         applyInfectionAura(host);
     }
 
-    /** 每 1 秒：对光环半径内非玩家实体施加持续指定秒数的指定等级虚数侵染 */
     private void applyInfectionAura(LivingEntity host) {
         double radius = TaczCuriosConfig.COMMON.wangshiDeKuqiuMingzhiqiAuraRadius.get();
         double radiusSq = radius * radius;

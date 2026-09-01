@@ -7,7 +7,6 @@ import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -19,14 +18,12 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class WangshiDeHuanmeng extends BoundCurioItem {
-    /** 伤害倍率 */
     private static float damageMultiplier() {
         return TaczCuriosConfig.COMMON.wangshiDeHuanmengDamageMultiplier.get().floatValue();
     }
@@ -72,7 +69,6 @@ public class WangshiDeHuanmeng extends BoundCurioItem {
         if (!((WangshiDeHuanmeng) equipped.getItem()).matchesRestriction(player)) {
             return;
         }
-        // 伤害倍率：概率 = 施加者虚数抗性
         if (player.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(player)) {
             event.setAmount(event.getAmount() * damageMultiplier());
         }

@@ -11,7 +11,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -26,7 +25,6 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,7 +34,6 @@ import java.util.UUID;
 public class Kongmeng extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("e6b2f5d1-8c4a-4e9b-a7d3-1f9e4c2b8d56");
 
-    /** 钓鱼特殊战利品概率 */
     private static double specialFishChance() {
         return TaczCuriosConfig.COMMON.kongmengSpecialFishChance.get();
     }
@@ -87,7 +84,6 @@ public class Kongmeng extends BoundCurioItem {
         if (equipped.isEmpty()) {
             return;
         }
-        // 0.01% 概率获得下界之星 / 龙蛋
         if (player.getRandom().nextDouble() < specialFishChance()) {
             ItemStack special = player.getRandom().nextBoolean()
                     ? new ItemStack(Items.NETHER_STAR)
@@ -110,7 +106,6 @@ public class Kongmeng extends BoundCurioItem {
         if (!((Kongmeng) equipped.getItem()).matchesRestriction(player)) {
             return;
         }
-        // 击杀战利品翻倍：概率 = 施加者虚数抗性
         if (player.getRandom().nextDouble() >= ImaginaryResistanceHelper.getResistanceProbability(player)) {
             return;
         }

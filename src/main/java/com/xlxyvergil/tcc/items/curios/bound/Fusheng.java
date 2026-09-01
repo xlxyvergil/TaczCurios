@@ -9,7 +9,6 @@ import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -89,7 +88,6 @@ public class Fusheng extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
 
-        // 与繁星三阶段一致：客户端实时读取持有者虚数抗性，直显护甲/护甲韧性加成（加成百分比 = 虚数抗性值）
         double resistance = 0;
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);

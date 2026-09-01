@@ -19,19 +19,17 @@ public final class GunHeadshotEventHandler {
     public static final String TRIGGER_GUN_HEADSHOT_HIT = "gun_headshot_hit";
     public static final String TRIGGER_GUN_HEADSHOT_KILL = "gun_headshot_kill";
 
-    /** 爆头 → 死亡的时间窗口（tick）。虚数伤害在 Post 事件同 tick 触发，2 tick 足够。 */
+    
     private static final long DEATH_WINDOW_TICKS = 2L;
 
     private GunHeadshotEventHandler() {}
 
-    /**
-     * 监听爆头命中：触发 gun_headshot_hit 判定，并把爆头标记（attacker / time / gunId）写入 GunKillDataCapability 供 onLivingDeath 使用。
-     */
+    
     @SubscribeEvent
     public static void onGunHeadshotHit(EntityHurtByGunEvent.Pre event) {
         if (!event.isHeadShot()) return;
         LivingEntity attacker = event.getAttacker();
-        // 攻击者可以是玩家本体，也可以是佩戴者（主人）的女仆，统一归属到主人玩家
+        
         Player player = MaidCompat.resolveOwnerPlayer(attacker);
         if (player == null) return;
         if (player.level().isClientSide) return;
@@ -47,10 +45,7 @@ public final class GunHeadshotEventHandler {
         handleTrigger(player, hurt, event.getGunId(), TRIGGER_GUN_HEADSHOT_HIT);
     }
 
-    /**
-     * 统一的爆头击杀判定：死亡源 attacker 必须是玩家，从 Capability 读取爆头标记（attacker 匹配且在 2 tick 窗口内），
-     * 再读取 gunId 触发 gun_headshot_kill。用 Capability 而非 NBT，以兼容 getPersistentData() 返回空 NBT 的实体（如 Apollyon）。
-     */
+    
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity killed = event.getEntity();
@@ -58,7 +53,7 @@ public final class GunHeadshotEventHandler {
 
         DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
-        // 女仆爆头击杀时归属到其主人玩家，玩家爆头时归属玩家本体
+        
         Player player = MaidCompat.resolveOwnerPlayer(sourceEntity);
         if (player == null) return;
 
@@ -87,7 +82,7 @@ public final class GunHeadshotEventHandler {
 
     private static void handleTrigger(Player player, LivingEntity other,
                                        net.minecraft.resources.ResourceLocation gunId, String trigger) {
-        // gun_headshot_kill 必须是枪械击杀，没有 gunId 说明不是枪杀，直接跳过
+        
         if (TRIGGER_GUN_HEADSHOT_KILL.equals(trigger) && gunId == null) return;
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
         if (serverPlayer == null) return;
@@ -101,7 +96,7 @@ public final class GunHeadshotEventHandler {
 
             if (!AchievementConditionMatcher.matchesKillConditions(player, other, gunId, def)) continue;
 
-            // 每次击杀授予 1 步进度
+            
             var kills = def.conditions() != null ? def.conditions().kills() : null;
             if (kills != null && kills.size() > 1) {
                 if (other == null) continue;

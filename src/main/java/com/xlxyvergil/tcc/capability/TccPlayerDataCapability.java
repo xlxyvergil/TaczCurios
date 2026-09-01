@@ -17,9 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * 玩家数据 Capability，替代 persistentData 方案，持久化成就进度、已访问群系与维度集合。
- */
+
 public final class TccPlayerDataCapability {
 
     public static final ResourceLocation ID = new ResourceLocation("tcc", "player_data");
@@ -50,7 +48,7 @@ public final class TccPlayerDataCapability {
         private long zombieVillagerCured;
         private long itemsCrafted;
 
-        // 成就进度
+        
 
         public int getAchievementProgress(String achievementId) {
             return achievementProgress.getOrDefault(achievementId, 0);
@@ -60,7 +58,7 @@ public final class TccPlayerDataCapability {
             achievementProgress.put(achievementId, progress);
         }
 
-        // 已访问群系
+        
 
         public boolean hasVisitedBiome(String biomeId) {
             return visitedBiomes.contains(biomeId);
@@ -74,7 +72,7 @@ public final class TccPlayerDataCapability {
             return visitedBiomes;
         }
 
-        // 已访问维度
+        
 
         public boolean hasVisitedDimension(String dimensionId) {
             return visitedDimensions.contains(dimensionId);
@@ -88,7 +86,7 @@ public final class TccPlayerDataCapability {
             return visitedDimensions;
         }
 
-        // 事件统计计数（治愈僵尸村民 / 合成物品，独立 long 字段）
+        
 
         public long getZombieVillagerCured() {
             return zombieVillagerCured;
@@ -114,7 +112,7 @@ public final class TccPlayerDataCapability {
             this.itemsCrafted += delta;
         }
 
-        // 饰品佩戴时长（独立 long 字段计数）
+        
 
         public long getPlayTimeGriseo() {
             return playTimeGriseo;
@@ -164,9 +162,7 @@ public final class TccPlayerDataCapability {
             this.playTimeQishiZhijian++;
         }
 
-        /**
-         * 用于 PlayerEvent.Clone 死亡复活；Forge 的 Capability NBT 持久化在复活中不一定可靠，需显式复制。
-         */
+        
         public void copyFrom(Handler other) {
             this.achievementProgress.clear();
             this.achievementProgress.putAll(other.achievementProgress);
@@ -182,7 +178,7 @@ public final class TccPlayerDataCapability {
             this.itemsCrafted = other.itemsCrafted;
         }
 
-        // NBT 序列化
+        
 
         CompoundTag serializeNBT() {
             CompoundTag tag = new CompoundTag();
@@ -250,7 +246,7 @@ public final class TccPlayerDataCapability {
         }
     }
 
-    // Forge Capability 注册
+    
 
     public static final Capability<Handler> CAPABILITY =
             CapabilityManager.get(new CapabilityToken<>() {});
@@ -277,7 +273,7 @@ public final class TccPlayerDataCapability {
         }
     }
 
-    // 便捷静态方法
+    
 
     public static int getAchievementProgress(Player player, String achievementId) {
         var opt = player.getCapability(CAPABILITY);
@@ -296,7 +292,7 @@ public final class TccPlayerDataCapability {
         return opt.isPresent() && opt.orElse(null).hasVisitedBiome(biomeId);
     }
 
-    /** 记录群系访问，返回是否为新记录（首次访问）。 */
+    
     public static boolean addVisitedBiome(Player player, String biomeId) {
         var opt = player.getCapability(CAPABILITY);
         if (opt.isPresent()) {
@@ -310,7 +306,7 @@ public final class TccPlayerDataCapability {
         return opt.isPresent() && opt.orElse(null).hasVisitedDimension(dimensionId);
     }
 
-    /** 记录维度访问，返回是否为新记录（首次访问）。 */
+    
     public static boolean addVisitedDimension(Player player, String dimensionId) {
         var opt = player.getCapability(CAPABILITY);
         if (opt.isPresent()) {
@@ -360,7 +356,7 @@ public final class TccPlayerDataCapability {
         });
     }
 
-    // 饰品佩戴时长（独立计数，读写均走专用方法）
+    
 
     public static long getPlayTimeGriseo(Player player) {
         var opt = player.getCapability(CAPABILITY);

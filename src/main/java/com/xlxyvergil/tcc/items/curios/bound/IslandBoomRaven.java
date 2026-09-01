@@ -10,7 +10,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -89,7 +88,6 @@ public class IslandBoomRaven extends BoundCurioItem {
             }
         }
 
-        // 攻击后N秒破除隐身
         int lastHurtTs = entity.getLastHurtMobTimestamp();
         int breakDelay = TaczCuriosConfig.COMMON.islandBoomRavenInvisBreakDelay.get();
         if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == breakDelay) {

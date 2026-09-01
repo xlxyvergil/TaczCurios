@@ -13,7 +13,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,7 +25,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -36,17 +34,14 @@ import java.util.UUID;
 public class Jielv extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("1c7e4d9f-5a2b-4e6c-b8f1-3d9a6c2e7b48");
 
-    /** 施加随机 debuff 的概率 */
     private static double debuffChance() {
         return TaczCuriosConfig.COMMON.jielvDebuffChance.get();
     }
 
-    /** debuff 时长（tick） */
     private static int debuffDuration() {
         return TaczCuriosConfig.COMMON.jielvDebuffDurationSeconds.get() * 20;
     }
 
-    /** 施加 debuff 数量 */
     private static int debuffCount() {
         return TaczCuriosConfig.COMMON.jielvDebuffCount.get();
     }

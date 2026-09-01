@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
-import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
@@ -16,7 +15,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -28,7 +26,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -38,22 +35,18 @@ import java.util.UUID;
 public class Eden extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2d9f7e4b-6a1c-4b8e-9f2d-7c3e1a5b8d64");
 
-    /** 光环范围（格） */
     private static double auraRange() {
         return TaczCuriosConfig.COMMON.edenAuraRange.get();
     }
 
-    /** 施加间隔（tick） */
     private static long interval() {
         return (long) TaczCuriosConfig.COMMON.edenIntervalSeconds.get() * 20L;
     }
 
-    /** buff 时长（tick） */
     private static int buffDuration() {
         return TaczCuriosConfig.COMMON.edenBuffDurationSeconds.get() * 20;
     }
 
-    /** buff 等级 */
     private static int buffAmplifier() {
         return TaczCuriosConfig.COMMON.edenBuffAmplifier.get();
     }
@@ -112,13 +105,12 @@ public class Eden extends BoundCurioItem {
             for (ServerPlayer player : players) {
                 applyAura(players, player);
             }
-            for (EntityMaid maid : MaidCompat.getMaids(level)) {
+            for (LivingEntity maid : MaidCompat.getMaids(level)) {
                 applyAura(players, maid);
             }
         }
     }
 
-    /** 以单个佩戴者（玩家或女仆）为中心，为其光环范围内的玩家统一施加同一个随机增益 buff。 */
     private static void applyAura(List<ServerPlayer> players, LivingEntity wearer) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(wearer,
                 stack -> stack.getItem() instanceof Eden);
@@ -128,7 +120,6 @@ public class Eden extends BoundCurioItem {
         if (!((Eden) equipped.getItem()).matchesRestriction(wearer)) {
             return;
         }
-        // 统一随机：整个光环内所有人获得同一个 buff（避免每人各自独立随机）
         MobEffect effect = MobEffectPoolHelper.randomBeneficial(wearer.getRandom());
         for (ServerPlayer other : players) {
             if (wearer.distanceToSqr(other) > auraRange() * auraRange()) {

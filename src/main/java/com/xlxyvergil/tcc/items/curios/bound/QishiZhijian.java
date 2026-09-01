@@ -14,7 +14,6 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -95,7 +94,6 @@ public class QishiZhijian extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide()) return;
 
-        // 每秒恢复一次弹药
         if (entity.tickCount % 20 != 0) return;
         if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 

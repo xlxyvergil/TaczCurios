@@ -15,7 +15,6 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,7 +25,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -86,7 +84,6 @@ public class HeavenFireJudgment extends BoundCurioItem {
         appendBoundPlayer(stack, tooltip);
     }
     
-    /** 扣血并施加天火流血标记（Post 事件） */
     @SubscribeEvent
     public static void onGunHurt(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = TacDamageHelper.getAttacker(event);
@@ -108,35 +105,29 @@ public class HeavenFireJudgment extends BoundCurioItem {
 
         float healthPercentage = attacker.getHealth() / attacker.getMaxHealth();
         if (healthPercentage <= 0.4) {
-            return;  // 血量不满足条件，不触发扣血
+            return;
         }
 
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get();
 
-        // 立即扣除配置的生命值比例（使用setHealth直接设置，可触发不死图腾）
         float currentHealth = attacker.getHealth();
-        float healthToDeduct = currentHealth * (float)(-healthCost);  // healthCost为负值，取反得到正值
+        float healthToDeduct = currentHealth * (float)(-healthCost);
         if (healthToDeduct > 0 && currentHealth > healthToDeduct) {
             attacker.setHealth(currentHealth - healthToDeduct);
         }
         
-        // 施加天火流血效果（固定1级，不叠加）
         int bleedingDuration = TaczCuriosConfig.COMMON.heavenFireBleedingDuration.get();
         
         attacker.addEffect(new MobEffectInstance(
             TccMobEffects.HEAVEN_FIRE_BLEEDING.get(),
-            bleedingDuration * 20,  // 转换为tick
-            0,    // 固定0级(显示为1级)
-            false,  // 不是药水
-            false,  // 不显示粒子
-            true    // 显示图标
+            bleedingDuration * 20,
+            0,
+            false,
+            false,
+            true
         ));
     }
     
-    /**
-     * 监听天火流血结算事件：虚数抗性≥40且未死亡时，天火圣裁进化为天火劫灭。
-     * 由 achievement_definitions.json (tcc:judgment_to_apocalypse) 驱动。
-     */
     @SubscribeEvent
     public static void onBleedingSettlement(HeavenFireBleedingSettlementEvent event) {
         LivingEntity entity = event.getEntity();
@@ -170,7 +161,6 @@ public class HeavenFireJudgment extends BoundCurioItem {
             }
         }
 
-        // 授予成就
         RuleAdvancementMapping.awardNextCriterion(
                 serverPlayer, def.id(), def.targetCount());
     }
@@ -179,12 +169,10 @@ public class HeavenFireJudgment extends BoundCurioItem {
         return !findEquippedStack(livingEntity).isEmpty();
     }
     
-    /** 从天火饰品槽位中查找已装备的天火圣裁实例 */
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireJudgment);
     }
     
-    /** 血量变化回调（由 HeavenFireHealthListener 调用） */
     public static void onHealthChanged(LivingEntity entity) {
         ItemStack equippedStack = findEquippedStack(entity);
         if (equippedStack.isEmpty()) {
@@ -196,11 +184,9 @@ public class HeavenFireJudgment extends BoundCurioItem {
         HeavenFireJudgment instance = (HeavenFireJudgment) equippedStack.getItem();
         
         if (healthPercentage > 0.4) {
-            // 血量 > 40% 时恢复属性
             instance.applyEffects(entity, equippedStack);
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
         } else {
-            // 血量 <= 40% 时移除属性
             instance.removeEffects(entity);
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
         }

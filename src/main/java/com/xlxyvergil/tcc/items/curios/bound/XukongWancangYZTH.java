@@ -16,7 +16,6 @@ import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
@@ -97,7 +96,6 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        // 额外虚数伤害：20 + attack_damage * (虚数抗性 / 100)
         double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
@@ -111,7 +109,6 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (event.getBullet() == null) return;
         if (!event.getBullet().getPersistentData().getBoolean(ImaginaryConversionHelper.INFECTION_KEY)) return;
 
-        // 攻击必定触发侵染（自定义持续秒数）
         ImaginaryConversionHelper.applyInfection(targetLiving, attacker, 1,
             TaczCuriosConfig.COMMON.xukongWancangYZTHInfectionDuration.get());
     }
@@ -121,7 +118,6 @@ public class XukongWancangYZTH extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide()) return;
 
-        // 每秒恢复一次弹药
         if (entity.tickCount % 20 != 0) return;
         if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 

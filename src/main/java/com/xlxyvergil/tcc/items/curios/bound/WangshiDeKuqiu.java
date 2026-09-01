@@ -57,12 +57,10 @@ public class WangshiDeKuqiu extends BoundCurioItem {
         if (!(host instanceof LivingEntity) || host.level().isClientSide) return;
         if (host.isDeadOrDying()) return;
         if (!matchesRestriction(host)) return;
-        // 每 1 秒刷新一次范围内虚数侵染
         if (host.tickCount % 20 != 0) return;
         applyInfectionAura(host);
     }
 
-    /** 每 1 秒：对光环半径内非玩家实体施加持续指定秒数的指定等级虚数侵染 */
     private void applyInfectionAura(LivingEntity host) {
         double radius = TaczCuriosConfig.COMMON.wangshiDeKuqiuAuraRadius.get();
         double radiusSq = radius * radius;
