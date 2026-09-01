@@ -39,7 +39,7 @@ public final class LivingDeathEventHandler {
         if (killed.level().isClientSide) return;
 
         DamageSource source = event.getSource();
-        Entity sourceEntity = source.getEntity();
+        Entity sourceEntity = resolveKillerEntity(source, killed);
 
         
         Player killerPlayer = MaidCompat.resolveOwnerPlayer(sourceEntity);
@@ -62,6 +62,19 @@ public final class LivingDeathEventHandler {
             handleTrigger(victimPlayer, killed, killedKey, sourceEntity, source,
                     TRIGGER_LIVING_DEATH, true, false);
         }
+    }
+
+    /**
+     * 解析击杀者实体。
+     * 优先取 damage source 的责任实体（如弹射物的发射者）；
+     * 当其为 null（如凋灵之首在无 owner 时使用 magic 伤害）时，
+     * 回退到原版的「击杀信用」lastHurtByMob（getKillCredit()），
+     * 这正对应死亡消息「被凋灵杀死」能显示凋灵的攻击者关联机制。
+     */
+    private static Entity resolveKillerEntity(DamageSource source, LivingEntity killed) {
+        Entity entity = source.getEntity();
+        if (entity != null) return entity;
+        return killed.getKillCredit();
     }
 
     public static void triggerLivingDeath(Player player, LivingEntity killed, Entity otherEntity,
