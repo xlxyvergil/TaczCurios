@@ -2072,19 +2072,19 @@ public class TaczCuriosConfig {
             builder.comment("梅比乌斯饰品配置").push("mebius");
             mebiusPerTypeBonus = builder
                     .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.01 = +1%）")
-                    .defineInRange("perTypeBonus", 0.01, 0.0, 100.0);
+                    .defineInRange("perTypeBonus", 0.001, 0.0, 100.0);
             builder.pop();
 
             builder.comment("噬界之蛇饰品配置").push("shijie_zhi_she");
             shijieZhiShePerTypeBonus = builder
                     .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.015 = +1.5%）")
-                    .defineInRange("perTypeBonus", 0.015, 0.0, 100.0);
+                    .defineInRange("perTypeBonus", 0.005, 0.0, 100.0);
             builder.pop();
 
             builder.comment("无限饰品配置").push("wuxian");
             wuxianPerTypeBonus = builder
                     .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.02 = +2%）")
-                    .defineInRange("perTypeBonus", 0.02, 0.0, 100.0);
+                    .defineInRange("perTypeBonus", 0.01, 0.0, 100.0);
             builder.pop();
 
             // 饰品加成属性黑名单
@@ -2092,6 +2092,7 @@ public class TaczCuriosConfig {
             attributeBonusBlacklist = builder
                     .comment("黑名单中的属性注册名列表（格式：命名空间:属性名，如 taa:recoil）")
                     .defineList("attributes", List.of(
+                            "gunsmithlib:bullet_damage",
                             "taa:explosion_knockbacknew", "taa:explosion_enabled",
                             "taa:ignitefire", "taa:inaccuracy", "taa:inaccuracy_stand",
                             "taa:inaccuracy_move", "taa:inaccuracy_sneak", "taa:inaccuracy_lie",

@@ -238,12 +238,12 @@ public class AttributeHelper {
     }
 
     /**
-     * 无限系列全属性加成：遍历所有注册属性统一增删修饰符，并按「饰品加成属性黑名单」过滤，黑名单内的属性不参与增益，
-     * 并使用 MULTIPLY_TOTAL（整体乘法）操作。value 为 0 时仅移除（removeEffects 用）。
+     * 全属性加成：遍历所有注册属性统一增删修饰符，并按「饰品加成属性黑名单」过滤，黑名单内的属性不参与增益，
+     * 并使用 MULTIPLY_BASE（基础乘法）操作。value 为 0 时仅移除（removeEffects 用）。
      */
     public static void applyInfiniteAllAttributesModifier(LivingEntity entity, UUID uuid, String name, double value) {
         Collection<? extends String> blacklist = TaczCuriosConfig.COMMON.attributeBonusBlacklist.get();
-        applyAllAttributesModifier(entity, uuid, name, value, AttributeModifier.Operation.MULTIPLY_TOTAL, blacklist);
+        applyAllAttributesModifier(entity, uuid, name, value, AttributeModifier.Operation.MULTIPLY_BASE, blacklist);
     }
 
     private static void applyAllAttributesModifier(LivingEntity entity, UUID uuid, String name,
