@@ -68,9 +68,10 @@ public final class AchievementConditionMatcher {
 
         if (c.healthMax() != null && player.getHealth() > c.healthMax()) return false;
 
-        if (c.minHeight() != null && killed != null) {
+        if (c.minHeight() != null) {
             double minH = c.minHeight();
-            if (player.getY() < minH || killed.getY() < minH) return false;
+            // 放宽：只要求击杀者（玩家）在指定高度以上，不再校验被击杀实体的高度
+            if (player != null && player.getY() < minH) return false;
         }
 
         return true;
