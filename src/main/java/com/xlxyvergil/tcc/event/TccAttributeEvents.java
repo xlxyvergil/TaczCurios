@@ -5,14 +5,19 @@ import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.items.curios.bound.IslandBoomRaven;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,6 +42,25 @@ public class TccAttributeEvents {
     
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
 
+    /** tacz:bullets —— TACZ 枪械子弹伤害 tag */
+    private static final TagKey<DamageType> TACZ_BULLETS_TAG =
+        TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullets"));
+
+    /**
+     * 判断伤害来源是否属于实体的主动攻击：
+     *  玩家/生物普通攻击（PLAYER_ATTACK / MOB_ATTACK）、
+     *  枪械子弹（tacz:bullets）、
+     *  以及虚数枪伤（tcc:imaginary_damage，由 ImaginaryConversionHelper 在 Pre 阶段把子弹源替换而来）。
+     * 用于过滤其它模组在 LivingHurtEvent 中通过 FastHurt 再入产生的强制子伤害
+     *  （IN_FIRE / WIND_FLOW / FROST_FLAME / MOB_CUTTING / GENERIC_KILL 等），切断再入栈溢出。
+     */
+    public static boolean isActiveAttackSource(DamageSource source) {
+        return source.is(DamageTypes.PLAYER_ATTACK)
+            || source.is(DamageTypes.MOB_ATTACK)
+            || source.is(TACZ_BULLETS_TAG)
+            || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
+    }
+
     
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
@@ -45,9 +69,8 @@ public class TccAttributeEvents {
 
         
         if (source.getEntity() instanceof LivingEntity attacker) {
-            double damageMult = attacker.getAttributeValue(AttributeHelper.BULLET_GUNDAMAGE);
-            double bulletCountMult = attacker.getAttributeValue(AttributeHelper.BULLET_COUNT);
-            intendedDamage = (float) (intendedDamage * damageMult * bulletCountMult);
+            double damageMult = attacker.getAttributeValue(AttributeHelper.ATTACK_DAMAGE);
+            intendedDamage = (float) (intendedDamage * (1 + damageMult / TaczCuriosConfig.COMMON.imaginaryDamageAttackAmplification.get()));
         }
 
         
@@ -153,7 +176,11 @@ public class TccAttributeEvents {
         living.addEffect(newInstance, attacker);
 
         
-        living.getPersistentData().putString(INFECTION_ATTACKER_KEY, attacker.getStringUUID());
+        // 记录侵染来源攻击者，使虚数崩解击杀能正确归属
+        // （若攻击者是女仆，转换为女仆主人，以让崩解击杀计入主人名下）
+        LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
+        living.getPersistentData().putString(
+                INFECTION_ATTACKER_KEY, (credited != null ? credited : attacker).getStringUUID());
 
         
         

@@ -29,8 +29,14 @@ public final class GunKillDebugFallbackHandler {
 
     
     public static void refreshGunKillWindow(LivingEntity target, ServerPlayer attacker) {
+        // 复用已有 gunId，避免虚数崩解 DoT 刷新窗口时丢失枪械类型判定（如 pistol）
+        String gunId = "";
+        GunKillDataCapability.GunKillData existing = GunKillDataCapability.getData(target);
+        if (existing != null && existing.gunId != null) {
+            gunId = existing.gunId;
+        }
         GunKillDataCapability.setGunData(target,
-            attacker.getStringUUID(), "", attacker.level().getGameTime(), target.getStringUUID());
+            attacker.getStringUUID(), gunId, attacker.level().getGameTime(), target.getStringUUID());
     }
 
     @SubscribeEvent

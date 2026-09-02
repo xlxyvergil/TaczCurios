@@ -44,13 +44,10 @@ public class MetaMorph extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        double attackBonus = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
-            + totalResistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
         AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
-            attackBonus, ATTACK_DAMAGE_UUID,
-            "tcc.meta_morph.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
+            totalResistance, ATTACK_DAMAGE_UUID,
+            "tcc.meta_morph.attack_damage", AttributeModifier.Operation.ADDITION);
 
         double lifeSteal = Math.round(totalResistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get() * 10000.0) / 10000.0;
         AttributeHelper.applyModifier(livingEntity, AttributeHelper.LIFE_STEAL,
@@ -81,6 +78,7 @@ public class MetaMorph extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (event.getEntity().level().isClientSide()) return;
 
         DamageSource source = event.getSource();
@@ -94,8 +92,8 @@ public class MetaMorph extends BoundCurioItem {
         LivingEntity target = event.getEntity();
         if (target.isDeadOrDying()) return;
 
-        double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float imaginaryBonus = (float) (Math.round(attackDamage * 10000.0) / 10000.0);
+        double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        float imaginaryBonus = (float) (Math.round(imaginaryResistance * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             target,
             TccDamageSources.imaginaryDamage(target.level(), attacker),
@@ -117,24 +115,20 @@ public class MetaMorph extends BoundCurioItem {
 
 
 
-        double attackFromHealth = 0;
+        double attackFromResistance = 0;
         double lifeStealFromResistance = 0;
         double imaginaryDamage = 0;
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
             if (wearer != null && isEquipped(wearer)) {
-                double maxHealth = wearer.getAttributeValue(Attributes.MAX_HEALTH);
                 double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                attackFromHealth = (maxHealth * TaczCuriosConfig.COMMON.metaMorphHealthToAttackPercent.get()
-                    + resistance * TaczCuriosConfig.COMMON.metaMorphResistanceToAttackPercent.get()) / 100.0;
+                attackFromResistance = resistance;
                 lifeStealFromResistance = resistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
-                imaginaryDamage = wearer.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                imaginaryDamage = resistance;
             }
         }
-        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromResistance, "%.1f", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health")
-                .withStyle(ChatFormatting.LIGHT_PURPLE));
         tooltip.add(formatModifierTooltip(lifeStealFromResistance, "%.2f", Component.translatable(AttributeHelper.LIFE_STEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")

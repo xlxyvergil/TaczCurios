@@ -1,7 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -40,11 +40,11 @@ public class DominanceKey extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        double maxHealth = livingEntity.getAttributeValue(Attributes.MAX_HEALTH);
-        double attackBonus = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyHealthToAttackPercent.get() / 100.0;
+        double resistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        double attackBonus = resistance * 0.5;
         AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
             attackBonus, ATTACK_DAMAGE_UUID,
-            "tcc.dominance_key.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
+            "tcc.dominance_key.attack_damage", AttributeModifier.Operation.ADDITION);
     }
 
     @Override
@@ -69,6 +69,7 @@ public class DominanceKey extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         LivingEntity attacker = resolveAttacker(event);
         if (attacker == null || !isEquipped(attacker)) return;
         if (!GunTypeChecker.isHoldingMeleeWeapon(attacker)) return;
@@ -77,8 +78,8 @@ public class DominanceKey extends BoundCurioItem {
         LivingEntity targetLiving = event.getEntity();
         if (targetLiving.isDeadOrDying()) return;
 
-        double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        float imaginaryBonus = (float) (Math.round(attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get() * 10000.0) / 10000.0);
+        double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        float imaginaryBonus = (float) (Math.round(imaginaryResistance * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
@@ -110,24 +111,23 @@ public class DominanceKey extends BoundCurioItem {
 
 
 
-        double attackFromHealth = 0;
+        double attackFromResistance = 0;
         double imaginaryDamage = 0;
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
             if (wearer != null && isEquipped(wearer)) {
-                double maxHealth = wearer.getAttributeValue(Attributes.MAX_HEALTH);
-                attackFromHealth = maxHealth * TaczCuriosConfig.COMMON.dominanceKeyHealthToAttackPercent.get() / 100.0;
-                double attackDamage = wearer.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                imaginaryDamage = attackDamage * TaczCuriosConfig.COMMON.dominanceKeyImaginaryDamageScale.get();
+                double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                attackFromResistance = resistance * 0.5;
+                imaginaryDamage = resistance;
             }
         }
-        tooltip.add(formatModifierTooltip(attackFromHealth * 100, "%.1f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
+        tooltip.add(formatModifierTooltip(attackFromResistance, "%.1f", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.dominance_key.special_damage",
                 String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.WHITE));
 
-        tooltip.add(Component.translatable("tcc.tooltip.affected_by_max_health")
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));

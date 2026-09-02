@@ -33,6 +33,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
         
+        public final ForgeConfigSpec.DoubleValue imaginaryDamageAttackAmplification;
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
@@ -379,8 +380,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue huajieZhiyanHealthPerResistance;
 
         
-        public final ForgeConfigSpec.DoubleValue dominanceKeyHealthToAttackPercent;
-        public final ForgeConfigSpec.DoubleValue dominanceKeyImaginaryDamageScale;
+
 
         
         public final ForgeConfigSpec.IntValue aoMieMaxSlots;
@@ -389,8 +389,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue aoMieHealthPerResistance;
 
         
-        public final ForgeConfigSpec.DoubleValue metaMorphHealthToAttackPercent;
-        public final ForgeConfigSpec.DoubleValue metaMorphResistanceToAttackPercent;
         public final ForgeConfigSpec.DoubleValue metaMorphLifeStealPerResistance;
 
         
@@ -431,7 +429,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
 
         
-        public final ForgeConfigSpec.DoubleValue heiyuanBaihuaDamagePercent;
+
 
         
 
@@ -660,6 +658,13 @@ public class TaczCuriosConfig {
             heavenFireApocalypseDelayDuration = builder
                     .comment("天火劫灭扣血后延迟施加流血的时长(秒) (默认: 3, 最小: 1)")
                     .defineInRange("delayDuration", 3, 1, 60);
+            builder.pop();
+            
+            
+            builder.comment("附加伤害基于攻击力的增幅（分母）：附加虚数伤害 = 基础伤害 × (1 + 攻击力 / 该值)").push("imaginary_damage");
+            imaginaryDamageAttackAmplification = builder
+                    .comment("附加伤害基于攻击力的增幅 (默认: 1000) —— 攻击力越高，附加虚数伤害越高")
+                    .defineInRange("attackAmplification", 1000.0, 1.0, 100000.0);
             builder.pop();
             
             
@@ -1724,14 +1729,7 @@ public class TaczCuriosConfig {
             builder.pop();
 
             
-            builder.comment("支配之键饰品配置").push("dominance_key");
-            dominanceKeyHealthToAttackPercent = builder
-                    .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%，攻击加成 = 最大生命值 * 此值 / 100)")
-                    .defineInRange("healthToAttackPercent", 0.10, 0.0, 10.0);
-            dominanceKeyImaginaryDamageScale = builder
-                    .comment("攻击力转虚数伤害比例 (默认: 0.3 = 30%)")
-                    .defineInRange("imaginaryDamageScale", 0.3, 0.0, 10.0);
-            builder.pop();
+
 
             
             builder.comment("鏖灭饰品配置").push("aomie");
@@ -1751,12 +1749,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("Meta-Morph饰品配置").push("meta_morph");
-            metaMorphHealthToAttackPercent = builder
-                    .comment("最大生命值转攻击力比例 (默认: 0.10 = 10%)")
-                    .defineInRange("healthToAttackPercent", 0.10, 0.0, 10.0);
-            metaMorphResistanceToAttackPercent = builder
-                    .comment("每点虚数抗性转化为攻击力的比例 (默认: 0.10 = 10%)")
-                    .defineInRange("resistanceToAttackPercent", 0.10, 0.0, 10.0);
             metaMorphLifeStealPerResistance = builder
                     .comment("每点虚数抗性提供的生命偷取 (默认: 0.01)")
                     .defineInRange("lifeStealPerResistance", 0.01, 0.0, 1.0);
@@ -1860,11 +1852,7 @@ public class TaczCuriosConfig {
             builder.pop();
 
             
-            builder.comment("黑渊白花·创灭螺旋饰品配置").push("heiyuan_baihua");
-            heiyuanBaihuaDamagePercent = builder
-                    .comment("每次造成伤害时附加佩戴者当前血量的比例 (默认: 1.0 = 100%)")
-                    .defineInRange("damagePercent", 1.0, 0.0, 100.0);
-            builder.pop();
+
 
             
 

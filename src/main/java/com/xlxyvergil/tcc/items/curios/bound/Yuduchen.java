@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.util.AiStopHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,6 +69,7 @@ public class Yuduchen extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
         }
@@ -113,8 +115,16 @@ public class Yuduchen extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.transient.key_effect",
                 String.format("%.0f", stopChance() * 100))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("item.tcc.transient.key_effect_armor_imaginary",
-                String.format("%.0f", armorImaginaryScale() * 100))
+        double imaginaryDamage = 0;
+        if (level != null && level.isClientSide()) {
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null && isEquipped(wearer)) {
+                double armor = wearer.getAttributeValue(Attributes.ARMOR);
+                imaginaryDamage = armor * armorImaginaryScale();
+            }
+        }
+        tooltip.add(Component.translatable("item.tcc.transient.key_effect_armor_imaginary_damage",
+                String.format("%.2f", imaginaryDamage))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }

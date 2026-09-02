@@ -504,8 +504,8 @@
         },
         "icon": "tcc:fanxing",
         "description": {
-          "zh_cn": "鞘翅飞行距离达到2556500cm",
-          "en_us": "Elytra flight distance reaches 2556500cm"
+          "zh_cn": "鞘翅滑行距离达到25.565公里",
+          "en_us": "Elytra glide distance reaches 25.565 km"
         },
         "frame": "challenge",
         "hidden": false

@@ -96,10 +96,9 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
-            + (float) Math.round(attackDamage * (imaginaryResistance / 100.0) * 10000.0) / 10000.0);
+            + imaginaryResistance);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
@@ -147,10 +146,9 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
             if (wearer != null) {
-                double attackDamage = wearer.getAttributeValue(Attributes.ATTACK_DAMAGE);
                 double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                 computedImaginaryDamage = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get()
-                    + attackDamage * (resistance / 100.0);
+                    + resistance;
             }
         }
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.damage",

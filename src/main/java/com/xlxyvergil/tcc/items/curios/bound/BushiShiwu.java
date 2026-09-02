@@ -67,6 +67,7 @@ public class BushiShiwu extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
         }

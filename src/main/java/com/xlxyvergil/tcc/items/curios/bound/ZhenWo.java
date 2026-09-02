@@ -228,7 +228,7 @@ public class ZhenWo extends BoundCurioItem {
                 it.remove();
                 if (beam.owner != null && beam.owner.isAlive() && !target.isDeadOrDying()) {
                     float imaginaryResistance = (float) beam.owner.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                    float damage = imaginaryResistance * beam.owner.getMaxHealth();
+                    float damage = (imaginaryResistance / 100.0f) * beam.owner.getMaxHealth();
                     DamageSource source = TccDamageSources.imaginaryDamage(beam.owner.level(), beam.owner);
                     TccAttributeEvents.applyImaginaryDamage(target, source, damage);
                 }
@@ -384,7 +384,7 @@ public class ZhenWo extends BoundCurioItem {
                     s -> s.getItem() instanceof ZhenWo).isEmpty()) {
                 double imaginaryResistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                 double maxHealth = wearer.getAttributeValue(Attributes.MAX_HEALTH);
-                imaginaryDamage = imaginaryResistance * maxHealth;
+                imaginaryDamage = (imaginaryResistance / 100.0) * maxHealth;
             }
         }
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.damage",
@@ -394,6 +394,9 @@ public class ZhenWo extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.cooldown",
                 TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get())
             .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);

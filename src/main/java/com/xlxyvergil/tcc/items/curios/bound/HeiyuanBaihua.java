@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
@@ -8,6 +9,7 @@ import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import net.minecraft.ChatFormatting;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -55,6 +57,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (event.getEntity().level().isClientSide) return;
 
         LivingEntity target = event.getEntity();
@@ -65,7 +68,8 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (target == attacker) return;
         if (!hasEquipped(attacker)) return;
 
-        float damage = (float) (attacker.getHealth() * TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get());
+        double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        float damage = (float) (attacker.getHealth() * (imaginaryResistance / 100.0));
         if (damage <= 0) return;
 
         TccAttributeEvents.applyImaginaryDamage(target,
@@ -82,13 +86,23 @@ public class HeiyuanBaihua extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
+        double resistancePercent = 0;
+        if (level != null && level.isClientSide()) {
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null && hasEquipped(wearer)) {
+                resistancePercent = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+            }
+        }
         tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect",
-                (int) (TaczCuriosConfig.COMMON.heiyuanBaihuaDamagePercent.get() * 100))
+                (int) resistancePercent)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
                 String.format("%d", TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get()))
             .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+            .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);
