@@ -459,14 +459,17 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue edenIntervalSeconds;
         public final ForgeConfigSpec.IntValue edenBuffDurationSeconds;
         public final ForgeConfigSpec.IntValue edenBuffAmplifier;
+        public final ForgeConfigSpec.DoubleValue edenGunDamageReduction;
         public final ForgeConfigSpec.DoubleValue cuiyaoZhiGeAuraRange;
         public final ForgeConfigSpec.IntValue cuiyaoZhiGeIntervalSeconds;
         public final ForgeConfigSpec.IntValue cuiyaoZhiGeBuffDurationSeconds;
         public final ForgeConfigSpec.IntValue cuiyaoZhiGeBuffAmplifier;
+        public final ForgeConfigSpec.DoubleValue cuiyaoZhiGeGunDamageReduction;
         public final ForgeConfigSpec.DoubleValue huangjinAuraRange;
         public final ForgeConfigSpec.IntValue huangjinIntervalSeconds;
         public final ForgeConfigSpec.IntValue huangjinBuffDurationSeconds;
         public final ForgeConfigSpec.IntValue huangjinBuffAmplifier;
+        public final ForgeConfigSpec.DoubleValue huangjinGunDamageReduction;
         
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> goldenBeneficialBuffBlacklist;
 
@@ -682,8 +685,8 @@ public class TaczCuriosConfig {
                     .comment("虚数侵染效果持续时间(秒) (默认: 15)")
                     .defineInRange("duration", 15, 1, 300);
             imaginaryInfectionResistanceReduction = builder
-                    .comment("虚数侵染降低的虚数抗性值 (默认: 10)")
-                    .defineInRange("resistanceReduction", 10.0, 0, 100);
+                    .comment("虚数侵染降低的虚数抗性值 (默认: 5)")
+                    .defineInRange("resistanceReduction", 5.0, 0, 100);
             builder.pop();
             
 
@@ -1856,8 +1859,8 @@ public class TaczCuriosConfig {
                     .comment("施加随机 debuff 概率 (默认: 0.05 = 5%)")
                     .defineInRange("debuffChance", 0.05, 0.0, 1.0);
             aponiaDebuffDurationSeconds = builder
-                    .comment("debuff 时长（秒） (默认: 15)")
-                    .defineInRange("debuffDurationSeconds", 15, 1, 3600);
+                    .comment("debuff 时长（秒） (默认: 3)")
+                    .defineInRange("debuffDurationSeconds", 3, 1, 3600);
             aponiaDebuffCount = builder
                     .comment("施加 debuff 数量 (默认: 1)")
                     .defineInRange("debuffCount", 1, 1, 100);
@@ -1868,11 +1871,11 @@ public class TaczCuriosConfig {
                     .comment("施加随机 debuff 概率 (默认: 0.1 = 10%)")
                     .defineInRange("debuffChance", 0.1, 0.0, 1.0);
             shenzuiZhijianDebuffDurationSeconds = builder
-                    .comment("debuff 时长（秒） (默认: 15)")
-                    .defineInRange("debuffDurationSeconds", 15, 1, 3600);
+                    .comment("debuff 时长（秒） (默认: 3)")
+                    .defineInRange("debuffDurationSeconds", 3, 1, 3600);
             shenzuiZhijianDebuffCount = builder
-                    .comment("施加 debuff 数量 (默认: 2)")
-                    .defineInRange("debuffCount", 2, 1, 100);
+                    .comment("施加 debuff 数量 (默认: 1)")
+                    .defineInRange("debuffCount", 1, 1, 100);
             builder.pop();
 
             builder.comment("戒律饰品配置").push("jielv");
@@ -1880,11 +1883,11 @@ public class TaczCuriosConfig {
                     .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
                     .defineInRange("debuffChance", 0.15, 0.0, 1.0);
             jielvDebuffDurationSeconds = builder
-                    .comment("debuff 时长（秒） (默认: 15)")
-                    .defineInRange("debuffDurationSeconds", 15, 1, 3600);
+                    .comment("debuff 时长（秒） (默认: 3)")
+                    .defineInRange("debuffDurationSeconds", 3, 1, 3600);
             jielvDebuffCount = builder
-                    .comment("施加 debuff 数量 (默认: 3)")
-                    .defineInRange("debuffCount", 3, 1, 100);
+                    .comment("施加 debuff 数量 (默认: 1)")
+                    .defineInRange("debuffCount", 1, 1, 100);
             builder.pop();
 
             
@@ -1937,14 +1940,17 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             edenIntervalSeconds = builder
-                    .comment("buff 施加间隔（秒） (默认: 5)")
-                    .defineInRange("intervalSeconds", 5, 1, 3600);
+                    .comment("buff 施加间隔（秒） (默认: 20)")
+                    .defineInRange("intervalSeconds", 20, 1, 3600);
             edenBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
                     .defineInRange("buffDurationSeconds", 30, 1, 3600);
             edenBuffAmplifier = builder
                     .comment("buff 等级（0=I 级，默认: 0）")
                     .defineInRange("buffAmplifier", 0, 0, 255);
+            edenGunDamageReduction = builder
+                    .comment("基乘算法：枪械伤害倍率降低比例 (默认: -0.8 = 降低80%)")
+                    .defineInRange("gunDamageReduction", -0.8, -1.0, 0.0);
             builder.pop();
 
             builder.comment("璀耀之歌饰品配置").push("cuiyao_zhi_ge");
@@ -1952,14 +1958,17 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             cuiyaoZhiGeIntervalSeconds = builder
-                    .comment("buff 施加间隔（秒） (默认: 5)")
-                    .defineInRange("intervalSeconds", 5, 1, 3600);
+                    .comment("buff 施加间隔（秒） (默认: 20)")
+                    .defineInRange("intervalSeconds", 20, 1, 3600);
             cuiyaoZhiGeBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
                     .defineInRange("buffDurationSeconds", 30, 1, 3600);
             cuiyaoZhiGeBuffAmplifier = builder
                     .comment("buff 等级（0=I 级，默认: 1 = II 级）")
                     .defineInRange("buffAmplifier", 1, 0, 255);
+            cuiyaoZhiGeGunDamageReduction = builder
+                    .comment("基乘算法：枪械伤害倍率降低比例 (默认: -0.8 = 降低80%)")
+                    .defineInRange("gunDamageReduction", -0.8, -1.0, 0.0);
             builder.pop();
 
             builder.comment("黄金饰品配置").push("huangjin");
@@ -1967,14 +1976,17 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             huangjinIntervalSeconds = builder
-                    .comment("buff 施加间隔（秒） (默认: 5)")
-                    .defineInRange("intervalSeconds", 5, 1, 3600);
+                    .comment("buff 施加间隔（秒） (默认: 20)")
+                    .defineInRange("intervalSeconds", 20, 1, 3600);
             huangjinBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
                     .defineInRange("buffDurationSeconds", 30, 1, 3600);
             huangjinBuffAmplifier = builder
                     .comment("buff 等级（0=I 级，默认: 2 = III 级）")
                     .defineInRange("buffAmplifier", 2, 0, 255);
+            huangjinGunDamageReduction = builder
+                    .comment("基乘算法：枪械伤害倍率降低比例 (默认: -0.8 = 降低80%)")
+                    .defineInRange("gunDamageReduction", -0.8, -1.0, 0.0);
             builder.pop();
 
             

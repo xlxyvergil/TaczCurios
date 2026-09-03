@@ -4,7 +4,6 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
@@ -135,10 +134,6 @@ public class QidianChonggou extends BoundCurioItem {
             return;
         }
         ImaginaryConversionHelper.convertToImaginary(event);
-        Entity hurt = event.getHurtEntity();
-        if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            TccAttributeEvents.applyCollapse(target, attacker);
-        }
     }
 
     @OnlyIn(Dist.CLIENT)

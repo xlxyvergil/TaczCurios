@@ -106,6 +106,7 @@ public class LaZhiYan extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

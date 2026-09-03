@@ -96,9 +96,8 @@ public class BushiShiwu extends BoundCurioItem {
         float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
                 TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
-        // 攻击命中时同时施加虚数侵染，保证崩解 DoT 可正常结算
+        // 攻击命中时同时施加虚数侵染
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
-        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {

@@ -49,7 +49,7 @@ public class Shesha extends BoundCurioItem {
 
     @Override
     public List<String> getWeaponTypeRestriction() {
-        return List.of("mg");
+        return List.of("sniper");
     }
 
     public static boolean isEquipped(LivingEntity entity) {
@@ -114,6 +114,7 @@ public class Shesha extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

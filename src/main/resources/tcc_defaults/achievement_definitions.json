@@ -1692,8 +1692,8 @@
         },
         "icon": "tcc:mebius",
         "description": {
-          "zh_cn": "轻机枪击杀任意生物150次",
-          "en_us": "Kill any entity 150 times with an LMG"
+          "zh_cn": "狙击枪击杀任意生物40次",
+          "en_us": "Kill any entity 40 times with a sniper"
         },
         "frame": "task",
         "hidden": false
@@ -1701,9 +1701,9 @@
       "parent": "tcc:tcc_root",
       "trigger": "gun_kill",
       "conditions": {
-        "holdingGunTypes": ["mg"],
+        "holdingGunTypes": ["sniper"],
         "kills": [
-          { "entity": "*", "criteria_count": 150 }
+          { "entity": "*", "criteria_count": 40 }
         ],
         "dimension": "minecraft:overworld"
       },
@@ -1725,8 +1725,8 @@
         },
         "icon": "tcc:wangshi_de_sheying",
         "description": {
-          "zh_cn": "装备梅比乌斯，使用轻机枪击杀下界生物100次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
-          "en_us": "Kill 100 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with an LMG while wearing Mobius"
+          "zh_cn": "装备梅比乌斯，使用狙击枪击杀下界生物25次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
+          "en_us": "Kill 25 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with a sniper while wearing Mobius"
         },
         "frame": "goal",
         "hidden": false
@@ -1735,13 +1735,13 @@
       "trigger": "gun_kill",
       "conditions": {
         "equippedCurios": ["tcc:mebius"],
-        "holdingGunTypes": ["mg"],
+        "holdingGunTypes": ["sniper"],
         "kills": [
-          { "entity": "minecraft:zombified_piglin", "criteria_count": 100 },
-          { "entity": "minecraft:wither_skeleton", "criteria_count": 100 },
-          { "entity": "minecraft:ghast", "criteria_count": 100 },
-          { "entity": "minecraft:blaze", "criteria_count": 100 },
-          { "entity": "minecraft:magma_cube", "criteria_count": 100 }
+          { "entity": "minecraft:zombified_piglin", "criteria_count": 25 },
+          { "entity": "minecraft:wither_skeleton", "criteria_count": 25 },
+          { "entity": "minecraft:ghast", "criteria_count": 25 },
+          { "entity": "minecraft:blaze", "criteria_count": 25 },
+          { "entity": "minecraft:magma_cube", "criteria_count": 25 }
         ]
       },
       "prerequisites": ["tcc:mebius_grant"],
@@ -1762,8 +1762,8 @@
         },
         "icon": "tcc:si_zhi_yi",
         "description": {
-          "zh_cn": "装备噬界之蛇，使用轻机枪击杀下界生物500次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
-          "en_us": "Kill 500 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with an LMG while wearing Serpent Devouring Worlds"
+          "zh_cn": "装备噬界之蛇，使用狙击枪击杀下界生物125次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
+          "en_us": "Kill 125 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with a sniper while wearing Serpent Devouring Worlds"
         },
         "frame": "goal",
         "hidden": false
@@ -1772,13 +1772,13 @@
       "trigger": "gun_kill",
       "conditions": {
         "equippedCurios": ["tcc:shijie_zhi_she"],
-        "holdingGunTypes": ["mg"],
+        "holdingGunTypes": ["sniper"],
         "kills": [
-          { "entity": "minecraft:zombified_piglin", "criteria_count": 500 },
-          { "entity": "minecraft:wither_skeleton", "criteria_count": 500 },
-          { "entity": "minecraft:ghast", "criteria_count": 500 },
-          { "entity": "minecraft:blaze", "criteria_count": 500 },
-          { "entity": "minecraft:magma_cube", "criteria_count": 500 }
+          { "entity": "minecraft:zombified_piglin", "criteria_count": 125 },
+          { "entity": "minecraft:wither_skeleton", "criteria_count": 125 },
+          { "entity": "minecraft:ghast", "criteria_count": 125 },
+          { "entity": "minecraft:blaze", "criteria_count": 125 },
+          { "entity": "minecraft:magma_cube", "criteria_count": 125 }
         ]
       },
       "prerequisites": ["tcc:mebius_to_shijie_zhi_she"],
@@ -1831,8 +1831,8 @@
         },
         "icon": "tcc:wuxian",
         "description": {
-          "zh_cn": "装备往世的蛇影·死之衣，使用轻机枪击杀末影龙",
-          "en_us": "Kill the Ender Dragon with an LMG while wearing Serpent of Time: Shroud of Death"
+          "zh_cn": "装备往世的蛇影·死之衣，使用狙击枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon with a sniper while wearing Serpent of Time: Shroud of Death"
         },
         "frame": "challenge",
         "hidden": false
@@ -1841,7 +1841,7 @@
       "trigger": "gun_kill",
       "conditions": {
         "equippedCurios": ["tcc:si_zhi_yi"],
-        "holdingGunTypes": ["mg"],
+        "holdingGunTypes": ["sniper"],
         "kills": [
           { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
         ]

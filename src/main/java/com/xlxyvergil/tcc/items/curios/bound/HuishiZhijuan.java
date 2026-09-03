@@ -106,7 +106,7 @@ public class HuishiZhijuan extends BoundCurioItem {
 
     @Override
     public List<String> getWeaponTypeRestriction() {
-        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+        return List.of("smg");
     }
 
     @OnlyIn(Dist.CLIENT)

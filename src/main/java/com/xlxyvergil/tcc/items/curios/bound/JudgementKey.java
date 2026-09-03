@@ -146,6 +146,7 @@ public class JudgementKey extends BoundCurioItem {
 
         tooltip.add(Component.literal(""));
 
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

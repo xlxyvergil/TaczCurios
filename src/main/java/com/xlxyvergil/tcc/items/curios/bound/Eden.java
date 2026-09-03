@@ -34,6 +34,7 @@ import java.util.UUID;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Eden extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2d9f7e4b-6a1c-4b8e-9f2d-7c3e1a5b8d64");
+    private static final UUID BASE_GUN_DAMAGE_UUID = UUID.fromString("3f6c2b9a-7d4e-4f1a-b8c5-2e9a0d7f6c31");
 
     private static double auraRange() {
         return TaczCuriosConfig.COMMON.edenAuraRange.get();
@@ -70,11 +71,16 @@ public class Eden extends BoundCurioItem {
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
                 total, IMAGINARY_RESISTANCE_UUID,
                 "tcc.eden.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        // 基乘算法：基础枪械伤害倍率降低（默认 -0.8 = 降低80%）
+        AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE,
+                TaczCuriosConfig.COMMON.edenGunDamageReduction.get(),
+                BASE_GUN_DAMAGE_UUID, "tcc.eden.gun_damage", AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, BASE_GUN_DAMAGE_UUID);
     }
 
     @Override
@@ -134,6 +140,9 @@ public class Eden extends BoundCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
+        tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.edenGunDamageReduction.get() * 100,
+                "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.golden.curio_effect",
                 (int) auraRange(), buffAmplifier() + 1)
                 .withStyle(ChatFormatting.GOLD));

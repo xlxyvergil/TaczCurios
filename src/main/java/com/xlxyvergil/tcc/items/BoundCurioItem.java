@@ -203,4 +203,10 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
                     .withStyle(ChatFormatting.RED));
         }
     }
+
+    
+    protected void appendAlwaysImaginaryCollapse(List<Component> tooltip) {
+        tooltip.add(Component.translatable("tcc.tooltip.always_imaginary_collapse")
+                .withStyle(ChatFormatting.RED));
+    }
 }

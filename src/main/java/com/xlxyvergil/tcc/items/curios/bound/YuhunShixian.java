@@ -93,9 +93,8 @@ public class YuhunShixian extends BoundCurioItem {
                     -stripToughness, TOUGHNESS_STRIP_UUID,
                     "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
         }
-        // 攻击命中时同时施加虚数侵染，保证崩解 DoT 可正常结算
+        // 攻击命中时同时施加虚数侵染
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
-        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {

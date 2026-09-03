@@ -91,7 +91,7 @@ public class Griseo extends BoundCurioItem {
 
     @Override
     public List<String> getWeaponTypeRestriction() {
-        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+        return List.of("smg");
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -48,7 +48,7 @@ public class Mebius extends BoundCurioItem {
 
     @Override
     public List<String> getWeaponTypeRestriction() {
-        return List.of("mg");
+        return List.of("sniper");
     }
 
     public static boolean isEquipped(LivingEntity entity) {

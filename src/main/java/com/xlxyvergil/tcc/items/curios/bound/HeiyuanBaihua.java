@@ -103,6 +103,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

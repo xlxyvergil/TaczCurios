@@ -125,7 +125,7 @@ public class ShijieFanyan extends BoundCurioItem {
 
     @Override
     public List<String> getWeaponTypeRestriction() {
-        return GunTypeChecker.ALL_GUN_TYPES_LIST;
+        return List.of("smg");
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -166,6 +166,7 @@ public class ShijieFanyan extends BoundCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

@@ -130,6 +130,7 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
 
         tooltip.add(Component.literal(""));
         
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
     

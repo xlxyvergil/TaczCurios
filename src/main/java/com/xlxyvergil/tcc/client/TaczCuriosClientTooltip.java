@@ -4,8 +4,6 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
-import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
-import com.xlxyvergil.tcc.evolution.KeyTierRegistry.KeyTier;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
@@ -50,12 +48,6 @@ public class TaczCuriosClientTooltip {
         appendEvolutionCondition(tooltip, stack);
 
         
-        // 3阶与特殊神之键：攻击必定触发虚数崩解
-        KeyTier tier = KeyTierRegistry.tierOf(stack);
-        if (tier == KeyTier.T3 || tier == KeyTier.SPECIAL) {
-            tooltip.add(Component.translatable("tcc.tooltip.always_imaginary_collapse")
-                    .withStyle(ChatFormatting.RED));
-        }
 
         
         if (stack.getItem() instanceof BoundCurioItem curio && curio.requiresCollapseCrystal()) {
