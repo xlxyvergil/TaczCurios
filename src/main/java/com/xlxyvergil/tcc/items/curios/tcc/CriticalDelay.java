@@ -31,6 +31,9 @@ public class CriticalDelay extends TccCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 仅在主手持有符合武器类型（任意枪械）时才生效；切换武器时由 GunSwitchEventHandler 触发 refreshEffects 重新评估
+        if (!matchesRestriction(livingEntity)) return;
+
         double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get());
         double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get());
 

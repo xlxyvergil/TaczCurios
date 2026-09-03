@@ -4,6 +4,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 运行时枚举全部注册效果（ForgeRegistries.MOB_EFFECTS），按 isBeneficial() 分正面/负面池（中性效果不进正面池）；正面池支持配置 golden_buff_blacklist 黑名单过滤。
+ * 运行时枚举全部注册效果（ForgeRegistries.MOB_EFFECTS），按 MobEffectCategory 严格分为正面/负面/中性三类池；正面池支持配置 golden_buff_blacklist 黑名单过滤，负面池支持配置 discipline_buff_blacklist 黑名单过滤。
  */
 public final class MobEffectPoolHelper {
 
@@ -23,13 +24,19 @@ public final class MobEffectPoolHelper {
 
     public static List<MobEffect> getAllBeneficialEffects() {
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
-                .filter(MobEffect::isBeneficial)
+                .filter(effect -> effect.getCategory() == MobEffectCategory.BENEFICIAL)
                 .toList();
     }
 
     public static List<MobEffect> getAllHarmfulEffects() {
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
-                .filter(effect -> !effect.isBeneficial())
+                .filter(effect -> effect.getCategory() == MobEffectCategory.HARMFUL)
+                .toList();
+    }
+
+    public static List<MobEffect> getAllNeutralEffects() {
+        return ForgeRegistries.MOB_EFFECTS.getValues().stream()
+                .filter(effect -> effect.getCategory() == MobEffectCategory.NEUTRAL)
                 .toList();
     }
 
@@ -37,7 +44,7 @@ public final class MobEffectPoolHelper {
     private static List<MobEffect> getAllowedBeneficialEffects() {
         Set<ResourceLocation> blacklist = goldenBeneficialBlacklist();
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
-                .filter(MobEffect::isBeneficial)
+                .filter(effect -> effect.getCategory() == MobEffectCategory.BENEFICIAL)
                 .filter(effect -> {
                     ResourceLocation key = ForgeRegistries.MOB_EFFECTS.getKey(effect);
                     return key == null || !blacklist.contains(key);
@@ -71,7 +78,7 @@ public final class MobEffectPoolHelper {
     private static List<MobEffect> getAllowedHarmfulEffects() {
         Set<ResourceLocation> blacklist = disciplineHarmfulBlacklist();
         return ForgeRegistries.MOB_EFFECTS.getValues().stream()
-                .filter(effect -> !effect.isBeneficial())
+                .filter(effect -> effect.getCategory() == MobEffectCategory.HARMFUL)
                 .filter(effect -> {
                     ResourceLocation key = ForgeRegistries.MOB_EFFECTS.getKey(effect);
                     return key == null || !blacklist.contains(key);

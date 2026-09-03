@@ -68,7 +68,9 @@ public class JiuChanZhiYuanCraftRecipe extends CustomRecipe {
         return TccRecipeSerializers.JIU_CHAN_ZHI_YUAN_CRAFT.get();
     }
 
-    /** 纠缠之缘消耗 1 个；目标饰品不消耗，原样保留在合成台 */
+    /**
+     * 纠缠之缘作为代价消耗 1 个；目标饰品原样保留（合成台返还原物，视为"完全副本"）。
+     */
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
         NonNullList<ItemStack> remaining = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
@@ -76,9 +78,7 @@ public class JiuChanZhiYuanCraftRecipe extends CustomRecipe {
             ItemStack s = container.getItem(i);
             if (s.isEmpty()) continue;
             if (s.getItem() == TccItems.JIU_CHAN_ZHI_YUAN) {
-                ItemStack left = s.copy();
-                left.shrink(1);
-                remaining.set(i, left);
+                remaining.set(i, ItemStack.EMPTY);
             } else {
                 remaining.set(i, s.copy());
             }

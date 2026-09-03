@@ -2085,7 +2085,8 @@ public class TaczCuriosConfig {
                             "taa:ignitefire", "taa:inaccuracy", "taa:inaccuracy_stand",
                             "taa:inaccuracy_move", "taa:inaccuracy_sneak", "taa:inaccuracy_lie",
                             "taa:inaccuracy_aim", "taa:knockback", "taa:recoil",
-                            "taa:recoil_pitch", "taa:recoil_yaw", "taa:silencenew"
+                            "taa:recoil_pitch", "taa:recoil_yaw", "taa:silencenew",
+                            "taa:weight"
                     ), o -> o instanceof String);
             builder.pop();
 
