@@ -10,6 +10,8 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
+
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
@@ -99,6 +101,8 @@ public class MetaMorph extends BoundCurioItem {
             TccDamageSources.imaginaryDamage(target.level(), attacker),
             imaginaryBonus
         );
+        // 攻击命中时同时施加虚数侵染，保证崩解 DoT 可正常结算
+        TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
         TccAttributeEvents.applyCollapse(target, attacker);
     }
 

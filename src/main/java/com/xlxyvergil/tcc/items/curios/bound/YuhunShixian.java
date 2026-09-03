@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -92,6 +93,8 @@ public class YuhunShixian extends BoundCurioItem {
                     -stripToughness, TOUGHNESS_STRIP_UUID,
                     "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
         }
+        // 攻击命中时同时施加虚数侵染，保证崩解 DoT 可正常结算
+        TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
         TccAttributeEvents.applyCollapse(target, attacker);
     }
 

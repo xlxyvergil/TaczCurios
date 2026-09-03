@@ -398,6 +398,7 @@
   "item.tcc.xukong_wancang_yzth.effect.ammo": "Restore %s%% ammo per second, min 1 ammo.",
   "tcc.tooltip.gun_to_imaginary": "Gun damage becomes imaginary,",
   "tcc.tooltip.always_infection": "always inflict infection",
+  "tcc.tooltip.always_imaginary_collapse": "always inflict Imaginary Infection",
   "item.tcc.kalpas": "§6Kalpas",
   "item.tcc.kalpas.effect": "Adapts to %1$s damage types in order when hit. Adaptation: damage from the same type reduced by %2$.0f%%,\nexpires after %3$ss out of combat",
   "item.tcc.imer": "§6Imer",

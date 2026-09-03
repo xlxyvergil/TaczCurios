@@ -10,6 +10,7 @@ import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AiStopHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
@@ -95,6 +96,8 @@ public class BushiShiwu extends BoundCurioItem {
         float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
                 TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+        // 攻击命中时同时施加虚数侵染，保证崩解 DoT 可正常结算
+        TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
         TccAttributeEvents.applyCollapse(target, attacker);
     }
 

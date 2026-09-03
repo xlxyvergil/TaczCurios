@@ -50,10 +50,10 @@ public class TaczCuriosClientTooltip {
         appendEvolutionCondition(tooltip, stack);
 
         
-        // 3阶与特殊神之键：攻击必定触发虚数侵染与虚数崩解
+        // 3阶与特殊神之键：攻击必定触发虚数崩解
         KeyTier tier = KeyTierRegistry.tierOf(stack);
         if (tier == KeyTier.T3 || tier == KeyTier.SPECIAL) {
-            tooltip.add(Component.translatable("tcc.tooltip.always_infection")
+            tooltip.add(Component.translatable("tcc.tooltip.always_imaginary_collapse")
                     .withStyle(ChatFormatting.RED));
         }
 
