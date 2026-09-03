@@ -96,9 +96,10 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
+        float baseDamage = event.getBaseAmount();
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
-            + imaginaryResistance);
+        float imaginaryBonus = (float) (baseDamage * (imaginaryResistance / 100.0)
+            * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get());
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
@@ -141,18 +142,10 @@ public class XukongWancangYZTH extends BoundCurioItem {
         tooltip.add(Component.literal(""));
 
         double ammoRegen = TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100;
+        double damageScale = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get();
 
-        double computedImaginaryDamage = 0;
-        if (level != null && level.isClientSide()) {
-            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
-            if (wearer != null) {
-                double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                computedImaginaryDamage = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get()
-                    + resistance;
-            }
-        }
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.damage",
-                String.format("%.0f", computedImaginaryDamage))
+                String.format("%.2f", damageScale))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.ammo",
                 String.format("%.0f", ammoRegen))

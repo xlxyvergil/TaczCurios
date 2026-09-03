@@ -95,7 +95,9 @@ public class MetaMorph extends BoundCurioItem {
         if (target.isDeadOrDying()) return;
 
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        float imaginaryBonus = (float) (Math.round(imaginaryResistance * 10000.0) / 10000.0);
+        double attackDamage = attacker.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        float imaginaryBonus = (float) ((imaginaryResistance / 100.0) * attackDamage
+            * TaczCuriosConfig.COMMON.metaMorphImaginaryDamageScale.get());
         TccAttributeEvents.applyImaginaryDamage(
             target,
             TccDamageSources.imaginaryDamage(target.level(), attacker),
@@ -128,7 +130,9 @@ public class MetaMorph extends BoundCurioItem {
                 double resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                 attackFromResistance = resistance;
                 lifeStealFromResistance = resistance * TaczCuriosConfig.COMMON.metaMorphLifeStealPerResistance.get();
-                imaginaryDamage = resistance;
+                double attackDamage = wearer.getAttributeValue(Attributes.ATTACK_DAMAGE);
+                imaginaryDamage = (resistance / 100.0) * attackDamage
+                    * TaczCuriosConfig.COMMON.metaMorphImaginaryDamageScale.get();
             }
         }
         tooltip.add(formatModifierTooltip(attackFromResistance, "%.1f", Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))

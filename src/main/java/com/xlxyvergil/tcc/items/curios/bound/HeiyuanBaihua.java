@@ -69,7 +69,8 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (!hasEquipped(attacker)) return;
 
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        float damage = (float) (attacker.getHealth() * (imaginaryResistance / 100.0));
+        float damage = (float) (attacker.getMaxHealth() * (imaginaryResistance / 100.0)
+            * TaczCuriosConfig.COMMON.heiyuanBaihuaImaginaryDamageScale.get());
         if (damage <= 0) return;
 
         TccAttributeEvents.applyImaginaryDamage(target,
@@ -95,8 +96,9 @@ public class HeiyuanBaihua extends BoundCurioItem {
                 resistancePercent = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             }
         }
+        double damageScale = TaczCuriosConfig.COMMON.heiyuanBaihuaImaginaryDamageScale.get();
         tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect",
-                (int) resistancePercent)
+                (int) (resistancePercent * damageScale))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")

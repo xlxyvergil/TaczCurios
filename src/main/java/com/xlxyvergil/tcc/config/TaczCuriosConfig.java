@@ -44,6 +44,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue tier2ImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue tier3ImaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue specialImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.DoubleValue heiyuanBaihuaImaginaryDamageScale;
 
         
         public final ForgeConfigSpec.DoubleValue judgementProcChance;
@@ -353,7 +354,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionDuration;
 
         
-        public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamage;
+        public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamageScale;
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHAmmoRegenPercent;
         public final ForgeConfigSpec.IntValue xukongWancangYZTHInfectionDuration;
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHHeatMax;
@@ -387,6 +388,7 @@ public class TaczCuriosConfig {
 
         
         public final ForgeConfigSpec.DoubleValue metaMorphLifeStealPerResistance;
+        public final ForgeConfigSpec.DoubleValue metaMorphImaginaryDamageScale;
 
         
         public final ForgeConfigSpec.DoubleValue suMaxHealthReduction;
@@ -413,6 +415,7 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunAmmoResistanceScale;
+        public final ForgeConfigSpec.DoubleValue yinguoZhuanlunImaginaryDamageScale;
 
         
         public final ForgeConfigSpec.DoubleValue zhenWoImaginaryResistance;
@@ -717,6 +720,13 @@ public class TaczCuriosConfig {
             specialImaginaryInfectionMaxLevel = builder
                     .comment("特殊神之键(黑渊白花/天火劫灭·无烬终焉/神恩结界)的虚数侵染上限 (默认: 9)")
                     .defineInRange("specialMaxLevel", 9, 1, 99);
+            builder.pop();
+            
+            
+            builder.comment("黑渊白花饰品配置").push("heiyuan_baihua");
+            heiyuanBaihuaImaginaryDamageScale = builder
+                    .comment("附加虚数伤害系数 (默认: 1.0；最终伤害 = 攻击者总血量 × 虚数抗性/100 × 系数)")
+                    .defineInRange("imaginaryDamageScale", 1.0, 0.0, 1000.0);
             builder.pop();
             
             
@@ -1665,9 +1675,9 @@ public class TaczCuriosConfig {
 
             
             builder.comment("虚空万藏·雨众天华饰品配置").push("xukong_wancang_yzth");
-            xukongWancangYZTHImaginaryDamage = builder
-                    .comment("基础额外虚数伤害 (默认: 20.0)")
-                    .defineInRange("imaginaryDamage", 20.0, 0, 10000);
+            xukongWancangYZTHImaginaryDamageScale = builder
+                    .comment("附加虚数伤害系数 (默认: 1.0；最终伤害 = 子弹基础伤害 × 虚数抗性/100 × 系数)")
+                    .defineInRange("imaginaryDamageScale", 1.0, 0.0, 1000.0);
             xukongWancangYZTHAmmoRegenPercent = builder
                     .comment("每秒弹药恢复比例 (默认: 0.2 = 20%)")
                     .defineInRange("ammoRegenPercent", 0.2, 0, 1);
@@ -1749,6 +1759,9 @@ public class TaczCuriosConfig {
             metaMorphLifeStealPerResistance = builder
                     .comment("每点虚数抗性提供的生命偷取 (默认: 0.01)")
                     .defineInRange("lifeStealPerResistance", 0.01, 0.0, 1.0);
+            metaMorphImaginaryDamageScale = builder
+                    .comment("附加虚数伤害系数 (默认: 1.0；最终伤害 = 虚数抗性/100 × 攻击伤害 × 系数)")
+                    .defineInRange("imaginaryDamageScale", 1.0, 0.0, 1000.0);
             builder.pop();
 
             
@@ -1815,6 +1828,9 @@ public class TaczCuriosConfig {
             yinguoZhuanlunAmmoResistanceScale = builder
                     .comment("每点虚数抗性提供的弹药恢复系数 (默认: 0.01)")
                     .defineInRange("ammoResistanceScale", 0.01, 0.0, 1.0);
+            yinguoZhuanlunImaginaryDamageScale = builder
+                    .comment("附加虚数伤害系数 (默认: 1.0；最终伤害 = 子弹基础伤害 × 虚数抗性/100 × 系数)")
+                    .defineInRange("imaginaryDamageScale", 1.0, 0.0, 1000.0);
             builder.pop();
 
             

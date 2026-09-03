@@ -107,9 +107,12 @@ public class YinguoZhuanlun extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
+        float baseDamage = event.getBaseAmount();
         double totalResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        float imaginaryDamage = (float) (baseDamage * (totalResistance / 100.0)
+            * TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryDamageScale.get());
         TccAttributeEvents.applyImaginaryDamage(targetLiving,
-            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), (float) totalResistance);
+            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), imaginaryDamage);
         TccAttributeEvents.applyCollapse(targetLiving, attacker);
     }
 
@@ -135,12 +138,13 @@ public class YinguoZhuanlun extends BoundCurioItem {
             }
         }
         double ammoPercent = resistance * TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get() * 100;
+        double damageScale = TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryDamageScale.get();
 
         tooltip.add(formatModifierTooltip(overheal, "%.0f%%", Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.special",
                 String.format("%.0f", ammoPercent),
-                String.format("%.0f", resistance))
+                String.format("%.2f", damageScale))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));
