@@ -96,7 +96,7 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker);
+        float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.HEAVY_WEAPON_TYPES);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (baseDamage * (imaginaryResistance / 100.0)
             * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get());
@@ -149,7 +149,7 @@ public class XukongWancangYZTH extends BoundCurioItem {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
             if (wearer != null) {
                 resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                gunDamage = GunTypeChecker.getMainHandGunDamage(wearer);
+                gunDamage = GunTypeChecker.getMainHandGunDamage(wearer, GunTypeChecker.HEAVY_WEAPON_TYPES);
             }
         }
         double imaginaryDamage = gunDamage * (resistance / 100.0) * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get();

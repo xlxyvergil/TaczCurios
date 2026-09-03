@@ -2,16 +2,18 @@ package com.xlxyvergil.tcc.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.tacz.guns.api.GunProperties;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
-import com.tacz.guns.util.AttachmentDataUtils;
+import com.tacz.guns.resource.pojo.data.gun.ExtraDamage;
 import com.xlxyvergil.taa.context.ShooterContext;
 import com.xlxyvergil.taa.modifier.AmmoCountModifier;
 
@@ -101,12 +103,20 @@ public class GunTypeChecker {
     }
 
     /**
-     * 读取持枪者主手 TACZ 枪械的子弹实际伤害（受到配件加成后的单发伤害），
-     * 用于动态 tooltip 显示与服务端伤害结算，避免其它属性/距离衰减的干扰。<br>
-     * 若主手不是枪械或无法读取，返回 0。
+     * 读取持枪者主手 TACZ 枪械的子弹实际伤害（TAA 计算后伤害：配件伤害 × 玩家枪械伤害属性 × 弹丸数），不限制枪械类型。<br>
+     * 用于动态 tooltip 显示与服务端伤害结算。若主手不是枪械或无法读取，返回 0。
      */
     public static double getMainHandGunDamage(LivingEntity livingEntity) {
-        if (livingEntity == null) {
+        return getMainHandGunDamage(livingEntity, ALL_GUN_TYPES);
+    }
+
+    /**
+     * 读取持枪者主手 TACZ 枪械的子弹实际伤害，并限定枪械类型。<br>
+     * 直接读取 TAA 计算后的实时缓存（配件伤害 × 玩家枪械伤害属性 × 弹丸数），与枪械面板显示的伤害一致。<br>
+     * 仅当主手枪械类型属于 {@code gunTypes} 时才返回伤害值，否则返回 0。
+     */
+    public static double getMainHandGunDamage(LivingEntity livingEntity, Set<String> gunTypes) {
+        if (livingEntity == null || gunTypes == null || gunTypes.isEmpty()) {
             return 0;
         }
         ItemStack gunStack = livingEntity.getMainHandItem();
@@ -115,9 +125,26 @@ public class GunTypeChecker {
             return 0;
         }
         ResourceLocation gunId = iGun.getGunId(gunStack);
-        return TimelessAPI.getCommonGunIndex(gunId)
-                .map(index -> AttachmentDataUtils.getDamageWithAttachment(gunStack, index.getGunData()))
-                .orElse(0.0);
+        boolean typeMatched = TimelessAPI.getCommonGunIndex(gunId)
+                .filter(index -> gunTypes.contains(index.getType()))
+                .isPresent();
+        if (!typeMatched) {
+            return 0;
+        }
+        // 读取 TAA 计算后的伤害缓存（与枪械面板读取的 DamageModifier.ID 同一键：GunProperties.DAMAGE）
+        IGunOperator operator = IGunOperator.fromLivingEntity(livingEntity);
+        if (operator == null) {
+            return 0;
+        }
+        AttachmentCacheProperty cache = operator.getCacheProperty();
+        if (cache == null) {
+            return 0;
+        }
+        LinkedList<ExtraDamage.DistanceDamagePair> damagePairs = cache.getCache(GunProperties.DAMAGE);
+        if (damagePairs == null || damagePairs.isEmpty()) {
+            return 0;
+        }
+        return damagePairs.getFirst().getDamage();
     }
 
     /**

@@ -107,7 +107,7 @@ public class YinguoZhuanlun extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker);
+        float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.RIFLE_GUN_TYPES);
         double totalResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryDamage = (float) (baseDamage * (totalResistance / 100.0)
             * TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryDamageScale.get());
@@ -136,7 +136,7 @@ public class YinguoZhuanlun extends BoundCurioItem {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
             if (wearer != null) {
                 resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-                gunDamage = GunTypeChecker.getMainHandGunDamage(wearer);
+                gunDamage = GunTypeChecker.getMainHandGunDamage(wearer, GunTypeChecker.RIFLE_GUN_TYPES);
             }
         }
         double ammoPercent = resistance * TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get() * 100;
