@@ -75,9 +75,11 @@ public class HeiyuanBaihua extends BoundCurioItem {
         TccAttributeEvents.applyImaginaryDamage(target,
             TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
 
+        // 先施加侵染，再施加剧增崩解，确保崩解结算时目标带侵染
         TccAttributeEvents.applyInfection(target, attacker,
-            new ImaginaryInfectionHelper.InfectionInfo(
-                TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get(), false));
+            TaczCuriosConfig.COMMON.specialImaginaryInfectionMaxLevel.get());
+
+        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -95,10 +97,6 @@ public class HeiyuanBaihua extends BoundCurioItem {
         }
         tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect",
                 (int) resistancePercent)
-            .withStyle(ChatFormatting.RED));
-
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
-                String.format("%d", TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get()))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")

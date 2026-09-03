@@ -47,11 +47,19 @@ public class ImaginaryResistanceHelper {
      * 实际虚数抗性 ÷100 转为概率，负值按 0%，100+ 封顶 100%。
      */
     public static double getResistanceProbability(LivingEntity entity) {
+        return getResistanceProbability(entity, 0.01);
+    }
+
+    /**
+     * 实际虚数抗性 × 系数转为概率，负值按 0%，结果封顶 100%。
+     * 系数由调用方配置（如舍沙的 buffRemovalFactor）。
+     */
+    public static double getResistanceProbability(LivingEntity entity, double factor) {
         if (entity == null) {
             return 0.0;
         }
         double resistance = entity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        return Math.max(0.0, Math.min(1.0, resistance / 100.0));
+        return Math.max(0.0, Math.min(1.0, resistance * factor));
     }
 
     /**

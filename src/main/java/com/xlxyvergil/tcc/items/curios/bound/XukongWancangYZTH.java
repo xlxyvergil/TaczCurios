@@ -96,6 +96,8 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
+        TccAttributeEvents.applyCollapse(targetLiving, attacker);
+
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamage.get().floatValue()
             + imaginaryResistance);
@@ -158,8 +160,6 @@ public class XukongWancangYZTH extends BoundCurioItem {
                 String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
-            .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")

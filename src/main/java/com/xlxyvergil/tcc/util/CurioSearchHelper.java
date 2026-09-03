@@ -38,4 +38,28 @@ public final class CurioSearchHelper {
 
         return ItemStack.EMPTY;
     }
+
+    /** 遍历实体所有饰品槽位中的物品，对每个非空 ItemStack 执行回调。 */
+    public static void forEachEquippedStack(LivingEntity livingEntity, java.util.function.Consumer<ItemStack> consumer) {
+        if (livingEntity == null || consumer == null) {
+            return;
+        }
+        ICuriosItemHandler inv = CuriosApi.getCuriosInventory(livingEntity).orElse(null);
+        if (inv == null) {
+            return;
+        }
+        for (var entry : inv.getCurios().entrySet()) {
+            ICurioStacksHandler stacksHandler = entry.getValue();
+            if (stacksHandler == null) {
+                continue;
+            }
+            var handler = stacksHandler.getStacks();
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack stack = handler.getStackInSlot(i);
+                if (!stack.isEmpty()) {
+                    consumer.accept(stack);
+                }
+            }
+        }
+    }
 }

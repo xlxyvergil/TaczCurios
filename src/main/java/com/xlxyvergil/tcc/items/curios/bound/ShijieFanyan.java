@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.registries.TccMobEffects;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -13,8 +13,6 @@ import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -120,17 +118,8 @@ public class ShijieFanyan extends BoundCurioItem {
         int luck = (int) attacker.getAttributeValue(AttributeHelper.LUCK);
         double collapseChance = Math.round((TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()
             + (luck / 10.0) * TaczCuriosConfig.COMMON.shijieFanyanCollapsePerLuck.get()) * 10000.0) / 10000.0;
-        var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
-        if (!targetLiving.hasEffect(collapse) && attacker.getRandom().nextDouble() < collapseChance) {
-            int collapseDuration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
-            var collapseInstance = new MobEffectInstance(
-                collapse,
-                collapseDuration * 20,
-                0,
-                false, false, true
-            );
-            targetLiving.addEffect(collapseInstance, attacker);
-            forceAddEffect(targetLiving, collapseInstance);
+        if (attacker.getRandom().nextDouble() < collapseChance) {
+            TccAttributeEvents.applyCollapse(targetLiving, attacker);
         }
     }
 
@@ -170,8 +159,6 @@ public class ShijieFanyan extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.shijie_fanyan.special",
                 sfCollapseStr)
             .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("tcc.tooltip.always_infection")
-            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));
 
@@ -180,21 +167,5 @@ public class ShijieFanyan extends BoundCurioItem {
 
         tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);
-    }
-
-    private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
-        MobEffect effect = ins.getEffect();
-        MobEffectInstance old = e.getActiveEffectsMap().get(effect);
-        if (old == null) {
-            e.getActiveEffectsMap().put(effect, ins);
-            effect.addAttributeModifiers(e, e.getAttributes(), ins.getAmplifier());
-            e.onEffectAdded(ins, null);
-        } else {
-            int prevAmp = old.getAmplifier();
-            old.update(ins);
-            if (old.getAmplifier() != prevAmp) {
-                effect.addAttributeModifiers(e, e.getAttributes(), old.getAmplifier());
-            }
-        }
     }
 }

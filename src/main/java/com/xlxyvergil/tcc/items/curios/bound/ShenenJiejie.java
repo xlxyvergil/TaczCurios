@@ -4,11 +4,13 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -65,6 +67,10 @@ public class ShenenJiejie extends BoundCurioItem {
             return;
         }
         ImaginaryConversionHelper.convertToImaginary(event);
+        Entity hurt = event.getHurtEntity();
+        if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
+            TccAttributeEvents.applyCollapse(target, attacker);
+        }
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
-import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +20,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import net.minecraftforge.event.entity.living.LivingHealEvent;
@@ -32,7 +30,6 @@ import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import top.theillusivec4.curios.api.CuriosApi;
 
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -142,14 +139,12 @@ public class TccAttributeEvents {
         if (!(srcEntity instanceof LivingEntity attacker)) return;
 
         
-        applyInfection(living, attacker, ImaginaryInfectionHelper.resolve(attacker));
+        applyInfection(living, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
     }
 
     
-    public static void applyInfection(LivingEntity living, LivingEntity attacker, ImaginaryInfectionHelper.InfectionInfo info) {
-        if (!info.isValid()) return;
-        int maxLevel = info.maxLevel();
-        boolean canApplyCollapse = info.canApplyCollapse();
+    public static void applyInfection(LivingEntity living, LivingEntity attacker, int maxLevel) {
+        if (maxLevel <= 0) return;
         int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
 
         var imaginaryInfection = TccMobEffects.IMAGINARY_INFECTION.get();
@@ -174,36 +169,34 @@ public class TccAttributeEvents {
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
         living.getPersistentData().putString(
                 INFECTION_ATTACKER_KEY, (credited != null ? credited : attacker).getStringUUID());
+    }
 
-        
-        
-        
-        if (canApplyCollapse) {
-            var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
-            if (!living.hasEffect(collapse)) {
-                var collapseInstance = new MobEffectInstance(
-                    collapse,
-                    duration * 20,
-                    0,
-                    false, false, true
-                );
-                forceAddEffect(living, collapseInstance);
-                living.addEffect(collapseInstance, attacker);
+    /**
+     * 统一施加剧增崩解的实际入口：写入来源攻击者 NBT 并施加崩解效果。
+     * 供各饰品在命中时（含概率判定通过后）调用。
+     * 返回是否真正新施加了崩解（目标此前无崩解且存活）；目标已有崩解或已死亡则返回 false。
+     */
+    public static boolean applyCollapse(LivingEntity target, LivingEntity attacker) {
+        if (target == null || attacker == null) return false;
+        if (target.isDeadOrDying()) return false;
+        var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
+        if (collapse == null || target.hasEffect(collapse)) return false;
 
-                
-                if (attackerHasHarmfulCurio(attacker)) {
-                    var erosion = TccMobEffects.EROSION.get();
-                    var erosionInstance = new MobEffectInstance(
-                        erosion,
-                        duration * 20,
-                        0,
-                        false, false, true
-                    );
-                    forceAddEffect(living, erosionInstance);
-                    living.addEffect(erosionInstance, attacker);
-                }
-            }
-        }
+        int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
+        var collapseInstance = new MobEffectInstance(
+            collapse,
+            duration * 20,
+            0,
+            false, false, true
+        );
+        forceAddEffect(target, collapseInstance);
+        target.addEffect(collapseInstance, attacker);
+
+        // 记录侵染来源攻击者，使崩解击杀能正确归属（女仆转换为女仆主人）
+        LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
+        target.getPersistentData().putString(
+                INFECTION_ATTACKER_KEY, (credited != null ? credited : attacker).getStringUUID());
+        return true;
     }
 
     
@@ -240,18 +233,6 @@ public class TccAttributeEvents {
         }
     }
 
-    private static boolean attackerHasHarmfulCurio(LivingEntity attacker) {
-        if (!(attacker instanceof Player)) return false;
-        return CuriosApi.getCuriosInventory(attacker).resolve()
-            .map(inv -> 
-                inv.findFirstCurio(TccItems.GILDED_RIFLE_APTITUDE).isPresent() ||
-                inv.findFirstCurio(TccItems.GILDED_SHOTGUN_SAVVY).isPresent() ||
-                inv.findFirstCurio(TccItems.GILDED_MARKSMAN).isPresent() ||
-                inv.findFirstCurio(TccItems.CONDITION_OVERLOAD).isPresent()
-            ).orElse(false);
-    }
-
-    
     private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
         MobEffect effect = ins.getEffect();
         MobEffectInstance old = e.getActiveEffectsMap().get(effect);

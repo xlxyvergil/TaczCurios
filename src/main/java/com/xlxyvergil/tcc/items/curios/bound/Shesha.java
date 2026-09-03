@@ -2,6 +2,8 @@ package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -85,8 +87,10 @@ public class Shesha extends BoundCurioItem {
         }
         Entity hurt = event.getHurtEntity();
         if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
-            // 移除概率 = 施加者虚数抗性概率
-            if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
+            TccAttributeEvents.applyCollapse(target, attacker);
+            // 移除概率 = 佩戴者虚数抗性 × 配置系数
+            double factor = TaczCuriosConfig.COMMON.sheshaBuffRemovalFactor.get();
+            if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker, factor)) {
                 List<MobEffect> beneficials = new ArrayList<>();
                 for (MobEffectInstance instance : target.getActiveEffects()) {
                     if (instance.getEffect().isBeneficial()) {

@@ -99,6 +99,7 @@ public class MetaMorph extends BoundCurioItem {
             TccDamageSources.imaginaryDamage(target.level(), attacker),
             imaginaryBonus
         );
+        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     @Override

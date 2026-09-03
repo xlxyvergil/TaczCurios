@@ -95,6 +95,7 @@ public class BushiShiwu extends BoundCurioItem {
         float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
                 TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {

@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 虚数崩解流血效果：伤害 = 目标最大血量 × percentPerLevel × 侵染等级 × (1 + min(debuff数, maxDebuff) × percentPerDebuff)；
+ * 虚数崩解流血效果：伤害 = 目标最大血量 × percentPerLevel × (1 + min(debuff数, maxDebuff) × percentPerDebuff)；
+ * 侵染等级不再于崩解基础中线性放大，统一由通用虚数伤害入口的侵染增伤（1 + 侵染等级 × ampPerLevel）体现。
  * 负面数量增益只在目标带侵蚀时生效。
  */
 public class ImaginaryCollapseEffect extends MobEffect {
@@ -60,7 +61,7 @@ public class ImaginaryCollapseEffect extends MobEffect {
             debuffMultiplier = Math.round((1.0 + (1.0 + effectiveDebuffs) * percentPerDebuff) * 10000.0) / 10000.0;
         }
 
-        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * infectionLevel * debuffMultiplier * 10000.0) / 10000.0);
+        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * debuffMultiplier * 10000.0) / 10000.0);
 
         if (finalDamage > 0) {
             // 从 NBT 读取侵染来源 attacker（由 TccAttributeEvents.applyImaginaryInfection 写入）

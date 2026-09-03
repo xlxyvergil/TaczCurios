@@ -1,73 +1,35 @@
 package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.items.curios.bound.HeavenFireApocalypse;
-import com.xlxyvergil.tcc.items.curios.bound.HeavenFireApocalypseEndless;
-import com.xlxyvergil.tcc.items.curios.bound.JudgementKey;
-import com.xlxyvergil.tcc.items.curios.bound.MetaMorph;
-import com.xlxyvergil.tcc.items.curios.bound.ShijieFanyan;
-import com.xlxyvergil.tcc.items.curios.bound.XukongWancangYZTH;
-import com.xlxyvergil.tcc.items.curios.bound.YinguoZhuanlun;
+import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
+import com.xlxyvergil.tcc.evolution.KeyTierRegistry.KeyTier;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 虚数侵染饰品等级映射；新增虚数伤害饰品时在此加一行即可，无需改动 TccAttributeEvents。
+ * 虚数侵染上限映射：按神之键阶位（由 key_tiers.json 决定）返回目标可堆叠到的最大层数。
+ * 新增神之键只需在 key_tiers.json 中登记阶位，无需改动此文件或其他 Java 代码。
  */
 public final class ImaginaryInfectionHelper {
 
     private ImaginaryInfectionHelper() {}
 
-    /** 根据攻击者装备的饰品，确定虚数侵染最大等级及是否可施加崩解。 */
-    public static InfectionInfo resolve(LivingEntity attacker) {
-        if (HeavenFireApocalypseEndless.hasHeavenFireApocalypseEndlessEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get(),
-                true
-            );
+    /** 根据攻击者身上已装备神之键的最高阶位，确定对目标施加的虚数侵染允许堆叠到的最大层数。 */
+    public static int resolveMaxLevel(LivingEntity attacker) {
+        if (attacker == null) {
+            return TaczCuriosConfig.COMMON.tier1ImaginaryInfectionMaxLevel.get();
         }
-        if (HeavenFireApocalypse.hasHeavenFireApocalypseEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        if (JudgementKey.hasEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.judgementKeyImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        if (ShijieFanyan.hasEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.shijieFanyanImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        if (XukongWancangYZTH.isEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        if (YinguoZhuanlun.hasEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        if (MetaMorph.isEquipped(attacker)) {
-            return new InfectionInfo(
-                TaczCuriosConfig.COMMON.metaMorphImaginaryInfectionMaxLevel.get(),
-                false
-            );
-        }
-        // 未定义饰品的虚数伤害来源，默认1级侵染
-        return new InfectionInfo(1, false);
-    }
-
-    public record InfectionInfo(int maxLevel, boolean canApplyCollapse) {
-        public boolean isValid() {
-            return maxLevel > 0;
-        }
+        KeyTier[] best = { KeyTier.NONE };
+        CurioSearchHelper.forEachEquippedStack(attacker, stack -> {
+            KeyTier tier = KeyTierRegistry.tierOf(stack);
+            if (tier.ordinal() > best[0].ordinal()) {
+                best[0] = tier;
+            }
+        });
+        return switch (best[0]) {
+            case SPECIAL -> TaczCuriosConfig.COMMON.specialImaginaryInfectionMaxLevel.get();
+            case T3 -> TaczCuriosConfig.COMMON.tier3ImaginaryInfectionMaxLevel.get();
+            case T2 -> TaczCuriosConfig.COMMON.tier2ImaginaryInfectionMaxLevel.get();
+            default -> TaczCuriosConfig.COMMON.tier1ImaginaryInfectionMaxLevel.get();
+        };
     }
 }

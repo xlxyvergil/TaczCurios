@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -15,6 +16,7 @@ import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -122,11 +124,6 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
                 String.format("%+d", totalNearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration))
             .withStyle(ChatFormatting.RED));
-        
-        int infectionMax = TaczCuriosConfig.COMMON.endlessImaginaryInfectionMaxLevel.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
-                String.format("%d", infectionMax))
-            .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -168,6 +165,12 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         }
 
         if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
+
+        // 统一经由 applyCollapse 施加剧增崩解：命中且目标存活时必定施加
+        Entity hurt = event.getHurtEntity();
+        if (hurt instanceof LivingEntity target && !target.isDeadOrDying()) {
+            TccAttributeEvents.applyCollapse(target, attacker);
+        }
 
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.endlessNearbyPlayerRadius.get();
         List<Player> nearbyPlayers = attacker.level().getEntitiesOfClass(Player.class, attacker.getBoundingBox().inflate(nearbyPlayerRadius));

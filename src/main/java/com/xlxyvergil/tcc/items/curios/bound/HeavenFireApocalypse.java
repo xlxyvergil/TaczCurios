@@ -107,13 +107,6 @@ public class HeavenFireApocalypse extends BoundCurioItem {
             .withStyle(ChatFormatting.RED));
         
         // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
-        
-        // 虚数侵染上限 + 虚数崩解
-        int infectionMax = TaczCuriosConfig.COMMON.apocalypseImaginaryInfectionMaxLevel.get();
-        tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.inflection_max",
-                String.format("%d", infectionMax))
-            .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.literal(""));
 
         appendBoundPlayer(stack, tooltip);
     }

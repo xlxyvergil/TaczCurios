@@ -5,7 +5,6 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
-import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -17,8 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -119,17 +116,8 @@ public class JudgementKey extends BoundCurioItem {
         }
 
         double collapseProc = TaczCuriosConfig.COMMON.judgementCollapseProcChance.get();
-        var collapse = TccMobEffects.IMAGINARY_COLLAPSE.get();
-        if (!targetLiving.hasEffect(collapse) && attacker.getRandom().nextDouble() < collapseProc) {
-            int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
-            var collapseInstance = new MobEffectInstance(
-                collapse,
-                duration * 20,
-                0,
-                false, false, true
-            );
-            targetLiving.addEffect(collapseInstance, attacker);
-            forceAddEffect(targetLiving, collapseInstance);
+        if (attacker.getRandom().nextDouble() < collapseProc) {
+            TccAttributeEvents.applyCollapse(targetLiving, attacker);
         }
     }
 
@@ -159,21 +147,5 @@ public class JudgementKey extends BoundCurioItem {
         tooltip.add(Component.literal(""));
 
         appendBoundPlayer(stack, tooltip);
-    }
-
-    private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
-        MobEffect effect = ins.getEffect();
-        MobEffectInstance old = e.getActiveEffectsMap().get(effect);
-        if (old == null) {
-            e.getActiveEffectsMap().put(effect, ins);
-            effect.addAttributeModifiers(e, e.getAttributes(), ins.getAmplifier());
-            e.onEffectAdded(ins, null);
-        } else {
-            int prevAmp = old.getAmplifier();
-            old.update(ins);
-            if (old.getAmplifier() != prevAmp) {
-                effect.addAttributeModifiers(e, e.getAttributes(), old.getAmplifier());
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -73,6 +74,10 @@ public class LaZhiYan extends BoundCurioItem {
         }
         if (player.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(player)) {
             event.setAmount(event.getAmount() * damageMultiplier());
+        }
+        LivingEntity target = event.getEntity();
+        if (!target.isDeadOrDying()) {
+            TccAttributeEvents.applyCollapse(target, player);
         }
     }
 

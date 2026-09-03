@@ -125,6 +125,9 @@ public class Mebius extends BoundCurioItem {
         if (encodeId == null) {
             return;
         }
+        if (getKilledTypeCount(equipped) >= TaczCuriosConfig.COMMON.sheshaLineKillTypeRecordLimit.get()) {
+            return;
+        }
         CompoundTag tag = equipped.getOrCreateTag();
         String key = KILL_KEY_PREFIX + encodeId;
         if (!tag.contains(key)) {

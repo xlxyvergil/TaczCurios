@@ -110,6 +110,7 @@ public class YinguoZhuanlun extends BoundCurioItem {
         double totalResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         TccAttributeEvents.applyImaginaryDamage(targetLiving,
             TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), (float) totalResistance);
+        TccAttributeEvents.applyCollapse(targetLiving, attacker);
     }
 
     @Override

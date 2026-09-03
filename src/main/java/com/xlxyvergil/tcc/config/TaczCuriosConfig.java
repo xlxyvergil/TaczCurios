@@ -40,13 +40,10 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
         
         
-        public final ForgeConfigSpec.IntValue judgementKeyImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue apocalypseImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue endlessImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue shijieFanyanImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue xukongWancangYZTHImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue metaMorphImaginaryInfectionMaxLevel;
-        public final ForgeConfigSpec.IntValue yinguoZhuanlunImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue tier1ImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue tier2ImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue tier3ImaginaryInfectionMaxLevel;
+        public final ForgeConfigSpec.IntValue specialImaginaryInfectionMaxLevel;
 
         
         public final ForgeConfigSpec.DoubleValue judgementProcChance;
@@ -497,6 +494,12 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue shijieZhiShePerTypeBonus;
         public final ForgeConfigSpec.DoubleValue wuxianPerTypeBonus;
 
+        /** 梅比乌斯/噬界之蛇/无限 统一击杀类型记录上限 */
+        public final ForgeConfigSpec.IntValue sheshaLineKillTypeRecordLimit;
+
+        /** 舍沙移除目标有益 buff 的概率系数 */
+        public final ForgeConfigSpec.DoubleValue sheshaBuffRemovalFactor;
+
         
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> attributeBonusBlacklist;
 
@@ -687,8 +690,8 @@ public class TaczCuriosConfig {
             
             builder.comment("虚数崩解配置（虚数崩解基于虚数侵染层数和负面效果种数造成额外伤害）").push("imaginary_collapse");
             collapsePercentPerLevel = builder
-                    .comment("每层虚数侵染的崩解增伤比例 (默认: 0.01 = 1%/层)")
-                    .defineInRange("percentPerLevel", 0.01, 0, 1);
+                    .comment("崩解基础每秒造成的最大生命值伤害比例（不再随侵染等级线性放大；层数由通用侵染增伤体现） (默认: 0.025 ≈ 2.5%/秒)")
+                    .defineInRange("percentPerLevel", 0.025, 0, 1);
             collapsePercentPerDebuff = builder
                     .comment("每种负面效果的崩解增伤比例 (默认: 0.1 = 10%/种)")
                     .defineInRange("percentPerDebuff", 0.1, 0, 1);
@@ -698,28 +701,19 @@ public class TaczCuriosConfig {
             builder.pop();
 
             
-            builder.comment("按饰品分级的虚数侵染上限（当攻击者携带对应饰品时，目标虚数侵染不会超过此等级）").push("imaginary_infection_per_curio");
-            judgementKeyImaginaryInfectionMaxLevel = builder
-                    .comment("裁决之键的虚数侵染上限 (默认: 9)")
-                    .defineInRange("judgementKeyMaxLevel", 9, 1, 99);
-            apocalypseImaginaryInfectionMaxLevel = builder
-                    .comment("天火劫灭的虚数侵染上限 (默认: 6)")
-                    .defineInRange("apocalypseMaxLevel", 6, 1, 99);
-            endlessImaginaryInfectionMaxLevel = builder
-                    .comment("劫灭无尽的虚数侵染上限 (默认: 9)")
-                    .defineInRange("endlessMaxLevel", 9, 1, 99);
-            shijieFanyanImaginaryInfectionMaxLevel = builder
-                    .comment("视界反演的虚数侵染上限 (默认: 9)")
-                    .defineInRange("shijieFanyanMaxLevel", 9, 1, 99);
-            xukongWancangYZTHImaginaryInfectionMaxLevel = builder
-                    .comment("雨众天华的虚数侵染上限 (默认: 9)")
-                    .defineInRange("xukongWancangYZTHMaxLevel", 9, 1, 99);
-            metaMorphImaginaryInfectionMaxLevel = builder
-                    .comment("Meta-Morph的虚数侵染上限 (默认: 9)")
-                    .defineInRange("metaMorphMaxLevel", 9, 1, 99);
-            yinguoZhuanlunImaginaryInfectionMaxLevel = builder
-                    .comment("因果转轮的虚数侵染上限 (默认: 9)")
-                    .defineInRange("yinguoZhuanlunMaxLevel", 9, 1, 99);
+            builder.comment("按神之键阶位分级的虚数侵染上限（1阶/2阶/3阶；特殊神之键：黑渊白花、天火劫灭·无烬终焉、第零额定功率·神恩结界可到9级）").push("imaginary_infection_by_tier");
+            tier1ImaginaryInfectionMaxLevel = builder
+                    .comment("1阶神之键的虚数侵染上限 (默认: 2)")
+                    .defineInRange("tier1MaxLevel", 2, 1, 99);
+            tier2ImaginaryInfectionMaxLevel = builder
+                    .comment("2阶神之键的虚数侵染上限 (默认: 4)")
+                    .defineInRange("tier2MaxLevel", 4, 1, 99);
+            tier3ImaginaryInfectionMaxLevel = builder
+                    .comment("3阶神之键的虚数侵染上限 (默认: 6)")
+                    .defineInRange("tier3MaxLevel", 6, 1, 99);
+            specialImaginaryInfectionMaxLevel = builder
+                    .comment("特殊神之键(黑渊白花/天火劫灭·无烬终焉/神恩结界)的虚数侵染上限 (默认: 9)")
+                    .defineInRange("specialMaxLevel", 9, 1, 99);
             builder.pop();
             
             
@@ -1859,8 +1853,8 @@ public class TaczCuriosConfig {
             
             builder.comment("阿波尼亚饰品配置").push("aponia");
             aponiaDebuffChance = builder
-                    .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
-                    .defineInRange("debuffChance", 0.15, 0.0, 1.0);
+                    .comment("施加随机 debuff 概率 (默认: 0.05 = 5%)")
+                    .defineInRange("debuffChance", 0.05, 0.0, 1.0);
             aponiaDebuffDurationSeconds = builder
                     .comment("debuff 时长（秒） (默认: 15)")
                     .defineInRange("debuffDurationSeconds", 15, 1, 3600);
@@ -1871,8 +1865,8 @@ public class TaczCuriosConfig {
 
             builder.comment("深罪之槛饰品配置").push("shenzui_zhijian");
             shenzuiZhijianDebuffChance = builder
-                    .comment("施加随机 debuff 概率 (默认: 0.15 = 15%)")
-                    .defineInRange("debuffChance", 0.15, 0.0, 1.0);
+                    .comment("施加随机 debuff 概率 (默认: 0.1 = 10%)")
+                    .defineInRange("debuffChance", 0.1, 0.0, 1.0);
             shenzuiZhijianDebuffDurationSeconds = builder
                     .comment("debuff 时长（秒） (默认: 15)")
                     .defineInRange("debuffDurationSeconds", 15, 1, 3600);
@@ -2059,20 +2053,34 @@ public class TaczCuriosConfig {
             
             builder.comment("梅比乌斯饰品配置").push("mebius");
             mebiusPerTypeBonus = builder
-                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.01 = +1%）")
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.001 = +0.1%）")
                     .defineInRange("perTypeBonus", 0.001, 0.0, 100.0);
             builder.pop();
 
             builder.comment("噬界之蛇饰品配置").push("shijie_zhi_she");
             shijieZhiShePerTypeBonus = builder
-                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.015 = +1.5%）")
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.005 = +0.5%）")
                     .defineInRange("perTypeBonus", 0.005, 0.0, 100.0);
             builder.pop();
 
             builder.comment("无限饰品配置").push("wuxian");
             wuxianPerTypeBonus = builder
-                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.02 = +2%）")
-                    .defineInRange("perTypeBonus", 0.01, 0.0, 100.0);
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.002 = +0.2%）")
+                    .defineInRange("perTypeBonus", 0.002, 0.0, 100.0);
+            builder.pop();
+
+            
+            builder.comment("梅比乌斯/噬界之蛇/无限 统一击杀类型记录上限").push("shesha_line_kill_type");
+            sheshaLineKillTypeRecordLimit = builder
+                    .comment("梅比乌斯、噬界之蛇、无限 每击杀一种实体类型的记录上限（默认: 100）")
+                    .defineInRange("killTypeRecordLimit", 100, 1, 10000);
+            builder.pop();
+
+            
+            builder.comment("舍沙配置").push("shesha");
+            sheshaBuffRemovalFactor = builder
+                    .comment("舍沙移除目标有益 buff 的概率系数：概率 = 佩戴者虚数抗性 × 本系数，封顶 100%（默认: 0.01 = 抗性/100）")
+                    .defineInRange("buffRemovalFactor", 0.01, 0.0, 1.0);
             builder.pop();
 
             
@@ -2093,14 +2101,14 @@ public class TaczCuriosConfig {
             
             builder.comment("往世的蛇影饰品配置").push("wangshi_de_sheying");
             wangshiDeSheyingRemoveChance = builder
-                    .comment("造成伤害移除目标正面 buff 概率 (默认: 0.10 = 10%)")
-                    .defineInRange("removeChance", 0.10, 0.0, 1.0);
+                    .comment("造成伤害移除目标正面 buff 概率 (默认: 0.01 = 1%)")
+                    .defineInRange("removeChance", 0.01, 0.0, 1.0);
             builder.pop();
 
             builder.comment("往世的蛇影·死之衣饰品配置").push("si_zhi_yi");
             siZhiYiRemoveChance = builder
-                    .comment("造成伤害移除目标正面 buff 概率 (默认: 0.20 = 20%)")
-                    .defineInRange("removeChance", 0.20, 0.0, 1.0);
+                    .comment("造成伤害移除目标正面 buff 概率 (默认: 0.05 = 5%)")
+                    .defineInRange("removeChance", 0.05, 0.0, 1.0);
             builder.pop();
 
             

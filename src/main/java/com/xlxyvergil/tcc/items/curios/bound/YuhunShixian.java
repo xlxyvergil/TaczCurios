@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -91,6 +92,7 @@ public class YuhunShixian extends BoundCurioItem {
                     -stripToughness, TOUGHNESS_STRIP_UUID,
                     "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
         }
+        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {

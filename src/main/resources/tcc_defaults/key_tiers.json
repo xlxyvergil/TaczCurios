@@ -1,0 +1,48 @@
+{
+  "tiers": {
+    "1": [
+      "tcc:seven_thunders",
+      "tcc:heaven_fire_judgment",
+      "tcc:qianjie_yicheng",
+      "tcc:dominance_key",
+      "tcc:wanwu_xiumian",
+      "tcc:xukong_wancang",
+      "tcc:wangshi_de_kuqiu",
+      "tcc:eden_star",
+      "tcc:dizang_yuhun",
+      "tcc:wangshi_de_sheying",
+      "tcc:yuduchen",
+      "tcc:wangshi_de_huanmeng"
+    ],
+    "2": [
+      "tcc:seven_thunders_thunder_seen",
+      "tcc:heaven_fire_apocalypse",
+      "tcc:yongjie_zhijian",
+      "tcc:tingzhi_zhijian",
+      "tcc:qishi_zhijian",
+      "tcc:wangshi_de_kuqiu_mingzhiqi",
+      "tcc:tuntian_zhijian",
+      "tcc:qinshi_zhijian",
+      "tcc:si_zhi_yi",
+      "tcc:fanchen_nandu",
+      "tcc:ye_zhi_tong"
+    ],
+    "3": [
+      "tcc:judgement_key",
+      "tcc:shijie_fanyan",
+      "tcc:meta_morph",
+      "tcc:yinguo_zhuanlun",
+      "tcc:xukong_wancang_yzth",
+      "tcc:qidian_chonggou",
+      "tcc:yuhun_shixian",
+      "tcc:shesha",
+      "tcc:bushi_shiwu",
+      "tcc:la_zhi_yan"
+    ],
+    "special": [
+      "tcc:heaven_fire_apocalypse_endless",
+      "tcc:shenen_jiejie",
+      "tcc:heiyuan_baihua"
+    ]
+  }
+}
