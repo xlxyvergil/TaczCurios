@@ -61,6 +61,9 @@ public class YuhunShixian extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        // 仅响应真正的主动攻击（近战/枪械/虚数伤），过滤 FastHurt 再入产生的强制子伤害（残血 GENERIC_KILL 等），
+        // 避免崩解/侵染/削甲特效被子伤害重复触发，造成递归施加
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
         }
@@ -95,6 +98,8 @@ public class YuhunShixian extends BoundCurioItem {
         }
         // 攻击命中时同时施加虚数侵染
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
+        // 先施侵染，再施加剧增崩解，确保崩解结算时目标带侵染
+        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
@@ -114,6 +119,9 @@ public class YuhunShixian extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.dawn.key_effect_resistance")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
+
+        tooltip.add(Component.literal(""));
+        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

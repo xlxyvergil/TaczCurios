@@ -107,7 +107,7 @@ public class YinguoZhuanlun extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        float baseDamage = event.getBaseAmount();
+        float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker);
         double totalResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryDamage = (float) (baseDamage * (totalResistance / 100.0)
             * TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryDamageScale.get());
@@ -131,20 +131,23 @@ public class YinguoZhuanlun extends BoundCurioItem {
         double overheal = TaczCuriosConfig.COMMON.yinguoZhuanlunOverheal.get() * 100;
 
         double resistance = 0;
+        double gunDamage = 0;
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
             if (wearer != null) {
                 resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                gunDamage = GunTypeChecker.getMainHandGunDamage(wearer);
             }
         }
         double ammoPercent = resistance * TaczCuriosConfig.COMMON.yinguoZhuanlunAmmoResistanceScale.get() * 100;
-        double damageScale = TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryDamageScale.get();
+        // 实际附加伤害 = 主手枪械实际子弹伤害 × 虚数抗性/100 × 系数（真正动态，随主手枪械与虚数抗性变化）
+        double imaginaryDamage = gunDamage * (resistance / 100.0) * TaczCuriosConfig.COMMON.yinguoZhuanlunImaginaryDamageScale.get();
 
         tooltip.add(formatModifierTooltip(overheal, "%.0f%%", Component.translatable(AttributeHelper.OVERHEAL.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.special",
                 String.format("%.0f", ammoPercent),
-                String.format("%.2f", damageScale))
+                String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));

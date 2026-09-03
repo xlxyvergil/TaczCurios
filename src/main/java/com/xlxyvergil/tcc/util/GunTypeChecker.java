@@ -11,6 +11,7 @@ import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
+import com.tacz.guns.util.AttachmentDataUtils;
 import com.xlxyvergil.taa.context.ShooterContext;
 import com.xlxyvergil.taa.modifier.AmmoCountModifier;
 
@@ -97,6 +98,26 @@ public class GunTypeChecker {
 
     public static boolean isHoldingAnyGun(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, ALL_GUN_TYPES);
+    }
+
+    /**
+     * 读取持枪者主手 TACZ 枪械的子弹实际伤害（受到配件加成后的单发伤害），
+     * 用于动态 tooltip 显示与服务端伤害结算，避免其它属性/距离衰减的干扰。<br>
+     * 若主手不是枪械或无法读取，返回 0。
+     */
+    public static double getMainHandGunDamage(LivingEntity livingEntity) {
+        if (livingEntity == null) {
+            return 0;
+        }
+        ItemStack gunStack = livingEntity.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(gunStack);
+        if (iGun == null) {
+            return 0;
+        }
+        ResourceLocation gunId = iGun.getGunId(gunStack);
+        return TimelessAPI.getCommonGunIndex(gunId)
+                .map(index -> AttachmentDataUtils.getDamageWithAttachment(gunStack, index.getGunData()))
+                .orElse(0.0);
     }
 
     /**

@@ -82,7 +82,7 @@ public class JudgementKey extends BoundCurioItem {
 
         if (event.getBullet() != null) {
             event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
-            float damage = event.getBaseAmount();
+            float damage = (float) GunTypeChecker.getMainHandGunDamage(attacker);
             event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_KEY, damage);
             float damageAfterHeadshot = damage * event.getHeadshotMultiplier();
             event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY, damageAfterHeadshot);

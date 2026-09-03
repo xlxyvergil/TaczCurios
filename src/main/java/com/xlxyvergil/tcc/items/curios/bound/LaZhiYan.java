@@ -60,6 +60,8 @@ public class LaZhiYan extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        // 仅响应真正的主动攻击，过滤 FastHurt 再入的强制子伤害，避免崩解/倍率被子伤害重复触发
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         Entity attackerEntity = event.getSource().getEntity();
         if (!(attackerEntity instanceof LivingEntity player) || player.level().isClientSide) {
             return;

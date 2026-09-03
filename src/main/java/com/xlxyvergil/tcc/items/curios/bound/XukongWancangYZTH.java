@@ -96,7 +96,7 @@ public class XukongWancangYZTH extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        float baseDamage = event.getBaseAmount();
+        float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginaryBonus = (float) (baseDamage * (imaginaryResistance / 100.0)
             * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get());
@@ -142,10 +142,20 @@ public class XukongWancangYZTH extends BoundCurioItem {
         tooltip.add(Component.literal(""));
 
         double ammoRegen = TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100;
-        double damageScale = TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get();
+        // 实际附加伤害 = 主手枪械实际子弹伤害 × 虚数抗性/100 × 系数（真正动态，随主手枪械与虚数抗性变化）
+        double resistance = 0;
+        double gunDamage = 0;
+        if (level != null && level.isClientSide()) {
+            LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
+            if (wearer != null) {
+                resistance = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+                gunDamage = GunTypeChecker.getMainHandGunDamage(wearer);
+            }
+        }
+        double imaginaryDamage = gunDamage * (resistance / 100.0) * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get();
 
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.damage",
-                String.format("%.2f", damageScale))
+                String.format("%.2f", imaginaryDamage))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.ammo",
                 String.format("%.0f", ammoRegen))
