@@ -33,10 +33,10 @@ public final class LootrHighlightsRenderer {
     private static final double HEIGHT = 16.0D;
     /** 光柱截面半宽（格）。 */
     private static final double TOP_RADIUS = 0.20D;
-    /** 光柱颜色（金色系，呼应"战利品"）。 */
-    private static final float RED = 1.0F;
-    private static final float GREEN = 0.82F;
-    private static final float BLUE = 0.22F;
+    /** 光柱颜色（绿色）。 */
+    private static final float RED = 0.22F;
+    private static final float GREEN = 0.95F;
+    private static final float BLUE = 0.35F;
     private static final float ALPHA = 0.45F;
 
     private LootrHighlightsRenderer() {}

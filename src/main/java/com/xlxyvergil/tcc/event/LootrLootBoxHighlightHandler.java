@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -72,6 +73,26 @@ public final class LootrLootBoxHighlightHandler {
                 NetworkHandler.sendLootrHighlights(player, List.of());
             }
         }
+    }
+
+    /**
+     * 玩家打开容器（含 Lootr 箱子）时立即重扫一次，使刚被开启的箱子光柱即时消失。
+     * 此时战利品已填充到 {@code ChestData}，因此 {@link #scanUnopenedChests} 会立刻将其剔除。
+     */
+    @SubscribeEvent
+    public static void onPlayerOpenContainer(PlayerContainerEvent.Open event) {
+        // Lootr 未安装则完全跳过
+        if (!LootrCompat.isLoaded()) {
+            return;
+        }
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        if (!hasHighlightingCurio(player)) {
+            return;
+        }
+        ServerLevel level = (ServerLevel) player.level();
+        NetworkHandler.sendLootrHighlights(player, scanUnopenedChests(level, player));
     }
 
     /** 玩家是否佩戴了会触发高亮的三件饰品之一。 */
