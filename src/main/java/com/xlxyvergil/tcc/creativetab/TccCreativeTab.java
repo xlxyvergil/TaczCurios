@@ -21,198 +21,195 @@ public class TccCreativeTab {
             .title(Component.translatable("itemGroup.tcc.tacz_curio_tab"))
             .icon(() -> new ItemStack(TccItems.SOLDIER_BASIC_TAG))
             .displayItems((parameters, output) -> {
-                // 添加所有TaczCurios饰品到创造模式标签页
-                output.accept(TccItems.SOLDIER_BASIC_TAG);
-                output.accept(TccItems.SOLDIER_SPECIFIC_TAG);
-                output.accept(TccItems.HEAVY_CALIBER_TAG);
-                output.accept(TccItems.RED_MOVEMENT_TAG);
-                output.accept(TccItems.SUMMER_BEACH);
-                output.accept(TccItems.BRAHMA_BEASTS);
-                output.accept(TccItems.SALVATION);
-                output.accept(TccItems.XIORA);
-                output.accept(TccItems.RAVEN);
-                output.accept(TccItems.ISLAND_BOOM_RAVEN);
-                output.accept(TccItems.URAL_WOLF_TAG);
-                output.accept(TccItems.ALLOY_DRILL);
-                output.accept(TccItems.CAREFUL_HEART);
-                output.accept(TccItems.MERGED_RIFLING);
-                output.accept(TccItems.DESPICABLE_ACCELERATION);
-                output.accept(TccItems.HEAVEN_FIRE_APOCALYPSE);
-                output.accept(TccItems.HEAVEN_FIRE_JUDGMENT);
-                output.accept(TccItems.SEVEN_THUNDERS);
-                output.accept(TccItems.SEVEN_THUNDERS_THUNDER_SEEN);
-                output.accept(TccItems.JUDGEMENT_KEY);
-                output.accept(TccItems.BLAZE_STORM);
-                output.accept(TccItems.BLAZE_STORM_PRIME);
-                output.accept(TccItems.RIPPING_PRIME);
-                output.accept(TccItems.CLOSE_COMBAT_PRIME);
-                output.accept(TccItems.EVIL_ACCURACY);
-                output.accept(TccItems.LIMIT_SPEED);
-                output.accept(TccItems.FEROCIOUS_EXTENSION);
-                output.accept(TccItems.RIFLING);
-                output.accept(TccItems.CLOSE_RANGE_SHOT);
-                output.accept(TccItems.HEAVY_FIREPOWER);
-                output.accept(TccItems.WASP_STINGER);
-                output.accept(TccItems.PROPHECY_PACT);
-                output.accept(TccItems.MALIGNANT_SPREAD);
-                output.accept(TccItems.CHAMBER);
-                output.accept(TccItems.CHAMBER_PRIME);
-                output.accept(TccItems.BURST_RELOAD);
-                output.accept(TccItems.CORRUPT_MAGAZINE);
-                output.accept(TccItems.SPLIT_CHAMBER);
-                // 霰弹枪饰品
-                output.accept(TccItems.TACTICAL_RELOAD);
-                output.accept(TccItems.OVERLOADED_MAGAZINE);
-                output.accept(TccItems.INFERNAL_CHAMBER);
-                // 手枪饰品
-                output.accept(TccItems.SUSTAINED_FIRE);
-                output.accept(TccItems.INFECTED_MAGAZINE);
-                output.accept(TccItems.DEADLY_SURGE);
-                output.accept(TccItems.BULLET_SPREAD);
-                output.accept(TccItems.OPPRESSION_POINT);
-                output.accept(TccItems.OPPRESSION_POINT_PRIME);
-                output.accept(TccItems.SWORD_WIND);
-                output.accept(TccItems.SWORD_WIND_PRIME);
-                
-                output.accept(TccItems.DEPLETED_RELOAD);
-                output.accept(TccItems.BURST_RELOAD_PRIME);
-                output.accept(TccItems.TACTICAL_RELOAD_PRIME);
-                output.accept(TccItems.SHOTGUN_EXPANSION_PRIME);
-                output.accept(TccItems.MAGAZINE_BOOST_PRIME);
-                output.accept(TccItems.TANDEM_MAGAZINE_PRIME);
-                
-                output.accept(TccItems.SHOTGUN_EXPANSION);
-                output.accept(TccItems.MAGAZINE_BOOST);
-                output.accept(TccItems.TANDEM_MAGAZINE);
-                
-                // 添加裂隙级饰品
-                output.accept(TccItems.KIKAKU_ICHIJIN);
-                output.accept(TccItems.HEAVEN_FIRE_APOCALYPSE_ENDLESS);
-                
-                // 添加Phase 2 新增饰品 (16个常驻属性饰品)
-                output.accept(TccItems.CRITICAL_DELAY);       // 关键延迟
-                output.accept(TccItems.LETHAL_CRIT);           // 致命一击
-                output.accept(TccItems.WEAKNESS_SENSE);        // 弱点感应
-                output.accept(TccItems.DESTRUCTION);           // 破灭
-                output.accept(TccItems.DESTRUCTION_PRIME);     // 破灭Prime
-                output.accept(TccItems.THUNDER_BARREL);        // 雷筒
-                output.accept(TccItems.THUNDER_BARREL_PRIME);  // 雷筒Prime
-                output.accept(TccItems.WEAKNESS_MASTERY);      // 弱点专精
-                output.accept(TccItems.WEAKNESS_MASTERY_PRIME);// 弱点专精Prime
-                output.accept(TccItems.HOLLOW_POINT);          // 空尖弹
-                output.accept(TccItems.PISTOL_MASTERY);        // 手枪精通
-                output.accept(TccItems.PISTOL_MASTERY_PRIME);  // 手枪精通Prime
-                output.accept(TccItems.STEEL_SLASH);           // 斩铁
-                output.accept(TccItems.DISMEMBERMENT);         // 肢解
-                output.accept(TccItems.SACRIFICE_OPPRESSION);  // 牺牲压迫点
-                output.accept(TccItems.SACRIFICE_STEEL);       // 牺牲斩铁
+                // 1. 工作方块
+                output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM);
 
-                // 添加Phase 3 新增饰品 (12个Buff触发饰品)
-                output.accept(TccItems.ARGON_SCOPE);              // 氩晶瞄具
-                output.accept(TccItems.GILDED_ARGON_SCOPE);       // 镀层氩晶瞄具
-                output.accept(TccItems.SHARP_BULLET);             // 尖刃弹头
-                output.accept(TccItems.GILDED_SPLIT_CHAMBER);     // 镀层分裂膛室
-                output.accept(TccItems.LASER_SCOPE);              // 雷射瞄具
-                output.accept(TccItems.FRAGMENT_SHOT);            // 破片射击
-                output.accept(TccItems.GILDED_INFERNAL_CHAMBER);  // 镀层地狱弹膛
-                output.accept(TccItems.HYDRAULIC_CROSSHAIR);      // 液压准心
-                output.accept(TccItems.GILDED_HYDRAULIC_CROSSHAIR);// 镀层液压准心
-                output.accept(TccItems.SHARP_AMMO);               // 尖锐子弹
-                output.accept(TccItems.GILDED_BULLET_SPREAD);     // 镀层弹头扩散
-                output.accept(TccItems.GILDED_STEEL_SLASH);       // 镀层斩铁
-
-                // 添加Phase 4 新增饰品 (5个特殊饰品)
-                output.accept(TccItems.GILDED_RIFLE_APTITUDE);   // 镀层步枪才能
-                output.accept(TccItems.GILDED_SHOTGUN_SAVVY);    // 镀层通晓霰弹枪
-                output.accept(TccItems.GILDED_MARKSMAN);         // 镀层准确射手
-                output.accept(TccItems.CONDITION_OVERLOAD);      // 异况超量
-
-                // 添加材料物品
+                // 2. 材料
                 output.accept(TccItems.CORE_FUSION);
                 output.accept(TccItems.FUSION_VESSEL);
                 output.accept(TccItems.RIFT_SILVER);
                 output.accept(TccItems.COLLAPSE_CRYSTAL);
 
-                // 添加格蕾修 新饰品
+                // 3. tcc 常见稀有度
+                output.accept(TccItems.PROPHECY_PACT);
+                output.accept(TccItems.BURST_RELOAD);
+                output.accept(TccItems.SUSTAINED_FIRE);
+                output.accept(TccItems.OPPRESSION_POINT);
+                output.accept(TccItems.SWORD_WIND);
+                output.accept(TccItems.SHOTGUN_EXPANSION);
+                output.accept(TccItems.MAGAZINE_BOOST);
+                output.accept(TccItems.TANDEM_MAGAZINE);
+                output.accept(TccItems.LETHAL_CRIT);
+                output.accept(TccItems.THUNDER_BARREL);
+                output.accept(TccItems.PISTOL_MASTERY);
+                output.accept(TccItems.STEEL_SLASH);
+                output.accept(TccItems.DISMEMBERMENT);
+                output.accept(TccItems.FRAGMENT_SHOT);
+                output.accept(TccItems.HYDRAULIC_CROSSHAIR);
+
+                // 4. tcc 罕见稀有度
+                output.accept(TccItems.SOLDIER_BASIC_TAG);
+                output.accept(TccItems.RED_MOVEMENT_TAG);
+                output.accept(TccItems.URAL_WOLF_TAG);
+                output.accept(TccItems.LIMIT_SPEED);
+                output.accept(TccItems.FEROCIOUS_EXTENSION);
+                output.accept(TccItems.RIFLING);
+                output.accept(TccItems.CLOSE_RANGE_SHOT);
+                output.accept(TccItems.WASP_STINGER);
+                output.accept(TccItems.TACTICAL_RELOAD);
+                output.accept(TccItems.WEAKNESS_MASTERY);
+                output.accept(TccItems.SHARP_BULLET);
+                output.accept(TccItems.LASER_SCOPE);
+                output.accept(TccItems.SHARP_AMMO);
+
+                // 5. tcc 稀有稀有度
+                output.accept(TccItems.HEAVY_CALIBER_TAG);
+                output.accept(TccItems.DESPICABLE_ACCELERATION);
+                output.accept(TccItems.ALLOY_DRILL);
+                output.accept(TccItems.BLAZE_STORM);
+                output.accept(TccItems.EVIL_ACCURACY);
+                output.accept(TccItems.HEAVY_FIREPOWER);
+                output.accept(TccItems.MALIGNANT_SPREAD);
+                output.accept(TccItems.CHAMBER);
+                output.accept(TccItems.CORRUPT_MAGAZINE);
+                output.accept(TccItems.SPLIT_CHAMBER);
+                output.accept(TccItems.OVERLOADED_MAGAZINE);
+                output.accept(TccItems.INFERNAL_CHAMBER);
+                output.accept(TccItems.INFECTED_MAGAZINE);
+                output.accept(TccItems.DEADLY_SURGE);
+                output.accept(TccItems.BULLET_SPREAD);
+                output.accept(TccItems.DEPLETED_RELOAD);
+                output.accept(TccItems.CRITICAL_DELAY);
+                output.accept(TccItems.WEAKNESS_SENSE);
+                output.accept(TccItems.DESTRUCTION);
+                output.accept(TccItems.HOLLOW_POINT);
+                output.accept(TccItems.ARGON_SCOPE);
+                output.accept(TccItems.CONDITION_OVERLOAD);
+
+                // 6. tcc 传说稀有度
+                output.accept(TccItems.SOLDIER_SPECIFIC_TAG);
+                output.accept(TccItems.MERGED_RIFLING);
+                output.accept(TccItems.CAREFUL_HEART);
+                output.accept(TccItems.BLAZE_STORM_PRIME);
+                output.accept(TccItems.RIPPING_PRIME);
+                output.accept(TccItems.CLOSE_COMBAT_PRIME);
+                output.accept(TccItems.CHAMBER_PRIME);
+                output.accept(TccItems.OPPRESSION_POINT_PRIME);
+                output.accept(TccItems.SWORD_WIND_PRIME);
+                output.accept(TccItems.BURST_RELOAD_PRIME);
+                output.accept(TccItems.TACTICAL_RELOAD_PRIME);
+                output.accept(TccItems.SHOTGUN_EXPANSION_PRIME);
+                output.accept(TccItems.MAGAZINE_BOOST_PRIME);
+                output.accept(TccItems.TANDEM_MAGAZINE_PRIME);
+                output.accept(TccItems.DESTRUCTION_PRIME);
+                output.accept(TccItems.THUNDER_BARREL_PRIME);
+                output.accept(TccItems.WEAKNESS_MASTERY_PRIME);
+                output.accept(TccItems.PISTOL_MASTERY_PRIME);
+                output.accept(TccItems.SACRIFICE_OPPRESSION);
+                output.accept(TccItems.SACRIFICE_STEEL);
+
+                // 7. tcc 镀层饰品
+                output.accept(TccItems.GILDED_ARGON_SCOPE);
+                output.accept(TccItems.GILDED_SPLIT_CHAMBER);
+                output.accept(TccItems.GILDED_INFERNAL_CHAMBER);
+                output.accept(TccItems.GILDED_HYDRAULIC_CROSSHAIR);
+                output.accept(TccItems.GILDED_BULLET_SPREAD);
+                output.accept(TccItems.GILDED_STEEL_SLASH);
+                output.accept(TccItems.GILDED_RIFLE_APTITUDE);
+                output.accept(TccItems.GILDED_SHOTGUN_SAVVY);
+                output.accept(TccItems.GILDED_MARKSMAN);
+
+                // 8. tcc 裂隙稀有度
+                output.accept(TccItems.KIKAKU_ICHIJIN);
+
+                // 9. 神之键/逐火之蛾（按 achievement_definitions.json 进化链路排序）
+                // 系列1 涤罪七雷/渡鸦
+                output.accept(TccItems.SEVEN_THUNDERS);
+                output.accept(TccItems.XIORA);
+                output.accept(TccItems.RAVEN);
+                output.accept(TccItems.SEVEN_THUNDERS_THUNDER_SEEN);
+                output.accept(TccItems.ISLAND_BOOM_RAVEN);
+                output.accept(TccItems.JUDGEMENT_KEY);
+                // 系列2 天火
+                output.accept(TccItems.HEAVEN_FIRE_JUDGMENT);
+                output.accept(TccItems.SUMMER_BEACH);
+                output.accept(TccItems.HEAVEN_FIRE_APOCALYPSE);
+                output.accept(TccItems.BRAHMA_BEASTS);
+                output.accept(TccItems.SALVATION);
+                output.accept(TccItems.HEAVEN_FIRE_APOCALYPSE_ENDLESS);
+                // 系列3 格蕾修
                 output.accept(TccItems.GRISEO);
                 output.accept(TccItems.QIANJIE_YICHENG);
                 output.accept(TccItems.HUISHI_ZHIJUAN);
-                output.accept(TccItems.YONGJIE_ZHIJIAN);
                 output.accept(TccItems.FANXING);
+                output.accept(TccItems.YONGJIE_ZHIJIAN);
                 output.accept(TccItems.SHIJIE_FANYAN);
-
-                // 添加v2v系列
-                output.accept(TccItems.VILL_V);
-                output.accept(TccItems.XUKONG_WANCANG);
-                output.accept(TccItems.YUXI_ZHIXIA);
-                output.accept(TccItems.QISHI_ZHIJIAN);
-                output.accept(TccItems.LUOXUAN);
-                output.accept(TccItems.XUKONG_WANCANG_YZTH);
-
-                // 添加千劫/伊默尔系列饰品
+                // 系列4 千劫
                 output.accept(TccItems.KALPAS);
                 output.accept(TccItems.IMER);
                 output.accept(TccItems.HUAJIE_ZHIYAN);
                 output.accept(TccItems.DOMINANCE_KEY);
                 output.accept(TccItems.AOMIE);
                 output.accept(TccItems.META_MORPH);
-
-                // 添加苏系列饰品
+                // 系列5 苏
                 output.accept(TccItems.SU);
                 output.accept(TccItems.WANWU_XIUMIAN);
                 output.accept(TccItems.JUEZHE);
                 output.accept(TccItems.TINGZHI_ZHIJIAN);
                 output.accept(TccItems.TIANHUI);
                 output.accept(TccItems.YINGUO_ZHUANLUN);
-                
-                // 新系列 36 件
-                // --- 戒律（霰弹枪）---
+                // 系列6 维尔薇
+                output.accept(TccItems.VILL_V);
+                output.accept(TccItems.XUKONG_WANCANG);
+                output.accept(TccItems.YUXI_ZHIXIA);
+                output.accept(TccItems.QISHI_ZHIJIAN);
+                output.accept(TccItems.LUOXUAN);
+                output.accept(TccItems.XUKONG_WANCANG_YZTH);
+                // 系列7 阿波尼亚
                 output.accept(TccItems.APONIA);
-                output.accept(TccItems.SHENZUI_ZHIJIAN);
-                output.accept(TccItems.JIELV);
                 output.accept(TccItems.WANGSHI_DE_KUQIU);
+                output.accept(TccItems.SHENZUI_ZHIJIAN);
                 output.accept(TccItems.WANGSHI_DE_KUQIU_MINGZHIQI);
+                output.accept(TccItems.JIELV);
                 output.accept(TccItems.SHENEN_JIEJIE);
-                // --- 黄金（手枪）---
+                // 系列8 伊甸
                 output.accept(TccItems.EDEN);
-                output.accept(TccItems.CUIYAO_ZHI_GE);
-                output.accept(TccItems.HUANGJIN);
                 output.accept(TccItems.EDEN_STAR);
+                output.accept(TccItems.CUIYAO_ZHI_GE);
                 output.accept(TccItems.TUNTIAN_ZHIJIAN);
+                output.accept(TccItems.HUANGJIN);
                 output.accept(TccItems.QIDIAN_CHONGGOU);
-                // --- 旭光（近战）---
+                // 系列9 科斯魔
                 output.accept(TccItems.KOSMA);
-                output.accept(TccItems.LIMING_ZHI_SHAO);
-                output.accept(TccItems.XUGUANG);
                 output.accept(TccItems.DIZANG_YUHUN);
+                output.accept(TccItems.LIMING_ZHI_SHAO);
                 output.accept(TccItems.QINSHI_ZHIJIAN);
+                output.accept(TccItems.XUGUANG);
                 output.accept(TccItems.YUHUN_SHIXIAN);
-                // --- 无限（轻机枪）---
+                // 系列10 梅比乌斯
                 output.accept(TccItems.MEBIUS);
-                output.accept(TccItems.SHIJIE_ZHI_SHE);
-                output.accept(TccItems.WUXIAN);
                 output.accept(TccItems.WANGSHI_DE_SHEYING);
+                output.accept(TccItems.SHIJIE_ZHI_SHE);
                 output.accept(TccItems.SI_ZHI_YI);
+                output.accept(TccItems.WUXIAN);
                 output.accept(TccItems.SHESHA);
-                // --- 浮生（近战）---
+                // 系列11 华
                 output.accept(TccItems.HUA);
-                output.accept(TccItems.DUCHEN_ZHI_YU);
-                output.accept(TccItems.FUSHENG);
                 output.accept(TccItems.YUDUCHEN);
+                output.accept(TccItems.DUCHEN_ZHI_YU);
                 output.accept(TccItems.FANCHEN_NANDU);
+                output.accept(TccItems.FUSHENG);
                 output.accept(TccItems.BUSHI_SHIWU);
-                // --- 空梦（霰弹枪）---
+                // 系列12 帕朵
                 output.accept(TccItems.PADO_PHILIPIS);
-                output.accept(TccItems.LUEJI_ZHI_SHOU);
-                output.accept(TccItems.KONGMENG);
                 output.accept(TccItems.WANGSHI_DE_HUANMENG);
+                output.accept(TccItems.LUEJI_ZHI_SHOU);
                 output.accept(TccItems.YE_ZHI_TONG);
+                output.accept(TccItems.KONGMENG);
                 output.accept(TccItems.LA_ZHI_YAN);
-                // 添加最终阶段独立饰品
+                // 最终阶段
                 output.accept(TccItems.ZEN_WO);
                 output.accept(TccItems.HEIYUAN_BAIHUA);
-                // 添加工作方块
-                output.accept(TccBlocks.TESHIN_WORKBENCH_ITEM);
             })
             .build());
 }
