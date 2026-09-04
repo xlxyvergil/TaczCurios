@@ -27,6 +27,8 @@ public class RedMovementTag extends TccCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(MOVE_SPEED_MODIFIER_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVE_SPEED, speedBoost, MOVE_SPEED_MODIFIER_UUID, "tcc_red_movement_speed_boost", AttributeModifier.Operation.ADDITION);

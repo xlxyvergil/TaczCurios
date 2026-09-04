@@ -36,15 +36,26 @@ public class SacrificeSteel extends TccCurioItem {
             .orElse(false);
     }
 
+    /** 套装加成倍率随融合等级线性增长：0 级为 1.0（额外 +0%），满级为配置值（默认 1.25，即额外 +25%）。 */
+    private static double getSetBonusValue(ItemStack stack) {
+        double config = TaczCuriosConfig.COMMON.sacrificeSetBonus.get();
+        FusionData fusion = FusionData.from(stack);
+        int maxLevel = fusion.maxLevel();
+        return maxLevel > 0 ? 1.0 + (config - 1.0) * ((double) fusion.level() / maxLevel) : config;
+    }
+
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(CRIT_CHANCE_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(SET_BONUS_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSteelCritChance.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
 
             // 套装效果：同时装备牺牲压迫点时，额外 +25%
             if (hasSacrificeOppression(livingEntity)) {
-                double setBonus = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get());
+                double setBonus = getSetBonusValue(stack);
                 double bonusModifier = critChanceBoost * (setBonus - 1.0);
                 AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, bonusModifier, SET_BONUS_UUID, SET_BONUS_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
             } else {
@@ -77,7 +88,7 @@ public class SacrificeSteel extends TccCurioItem {
                 String.format("%+.0f", critChanceBoost))
             .withStyle(ChatFormatting.WHITE));
 
-        double setBonusPct = (FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeSetBonus.get()) - 1.0) * 100;
+        double setBonusPct = (getSetBonusValue(stack) - 1.0) * 100;
         tooltip.add(Component.translatable("item.tcc.sacrifice_steel.set_bonus",
                 String.format("%+.0f", setBonusPct))
             .withStyle(ChatFormatting.LIGHT_PURPLE));

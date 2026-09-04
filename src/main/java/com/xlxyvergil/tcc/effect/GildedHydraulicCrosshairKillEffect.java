@@ -1,6 +1,9 @@
 package com.xlxyvergil.tcc.effect;
 
+import java.util.UUID;
+
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -12,6 +15,7 @@ public class GildedHydraulicCrosshairKillEffect extends MobEffect {
         double perLevelValue = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "410756c5-8d3b-4bcf-ab77-9bc3728175a2", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeHelper.registerSourceItem(UUID.fromString("410756c5-8d3b-4bcf-ab77-9bc3728175a2"), TccItems.GILDED_HYDRAULIC_CROSSHAIR);
     }
 
 }

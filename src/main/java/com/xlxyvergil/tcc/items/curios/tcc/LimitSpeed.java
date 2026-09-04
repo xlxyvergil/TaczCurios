@@ -31,6 +31,8 @@ public class LimitSpeed extends TccCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(AMMO_SPEED_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double ammoSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.AMMO_SPEED, ammoSpeedBoost, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);

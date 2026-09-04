@@ -3,12 +3,14 @@ package com.xlxyvergil.tcc.network;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.List;
 import java.util.Optional;
 
 public final class NetworkHandler {
@@ -39,10 +41,19 @@ public final class NetworkHandler {
                 PacketSyncPlayTime::decode,
                 PacketSyncPlayTime::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, SyncLootrHighlightsS2CPacket.class,
+                SyncLootrHighlightsS2CPacket::encode,
+                SyncLootrHighlightsS2CPacket::decode,
+                SyncLootrHighlightsS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
         CHANNEL.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    public static void sendLootrHighlights(ServerPlayer player, List<BlockPos> positions) {
+        sendToPlayer(player, new SyncLootrHighlightsS2CPacket(positions));
     }
 
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {

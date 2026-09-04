@@ -30,6 +30,8 @@ public class SwordWindPrime extends TccCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(ENTITY_INTERACTION_RANGE_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.swordWindPrimeMeleeRangeBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ENTITY_REACH, rangeBoost, ENTITY_INTERACTION_RANGE_UUID, ENTITY_INTERACTION_RANGE_NAME, AttributeModifier.Operation.ADDITION);

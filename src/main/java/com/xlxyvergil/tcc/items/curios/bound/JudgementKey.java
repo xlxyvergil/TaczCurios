@@ -42,6 +42,9 @@ public class JudgementKey extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(CRIT_CHANCE_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(CRIT_DAMAGE_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                 TaczCuriosConfig.COMMON.judgementKeyCritChance.get(), CRIT_CHANCE_UUID,

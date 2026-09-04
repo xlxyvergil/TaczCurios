@@ -1,7 +1,9 @@
 package com.xlxyvergil.tcc.effect;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
+import java.util.UUID;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,6 +14,7 @@ public class HydraulicCrosshairEffect extends MobEffect {
         double baseValue = TaczCuriosConfig.COMMON.hydraulicCrosshairBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "f32f9e0d-9078-4da4-985b-c3ac3636b349", baseValue, AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeHelper.registerSourceItem(UUID.fromString("f32f9e0d-9078-4da4-985b-c3ac3636b349"), TccItems.HYDRAULIC_CROSSHAIR);
     }
 
     @Override

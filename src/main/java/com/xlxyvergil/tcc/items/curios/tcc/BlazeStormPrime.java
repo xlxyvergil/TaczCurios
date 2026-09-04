@@ -36,6 +36,10 @@ public class BlazeStormPrime extends TccCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(EXPLOSION_RADIUS_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(EXPLOSION_DAMAGE_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(EXPLOSION_ENABLED_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double explosionRadiusBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get());
             double explosionDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get());

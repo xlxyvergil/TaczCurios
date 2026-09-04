@@ -189,6 +189,9 @@ dependencies {
     compileOnly fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
     // Iron's Spells 'n Spellbooks (optional, for true_invisibility effect)
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
+    // Lootr (optional, compile only) - 用于"高亮未开启的 Lootr 战利品箱子"功能
+    // 所有对 Lootr 类的引用均封装在 compat/lootr/LootrCompat 中，并以 ModList.isLoaded("lootr") 短路保护
+    compileOnly fg.deobf("curse.maven:lootr-361276:7263076")
 
     // JEI (optional, compile only) - 用于显示饰品进化路径与崩坏结晶合成
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")

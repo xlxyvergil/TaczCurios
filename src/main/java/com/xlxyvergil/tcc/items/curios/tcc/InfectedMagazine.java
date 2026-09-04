@@ -33,6 +33,9 @@ public class InfectedMagazine extends TccCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(MAGAZINE_CAPACITY_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(RELOAD_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get());
             double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get());

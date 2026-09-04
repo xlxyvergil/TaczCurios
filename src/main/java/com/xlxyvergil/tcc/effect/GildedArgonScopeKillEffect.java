@@ -1,10 +1,13 @@
 package com.xlxyvergil.tcc.effect;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+
+import java.util.UUID;
 
 public class GildedArgonScopeKillEffect extends MobEffect {
     public GildedArgonScopeKillEffect() {
@@ -12,6 +15,7 @@ public class GildedArgonScopeKillEffect extends MobEffect {
         double perLevelValue = TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "3da691c2-0f73-48cc-938a-d8c9152ed1ee", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeHelper.registerSourceItem(UUID.fromString("3da691c2-0f73-48cc-938a-d8c9152ed1ee"), TccItems.GILDED_ARGON_SCOPE);
     }
 
 }

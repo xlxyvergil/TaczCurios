@@ -40,6 +40,8 @@ public class DominanceKey extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(ATTACK_DAMAGE_UUID, stack.getItem());
         double resistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         double attackBonus = resistance * 0.5;
         AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,

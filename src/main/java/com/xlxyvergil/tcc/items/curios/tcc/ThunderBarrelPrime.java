@@ -28,6 +28,8 @@ public class ThunderBarrelPrime extends TccCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(CRIT_CHANCE_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.thunderBarrelPrimeCritChance.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE, critChanceBoost, CRIT_CHANCE_UUID, CRIT_CHANCE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);

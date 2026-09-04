@@ -27,6 +27,8 @@ public class GildedBulletSpread extends TccCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(BASE_BULLET_COUNT_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, baseBulletCount, BASE_BULLET_COUNT_UUID, BASE_BULLET_COUNT_NAME, AttributeModifier.Operation.MULTIPLY_BASE);

@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.network;
 
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
+import com.xlxyvergil.tcc.client.LootrHighlightClientData;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -46,5 +47,9 @@ final class ClientPacketHandler {
         TccPlayerDataCapability.setPlayTimeHuishiZhijuan(player, packet.huishiZhijuan());
         TccPlayerDataCapability.setPlayTimeFanxing(player, packet.fanxing());
         TccPlayerDataCapability.setPlayTimeQishiZhijian(player, packet.qishiZhijian());
+    }
+
+    static void handleLootrHighlights(SyncLootrHighlightsS2CPacket packet) {
+        LootrHighlightClientData.setHighlights(packet.positions());
     }
 }

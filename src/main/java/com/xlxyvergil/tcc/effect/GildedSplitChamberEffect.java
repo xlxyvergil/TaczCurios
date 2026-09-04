@@ -1,6 +1,9 @@
 package com.xlxyvergil.tcc.effect;
 
+import java.util.UUID;
+
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -12,6 +15,7 @@ public class GildedSplitChamberEffect extends MobEffect {
         double perLevelValue = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get();
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
             "0f372759-929e-4699-b253-dc73336e8a01", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+        AttributeHelper.registerSourceItem(UUID.fromString("0f372759-929e-4699-b253-dc73336e8a01"), TccItems.GILDED_SPLIT_CHAMBER);
     }
 
 }

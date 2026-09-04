@@ -30,6 +30,9 @@ public class EvilAccuracy extends TccCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(RECOIL_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(ROUNDS_PER_MINUTE_UUID, stack.getItem());
         if (matchesRestriction(livingEntity)) {
             double recoilReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get());
             double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get());

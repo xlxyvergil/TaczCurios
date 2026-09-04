@@ -9,13 +9,32 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AttributeHelper {
+
+    /** 记录修饰符 UUID → 来源饰品 Item，供客户端属性面板显示来源图标。 */
+    private static final Map<UUID, Item> MODIFIER_SOURCES = new ConcurrentHashMap<>();
+
+
+    /** 登记某个修饰符 UUID 的来源饰品。 */
+    public static void registerSourceItem(UUID uuid, Item item) {
+        if (uuid != null && item != null) {
+            MODIFIER_SOURCES.putIfAbsent(uuid, item);
+        }
+    }
+
+    /** 按修饰符 UUID 查询来源饰品。 */
+    public static Item getSourceItem(UUID uuid) {
+        return uuid == null ? null : MODIFIER_SOURCES.get(uuid);
+    }
     
     
     

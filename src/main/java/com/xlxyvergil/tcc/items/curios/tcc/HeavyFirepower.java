@@ -30,6 +30,9 @@ public class HeavyFirepower extends TccCurioItem {
     
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(DAMAGE_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(INACCURACY_UUID, stack.getItem());
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerDamageBoost.get());
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyFirepowerAccuracyReduction.get());
         
