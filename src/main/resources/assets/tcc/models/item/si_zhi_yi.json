@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "tcc:item/si_zhi_yi",
-    "layer1": "tcc:item/border_rift"
+    "layer1": "tcc:item/border_epic"
   }
 }
