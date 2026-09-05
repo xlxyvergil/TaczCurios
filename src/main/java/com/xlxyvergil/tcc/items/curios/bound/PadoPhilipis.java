@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.compat.lootr.LootrCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -128,8 +129,10 @@ public class PadoPhilipis extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.dream.curio_effect_loot")
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight")
-                .withStyle(ChatFormatting.GREEN));
+        if (LootrCompat.isLoaded()) {
+            tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight")
+                    .withStyle(ChatFormatting.GREEN));
+        }
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
