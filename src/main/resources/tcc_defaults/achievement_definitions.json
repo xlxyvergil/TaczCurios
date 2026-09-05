@@ -450,10 +450,9 @@
         "hidden": false
       },
       "parent": "tcc:qianjie_yicheng_grant",
-      "trigger": "stat_polling",
+      "trigger": "fish_caught",
       "conditions": {
         "equippedCurios": ["tcc:qianjie_yicheng"],
-        "stat": "minecraft:fish_caught",
         "criteria_count": 200
       },
       "prerequisites": ["tcc:qianjie_yicheng_grant"],
@@ -2119,8 +2118,8 @@
         },
         "icon": "tcc:wangshi_de_huanmeng",
         "description": {
-          "zh_cn": "装备帕朵菲利斯，钓鱼300次",
-          "en_us": "Catch 300 fish while wearing Pardo Philis"
+          "zh_cn": "装备帕朵菲利斯，钓鱼200次",
+          "en_us": "Catch 200 fish while wearing Pardo Philis"
         },
         "frame": "goal",
         "hidden": false
@@ -2129,7 +2128,7 @@
       "trigger": "fish_caught",
       "conditions": {
         "equippedCurios": ["tcc:pado_philipis"],
-        "criteria_count": 300
+        "criteria_count": 200
       },
       "prerequisites": ["tcc:pado_philipis_grant"],
       "reward": {
