@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -7,10 +8,10 @@ import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -75,6 +76,34 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
         TccAttributeEvents.applyImaginaryDamage(target,
             TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
+
+        // 先施加侵染，再施加剧增崩解，确保崩解结算时目标带侵染
+        TccAttributeEvents.applyInfection(target, attacker,
+            TaczCuriosConfig.COMMON.specialImaginaryInfectionMaxLevel.get());
+
+        TccAttributeEvents.applyCollapse(target, attacker);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
+        // 枪械命中：TACZ 子弹普通命中的 LivingHurtEvent 伤害源无法被 isActiveAttackSource 识别，
+        // 因此黑渊白花需额外监听枪击事件才能对普通枪击施加虚数伤害/侵染/崩解。
+        if (event.getLogicalSide().isClient()) return;
+        if (!(event.getHurtEntity() instanceof LivingEntity target)) return;
+        if (target.isDeadOrDying()) return;
+
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null || !hasEquipped(attacker)) return;
+        if (!(attacker.level() instanceof ServerLevel)) return;
+        if (target == attacker) return;
+
+        double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
+        float damage = (float) (attacker.getMaxHealth() * (imaginaryResistance / 100.0)
+            * TaczCuriosConfig.COMMON.heiyuanBaihuaImaginaryDamageScale.get());
+        if (damage > 0) {
+            TccAttributeEvents.applyImaginaryDamage(target,
+                TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
+        }
 
         // 先施加侵染，再施加剧增崩解，确保崩解结算时目标带侵染
         TccAttributeEvents.applyInfection(target, attacker,
