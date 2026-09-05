@@ -560,17 +560,22 @@
         },
         "icon": "tcc:kalpas",
         "description": {
-          "zh_cn": "造成伤害达到10000",
-          "en_us": "Damage Dealt reaches 10000"
+          "zh_cn": "造成伤害达到10000，并击杀30只亡灵生物",
+          "en_us": "Damage Dealt reaches 10000 and kill 30 undead mobs"
         },
         "frame": "goal",
         "hidden": false
       },
       "parent": "tcc:tcc_root",
-      "trigger": "stat_polling",
+      "trigger": "living_death",
+      "playerKilled": false,
       "conditions": {
-        "stat": "minecraft:damage_dealt",
-        "criteria_count": 10000
+        "extraStats": [
+          { "stat": "minecraft:damage_dealt", "criteria_count": 10000 }
+        ],
+        "kills": [
+          { "entity": "#minecraft:undead", "criteria_count": 30 }
+        ]
       },
       "prerequisites": [],
       "reward": {
@@ -590,18 +595,24 @@
         },
         "icon": "tcc:imer",
         "description": {
-          "zh_cn": "佩戴千劫，承受伤害达到10000",
-          "en_us": "Damage Taken reaches 10000 while wearing Kalpas"
+          "zh_cn": "佩戴千劫，承受伤害达到10000，并在下界击杀任意30只生物",
+          "en_us": "Damage Taken reaches 10000 while wearing Kalpas, and kill 30 mobs in the Nether"
         },
         "frame": "goal",
         "hidden": false
       },
       "parent": "tcc:kalpas_grant",
-      "trigger": "stat_polling",
+      "trigger": "living_death",
+      "playerKilled": false,
       "conditions": {
         "equippedCurios": ["tcc:kalpas"],
-        "stat": "minecraft:damage_taken",
-        "criteria_count": 10000
+        "extraStats": [
+          { "stat": "minecraft:damage_taken", "criteria_count": 10000 }
+        ],
+        "kills": [
+          { "entity": "*", "criteria_count": 30 }
+        ],
+        "dimension": "minecraft:the_nether"
       },
       "prerequisites": ["tcc:kalpas_grant"],
       "reward": {
