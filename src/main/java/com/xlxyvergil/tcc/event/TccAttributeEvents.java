@@ -31,12 +31,22 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
+
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TccAttributeEvents {
 
-    
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
+
+    /**
+     * 重入防护：当一个目标正在被本次附加虚数伤害（applyImaginaryDamage 的 hurt 路径）结算时，
+     * 该目标会临时进入此集合，用于切断：嵌套 LivingHurtEvent 带来的第二次抗性/侵染结算，
+     * 以及饰品 onLivingHurt 监听器再次触发 applyImaginaryDamage 导致的无限递归。
+     */
+    private static final Set<LivingEntity> IMAGINARY_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
 
     /** tacz:bullets —— TACZ 枪械子弹伤害 tag */
     private static final TagKey<DamageType> TACZ_BULLETS_TAG =
@@ -57,36 +67,74 @@ public class TccAttributeEvents {
             || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
     }
 
-    
-    public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
-        if (intendedDamage <= 0) return false;
-
+    /**
+     * 虚数伤害通用前置：清零无敌帧 + 虚数攻击力放大。返回放大后的伤害。
+     */
+    private static float amplifyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         target.invulnerableTime = 0;
-
-        
         if (source.getEntity() instanceof LivingEntity attacker) {
             double damageMult = attacker.getAttributeValue(AttributeHelper.ATTACK_DAMAGE);
             intendedDamage = (float) (intendedDamage * (1 + damageMult / TaczCuriosConfig.COMMON.imaginaryDamageAttackAmplification.get()));
         }
+        return intendedDamage;
+    }
 
-        
-        if (ApollyonCompat.isRevelationFixApostle(target)) {
-            if (target.level().dimension() == Level.NETHER) {
-                float newHealth = ApollyonCompat.applyDirectDamage(target, intendedDamage);
-                if (newHealth <= 0) {
-                    target.die(source);
-                }
-                return true;
+    /**
+     * 判断目标是否为启示录「律法修正使徒」，是则走其专属虚数伤害路径。
+     * 仅当使徒位于下界时直接结算并返回 true；下界之外清除攻击冷却后返回 false，继续走常规虚数伤害结算。
+     */
+    private static boolean handleApollyonImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
+        if (!ApollyonCompat.isRevelationFixApostle(target)) return false;
+        if (target.level().dimension() == Level.NETHER) {
+            float newHealth = ApollyonCompat.applyDirectDamage(target, intendedDamage);
+            if (newHealth <= 0) {
+                target.die(source);
             }
-            
-            ApollyonCompat.clearHitCooldown(target);
+            return true;
         }
+        ApollyonCompat.clearHitCooldown(target);
+        return false;
+    }
 
-        
+    /**
+     * 非崩解产生的虚数伤害：走常规 hurt 结算（护甲、吸收等正常生效）。由饰品命中时调用。
+     */
+    public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
+        if (intendedDamage <= 0) return false;
+        if (IMAGINARY_HURT_GUARD.contains(target)) return false;
+
+        intendedDamage = amplifyImaginaryDamage(target, source, intendedDamage);
+
+        if (handleApollyonImaginaryDamage(target, source, intendedDamage)) return true;
+
         float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
         if (finalDamage <= 0) return false;
 
-        
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            target.setLastHurtByMob(attacker);
+        }
+
+        IMAGINARY_HURT_GUARD.add(target);
+        try {
+            return target.hurt(source, finalDamage);
+        } finally {
+            IMAGINARY_HURT_GUARD.remove(target);
+        }
+    }
+
+    /**
+     * 由虚数崩解效果造成的伤害：直接走 setHealth（绕过护甲/吸收等常规伤害结算）。由 ImaginaryCollapseEffect 调用。
+     */
+    public static boolean applyCollapseDamage(LivingEntity target, DamageSource source, float intendedDamage) {
+        if (intendedDamage <= 0) return false;
+
+        intendedDamage = amplifyImaginaryDamage(target, source, intendedDamage);
+
+        if (handleApollyonImaginaryDamage(target, source, intendedDamage)) return true;
+
+        float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
+        if (finalDamage <= 0) return false;
+
         if (source.getEntity() instanceof LivingEntity attacker) {
             target.setLastHurtByMob(attacker);
         }
@@ -94,7 +142,6 @@ public class TccAttributeEvents {
         float newHealth = target.getHealth() - finalDamage;
         if (newHealth <= 0) {
             target.setHealth(0);
-            
             target.die(source);
             return true;
         }
@@ -102,12 +149,10 @@ public class TccAttributeEvents {
         return true;
     }
 
-    
     private static float resolveFinalImaginaryDamage(LivingEntity target, DamageSource source, float baseDamage) {
         if (baseDamage <= 0) return 0;
 
         double resistance = target.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        
         resistance = Math.max(-100.0, Math.min(100.0, resistance));
 
         float damageAfterResistance = (float) (baseDamage * (1.0 - resistance / 100.0));
@@ -138,11 +183,9 @@ public class TccAttributeEvents {
         var srcEntity = source.getEntity();
         if (!(srcEntity instanceof LivingEntity attacker)) return;
 
-        
         applyInfection(living, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
     }
 
-    
     public static void applyInfection(LivingEntity living, LivingEntity attacker, int maxLevel) {
         if (maxLevel <= 0) return;
         int duration = TaczCuriosConfig.COMMON.imaginaryInfectionDuration.get();
@@ -159,11 +202,10 @@ public class TccAttributeEvents {
             newAmplifier,
             false, false, true
         );
-        
+
         forceAddEffect(living, newInstance);
         living.addEffect(newInstance, attacker);
 
-        
         // 记录侵染来源攻击者，使虚数崩解击杀能正确归属
         // （若攻击者是女仆，转换为女仆主人，以让崩解击杀计入主人名下）
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
@@ -199,7 +241,6 @@ public class TccAttributeEvents {
         return true;
     }
 
-    
     @SubscribeEvent
     public static void onGunOverheal(EntityHurtByGunEvent.Post event) {
         if (event.getLogicalSide().isClient()) return;
@@ -209,7 +250,7 @@ public class TccAttributeEvents {
 
         DamageSource source = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
         if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
-        
+
         if (source.getDirectEntity() instanceof LivingEntity) return;
 
         Attribute overhealAttr = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "overheal"));
@@ -220,8 +261,6 @@ public class TccAttributeEvents {
         float damage = event.getBaseAmount();
         if (event.isHeadShot()) damage *= event.getHeadshotMultiplier();
 
-        
-        
         if (!(event.getHurtEntity() instanceof LivingEntity target)) return;
         float effectiveDamage = Math.min(damage, target.getMaxHealth());
 
@@ -239,7 +278,7 @@ public class TccAttributeEvents {
         if (old == null) {
             e.getActiveEffectsMap().put(effect, ins);
             effect.addAttributeModifiers(e, e.getAttributes(), ins.getAmplifier());
-            
+
             e.onEffectAdded(ins, null);
         } else {
             int prevAmp = old.getAmplifier();
@@ -250,11 +289,11 @@ public class TccAttributeEvents {
         }
     }
 
-    
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
         if (target.level().isClientSide || target.isDeadOrDying()) return;
+        if (IMAGINARY_HURT_GUARD.contains(target)) return;
 
         DamageSource source = event.getSource();
 
@@ -263,7 +302,6 @@ public class TccAttributeEvents {
         }
     }
 
-    
     @SubscribeEvent
     public static void onLivingHeal(LivingHealEvent event) {
         LivingEntity entity = event.getEntity();
@@ -273,7 +311,6 @@ public class TccAttributeEvents {
         }
     }
 
-    
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         if (event.getResult() == Result.ALLOW) return;
@@ -283,15 +320,14 @@ public class TccAttributeEvents {
         }
     }
 
-    
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEffectRemove(MobEffectEvent.Remove event) {
         LivingEntity entity = event.getEntity();
         if (entity.isDeadOrDying()) return;
-        
+
         MobEffect effect = event.getEffect();
         if (effect == null) return;
-        
+
         var key = ForgeRegistries.MOB_EFFECTS.getKey(effect);
         if (key != null && key.getNamespace().equals("tcc")) {
             MobEffectInstance instance = entity.getActiveEffectsMap().get(effect);

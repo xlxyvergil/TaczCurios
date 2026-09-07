@@ -70,7 +70,7 @@ public class ImaginaryCollapseEffect extends MobEffect {
             if (attacker instanceof ServerPlayer sp) {
                 GunKillDebugFallbackHandler.refreshGunKillWindow(entity, sp);
             }
-            TccAttributeEvents.applyImaginaryDamage(
+            TccAttributeEvents.applyCollapseDamage(
                 entity,
                 TccDamageSources.imaginaryDamage(entity.level(), attacker),
                 finalDamage);

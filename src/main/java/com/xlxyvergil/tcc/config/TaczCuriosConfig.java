@@ -2117,12 +2117,13 @@ public class TaczCuriosConfig {
                     .comment("黑名单中的属性注册名列表（格式：命名空间:属性名，如 taa:recoil）")
                     .defineList("attributes", List.of(
                             "gunsmithlib:bullet_damage",
+                            "minecraft:movement_speed", "minecraft:bounciness", "minecraft:burning_time", "minecraft:gravity",
                             "taa:explosion_knockbacknew", "taa:explosion_enabled",
                             "taa:ignitefire", "taa:inaccuracy", "taa:inaccuracy_stand",
                             "taa:inaccuracy_move", "taa:inaccuracy_sneak", "taa:inaccuracy_lie",
                             "taa:inaccuracy_aim", "taa:knockback", "taa:recoil",
                             "taa:recoil_pitch", "taa:recoil_yaw", "taa:silencenew",
-                            "taa:weight"
+                            "taa:weight", "taa:bounciness", "taa:burning_time", "taa:gravity"
                     ), o -> o instanceof String);
             builder.pop();
 
