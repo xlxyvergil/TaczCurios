@@ -479,6 +479,7 @@
   "item.tcc.transient.key_effect_armor_imaginary_resistance": "On hit deal about %1$s extra imaginary damage",
   "item.tcc.dream.curio_effect_fish": "0.01%% chance while fishing to obtain Nether Star or Dragon Egg",
   "item.tcc.dream.curio_effect_loot": "Kill loot doubled",
+  "item.tcc.dream.fish_speed": "Fishing wait time reduced by %s",
   "item.tcc.dream.lootr_highlight": "While worn, unopened Lootr loot chests within 64 blocks show a green pillar (only visible to you)",
   "item.tcc.dream.key_effect": "Chance to deal %sx damage",
   "effect.tcc.zhen_wo_barrier": "True Self Barrier",
