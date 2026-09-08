@@ -97,7 +97,11 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 非崩解产生的虚数伤害：走常规 hurt 结算（护甲、吸收等正常生效）。由饰品命中时调用。
+     * 非崩解产生的虚数伤害：由饰品命中时调用。
+     * 结算方式由配置 imaginaryDamageUseSetHealth 决定：
+     *  false（默认）→ 走常规 hurt 结算（护甲、吸收等正常生效）；
+     *  true → 直接 setHealth（绕过护甲/吸收等常规伤害结算）。
+     * 两条路径均先经过 handleApollyonImaginaryDamage 的使徒专属判断。
      */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
@@ -112,6 +116,17 @@ public class TccAttributeEvents {
 
         if (source.getEntity() instanceof LivingEntity attacker) {
             target.setLastHurtByMob(attacker);
+        }
+
+        if (TaczCuriosConfig.COMMON.imaginaryDamageUseSetHealth.get()) {
+            float newHealth = target.getHealth() - finalDamage;
+            if (newHealth <= 0) {
+                target.setHealth(0);
+                target.die(source);
+                return true;
+            }
+            target.setHealth(newHealth);
+            return true;
         }
 
         IMAGINARY_HURT_GUARD.add(target);

@@ -34,6 +34,7 @@ public class TaczCuriosConfig {
         
         
         public final ForgeConfigSpec.DoubleValue imaginaryDamageAttackAmplification;
+        public final ForgeConfigSpec.BooleanValue imaginaryDamageUseSetHealth;
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
@@ -674,6 +675,9 @@ public class TaczCuriosConfig {
             imaginaryDamageAttackAmplification = builder
                     .comment("附加伤害基于攻击力的增幅 (默认: 1000) —— 攻击力越高，附加虚数伤害越高")
                     .defineInRange("attackAmplification", 1000.0, 1.0, 100000.0);
+            imaginaryDamageUseSetHealth = builder
+                    .comment("非崩解附加虚数伤害的结算方式：true = 直接 setHealth（绕过护甲/吸收），false = 走 hurt 常规结算（默认）")
+                    .define("useSetHealth", false);
             builder.pop();
             
             
