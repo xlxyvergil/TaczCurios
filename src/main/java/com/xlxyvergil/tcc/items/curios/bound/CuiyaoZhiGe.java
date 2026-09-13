@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.tacz.guns.api.event.common.GunShootEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
@@ -12,19 +13,19 @@ import com.xlxyvergil.tcc.util.MobEffectPoolHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
@@ -35,6 +36,9 @@ import java.util.UUID;
 public class CuiyaoZhiGe extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("9f4d2e7b-3a8c-4f1e-b6d5-8c2e1a7f4b30");
     private static final UUID BASE_GUN_DAMAGE_UUID = UUID.fromString("5a1d3e8c-4b6f-4c2a-9d7e-1f3b5a8c6d27");
+
+    /** 攻击触发冷却存储键：记录该佩戴者下次可触发的游戏刻。 */
+    private static final String COOLDOWN_KEY = "tcc_cuiyao_zhi_ge_aura_next";
 
     private static double auraRange() {
         return TaczCuriosConfig.COMMON.cuiyaoZhiGeAuraRange.get();
@@ -96,31 +100,34 @@ public class CuiyaoZhiGe extends BoundCurioItem {
                 stack -> stack.getItem() instanceof CuiyaoZhiGe).isEmpty();
     }
 
-    @SubscribeEvent
-    public static void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onGunShoot(GunShootEvent event) {
+        // 开枪事件在客户端与服务端都会触发，只在服务端处理
+        if (event.getLogicalSide() != LogicalSide.SERVER) {
             return;
         }
-        MinecraftServer server = event.getServer();
-        if (server == null) {
+        LivingEntity shooter = event.getShooter();
+        if (!(shooter.level() instanceof ServerLevel level)) {
             return;
         }
-        long gameTime = server.overworld().getGameTime();
-        if (gameTime % interval() != 0) {
+        // 冷却检查提前：冷却未结束时直接跳过，省去后续饰品查询与限制判定
+        long gameTime = level.getGameTime();
+        if (shooter.getPersistentData().getLong(COOLDOWN_KEY) > gameTime) {
             return;
         }
-        for (ServerLevel level : server.getAllLevels()) {
-            List<ServerPlayer> players = level.players();
-            for (ServerPlayer player : players) {
-                applyAura(players, player);
-            }
-            for (LivingEntity maid : MaidCompat.getMaids(level)) {
-                applyAura(players, maid);
-            }
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(shooter,
+                stack -> stack.getItem() instanceof CuiyaoZhiGe);
+        if (equipped.isEmpty()) {
+            return;
         }
+        if (!((CuiyaoZhiGe) equipped.getItem()).matchesRestriction(shooter)) {
+            return;
+        }
+        shooter.getPersistentData().putLong(COOLDOWN_KEY, gameTime + interval());
+        applyAura(level, shooter);
     }
 
-    private static void applyAura(List<ServerPlayer> players, LivingEntity wearer) {
+    private static void applyAura(ServerLevel level, LivingEntity wearer) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(wearer,
                 stack -> stack.getItem() instanceof CuiyaoZhiGe);
         if (equipped.isEmpty()) {
@@ -130,11 +137,15 @@ public class CuiyaoZhiGe extends BoundCurioItem {
             return;
         }
         MobEffect effect = MobEffectPoolHelper.randomBeneficial(wearer.getRandom());
-        for (ServerPlayer other : players) {
-            if (wearer.distanceToSqr(other) > auraRange() * auraRange()) {
+        // 以佩戴者为中心扫描实体，对范围内的玩家和女仆施加 buff
+        AABB box = wearer.getBoundingBox().inflate(auraRange());
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, box,
+                entity -> entity.isAlive() && MaidCompat.isPlayerOrMaid(entity));
+        for (LivingEntity target : targets) {
+            if (wearer.distanceToSqr(target) > auraRange() * auraRange()) {
                 continue;
             }
-            MobEffectPoolHelper.applyEffect(other, effect, buffDuration(), buffAmplifier(), wearer);
+            MobEffectPoolHelper.applyEffect(target, effect, buffDuration(), buffAmplifier(), wearer);
         }
     }
 

@@ -1960,7 +1960,7 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             edenIntervalSeconds = builder
-                    .comment("buff 施加间隔（秒） (默认: 20)")
+                    .comment("攻击触发光环的冷却（秒） (默认: 20)")
                     .defineInRange("intervalSeconds", 20, 1, 3600);
             edenBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
@@ -1978,7 +1978,7 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             cuiyaoZhiGeIntervalSeconds = builder
-                    .comment("buff 施加间隔（秒） (默认: 20)")
+                    .comment("攻击触发光环的冷却（秒） (默认: 20)")
                     .defineInRange("intervalSeconds", 20, 1, 3600);
             cuiyaoZhiGeBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
@@ -1996,7 +1996,7 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             huangjinIntervalSeconds = builder
-                    .comment("buff 施加间隔（秒） (默认: 20)")
+                    .comment("攻击触发光环的冷却（秒） (默认: 20)")
                     .defineInRange("intervalSeconds", 20, 1, 3600);
             huangjinBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")

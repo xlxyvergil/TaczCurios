@@ -157,17 +157,22 @@ public class TaczCuriosClientTooltip {
             return null;
         }
         
-        LivingEntity maidWearer = MaidCompat.findWearingMaid(mc.level, s -> ItemStack.isSameItem(s, stack));
-        if (maidWearer != null) {
-            return maidWearer;
+        // 1) 若当前打开的是女仆的界面（含女仆 Curios 饰品界面），直接取界面绑定的女仆，
+        //    无需遍历整个世界。
+        LivingEntity maid = MaidCompat.resolveScreenMaid(mc.screen);
+        if (maid != null && isEquippedWith(maid, stack)) {
+            return maid;
         }
+
+        // 2) 其它场景（创造物品栏 / 玩家背包 / 玩家 Curios 界面）：佩戴者只可能是玩家自己。
         Player player = mc.player;
-        
-        if (player != null
-                && !CurioSearchHelper.findFirstEquippedStack(player, s -> ItemStack.isSameItem(s, stack)).isEmpty()) {
+        if (player != null && isEquippedWith(player, stack)) {
             return player;
         }
-        
-        return player;
+        return null;
+    }
+
+    private static boolean isEquippedWith(LivingEntity entity, ItemStack stack) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity, s -> ItemStack.isSameItem(s, stack)).isEmpty();
     }
 }

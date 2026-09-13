@@ -128,6 +128,15 @@ public class QishiZhijian extends BoundCurioItem {
                 String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.WHITE));
 
+        tooltip.add(formatModifierTooltip(
+                TaczCuriosConfig.COMMON.qishiZhijianHeatMax.get() * 100, "%.0f%%",
+                Component.translatable(AttributeHelper.HEAT_MAX.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(
+                TaczCuriosConfig.COMMON.qishiZhijianHeatCooling.get() * 100, "%.0f%%",
+                Component.translatable(AttributeHelper.HEAT_COOLING.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+
         tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);
     }

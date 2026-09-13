@@ -163,6 +163,14 @@ public class XukongWancangYZTH extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.ammo",
                 String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.RED));
+        tooltip.add(formatModifierTooltip(
+                TaczCuriosConfig.COMMON.xukongWancangYZTHHeatMax.get() * 100, "%.0f%%",
+                Component.translatable(AttributeHelper.HEAT_MAX.getDescriptionId()))
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(formatModifierTooltip(
+                TaczCuriosConfig.COMMON.xukongWancangYZTHHeatCooling.get() * 100, "%.0f%%",
+                Component.translatable(AttributeHelper.HEAT_COOLING.getDescriptionId()))
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));
 

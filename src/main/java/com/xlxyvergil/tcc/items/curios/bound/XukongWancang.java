@@ -123,6 +123,15 @@ public class XukongWancang extends BoundCurioItem {
                 String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.GOLD));
 
+        tooltip.add(formatModifierTooltip(
+                TaczCuriosConfig.COMMON.xukongWancangHeatMax.get() * 100, "%.0f%%",
+                Component.translatable(AttributeHelper.HEAT_MAX.getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(
+                TaczCuriosConfig.COMMON.xukongWancangHeatCooling.get() * 100, "%.0f%%",
+                Component.translatable(AttributeHelper.HEAT_COOLING.getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+
         tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);
     }
