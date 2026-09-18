@@ -459,7 +459,7 @@
   "item.tcc.heiyuan_baihua.effect": "每次造成伤害时，附加等同于自身最大生命值%1$s%%的虚数伤害",
   "item.tcc.discipline.curio_effect": "攻击时15%%概率对目标施加 %s 个随机debuff",
   "item.tcc.discipline.key_effect": "%s格内非玩家实体每秒受到%s级虚数侵染",
-  "item.tcc.golden.curio_effect": "%s 格内玩家每5秒获得1个随机正面buff（%s 级）",
+  "item.tcc.golden.curio_effect": "开枪命中时，%s 格内玩家/女仆获得1个随机正面buff（%s 级）",
   "item.tcc.golden.key_effect": "%s 格内禁止瞬移",
   "item.tcc.dawn.key_effect": "攻击必定削减目标当前护甲/韧性 %s%%",
   "item.tcc.dawn.key_effect_resistance": "攻击必定削减目标当前护甲/韧性",

@@ -7,8 +7,7 @@
     "DamageResistanceMixin",
     "ImaginaryDeathDropMixin",
     "LivingEntityAccessor",
-    "RaidMixin",
-    "RSCraftingGridBehaviorMixin"
+    "RaidMixin"
   ],
   "injectors": {
     "defaultRequire": 1
