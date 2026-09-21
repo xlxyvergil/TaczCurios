@@ -44,17 +44,18 @@ public class Raven extends BoundCurioItem {
         AttributeHelper.registerSourceItem(ARMOR_UUID, stack.getItem());
         AttributeHelper.registerSourceItem(MOVE_SPEED_UUID, stack.getItem());
         AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
-        if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = findEquippedStack(livingEntity);
-            CompoundTag tag = equipped.getTag();
-            double total = ImaginaryResistanceHelper.calculateTotalResistance(1, tag);
+        // 虚数抗性不受武器类型限制，装备即生效。
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(1, tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
+            "tcc.raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
+        if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.ravenArmorMultiplier.get(), ARMOR_UUID,
                 "tcc.raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get(), MOVE_SPEED_UUID,
                 "tcc.raven.movement_speed", AttributeModifier.Operation.MULTIPLY_BASE);
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
-                "tcc.raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
         }
     }
 

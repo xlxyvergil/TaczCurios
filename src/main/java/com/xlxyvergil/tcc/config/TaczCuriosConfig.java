@@ -48,6 +48,12 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heiyuanBaihuaImaginaryDamageScale;
 
         
+        public final ForgeConfigSpec.BooleanValue tier1CurioRemovable;
+        public final ForgeConfigSpec.BooleanValue tier2CurioRemovable;
+        public final ForgeConfigSpec.BooleanValue tier3CurioRemovable;
+        public final ForgeConfigSpec.BooleanValue specialCurioRemovable;
+
+        
         public final ForgeConfigSpec.DoubleValue judgementProcChance;
         public final ForgeConfigSpec.DoubleValue judgementDirectDamagePercent;
         public final ForgeConfigSpec.DoubleValue judgementCollapseProcChance;
@@ -724,6 +730,22 @@ public class TaczCuriosConfig {
             specialImaginaryInfectionMaxLevel = builder
                     .comment("特殊神之键(黑渊白花/天火劫灭·无烬终焉/神恩结界)的虚数侵染上限 (默认: 9)")
                     .defineInRange("specialMaxLevel", 9, 1, 99);
+            builder.pop();
+            
+            
+            builder.comment("按阶位控制神之键/逐火之蛾饰品能否直接卸下（阶位由 config/tcc/key_tiers.json 决定；true = 可直接卸下且不消耗崩坏结晶，false = 维持原限制）").push("curio_removable_by_tier");
+            tier1CurioRemovable = builder
+                    .comment("1阶饰品是否可直接卸下 (默认: true)")
+                    .define("tier1", true);
+            tier2CurioRemovable = builder
+                    .comment("2阶饰品是否可直接卸下 (默认: false)")
+                    .define("tier2", false);
+            tier3CurioRemovable = builder
+                    .comment("3阶饰品是否可直接卸下 (默认: false)")
+                    .define("tier3", false);
+            specialCurioRemovable = builder
+                    .comment("特殊饰品(黑渊白花/天火劫灭·无烬终焉/神恩结界/真我)是否可直接卸下 (默认: false)")
+                    .define("special", false);
             builder.pop();
             
             
@@ -2121,6 +2143,8 @@ public class TaczCuriosConfig {
                     .comment("黑名单中的属性注册名列表（格式：命名空间:属性名，如 taa:recoil）")
                     .defineList("attributes", List.of(
                             "gunsmithlib:bullet_damage",
+                            // 虚数抗性为无条件施加，不应被全属性加成的武器判断间接限制，故排除。
+                            "tcc:imaginary_damage_resistance",
                             "minecraft:movement_speed", "minecraft:bounciness", "minecraft:burning_time", "minecraft:gravity",
                             "taa:explosion_knockbacknew", "taa:explosion_enabled",
                             "taa:ignitefire", "taa:inaccuracy", "taa:inaccuracy_stand",

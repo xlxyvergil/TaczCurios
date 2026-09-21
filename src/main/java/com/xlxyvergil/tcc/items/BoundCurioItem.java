@@ -3,7 +3,9 @@ package com.xlxyvergil.tcc.items;
 import com.xlxyvergil.tcc.api.items.IBindable;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
 import net.minecraft.ChatFormatting;
@@ -69,6 +71,18 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     
+    /** 该饰品所处阶位是否被配置为可直接卸下（无需崩坏结晶）。阶位由 key_tiers.json 决定，开关见配置 curio_removable_by_tier。 */
+    private static boolean isTierRemovable(ItemStack stack) {
+        return switch (KeyTierRegistry.tierOf(stack)) {
+            case T1 -> TaczCuriosConfig.COMMON.tier1CurioRemovable.get();
+            case T2 -> TaczCuriosConfig.COMMON.tier2CurioRemovable.get();
+            case T3 -> TaczCuriosConfig.COMMON.tier3CurioRemovable.get();
+            case SPECIAL -> TaczCuriosConfig.COMMON.specialCurioRemovable.get();
+            case NONE -> false;
+        };
+    }
+
+    
     private void consumeCollapseCrystal(Player player) {
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
@@ -102,7 +116,7 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         if (player.isCreative()) {
             return true;
         }
-        if (isBoundSlot(slotContext) && hasCollapseCrystal(player)) {
+        if (isBoundSlot(slotContext) && (isTierRemovable(stack) || hasCollapseCrystal(player))) {
             return true;
         }
         return false;
@@ -114,7 +128,7 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         
         boolean maidDead = MaidCompat.isMaid(slotContext.entity()) && slotContext.entity().isDeadOrDying();
         Player player = isBoundItem() ? MaidCompat.resolveOwnerPlayer(slotContext.entity()) : null;
-        if (player != null && !player.isCreative() && isBoundSlot(slotContext) && !maidDead) {
+        if (player != null && !player.isCreative() && isBoundSlot(slotContext) && !maidDead && !isTierRemovable(stack)) {
             consumeCollapseCrystal(player);
         }
         super.onUnequip(slotContext, newStack, stack);

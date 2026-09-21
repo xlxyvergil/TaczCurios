@@ -45,13 +45,12 @@ public class BrahmaBeasts extends BoundCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
         AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_MODIFIER_UUID, stack.getItem());
-        if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = findEquippedStack(livingEntity);
-            CompoundTag tag = equipped.getTag();
-            double total = ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                total, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_brahma_beasts_resistance", AttributeModifier.Operation.ADDITION);
-        }
+        // 虚数抗性不受武器类型限制，装备即生效。
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double total = ImaginaryResistanceHelper.calculateTotalResistance(getBaseResistance(), tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            total, IMAGINARY_RESISTANCE_MODIFIER_UUID, "tcc_brahma_beasts_resistance", AttributeModifier.Operation.ADDITION);
     }
     
     @Override

@@ -78,7 +78,9 @@ public class Kosma extends BoundCurioItem {
                     attackDamagePct(), ATTACK_DAMAGE_UUID,
                     "tcc.dawn.attack_damage", AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
-            removeEffects(livingEntity);
+            // 武器不匹配时只清理受限制的攻击加成，虚数抗性为无条件施加，需保留。
+            AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
+            AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
         }
     }
 

@@ -70,7 +70,9 @@ public class Fusheng extends BoundCurioItem {
                     pct, TOUGHNESS_UUID,
                     "tcc.transient.toughness", AttributeModifier.Operation.MULTIPLY_TOTAL);
         } else {
-            removeEffects(livingEntity);
+            // 武器不匹配时只清理受限制的护甲加成，虚数抗性为无条件施加，需保留。
+            AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR, ARMOR_UUID);
+            AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR_TOUGHNESS, TOUGHNESS_UUID);
         }
     }
 

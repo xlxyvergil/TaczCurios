@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 神之键阶位注册表：根据 item id 决定其属于 1/2/3 阶还是特殊（9 级）神之键。
- * 阶位标签由 tcc/key_tiers.json 驱动，新增神之键无需改动 Java 代码，只需在 json 中登记。
+ * 神之键/逐火之蛾阶位注册表：根据 item id 决定其属于 1/2/3 阶还是特殊阶。
+ * 阶位标签由 tcc/key_tiers.json 驱动，新增饰品无需改动 Java 代码，只需在 json 中登记。
  */
 public final class KeyTierRegistry {
 
-    /** 神之键阶位。ordinal 越大阶位越高，SPECIAL 为最高（9 级）。 */
+    /** 饰品阶位。ordinal 越大阶位越高，SPECIAL 为最高阶。 */
     public enum KeyTier {
         NONE,
         T1,
@@ -126,26 +126,13 @@ public final class KeyTierRegistry {
         if (key == null) {
             return KeyTier.NONE;
         }
-        switch (key.trim().toLowerCase(Locale.ROOT)) {
-            case "1":
-            case "t1":
-            case "1阶":
-                return KeyTier.T1;
-            case "2":
-            case "t2":
-            case "2阶":
-                return KeyTier.T2;
-            case "3":
-            case "t3":
-            case "3阶":
-                return KeyTier.T3;
-            case "special":
-            case "9":
-            case "s":
-                return KeyTier.SPECIAL;
-            default:
-                return KeyTier.NONE;
-        }
+        return switch (key.trim().toLowerCase(Locale.ROOT)) {
+            case "1" -> KeyTier.T1;
+            case "2" -> KeyTier.T2;
+            case "3" -> KeyTier.T3;
+            case "special" -> KeyTier.SPECIAL;
+            default -> KeyTier.NONE;
+        };
     }
 
     private static void ensureDefaults(Path file) {

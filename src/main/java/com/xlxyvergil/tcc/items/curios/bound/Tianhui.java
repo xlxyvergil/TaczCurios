@@ -40,15 +40,17 @@ public class Tianhui extends BoundCurioItem {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
         AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
         AttributeHelper.registerSourceItem(MAX_HEALTH_UUID, stack.getItem());
+        // 虚数抗性不受武器类型限制，装备即生效。
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof Tianhui);
+        CompoundTag tag = equipped.getTag();
+        double total = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            total, IMAGINARY_RESISTANCE_UUID,
+            "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+
         if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                    s -> s.getItem() instanceof Tianhui);
-            CompoundTag tag = equipped.getTag();
-            double total = 1.0
-                    + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                total, IMAGINARY_RESISTANCE_UUID,
-                "tcc.tianhui.imaginary_resistance", AttributeModifier.Operation.ADDITION);
             AttributeHelper.applyModifier(livingEntity, Attributes.MAX_HEALTH,
                 TaczCuriosConfig.COMMON.tianhuiMaxHealthReduction.get(), MAX_HEALTH_UUID,
                 "tcc.tianhui.max_health", AttributeModifier.Operation.MULTIPLY_BASE);

@@ -89,7 +89,10 @@ public class LimingZhiShao extends BoundCurioItem {
                         "tcc.dawn.crit_chance", AttributeModifier.Operation.ADDITION);
             }
         } else {
-            removeEffects(livingEntity);
+            // 武器不匹配时只清理受限制的攻击/暴击加成，虚数抗性为无条件施加，需保留。
+            AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
+            AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
+            AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
         }
     }
 

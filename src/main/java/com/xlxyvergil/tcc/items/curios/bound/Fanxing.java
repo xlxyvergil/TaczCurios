@@ -44,15 +44,16 @@ public class Fanxing extends BoundCurioItem {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
         AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
         AttributeHelper.registerSourceItem(LUCK_UUID, stack.getItem());
-        if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = findEquippedStack(livingEntity);
-            CompoundTag tag = equipped.getTag();
-            double resistance = 1.0
-                    + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
-                resistance, IMAGINARY_RESISTANCE_UUID,
-                "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+        // 虚数抗性不受武器类型限制，装备即生效。
+        ItemStack equipped = findEquippedStack(livingEntity);
+        CompoundTag tag = equipped.getTag();
+        double resistance = 1.0
+                + ImaginaryResistanceHelper.getExtraResistanceFromProgress(tag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            resistance, IMAGINARY_RESISTANCE_UUID,
+            "tcc.fanxing.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
+        if (matchesRestriction(livingEntity)) {
             double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             int luckFromResistance = (int) ((int) Math.round(totalResistance * TaczCuriosConfig.COMMON.fanxingLuckPerResistance.get() * 10000.0) / 10000.0);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,

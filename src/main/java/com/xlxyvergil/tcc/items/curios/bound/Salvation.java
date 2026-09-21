@@ -59,11 +59,12 @@ public class Salvation extends BoundCurioItem {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
         AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
         AttributeHelper.registerSourceItem(KNOCKBACK_RESISTANCE_UUID, stack.getItem());
+        // 虚数抗性不受武器类型限制，装备即生效。
+        double imaginaryResistance = getSalvationResistance(livingEntity);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+            imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
+
         if (matchesRestriction(livingEntity)) {
-            double imaginaryResistance = getSalvationResistance(livingEntity);
-            AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), 
-                imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
-            
             livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
             livingEntity.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
