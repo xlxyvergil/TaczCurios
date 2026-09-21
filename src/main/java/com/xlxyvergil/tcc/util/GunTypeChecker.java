@@ -1,0 +1,268 @@
+package com.xlxyvergil.tcc.util;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.tacz.guns.api.GunProperties;
+import com.tacz.guns.api.TimelessAPI;
+import com.tacz.guns.api.entity.IGunOperator;
+import com.tacz.guns.api.item.IGun;
+import com.tacz.guns.resource.index.CommonGunIndex;
+import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
+import com.tacz.guns.resource.pojo.data.gun.ExtraDamage;
+import com.xlxyvergil.taa.context.ShooterContext;
+import com.xlxyvergil.taa.modifier.AmmoCountModifier;
+
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.neoforged.neoforge.common.ItemAbilities;
+
+public class GunTypeChecker {
+    // 定义支持的枪械类型集合
+    public static final Set<String> DMG_BOOST_GUN_TYPES = Set.of("rifle", "sniper", "smg", "mg", "rpg");
+    public static final Set<String> SHOTGUN_GUN_TYPES = Set.of("shotgun");
+    public static final Set<String> PISTOL_GUN_TYPES = Set.of("pistol");
+    public static final Set<String> SNIPER_GUN_TYPES = Set.of("sniper");
+    public static final Set<String> RIFLE_GUN_TYPES = Set.of("rifle");
+    public static final Set<String> HEAVY_WEAPON_TYPES = Set.of("rpg", "mg");
+    public static final Set<String> ALL_GUN_TYPES = Set.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
+    public static final List<String> ALL_GUN_TYPES_LIST = List.of("pistol", "rifle", "shotgun", "sniper", "smg", "mg", "rpg");
+    
+    private static final Map<String, String> GUN_TYPE_LANG_KEYS = Map.of(
+        "pistol", "gun_type.tcc.pistol",
+        "rifle", "gun_type.tcc.rifle", 
+        "shotgun", "gun_type.tcc.shotgun",
+        "sniper", "gun_type.tcc.sniper",
+        "smg", "gun_type.tcc.smg",
+        "mg", "gun_type.tcc.mg",
+        "rpg", "gun_type.tcc.rpg"
+    );
+    
+    public static boolean isHoldingRifle(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, RIFLE_GUN_TYPES);
+    }
+
+    @net.neoforged.api.distmarker.OnlyIn(net.neoforged.api.distmarker.Dist.CLIENT)
+    public static String formatGunTypes(List<? extends String> gunTypes) {
+        return gunTypes.stream()
+            .map(type -> {
+                String langKey = GUN_TYPE_LANG_KEYS.get(type);
+                if (langKey != null) {
+                    return net.minecraft.client.resources.language.I18n.get(langKey);
+                }
+                return type;
+            })
+            .collect(java.util.stream.Collectors.joining(", "));
+    }
+    
+    public static boolean isHoldingValidGunType(LivingEntity livingEntity, Set<String> validTypes) {
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun != null) {
+            ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            return TimelessAPI.getCommonGunIndex(gunId)
+                .map(CommonGunIndex::getType)
+                .map(validTypes::contains)
+                .orElse(false);
+        }
+        
+        return false;
+    }
+    
+    public static boolean isHoldingDmgBoostGunType(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, DMG_BOOST_GUN_TYPES);
+    }
+    
+    public static boolean isHoldingShotgun(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, SHOTGUN_GUN_TYPES);
+    }
+    
+    public static boolean isHoldingPistol(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, PISTOL_GUN_TYPES);
+    }
+    
+    public static boolean isHoldingSniper(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, SNIPER_GUN_TYPES);
+    }
+
+    public static boolean isHoldingHeavyWeapon(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, HEAVY_WEAPON_TYPES);
+    }
+
+    public static boolean isHoldingAnyGun(LivingEntity livingEntity) {
+        return isHoldingValidGunType(livingEntity, ALL_GUN_TYPES);
+    }
+
+    /**
+     * 读取持枪者主手 TACZ 枪械的子弹实际伤害（TAA 计算后伤害：配件伤害 × 玩家枪械伤害属性 × 弹丸数），不限制枪械类型。<br>
+     * 用于动态 tooltip 显示与服务端伤害结算。若主手不是枪械或无法读取，返回 0。
+     */
+    public static double getMainHandGunDamage(LivingEntity livingEntity) {
+        return getMainHandGunDamage(livingEntity, ALL_GUN_TYPES);
+    }
+
+    /**
+     * 读取持枪者主手 TACZ 枪械的子弹实际伤害，并限定枪械类型。<br>
+     * 直接读取 TAA 计算后的实时缓存（配件伤害 × 玩家枪械伤害属性 × 弹丸数），与枪械面板显示的伤害一致。<br>
+     * 仅当主手枪械类型属于 {@code gunTypes} 时才返回伤害值，否则返回 0。
+     */
+    public static double getMainHandGunDamage(LivingEntity livingEntity, Set<String> gunTypes) {
+        if (livingEntity == null || gunTypes == null || gunTypes.isEmpty()) {
+            return 0;
+        }
+        ItemStack gunStack = livingEntity.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(gunStack);
+        if (iGun == null) {
+            return 0;
+        }
+        ResourceLocation gunId = iGun.getGunId(gunStack);
+        boolean typeMatched = TimelessAPI.getCommonGunIndex(gunId)
+                .filter(index -> gunTypes.contains(index.getType()))
+                .isPresent();
+        if (!typeMatched) {
+            return 0;
+        }
+        // 读取 TAA 计算后的伤害缓存（与枪械面板读取的 DamageModifier.ID 同一键：GunProperties.DAMAGE）
+        IGunOperator operator = IGunOperator.fromLivingEntity(livingEntity);
+        if (operator == null) {
+            return 0;
+        }
+        AttachmentCacheProperty cache = operator.getCacheProperty();
+        if (cache == null) {
+            return 0;
+        }
+        LinkedList<ExtraDamage.DistanceDamagePair> damagePairs = cache.getCache(GunProperties.DAMAGE);
+        if (damagePairs == null || damagePairs.isEmpty()) {
+            return 0;
+        }
+        return damagePairs.getFirst().getDamage();
+    }
+
+    /**
+     * 检查是否持有近战武器：物品可执行 ItemAbilities.SWORD_DIG（剑类行为），或主手基础 ATTACK_DAMAGE 属性值大于 0，满足任一即视为近战武器。
+     */
+    public static boolean isHoldingMeleeWeapon(LivingEntity livingEntity) {
+        ItemStack mainHand = livingEntity.getMainHandItem();
+        if (mainHand.isEmpty()) return false;
+        if (mainHand.canPerformAction(ItemAbilities.SWORD_DIG)) return true;
+        for (ItemAttributeModifiers.Entry entry : mainHand.getAttributeModifiers().modifiers()) {
+            if (entry.slot().test(EquipmentSlot.MAINHAND)
+                && entry.attribute().equals(Attributes.ATTACK_DAMAGE)
+                && entry.modifier().amount() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static boolean isHoldingGunWithFullMagazine(LivingEntity livingEntity) {
+        ItemStack mainHandItem = livingEntity.getMainHandItem();
+        IGun iGun = IGun.getIGunOrNull(mainHandItem);
+        
+        if (iGun == null) {
+            return false;
+        }
+        
+        ResourceLocation gunId = iGun.getGunId(mainHandItem);
+        return TimelessAPI.getCommonGunIndex(gunId)
+            .map(index -> {
+                // 基础弹药数（包含枪管中的子弹）
+                int barrelBulletAmount = (iGun.hasBulletInBarrel(mainHandItem) && index.getGunData().getBolt() != com.tacz.guns.resource.pojo.data.gun.Bolt.OPEN_BOLT) ? 1 : 0;
+                int ammoAmount = index.getGunData().getAmmoAmount() + barrelBulletAmount;
+                
+                // 获取修改后的最大弹药数（与GunPropertyDiagramsMixin相同的逻辑）
+                int maxAmmoCount = ammoAmount;
+                
+                // 检查是否为背包供弹模式，如果是则不修改
+                boolean isUsingInventoryAsMagazine = index.getGunData().getReloadData() != null && 
+                    index.getGunData().getReloadData().getType() == com.tacz.guns.resource.pojo.data.gun.FeedType.INVENTORY;
+                    
+                if (!isUsingInventoryAsMagazine) {
+                    // 首先尝试从ShooterContext获取缓存数据（最高优先级）
+                    LivingEntity shooter = ShooterContext.getShooter();
+                    if (shooter != null) {
+                        IGunOperator operator = IGunOperator.fromLivingEntity(shooter);
+                        if (operator != null) {
+                            AttachmentCacheProperty cache = operator.getCacheProperty();
+                            if (cache != null) {
+                                Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
+                                if (modifiedAmmoCount != null) {
+                                    maxAmmoCount = modifiedAmmoCount;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // 如果ShooterContext中没有，尝试从生物获取缓存数据（备选方案）
+                    if (maxAmmoCount == ammoAmount) { // 只有在还没有修改值时才尝试
+                        IGunOperator operator = IGunOperator.fromLivingEntity(livingEntity);
+                        if (operator != null) {
+                            AttachmentCacheProperty cache = operator.getCacheProperty();
+                            if (cache != null) {
+                                Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
+                                if (modifiedAmmoCount != null) {
+                                    maxAmmoCount = modifiedAmmoCount;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                int currentAmmo = iGun.getCurrentAmmoCount(mainHandItem);
+                
+                // 确保弹药数不为负数且为有效值
+                if (currentAmmo < 0 || maxAmmoCount <= 0) {
+                    return false;
+                }
+                
+                return currentAmmo == maxAmmoCount;
+            })
+            .orElse(false);
+    }
+
+    public static boolean isHoldingConfiguredGunTypes(LivingEntity livingEntity, List<? extends String> gunTypes) {
+        return isHoldingValidGunType(livingEntity, new HashSet<>(gunTypes));
+    }
+
+    public static boolean matchesGunTypes(ResourceLocation gunId, List<? extends String> gunTypes) {
+        if (gunId == null) {
+            return false;
+        }
+        if (gunTypes == null || gunTypes.isEmpty()) {
+            return true;
+        }
+        Set<String> validTypes = new HashSet<>(gunTypes);
+        return TimelessAPI.getCommonGunIndex(gunId)
+            .map(CommonGunIndex::getType)
+            .map(validTypes::contains)
+            .orElse(false);
+    }
+
+    public static List<Holder<Attribute>> getDamageAttributesForGunTypes(List<? extends String> gunTypes) {
+        List<Holder<Attribute>> attributes = new ArrayList<>();
+        attributes.add(AttributeHelper.BULLET_GUNDAMAGE);
+        for (String type : gunTypes) {
+            switch (type) {
+                case "pistol" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_PISTOL);
+                case "rifle" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_RIFLE);
+                case "shotgun" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN);
+                case "sniper" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SNIPER);
+                case "smg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SMG);
+                case "mg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_LMG);
+                case "rpg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER);
+            }
+        }
+        return attributes;
+    }
+}

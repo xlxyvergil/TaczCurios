@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "I#I",
+    "###"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "#": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "tcc:teshin_workbench"
+  }
+}

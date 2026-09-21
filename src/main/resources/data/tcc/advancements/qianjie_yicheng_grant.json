@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:qianjie_yicheng"
+    },
+    "title": {
+      "translate": "advancement.tcc.qianjie_yicheng_grant.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.qianjie_yicheng_grant.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:griseo_grant",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

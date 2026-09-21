@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:eden_to_cuiyao_zhi_ge",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.cuiyao_zhi_ge_to_huangjin.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:huangjin"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.cuiyao_zhi_ge_to_huangjin.title"
+                              },
+                    "frame":  "challenge"
+                }
+}

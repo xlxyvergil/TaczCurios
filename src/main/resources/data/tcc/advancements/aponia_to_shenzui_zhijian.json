@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.aponia_to_shenzui_zhijian.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:shenzui_zhijian"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.aponia_to_shenzui_zhijian.title"
+                              },
+                    "frame":  "goal"
+                }
+}

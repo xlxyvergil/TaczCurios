@@ -1,0 +1,7 @@
+{
+  "entities": [
+    "player",
+    "touhou_little_maid:maid"
+  ],
+  "slots": ["tcc_slot", "tcc_3rd", "tcc_tdk"]
+}

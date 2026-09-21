@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:fanxing"
+    },
+    "title": {
+      "translate": "advancement.tcc.huishi_to_fanxing.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.huishi_to_fanxing.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:qianjie_to_yongjie_zhijian",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

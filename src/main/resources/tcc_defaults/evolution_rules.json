@@ -1,0 +1,796 @@
+{
+  "rules": {
+    "tcc_summer_beach_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:summer_beach",
+      "description": {
+        "zh_cn": "使用手枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with pistol, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "pistol"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+    "tcc_brahma_beasts_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:brahma_beasts",
+      "description": {
+        "zh_cn": "使用手枪击杀末影龙，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Ender Dragon with pistol, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "pistol"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:ender_dragon"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+    
+    "tcc_xiora_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:xiora",
+      "description": {
+        "zh_cn": "使用狙击枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": ["sniper"]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+    "tcc_raven_gain_imaginary_resistance": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:raven",
+      "description": {
+        "zh_cn": "使用狙击枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": ["sniper"]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_griseo_imaginary_from_days": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:griseo",
+      "description": {
+        "zh_cn": "每佩戴格蕾修游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Griseo (24000 ticks), +1 Imaginary Resistance (cap 20)"
+      },
+      "stat": "tcc:play_time_griseo",
+      "statThreshold": 24000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_griseo_imaginary"
+      }
+    },
+    "tcc_huishi_zhijuan_imaginary_from_days": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:huishi_zhijuan",
+      "description": {
+        "zh_cn": "每佩戴绘世之卷游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Scroll of Painting (24000 ticks), +1 Imaginary Resistance (cap 20)"
+      },
+      "stat": "tcc:play_time_huishi_zhijuan",
+      "statThreshold": 24000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_huishi_zhijuan_imaginary"
+      }
+    },
+    "tcc_fanxing_imaginary_from_days": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:fanxing",
+      "description": {
+        "zh_cn": "每佩戴繁星游玩1天（24000tick），+1虚数抗性（上限20）",
+        "en_us": "Every 1 day wearing Starry Sky (24000 ticks), +1 Imaginary Resistance (cap 20)"
+      },
+      "stat": "tcc:play_time_fanxing",
+      "statThreshold": 24000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_fanxing_imaginary"
+      }
+    },
+
+    "tcc_kalpas_imaginary_from_melee": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:kalpas",
+      "description": {
+        "zh_cn": "每造成2000点伤害，+1虚数抗性（上限20）",
+        "en_us": "Every 2000 damage dealt, +1 Imaginary Resistance (cap 20)"
+      },
+      "stat": "minecraft:damage_dealt",
+      "statThreshold": 2000,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_kalpas_imaginary"
+      }
+    },
+
+    "tcc_huajie_zhiyan_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:huajie_zhiyan",
+      "description": {
+        "zh_cn": "击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "When Wither dies nearby, +2 Imaginary Resistance (cap 20)"
+      },
+      "playerKilled": false,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_huajie_zhiyan_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_su_imaginary_from_raid": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:su",
+      "description": {
+        "zh_cn": "每赢得一次袭击，+4虚数抗性（上限20）",
+        "en_us": "Every raid won, +4 Imaginary Resistance (cap 20)"
+      },
+      "stat": "minecraft:raid_win",
+      "statThreshold": 1,
+      "value": 4.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_su_imaginary"
+      }
+    },
+
+    "tcc_juezhe_imaginary_from_wither_rifle": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:juezhe",
+      "description": {
+        "zh_cn": "使用步枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with rifle, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "rifle"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_juezhe_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_vill_v_imaginary_from_enchant": {
+      "enabled": true,
+      "trigger": "stat_polling",
+      "type": "attribute",
+      "item": "tcc:vill_v",
+      "description": {
+        "zh_cn": "每附魔20次物品，+1虚数抗性（上限20）",
+        "en_us": "Every 20 items enchanted, +1 Imaginary Resistance (cap 20)"
+      },
+      "stat": "minecraft:enchant_item",
+      "statThreshold": 20,
+      "value": 1.0,
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_vill_v_imaginary"
+      }
+    },
+
+    "tcc_yuxi_zhixia_imaginary_from_heavy_wither": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:yuxi_zhixia",
+      "description": {
+        "zh_cn": "使用重型武器击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with heavy weapon, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": ["rpg", "mg"]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_yuxi_zhixia_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_aponia_imaginary_from_nether": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:aponia",
+      "description": {
+        "zh_cn": "使用霰弹枪击杀僵尸，每次+0.05虚数抗性（上限20）",
+        "en_us": "Kill Zombie with shotgun, +0.05 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "shotgun"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_aponia_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:zombie"
+          },
+          "value": 0.05
+        }
+      ]
+    },
+    "tcc_shenzui_zhijian_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:shenzui_zhijian",
+      "description": {
+        "zh_cn": "使用霰弹枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with shotgun, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "shotgun"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_shenzui_zhijian_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_eden_imaginary_from_nether": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:eden",
+      "description": {
+        "zh_cn": "使用手枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.05虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with pistol, +0.05 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "pistol"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_eden_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:zombified_piglin"
+          },
+          "value": 0.2
+        },
+        {
+          "entity": {
+            "key": "minecraft:wither_skeleton"
+          },
+          "value": 0.2
+        },
+        {
+          "entity": {
+            "key": "minecraft:ghast"
+          },
+          "value": 0.2
+        },
+        {
+          "entity": {
+            "key": "minecraft:blaze"
+          },
+          "value": 0.2
+        },
+        {
+          "entity": {
+            "key": "minecraft:magma_cube"
+          },
+          "value": 0.2
+        }
+      ]
+    },
+    "tcc_cuiyao_zhi_ge_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:cuiyao_zhi_ge",
+      "description": {
+        "zh_cn": "使用手枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with pistol, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "pistol"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_cuiyao_zhi_ge_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_kosma_imaginary_from_nether": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:kosma",
+      "description": {
+        "zh_cn": "击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.05虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube, +0.05 Imaginary Resistance per kill (cap 20)"
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_kosma_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:zombified_piglin"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:wither_skeleton"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:ghast"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:blaze"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:magma_cube"
+          },
+          "value": 0.05
+        }
+      ]
+    },
+    "tcc_liming_zhi_shao_imaginary_from_end": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:liming_zhi_shao",
+      "description": {
+        "zh_cn": "击杀末地生物，每次+2虚数抗性（上限20）",
+        "en_us": "Kill End mobs, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_liming_zhi_shao_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:shulker"
+          },
+          "value": 2.0
+        },
+        {
+          "entity": {
+            "key": "minecraft:enderman"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_mebius_imaginary_from_nether": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:mebius",
+      "description": {
+        "zh_cn": "使用狙击枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.2虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with sniper, +0.2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "sniper"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_mebius_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:zombified_piglin"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:wither_skeleton"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:ghast"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:blaze"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:magma_cube"
+          },
+          "value": 0.05
+        }
+      ]
+    },
+    "tcc_shijie_zhi_she_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:shijie_zhi_she",
+      "description": {
+        "zh_cn": "使用狙击枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with sniper, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "sniper"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_shijie_zhi_she_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_hua_imaginary_from_nether": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:hua",
+      "description": {
+        "zh_cn": "击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.05虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube, +0.05 Imaginary Resistance per kill (cap 20)"
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_hua_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:zombified_piglin"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:wither_skeleton"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:ghast"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:blaze"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:magma_cube"
+          },
+          "value": 0.05
+        }
+      ]
+    },
+    "tcc_duchen_zhi_yu_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "living_death",
+      "type": "attribute",
+      "item": "tcc:duchen_zhi_yu",
+      "description": {
+        "zh_cn": "击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_duchen_zhi_yu_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    },
+
+    "tcc_pado_philipis_imaginary_from_nether": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:pado_philipis",
+      "description": {
+        "zh_cn": "使用霰弹枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.05虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with shotgun, +0.05 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "shotgun"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_pado_philipis_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:zombified_piglin"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:wither_skeleton"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:ghast"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:blaze"
+          },
+          "value": 0.05
+        },
+        {
+          "entity": {
+            "key": "minecraft:magma_cube"
+          },
+          "value": 0.05
+        }
+      ]
+    },
+    "tcc_lueji_zhi_shou_imaginary_from_wither": {
+      "enabled": true,
+      "trigger": "gun_kill",
+      "type": "attribute",
+      "item": "tcc:lueji_zhi_shou",
+      "description": {
+        "zh_cn": "使用霰弹枪击杀凋灵，每次+2虚数抗性（上限20）",
+        "en_us": "Kill Wither with shotgun, +2 Imaginary Resistance per kill (cap 20)"
+      },
+      "requirements": {
+        "holdingGunTypes": [
+          "shotgun"
+        ]
+      },
+      "progress": {
+        "attribute": "tcc:imaginary_damage_resistance",
+        "operation": "ADDITION",
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_lueji_zhi_shou_imaginary"
+      },
+      "kills": [
+        {
+          "entity": {
+            "key": "minecraft:wither"
+          },
+          "value": 2.0
+        }
+      ]
+    }
+  }
+}

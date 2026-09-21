@@ -1,0 +1,210 @@
+package com.xlxyvergil.tcc.items.curios.tcc;
+
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.items.TccCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+
+import javax.annotation.Nullable;
+import java.util.Comparator;
+import java.util.List;
+
+@EventBusSubscriber(modid = TaczCurios.MODID)
+public class KikakuIchijin extends TccCurioItem {
+    public KikakuIchijin(Properties properties) {
+        super(properties);
+    }
+
+    
+    @Override
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    }
+
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        Level level = context.level();
+        super.appendHoverText(stack, context, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
+        tooltip.add(Component.translatable("item.tcc.kikaku_ichijin.effect")
+            .withStyle(ChatFormatting.DARK_PURPLE));
+
+        tooltip.add(Component.literal(""));
+
+    }
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingIncomingDamageEvent event) {
+        if (!(event.getEntity().level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null) return;
+
+        boolean hasKikaku = !CurioSearchHelper.findFirstEquippedStack(attacker,
+            stack -> stack.getItem() instanceof KikakuIchijin).isEmpty();
+        if (!hasKikaku) return;
+
+        
+        LivingEntity sacrifice = findSacrifice(attacker, serverLevel);
+
+        float healthMultiplier = TaczCuriosConfig.COMMON.kikakuIchijinHealthMultiplier.get().floatValue();
+        float damageMultiplier = sacrifice.getMaxHealth() * healthMultiplier;
+        event.setAmount(event.getAmount() * damageMultiplier);
+
+        destroyBlocksAroundVictim(serverLevel, event.getEntity());
+
+        
+        sacrifice.setHealth(0.0F);
+        sacrifice.die(sacrifice.damageSources().genericKill());
+        sacrifice.kill();
+
+        boolean isSelfSacrifice = (sacrifice == attacker);
+        if (isSelfSacrifice) {
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                Component.translatable("message.tcc.kikaku_ichijin.self_sacrifice", attacker.getName()), false);
+        } else {
+            Component sacrificeName = MaidCompat.getDisplayName(sacrifice);
+            serverLevel.getServer().getPlayerList().broadcastSystemMessage(
+                Component.translatable("message.tcc.kikaku_ichijin.sacrifice", attacker.getName(), sacrificeName), false);
+        }
+    }
+
+    
+    private static LivingEntity resolveAttacker(LivingIncomingDamageEvent event) {
+        DamageSource source = event.getSource();
+        LivingEntity attacker = resolveFromEntity(source.getEntity());
+        if (attacker != null) return attacker;
+        return resolveFromEntity(source.getDirectEntity());
+    }
+
+    private static LivingEntity resolveFromEntity(Entity entity) {
+        if (entity == null) return null;
+        if (entity instanceof LivingEntity living) return living;
+        if (entity instanceof Projectile proj) {
+            if (proj.getOwner() instanceof LivingEntity owner) return owner;
+            return null;
+        }
+        if (entity instanceof OwnableEntity ownable) {
+            Entity owner = ownable.getOwner();
+            if (owner instanceof LivingEntity living) return living;
+        }
+        return null;
+    }
+
+    
+    private static LivingEntity findSacrifice(LivingEntity attacker, ServerLevel level) {
+        AABB searchBox = attacker.getBoundingBox().inflate(64.0);
+
+        if (MaidCompat.isMaid(attacker)) {
+            
+            List<Player> nearbyPlayers = level.getEntitiesOfClass(
+                Player.class, searchBox,
+                player -> player != attacker && player.isAlive()
+            );
+            if (!nearbyPlayers.isEmpty()) {
+                return nearbyPlayers.stream()
+                    .min(Comparator.comparingDouble(p -> p.distanceToSqr(attacker)))
+                    .get();
+            }
+            return attacker;
+        }
+
+        if (attacker instanceof Player) {
+            
+            List<LivingEntity> nearbyMaids = MaidCompat.getMaidsNear(level, searchBox,
+                maid -> maid != attacker && maid.isAlive());
+            if (!nearbyMaids.isEmpty()) {
+                return nearbyMaids.stream()
+                    .min(Comparator.comparingDouble(m -> m.distanceToSqr(attacker)))
+                    .get();
+            }
+            List<Player> nearbyPlayers = level.getEntitiesOfClass(
+                Player.class, searchBox,
+                player -> player != attacker && player.isAlive()
+            );
+            if (!nearbyPlayers.isEmpty()) {
+                return nearbyPlayers.stream()
+                    .min(Comparator.comparingDouble(p -> p.distanceToSqr(attacker)))
+                    .get();
+            }
+            return attacker;
+        }
+
+        
+        return attacker;
+    }
+
+    
+    private static void destroyBlocksAroundVictim(ServerLevel level, LivingEntity victim) {
+        BlockPos center = victim.blockPosition();
+        int radius = 6;
+        double radiusSq = radius * radius;
+        boolean destroyUnbreakable = TaczCuriosConfig.COMMON.kikakuIchijinDestroyUnbreakableBlocks.get();
+        boolean destroyNormal = TaczCuriosConfig.COMMON.kikakuIchijinDestroyNormalBlocks.get();
+
+        if (!destroyUnbreakable && !destroyNormal) {
+            return;
+        }
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    if (x * x + y * y + z * z > radiusSq) {
+                        continue;
+                    }
+
+                    BlockPos pos = center.offset(x, y, z);
+                    BlockState blockState = level.getBlockState(pos);
+
+                    if (blockState.isAir()) {
+                        continue;
+                    }
+
+                    float destroySpeed = blockState.getDestroySpeed(level, pos);
+
+                    boolean isUnbreakable = destroySpeed < 0;
+
+                    if (isUnbreakable && !destroyUnbreakable) {
+                        continue;
+                    }
+                    if (!isUnbreakable && !destroyNormal) {
+                        continue;
+                    }
+
+                    Block.dropResources(blockState, level, pos, level.getBlockEntity(pos), victim, ItemStack.EMPTY);
+                    level.removeBlock(pos, false);
+                }
+            }
+        }
+    }
+}

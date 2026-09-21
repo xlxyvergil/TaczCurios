@@ -1,0 +1,44 @@
+package com.xlxyvergil.tcc.event;
+
+import com.tacz.guns.api.event.common.GunDrawEvent;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+import top.theillusivec4.curios.api.CuriosApi;
+import com.xlxyvergil.tcc.TaczCurios;
+
+@EventBusSubscriber(modid = TaczCurios.MODID)
+public class GunSwitchEventHandler {
+    
+    @SubscribeEvent
+    public static void onGunDraw(GunDrawEvent event) {
+        // 玩家切换武器后检查所有装备的饰品并应用效果
+        if (event.getEntity() instanceof Player player) {
+            CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
+                curiosInventory.getCurios().forEach((slotIdentifier, stacksHandler) -> {
+                    for (int i = 0; i < stacksHandler.getSlots(); i++) {
+                        ItemStack stack = stacksHandler.getStacks().getStackInSlot(i);
+                        if (!stack.isEmpty() && stack.getItem() instanceof BaseCurioItem curioItem) {
+                            // 先移除旧效果再按当前手持枪械类型重新应用，保证属性仅在手持对应枪械时生效
+                            curioItem.refreshEffects(player, stack);
+                        }
+                    }
+                });
+            });
+            
+            // 枪械切换后更新TACZ属性缓存
+            if (player instanceof ServerPlayer serverPlayer) {
+                updateTaczCache(serverPlayer);
+            }
+        }
+    }
+    
+    private static void updateTaczCache(ServerPlayer player) {
+        // 触发TACZ的附件属性变更事件，强制重新计算属性
+        com.tacz.guns.resource.modifier.AttachmentPropertyManager.postChangeEvent(player, player.getMainHandItem());
+    }
+}

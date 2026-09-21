@@ -1,0 +1,103 @@
+package com.xlxyvergil.tcc.effect;
+
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.evolution.GunKillDebugFallbackHandler;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.common.EffectCure;
+
+import java.util.Set;
+import java.util.UUID;
+
+/**
+ * 虚数崩解流血效果：伤害 = 目标最大血量 × percentPerLevel × (1 + min(debuff数, maxDebuff) × percentPerDebuff)；
+ * 侵染等级不再于崩解基础中线性放大，统一由通用虚数伤害入口的侵染增伤（1 + 侵染等级 × ampPerLevel）体现。
+ * 负面数量增益只在目标带侵蚀时生效。
+ */
+public class ImaginaryCollapseEffect extends MobEffect {
+
+    public ImaginaryCollapseEffect() {
+        super(MobEffectCategory.NEUTRAL, 0x4B0082);
+    }
+
+    /**
+     * 不提供任何 cure，阻止 Goety/Warlock/Codger 等 boss 的剥离机制。
+     */
+    @Override
+    public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+        // 留空即表示不可被任何 cure 解除
+    }
+
+    @Override
+    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+        if (entity.level().isClientSide) return true;
+
+        int infectionLevel = 0;
+        MobEffectInstance infection = entity.getEffect(TccMobEffects.IMAGINARY_INFECTION);
+        if (infection != null) {
+            infectionLevel = infection.getAmplifier() + 1;
+        }
+        if (infectionLevel <= 0) return true;
+
+        double percentPerLevel = TaczCuriosConfig.COMMON.collapsePercentPerLevel.get();
+        double debuffMultiplier = 1.0;
+
+        // 仅当目标带有侵蚀效果时，才统计负面效果数量增益
+        if (entity.hasEffect(TccMobEffects.EROSION)) {
+            int debuffCount = 0;
+            for (MobEffectInstance instance : entity.getActiveEffects()) {
+                if (instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                    debuffCount++;
+                }
+            }
+            int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
+            double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
+            int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
+            debuffMultiplier = Math.round((1.0 + (1.0 + effectiveDebuffs) * percentPerDebuff) * 10000.0) / 10000.0;
+        }
+
+        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * debuffMultiplier * 10000.0) / 10000.0);
+
+        if (finalDamage > 0) {
+            // 从 NBT 读取侵染来源 attacker（由 TccAttributeEvents.applyImaginaryInfection 写入）
+            LivingEntity attacker = resolveInfectionAttacker(entity);
+            // 刷新枪杀判定窗口，确保虚数崩 DoT 击杀时能通过 onLivingDeath 的时间窗口校验
+            if (attacker instanceof ServerPlayer sp) {
+                GunKillDebugFallbackHandler.refreshGunKillWindow(entity, sp);
+            }
+            TccAttributeEvents.applyCollapseDamage(
+                entity,
+                TccDamageSources.imaginaryDamage(entity.level(), attacker),
+                finalDamage);
+        }
+        return true;
+    }
+
+    /**
+     * 从目标 NBT 读取虚数侵染来源，使击杀结算时 DamageSource.getEntity() 能返回正确玩家。
+     */
+    private static LivingEntity resolveInfectionAttacker(LivingEntity entity) {
+        if (!(entity.level() instanceof ServerLevel sl)) return null;
+        String uuidStr = entity.getPersistentData().getString(TccAttributeEvents.INFECTION_ATTACKER_KEY);
+        if (uuidStr.isEmpty()) return null;
+        try {
+            UUID uuid = UUID.fromString(uuidStr);
+            ServerPlayer player = sl.getServer().getPlayerList().getPlayer(uuid);
+            return player;
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+        return duration % 20 == 0;
+    }
+}

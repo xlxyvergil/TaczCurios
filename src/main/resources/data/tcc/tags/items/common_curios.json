@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "tcc:prophecy_pact",
+    "tcc:magazine_boost",
+    "tcc:oppression_point",
+    "tcc:sword_wind",
+    "tcc:shotgun_expansion",
+    "tcc:tandem_magazine",
+    "tcc:burst_reload",
+    "tcc:sustained_fire",
+    "tcc:lethal_crit",
+    "tcc:thunder_barrel",
+    "tcc:pistol_mastery",
+    "tcc:steel_slash",
+    "tcc:dismemberment",
+    "tcc:fragment_shot",
+    "tcc:hydraulic_crosshair"
+  ]
+}

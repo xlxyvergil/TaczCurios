@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:heaven_fire_apocalypse"
+    },
+    "title": {
+      "translate": "advancement.tcc.judgment_to_apocalypse.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.judgment_to_apocalypse.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:summer_beach_grant",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

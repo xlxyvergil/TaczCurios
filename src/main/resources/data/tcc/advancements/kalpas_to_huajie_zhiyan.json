@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:huajie_zhiyan"
+    },
+    "title": {
+      "translate": "advancement.tcc.kalpas_to_huajie_zhiyan.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.kalpas_to_huajie_zhiyan.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:imer_grant",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

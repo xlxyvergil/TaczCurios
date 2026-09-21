@@ -1,0 +1,94 @@
+package com.xlxyvergil.tcc.event;
+
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+
+import javax.annotation.Nullable;
+
+/**
+ * 受击触发式黄心：饰品类在 LivingIncomingDamageEvent 中调用 tryTriggerAbsorption，
+ * 满足装备+血量阈值+冷却后赋予 ABSORPTION 并进入冷却；冷却存于 PersistentData，由 onLivingTick 递减。
+ */
+@net.neoforged.fml.common.EventBusSubscriber(modid = TaczCurios.MODID)
+public class CurioAbsorptionEventHandler {
+
+    public static final String ABSORPTION_COOLDOWN_KEY = TaczCurios.MODID + ":absorption_cooldown";
+
+    /**
+     * 在 LivingIncomingDamageEvent 中触发吸收（黄心）：装备指定饰品、血量比例 ≤ 阈值、冷却结束三者同时满足才生效；
+     * 触发后赋予 ABSORPTION 并重新进入冷却。
+     */
+    public static boolean tryTriggerAbsorption(
+            LivingEntity entity,
+            Item curioItem,
+            double triggerHpRatio,
+            int absorptionLevel,
+            double absorptionSeconds,
+            double cooldownSeconds
+    ) {
+        // 1. 检查饰品是否装备
+        if (!isCurioEquipped(entity, curioItem)) {
+            return false;
+        }
+
+        // 2. 检查冷却（冷却由 onLivingTick 统一倒计时）
+        if (entity.getPersistentData().getInt(ABSORPTION_COOLDOWN_KEY) > 0) {
+            return false;
+        }
+
+        // 3. 检查血量阈值
+        float hpRatio = entity.getHealth() / entity.getMaxHealth();
+        if (hpRatio > triggerHpRatio) {
+            return false;
+        }
+
+        // 4. 触发吸收效果
+        int durationTicks = (int) (absorptionSeconds * 20);
+        int amplifier = absorptionLevel - 1; // MobEffectInstance amplifier: 0 = I 级
+        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, durationTicks, amplifier));
+
+        // 5. 设置冷却
+        int cooldownTicks = (int) (cooldownSeconds * 20);
+        entity.getPersistentData().putInt(ABSORPTION_COOLDOWN_KEY, cooldownTicks);
+
+        return true;
+    }
+
+    public static void resetCooldown(LivingEntity entity) {
+        entity.getPersistentData().putInt(ABSORPTION_COOLDOWN_KEY, 0);
+    }
+
+    public static int getCooldown(LivingEntity entity) {
+        return entity.getPersistentData().getInt(ABSORPTION_COOLDOWN_KEY);
+    }
+
+    // Tick 事件（冷却倒计时）
+
+    /**
+     * 每 tick 对在线玩家执行冷却倒计时；实际触发逻辑由具体饰品类调用，本类只负责通用倒计时。
+     */
+    @SubscribeEvent
+    public static void onLivingTick(EntityTickEvent.Post event) {
+        if (!event.getEntity().isAlive()) return;
+        Entity entity = event.getEntity();
+
+        int cooldown = entity.getPersistentData().getInt(ABSORPTION_COOLDOWN_KEY);
+        if (cooldown > 0) {
+            entity.getPersistentData().putInt(ABSORPTION_COOLDOWN_KEY, cooldown - 1);
+        }
+    }
+
+    // 内部工具方法
+
+    private static boolean isCurioEquipped(LivingEntity entity, @Nullable Item item) {
+        if (item == null) return false;
+        return !CurioSearchHelper.findFirstEquippedStack(entity, stack -> stack.getItem() == item).isEmpty();
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:mebius_grant",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.wangshi_de_sheying_grant.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:wangshi_de_sheying"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.wangshi_de_sheying_grant.title"
+                              },
+                    "frame":  "goal"
+                }
+}

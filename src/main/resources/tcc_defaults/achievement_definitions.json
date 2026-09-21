@@ -1,0 +1,2304 @@
+{
+  "achievements": {
+    "tcc:my_island": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "我的小岛",
+          "en_us": "My Island"
+        },
+        "icon": "tcc:seven_thunders",
+        "description": {
+          "zh_cn": "爆头击杀任意实体30次",
+          "en_us": "Headshot kill any entity 30 times"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_headshot_kill",
+      "conditions": {
+        "kills": [
+          { "entity": "*", "criteria_count": 30 }
+        ]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:seven_thunders",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:xiora_mission": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "夜袭强敌",
+          "en_us": "Night Raid"
+        },
+        "icon": "tcc:xiora",
+        "description": {
+          "zh_cn": "佩戴涤罪七雷，隐身后使用狙击枪爆头击杀任意实体10次",
+          "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders with invisibility and sniper"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:my_island",
+      "trigger": "gun_headshot_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:seven_thunders"],
+        "requiredEffects": ["minecraft:invisibility"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "*", "criteria_count": 10 }
+        ]
+      },
+      "prerequisites": ["tcc:my_island"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:xiora",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:thunder_seen": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "雷光初现",
+          "en_us": "Thunder Seen"
+        },
+        "icon": "tcc:seven_thunders_thunder_seen",
+        "description": {
+          "zh_cn": "佩戴涤罪七雷，使用狙击枪爆头击杀任意实体10次",
+          "en_us": "Headshot kill any entity 10 times while wearing Seven Thunders with sniper"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_mission",
+      "trigger": "gun_headshot_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:seven_thunders"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "*", "criteria_count": 10 }
+        ]
+      },
+      "prerequisites": ["tcc:xiora_mission"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:seven_thunders",
+        "to": "tcc:seven_thunders_thunder_seen",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:xiora_to_raven": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "夜袭渡鸦",
+          "en_us": "Night Raven"
+        },
+        "icon": "tcc:raven",
+        "description": {
+          "zh_cn": "佩戴希奥拉，隐身后使用狙击枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Xiora with invisibility and sniper"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_mission",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:xiora"],
+        "requiredEffects": ["minecraft:invisibility"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:xiora_mission"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:xiora",
+        "to": "tcc:raven",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:raven_to_island": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "七雷召唤",
+          "en_us": "Seven Thunders Calling"
+        },
+        "icon": "tcc:island_boom_raven",
+        "description": {
+          "zh_cn": "佩戴渡鸦和涤罪七雷·雷鸣见，100米外使用狙击枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon from 100m+ while wearing Raven and Seven Thunders: Thunder Seen with sniper"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_to_raven",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:raven", "tcc:seven_thunders_thunder_seen"],
+        "holdingGunTypes": ["sniper"],
+        "minDistance": 100.0,
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:xiora_to_raven", "tcc:thunder_seen"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:raven",
+        "to": "tcc:island_boom_raven",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:seven_thunders_thunder_seen", "to": "tcc:judgement_key" }
+        ],
+        "autoAchievements": ["tcc:judgement_key"]
+      }
+    },
+
+    "tcc:judgement_key": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "裁决",
+          "en_us": "Judgement Key"
+        },
+        "icon": "tcc:judgement_key",
+        "description": {
+          "zh_cn": "获得裁决之键",
+          "en_us": "Obtain Judgement Key"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:xiora_to_raven",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:heaven_fire_judgment": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "天火圣裁",
+          "en_us": "Heaven Fire Judgment"
+        },
+        "icon": "tcc:heaven_fire_judgment",
+        "description": {
+          "zh_cn": "使用手枪击杀凋零骷髅100次",
+          "en_us": "Kill Wither Skeletons 100 times with pistol"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "conditions": {
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "minecraft:wither_skeleton", "criteria_count": 100 }
+        ]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:heaven_fire_judgment",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:summer_beach_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "凯文",
+          "en_us": "Kevin"
+        },
+        "icon": "tcc:summer_beach",
+        "description": {
+          "zh_cn": "佩戴天火圣裁，被凋灵击杀",
+          "en_us": "Be killed by a Wither while wearing Heaven Fire Judgment"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:heaven_fire_judgment",
+      "trigger": "living_death",
+      "playerKilled": true,
+      "conditions": {
+        "killer": "minecraft:wither",
+        "equippedCurios": ["tcc:heaven_fire_judgment"]
+      },
+      "prerequisites": ["tcc:heaven_fire_judgment"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:summer_beach",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:judgment_to_apocalypse": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：天火劫灭",
+          "en_us": "Evolution: Heaven Fire Apocalypse"
+        },
+        "icon": "tcc:heaven_fire_apocalypse",
+        "description": {
+          "zh_cn": "佩戴天火圣裁，流血结算未死亡",
+          "en_us": "Survive bleeding settlement while wearing Heaven Fire Judgment"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:summer_beach_grant",
+      "trigger": "bleeding_settlement",
+      "conditions": {
+        "equippedCurios": ["tcc:heaven_fire_judgment"]
+      },
+      "prerequisites": ["tcc:summer_beach_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:heaven_fire_judgment",
+        "to": "tcc:heaven_fire_apocalypse"
+      }
+    },
+
+    "tcc:summer_to_brahma": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：无烬之剑",
+          "en_us": "Evolution: Inexhaustible Sword"
+        },
+        "icon": "tcc:brahma_beasts",
+        "description": {
+          "zh_cn": "佩戴凯文和天火劫灭，使用手枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Kevin and Heaven Fire Apocalypse with pistol"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:judgment_to_apocalypse",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:summer_beach", "tcc:heaven_fire_apocalypse"],
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:summer_beach_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:summer_beach",
+        "to": "tcc:brahma_beasts"
+      }
+    },
+
+    "tcc:brahma_to_salvation": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：救赎",
+          "en_us": "Evolution: Salvation"
+        },
+        "icon": "tcc:salvation",
+        "description": {
+          "zh_cn": "佩戴无烬之剑和天火劫灭，使用手枪在Y>=200的高度击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Inexhaustible Sword and Heaven Fire Apocalypse with pistol at Y>=200"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:summer_to_brahma",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:brahma_beasts", "tcc:heaven_fire_apocalypse"],
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ],
+        "minHeight": 200.0
+      },
+      "prerequisites": ["tcc:summer_to_brahma"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:brahma_beasts",
+        "to": "tcc:salvation",
+        "linkedEvolves": [
+          { "item": "tcc:heaven_fire_apocalypse", "to": "tcc:heaven_fire_apocalypse_endless" }
+        ],
+        "autoAchievements": ["tcc:heaven_fire_apocalypse_endless"]
+      }
+    },
+
+    "tcc:heaven_fire_apocalypse_endless": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "劫灭无尽",
+          "en_us": "Apocalypse Endless"
+        },
+        "icon": "tcc:heaven_fire_apocalypse_endless",
+        "description": {
+          "zh_cn": "获得天火劫灭·无烬终焉",
+          "en_us": "Obtain Heaven Fire Apocalypse Endless"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:summer_to_brahma",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:griseo_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "生命的色彩",
+          "en_us": "Colors of Life"
+        },
+        "icon": "tcc:griseo",
+        "description": {
+          "zh_cn": "繁殖动物达到200次",
+          "en_us": "Animals Bred reaches 200"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "stat_polling",
+      "conditions": {
+        "stat": "minecraft:animals_bred",
+        "criteria_count": 200
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:griseo",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:qianjie_yicheng_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "千界一乘",
+          "en_us": "Thousand Realms"
+        },
+        "icon": "tcc:qianjie_yicheng",
+        "description": {
+          "zh_cn": "佩戴格蕾修，访问下界",
+          "en_us": "Visit the Nether while wearing Griseo"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:griseo_grant",
+      "trigger": "biome_visit",
+      "conditions": {
+        "equippedCurios": ["tcc:griseo"],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:griseo_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:qianjie_yicheng",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:griseo_to_huishi_zhijuan": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：绘世之卷",
+          "en_us": "Evolution: Scroll of Painted World"
+        },
+        "icon": "tcc:huishi_zhijuan",
+        "description": {
+          "zh_cn": "佩戴千界一乘，钓鱼达到200条",
+          "en_us": "Fish Caught reaches 200 while wearing Thousand Worlds"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:qianjie_yicheng_grant",
+      "trigger": "fish_caught",
+      "conditions": {
+        "equippedCurios": ["tcc:qianjie_yicheng"],
+        "criteria_count": 200
+      },
+      "prerequisites": ["tcc:qianjie_yicheng_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:griseo",
+        "to": "tcc:huishi_zhijuan",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:qianjie_to_yongjie_zhijian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：永劫之键",
+          "en_us": "Evolution: Key of Perpetuity"
+        },
+        "icon": "tcc:yongjie_zhijian",
+        "description": {
+          "zh_cn": "佩戴绘世之卷，访问末地",
+          "en_us": "Visit the End while wearing Scroll of Painting"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:griseo_to_huishi_zhijuan",
+      "trigger": "biome_visit",
+      "conditions": {
+        "equippedCurios": ["tcc:huishi_zhijuan"],
+        "dimension": "minecraft:the_end"
+      },
+      "prerequisites": ["tcc:griseo_to_huishi_zhijuan"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:qianjie_yicheng",
+        "to": "tcc:yongjie_zhijian",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:huishi_to_fanxing": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：繁星·视界反演",
+          "en_us": "Evolution: Fanxing & World Inversion"
+        },
+        "icon": "tcc:fanxing",
+        "description": {
+          "zh_cn": "鞘翅滑行距离达到25.565公里",
+          "en_us": "Elytra glide distance reaches 25.565 km"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:qianjie_to_yongjie_zhijian",
+      "trigger": "stat_polling",
+      "conditions": {
+        "stat": "minecraft:aviate_one_cm",
+        "criteria_count": 2556500
+      },
+      "prerequisites": ["tcc:griseo_to_huishi_zhijuan", "tcc:qianjie_to_yongjie_zhijian"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:huishi_zhijuan",
+        "to": "tcc:fanxing",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:yongjie_zhijian", "to": "tcc:shijie_fanyan" }
+        ],
+        "autoAchievements": ["tcc:shijie_fanyan_grant"]
+      }
+    },
+
+    "tcc:shijie_fanyan_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "视界反演",
+          "en_us": "World Inversion"
+        },
+        "icon": "tcc:shijie_fanyan",
+        "description": {
+          "zh_cn": "获得千界一乘·视界反演",
+          "en_us": "Obtain First Key of Worlds - Horizon Inversion"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:qianjie_to_yongjie_zhijian",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:kalpas_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "千劫",
+          "en_us": "Kalpas"
+        },
+        "icon": "tcc:kalpas",
+        "description": {
+          "zh_cn": "造成伤害达到10000，并击杀30只亡灵生物",
+          "en_us": "Damage Dealt reaches 10000 and kill 30 undead mobs"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "extraStats": [
+          { "stat": "minecraft:damage_dealt", "criteria_count": 10000 }
+        ],
+        "kills": [
+          { "entity": "#minecraft:undead", "criteria_count": 30 }
+        ]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:kalpas",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:imer_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "伊默尔",
+          "en_us": "Imer"
+        },
+        "icon": "tcc:imer",
+        "description": {
+          "zh_cn": "佩戴千劫，承受伤害达到10000，并在下界击杀任意30只生物",
+          "en_us": "Damage Taken reaches 10000 while wearing Kalpas, and kill 30 mobs in the Nether"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kalpas_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:kalpas"],
+        "extraStats": [
+          { "stat": "minecraft:damage_taken", "criteria_count": 10000 }
+        ],
+        "kills": [
+          { "entity": "*", "criteria_count": 30 }
+        ],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:kalpas_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:imer",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:kalpas_to_huajie_zhiyan": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：坏劫之焱",
+          "en_us": "Evolution: Blazing Calamity"
+        },
+        "icon": "tcc:huajie_zhiyan",
+        "description": {
+          "zh_cn": "佩戴伊默尔，造成伤害达到50000并击杀凋灵",
+          "en_us": "Damage Dealt reaches 50000 and kill a Wither while wearing Imer"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:imer_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:imer"],
+        "extraStats": [
+          { "stat": "minecraft:damage_dealt", "criteria_count": 50000 }
+        ],
+        "kills": [
+          { "entity": "minecraft:wither", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:imer_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:kalpas",
+        "to": "tcc:huajie_zhiyan",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:imer_to_dominance_key": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：支配之键",
+          "en_us": "Evolution: Dominance Key"
+        },
+        "icon": "tcc:dominance_key",
+        "description": {
+          "zh_cn": "佩戴坏劫之焱，击杀生物达到1000",
+          "en_us": "Mob Kills reaches 1000 while wearing Blazing Calamity"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kalpas_to_huajie_zhiyan",
+      "trigger": "stat_polling",
+      "conditions": {
+        "equippedCurios": ["tcc:huajie_zhiyan"],
+        "stat": "minecraft:mob_kills",
+        "criteria_count": 1000
+      },
+      "prerequisites": ["tcc:kalpas_to_huajie_zhiyan"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:imer",
+        "to": "tcc:dominance_key",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:huajie_to_aomie": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "进化：鏖灭",
+          "en_us": "Evolution: Annihilation"
+        },
+        "icon": "tcc:aomie",
+        "description": {
+          "zh_cn": "佩戴支配之键，击杀怪物达到5000、承受伤害达到50000并击杀末影龙",
+          "en_us": "Mob Kills reaches 5000, Damage Taken reaches 50000 and kill the Ender Dragon while wearing Key of Dominance"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:imer_to_dominance_key",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:dominance_key"],
+        "extraStats": [
+          { "stat": "minecraft:mob_kills", "criteria_count": 5000 },
+          { "stat": "minecraft:damage_taken", "criteria_count": 50000 }
+        ],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:imer_to_dominance_key"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:huajie_zhiyan",
+        "to": "tcc:aomie",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:dominance_key", "to": "tcc:meta_morph" }
+        ],
+        "autoAchievements": ["tcc:meta_morph_grant"]
+      }
+    },
+
+    "tcc:meta_morph_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "Meta-Morph",
+          "en_us": "Meta-Morph"
+        },
+        "icon": "tcc:meta_morph",
+        "description": {
+          "zh_cn": "获得Meta-Morph",
+          "en_us": "Obtain Meta-Morph"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:imer_to_dominance_key",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:su_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "苏",
+          "en_us": "Su"
+        },
+        "icon": "tcc:su",
+        "description": {
+          "zh_cn": "使用步枪击杀亡灵生物100次",
+          "en_us": "Kill Undead Mobs 100 times with rifle"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "conditions": {
+        "holdingGunTypes": ["rifle"],
+        "kills": [
+          { "entity": "#minecraft:undead", "criteria_count": 100 }
+        ]
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:su",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:wanwu_xiumian_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "万物休眠",
+          "en_us": "All Things Slumber"
+        },
+        "icon": "tcc:wanwu_xiumian",
+        "description": {
+          "zh_cn": "佩戴苏，治愈僵尸村民达到20次",
+          "en_us": "Zombie Villagers Cured reaches 20 while wearing Su"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:su_grant",
+      "trigger": "zombie_villager_cured",
+      "conditions": {
+        "equippedCurios": ["tcc:su"],
+        "stat": "tcc:zombie_villager_cured",
+        "criteria_count": 20
+      },
+      "prerequisites": ["tcc:su_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:wanwu_xiumian",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:su_to_juezhe": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "觉者",
+          "en_us": "The Enlightened One"
+        },
+        "icon": "tcc:juezhe",
+        "description": {
+          "zh_cn": "佩戴万物休眠，赢得袭击达到10次",
+          "en_us": "Raids Won reaches 10 while wearing All Things Slumber"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:wanwu_xiumian_grant",
+      "trigger": "raid_victory",
+      "conditions": {
+        "equippedCurios": ["tcc:wanwu_xiumian"],
+        "criteria_count": 10
+      },
+      "prerequisites": ["tcc:wanwu_xiumian_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:su",
+        "to": "tcc:juezhe",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:wanwu_xiumian_to_tingzhi_zhijian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "停滞之键",
+          "en_us": "Key of Stagnation"
+        },
+        "icon": "tcc:tingzhi_zhijian",
+        "description": {
+          "zh_cn": "佩戴觉者，使用步枪击杀凋灵",
+          "en_us": "Kill a Wither while wearing The Enlightened One with rifle"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:su_to_juezhe",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:juezhe"],
+        "holdingGunTypes": ["rifle"],
+        "kills": [
+          { "entity": "minecraft:wither", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:su_to_juezhe"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:wanwu_xiumian",
+        "to": "tcc:tingzhi_zhijian",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:juezhe_to_tianhui": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "天慧",
+          "en_us": "Heavenly Wisdom"
+        },
+        "icon": "tcc:tianhui",
+        "description": {
+          "zh_cn": "佩戴停滞之键，击杀末影龙，血量低于4心",
+          "en_us": "Kill the Ender Dragon while wearing Key of Stagnation with less than 4 hearts"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:wanwu_xiumian_to_tingzhi_zhijian",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:tingzhi_zhijian"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ],
+        "healthMax": 8.0
+      },
+      "prerequisites": ["tcc:wanwu_xiumian_to_tingzhi_zhijian"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:juezhe",
+        "to": "tcc:tianhui",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:tingzhi_zhijian", "to": "tcc:yinguo_zhuanlun" }
+        ],
+        "autoAchievements": ["tcc:tingzhi_zhijian_to_yinguo_zhuanlun"]
+      }
+    },
+
+    "tcc:tingzhi_zhijian_to_yinguo_zhuanlun": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "因果转轮",
+          "en_us": "Wheel of Causality"
+        },
+        "icon": "tcc:yinguo_zhuanlun",
+        "description": {
+          "zh_cn": "获得因果转轮",
+          "en_us": "Obtain Wheel of Causality"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:wanwu_xiumian_to_tingzhi_zhijian",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:vill_v_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "VILL-V",
+          "en_us": "VILL-V"
+        },
+        "icon": "tcc:vill_v",
+        "description": {
+          "zh_cn": "合成物品达到1200次",
+          "en_us": "Craft items 1200 times"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "items_crafted",
+      "conditions": {
+        "stat": "tcc:items_crafted",
+        "criteria_count": 1200
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:vill_v",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:xukong_wancang_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "虚空万藏",
+          "en_us": "Void Archives"
+        },
+        "icon": "tcc:xukong_wancang",
+        "description": {
+          "zh_cn": "佩戴维尔薇，与村民交易达到200次",
+          "en_us": "Trade with Villagers reaches 200 while wearing Vill-V"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:vill_v_grant",
+      "trigger": "stat_polling",
+      "conditions": {
+        "equippedCurios": ["tcc:vill_v"],
+        "stat": "minecraft:traded_with_villager",
+        "criteria_count": 200
+      },
+      "prerequisites": ["tcc:vill_v_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:xukong_wancang",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": false
+      }
+    },
+
+    "tcc:yuxi_zhixia_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "愚戏之匣",
+          "en_us": "Box of Fools"
+        },
+        "icon": "tcc:yuxi_zhixia",
+        "description": {
+          "zh_cn": "佩戴虚空万藏，使用重型武器击杀凋灵",
+          "en_us": "Kill a Wither while wearing Void Archives with heavy weapon"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:xukong_wancang_grant",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:xukong_wancang"],
+        "holdingGunTypes": ["rpg", "mg"],
+        "kills": [
+          { "entity": "minecraft:wither", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:xukong_wancang_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:vill_v",
+        "to": "tcc:yuxi_zhixia",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:qishi_zhijian_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "启示之键",
+          "en_us": "Key of Revelation"
+        },
+        "icon": "tcc:qishi_zhijian",
+        "description": {
+          "zh_cn": "佩戴愚戏之匣，使用重型武器击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Box of Fools with heavy weapon"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:yuxi_zhixia_grant",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:yuxi_zhixia"],
+        "holdingGunTypes": ["rpg", "mg"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:yuxi_zhixia_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:xukong_wancang",
+        "to": "tcc:qishi_zhijian",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:luoxuan_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "螺旋",
+          "en_us": "Spiral"
+        },
+        "icon": "tcc:luoxuan",
+        "description": {
+          "zh_cn": "佩戴启示之键存活6小时（死亡重置计数）",
+          "en_us": "Survive 6 hours while wearing Key of Revelation (resets on death)"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:qishi_zhijian_grant",
+      "trigger": "play_time",
+      "conditions": {
+        "equippedCurios": ["tcc:qishi_zhijian"],
+        "stat": "tcc:play_time_qishi_zhijian",
+        "criteria_count": 432000
+      },
+      "prerequisites": ["tcc:qishi_zhijian_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:yuxi_zhixia",
+        "to": "tcc:luoxuan",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:qishi_zhijian", "to": "tcc:xukong_wancang_yzth" }
+        ],
+        "autoAchievements": ["tcc:xukong_wancang_yzth_grant"]
+      }
+    },
+
+    "tcc:xukong_wancang_yzth_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "虚空万藏·原始统括",
+          "en_us": "Void Archives - Primordial Synthesis"
+        },
+        "icon": "tcc:xukong_wancang_yzth",
+        "description": {
+          "zh_cn": "获得虚空万藏·雨众天华",
+          "en_us": "Obtain Void Archives - Amrita Ruin"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:qishi_zhijian_grant",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:aponia_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "阿波尼亚",
+          "en_us": "Aponia"
+        },
+        "icon": "tcc:aponia",
+        "description": {
+          "zh_cn": "霰弹枪击杀任意生物50次",
+          "en_us": "Kill any entity 50 times with a shotgun"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "conditions": {
+        "holdingGunTypes": ["shotgun"],
+        "kills": [
+          { "entity": "*", "criteria_count": 50 }
+        ],
+        "dimension": "minecraft:overworld"
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:aponia",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:wangshi_de_kuqiu_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "往世的苦囚",
+          "en_us": "Prisoner of the Past"
+        },
+        "icon": "tcc:wangshi_de_kuqiu",
+        "description": {
+          "zh_cn": "装备阿波尼亚，击杀僵尸200只",
+          "en_us": "Kill 200 zombies while wearing Aponia"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:aponia_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:aponia"],
+        "kills": [
+          { "entity": "minecraft:zombie", "criteria_count": 200 }
+        ]
+      },
+      "prerequisites": ["tcc:aponia_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:wangshi_de_kuqiu",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "往世的苦囚·命之契",
+          "en_us": "Prisoner of the Past: Bond of Fate"
+        },
+        "icon": "tcc:wangshi_de_kuqiu_mingzhiqi",
+        "description": {
+          "zh_cn": "装备深罪之槛，袭击胜利5次",
+          "en_us": "Win 5 raids while wearing Penance of the Deep"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:aponia_to_shenzui_zhijian",
+      "trigger": "raid_victory",
+      "conditions": {
+        "equippedCurios": ["tcc:shenzui_zhijian"],
+        "criteria_count": 5
+      },
+      "prerequisites": ["tcc:aponia_to_shenzui_zhijian"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:wangshi_de_kuqiu",
+        "to": "tcc:wangshi_de_kuqiu_mingzhiqi",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:aponia_to_shenzui_zhijian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "深罪之槛",
+          "en_us": "Penance of the Deep"
+        },
+        "icon": "tcc:shenzui_zhijian",
+        "description": {
+          "zh_cn": "装备往世的苦囚，击杀凋灵",
+          "en_us": "Kill a Wither while wearing Prisoner of the Past"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:wangshi_de_kuqiu_grant",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:wangshi_de_kuqiu"],
+        "kills": [
+          { "entity": "minecraft:wither", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:wangshi_de_kuqiu_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:aponia",
+        "to": "tcc:shenzui_zhijian",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:shenzui_zhijian_to_jielv": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "戒律",
+          "en_us": "Discipline"
+        },
+        "icon": "tcc:jielv",
+        "description": {
+          "zh_cn": "装备往世的苦囚·命之契，使用霰弹枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon with a shotgun while wearing Prisoner of the Past: Bond of Fate"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:wangshi_de_kuqiu_mingzhiqi"],
+        "holdingGunTypes": ["shotgun"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:shenzui_zhijian",
+        "to": "tcc:jielv",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:wangshi_de_kuqiu_mingzhiqi", "to": "tcc:shenen_jiejie" }
+        ],
+        "autoAchievements": ["tcc:shenen_jiejie_grant"]
+      }
+    },
+
+    "tcc:shenen_jiejie_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "第零额定功率·神恩结界",
+          "en_us": "Divine Judgment Field"
+        },
+        "icon": "tcc:shenen_jiejie",
+        "description": {
+          "zh_cn": "获得第零额定功率·神恩结界",
+          "en_us": "Obtain Divine Judgment Field"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:aponia_to_shenzui_zhijian",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:eden_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "伊甸",
+          "en_us": "Eden"
+        },
+        "icon": "tcc:eden",
+        "description": {
+          "zh_cn": "手枪击杀任意生物50次",
+          "en_us": "Kill any entity 50 times with a pistol"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "conditions": {
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "*", "criteria_count": 50 }
+        ],
+        "dimension": "minecraft:overworld"
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:eden",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:eden_star_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "伊甸之星",
+          "en_us": "Star of Eden"
+        },
+        "icon": "tcc:eden_star",
+        "description": {
+          "zh_cn": "装备伊甸，与村民交易200次",
+          "en_us": "Trade with villagers 200 times while wearing Eden"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:eden_grant",
+      "trigger": "stat_polling",
+      "conditions": {
+        "equippedCurios": ["tcc:eden"],
+        "stat": "minecraft:traded_with_villager",
+        "criteria_count": 200
+      },
+      "prerequisites": ["tcc:eden_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:eden_star",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:eden_star_to_tuntian_zhijian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "吞噬之键",
+          "en_us": "Key of Devouring"
+        },
+        "icon": "tcc:tuntian_zhijian",
+        "description": {
+          "zh_cn": "装备璀耀之歌，使用手枪击杀下界生物100次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
+          "en_us": "Kill 100 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with a pistol while wearing Radiant Song"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:eden_to_cuiyao_zhi_ge",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:cuiyao_zhi_ge"],
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "minecraft:zombified_piglin", "criteria_count": 100 },
+          { "entity": "minecraft:wither_skeleton", "criteria_count": 100 },
+          { "entity": "minecraft:ghast", "criteria_count": 100 },
+          { "entity": "minecraft:blaze", "criteria_count": 100 },
+          { "entity": "minecraft:magma_cube", "criteria_count": 100 }
+        ]
+      },
+      "prerequisites": ["tcc:eden_to_cuiyao_zhi_ge"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:eden_star",
+        "to": "tcc:tuntian_zhijian",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:eden_to_cuiyao_zhi_ge": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "璀耀之歌",
+          "en_us": "Radiant Song"
+        },
+        "icon": "tcc:cuiyao_zhi_ge",
+        "description": {
+          "zh_cn": "装备伊甸之星，袭击胜利5次",
+          "en_us": "Win 5 raids while wearing Star of Eden"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:eden_star_grant",
+      "trigger": "raid_victory",
+      "conditions": {
+        "equippedCurios": ["tcc:eden_star"],
+        "criteria_count": 5
+      },
+      "prerequisites": ["tcc:eden_star_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:eden",
+        "to": "tcc:cuiyao_zhi_ge",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:cuiyao_zhi_ge_to_huangjin": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "黄金",
+          "en_us": "Gold"
+        },
+        "icon": "tcc:huangjin",
+        "description": {
+          "zh_cn": "装备吞噬之键，使用手枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon with a pistol while wearing Key of Devouring"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:eden_star_to_tuntian_zhijian",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:tuntian_zhijian"],
+        "holdingGunTypes": ["pistol"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:eden_star_to_tuntian_zhijian"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:cuiyao_zhi_ge",
+        "to": "tcc:huangjin",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:tuntian_zhijian", "to": "tcc:qidian_chonggou" }
+        ],
+        "autoAchievements": ["tcc:qidian_chonggou_grant"]
+      }
+    },
+
+    "tcc:qidian_chonggou_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "第三额定功率·奇点重构",
+          "en_us": "Singularity Reconstruction"
+        },
+        "icon": "tcc:qidian_chonggou",
+        "description": {
+          "zh_cn": "获得第三额定功率·奇点重构",
+          "en_us": "Obtain Singularity Reconstruction"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:eden_to_cuiyao_zhi_ge",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:kosma_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "科斯魔",
+          "en_us": "Kosma"
+        },
+        "icon": "tcc:kosma",
+        "description": {
+          "zh_cn": "击杀任意生物200次",
+          "en_us": "Kill any entity 200 times"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "kills": [
+          { "entity": "*", "criteria_count": 200 }
+        ],
+        "dimension": "minecraft:overworld"
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:kosma",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:dizang_yuhun_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "地藏御魂",
+          "en_us": "Sentience of Dizang"
+        },
+        "icon": "tcc:dizang_yuhun",
+        "description": {
+          "zh_cn": "装备科斯魔，在下界击杀任意生物300次",
+          "en_us": "Kill 300 mobs in the Nether while wearing Kosma"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kosma_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:kosma"],
+        "kills": [
+          { "entity": "*", "criteria_count": 300 }
+        ],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:kosma_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:dizang_yuhun",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:dizang_yuhun_to_qinshi_zhijian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "侵蚀之键",
+          "en_us": "Key of Erosion"
+        },
+        "icon": "tcc:qinshi_zhijian",
+        "description": {
+          "zh_cn": "装备黎明之哨，在下界击杀任意生物500次",
+          "en_us": "Kill 500 mobs in the Nether while wearing Sentinel of Dawn"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kosma_to_liming_zhi_shao",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:liming_zhi_shao"],
+        "kills": [
+          { "entity": "*", "criteria_count": 500 }
+        ],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:kosma_to_liming_zhi_shao"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:dizang_yuhun",
+        "to": "tcc:qinshi_zhijian",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:kosma_to_liming_zhi_shao": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "黎明之哨",
+          "en_us": "Sentinel of Dawn"
+        },
+        "icon": "tcc:liming_zhi_shao",
+        "description": {
+          "zh_cn": "装备地藏御魂，在末地击杀任意生物100次",
+          "en_us": "Kill 100 mobs in the End while wearing Sentience of Dizang"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:dizang_yuhun_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:dizang_yuhun"],
+        "kills": [
+          { "entity": "*", "criteria_count": 100 }
+        ],
+        "dimension": "minecraft:the_end"
+      },
+      "prerequisites": ["tcc:dizang_yuhun_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:kosma",
+        "to": "tcc:liming_zhi_shao",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:liming_zhi_shao_to_xuguang": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "旭光",
+          "en_us": "Dawn"
+        },
+        "icon": "tcc:xuguang",
+        "description": {
+          "zh_cn": "装备侵蚀之键，击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Key of Erosion"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:dizang_yuhun_to_qinshi_zhijian",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:qinshi_zhijian"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:dizang_yuhun_to_qinshi_zhijian"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:liming_zhi_shao",
+        "to": "tcc:xuguang",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:qinshi_zhijian", "to": "tcc:yuhun_shixian" }
+        ],
+        "autoAchievements": ["tcc:yuhun_shixian_grant"]
+      }
+    },
+
+    "tcc:yuhun_shixian_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "御魂示现",
+          "en_us": "Manifestation of Souls"
+        },
+        "icon": "tcc:yuhun_shixian",
+        "description": {
+          "zh_cn": "获得御魂示现",
+          "en_us": "Obtain Manifestation of Souls"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:kosma_to_liming_zhi_shao",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:mebius_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "梅比乌斯",
+          "en_us": "Mobius"
+        },
+        "icon": "tcc:mebius",
+        "description": {
+          "zh_cn": "狙击枪击杀任意生物40次",
+          "en_us": "Kill any entity 40 times with a sniper"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "gun_kill",
+      "conditions": {
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "*", "criteria_count": 40 }
+        ],
+        "dimension": "minecraft:overworld"
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:mebius",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:wangshi_de_sheying_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "往世的蛇影",
+          "en_us": "Shadow of the Past"
+        },
+        "icon": "tcc:wangshi_de_sheying",
+        "description": {
+          "zh_cn": "装备梅比乌斯，使用狙击枪击杀下界生物25次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
+          "en_us": "Kill 25 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with a sniper while wearing Mobius"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:mebius_grant",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:mebius"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "minecraft:zombified_piglin", "criteria_count": 25 },
+          { "entity": "minecraft:wither_skeleton", "criteria_count": 25 },
+          { "entity": "minecraft:ghast", "criteria_count": 25 },
+          { "entity": "minecraft:blaze", "criteria_count": 25 },
+          { "entity": "minecraft:magma_cube", "criteria_count": 25 }
+        ]
+      },
+      "prerequisites": ["tcc:mebius_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:wangshi_de_sheying",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:wangshi_de_sheying_to_si_zhi_yi": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "往世的蛇影·死之衣",
+          "en_us": "Serpent of Time: Shroud of Death"
+        },
+        "icon": "tcc:si_zhi_yi",
+        "description": {
+          "zh_cn": "装备噬界之蛇，使用狙击枪击杀下界生物125次（僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪）",
+          "en_us": "Kill 125 Nether mobs (zombified piglin / wither skeleton / ghast / blaze / magma cube) with a sniper while wearing Serpent Devouring Worlds"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:mebius_to_shijie_zhi_she",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:shijie_zhi_she"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "minecraft:zombified_piglin", "criteria_count": 125 },
+          { "entity": "minecraft:wither_skeleton", "criteria_count": 125 },
+          { "entity": "minecraft:ghast", "criteria_count": 125 },
+          { "entity": "minecraft:blaze", "criteria_count": 125 },
+          { "entity": "minecraft:magma_cube", "criteria_count": 125 }
+        ]
+      },
+      "prerequisites": ["tcc:mebius_to_shijie_zhi_she"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:wangshi_de_sheying",
+        "to": "tcc:si_zhi_yi",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:mebius_to_shijie_zhi_she": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "噬界之蛇",
+          "en_us": "Serpent Devouring Worlds"
+        },
+        "icon": "tcc:shijie_zhi_she",
+        "description": {
+          "zh_cn": "装备往世的蛇影，击杀凋灵",
+          "en_us": "Kill a Wither while wearing Shadow of the Past"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:wangshi_de_sheying_grant",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:wangshi_de_sheying"],
+        "kills": [
+          { "entity": "minecraft:wither", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:wangshi_de_sheying_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:mebius",
+        "to": "tcc:shijie_zhi_she",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:shijie_zhi_she_to_wuxian": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "无限",
+          "en_us": "Infinite"
+        },
+        "icon": "tcc:wuxian",
+        "description": {
+          "zh_cn": "装备往世的蛇影·死之衣，使用狙击枪击杀末影龙",
+          "en_us": "Kill the Ender Dragon with a sniper while wearing Serpent of Time: Shroud of Death"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:wangshi_de_sheying_to_si_zhi_yi",
+      "trigger": "gun_kill",
+      "conditions": {
+        "equippedCurios": ["tcc:si_zhi_yi"],
+        "holdingGunTypes": ["sniper"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:wangshi_de_sheying_to_si_zhi_yi"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:shijie_zhi_she",
+        "to": "tcc:wuxian",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:si_zhi_yi", "to": "tcc:shesha" }
+        ],
+        "autoAchievements": ["tcc:shesha_grant"]
+      }
+    },
+
+    "tcc:shesha_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "舍沙",
+          "en_us": "Sesha"
+        },
+        "icon": "tcc:shesha",
+        "description": {
+          "zh_cn": "获得舍沙",
+          "en_us": "Obtain Sesha"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:mebius_to_shijie_zhi_she",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:hua_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "华",
+          "en_us": "Fu Hua"
+        },
+        "icon": "tcc:hua",
+        "description": {
+          "zh_cn": "击杀任意生物200次",
+          "en_us": "Kill any entity 200 times"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "kills": [
+          { "entity": "*", "criteria_count": 200 }
+        ],
+        "dimension": "minecraft:overworld"
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:hua",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:yuduchen_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "羽渡尘",
+          "en_us": "Feather of the Past"
+        },
+        "icon": "tcc:yuduchen",
+        "description": {
+          "zh_cn": "装备华，袭击胜利2次",
+          "en_us": "Win 2 raids while wearing Fu Hua"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:hua_grant",
+      "trigger": "raid_victory",
+      "conditions": {
+        "equippedCurios": ["tcc:hua"],
+        "criteria_count": 2
+      },
+      "prerequisites": ["tcc:hua_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:yuduchen",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:yuduchen_to_fanchen_nandu": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "凡尘难渡",
+          "en_us": "The Mundane Hard to Cross"
+        },
+        "icon": "tcc:fanchen_nandu",
+        "description": {
+          "zh_cn": "装备渡尘之羽，在下界击杀任意生物500次",
+          "en_us": "Kill 500 mobs in the Nether while wearing Feather of Dust"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:hua_to_duchen_zhi_yu",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:duchen_zhi_yu"],
+        "kills": [
+          { "entity": "*", "criteria_count": 500 }
+        ],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:hua_to_duchen_zhi_yu"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:yuduchen",
+        "to": "tcc:fanchen_nandu",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:hua_to_duchen_zhi_yu": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "渡尘之羽",
+          "en_us": "Feather of Dust"
+        },
+        "icon": "tcc:duchen_zhi_yu",
+        "description": {
+          "zh_cn": "装备羽渡尘，击杀凋灵",
+          "en_us": "Kill a Wither while wearing Feather of the Past"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:yuduchen_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:yuduchen"],
+        "kills": [
+          { "entity": "minecraft:wither", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:yuduchen_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:hua",
+        "to": "tcc:duchen_zhi_yu",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:duchen_zhi_yu_to_fusheng": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "浮生",
+          "en_us": "Fleeting Life"
+        },
+        "icon": "tcc:fusheng",
+        "description": {
+          "zh_cn": "装备凡尘难渡，击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing The Mundane Hard to Cross"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:yuduchen_to_fanchen_nandu",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:fanchen_nandu"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:yuduchen_to_fanchen_nandu"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:duchen_zhi_yu",
+        "to": "tcc:fusheng",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:fanchen_nandu", "to": "tcc:bushi_shiwu" }
+        ],
+        "autoAchievements": ["tcc:bushi_shiwu_grant"]
+      }
+    },
+
+    "tcc:bushi_shiwu_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "不识时务",
+          "en_us": "Oblivious"
+        },
+        "icon": "tcc:bushi_shiwu",
+        "description": {
+          "zh_cn": "获得不识时务",
+          "en_us": "Obtain Oblivious"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:hua_to_duchen_zhi_yu",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:pado_philipis_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "帕朵菲利斯",
+          "en_us": "Pardo Philis"
+        },
+        "icon": "tcc:pado_philipis",
+        "description": {
+          "zh_cn": "食用鱼类食物333次",
+          "en_us": "Eat fish food 333 times"
+        },
+        "frame": "task",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "fish_food_eaten",
+      "conditions": {
+        "criteria_count": 333
+      },
+      "prerequisites": [],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:pado_philipis",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:wangshi_de_huanmeng_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "往世的幻梦",
+          "en_us": "Dream of the Past"
+        },
+        "icon": "tcc:wangshi_de_huanmeng",
+        "description": {
+          "zh_cn": "装备帕朵菲利斯，钓鱼200次",
+          "en_us": "Catch 200 fish while wearing Pardo Philis"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:pado_philipis_grant",
+      "trigger": "fish_caught",
+      "conditions": {
+        "equippedCurios": ["tcc:pado_philipis"],
+        "criteria_count": 200
+      },
+      "prerequisites": ["tcc:pado_philipis_grant"],
+      "reward": {
+        "type": "grant",
+        "item": "tcc:wangshi_de_huanmeng",
+        "overflowMode": "INVENTORY_THEN_DROP",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:wangshi_de_huanmeng_to_ye_zhi_tong": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "往世的幻梦·夜之瞳",
+          "en_us": "Reverie of the Past: Eye of Night"
+        },
+        "icon": "tcc:ye_zhi_tong",
+        "description": {
+          "zh_cn": "装备掠集之兽，在下界击杀任意生物300次",
+          "en_us": "Kill 300 mobs in the Nether while wearing Beast of Gathering"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:pado_philipis_to_lueji_zhi_shou",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:lueji_zhi_shou"],
+        "kills": [
+          { "entity": "*", "criteria_count": 300 }
+        ],
+        "dimension": "minecraft:the_nether"
+      },
+      "prerequisites": ["tcc:pado_philipis_to_lueji_zhi_shou"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:wangshi_de_huanmeng",
+        "to": "tcc:ye_zhi_tong",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:pado_philipis_to_lueji_zhi_shou": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "掠集之兽",
+          "en_us": "Beast of Gathering"
+        },
+        "icon": "tcc:lueji_zhi_shou",
+        "description": {
+          "zh_cn": "装备往世的幻梦，在末地击杀任意生物100次",
+          "en_us": "Kill 100 mobs in the End while wearing Dream of the Past"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:wangshi_de_huanmeng_grant",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:wangshi_de_huanmeng"],
+        "kills": [
+          { "entity": "*", "criteria_count": 100 }
+        ],
+        "dimension": "minecraft:the_end"
+      },
+      "prerequisites": ["tcc:wangshi_de_huanmeng_grant"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:pado_philipis",
+        "to": "tcc:lueji_zhi_shou",
+        "bindToPlayer": true
+      }
+    },
+
+    "tcc:lueji_zhi_shou_to_kongmeng": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "空梦",
+          "en_us": "Empty Dream"
+        },
+        "icon": "tcc:kongmeng",
+        "description": {
+          "zh_cn": "装备往世的幻梦·夜之瞳，击杀末影龙",
+          "en_us": "Kill the Ender Dragon while wearing Reverie of the Past: Eye of Night"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:wangshi_de_huanmeng_to_ye_zhi_tong",
+      "trigger": "living_death",
+      "playerKilled": false,
+      "conditions": {
+        "equippedCurios": ["tcc:ye_zhi_tong"],
+        "kills": [
+          { "entity": "minecraft:ender_dragon", "criteria_count": 1 }
+        ]
+      },
+      "prerequisites": ["tcc:wangshi_de_huanmeng_to_ye_zhi_tong"],
+      "reward": {
+        "type": "evolve",
+        "item": "tcc:lueji_zhi_shou",
+        "to": "tcc:kongmeng",
+        "bindToPlayer": true,
+        "linkedEvolves": [
+          { "item": "tcc:ye_zhi_tong", "to": "tcc:la_zhi_yan" }
+        ],
+        "autoAchievements": ["tcc:la_zhi_yan_grant"]
+      }
+    },
+
+    "tcc:la_zhi_yan_grant": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "拉之眼",
+          "en_us": "Eye of Ra"
+        },
+        "icon": "tcc:la_zhi_yan",
+        "description": {
+          "zh_cn": "获得拉之眼",
+          "en_us": "Obtain Eye of Ra"
+        },
+        "frame": "goal",
+        "hidden": false
+      },
+      "parent": "tcc:pado_philipis_to_lueji_zhi_shou",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [],
+      "reward": null
+    },
+
+    "tcc:zhen_wo": {
+      "enabled": true,
+      "display": {
+        "title": {
+          "zh_cn": "真我",
+          "en_us": "True Self"
+        },
+        "icon": "tcc:zhen_wo",
+        "description": {
+          "zh_cn": "完成十二个系列的最终成就，直面真正的自己",
+          "en_us": "Complete the final achievement of each of the twelve series and face your true self"
+        },
+        "frame": "challenge",
+        "hidden": false
+      },
+      "parent": "tcc:tcc_root",
+      "trigger": "auto",
+      "conditions": null,
+      "prerequisites": [
+        "tcc:judgement_key",
+        "tcc:heaven_fire_apocalypse_endless",
+        "tcc:shijie_fanyan_grant",
+        "tcc:meta_morph_grant",
+        "tcc:tingzhi_zhijian_to_yinguo_zhuanlun",
+        "tcc:xukong_wancang_yzth_grant",
+        "tcc:shenen_jiejie_grant",
+        "tcc:qidian_chonggou_grant",
+        "tcc:yuhun_shixian_grant",
+        "tcc:shesha_grant",
+        "tcc:bushi_shiwu_grant",
+        "tcc:la_zhi_yan_grant"
+      ],
+      "reward": null
+    }
+  }
+}

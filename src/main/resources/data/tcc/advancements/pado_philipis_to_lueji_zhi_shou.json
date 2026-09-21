@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:wangshi_de_huanmeng_to_ye_zhi_tong",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.pado_philipis_to_lueji_zhi_shou.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:lueji_zhi_shou"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.pado_philipis_to_lueji_zhi_shou.title"
+                              },
+                    "frame":  "goal"
+                }
+}

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.xlxyvergil.tcc.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixinextras": {
+    "minVersion": "0.5.0"
+  },
+  "mixins": [
+    "DamageResistanceMixin",
+    "ImaginaryDeathDropMixin",
+    "LivingEntityAccessor",
+    "RaidMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "tcc.refmap.json"
+}

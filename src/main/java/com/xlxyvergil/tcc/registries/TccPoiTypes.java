@@ -1,0 +1,22 @@
+package com.xlxyvergil.tcc.registries;
+
+import com.google.common.collect.ImmutableSet;
+import com.xlxyvergil.tcc.TaczCurios;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.neoforged.neoforge.registries.RegisterEvent;
+
+public class TccPoiTypes {
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "teshin_workbench");
+    public static final ResourceKey<PoiType> POI_KEY = ResourceKey.create(Registries.POINT_OF_INTEREST_TYPE, ID);
+
+    public static PoiType TESHIN_WORKBENCH_POI;
+
+    public static void init(RegisterEvent.RegisterHelper<PoiType> registry) {
+        TESHIN_WORKBENCH_POI = new PoiType(
+            ImmutableSet.copyOf(TccBlocks.TESHIN_WORKBENCH.getStateDefinition().getPossibleStates()), 1, 1);
+        registry.register(ID, TESHIN_WORKBENCH_POI);
+    }
+}

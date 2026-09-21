@@ -1,0 +1,125 @@
+package com.xlxyvergil.tcc.items.curios.bound;
+
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.items.BoundCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
+
+import javax.annotation.Nullable;
+import java.util.List;
+
+import net.minecraft.resources.ResourceLocation;
+@EventBusSubscriber(modid = TaczCurios.MODID)
+public class DizangYuhun extends BoundCurioItem {
+    private static final ResourceLocation ARMOR_STRIP_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "dizang_yuhun_1b28a6a4_2b99");
+    private static final ResourceLocation TOUGHNESS_STRIP_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "dizang_yuhun_3ad28e89_1df2");
+
+    private static double stripPercent() {
+        return TaczCuriosConfig.COMMON.dizangYuhunStripPercent.get();
+    }
+
+    public DizangYuhun(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    protected boolean isBoundItem() {
+        return true;
+    }
+
+    @Override
+    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
+        AttributeHelper.registerSourceItem(ARMOR_STRIP_ID, stack.getItem());
+        AttributeHelper.registerSourceItem(TOUGHNESS_STRIP_ID, stack.getItem());
+    }
+
+    @Override
+    protected void removeEffects(LivingEntity livingEntity) {
+    }
+
+    @Override
+    public List<String> getWeaponTypeRestriction() {
+        return List.of("melee");
+    }
+
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                stack -> stack.getItem() instanceof DizangYuhun).isEmpty();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLivingHurt(LivingIncomingDamageEvent event) {
+        // 仅响应真正的主动攻击，过滤 FastHurt 再入的强制子伤害，避免削甲削韧被子伤害重复触发
+        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
+        if (!(event.getEntity().level() instanceof ServerLevel)) {
+            return;
+        }
+        LivingEntity attacker = resolveAttacker(event);
+        if (attacker == null) {
+            return;
+        }
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
+                stack -> stack.getItem() instanceof DizangYuhun);
+        if (equipped.isEmpty()) {
+            return;
+        }
+        if (!((DizangYuhun) equipped.getItem()).matchesRestriction(attacker)) {
+            return;
+        }
+        LivingEntity target = event.getEntity();
+        if (target.isDeadOrDying()) {
+            return;
+        }
+        double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * stripPercent() * 100.0) / 100.0;
+        double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * stripPercent() * 100.0) / 100.0;
+        if (stripArmor > 0) {
+            AttributeHelper.applyStackingModifier(target, Attributes.ARMOR,
+                    -stripArmor, ARMOR_STRIP_ID, AttributeModifier.Operation.ADD_VALUE);
+        }
+        if (stripToughness > 0) {
+            AttributeHelper.applyStackingModifier(target, Attributes.ARMOR_TOUGHNESS,
+                    -stripToughness, TOUGHNESS_STRIP_ID, AttributeModifier.Operation.ADD_VALUE);
+        }
+    }
+
+    private static LivingEntity resolveAttacker(LivingIncomingDamageEvent event) {
+        if (event.getSource().getEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        if (event.getSource().getDirectEntity() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        Level level = context.level();
+        super.appendHoverText(stack, context, tooltip, flag);
+        tooltip.add(Component.translatable("item.tcc.dawn.key_effect",
+                String.format("%.0f", stripPercent() * 100))
+                .withStyle(ChatFormatting.GOLD));
+        appendBoundPlayer(stack, tooltip);
+    }
+}

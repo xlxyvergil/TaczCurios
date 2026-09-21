@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tcc:item/wangshi_de_sheying",
+    "layer1": "tcc:item/border_rare"
+  }
+}

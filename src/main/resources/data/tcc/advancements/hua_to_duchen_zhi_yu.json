@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:yuduchen_to_fanchen_nandu",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.hua_to_duchen_zhi_yu.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:duchen_zhi_yu"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.hua_to_duchen_zhi_yu.title"
+                              },
+                    "frame":  "goal"
+                }
+}

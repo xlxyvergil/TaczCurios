@@ -1,0 +1,23 @@
+{
+    "criteria":  {
+                     "step_1":  {
+                                    "trigger":  "minecraft:impossible"
+                                }
+                 },
+    "parent":  "tcc:pado_philipis_to_lueji_zhi_shou",
+    "display":  {
+                    "description":  {
+                                        "translate":  "advancement.tcc.lueji_zhi_shou_to_kongmeng.description"
+                                    },
+                    "show_toast":  true,
+                    "icon":  {
+                                 "item":  "tcc:kongmeng"
+                             },
+                    "hidden":  false,
+                    "announce_to_chat":  true,
+                    "title":  {
+                                  "translate":  "advancement.tcc.lueji_zhi_shou_to_kongmeng.title"
+                              },
+                    "frame":  "challenge"
+                }
+}

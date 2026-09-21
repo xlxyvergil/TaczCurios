@@ -1,0 +1,144 @@
+package com.xlxyvergil.tcc.registries;
+
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.effect.HeavenFireApocalypseBuffEffect;
+import com.xlxyvergil.tcc.effect.HeavenFireApocalypseDelayEffect;
+import com.xlxyvergil.tcc.effect.HeavenFireBleedingEffect;
+import com.xlxyvergil.tcc.effect.ErosionEffect;
+import com.xlxyvergil.tcc.effect.ImaginaryCollapseEffect;
+import com.xlxyvergil.tcc.effect.ImaginaryInfectionEffect;
+import com.xlxyvergil.tcc.effect.ArgonScopeEffect;
+import com.xlxyvergil.tcc.effect.GildedArgonScopeEffect;
+import com.xlxyvergil.tcc.effect.LaserScopeEffect;
+import com.xlxyvergil.tcc.effect.HydraulicCrosshairEffect;
+import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairEffect;
+import com.xlxyvergil.tcc.effect.SharpBulletEffect;
+import com.xlxyvergil.tcc.effect.FragmentShotEffect;
+import com.xlxyvergil.tcc.effect.SharpAmmoEffect;
+import com.xlxyvergil.tcc.effect.GildedSteelSlashEffect;
+import com.xlxyvergil.tcc.effect.GildedSplitChamberEffect;
+import com.xlxyvergil.tcc.effect.GildedInfernalChamberEffect;
+import com.xlxyvergil.tcc.effect.GildedBulletSpreadEffect;
+import com.xlxyvergil.tcc.effect.GildedArgonScopeKillEffect;
+import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairKillEffect;
+import com.xlxyvergil.tcc.effect.ZhenWoBarrierEffect;
+
+import net.minecraft.world.effect.MobEffect;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
+public class TccMobEffects {
+
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS =
+            DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, TaczCurios.MODID);
+
+    public static final DeferredHolder<MobEffect, MobEffect> HEAVEN_FIRE_APOCALYPSE_BUFF = MOB_EFFECTS.register(
+            "heaven_fire_apocalypse_buff",
+            HeavenFireApocalypseBuffEffect::new);
+    
+    /**
+     * 天火流血效果 - 基于最大生命值的百分比伤害
+     */
+    public static final DeferredHolder<MobEffect, MobEffect> HEAVEN_FIRE_BLEEDING = MOB_EFFECTS.register(
+            "heaven_fire_bleeding",
+            HeavenFireBleedingEffect::new);
+    
+    /**
+     * 虚数侵染效果 - 纯标记效果，降低虚数抗性，伤害由虚数崩解处理
+     */
+    public static final DeferredHolder<MobEffect, MobEffect> IMAGINARY_INFECTION = MOB_EFFECTS.register(
+            "imaginary_infection",
+            ImaginaryInfectionEffect::new);
+    
+    /**
+     * 虚数崩解效果 - 基于虚数侵染等级的百分比流血伤害
+     */
+    public static final DeferredHolder<MobEffect, MobEffect> IMAGINARY_COLLAPSE = MOB_EFFECTS.register(
+            "imaginary_collapse",
+            ImaginaryCollapseEffect::new);
+    
+    /**
+     * 侵蚀 - 负面增伤饰品命中目标时的标记效果
+     */
+    public static final DeferredHolder<MobEffect, MobEffect> EROSION = MOB_EFFECTS.register(
+            "erosion",
+            ErosionEffect::new);
+    
+    /**
+     * 天火劫灭延迟标记 - 用于在扣血后延迟施加流血效果
+     */
+    public static final DeferredHolder<MobEffect, MobEffect> HEAVEN_FIRE_APOCALYPSE_DELAY = MOB_EFFECTS.register(
+            "heaven_fire_apocalypse_delay",
+            HeavenFireApocalypseDelayEffect::new);
+
+    // Phase 3: 新增Buff效果
+
+    public static final DeferredHolder<MobEffect, MobEffect> ARGON_SCOPE = MOB_EFFECTS.register(
+            "argon_scope",
+            ArgonScopeEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_ARGON_SCOPE = MOB_EFFECTS.register(
+            "gilded_argon_scope",
+            GildedArgonScopeEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> LASER_SCOPE = MOB_EFFECTS.register(
+            "laser_scope",
+            LaserScopeEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> HYDRAULIC_CROSSHAIR = MOB_EFFECTS.register(
+            "hydraulic_crosshair",
+            HydraulicCrosshairEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_HYDRAULIC_CROSSHAIR = MOB_EFFECTS.register(
+            "gilded_hydraulic_crosshair",
+            GildedHydraulicCrosshairEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> SHARP_BULLET = MOB_EFFECTS.register(
+            "sharp_bullet",
+            SharpBulletEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> FRAGMENT_SHOT = MOB_EFFECTS.register(
+            "fragment_shot",
+            FragmentShotEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> SHARP_AMMO = MOB_EFFECTS.register(
+            "sharp_ammo",
+            SharpAmmoEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_STEEL_SLASH = MOB_EFFECTS.register(
+            "gilded_steel_slash",
+            GildedSteelSlashEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_SPLIT_CHAMBER = MOB_EFFECTS.register(
+            "gilded_split_chamber",
+            GildedSplitChamberEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_INFERNAL_CHAMBER = MOB_EFFECTS.register(
+            "gilded_infernal_chamber",
+            GildedInfernalChamberEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_BULLET_SPREAD = MOB_EFFECTS.register(
+            "gilded_bullet_spread",
+            GildedBulletSpreadEffect::new);
+
+    // Phase 3.5: 镀层饰品爆头击杀Buff（叠层）
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_ARGON_SCOPE_KILL = MOB_EFFECTS.register(
+            "gilded_argon_scope_kill",
+            GildedArgonScopeKillEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> GILDED_HYDRAULIC_CROSSHAIR_KILL = MOB_EFFECTS.register(
+            "gilded_hydraulic_crosshair_kill",
+            GildedHydraulicCrosshairKillEffect::new);
+
+    // 新系列：戒律/黄金/旭光/无限/浮生/空梦
+
+    /**
+     * 逐火之蛾「真我」结界标记 - 中性纯标记效果，驱动客户端地面特效渲染
+     */
+    public static final DeferredHolder<MobEffect, MobEffect> ZHEN_WO_BARRIER = MOB_EFFECTS.register(
+            "zhen_wo_barrier",
+            ZhenWoBarrierEffect::new);
+
+}

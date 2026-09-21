@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "tcc:rifling",
+    "tcc:close_range_shot",
+    "tcc:wasp_stinger",
+    "tcc:ural_wolf_tag",
+    "tcc:soldier_basic_tag",
+    "tcc:red_movement_tag",
+    "tcc:limit_speed",
+    "tcc:ferocious_extension",
+    "tcc:tactical_reload",
+    "tcc:weakness_mastery",
+    "tcc:sharp_bullet",
+    "tcc:laser_scope",
+    "tcc:sharp_ammo"
+  ]
+}

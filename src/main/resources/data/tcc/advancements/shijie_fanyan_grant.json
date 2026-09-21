@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "tcc:shijie_fanyan"
+    },
+    "title": {
+      "translate": "advancement.tcc.shijie_fanyan_grant.title"
+    },
+    "description": {
+      "translate": "advancement.tcc.shijie_fanyan_grant.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "tcc:qianjie_to_yongjie_zhijian",
+  "criteria": {
+    "step_1": { "trigger": "minecraft:impossible" }
+  }
+}

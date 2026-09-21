@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/world/item/Rarity",
+      "name": "TCC_RARITY_RIFT",
+      "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+      "parameters": {
+        "class": "com/xlxyvergil/tcc/registries/TccRarity",
+        "field": "RIFT_PROXY"
+      }
+    }
+  ]
+}
