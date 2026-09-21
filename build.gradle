@@ -181,12 +181,8 @@ dependencies {
     // Apothic-Curios 依赖 Apotheosis，但我们需要直接访问 AffixInstance 等 API
     compileOnly fg.deobf("curse.maven:apotheosis-313970:6461960")
     compileOnly fg.deobf("curse.maven:placebo-283644:6274231")
-    // Apothic-Curios for Curios-Apotheosis integration (optional, compile only)
-    compileOnly fg.deobf("curse.maven:apothic-curios-950712:6624706")
     // Apothic-Attributes as runtime dependency for mob effects
     implementation fg.deobf("curse.maven:apothic-attributes-898963:5634071")
-    // Enigmatic Legacy (optional, compile only)
-    compileOnly fg.deobf("curse.maven:enigmatic-legacy-336184:5600004")
     // Iron's Spells 'n Spellbooks (optional, for true_invisibility effect)
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
     // Lootr (optional, compile only) - 用于"高亮未开启的 Lootr 战利品箱子"功能
@@ -201,9 +197,6 @@ dependencies {
 
     // RevelationFix (optional, compile only) - 本地依赖
     compileOnly fg.deobf(files("libs/[Forge]RevelationFix-1.20.1-4.4.jar"))
-
-    // Refined Storage (optional, compile only) - 用于修复 Shift 批量合成事件计数
-    compileOnly fg.deobf("curse.maven:refined-storage-243076:4844585")
 
     // Mixin annotation processor for refmap generation
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
