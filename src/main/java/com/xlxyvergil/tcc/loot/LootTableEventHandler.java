@@ -1,10 +1,8 @@
 package com.xlxyvergil.tcc.loot;
 
-import com.mojang.serialization.MapCodec;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
-import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -12,6 +10,8 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.bus.api.SubscribeEvent;
 
 import java.util.Set;
@@ -30,16 +30,19 @@ public class LootTableEventHandler {
     private static final ResourceLocation END_CITY_TABLE =
             ResourceLocation.parse("minecraft:chests/end_city_treasure");
 
-    /** 自定义战利品函数类型，类加载时自动注册到 BuiltInRegistries。 */
-    public static final LootItemFunctionType<SetFusionCountFunction> SET_FUSION_COUNT =
-            register("set_fusion_count", SetFusionCountFunction.CODEC);
+    /**
+     * 自定义战利品函数类型。
+     *
+     * <p>原先在类初始化时直接 {@code Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, ...)}，
+     * 但 1.21.1 的注册表在 RegisterEvent 阶段结束后即被冻结，而本类由
+     * {@code FMLCommonSetupEvent} 才触发类加载，必然抛
+     * "Registry is already frozen"。改为 DeferredRegister，交由 RegisterEvent 注册。
+     */
+    public static final DeferredRegister<LootItemFunctionType<?>> LOOT_FUNCTION_TYPES =
+            DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, TaczCurios.MODID);
 
-    private static LootItemFunctionType<SetFusionCountFunction> register(String id, MapCodec<SetFusionCountFunction> codec) {
-        return Registry.register(
-                BuiltInRegistries.LOOT_FUNCTION_TYPE,
-                ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, id),
-                new LootItemFunctionType<>(codec));
-    }
+    public static final DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<SetFusionCountFunction>> SET_FUSION_COUNT =
+            LOOT_FUNCTION_TYPES.register("set_fusion_count", () -> new LootItemFunctionType<>(SetFusionCountFunction.CODEC));
 
     @SubscribeEvent
     public static void onLootTableLoad(LootTableLoadEvent event) {

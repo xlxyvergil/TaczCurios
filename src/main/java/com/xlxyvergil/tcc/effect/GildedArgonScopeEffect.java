@@ -13,9 +13,10 @@ import com.xlxyvergil.tcc.TaczCurios;
 public class GildedArgonScopeEffect extends MobEffect {
     public GildedArgonScopeEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFFCC66);
-        double perLevelValue = TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_argon_scope_effect_cf77490e_474c"), perLevelValue, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_argon_scope_effect_cf77490e_474c"),
+            AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance));
     }
 
 }

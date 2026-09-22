@@ -64,8 +64,9 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     
-    public boolean requiresCollapseCrystal() {
-        return isBoundItem();
+    /** 该饰品卸下时是否真的需要崩坏结晶：绑定饰品且其阶位未被配置为可直接卸下。 */
+    public boolean requiresCollapseCrystal(ItemStack stack) {
+        return isBoundItem() && !isTierRemovable(stack);
     }
 
     

@@ -51,7 +51,7 @@ public class TaczCuriosClientTooltip {
         
 
         
-        if (stack.getItem() instanceof BoundCurioItem curio && curio.requiresCollapseCrystal()) {
+        if (stack.getItem() instanceof BoundCurioItem curio && curio.requiresCollapseCrystal(stack)) {
             tooltip.add(Component.translatable("tcc.tooltip.requires_collapse_crystal")
                     .withStyle(ChatFormatting.RED, ChatFormatting.ITALIC));
         }

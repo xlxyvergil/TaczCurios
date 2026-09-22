@@ -12,9 +12,10 @@ import com.xlxyvergil.tcc.TaczCurios;
 public class GildedSteelSlashEffect extends MobEffect {
     public GildedSteelSlashEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFF8866);
-        double perLevelValue = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get();
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
-            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_steel_slash_effect_f7508ebd_7364"), perLevelValue, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_steel_slash_effect_f7508ebd_7364"),
+            AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_steel_slash_effect_f7508ebd_7364"), TccItems.GILDED_STEEL_SLASH);
     }
 

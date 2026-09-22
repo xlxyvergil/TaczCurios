@@ -15,7 +15,7 @@ public class FragmentShotEffect extends MobEffect {
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fragment_shot_effect_05ef1a76_52fd"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-            amplifier -> (amplifier + 1) * TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get());
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fragment_shot_effect_05ef1a76_52fd"), TccItems.FRAGMENT_SHOT);
     }
 }

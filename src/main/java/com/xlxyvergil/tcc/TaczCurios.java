@@ -52,16 +52,18 @@ public class TaczCurios
             event.register(Registries.VILLAGER_PROFESSION, TccVillagers::init);
         });
 
+        // 村民交易必须走 VillagerTradesEvent：VillagerTradingManager 会在 SERVER_DATA_LOAD 时
+        // 用「启动快照 + 本事件监听者」整体重建 VillagerTrades.TRADES，注册期直接写入会被清空。
+        NeoForge.EVENT_BUS.addListener(TccVillagers::onVillagerTrades);
+
         modEventBus.addListener(NetworkHandler::registerPayloads);
 
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
         TccRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
+        LootTableEventHandler.LOOT_FUNCTION_TYPES.register(modEventBus);
 
-        
-        NeoForge.EVENT_BUS.register(this);
-        
         NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
                 NetworkHandler.syncAllForPlayer(sp);

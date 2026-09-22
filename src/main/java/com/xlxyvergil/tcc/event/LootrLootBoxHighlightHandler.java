@@ -50,7 +50,7 @@ public final class LootrLootBoxHighlightHandler {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
-        // Lootr 未安装则完全跳过，避免触发 NoClassDefFoundError
+        // Lootr 未安装则完全跳过（LootrCompat 已做类型隔离，可安全调用）
         if (!LootrCompat.isLoaded()) {
             return;
         }

@@ -22,11 +22,10 @@ public class ImaginaryInfectionEffect extends MobEffect {
 
     public ImaginaryInfectionEffect() {
         super(MobEffectCategory.NEUTRAL, 0x8B0000);
-        double reduction = TaczCuriosConfig.COMMON.imaginaryInfectionResistanceReduction.get();
         this.addAttributeModifier(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             RESISTANCE_REDUCTION_ID,
-            -reduction,
-            AttributeModifier.Operation.ADD_VALUE);
+            AttributeModifier.Operation.ADD_VALUE,
+            amplifier -> -(amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.imaginaryInfectionResistanceReduction));
     }
 
     /**

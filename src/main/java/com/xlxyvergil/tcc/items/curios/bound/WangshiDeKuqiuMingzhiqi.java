@@ -18,13 +18,11 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.common.EventBusSubscriber;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-@EventBusSubscriber(modid = TaczCurios.MODID)
 public class WangshiDeKuqiuMingzhiqi extends BoundCurioItem {
     public WangshiDeKuqiuMingzhiqi(Properties properties) {
         super(properties);

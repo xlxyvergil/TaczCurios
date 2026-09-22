@@ -15,7 +15,7 @@ public class ArgonScopeEffect extends MobEffect {
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "argon_scope_effect_a46002d7_e441"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-            amplifier -> (amplifier + 1) * TaczCuriosConfig.COMMON.argonScopeBaseCritChance.get());
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.argonScopeBaseCritChance));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "argon_scope_effect_a46002d7_e441"), TccItems.ARGON_SCOPE);
     }
 }

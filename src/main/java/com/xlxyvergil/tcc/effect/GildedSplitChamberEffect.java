@@ -12,9 +12,10 @@ import com.xlxyvergil.tcc.TaczCurios;
 public class GildedSplitChamberEffect extends MobEffect {
     public GildedSplitChamberEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
-        double perLevelValue = TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel.get();
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
-            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_split_chamber_effect_0f372759_8a01"), perLevelValue, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_split_chamber_effect_0f372759_8a01"),
+            AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.gildedSplitChamberBulletCountPerLevel));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_split_chamber_effect_0f372759_8a01"), TccItems.GILDED_SPLIT_CHAMBER);
     }
 

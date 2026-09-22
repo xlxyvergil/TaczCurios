@@ -14,6 +14,20 @@ public class TaczCuriosConfig {
         COMMON_SPEC = specPair.getRight();
         COMMON = specPair.getLeft();
     }
+
+    /**
+     * 安全读取配置值：配置尚未加载时返回默认值。
+     *
+     * <p>MOB_EFFECT 注册发生在 {@code registerConfig} 排队加载之前，而
+     * {@code MobEffect.addAttributeModifier(Holder, ResourceLocation, Operation, Int2DoubleFunction)}
+     * 会在注册当场以 amplifier = 0 试算一次曲线，此时直接调用 {@code get()} 会抛
+     * "Cannot get config value before config is loaded."。
+     * <p>该试算结果只写入 {@code AttributeTemplate.amount}，运行期曲线非空时该字段不参与取值，
+     * 因此以默认值兜底不影响实际效果；运行期曲线求值仍会读到这里返回的真实配置值。
+     */
+    public static double getOrDefault(ModConfigSpec.ConfigValue<Double> value) {
+        return COMMON_SPEC.isLoaded() ? value.get() : value.getDefault();
+    }
     
     public static class Common {
         

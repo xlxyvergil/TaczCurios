@@ -20,29 +20,32 @@ import java.util.*;
 
 
 public abstract class BaseCurioItem extends Item implements ICurioItem {
-    
-    private static final Map<String, Set<String>> CONFLICT_MAP = new HashMap<>();
 
-    static {
-        loadConflictsFromConfig();
-    }
+    /**
+     * 冲突表延迟到首次使用时构建。@EventBusSubscriber 的类扫描发生在配置注册/加载之前，
+     * 若在静态初始化块里读取配置会抛 "Cannot get config value before config is loaded"。
+     */
+    private static final class ConflictMapHolder {
+        private static final Map<String, Set<String>> MAP = build();
 
-    private static void loadConflictsFromConfig() {
-        List<? extends String> conflictGroups = TaczCuriosConfig.COMMON.curioConflicts.get();
+        private static Map<String, Set<String>> build() {
+            Map<String, Set<String>> map = new HashMap<>();
+            List<? extends String> conflictGroups = TaczCuriosConfig.COMMON.curioConflicts.get();
 
-        for (String group : conflictGroups) {
-            String[] items = group.split(",");
-            Set<String> groupSet = new HashSet<>();
-            for (String item : items) {
-                groupSet.add(item.trim());
+            for (String group : conflictGroups) {
+                String[] items = group.split(",");
+                Set<String> groupSet = new HashSet<>();
+                for (String item : items) {
+                    groupSet.add(item.trim());
+                }
+
+                for (String itemName : groupSet) {
+                    Set<String> conflicts = map.computeIfAbsent(itemName, k -> new HashSet<>());
+                    conflicts.addAll(groupSet);
+                    conflicts.add(itemName);
+                }
             }
-
-            
-            for (String itemName : groupSet) {
-                Set<String> conflicts = CONFLICT_MAP.computeIfAbsent(itemName, k -> new HashSet<>());
-                conflicts.addAll(groupSet);
-                conflicts.add(itemName);
-            }
+            return map;
         }
     }
 
@@ -90,7 +93,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem {
         String slotId = slotContext.identifier();
         LivingEntity entity = (LivingEntity) slotContext.entity();
         String currentRegName = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-        Set<String> conflictNames = CONFLICT_MAP.getOrDefault(currentRegName, new HashSet<>());
+        Set<String> conflictNames = ConflictMapHolder.MAP.getOrDefault(currentRegName, new HashSet<>());
 
         if (!conflictNames.isEmpty()) {
             Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(entity);

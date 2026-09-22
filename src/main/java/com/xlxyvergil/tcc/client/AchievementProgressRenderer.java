@@ -10,6 +10,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -22,6 +23,10 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public final class AchievementProgressRenderer {
+
+    
+    private static final long VANILLA_STATS_REQUEST_INTERVAL_MS = 1000L;
+    private static long lastVanillaStatsRequest;
 
     private AchievementProgressRenderer() {}
 
@@ -296,11 +301,23 @@ public final class AchievementProgressRenderer {
         }
         if (registered == null) return 0;
 
+        requestVanillaStatsIfStale();
         try {
             return player.getStats().getValue(Stats.CUSTOM.get(registered));
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    private static void requestVanillaStatsIfStale() {
+        long now = Util.getMillis();
+        if (now - lastVanillaStatsRequest < VANILLA_STATS_REQUEST_INTERVAL_MS) return;
+        lastVanillaStatsRequest = now;
+
+        var connection = Minecraft.getInstance().getConnection();
+        if (connection == null) return;
+        connection.send(new ServerboundClientCommandPacket(
+                ServerboundClientCommandPacket.Action.REQUEST_STATS));
     }
 
 }

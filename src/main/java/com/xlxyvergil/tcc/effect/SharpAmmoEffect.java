@@ -15,7 +15,7 @@ public class SharpAmmoEffect extends MobEffect {
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_ammo_effect_7ebabc7f_3673"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-            amplifier -> (amplifier + 1) * TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.get());
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_ammo_effect_7ebabc7f_3673"), TccItems.SHARP_AMMO);
     }
 }

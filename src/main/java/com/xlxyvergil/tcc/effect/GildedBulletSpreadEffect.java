@@ -12,9 +12,10 @@ import com.xlxyvergil.tcc.TaczCurios;
 public class GildedBulletSpreadEffect extends MobEffect {
     public GildedBulletSpreadEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
-        double perLevelValue = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get();
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
-            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_bullet_spread_effect_78e5804f_52ee"), perLevelValue, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_bullet_spread_effect_78e5804f_52ee"),
+            AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_bullet_spread_effect_78e5804f_52ee"), TccItems.GILDED_BULLET_SPREAD);
     }
 

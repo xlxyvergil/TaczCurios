@@ -3,7 +3,7 @@ package com.xlxyvergil.tcc.mixin;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,17 +20,17 @@ public abstract class LivingEntityAccessor {
     @Invoker("checkTotemDeathProtection")
     public abstract boolean callCheckTotemDeathProtection(DamageSource damageSource);
 
-    @Inject(method = "removeEffect(Lnet/minecraft/world/effect/MobEffect;)Z",
+    @Inject(method = "removeEffect(Lnet/minecraft/core/Holder;)Z",
         at = @At("HEAD"), cancellable = true)
-    private void tcc$injectRemoveEffectHead(MobEffect effect, CallbackInfoReturnable<Boolean> cir) {
+    private void tcc$injectRemoveEffectHead(Holder<MobEffect> effect, CallbackInfoReturnable<Boolean> cir) {
         if (tcc$isOurEffect(effect)) {
             cir.setReturnValue(false);
-            cir.cancel();
         }
     }
 
-    private static boolean tcc$isOurEffect(MobEffect effect) {
-        var key = BuiltInRegistries.MOB_EFFECT.getKey(effect);
-        return key != null && key.getNamespace().equals("tcc");
+    private static boolean tcc$isOurEffect(Holder<MobEffect> effect) {
+        return effect.unwrapKey()
+                .map(key -> key.location().getNamespace().equals("tcc"))
+                .orElse(false);
     }
 }

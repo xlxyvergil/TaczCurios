@@ -44,7 +44,7 @@ public class SetFusionCountFunction extends LootItemConditionalFunction {
 
     @Override
     public LootItemFunctionType<SetFusionCountFunction> getType() {
-        return LootTableEventHandler.SET_FUSION_COUNT;
+        return LootTableEventHandler.SET_FUSION_COUNT.get();
     }
 
     // -- 构造器 --

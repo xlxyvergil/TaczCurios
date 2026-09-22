@@ -15,7 +15,7 @@ public class SharpBulletEffect extends MobEffect {
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_bullet_effect_7de1fac5_8194"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-            amplifier -> (amplifier + 1) * TaczCuriosConfig.COMMON.sharpBulletBaseCritDamage.get());
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.sharpBulletBaseCritDamage));
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_bullet_effect_7de1fac5_8194"), TccItems.SHARP_BULLET);
     }
 }

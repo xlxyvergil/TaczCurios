@@ -18,7 +18,7 @@ public class HeavenFireApocalypseBuffEffect extends MobEffect {
             EntityAttributeRegistry.BULLET_GUNDAMAGE,
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "heaven_fire_apocalypse_buff_effect_ba764054_012d"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
-            amplifier -> (amplifier + 1) * TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get()
+            amplifier -> (amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost)
         );
         AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "heaven_fire_apocalypse_buff_effect_ba764054_012d"), TccItems.HEAVEN_FIRE_APOCALYPSE);
     }
