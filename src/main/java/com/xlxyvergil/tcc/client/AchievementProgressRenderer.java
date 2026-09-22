@@ -12,6 +12,7 @@ import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -25,6 +26,10 @@ import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public final class AchievementProgressRenderer {
+
+    
+    private static final long VANILLA_STATS_REQUEST_INTERVAL_MS = 1000L;
+    private static long lastVanillaStatsRequest;
 
     private AchievementProgressRenderer() {}
 
@@ -292,6 +297,7 @@ public final class AchievementProgressRenderer {
         }
         if (registered == null) return 0;
 
+        requestVanillaStatsIfStale();
         try {
             return player.getStats().getValue(Stats.CUSTOM.get(registered));
         } catch (Exception e) {
@@ -299,5 +305,21 @@ public final class AchievementProgressRenderer {
         }
     }
 
+    /**
+     * 原版统计只由 ServerStatsCounter#sendStats 下发，而服务端仅在该连接收到
+     * ServerboundClientCommandPacket(REQUEST_STATS) 时才会调用它（原版只有打开统计界面会发）。
+     * 因此客户端 player.getStats() 在玩家打开统计界面之前全为 0，tooltip 也读不到值。
+     * 这里在 tooltip 真正需要原版统计时主动补发同一个请求；用时间戳防抖，避免每帧刷包。
+     */
+    private static void requestVanillaStatsIfStale() {
+        long now = Util.getMillis();
+        if (now - lastVanillaStatsRequest < VANILLA_STATS_REQUEST_INTERVAL_MS) return;
+        lastVanillaStatsRequest = now;
+
+        var connection = Minecraft.getInstance().getConnection();
+        if (connection == null) return;
+        connection.send(new ServerboundClientCommandPacket(
+                ServerboundClientCommandPacket.Action.REQUEST_STATS));
+    }
 }
 
