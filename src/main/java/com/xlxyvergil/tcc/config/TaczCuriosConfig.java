@@ -2131,8 +2131,8 @@ public class TaczCuriosConfig {
 
             builder.comment("无限饰品配置").push("wuxian");
             wuxianPerTypeBonus = builder
-                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.002 = +0.2%）")
-                    .defineInRange("perTypeBonus", 0.002, 0.0, 100.0);
+                    .comment("每击杀一种实体类型的全属性加成（小数，默认: 0.01 = +1%）")
+                    .defineInRange("perTypeBonus", 0.01, 0.0, 100.0);
             builder.pop();
 
             
@@ -2155,15 +2155,18 @@ public class TaczCuriosConfig {
                     .comment("黑名单中的属性注册名列表（格式：命名空间:属性名，如 taa:recoil）")
                     .defineList("attributes", List.of(
                             "gunsmithlib:bullet_damage",
-                            // 虚数抗性为无条件施加，不应被全属性加成的武器判断间接限制，故排除。
                             "tcc:imaginary_damage_resistance",
-                            "minecraft:movement_speed", "minecraft:bounciness", "minecraft:burning_time", "minecraft:gravity",
+                            "minecraft:generic.movement_speed", "minecraft:bounciness", "minecraft:burning_time", "minecraft:gravity",
                             "taa:explosion_knockbacknew", "taa:explosion_enabled",
                             "taa:ignitefire", "taa:inaccuracy", "taa:inaccuracy_stand",
                             "taa:inaccuracy_move", "taa:inaccuracy_sneak", "taa:inaccuracy_lie",
                             "taa:inaccuracy_aim", "taa:knockback", "taa:recoil",
                             "taa:recoil_pitch", "taa:recoil_yaw", "taa:silencenew",
-                            "taa:weight", "taa:bounciness", "taa:burning_time", "taa:gravity"
+                            "taa:weight", "taa:bounciness", "taa:burning_time", "taa:gravity",
+                            "taa:ads_time", "taa:heat_overheat_time", "taa:reload_time",
+                            "taa:explosion_destroy_blocknew", "taa:explosion_delay",
+                            "gunsmithlib:vert_recoil", "gunsmithlib:horz_recoil", "gunsmithlib:reload_speed",
+                            "sometaczaddon:gun_recoil_effect"
                     ), o -> o instanceof String);
             builder.pop();
 
