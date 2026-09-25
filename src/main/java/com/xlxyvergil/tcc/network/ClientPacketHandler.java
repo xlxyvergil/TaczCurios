@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.network;
 
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.client.LootrHighlightClientData;
+import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -51,5 +52,9 @@ final class ClientPacketHandler {
 
     static void handleLootrHighlights(SyncLootrHighlightsS2CPacket packet) {
         LootrHighlightClientData.setHighlights(packet.positions());
+    }
+
+    static void handleSpawnerHighlights(SyncSpawnerHighlightsS2CPacket packet) {
+        SpawnerHighlightClientData.setHighlights(packet.positions());
     }
 }

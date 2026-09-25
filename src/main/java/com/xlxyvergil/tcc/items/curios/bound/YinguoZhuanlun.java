@@ -149,9 +149,11 @@ public class YinguoZhuanlun extends BoundCurioItem {
 
         tooltip.add(formatModifierTooltip(overheal, "%.0f%%", Component.translatable(AttributeHelper.OVERHEAL.value().getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.special",
-                String.format("%.0f", ammoPercent),
+        tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.special.damage",
                 String.format("%.2f", imaginaryDamage))
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.yinguo_zhuanlun.special.ammo",
+                String.format("%.0f", ammoPercent))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));

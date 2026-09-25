@@ -28,6 +28,7 @@ public final class NetworkHandler {
         registrar.playToClient(SyncProgressS2CPacket.TYPE, SyncProgressS2CPacket.STREAM_CODEC, SyncProgressS2CPacket::handle);
         registrar.playToClient(PacketSyncPlayTime.TYPE, PacketSyncPlayTime.STREAM_CODEC, PacketSyncPlayTime::handle);
         registrar.playToClient(SyncLootrHighlightsS2CPacket.TYPE, SyncLootrHighlightsS2CPacket.STREAM_CODEC, SyncLootrHighlightsS2CPacket::handle);
+        registrar.playToClient(SyncSpawnerHighlightsS2CPacket.TYPE, SyncSpawnerHighlightsS2CPacket.STREAM_CODEC, SyncSpawnerHighlightsS2CPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
@@ -36,6 +37,10 @@ public final class NetworkHandler {
 
     public static void sendLootrHighlights(ServerPlayer player, List<BlockPos> positions) {
         sendToPlayer(player, new SyncLootrHighlightsS2CPacket(positions));
+    }
+
+    public static void sendSpawnerHighlights(ServerPlayer player, List<BlockPos> positions) {
+        sendToPlayer(player, new SyncSpawnerHighlightsS2CPacket(positions));
     }
 
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {
