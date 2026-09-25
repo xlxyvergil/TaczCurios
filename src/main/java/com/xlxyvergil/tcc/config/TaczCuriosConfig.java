@@ -1,9 +1,15 @@
 package com.xlxyvergil.tcc.config;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Set;
 
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.xlxyvergil.tcc.TaczCurios;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -2415,5 +2421,39 @@ public class TaczCuriosConfig {
     
     public static void registerConfigs() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
+    }
+
+    /**
+     * 客户端收到服务端配置后调用：把服务端 TOML 写入本地配置文件并让配置值立即生效。
+     *
+     * <p>写盘后重新载入 FileConfig 再交给 spec，使 FileConfig 的数据与服务端一致，
+     * 退出游戏时 Forge 保存配置便不会把本地旧值写回文件；任一步失败都保留本地配置。</p>
+     */
+    public static void applySyncedConfig(String toml) {
+        ModConfig config = findCommonConfig();
+        if (config == null || !(config.getConfigData() instanceof CommentedFileConfig fileConfig)) {
+            return;
+        }
+        try {
+            Files.writeString(fileConfig.getNioPath(), toml, StandardCharsets.UTF_8);
+            fileConfig.load();
+            COMMON_SPEC.acceptConfig(fileConfig);
+        } catch (Exception ignored) {
+            // 同步失败时保持本地配置
+        }
+    }
+
+    /** 取出本 mod 的 COMMON 配置，客户端同步时用它定位配置文件。 */
+    private static ModConfig findCommonConfig() {
+        Set<ModConfig> configs = ConfigTracker.INSTANCE.configSets().get(ModConfig.Type.COMMON);
+        if (configs == null) {
+            return null;
+        }
+        for (ModConfig config : configs) {
+            if (TaczCurios.MODID.equals(config.getModId())) {
+                return config;
+            }
+        }
+        return null;
     }
 }

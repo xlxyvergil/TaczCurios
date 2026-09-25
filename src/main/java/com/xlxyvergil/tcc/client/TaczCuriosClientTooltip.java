@@ -59,6 +59,11 @@ public class TaczCuriosClientTooltip {
     
 
     
+    /** 服务端同步新的成就数据后清空派生的索引缓存，使后续 tooltip 用新数据重建。 */
+    public static void invalidateCache() {
+        rewardToAchievement = null;
+    }
+
     private static Map<String, AchievementDefinitions.AchievementDef> getRewardMap() {
         if (rewardToAchievement == null) {
             rewardToAchievement = new HashMap<>();

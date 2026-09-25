@@ -51,10 +51,30 @@ public final class NetworkHandler {
                 SyncSpawnerHighlightsS2CPacket::decode,
                 SyncSpawnerHighlightsS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, SyncConfigS2CPacket.class,
+                SyncConfigS2CPacket::encode,
+                SyncConfigS2CPacket::decode,
+                SyncConfigS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, SyncDataFilesS2CPacket.class,
+                SyncDataFilesS2CPacket::encode,
+                SyncDataFilesS2CPacket::decode,
+                SyncDataFilesS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
         CHANNEL.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    /** 把服务端当前的 COMMON 配置下发给玩家，使客户端读取到的配置值与服务端一致。 */
+    public static void syncConfig(ServerPlayer player) {
+        sendToPlayer(player, SyncConfigS2CPacket.capture());
+    }
+
+    /** 把服务端实际生效的成就/进化/阶位 JSON 下发给玩家，使客户端显示与服务端一致。 */
+    public static void syncDataFiles(ServerPlayer player) {
+        sendToPlayer(player, SyncDataFilesS2CPacket.capture());
     }
 
     public static void sendLootrHighlights(ServerPlayer player, List<BlockPos> positions) {

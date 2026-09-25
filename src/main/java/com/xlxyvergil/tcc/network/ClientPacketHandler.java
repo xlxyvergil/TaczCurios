@@ -3,6 +3,11 @@ package com.xlxyvergil.tcc.network;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.client.LootrHighlightClientData;
 import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
+import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
+import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
+import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
+import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -56,5 +61,24 @@ final class ClientPacketHandler {
 
     static void handleSpawnerHighlights(SyncSpawnerHighlightsS2CPacket packet) {
         SpawnerHighlightClientData.setHighlights(packet.positions());
+    }
+
+    /**
+     * 用服务端下发的 TOML 覆盖本地配置文件与配置值，覆盖后客户端所有 {@code COMMON_SPEC} 读取
+     * 都会返回服务端值，本地文件也保持与服务端一致。失败时保留本地配置，不影响正常游玩。
+     */
+    static void handleSyncConfig(SyncConfigS2CPacket packet) {
+        TaczCuriosConfig.applySyncedConfig(packet.toml());
+    }
+
+    /**
+     * 用服务端下发的 JSON 覆盖本地数据文件并立即重新加载，
+     * 使客户端的成就显示、进化提示、阶位判定与服务端一致。
+     */
+    static void handleSyncDataFiles(SyncDataFilesS2CPacket packet) {
+        AchievementDefinitions.applySyncedText(packet.achievements());
+        EvolutionRegistry.applySyncedText(packet.evolution());
+        KeyTierRegistry.applySyncedText(packet.tiers());
+        TaczCuriosClientTooltip.invalidateCache();
     }
 }
