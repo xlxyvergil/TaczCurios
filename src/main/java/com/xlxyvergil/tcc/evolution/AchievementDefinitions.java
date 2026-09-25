@@ -24,6 +24,7 @@ import java.util.*;
 
 public final class AchievementDefinitions {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final String DIR_NAME = "tcc";
     private static final String FILE_NAME = "achievement_definitions.json";
     private static final String DEFAULT_RESOURCE = "/tcc_defaults/achievement_definitions.json";
 
@@ -68,7 +69,7 @@ public final class AchievementDefinitions {
         if (loadAttempted) return;
         synchronized (AchievementDefinitions.class) {
             if (loadAttempted) return;
-            Path file = FMLPaths.CONFIGDIR.get().resolve("tcc").resolve(FILE_NAME);
+            Path file = configFile();
             try { Files.createDirectories(file.getParent()); } catch (IOException e) {
                 loadAttempted = true;
                 return;
@@ -87,6 +88,46 @@ public final class AchievementDefinitions {
     }
 
     public static boolean isLoaded() { return loaded; }
+
+    private static Path configFile() {
+        return FMLPaths.CONFIGDIR.get().resolve(DIR_NAME).resolve(FILE_NAME);
+    }
+
+    /** 读取当前生效的配置文件文本，供服务端下发；文件不可读时返回 null。 */
+    public static String readConfigText() {
+        loadOnce();
+        try {
+            return Files.readString(configFile(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 用服务端下发的内容覆盖本地文件并立即重新加载。
+     * 不再合并 jar 内默认项，保证客户端数据与服务端完全一致；内容非法时保持现状。
+     */
+    public static void applySyncedText(String json) {
+        if (json == null || json.isBlank()) {
+            return;
+        }
+        synchronized (AchievementDefinitions.class) {
+            Path file = configFile();
+            try {
+                JsonParser.parseString(json);
+                Files.createDirectories(file.getParent());
+                Files.writeString(file, json, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                return;
+            }
+            loaded = false;
+            loadAttempted = false;
+            if (readAll(file)) {
+                loaded = true;
+            }
+            loadAttempted = true;
+        }
+    }
 
     private static boolean ensureDefaults(Path file) {
         if (Files.exists(file)) {

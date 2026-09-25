@@ -1,7 +1,15 @@
 package com.xlxyvergil.tcc.config;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
+import com.xlxyvergil.tcc.TaczCurios;
+import net.neoforged.fml.config.ConfigTracker;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.config.ModConfigs;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -2422,5 +2430,44 @@ public class TaczCuriosConfig {
                     .defineInRange("endChance", 0.05, 0.0, 1.0);
             builder.pop();
         }
+    }
+
+    /**
+     * 客户端收到服务端配置后调用：把服务端 TOML 写入本地配置文件，并让配置值立即生效。
+     *
+     * <p>先写盘再交给 FML 的 {@link ConfigTracker#acceptSyncedConfig}（与 SERVER 配置同步同一条路径），
+     * 使本地文件内容与内存中的配置值都与服务端一致，下次启动读取到的也是服务端这份配置。
+     * 任一步失败都保留本地配置。</p>
+     */
+    public static void applySyncedConfig(String toml) {
+        if (toml == null || toml.isBlank()) {
+            return;
+        }
+        ModConfig config = findCommonConfig();
+        if (config == null) {
+            return;
+        }
+        try {
+            Files.createDirectories(FMLPaths.CONFIGDIR.get());
+            Files.writeString(configPath(config), toml, StandardCharsets.UTF_8);
+            ConfigTracker.acceptSyncedConfig(config, toml.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception ignored) {
+            // 同步失败时保持本地配置
+        }
+    }
+
+    /** COMMON 配置固定落在 config 目录下，按 FML 的默认命名规则定位文件。 */
+    private static Path configPath(ModConfig config) {
+        return FMLPaths.CONFIGDIR.get().resolve(config.getFileName());
+    }
+
+    /** 取出本 mod 的 COMMON 配置，客户端同步时用它定位配置。 */
+    private static ModConfig findCommonConfig() {
+        for (ModConfig config : ModConfigs.getModConfigs(TaczCurios.MODID)) {
+            if (config.getType() == ModConfig.Type.COMMON) {
+                return config;
+            }
+        }
+        return null;
     }
 }

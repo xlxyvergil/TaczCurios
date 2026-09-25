@@ -67,6 +67,8 @@ public class TaczCurios
         NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> {
             if (event.getEntity() instanceof ServerPlayer sp) {
                 NetworkHandler.syncAllForPlayer(sp);
+                NetworkHandler.syncConfig(sp);
+                NetworkHandler.syncDataFiles(sp);
             }
         });
         

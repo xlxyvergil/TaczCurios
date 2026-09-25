@@ -60,7 +60,7 @@ public final class KeyTierRegistry {
             if (loaded) {
                 return;
             }
-            Path file = FMLPaths.CONFIGDIR.get().resolve(DIR_NAME).resolve(FILE_NAME);
+            Path file = configFile();
             try {
                 Files.createDirectories(file.getParent());
             } catch (IOException e) {
@@ -68,6 +68,43 @@ public final class KeyTierRegistry {
                 return;
             }
             ensureDefaults(file);
+            readAll(file);
+            loaded = true;
+        }
+    }
+
+    private static Path configFile() {
+        return FMLPaths.CONFIGDIR.get().resolve(DIR_NAME).resolve(FILE_NAME);
+    }
+
+    /** 读取当前生效的配置文件文本，供服务端下发；文件不可读时返回 null。 */
+    public static String readConfigText() {
+        loadOnce();
+        try {
+            return Files.readString(configFile(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 用服务端下发的内容覆盖本地文件并立即重新加载。
+     * 不再合并 jar 内默认项，保证客户端数据与服务端完全一致；内容非法时保持现状。
+     */
+    public static void applySyncedText(String json) {
+        if (json == null || json.isBlank()) {
+            return;
+        }
+        synchronized (KeyTierRegistry.class) {
+            Path file = configFile();
+            try {
+                JsonParser.parseString(json);
+                Files.createDirectories(file.getParent());
+                Files.writeString(file, json, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                return;
+            }
+            loaded = false;
             readAll(file);
             loaded = true;
         }

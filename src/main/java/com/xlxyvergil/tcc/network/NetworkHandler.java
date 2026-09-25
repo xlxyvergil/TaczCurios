@@ -29,10 +29,22 @@ public final class NetworkHandler {
         registrar.playToClient(PacketSyncPlayTime.TYPE, PacketSyncPlayTime.STREAM_CODEC, PacketSyncPlayTime::handle);
         registrar.playToClient(SyncLootrHighlightsS2CPacket.TYPE, SyncLootrHighlightsS2CPacket.STREAM_CODEC, SyncLootrHighlightsS2CPacket::handle);
         registrar.playToClient(SyncSpawnerHighlightsS2CPacket.TYPE, SyncSpawnerHighlightsS2CPacket.STREAM_CODEC, SyncSpawnerHighlightsS2CPacket::handle);
+        registrar.playToClient(SyncConfigS2CPacket.TYPE, SyncConfigS2CPacket.STREAM_CODEC, SyncConfigS2CPacket::handle);
+        registrar.playToClient(SyncDataFilesS2CPacket.TYPE, SyncDataFilesS2CPacket.STREAM_CODEC, SyncDataFilesS2CPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
         PacketDistributor.sendToPlayer(player, packet);
+    }
+
+    /** 把服务端当前的 COMMON 配置下发给玩家，使客户端读取到的配置值与服务端一致。 */
+    public static void syncConfig(ServerPlayer player) {
+        sendToPlayer(player, SyncConfigS2CPacket.capture());
+    }
+
+    /** 把服务端实际生效的成就/进化/阶位 JSON 下发给玩家，使客户端显示与服务端一致。 */
+    public static void syncDataFiles(ServerPlayer player) {
+        sendToPlayer(player, SyncDataFilesS2CPacket.capture());
     }
 
     public static void sendLootrHighlights(ServerPlayer player, List<BlockPos> positions) {
