@@ -644,9 +644,74 @@ public class TaczCuriosConfig {
             fishFoodItems = builder
                     .comment("鱼类物品注册名列表")
                     .defineList("items", List.of(
+                            // 原版
                             "minecraft:cod", "minecraft:cooked_cod",
                             "minecraft:salmon", "minecraft:cooked_salmon",
-                            "minecraft:pufferfish", "minecraft:tropical_fish"
+                            "minecraft:pufferfish", "minecraft:tropical_fish",
+                            // Aquaculture
+                            "aquaculture:atlantic_cod", "aquaculture:blackfish",
+                            "aquaculture:pacific_halibut", "aquaculture:atlantic_halibut",
+                            "aquaculture:atlantic_herring", "aquaculture:pink_salmon",
+                            "aquaculture:pollock", "aquaculture:rainbow_trout",
+                            "aquaculture:bayad", "aquaculture:boulti",
+                            "aquaculture:capitaine", "aquaculture:synodontis",
+                            "aquaculture:smallmouth_bass", "aquaculture:bluegill",
+                            "aquaculture:brown_trout", "aquaculture:carp",
+                            "aquaculture:catfish", "aquaculture:gar",
+                            "aquaculture:minnow", "aquaculture:muskellunge",
+                            "aquaculture:perch", "aquaculture:arapaima",
+                            "aquaculture:piranha", "aquaculture:tambaqui",
+                            "aquaculture:brown_shrooma", "aquaculture:red_shrooma",
+                            "aquaculture:jellyfish", "aquaculture:red_grouper",
+                            "aquaculture:tuna", "aquaculture:box_turtle",
+                            "aquaculture:arrau_turtle", "aquaculture:starshell_turtle",
+                            // Miner's Delight
+                            "miners_delight:squid", "miners_delight:glow_squid",
+                            "miners_delight:tentacles", "miners_delight:baked_squid",
+                            "miners_delight:baked_tentacles", "miners_delight:squid_sandwich",
+                            "miners_delight:takoyaki", "miners_delight:tentacles_on_a_stick",
+                            "miners_delight:bowl_of_stuffed_squid", "miners_delight:glow_ink_pasta",
+                            "miners_delight:fish_stew_cup", "miners_delight:baked_cod_stew_cup",
+                            // Crabber's Delight
+                            "crabbersdelight:crab", "crabbersdelight:cooked_crab",
+                            "crabbersdelight:clawster", "crabbersdelight:cooked_clawster",
+                            "crabbersdelight:shrimp", "crabbersdelight:cooked_shrimp",
+                            "crabbersdelight:clam", "crabbersdelight:raw_clam_meat",
+                            "crabbersdelight:cooked_clam_meat", "crabbersdelight:raw_squid_tentacles",
+                            "crabbersdelight:cooked_squid_tentacles", "crabbersdelight:raw_glow_squid_tentacles",
+                            "crabbersdelight:cooked_glow_squid_tentacles", "crabbersdelight:cooked_tropical_fish",
+                            "crabbersdelight:tropical_fish_slice", "crabbersdelight:cooked_tropical_fish_slice",
+                            "crabbersdelight:pufferfish_slice", "crabbersdelight:cooked_pufferfish_slice",
+                            "crabbersdelight:squid_kebab", "crabbersdelight:fish_stick",
+                            "crabbersdelight:shrimp_skewer", "crabbersdelight:crab_cakes",
+                            "crabbersdelight:crab_legs", "crabbersdelight:clam_bake",
+                            "crabbersdelight:clam_chowder", "crabbersdelight:bisque",
+                            "crabbersdelight:seafood_gumbo", "crabbersdelight:surf_and_turf",
+                            "crabbersdelight:shrimp_fried_rice", "crabbersdelight:stuffed_nautilus_shell",
+                            // Farmer's Delight
+                            "farmersdelight:cod_slice", "farmersdelight:cooked_cod_slice",
+                            "farmersdelight:salmon_slice", "farmersdelight:cooked_salmon_slice",
+                            "farmersdelight:fish_stew", "farmersdelight:baked_cod_stew",
+                            "farmersdelight:grilled_salmon", "farmersdelight:squid_ink_pasta",
+                            "farmersdelight:salmon_roll", "farmersdelight:cod_roll",
+                            // Youkai's Feasts
+                            "youkaisfeasts:raw_lamprey", "youkaisfeasts:raw_lamprey_fillet",
+                            "youkaisfeasts:roasted_lamprey", "youkaisfeasts:roasted_lamprey_fillet",
+                            "youkaisfeasts:raw_tuna", "youkaisfeasts:raw_tuna_slice",
+                            "youkaisfeasts:seared_tuna", "youkaisfeasts:seared_tuna_slice",
+                            "youkaisfeasts:otoro", "youkaisfeasts:roe",
+                            "youkaisfeasts:lamprey_skewer", "youkaisfeasts:kabayaki",
+                            "youkaisfeasts:grilled_eel_over_rice", "youkaisfeasts:tuna_nigiri",
+                            "youkaisfeasts:otoro_nigiri", "youkaisfeasts:tobiko_gunkan",
+                            "youkaisfeasts:tuscan_salmon", "youkaisfeasts:salmon_futomaki",
+                            "youkaisfeasts:salmon_futomaki_slice", "youkaisfeasts:salmon_lover_roll",
+                            "youkaisfeasts:salmon_lover_roll_slice", "youkaisfeasts:tekka_maki",
+                            "youkaisfeasts:tekka_maki_slice", "youkaisfeasts:california_roll",
+                            "youkaisfeasts:california_roll_slice", "youkaisfeasts:rainbow_roll",
+                            "youkaisfeasts:rainbow_roll_slice", "youkaisfeasts:rainbow_futomaki",
+                            "youkaisfeasts:rainbow_futomaki_slice", "youkaisfeasts:volcano_roll",
+                            "youkaisfeasts:volcano_roll_slice", "youkaisfeasts:roe_california_roll",
+                            "youkaisfeasts:roe_california_roll_slice"
                     ), o -> o instanceof String);
             builder.pop();
 

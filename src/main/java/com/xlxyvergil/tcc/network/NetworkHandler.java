@@ -46,6 +46,11 @@ public final class NetworkHandler {
                 SyncLootrHighlightsS2CPacket::decode,
                 SyncLootrHighlightsS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, SyncSpawnerHighlightsS2CPacket.class,
+                SyncSpawnerHighlightsS2CPacket::encode,
+                SyncSpawnerHighlightsS2CPacket::decode,
+                SyncSpawnerHighlightsS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
@@ -54,6 +59,10 @@ public final class NetworkHandler {
 
     public static void sendLootrHighlights(ServerPlayer player, List<BlockPos> positions) {
         sendToPlayer(player, new SyncLootrHighlightsS2CPacket(positions));
+    }
+
+    public static void sendSpawnerHighlights(ServerPlayer player, List<BlockPos> positions) {
+        sendToPlayer(player, new SyncSpawnerHighlightsS2CPacket(positions));
     }
 
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {

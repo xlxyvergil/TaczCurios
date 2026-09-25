@@ -2089,14 +2089,14 @@
         },
         "icon": "tcc:pado_philipis",
         "description": {
-          "zh_cn": "食用鱼类食物333次",
-          "en_us": "Eat fish food 333 times"
+          "zh_cn": "钓鱼333次",
+          "en_us": "Catch 333 fish"
         },
         "frame": "task",
         "hidden": false
       },
       "parent": "tcc:tcc_root",
-      "trigger": "fish_food_eaten",
+      "trigger": "fish_caught",
       "conditions": {
         "criteria_count": 333
       },
@@ -2118,17 +2118,17 @@
         },
         "icon": "tcc:wangshi_de_huanmeng",
         "description": {
-          "zh_cn": "装备帕朵菲利斯，钓鱼200次",
-          "en_us": "Catch 200 fish while wearing Pardo Philis"
+          "zh_cn": "装备帕朵菲利斯，食用鱼类食物333次",
+          "en_us": "Eat fish food 333 times while wearing Pardo Philis"
         },
         "frame": "goal",
         "hidden": false
       },
       "parent": "tcc:pado_philipis_grant",
-      "trigger": "fish_caught",
+      "trigger": "fish_food_eaten",
       "conditions": {
         "equippedCurios": ["tcc:pado_philipis"],
-        "criteria_count": 200
+        "criteria_count": 333
       },
       "prerequisites": ["tcc:pado_philipis_grant"],
       "reward": {

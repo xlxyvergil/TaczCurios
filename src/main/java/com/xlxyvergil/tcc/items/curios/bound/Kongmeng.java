@@ -133,6 +133,8 @@ public class Kongmeng extends BoundCurioItem {
             tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight")
                     .withStyle(ChatFormatting.GREEN));
         }
+        tooltip.add(Component.translatable("item.tcc.dream.spawner_highlight")
+                .withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
