@@ -17,10 +17,11 @@ import org.joml.Matrix4f;
 import java.util.Collection;
 
 /**
- * 绿色光柱的统一绘制工具：把一批方块坐标画成从方块中心向上 {@link #HEIGHT} 格的半透明绿色光柱。
+ * 光柱的统一绘制工具：把一批方块坐标画成从方块中心向上 {@link #HEIGHT} 格的半透明光柱。
  *
- * <p>由 Lootr 战利品箱子高亮（{@code LootrHighlightsRenderer}）与刷怪笼高亮
- * （{@code SpawnerHighlightsRenderer}）共同调用，坐标均由服务端定向下发、仅发给触发玩家本人。</p>
+ * <p>由 Lootr 战利品箱子高亮（{@code LootrHighlightsRenderer}，绿色）与刷怪笼高亮
+ * （{@code SpawnerHighlightsRenderer}，红色）共同调用，颜色由调用方传入；
+ * 坐标均由服务端定向下发、仅发给触发玩家本人。</p>
  */
 public final class HighlightPillarRenderer {
 
@@ -28,16 +29,14 @@ public final class HighlightPillarRenderer {
     private static final double HEIGHT = 16.0D;
     /** 光柱截面半宽（格）。 */
     private static final double TOP_RADIUS = 0.20D;
-    /** 光柱颜色（绿色）。 */
-    private static final float RED = 0.22F;
-    private static final float GREEN = 0.95F;
-    private static final float BLUE = 0.35F;
+    /** 光柱透明度。 */
     private static final float ALPHA = 0.45F;
 
     private HighlightPillarRenderer() {}
 
-    /** 在 {@link RenderLevelStageEvent.Stage#AFTER_ENTITIES} 阶段把给定坐标渲染成绿色光柱；坐标为空时不做任何事。 */
-    public static void render(RenderLevelStageEvent event, Collection<BlockPos> positions) {
+    /** 在 {@link RenderLevelStageEvent.Stage#AFTER_ENTITIES} 阶段把给定坐标渲染成指定颜色的光柱；坐标为空时不做任何事。 */
+    public static void render(RenderLevelStageEvent event, Collection<BlockPos> positions,
+                              float red, float green, float blue) {
         if (positions.isEmpty() || Minecraft.getInstance().level == null) {
             return;
         }
@@ -59,7 +58,7 @@ public final class HighlightPillarRenderer {
             double x = pos.getX() + 0.5D - camPos.x;
             double y = pos.getY() - camPos.y;
             double z = pos.getZ() + 0.5D - camPos.z;
-            renderPillar(builder, mat, x, y, z);
+            renderPillar(builder, mat, x, y, z, red, green, blue);
         }
 
         BufferUploader.drawWithShader(builder.end());
@@ -69,14 +68,15 @@ public final class HighlightPillarRenderer {
     }
 
     /** 绘制一根从 y 到 y+HEIGHT、截面半宽 TOP_RADIUS 的方形光柱（4 个侧面 + 顶部）。 */
-    private static void renderPillar(BufferBuilder builder, Matrix4f mat, double x, double y, double z) {
+    private static void renderPillar(BufferBuilder builder, Matrix4f mat, double x, double y, double z,
+                                     float red, float green, float blue) {
         double x0 = x - TOP_RADIUS;
         double x1 = x + TOP_RADIUS;
         double z0 = z - TOP_RADIUS;
         double z1 = z + TOP_RADIUS;
         double y1 = y + HEIGHT;
 
-        float r = RED, g = GREEN, b = BLUE, a = ALPHA;
+        float r = red, g = green, b = blue, a = ALPHA;
 
         // z = z0 面
         vertex(builder, mat, x0, y, z0, r, g, b, a);

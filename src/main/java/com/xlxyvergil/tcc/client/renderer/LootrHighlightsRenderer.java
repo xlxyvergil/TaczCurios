@@ -17,6 +17,11 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LootrHighlightsRenderer {
 
+    /** 战利品箱光柱颜色（绿色）。 */
+    private static final float RED = 0.22F;
+    private static final float GREEN = 0.95F;
+    private static final float BLUE = 0.35F;
+
     private LootrHighlightsRenderer() {}
 
     @SubscribeEvent
@@ -28,6 +33,6 @@ public final class LootrHighlightsRenderer {
         if (!LootrCompat.isLoaded()) {
             return;
         }
-        HighlightPillarRenderer.render(event, LootrHighlightClientData.getHighlights());
+        HighlightPillarRenderer.render(event, LootrHighlightClientData.getHighlights(), RED, GREEN, BLUE);
     }
 }
