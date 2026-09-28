@@ -171,8 +171,8 @@ dependencies {
 
     // Curios API dependency from Modrinth (1.20.1 compatible)
     implementation fg.deobf("maven.modrinth:curios:5.14.1+1.20.1")
-    // TaczAttributeAdd dependency from Modrinth (1.4.2)
-    implementation fg.deobf("maven.modrinth:FL4iBpQn:2fRv6pYM")
+    // TaczAttributeAdd dependency from CurseForge (1.4.2)
+    implementation fg.deobf("curse.maven:taczattributeadd-1393583:8996993")
     // TACZ dependency from Modrinth (1.1.7-hotfix)
     implementation fg.deobf("maven.modrinth:timeless-and-classics-zero:1.1.7-hotfix")
     // Touhou Little Maid (optional dependency, compile only)
