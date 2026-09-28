@@ -27,7 +27,7 @@ import java.util.UUID;
 /**
  * 服务端扫描：对<strong>佩戴 pado_philipis / lueji_zhi_shou / kongmeng 之一</strong>的玩家，
  * 每 {@link #SCAN_INTERVAL} tick 检测其周围 {@link #RADIUS} 格内的刷怪笼，
- * 并将这些刷怪笼的坐标通过 {@link NetworkHandler} 定向发给该玩家，由客户端渲染绿色光柱。
+ * 并将这些刷怪笼的坐标通过 {@link NetworkHandler} 定向发给该玩家，由客户端渲染红色光柱。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class SpawnerHighlightHandler {

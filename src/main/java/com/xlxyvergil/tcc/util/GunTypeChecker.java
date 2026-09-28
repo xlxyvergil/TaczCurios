@@ -14,8 +14,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
 import com.tacz.guns.resource.pojo.data.gun.ExtraDamage;
-import com.xlxyvergil.taa.context.ShooterContext;
-import com.xlxyvergil.taa.modifier.AmmoCountModifier;
+import com.xlxyvergil.taa.util.AmmoCapacityHelper;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -170,47 +169,21 @@ public class GunTypeChecker {
         ResourceLocation gunId = iGun.getGunId(mainHandItem);
         return TimelessAPI.getCommonGunIndex(gunId)
             .map(index -> {
-                // 基础弹药数（包含枪管中的子弹）
-                int barrelBulletAmount = (iGun.hasBulletInBarrel(mainHandItem) && index.getGunData().getBolt() != com.tacz.guns.resource.pojo.data.gun.Bolt.OPEN_BOLT) ? 1 : 0;
-                int ammoAmount = index.getGunData().getAmmoAmount() + barrelBulletAmount;
+                var gunData = index.getGunData();
                 
-                // 获取修改后的最大弹药数（与GunPropertyDiagramsMixin相同的逻辑）
-                int maxAmmoCount = ammoAmount;
-                
-                // 检查是否为背包供弹模式，如果是则不修改
-                boolean isUsingInventoryAsMagazine = index.getGunData().getReloadData() != null && 
-                    index.getGunData().getReloadData().getType() == com.tacz.guns.resource.pojo.data.gun.FeedType.INVENTORY;
-                    
-                if (!isUsingInventoryAsMagazine) {
-                    // 首先尝试从ShooterContext获取缓存数据（最高优先级）
-                    LivingEntity shooter = ShooterContext.getShooter();
-                    if (shooter != null) {
-                        IGunOperator operator = IGunOperator.fromLivingEntity(shooter);
-                        if (operator != null) {
-                            AttachmentCacheProperty cache = operator.getCacheProperty();
-                            if (cache != null) {
-                                Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
-                                if (modifiedAmmoCount != null) {
-                                    maxAmmoCount = modifiedAmmoCount;
-                                }
-                            }
-                        }
-                    }
-                    
-                    // 如果ShooterContext中没有，尝试从生物获取缓存数据（备选方案）
-                    if (maxAmmoCount == ammoAmount) { // 只有在还没有修改值时才尝试
-                        IGunOperator operator = IGunOperator.fromLivingEntity(livingEntity);
-                        if (operator != null) {
-                            AttachmentCacheProperty cache = operator.getCacheProperty();
-                            if (cache != null) {
-                                Integer modifiedAmmoCount = cache.getCache(AmmoCountModifier.ID);
-                                if (modifiedAmmoCount != null) {
-                                    maxAmmoCount = modifiedAmmoCount;
-                                }
-                            }
-                        }
-                    }
+                // 背包直读模式不进行换弹，也不存在“弹匣装满”的概念
+                boolean isUsingInventoryAsMagazine = gunData.getReloadData() != null &&
+                    gunData.getReloadData().getType() == com.tacz.guns.resource.pojo.data.gun.FeedType.INVENTORY;
+                if (isUsingInventoryAsMagazine) {
+                    return false;
                 }
+                
+                // 最终弹匣容量：TACZ 原生容量（含扩容弹匣）套用玩家属性与兼容链，与 Z 面板/HUD 一致
+                int maxAmmoCount = AmmoCapacityHelper.applyCapacity(
+                    AmmoCapacityHelper.resolveBaseCapacity(mainHandItem, gunData),
+                    mainHandItem,
+                    livingEntity
+                );
                 
                 int currentAmmo = iGun.getCurrentAmmoCount(mainHandItem);
                 
