@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.mixin;
 
+import com.xlxyvergil.tcc.items.curios.bound.ZhenWo;
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import org.spongepowered.asm.mixin.Mixin;
@@ -9,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.UUID;
 
@@ -68,6 +71,19 @@ public abstract class DamageResistanceMixin {
         self.setDeltaMovement(self.getDeltaMovement().multiply(0, 0, 0));
     }
 
+    // ---- 真我结界伤害免疫 ----
+
+    /**
+     * 真我结界激活期间免疫一切伤害：在 hurt 入口直接取消，近战/弹射物/爆炸/第三方伤害均不生效。
+     */
+    @Inject(method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
+    private void tcc$barrierImmune(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity self = (LivingEntity) (Object) this;
+        if (ZhenWo.isBarrierActiveWearer(self)) {
+            cir.setReturnValue(false);
+        }
+    }
+
     // ---- setHealth 拦截（仅冷却 / 单次上限） ----
 
     @ModifyVariable(method = "setHealth", at = @At("HEAD"), argsOnly = true)
@@ -80,9 +96,14 @@ public abstract class DamageResistanceMixin {
         // 仅拦截受伤
         if (delta >= 0.0F) return health;
 
+        // 真我结界激活期间：扣血一律归零，兜住绕过 hurt 的直接写血
+        if (ZhenWo.isBarrierActiveWearer(self)) {
+            return current;
+        }
+
         UUID id = self.getUUID();
 
-        // 完全免伤（retain <= 0，如真我结界期间 100%）：setHealth 层任何扣血都保留当前血量；
+        // 完全免伤（retain <= 0）：setHealth 层任何扣血都保留当前血量；
         // 绕过 setHealth 直接写血的第三方伤害由 tick 末的强制复活（reviveFully）兜底。
         Float retain = DamageResistanceHelper.DAMAGE_RETAIN_MAP.get(id);
         if (retain != null && retain <= 0.0F) {

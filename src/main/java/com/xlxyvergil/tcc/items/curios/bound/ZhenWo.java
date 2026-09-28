@@ -59,6 +59,9 @@ public class ZhenWo extends BoundCurioItem {
     private static final String BARRIER_KEY = "tcc_zhen_wo_barrier";
     private static final String COOLDOWN_KEY = "tcc_zhen_wo_cooldown";
 
+    /** 「真我结界激活中」的佩戴者 UUID 集合（仅服务端维护），供两参 getEntities 过滤使用。 */
+    private static final Set<UUID> ACTIVE_BARRIER_WEARERS = new HashSet<>();
+
     public ZhenWo(Properties properties) {
         super(properties);
     }
@@ -106,6 +109,7 @@ public class ZhenWo extends BoundCurioItem {
             KNOCKBACK_RESISTANCE_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
+        ACTIVE_BARRIER_WEARERS.remove(livingEntity.getUUID());
     }
 
     @Override
@@ -119,9 +123,15 @@ public class ZhenWo extends BoundCurioItem {
         int barrierTicks = tag.getInt(BARRIER_KEY);
         int cooldownTicks = tag.getInt(COOLDOWN_KEY);
 
-        float retain = barrierTicks > 0 ? 0.0F
-            : (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
-        DamageResistanceHelper.setDamageReduction(entity, retain);
+        // 同步「结界激活中」标记，供两参 getEntities 过滤
+        if (barrierTicks > 0) {
+            ACTIVE_BARRIER_WEARERS.add(entity.getUUID());
+        } else {
+            ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
+        }
+
+        DamageResistanceHelper.setDamageReduction(entity,
+            (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
 
         if (barrierTicks > 0) {
             barrierTicks--;
@@ -246,6 +256,15 @@ public class ZhenWo extends BoundCurioItem {
         level.sendParticles(pink, x, headY, z, 8, 0.18, 0.25, 0.18, 0.0);
     }
 
+    /** 该实体当前是否为「真我结界激活中」的佩戴者（不校验距离）。服务端查集合，客户端用同步的结界 buff 判定。 */
+    public static boolean isBarrierActiveWearer(LivingEntity entity) {
+        if (entity == null) return false;
+        if (entity.level().isClientSide) {
+            return entity.hasEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
+        }
+        return ACTIVE_BARRIER_WEARERS.contains(entity.getUUID());
+    }
+
     public static boolean isInsideActiveBarrier(LivingEntity entity) {
         if (entity == null || entity.level().isClientSide) return false;
         Level level = entity.level();
@@ -312,6 +331,7 @@ public class ZhenWo extends BoundCurioItem {
         int duration = TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20;
         tag.putInt(BARRIER_KEY, duration);
         tag.putInt(COOLDOWN_KEY, 0);
+        ACTIVE_BARRIER_WEARERS.add(player.getUUID());
 
         player.setHealth(player.getMaxHealth());
 
@@ -376,6 +396,8 @@ public class ZhenWo extends BoundCurioItem {
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger",
                 (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.world_pool")
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration",
                 TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),

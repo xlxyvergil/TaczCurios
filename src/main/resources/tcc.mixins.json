@@ -6,6 +6,7 @@
   "mixins": [
     "DamageResistanceMixin",
     "ImaginaryDeathDropMixin",
+    "LevelGetEntitiesMixin",
     "LivingEntityAccessor",
     "RaidMixin"
   ],
