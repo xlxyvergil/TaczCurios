@@ -37,7 +37,7 @@ public final class RuleAdvancementMapping {
     }
 
     /**
-     * 按累计进度授予多个「步」；进度达到目标时授予 step_1，完成进阶并触发成就达成事件。
+     * 按累计进度授予多个步数；进度达到目标时授予 step_1，完成进阶并触发成就达成事件。
      */
     public static void awardSteps(ServerPlayer player, String achievementId, int target, int steps) {
         if (steps <= 0 || target <= 0) return;

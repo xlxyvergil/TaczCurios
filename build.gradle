@@ -195,9 +195,6 @@ dependencies {
     // runtime 提供完整 JEI，便于开发环境测试；发布时不打包
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
-    // RevelationFix (optional, compile only) - 本地依赖
-    compileOnly fg.deobf(files("libs/[Forge]RevelationFix-1.20.1-4.4.jar"))
-
     // Mixin annotation processor for refmap generation
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

@@ -25,7 +25,7 @@ public final class EntityConditionHelper {
         if ("*".equals(entityKey)) return true;
         if (entityKey.startsWith("#")) {
             String tagStr = entityKey.substring(1);
-            // 仅支持原版 MobType，用 getMobType() 硬编码判定，与原版「亡灵杀手」等附魔语义一致。
+            // 仅支持原版 MobType，用 getMobType() 硬编码判定，与原版亡灵杀手等附魔语义一致。
             MobType mobType = parseMobType(tagStr);
             if (mobType != null) {
                 return entity instanceof LivingEntity le && le.getMobType() == mobType;

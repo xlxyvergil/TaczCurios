@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
  * 客户端渲染：把 {@link LootrHighlightClientData} 中记录的每一个"该玩家尚未开启的 Lootr 箱子"
  * 交给 {@link HighlightPillarRenderer} 画成绿色光柱。
  *
- * <p>坐标由服务端下发、仅发给该玩家本人，因此光柱只在对应玩家客户端显示。</p>
+ * 坐标由服务端下发、仅发给该玩家本人，因此光柱只在对应玩家客户端显示。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LootrHighlightsRenderer {

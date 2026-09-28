@@ -19,9 +19,9 @@ import java.util.Collection;
 /**
  * 光柱的统一绘制工具：把一批方块坐标画成从方块中心向上 {@link #HEIGHT} 格的半透明光柱。
  *
- * <p>由 Lootr 战利品箱子高亮（{@code LootrHighlightsRenderer}，绿色）与刷怪笼高亮
+ * 由 Lootr 战利品箱子高亮（{@code LootrHighlightsRenderer}，绿色）与刷怪笼高亮
  * （{@code SpawnerHighlightsRenderer}，红色）共同调用，颜色由调用方传入；
- * 坐标均由服务端定向下发、仅发给触发玩家本人。</p>
+ * 坐标均由服务端定向下发、仅发给触发玩家本人。
  */
 public final class HighlightPillarRenderer {
 

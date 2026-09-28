@@ -39,7 +39,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
         
-        public final ForgeConfigSpec.DoubleValue imaginaryDamageAttackAmplification;
         public final ForgeConfigSpec.BooleanValue imaginaryDamageUseSetHealth;
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
@@ -748,12 +747,9 @@ public class TaczCuriosConfig {
             builder.pop();
             
             
-            builder.comment("附加伤害基于攻击力的增幅（分母）：附加虚数伤害 = 基础伤害 × (1 + 攻击力 / 该值)").push("imaginary_damage");
-            imaginaryDamageAttackAmplification = builder
-                    .comment("附加伤害基于攻击力的增幅 (默认: 1000) —— 攻击力越高，附加虚数伤害越高")
-                    .defineInRange("attackAmplification", 1000.0, 1.0, 100000.0);
+            builder.comment("虚数附加伤害结算配置").push("imaginary_damage");
             imaginaryDamageUseSetHealth = builder
-                    .comment("非崩解附加虚数伤害的结算方式：true = 直接 setHealth（绕过护甲/吸收），false = 走 hurt 常规结算（默认）")
+                    .comment("非崩解附加虚数伤害的结算方式：true = 扣虚数死亡进度账本（绕过护甲/吸收与所有限伤/锁血），false = 走 hurt 常规结算（默认）")
                     .define("useSetHealth", false);
             builder.pop();
             
@@ -1931,7 +1927,7 @@ public class TaczCuriosConfig {
             builder.pop();
 
             
-            builder.comment("逐火之蛾「真我」饰品配置").push("zhen_wo");
+            builder.comment("逐火之蛾真我饰品配置").push("zhen_wo");
             zhenWoImaginaryResistance = builder
                     .comment("虚数抗性加成 (默认: 60)")
                     .defineInRange("imaginaryResistance", 60.0, -100, 100);
@@ -2425,9 +2421,8 @@ public class TaczCuriosConfig {
 
     /**
      * 客户端收到服务端配置后调用：把服务端 TOML 写入本地配置文件并让配置值立即生效。
-     *
-     * <p>写盘后重新载入 FileConfig 再交给 spec，使 FileConfig 的数据与服务端一致，
-     * 退出游戏时 Forge 保存配置便不会把本地旧值写回文件；任一步失败都保留本地配置。</p>
+     * 写盘后重新载入 FileConfig 再交给 spec，使 FileConfig 的数据与服务端一致，
+     * 退出游戏时 Forge 保存配置便不会把本地旧值写回文件；任一步失败都保留本地配置。
      */
     public static void applySyncedConfig(String toml) {
         ModConfig config = findCommonConfig();

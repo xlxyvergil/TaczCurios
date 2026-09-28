@@ -4,23 +4,25 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.compat.apollyon.ApollyonCompat;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.capability.ImaginaryHealthLedgerCapability;
+import com.xlxyvergil.tcc.util.ForcedKillHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.level.Level;
 
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -42,23 +44,18 @@ public class TccAttributeEvents {
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
 
     /**
-     * 重入防护：当一个目标正在被本次附加虚数伤害（applyImaginaryDamage 的 hurt 路径）结算时，
-     * 该目标会临时进入此集合，用于切断：嵌套 LivingHurtEvent 带来的第二次抗性/侵染结算，
-     * 以及饰品 onLivingHurt 监听器再次触发 applyImaginaryDamage 导致的无限递归。
+     * 重入防护：目标在 applyImaginaryDamage 的 hurt 路径结算期间加入本集合，
+     * 避免嵌套 LivingHurtEvent 二次结算、以及饰品监听器重复触发造成的递归。
      */
     private static final Set<LivingEntity> IMAGINARY_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
 
-    /** tacz:bullets —— TACZ 枪械子弹伤害 tag */
+    /** tacz:bullets：TACZ 枪械子弹伤害 tag */
     private static final TagKey<DamageType> TACZ_BULLETS_TAG =
         TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullets"));
 
     /**
-     * 判断伤害来源是否属于实体的主动攻击：
-     *  玩家/生物普通攻击（PLAYER_ATTACK / MOB_ATTACK）、
-     *  枪械子弹（tacz:bullets）、
-     *  以及虚数枪伤（tcc:imaginary_damage，由 ImaginaryConversionHelper 在 Pre 阶段把子弹源替换而来）。
-     * 用于过滤其它模组在 LivingHurtEvent 中通过 FastHurt 再入产生的强制子伤害
-     *  （IN_FIRE / WIND_FLOW / FROST_FLAME / MOB_CUTTING / GENERIC_KILL 等），切断再入栈溢出。
+     * 是否为主动攻击来源：玩家/生物普攻、枪械子弹（tacz:bullets）、虚数枪伤（tcc:imaginary_damage）。
+     * 用于过滤其它模组在 LivingHurtEvent 中再入产生的强制子伤害（IN_FIRE / WIND_FLOW 等），避免栈溢出。
      */
     public static boolean isActiveAttackSource(DamageSource source) {
         return source.is(DamageTypes.PLAYER_ATTACK)
@@ -68,48 +65,72 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 虚数伤害通用前置：清零无敌帧 + 虚数攻击力放大。返回放大后的伤害。
+     * 虚数/崩解伤害的落点：扣减实体身上的虚数死亡进度账本（capability）。
+     * 账本不写血量字段，因此不受 setHealth 限伤/锁血影响；起点在首次命中时取 getMaxHealth()。
+     * 归零后：先把实体判定生死读取的血量字段直接改为 0（不经过 setHealth/SynchedEntityData.set），
+     * 再走标准 die()；若 die() 被拦截未置位 dead，则补掉落并 remove(KILLED)。
+     * tcc:tcc_forced_kill 命中则跳过 die()，直接补掉落 + 移除。
      */
-    private static float amplifyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
-        target.invulnerableTime = 0;
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            double damageMult = attacker.getAttributeValue(AttributeHelper.ATTACK_DAMAGE);
-            intendedDamage = (float) (intendedDamage * (1 + damageMult / TaczCuriosConfig.COMMON.imaginaryDamageAttackAmplification.get()));
-        }
-        return intendedDamage;
-    }
+    private static boolean applyLedgerDamage(LivingEntity target, DamageSource source, float finalDamage) {
+        var ledger = ImaginaryHealthLedgerCapability.get(target);
+        if (ledger == null) return false;
 
-    /**
-     * 判断目标是否为启示录「律法修正使徒」，是则走其专属虚数伤害路径。
-     * 仅当使徒位于下界时直接结算并返回 true；下界之外清除攻击冷却后返回 false，继续走常规虚数伤害结算。
-     */
-    private static boolean handleApollyonImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
-        if (!ApollyonCompat.isRevelationFixApostle(target)) return false;
-        if (target.level().dimension() == Level.NETHER) {
-            float newHealth = ApollyonCompat.applyDirectDamage(target, intendedDamage);
-            if (newHealth <= 0) {
-                target.die(source);
-            }
+        if (!ledger.isInitialized()) {
+            ledger.init(target.getMaxHealth());
+        }
+        float remain = ledger.reduce(finalDamage);
+        notifyLedgerChange(target, source, ledger);
+        if (remain > 0) {
             return true;
         }
-        ApollyonCompat.clearHitCooldown(target);
-        return false;
+
+        // 账本归零：直接把实体判定生死读取的血量字段改为 0，不经过 setHealth/SynchedEntityData.set。
+        ledger.reset();
+        ForcedKillHelper.forceZeroHealth(target);
+
+        // 强制快杀：跳过 die()，直接补掉落 + 移除。
+        if (ForcedKillHelper.requiresForcedKill(target)) {
+            ForcedKillHelper.dropAllDeathLoot(target, source);
+            target.remove(Entity.RemovalReason.KILLED);
+            return true;
+        }
+
+        // 交给实体自身死亡链路（die -> tickDeath 负责掉落与移除）。
+        target.die(source);
+        // die() 未置位 dead 说明被拦截（如血量被接管的下界亚波伦），走兜底。
+        if (!target.dead) {
+            ForcedKillHelper.dropAllDeathLoot(target, source);
+            target.remove(Entity.RemovalReason.KILLED);
+        }
+        return true;
+    }
+
+    /** 账本每次变动后向相关玩家反馈：侵蚀 + 实体名 + 剩余百分比。 */
+    private static void notifyLedgerChange(LivingEntity target, DamageSource source, ImaginaryHealthLedgerCapability.Handler ledger) {
+        Component message = Component.translatable(
+            "message.tcc.imaginary_erosion",
+            target.getDisplayName(),
+            String.format("%.1f%%", ledger.getProgress() * 100.0F)
+        );
+
+        if (source.getEntity() instanceof ServerPlayer player) {
+            player.sendSystemMessage(message);
+            return;
+        }
+        for (ServerPlayer player : target.level().getEntitiesOfClass(ServerPlayer.class, target.getBoundingBox().inflate(32.0D))) {
+            player.sendSystemMessage(message);
+        }
     }
 
     /**
-     * 非崩解产生的虚数伤害：由饰品命中时调用。
-     * 结算方式由配置 imaginaryDamageUseSetHealth 决定：
-     *  false（默认）→ 走常规 hurt 结算（护甲、吸收等正常生效）；
-     *  true → 直接 setHealth（绕过护甲/吸收等常规伤害结算）。
-     * 两条路径均先经过 handleApollyonImaginaryDamage 的使徒专属判断。
+     * 虚数伤害结算入口（非崩解）：由饰品命中时调用。
+     * imaginaryDamageUseSetHealth 为 false（默认）走常规 hurt；为 true 走账本。
      */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
         if (IMAGINARY_HURT_GUARD.contains(target)) return false;
 
-        intendedDamage = amplifyImaginaryDamage(target, source, intendedDamage);
-
-        if (handleApollyonImaginaryDamage(target, source, intendedDamage)) return true;
+        target.invulnerableTime = 0;
 
         float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
         if (finalDamage <= 0) return false;
@@ -119,14 +140,7 @@ public class TccAttributeEvents {
         }
 
         if (TaczCuriosConfig.COMMON.imaginaryDamageUseSetHealth.get()) {
-            float newHealth = target.getHealth() - finalDamage;
-            if (newHealth <= 0) {
-                target.setHealth(0);
-                target.die(source);
-                return true;
-            }
-            target.setHealth(newHealth);
-            return true;
+            return applyLedgerDamage(target, source, finalDamage);
         }
 
         IMAGINARY_HURT_GUARD.add(target);
@@ -137,15 +151,11 @@ public class TccAttributeEvents {
         }
     }
 
-    /**
-     * 由虚数崩解效果造成的伤害：直接走 setHealth（绕过护甲/吸收等常规伤害结算）。由 ImaginaryCollapseEffect 调用。
-     */
+    /** 崩解伤害入口：直接扣账本。由 ImaginaryCollapseEffect 调用。 */
     public static boolean applyCollapseDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
 
-        intendedDamage = amplifyImaginaryDamage(target, source, intendedDamage);
-
-        if (handleApollyonImaginaryDamage(target, source, intendedDamage)) return true;
+        target.invulnerableTime = 0;
 
         float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
         if (finalDamage <= 0) return false;
@@ -154,14 +164,7 @@ public class TccAttributeEvents {
             target.setLastHurtByMob(attacker);
         }
 
-        float newHealth = target.getHealth() - finalDamage;
-        if (newHealth <= 0) {
-            target.setHealth(0);
-            target.die(source);
-            return true;
-        }
-        target.setHealth(newHealth);
-        return true;
+        return applyLedgerDamage(target, source, finalDamage);
     }
 
     private static float resolveFinalImaginaryDamage(LivingEntity target, DamageSource source, float baseDamage) {
@@ -221,17 +224,15 @@ public class TccAttributeEvents {
         forceAddEffect(living, newInstance);
         living.addEffect(newInstance, attacker);
 
-        // 记录侵染来源攻击者，使虚数崩解击杀能正确归属
-        // （若攻击者是女仆，转换为女仆主人，以让崩解击杀计入主人名下）
+        // 记录来源攻击者用于击杀归属（女仆则记其主人）。
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
         living.getPersistentData().putString(
                 INFECTION_ATTACKER_KEY, (credited != null ? credited : attacker).getStringUUID());
     }
 
     /**
-     * 统一施加剧增崩解的实际入口：写入来源攻击者 NBT 并施加崩解效果。
-     * 供各饰品在命中时（含概率判定通过后）调用。
-     * 返回是否真正新施加了崩解（目标此前无崩解且存活）；目标已有崩解或已死亡则返回 false。
+     * 施加剧增崩解：写入来源攻击者并施加崩解效果，供各饰品命中时调用。
+     * 仅新施加时返回 true；目标已有崩解或已死亡返回 false。
      */
     public static boolean applyCollapse(LivingEntity target, LivingEntity attacker) {
         if (target == null || attacker == null) return false;
@@ -249,7 +250,7 @@ public class TccAttributeEvents {
         forceAddEffect(target, collapseInstance);
         target.addEffect(collapseInstance, attacker);
 
-        // 记录侵染来源攻击者，使崩解击杀能正确归属（女仆转换为女仆主人）
+        // 记录来源攻击者用于击杀归属（女仆则记其主人）。
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
         target.getPersistentData().putString(
                 INFECTION_ATTACKER_KEY, (credited != null ? credited : attacker).getStringUUID());

@@ -13,6 +13,7 @@ import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
+import com.xlxyvergil.tcc.util.ITccSynchedEntityData;
 
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -59,7 +60,7 @@ public class ZhenWo extends BoundCurioItem {
     private static final String BARRIER_KEY = "tcc_zhen_wo_barrier";
     private static final String COOLDOWN_KEY = "tcc_zhen_wo_cooldown";
 
-    /** 「真我结界激活中」的佩戴者 UUID 集合（仅服务端维护），供两参 getEntities 过滤使用。 */
+    /** 真我结界激活中的佩戴者 UUID 集合（仅服务端维护），供两参 getEntities 过滤使用。 */
     private static final Set<UUID> ACTIVE_BARRIER_WEARERS = new HashSet<>();
 
     public ZhenWo(Properties properties) {
@@ -123,7 +124,7 @@ public class ZhenWo extends BoundCurioItem {
         int barrierTicks = tag.getInt(BARRIER_KEY);
         int cooldownTicks = tag.getInt(COOLDOWN_KEY);
 
-        // 同步「结界激活中」标记，供两参 getEntities 过滤
+        // 同步结界激活中标记，供两参 getEntities 过滤
         if (barrierTicks > 0) {
             ACTIVE_BARRIER_WEARERS.add(entity.getUUID());
         } else {
@@ -256,13 +257,25 @@ public class ZhenWo extends BoundCurioItem {
         level.sendParticles(pink, x, headY, z, 8, 0.18, 0.25, 0.18, 0.0);
     }
 
-    /** 该实体当前是否为「真我结界激活中」的佩戴者（不校验距离）。服务端查集合，客户端用同步的结界 buff 判定。 */
+    /** 该实体当前是否为真我结界激活中的佩戴者（不校验距离）。服务端查集合，客户端用同步的结界 buff 判定。 */
     public static boolean isBarrierActiveWearer(LivingEntity entity) {
         if (entity == null) return false;
         if (entity.level().isClientSide) {
             return entity.hasEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
         }
         return ACTIVE_BARRIER_WEARERS.contains(entity.getUUID());
+    }
+
+    /**
+     * 免死是否可用：佩戴真我，且结界未在冷却中。
+     * 结界激活期间恒可用；结界结束后进入与结界相同的冷却，冷却期间不免死（正常死亡）。
+     */
+    public static boolean canPreventDeath(LivingEntity entity) {
+        if (entity == null || entity.level() == null || entity.level().isClientSide) return false;
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) return false;
+        CompoundTag tag = stack.getOrCreateTag();
+        return tag.getInt(BARRIER_KEY) > 0 || tag.getInt(COOLDOWN_KEY) <= 0;
     }
 
     public static boolean isInsideActiveBarrier(LivingEntity entity) {
@@ -333,10 +346,43 @@ public class ZhenWo extends BoundCurioItem {
         tag.putInt(COOLDOWN_KEY, 0);
         ACTIVE_BARRIER_WEARERS.add(player.getUUID());
 
+        clearNegativeFloatData(player);
+
         player.setHealth(player.getMaxHealth());
 
         refreshBarrierBuff(player, duration);
         applyBarrierEffects(player);
+    }
+
+    /** 把佩戴者同步数据里残留的负 Float 清零，解除第三方"负向血量修正"对血量判定的压制。 */
+    private static void clearNegativeFloatData(LivingEntity entity) {
+        if (entity.getEntityData() instanceof ITccSynchedEntityData data) {
+            data.tcc$clearNegativeFloat();
+        }
+    }
+
+    /**
+     * 免死触发：佩戴者的同步血量即将被写成 0 / 负值时由同步数据层回调。
+     * <p>
+     * 必须在血量归零之前截断，否则客户端会收到 0 血而弹出死亡界面，随后服务端又把人救活，
+     * 造成客户端已死、服务端存活的状态错位（假死：无法攻击、无法交互）。
+     */
+    public static void onLethalHealthBlocked(LivingEntity entity) {
+        if (entity == null || entity.level() == null || entity.level().isClientSide) return;
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) return;
+
+        CompoundTag tag = stack.getOrCreateTag();
+        // 结界已激活：仅清残留并回满血，结界继续计时
+        if (tag.getInt(BARRIER_KEY) > 0) {
+            clearNegativeFloatData(entity);
+            entity.setHealth(entity.getMaxHealth());
+            return;
+        }
+        // 冷却中：不介入，正常死亡
+        if (tag.getInt(COOLDOWN_KEY) > 0) return;
+
+        activateBarrier(entity, stack);
     }
 
     @SubscribeEvent
@@ -349,7 +395,12 @@ public class ZhenWo extends BoundCurioItem {
 
         boolean barrierActive = stack.getOrCreateTag().getInt(BARRIER_KEY) > 0;
 
+        // 免死与结界共用同一冷却：冷却期间免死不生效，正常死亡。
+        if (!barrierActive && stack.getOrCreateTag().getInt(COOLDOWN_KEY) > 0) return;
+
         event.setCanceled(true);
+
+        clearNegativeFloatData(player);
 
         player.setDeltaMovement(Vec3.ZERO);
         player.hurtTime = 0;

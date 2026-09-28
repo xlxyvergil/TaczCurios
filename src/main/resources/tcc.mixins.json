@@ -7,8 +7,10 @@
     "DamageResistanceMixin",
     "ImaginaryDeathDropMixin",
     "LevelGetEntitiesMixin",
-    "LivingEntityAccessor",
-    "RaidMixin"
+    "LivingEntityEffectProtectionMixin",
+    "RaidMixin",
+    "ServerLevelPlayersMixin",
+    "SynchedEntityDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1

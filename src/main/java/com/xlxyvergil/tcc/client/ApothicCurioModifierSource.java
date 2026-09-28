@@ -24,9 +24,9 @@ import java.util.function.BiConsumer;
  * 客户端专用：向 Apothic Attributes 注册一个自定义 ModifierSourceType，
  * 让通过 {@link AttributeHelper} 动态施加的饰品修饰符，也能在属性面板中显示来源饰品图标。
  *
- * <p>由于饰品修饰符是动态加在实体属性实例上的，Apothic 默认的装备/饰品来源无法识别其 UUID，
- * 因此这里按「实体属性实例上的修饰符 UUID → AttributeHelper 登记的来源饰品」反查，
- * 再映射回实体当前佩戴的同款物品栈进行图标渲染。</p>
+ * 由于饰品修饰符是动态加在实体属性实例上的，Apothic 默认的装备/饰品来源无法识别其 UUID，
+ * 因此这里按实体属性实例上的修饰符 UUID → AttributeHelper 登记的来源饰品反查，
+ * 再映射回实体当前佩戴的同款物品栈进行图标渲染。
  */
 public final class ApothicCurioModifierSource {
 

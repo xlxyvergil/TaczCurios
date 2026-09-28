@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 提供常驻比例减伤（source-agnostic）公共 API，采用「每 tick 血量对账」实现：对每 tick 实际血量下降按保留因子统一削减，
+ * 提供常驻比例减伤（source-agnostic）公共 API，采用每 tick 血量对账实现：对每 tick 实际血量下降按保留因子统一削减，
  * 无论伤害来自 hurt()/setHealth() 还是绕过 setHealth 的第三方实现都生效；对账由 DamageResistanceMixin 每服务端 tick 调用 reconcileHealth()。
  */
 public final class DamageResistanceHelper {

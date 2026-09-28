@@ -13,9 +13,9 @@ import java.util.function.Supplier;
 /**
  * 服务端 → 客户端的 JSON 数据同步包，携带 {@code config/tcc} 下三份配置文件的完整文本。
  *
- * <p>成就定义 / 进化规则 / 阶位表在客户端被 tooltip、成就进度条等显示逻辑读取，
+ * 成就定义 / 进化规则 / 阶位表在客户端被 tooltip、成就进度条等显示逻辑读取，
  * 而实际结算发生在服务端。两边文件不一致时显示会与实际行为错位，
- * 因此登录时由服务端把自身实际生效的文件内容下发，客户端覆盖本地文件后重新加载。</p>
+ * 因此登录时由服务端把自身实际生效的文件内容下发，客户端覆盖本地文件后重新加载。
  *
  * @param achievements achievement_definitions.json 文本，无内容时为 null
  * @param evolution    evolution_rules.json 文本，无内容时为 null
