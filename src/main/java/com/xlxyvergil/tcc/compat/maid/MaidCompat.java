@@ -44,7 +44,7 @@ public final class MaidCompat {
         return MaidCompatInternal.getMaidsNear(level, box, filter);
     }
 
-    /** 实体是否为光环可作用的「玩家或女仆」。 */
+    /** 实体是否为光环可作用的玩家或女仆。 */
     public static boolean isPlayerOrMaid(Entity entity) {
         return entity instanceof Player || isMaid(entity);
     }

@@ -135,7 +135,7 @@ public class TccMobEffects {
     // 新系列：戒律/黄金/旭光/无限/浮生/空梦
 
     /**
-     * 逐火之蛾「真我」结界标记 - 中性纯标记效果，驱动客户端地面特效渲染
+     * 逐火之蛾真我结界标记 - 中性纯标记效果，驱动客户端地面特效渲染
      */
     public static final DeferredHolder<MobEffect, MobEffect> ZHEN_WO_BARRIER = MOB_EFFECTS.register(
             "zhen_wo_barrier",

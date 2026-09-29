@@ -114,6 +114,10 @@ public class LuejiZhiShou extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.dream.curio_effect_loot")
                 .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.dream.fall_immunity")
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.dream.fishing_speed")
+                .withStyle(ChatFormatting.GOLD));
         if (LootrCompat.isLoaded()) {
             tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight")
                     .withStyle(ChatFormatting.GREEN));

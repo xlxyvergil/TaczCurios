@@ -31,8 +31,8 @@ import java.util.UUID;
  * 每 {@link #SCAN_INTERVAL} tick 检测其周围 {@link #RADIUS} 格内"自己尚未开启的 Lootr 战利品箱子"，
  * 并将这些箱子的坐标通过 {@link SyncLootrHighlightsS2CPacket} 定向发给该玩家。
  *
- * <p>由于"某玩家是否开过"由 Lootr 的 {@code ChestData}（服务端 SavedData）记录，客户端无法读取，
- * 因此判断全部在服务端完成，客户端只负责把收到的坐标渲染成光柱。</p>
+ * 由于"某玩家是否开过"由 Lootr 的 {@code ChestData}（服务端 SavedData）记录，客户端无法读取，
+ * 因此判断全部在服务端完成，客户端只负责把收到的坐标渲染成光柱。
  */
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class LootrLootBoxHighlightHandler {

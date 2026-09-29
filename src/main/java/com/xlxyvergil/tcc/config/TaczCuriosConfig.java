@@ -53,7 +53,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
         
-        public final ModConfigSpec.DoubleValue imaginaryDamageAttackAmplification;
         public final ModConfigSpec.BooleanValue imaginaryDamageUseSetHealth;
         public final ModConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ModConfigSpec.IntValue imaginaryInfectionMaxLevel;
@@ -761,12 +760,9 @@ public class TaczCuriosConfig {
             builder.pop();
             
             
-            builder.comment("附加伤害基于攻击力的增幅（分母）：附加虚数伤害 = 基础伤害 × (1 + 攻击力 / 该值)").push("imaginary_damage");
-            imaginaryDamageAttackAmplification = builder
-                    .comment("附加伤害基于攻击力的增幅 (默认: 1000) —— 攻击力越高，附加虚数伤害越高")
-                    .defineInRange("attackAmplification", 1000.0, 1.0, 100000.0);
+            builder.comment("虚数附加伤害结算配置").push("imaginary_damage");
             imaginaryDamageUseSetHealth = builder
-                    .comment("非崩解附加虚数伤害的结算方式：true = 直接 setHealth（绕过护甲/吸收），false = 走 hurt 常规结算（默认）")
+                    .comment("非崩解附加虚数伤害的结算方式：true = 扣虚数死亡进度账本（绕过护甲/吸收与所有限伤/锁血），false = 走 hurt 常规结算（默认）")
                     .define("useSetHealth", false);
             builder.pop();
             
@@ -1944,7 +1940,7 @@ public class TaczCuriosConfig {
             builder.pop();
 
             
-            builder.comment("逐火之蛾「真我」饰品配置").push("zhen_wo");
+            builder.comment("逐火之蛾真我饰品配置").push("zhen_wo");
             zhenWoImaginaryResistance = builder
                     .comment("虚数抗性加成 (默认: 60)")
                     .defineInRange("imaginaryResistance", 60.0, -100, 100);
@@ -2434,10 +2430,9 @@ public class TaczCuriosConfig {
 
     /**
      * 客户端收到服务端配置后调用：把服务端 TOML 写入本地配置文件，并让配置值立即生效。
-     *
-     * <p>先写盘再交给 FML 的 {@link ConfigTracker#acceptSyncedConfig}（与 SERVER 配置同步同一条路径），
+     * 先写盘再交给 FML 的 {@link ConfigTracker#acceptSyncedConfig}（与 SERVER 配置同步同一条路径），
      * 使本地文件内容与内存中的配置值都与服务端一致，下次启动读取到的也是服务端这份配置。
-     * 任一步失败都保留本地配置。</p>
+     * 任一步失败都保留本地配置。
      */
     public static void applySyncedConfig(String toml) {
         if (toml == null || toml.isBlank()) {

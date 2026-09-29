@@ -130,8 +130,8 @@ dependencies {
     // === 必需依赖 ===
     // Curios API
     implementation "curse.maven:curios-309927:${curios_cf}"
-    // TaczAttributeAdd（属性系统）
-    implementation "curse.maven:taczattributeadd-1393583:${taa_curse_version}"
+    // TaczAttributeAdd（属性系统，1.4.3 起提供新的弹匣容量兼容链 API）
+    implementation "curse.maven:taczattributeadd-1393583:${taa_cf}"
     // TACZ 1.21.1（ChloePrime 发行版，modId 仍为 tacz）
     implementation "curse.maven:tacz-1-21-1-1353462:${tacz_curse_version}"
     // Apothic Attributes（生物属性/效果）

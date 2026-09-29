@@ -18,7 +18,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class AchievementEventListener {
 
-    /** 「真我」：达成 12 个系列成就的最终成就后自动授予。 */
+    /** 真我：达成 12 个系列成就的最终成就后自动授予。 */
     private static final String ZHEN_WO_ACHIEVEMENT = "tcc:zhen_wo";
 
     private AchievementEventListener() {}
@@ -45,7 +45,7 @@ public final class AchievementEventListener {
             }
         }
 
-        // 「真我」：当 12 个系列成就的最终成就全部完成时自动授予
+        // 真我：当 12 个系列成就的最终成就全部完成时自动授予
         awardAutoAchievement(player, ZHEN_WO_ACHIEVEMENT);
     }
 
@@ -60,7 +60,7 @@ public final class AchievementEventListener {
 
         RuleAdvancementMapping.awardAll(player, def.id(), def.targetCount());
 
-        // 「真我」达成后直接授予达成者 2 个纠缠之缘（普通物品，放到背包）
+        // 真我达成后直接授予达成者 2 个纠缠之缘（普通物品，放到背包）
         if (ZHEN_WO_ACHIEVEMENT.equals(achievementId)) {
             ItemStack reward = new ItemStack(TccItems.JIU_CHAN_ZHI_YUAN, 2);
             if (!player.getInventory().add(reward)) {

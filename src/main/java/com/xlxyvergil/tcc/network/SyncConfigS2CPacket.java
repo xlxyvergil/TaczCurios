@@ -21,8 +21,8 @@ import java.util.Map;
 /**
  * 服务端 → 客户端的配置同步数据包。
  *
- * <p>玩家登录时由服务端把当前 COMMON 配置整份序列化为 TOML 文本下发，客户端解析后覆盖本地的
- * COMMON 配置值。这样客户端 tooltip 等读取配置的显示逻辑与服务端实际结算用的数值保持一致。</p>
+ * 玩家登录时由服务端把当前 COMMON 配置整份序列化为 TOML 文本下发，客户端解析后覆盖本地的
+ * COMMON 配置值。这样客户端 tooltip 等读取配置的显示逻辑与服务端实际结算用的数值保持一致。
  */
 public record SyncConfigS2CPacket(String toml) implements CustomPacketPayload {
 
@@ -60,8 +60,8 @@ public record SyncConfigS2CPacket(String toml) implements CustomPacketPayload {
      * 要么是分组 {@link Config}，与 {@code ModConfigSpec#resetCaches} 的遍历方式一致；
      * {@code getSpec()} 与之同构，用于取出注释。
      *
-     * <p>注释必须一并写出：客户端载入时 {@code ModConfigSpec#acceptConfig} 会先做一次配置校验，
-     * 校验同时比对注释，注释缺失会被判定为「配置不正确」并触发修正与告警日志。</p>
+     * 注释必须一并写出：客户端载入时 {@code ModConfigSpec#acceptConfig} 会先做一次配置校验，
+     * 校验同时比对注释，注释缺失会被判定为配置不正确并触发修正与告警日志。
      */
     private static void collect(Map<String, Object> specNodes, Map<String, Object> valueNodes,
                                 List<String> parentPath, CommentedConfig target) {

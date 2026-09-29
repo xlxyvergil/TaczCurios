@@ -1,16 +1,14 @@
 package com.xlxyvergil.tcc.util;
 
 import com.tacz.guns.api.TimelessAPI;
-import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
-import com.xlxyvergil.taa.api.ExtendedGunProperties;
 import com.xlxyvergil.taa.util.AmmoCapacityHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * 统一弹药恢复入口。从玩家缓存读取计算后的弹匣容量，再用 AmmoCapacityHelper 兼容链算最终容量（含 GunsmithLib、KuvaLich 加成）写入弹药数；闭膛待击枪械先补膛内子弹。
+ * 统一弹药恢复入口。用 TAA 的弹匣容量兼容链算出最终容量（含玩家属性、GunsmithLib、KuvaLich 加成）写入弹药数；闭膛待击枪械先补膛内子弹。
  */
 public final class AmmoRegenHelper {
 
@@ -21,15 +19,9 @@ public final class AmmoRegenHelper {
         if (gunInfo.isEmpty()) return;
         var gunData = gunInfo.get().getGunData();
 
-        // 从实体缓存获取 modifier 计算的弹匣容量（不含 GunsmithLib 等外部加成）
-        var cacheProperty = IGunOperator.fromLivingEntity(entity).getCacheProperty();
-        if (cacheProperty == null) return;
-        Integer modifiedAmmoCount = cacheProperty.getCache(ExtendedGunProperties.MAGAZINE_CAPACITY);
-        if (modifiedAmmoCount == null || modifiedAmmoCount <= 0) return;
-
-        // 使用统一兼容链计算最终容量（含 GunsmithLib、KuvaLich 等加成），与 Z 面板/HUD 一致
-        int maxAmmo = AmmoCapacityHelper.computeFinalAmmoCapacity(
-            modifiedAmmoCount, held, entity, 0, 0
+        // 以 TACZ 原生容量（含扩容弹匣）为基数，套用玩家属性与兼容链算出最终容量，与 Z 面板/HUD 一致
+        int maxAmmo = AmmoCapacityHelper.applyCapacity(
+            AmmoCapacityHelper.resolveBaseCapacity(held, gunData), held, entity
         );
 
         int currentAmmo = iGun.getCurrentAmmoCount(held);

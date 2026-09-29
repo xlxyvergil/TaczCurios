@@ -1,6 +1,6 @@
 package com.xlxyvergil.tcc.mixin;
 
-import com.xlxyvergil.tcc.items.curios.bound.ZhenWo;
+import com.xlxyvergil.tcc.util.ZhenWoGuard;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class ImaginaryDeathDropMixin {
 
-    /** 用于标记「该实体在真我结界内死亡」，仅在死亡瞬间有效。 */
+    /** 用于标记该实体在真我结界内死亡，仅在死亡瞬间有效。 */
     private static final String SUPPRESS_ORB_TAG = "tcc_suppress_orb_drop";
 
     @Inject(method = "die", at = @At("HEAD"))
     private void tcc$markBarrierDeath(DamageSource source, CallbackInfo ci) {
         LivingEntity self = (LivingEntity) (Object) this;
         if (self.level().isClientSide) return;
-        if (ZhenWo.isInsideActiveBarrier(self)) {
+        if (ZhenWoGuard.isInsideActiveBarrier(self)) {
             self.getPersistentData().putBoolean(SUPPRESS_ORB_TAG, true);
         }
     }

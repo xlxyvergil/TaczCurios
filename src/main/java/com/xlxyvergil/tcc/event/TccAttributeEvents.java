@@ -4,23 +4,26 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunDamageSourcePart;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.capability.ImaginaryHealthLedgerCapability;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.ForcedKillHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.level.Level;
 
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -68,28 +71,71 @@ public class TccAttributeEvents {
     }
 
     /**
-     * 虚数伤害通用前置：清零无敌帧 + 虚数攻击力放大。返回放大后的伤害。
+     * 虚数/崩解伤害的落点：扣减实体身上的虚数死亡进度账本（attachment）。
+     * 账本不写血量字段，因此不受 setHealth 限伤/锁血影响；起点在首次命中时取 getMaxHealth()。
+     * 归零后：先把实体判定生死读取的血量字段直接改为 0（不经过 setHealth/SynchedEntityData.set），
+     * 再走标准 die()；若 die() 被拦截未置位 dead，则补掉落并 remove(KILLED)。
+     * tcc:tcc_forced_kill 命中则跳过 die()，直接补掉落 + 移除。
      */
-    private static float amplifyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
-        target.invulnerableTime = 0;
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            double damageMult = attacker.getAttributeValue(AttributeHelper.ATTACK_DAMAGE);
-            intendedDamage = (float) (intendedDamage * (1 + damageMult / TaczCuriosConfig.COMMON.imaginaryDamageAttackAmplification.get()));
+    private static boolean applyLedgerDamage(LivingEntity target, DamageSource source, float finalDamage) {
+        var ledger = ImaginaryHealthLedgerCapability.get(target);
+        if (ledger == null) return false;
+
+        if (!ledger.isInitialized()) {
+            ledger.init(target.getMaxHealth());
         }
-        return intendedDamage;
+        float remain = ledger.reduce(finalDamage);
+        notifyLedgerChange(target, source, ledger);
+        if (remain > 0) {
+            return true;
+        }
+        // 账本归零：直接把实体判定生死读取的血量字段改为 0，不经过 setHealth/SynchedEntityData.set。
+        ledger.reset();
+        ForcedKillHelper.forceZeroHealth(target);
+
+        // 强制快杀：跳过 die()，直接补掉落 + 移除。
+        if (ForcedKillHelper.requiresForcedKill(target)) {
+            ForcedKillHelper.dropAllDeathLoot(target, source);
+            target.remove(Entity.RemovalReason.KILLED);
+            return true;
+        }
+
+        // 交给实体自身死亡链路（die -> tickDeath 负责掉落与移除）。
+        target.die(source);
+        // die() 未置位 dead 说明被拦截（如血量被接管的下界亚波伦），走兜底。
+        if (!target.dead) {
+            ForcedKillHelper.dropAllDeathLoot(target, source);
+            target.remove(Entity.RemovalReason.KILLED);
+        }
+        return true;
+    }
+
+    /** 账本每次变动后向相关玩家反馈：侵蚀 + 实体名 + 剩余百分比。 */
+    private static void notifyLedgerChange(LivingEntity target, DamageSource source, ImaginaryHealthLedgerCapability.Handler ledger) {
+        Component message = Component.translatable(
+            "message.tcc.imaginary_erosion",
+            target.getDisplayName(),
+            String.format("%.1f%%", ledger.getProgress() * 100.0F)
+        );
+
+        if (source.getEntity() instanceof ServerPlayer player) {
+            player.sendSystemMessage(message);
+            return;
+        }
+        for (ServerPlayer player : target.level().getEntitiesOfClass(ServerPlayer.class, target.getBoundingBox().inflate(32.0D))) {
+            player.sendSystemMessage(message);
+        }
     }
 
     /**
-     * 非崩解产生的虚数伤害：由饰品命中时调用。
-     * 结算方式由配置 imaginaryDamageUseSetHealth 决定：
-     *  false（默认）→ 走常规 hurt 结算（护甲、吸收等正常生效）；
-     *  true → 直接 setHealth（绕过护甲/吸收等常规伤害结算）。
+     * 虚数伤害结算入口（非崩解）：由饰品命中时调用。
+     * imaginaryDamageUseSetHealth 为 false（默认）走常规 hurt；为 true 走账本。
      */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
         if (IMAGINARY_HURT_GUARD.contains(target)) return false;
 
-        intendedDamage = amplifyImaginaryDamage(target, source, intendedDamage);
+        target.invulnerableTime = 0;
 
         float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
         if (finalDamage <= 0) return false;
@@ -99,14 +145,7 @@ public class TccAttributeEvents {
         }
 
         if (TaczCuriosConfig.COMMON.imaginaryDamageUseSetHealth.get()) {
-            float newHealth = target.getHealth() - finalDamage;
-            if (newHealth <= 0) {
-                target.setHealth(0);
-                target.die(source);
-                return true;
-            }
-            target.setHealth(newHealth);
-            return true;
+            return applyLedgerDamage(target, source, finalDamage);
         }
 
         IMAGINARY_HURT_GUARD.add(target);
@@ -117,13 +156,11 @@ public class TccAttributeEvents {
         }
     }
 
-    /**
-     * 由虚数崩解效果造成的伤害：直接走 setHealth（绕过护甲/吸收等常规伤害结算）。由 ImaginaryCollapseEffect 调用。
-     */
+    /** 崩解伤害入口：直接扣账本。由 ImaginaryCollapseEffect 调用。 */
     public static boolean applyCollapseDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
 
-        intendedDamage = amplifyImaginaryDamage(target, source, intendedDamage);
+        target.invulnerableTime = 0;
 
         float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
         if (finalDamage <= 0) return false;
@@ -132,14 +169,7 @@ public class TccAttributeEvents {
             target.setLastHurtByMob(attacker);
         }
 
-        float newHealth = target.getHealth() - finalDamage;
-        if (newHealth <= 0) {
-            target.setHealth(0);
-            target.die(source);
-            return true;
-        }
-        target.setHealth(newHealth);
-        return true;
+        return applyLedgerDamage(target, source, finalDamage);
     }
 
     private static float resolveFinalImaginaryDamage(LivingEntity target, DamageSource source, float baseDamage) {
