@@ -460,7 +460,7 @@
   "item.tcc.zhen_wo": "§4Flame-Chasers: True Self",
   "item.tcc.zhen_wo.all_attributes": "All attributes +%1$s%% (multiplicative)",
   "item.tcc.zhen_wo.effect.trigger": "When HP < %1$s%%, trigger the Barrier: instantly restore 100%% HP.",
-  "item.tcc.zhen_wo.effect.world_pool": "Once the Barrier unfolds, you enter a World Bubble state: immune to all damage, but unable to interact.",
+  "item.tcc.zhen_wo.effect.world_pool": "Once the Barrier unfolds, you enter a World Bubble state: you cannot die.",
   "item.tcc.zhen_wo.effect.duration": "While active for %1$s s, every second restore 100%% HP to players and maids within %2$s blocks (spherical) and grant debuff immunity.",
   "item.tcc.zhen_wo.effect.damage": "Every second, apply Slowness %1$s to hostile targets within that area and deal %2$s imaginary damage.",
   "item.tcc.zhen_wo.effect.cooldown": "%1$s s cooldown.",
