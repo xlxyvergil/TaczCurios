@@ -267,15 +267,29 @@ public class ZhenWo extends BoundCurioItem {
     }
 
     /**
+     * 重入保护：本方法会经 getHealth() 注入（DamageResistanceMixin）被调用，而其中的 Curios 库存查询
+     * 对部分实体（如车万女仆 EntityMaid 的 getCapability）会回调 isAlive()/getHealth()，形成
+     * getHealth → canPreventDeath → Curios 查询 → getHealth 的无限递归（栈溢出）。用线程内标记截断递归。
+     */
+    private static final ThreadLocal<Boolean> CAN_PREVENT_DEATH_GUARD = ThreadLocal.withInitial(() -> Boolean.FALSE);
+
+    /**
      * 免死是否可用：佩戴真我，且结界未在冷却中。
      * 结界激活期间恒可用；结界结束后进入与结界相同的冷却，冷却期间不免死（正常死亡）。
      */
     public static boolean canPreventDeath(LivingEntity entity) {
         if (entity == null || entity.level() == null || entity.level().isClientSide) return false;
-        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
-        if (stack.isEmpty()) return false;
-        CompoundTag tag = stack.getOrCreateTag();
-        return tag.getInt(BARRIER_KEY) > 0 || tag.getInt(COOLDOWN_KEY) <= 0;
+        // 已在本次查询内重入（getHealth 回调），直接返回 false，避免无限递归。
+        if (Boolean.TRUE.equals(CAN_PREVENT_DEATH_GUARD.get())) return false;
+        CAN_PREVENT_DEATH_GUARD.set(Boolean.TRUE);
+        try {
+            ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
+            if (stack.isEmpty()) return false;
+            CompoundTag tag = stack.getOrCreateTag();
+            return tag.getInt(BARRIER_KEY) > 0 || tag.getInt(COOLDOWN_KEY) <= 0;
+        } finally {
+            CAN_PREVENT_DEATH_GUARD.set(Boolean.FALSE);
+        }
     }
 
     public static boolean isInsideActiveBarrier(LivingEntity entity) {

@@ -148,6 +148,7 @@ public class TaczCurios
             Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLevelRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
+            Class.forName("com.xlxyvergil.tcc.client.renderer.ErosionProgressOverlay");
             Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");
         }
     }
