@@ -27,7 +27,7 @@
   "item.tcc.seven_thunders_thunder_seen": "§6Seven Thunders: Thunder Seen",
   "item.tcc.judgement_key": "§4Judgement Key",
   "item.tcc.raven.special_invis": "Gain invisibility for %2$s seconds every %1$s seconds",
-  "item.tcc.seven_thunders_thunder_seen.special": "Headshots have %4$s%% chance to convert to imaginary damage and deal %5$s%% max HP extra imaginary damage",
+  "item.tcc.seven_thunders_thunder_seen.special": "Headshots have %4$s%% chance to deal %5$s%% max HP extra imaginary damage",
   "item.tcc.judgement_key.special": "On headshot: chance to deal extra imaginary damage. Bleeding inherits Imaginary Collapse damage bonus",
   "item.tcc.island_boom_raven.attr_regen": "Regeneration II",
   "item.tcc.island_boom_raven.special_invis": "Gain invisibility for %2$s seconds every %1$s seconds",

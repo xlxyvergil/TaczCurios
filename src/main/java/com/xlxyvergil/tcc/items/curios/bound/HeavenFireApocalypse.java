@@ -8,7 +8,6 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import com.xlxyvergil.tcc.util.TacDamageHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.ChatFormatting;
@@ -100,35 +99,13 @@ public class HeavenFireApocalypse extends BoundCurioItem {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
-            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.special",
                 String.format("%.0f", healthCost),
                 String.format("%.0f", nearbyPlayerRadius), 
                 String.format("%+d", totalNearbyPlayerDamageBoost),
                 String.format("%d", nearbyPlayerDuration))
             .withStyle(ChatFormatting.RED));
-        
-        // 伤害转换信息由客户端 TaczCuriosClientTooltip 通过 ItemTooltipEvent 动态追加
-
         appendBoundPlayer(stack, tooltip);
-    }
-    
-    /** 将 TACZ 枪械伤害转换为虚数伤害（Pre 事件） */
-    @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasHeavenFireApocalypseEquipped(attacker)) {
-            return;
-        }
-        
-        if (!(attacker.level() instanceof ServerLevel)) {
-            return;
-        }
-
-        if (!GunTypeChecker.isHoldingConfiguredGunTypes(attacker, List.of("pistol"))) return;
-
-        ImaginaryConversionHelper.convertToImaginary(event);
     }
     
     /** 扣血并为周围玩家提供加成（Post 事件） */
