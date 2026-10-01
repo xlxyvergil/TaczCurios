@@ -7,13 +7,14 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.capability.ImaginaryHealthLedgerCapability;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.util.ForcedKillHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,13 +22,17 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
 
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -36,7 +41,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @EventBusSubscriber(modid = "tcc")
@@ -50,6 +58,22 @@ public class TccAttributeEvents {
      * 以及饰品 onLivingHurt 监听器再次触发 applyImaginaryDamage 导致的无限递归。
      */
     private static final Set<LivingEntity> IMAGINARY_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
+
+    /**
+     * 侵蚀进度 HUD 的观察者注册表：玩家 UUID → 其最近造成伤害的实体（含时间戳）。
+     * 由攻击时写入，实体账本变化时按其定向推送，因此多个玩家围殴同一只怪都能各自看到该怪进度，
+     * 转火别的怪后自动切换目标。超过 {@link #HUD_TIMEOUT_MS} 未再攻击则视作脱离战斗并清理。
+     */
+    private static final Map<UUID, WatchedTarget> HUD_TARGETS = new ConcurrentHashMap<>();
+
+    /** 观察者失效时长：与客户端 HUD 的显示超时一致。 */
+    private static final long HUD_TIMEOUT_MS = 5000L;
+
+    private record WatchedTarget(Entity entity, long atMs) {
+        boolean isExpired(long now) {
+            return now - atMs >= HUD_TIMEOUT_MS;
+        }
+    }
 
     /** tacz:bullets —— TACZ 枪械子弹伤害 tag */
     private static final TagKey<DamageType> TACZ_BULLETS_TAG =
@@ -72,58 +96,151 @@ public class TccAttributeEvents {
 
     /**
      * 虚数/崩解伤害的落点：扣减实体身上的虚数死亡进度账本（attachment）。
-     * 账本不写血量字段，因此不受 setHealth 限伤/锁血影响；起点在首次命中时取 getMaxHealth()。
-     * 归零后：先把实体判定生死读取的血量字段直接改为 0（不经过 setHealth/SynchedEntityData.set），
-     * 再走标准 die()；若 die() 被拦截未置位 dead，则补掉落并 remove(KILLED)。
-     * tcc:tcc_forced_kill 命中则跳过 die()，直接补掉落 + 移除。
+     * 账本一旦进入即为实体血量的权威镜像（起点取首次命中时的当前血量），因此不受 setHealth 限伤/锁血影响。
+     * 每次扣减后立即把账本值强行写回血量字段并同步客户端，归零后由 triggerLedgerDeath 统一收尾。
      */
     private static boolean applyLedgerDamage(LivingEntity target, DamageSource source, float finalDamage) {
         var ledger = ImaginaryHealthLedgerCapability.get(target);
         if (ledger == null) return false;
 
         if (!ledger.isInitialized()) {
-            ledger.init(target.getMaxHealth());
+            ledger.init(target.getMaxHealth(), target.getHealth());
         }
+        ledger.setLastSource(source);
+        recordHudTarget(target, source);
         float remain = ledger.reduce(finalDamage);
-        notifyLedgerChange(target, source, ledger);
-        if (remain > 0) {
+        if (remain > 0.0F) {
+            // 把账本值强行写回血量并同步客户端（绕过限伤/锁血，UI 反馈即时）
+            ForcedKillHelper.forceHealth(target, remain);
+            pushHud(target);
             return true;
         }
-        // 账本归零：直接把实体判定生死读取的血量字段改为 0，不经过 setHealth/SynchedEntityData.set。
-        ledger.reset();
+        pushHud(target);
+        triggerLedgerDeath(target, ledger);
+        return true;
+    }
+
+    /**
+     * 账本记账：账本已初始化的实体，其本次实际受到的伤害（护甲/抗性/吸收减免后、即将从血量扣除的量）
+     * 同步记入账本，使账本始终是该实体血量的权威镜像。
+     * 走 hurt 的虚数伤害路线（IMAGINARY_HURT_GUARD 期间）不记账。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLedgerDamage(LivingDamageEvent.Pre event) {
+        LivingEntity target = event.getEntity();
+        if (target.level().isClientSide) return;
+        if (IMAGINARY_HURT_GUARD.contains(target)) return;
+
+        float amount = event.getNewDamage();
+        if (amount <= 0.0F) return;
+
+        var ledger = ImaginaryHealthLedgerCapability.get(target);
+        if (ledger == null || !ledger.isInitialized()) return;
+
+        ledger.setLastSource(event.getSource());
+        recordHudTarget(target, event.getSource());
+        ledger.reduce(amount);
+        pushHud(target);
+    }
+
+    /**
+     * 账本写回：账本是权威血量镜像，一旦与真实血量出现偏差（第三方限伤/锁血把血量卡住），
+     * 每 tick 强行写回并同步客户端；账本归零则统一收尾。
+     */
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onLedgerTick(EntityTickEvent.Pre event) {
+        if (!(event.getEntity() instanceof LivingEntity entity)) return;
+        if (entity.level().isClientSide) return;
+        if (entity.isDeadOrDying()) return;
+
+        var ledger = ImaginaryHealthLedgerCapability.get(entity);
+        if (ledger == null || !ledger.isInitialized()) return;
+
+        float authoritative = ledger.getLedger();
+        if (authoritative <= 0.0F) {
+            triggerLedgerDeath(entity, ledger);
+            return;
+        }
+        if (Math.abs(entity.getHealth() - authoritative) > 1.0E-4F) {
+            ForcedKillHelper.forceHealth(entity, authoritative);
+        }
+    }
+
+    /**
+     * 账本归零的统一收尾：先把血量字段写成 0（绕过限伤/锁血），再走标准 die()；
+     * 若 die() 被拦截未置位 dead，则补掉落并 remove(KILLED)。
+     * tcc:tcc_forced_kill 命中则跳过 die()，直接补掉落 + 移除。
+     */
+    private static void triggerLedgerDeath(LivingEntity target, ImaginaryHealthLedgerCapability.Handler ledger) {
+        DamageSource recorded = ledger != null ? ledger.getLastSource() : null;
+        if (ledger != null) {
+            ledger.reset();
+        }
         ForcedKillHelper.forceZeroHealth(target);
 
-        // 强制快杀：跳过 die()，直接补掉落 + 移除。
+        DamageSource source = recorded != null ? recorded : target.damageSources().genericKill();
+
         if (ForcedKillHelper.requiresForcedKill(target)) {
             ForcedKillHelper.dropAllDeathLoot(target, source);
             target.remove(Entity.RemovalReason.KILLED);
-            return true;
+            return;
         }
 
-        // 交给实体自身死亡链路（die -> tickDeath 负责掉落与移除）。
         target.die(source);
-        // die() 未置位 dead 说明被拦截（如血量被接管的下界亚波伦），走兜底。
         if (!target.dead) {
             ForcedKillHelper.dropAllDeathLoot(target, source);
             target.remove(Entity.RemovalReason.KILLED);
         }
-        return true;
     }
 
-    /** 账本每次变动后向相关玩家反馈：侵蚀 + 实体名 + 剩余百分比。 */
-    private static void notifyLedgerChange(LivingEntity target, DamageSource source, ImaginaryHealthLedgerCapability.Handler ledger) {
-        Component message = Component.translatable(
-            "message.tcc.imaginary_erosion",
-            target.getDisplayName(),
-            String.format("%.1f%%", ledger.getProgress() * 100.0F)
-        );
+    /**
+     * 解析本次伤害归属的玩家，作为侵蚀进度 HUD 的观察者：攻击者是玩家则取其本人，
+     * 是女仆则取其主人；其它来源返回 null（此时不改变其原有观察目标）。
+     */
+    private static ServerPlayer resolveViewer(DamageSource source) {
+        if (source == null) return null;
+        Entity attacker = source.getEntity();
+        if (attacker == null) return null;
+        Player owner = MaidCompat.resolveOwnerPlayer(attacker);
+        if (owner instanceof ServerPlayer sp) return sp;
+        if (attacker instanceof ServerPlayer sp) return sp;
+        return null;
+    }
 
-        if (source.getEntity() instanceof ServerPlayer player) {
-            player.sendSystemMessage(message);
-            return;
-        }
-        for (ServerPlayer player : target.level().getEntitiesOfClass(ServerPlayer.class, target.getBoundingBox().inflate(32.0D))) {
-            player.sendSystemMessage(message);
+    /** 记录该玩家「当前正在打的目标」为本次伤害的实体，供后续 HUD 定向推送。 */
+    private static void recordHudTarget(LivingEntity target, DamageSource source) {
+        ServerPlayer viewer = resolveViewer(source);
+        if (viewer == null) return;
+        HUD_TARGETS.put(viewer.getUUID(), new WatchedTarget(target, System.currentTimeMillis()));
+    }
+
+    /**
+     * 把 target 的最新侵蚀进度推送给「当前目标正好是它」的所有在线玩家，并顺带清理超时观察者。
+     * 多个玩家围殴同一只怪时都会收到；某人转火后不再收到该怪更新（其目标已变）。
+     */
+    private static void pushHud(LivingEntity target) {
+        if (!(target.level() instanceof ServerLevel serverLevel)) return;
+        var ledger = ImaginaryHealthLedgerCapability.get(target);
+        if (ledger == null) return;
+
+        long now = System.currentTimeMillis();
+        String name = MaidCompat.getDisplayName(target).getString();
+        float progress = ledger.getProgress();
+        var playerList = serverLevel.getServer().getPlayerList();
+
+        var it = HUD_TARGETS.entrySet().iterator();
+        while (it.hasNext()) {
+            var entry = it.next();
+            WatchedTarget watched = entry.getValue();
+            if (watched.isExpired(now)) {
+                it.remove();
+                continue;
+            }
+            if (watched.entity() != target) continue;
+            ServerPlayer viewer = playerList.getPlayer(entry.getKey());
+            if (viewer != null) {
+                NetworkHandler.sendErosionProgress(viewer, name, progress);
+            }
         }
     }
 
@@ -307,10 +424,22 @@ public class TccAttributeEvents {
     @SubscribeEvent
     public static void onLivingHeal(LivingHealEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(TccMobEffects.IMAGINARY_INFECTION)
-                || entity.hasEffect(TccMobEffects.IMAGINARY_COLLAPSE)) {
-            event.setCanceled(true);
+        if (!entity.hasEffect(TccMobEffects.IMAGINARY_INFECTION)
+                && !entity.hasEffect(TccMobEffects.IMAGINARY_COLLAPSE)) {
+            return;
         }
+
+        // 仅再生 buff 生效时允许回血，并把回血量同步恢复进账本（侵蚀进度随之回退）。
+        if (entity.hasEffect(MobEffects.REGENERATION)) {
+            var ledger = ImaginaryHealthLedgerCapability.get(entity);
+            if (ledger != null && ledger.isInitialized()) {
+                ledger.recover(event.getAmount());
+                pushHud(entity);
+                return;
+            }
+        }
+
+        event.setCanceled(true);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

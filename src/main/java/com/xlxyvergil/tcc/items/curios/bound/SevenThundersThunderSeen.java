@@ -3,16 +3,13 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
-import com.xlxyvergil.tcc.util.ImaginaryConversionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -83,8 +79,6 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
-        ImaginaryConversionHelper.convertToImaginary(event);
-
         if (event.isHeadShot()
             && attacker.getRandom().nextFloat() < TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()
             && event.getBullet() != null) {
@@ -94,18 +88,16 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     }
 
     @SubscribeEvent
-    public static void onLivingHurt(LivingIncomingDamageEvent event) {
-        LivingEntity target = event.getEntity();
-        if (target.level().isClientSide || target.isDeadOrDying()) return;
-
-        DamageSource source = event.getSource();
-        if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
-        if (!(source.getEntity() instanceof LivingEntity attacker)) return;
-        if (!hasEquipped(attacker)) return;
+    public static void onGunHurt(EntityHurtByGunEvent.Post event) {
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null || !hasEquipped(attacker)) return;
+        if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
-        Entity bullet = source.getDirectEntity();
+        Entity bullet = event.getBullet();
         if (bullet == null) return;
+
+        if (!(event.getHurtEntity() instanceof LivingEntity target) || target.isDeadOrDying()) return;
 
         var data = bullet.getPersistentData();
         if (!data.getBoolean(PROC_KEY) || data.getBoolean(PROC_USED_KEY)) return;

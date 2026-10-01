@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.network;
 
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
+import com.xlxyvergil.tcc.client.ErosionHudClientData;
 import com.xlxyvergil.tcc.client.LootrHighlightClientData;
 import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
@@ -61,6 +62,10 @@ final class ClientPacketHandler {
 
     static void handleSpawnerHighlights(SyncSpawnerHighlightsS2CPacket packet) {
         SpawnerHighlightClientData.setHighlights(packet.positions());
+    }
+
+    static void handleErosionProgress(SyncErosionProgressS2CPacket packet) {
+        ErosionHudClientData.update(packet.name(), packet.progress());
     }
 
     /**
