@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
-import com.xlxyvergil.tcc.capability.ImaginaryHealthLedgerCapability;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
@@ -48,7 +47,6 @@ public class TaczCurios
         modEventBus.addListener((RegisterCapabilitiesEvent e) -> {
             e.register(CurioAdaptationCapability.Handler.class);
             e.register(GunKillDataCapability.Handler.class);
-            e.register(ImaginaryHealthLedgerCapability.Handler.class);
             e.register(TccPlayerDataCapability.Handler.class);
         });
 
@@ -148,7 +146,6 @@ public class TaczCurios
             Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLevelRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
-            Class.forName("com.xlxyvergil.tcc.client.renderer.ErosionProgressOverlay");
             Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");
         }
     }

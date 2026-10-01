@@ -108,7 +108,7 @@ public class IslandBoomRaven extends BoundCurioItem {
         }
     }
 
-    public static boolean hasEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
 
@@ -144,6 +144,9 @@ public class IslandBoomRaven extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.special_invis",
                 String.format("%.1f", invisIntervalSecs),
                 String.format("%.1f", invisDurationSecs))
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(Component.translatable("tcc.tooltip.silent_movement")
             .withStyle(ChatFormatting.RED));
 
 

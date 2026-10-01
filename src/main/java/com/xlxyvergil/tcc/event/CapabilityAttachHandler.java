@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
-import com.xlxyvergil.tcc.capability.ImaginaryHealthLedgerCapability;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,10 +23,6 @@ public class CapabilityAttachHandler {
             event.addCapability(
                 GunKillDataCapability.ID,
                 new GunKillDataCapability.Provider()
-            );
-            event.addCapability(
-                ImaginaryHealthLedgerCapability.ID,
-                new ImaginaryHealthLedgerCapability.Provider()
             );
         }
         if (event.getObject() instanceof Player) {

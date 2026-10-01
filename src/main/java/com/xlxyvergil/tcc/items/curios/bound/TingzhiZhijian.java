@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AmmoRegenHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
@@ -75,6 +76,11 @@ public class TingzhiZhijian extends BoundCurioItem {
     @Override
     public List<String> getWeaponTypeRestriction() {
         return List.of("rifle");
+    }
+
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof TingzhiZhijian).isEmpty();
     }
 
     @OnlyIn(Dist.CLIENT)

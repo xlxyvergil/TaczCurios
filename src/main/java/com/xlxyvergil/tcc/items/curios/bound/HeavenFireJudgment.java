@@ -93,7 +93,7 @@ public class HeavenFireJudgment extends BoundCurioItem {
             return;
         }
 
-        if (!hasHeavenFireJudgmentEquipped(attacker)) {
+        if (!isEquipped(attacker)) {
             return;
         }
 
@@ -135,7 +135,7 @@ public class HeavenFireJudgment extends BoundCurioItem {
         LivingEntity entity = event.getEntity();
         if (event.isDead()) return;
         if (!(entity instanceof ServerPlayer serverPlayer)) return;
-        if (!hasHeavenFireJudgmentEquipped(entity)) return;
+        if (!isEquipped(entity)) return;
 
         AchievementDefinitions.AchievementDef def =
                 AchievementDefinitions.get("tcc:judgment_to_apocalypse").orElse(null);
@@ -167,7 +167,7 @@ public class HeavenFireJudgment extends BoundCurioItem {
                 serverPlayer, def.id(), def.targetCount());
     }
     
-    public static boolean hasHeavenFireJudgmentEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
     

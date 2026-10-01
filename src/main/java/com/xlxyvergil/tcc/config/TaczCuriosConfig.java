@@ -39,7 +39,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
         
-        public final ForgeConfigSpec.BooleanValue imaginaryDamageUseSetHealth;
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
@@ -744,13 +743,6 @@ public class TaczCuriosConfig {
             heavenFireApocalypseDelayDuration = builder
                     .comment("天火劫灭扣血后延迟施加流血的时长(秒) (默认: 3, 最小: 1)")
                     .defineInRange("delayDuration", 3, 1, 60);
-            builder.pop();
-            
-            
-            builder.comment("虚数附加伤害结算配置").push("imaginary_damage");
-            imaginaryDamageUseSetHealth = builder
-                    .comment("非崩解附加虚数伤害的结算方式：true = 扣虚数死亡进度账本（绕过护甲/吸收与所有限伤/锁血），false = 走 hurt 常规结算（默认）")
-                    .define("useSetHealth", false);
             builder.pop();
             
             

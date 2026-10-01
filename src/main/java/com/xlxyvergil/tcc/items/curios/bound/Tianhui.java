@@ -100,6 +100,11 @@ public class Tianhui extends BoundCurioItem {
         return List.of("rifle");
     }
 
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof Tianhui).isEmpty();
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {

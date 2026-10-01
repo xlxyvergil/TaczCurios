@@ -84,14 +84,14 @@ public class YinguoZhuanlun extends BoundCurioItem {
         return true;
     }
 
-    public static boolean hasEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof YinguoZhuanlun).isEmpty();
     }
 
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingRifle(attacker)) return;
 
@@ -101,7 +101,7 @@ public class YinguoZhuanlun extends BoundCurioItem {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingRifle(attacker)) return;
 

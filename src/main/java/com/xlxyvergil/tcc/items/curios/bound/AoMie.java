@@ -132,6 +132,9 @@ public class AoMie extends BoundCurioItem {
                 decaySeconds)
             .withStyle(ChatFormatting.RED));
 
+        tooltip.add(Component.translatable("tcc.tooltip.cooked_drops")
+            .withStyle(ChatFormatting.GOLD));
+
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 

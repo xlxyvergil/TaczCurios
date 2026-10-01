@@ -51,7 +51,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
     }
 
-    public static boolean hasEquipped(LivingEntity entity) {
+    public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
                 stack -> stack.getItem() instanceof HeiyuanBaihua).isEmpty();
     }
@@ -67,7 +67,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
         DamageSource source = event.getSource();
         if (!(source.getEntity() instanceof LivingEntity attacker)) return;
         if (target == attacker) return;
-        if (!hasEquipped(attacker)) return;
+        if (!isEquipped(attacker)) return;
 
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float damage = (float) (attacker.getMaxHealth() * (imaginaryResistance / 100.0)
@@ -93,7 +93,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (target.isDeadOrDying()) return;
 
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (target == attacker) return;
 
@@ -121,7 +121,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
         double resistancePercent = 0;
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);
-            if (wearer != null && hasEquipped(wearer)) {
+            if (wearer != null && isEquipped(wearer)) {
                 resistancePercent = wearer.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
             }
         }

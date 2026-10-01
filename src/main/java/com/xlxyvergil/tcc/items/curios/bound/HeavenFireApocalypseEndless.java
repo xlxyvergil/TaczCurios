@@ -140,7 +140,7 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasHeavenFireApocalypseEndlessEquipped(attacker)) {
+        if (attacker == null || !isEquipped(attacker)) {
             return;
         }
         
@@ -160,7 +160,7 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
             return;
         }
         
-        if (!hasHeavenFireApocalypseEndlessEquipped(attacker)) {
+        if (!isEquipped(attacker)) {
             return;
         }
         
@@ -190,7 +190,7 @@ public class HeavenFireApocalypseEndless extends BoundCurioItem {
         }
     }
     
-    public static boolean hasHeavenFireApocalypseEndlessEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof HeavenFireApocalypseEndless).isEmpty();
     }
     

@@ -76,6 +76,11 @@ public class Kalpas extends BoundCurioItem {
         }
     }
 
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof Kalpas).isEmpty();
+    }
+
     @Override
     public List<String> getWeaponTypeRestriction() {
         return List.of("melee");
@@ -99,6 +104,9 @@ public class Kalpas extends BoundCurioItem {
                 maxSlots,
                 String.format("%.2f", adaptFactor),
                 decaySeconds)
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.cooked_drops")
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

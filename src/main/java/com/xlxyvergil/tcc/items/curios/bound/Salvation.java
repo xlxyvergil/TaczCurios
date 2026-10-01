@@ -113,6 +113,8 @@ public class Salvation extends BoundCurioItem {
         
         tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses")
             .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.damage_reduction", String.format("%.0f", damageReduction))
             .withStyle(ChatFormatting.RED));
         
@@ -126,7 +128,7 @@ public class Salvation extends BoundCurioItem {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         if (event.player.level().isClientSide()) return;
-        if (!hasSalvationEquipped(event.player)) return;
+        if (!isEquipped(event.player)) return;
         if (!GunTypeChecker.isHoldingPistol(event.player)) {
             DamageResistanceHelper.clearDamageReduction(event.player);
             return;
@@ -149,7 +151,7 @@ public class Salvation extends BoundCurioItem {
         return true;
     }
     
-    public static boolean hasSalvationEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof Salvation).isEmpty();
     }
 
