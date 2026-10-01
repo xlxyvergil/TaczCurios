@@ -5,27 +5,27 @@
 # Find more information on toml format here:  https://github.com/toml-lang/toml
 # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
 modLoader="javafml"
-loaderVersion="[47,)"
-license="All Rights Reserved"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 
 [[mods]]
-modId="tcc"
-version="1.4.3"
-displayName="TaczCurios"
-authors="xlxyvergil"
-description="A Minecraft 1.20.1 jewelry mod that adds various accessories with special effects. Dependencies: Curios API and TaczAttributeAdd."
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
 
 [[dependencies.tcc]]
 modId="forge"
 mandatory=true
-versionRange="[47,)"
+versionRange="${forge_version_range}"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.tcc]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.20.1,1.21)"
+versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
 
