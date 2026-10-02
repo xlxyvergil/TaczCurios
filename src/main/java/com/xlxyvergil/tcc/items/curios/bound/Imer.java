@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -49,6 +50,11 @@ public class Imer extends BoundCurioItem {
     @Override
     public List<String> getWeaponTypeRestriction() {
         return List.of("melee");
+    }
+
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof Imer).isEmpty();
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -130,6 +130,9 @@ public class HuajieZhiyan extends BoundCurioItem {
                 decaySeconds)
             .withStyle(ChatFormatting.WHITE));
 
+        tooltip.add(Component.translatable("tcc.tooltip.cooked_drops")
+            .withStyle(ChatFormatting.GOLD));
+
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 

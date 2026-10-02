@@ -27,7 +27,7 @@ import java.util.Map;
  * NaN 一律钳为 0。第三方模组靠"负向血量修正"绕过 setHealth、直接把判定血量压到 0 以下的通道由此失效。
  * 结界冷却期间不钳制，让强杀手段能正常杀死佩戴者。
  *
- * 内部字段一律按声明类型反射识别，不依赖被混淆的字段名（同 ForcedKillHelper 的做法）。
+ * 内部字段一律按声明类型反射识别，不依赖被混淆的字段名。
  */
 @Mixin(SynchedEntityData.class)
 public abstract class SynchedEntityDataMixin implements ITccSynchedEntityData {

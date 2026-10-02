@@ -31,7 +31,6 @@ public final class NetworkHandler {
         registrar.playToClient(SyncSpawnerHighlightsS2CPacket.TYPE, SyncSpawnerHighlightsS2CPacket.STREAM_CODEC, SyncSpawnerHighlightsS2CPacket::handle);
         registrar.playToClient(SyncConfigS2CPacket.TYPE, SyncConfigS2CPacket.STREAM_CODEC, SyncConfigS2CPacket::handle);
         registrar.playToClient(SyncDataFilesS2CPacket.TYPE, SyncDataFilesS2CPacket.STREAM_CODEC, SyncDataFilesS2CPacket::handle);
-        registrar.playToClient(SyncErosionProgressS2CPacket.TYPE, SyncErosionProgressS2CPacket.STREAM_CODEC, SyncErosionProgressS2CPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
@@ -54,11 +53,6 @@ public final class NetworkHandler {
 
     public static void sendSpawnerHighlights(ServerPlayer player, List<BlockPos> positions) {
         sendToPlayer(player, new SyncSpawnerHighlightsS2CPacket(positions));
-    }
-
-    /** 向观察者玩家推送其最近伤害实体的侵蚀进度（剩余比例），用于 HUD 显示。 */
-    public static void sendErosionProgress(ServerPlayer player, String name, float progress) {
-        sendToPlayer(player, new SyncErosionProgressS2CPacket(name, progress));
     }
 
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {

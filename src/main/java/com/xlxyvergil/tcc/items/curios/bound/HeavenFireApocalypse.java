@@ -118,7 +118,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
             return;
         }
 
-        if (!hasHeavenFireApocalypseEquipped(attacker)) {
+        if (!isEquipped(attacker)) {
             return;
         }
         
@@ -137,7 +137,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         double healthCostConfig = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get();
         
         // 检查是否装备了梵天百兽，如果是则减少扣血比例
-        if (BrahmaBeasts.hasBrahmaBeastsEquipped(attacker)) {
+        if (BrahmaBeasts.isEquipped(attacker)) {
             double reduction = TaczCuriosConfig.COMMON.brahmaBeastsHealthCostReduction.get();
             healthCostConfig += reduction;
         }
@@ -182,7 +182,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
                 false, false, true));
         }
     }
-    public static boolean hasHeavenFireApocalypseEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
     

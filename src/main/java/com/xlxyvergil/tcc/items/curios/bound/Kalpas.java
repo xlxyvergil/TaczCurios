@@ -78,6 +78,11 @@ public class Kalpas extends BoundCurioItem {
         return List.of("melee");
     }
 
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof Kalpas).isEmpty();
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
@@ -97,6 +102,9 @@ public class Kalpas extends BoundCurioItem {
                 maxSlots,
                 String.format("%.2f", adaptFactor),
                 decaySeconds)
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.cooked_drops")
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

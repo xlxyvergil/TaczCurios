@@ -64,7 +64,7 @@ public class Xiora extends BoundCurioItem {
         return java.util.List.of("sniper");
     }
 
-    public static boolean hasEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
 
@@ -89,6 +89,9 @@ public class Xiora extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%", Component.translatable(AttributeHelper.MOVEMENT_SPEED.value().getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.silent_movement")
+                .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));
 

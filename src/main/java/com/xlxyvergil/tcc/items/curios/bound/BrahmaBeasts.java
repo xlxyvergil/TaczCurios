@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -79,13 +80,16 @@ public class BrahmaBeasts extends BoundCurioItem {
         
         appendImaginaryResistance(stack, tooltip);
         
+        tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
+                .withStyle(ChatFormatting.RED));
+        
         appendBoundPlayer(stack, tooltip);
         
         tooltip.add(Component.literal(""));
  
     }
 
-    public static boolean hasBrahmaBeastsEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof BrahmaBeasts).isEmpty();
     }
 

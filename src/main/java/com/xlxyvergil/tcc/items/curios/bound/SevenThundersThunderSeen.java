@@ -3,6 +3,8 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -68,14 +70,14 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
         return true;
     }
 
-    public static boolean hasEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof SevenThundersThunderSeen).isEmpty();
     }
 
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
@@ -90,7 +92,7 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     @SubscribeEvent
     public static void onGunHurt(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
@@ -104,7 +106,8 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
 
         float extra = (float) ((float) Math.round(target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 10000.0) / 10000.0);
         if (extra > 0) {
-            target.setHealth(Math.max(0, target.getHealth() - extra));
+            TccAttributeEvents.applyImaginaryDamage(target,
+                TccDamageSources.imaginaryDamage(target.level(), attacker), extra);
         }
         data.putBoolean(PROC_USED_KEY, true);
     }

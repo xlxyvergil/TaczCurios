@@ -70,6 +70,11 @@ public class ZhenWo extends BoundCurioItem {
         super(properties);
     }
 
+    public static boolean isEquipped(LivingEntity entity) {
+        return !CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof ZhenWo).isEmpty();
+    }
+
     @Override
     protected boolean isBoundItem() {
         return true;

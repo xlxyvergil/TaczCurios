@@ -103,7 +103,7 @@ public class Raven extends BoundCurioItem {
         }
     }
 
-    public static boolean hasEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
 
@@ -136,6 +136,9 @@ public class Raven extends BoundCurioItem {
                 String.format("%.1f", invisIntervalSecs),
                 String.format("%.1f", invisDurationSecs))
             .withStyle(ChatFormatting.WHITE));
+
+        tooltip.add(Component.translatable("tcc.tooltip.silent_movement")
+            .withStyle(ChatFormatting.RED));
 
         appendBoundPlayer(stack, tooltip);
 

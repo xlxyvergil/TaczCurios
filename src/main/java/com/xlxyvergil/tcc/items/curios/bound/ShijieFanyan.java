@@ -88,14 +88,14 @@ public class ShijieFanyan extends BoundCurioItem {
         applyEffects(slotContext.entity(), stack);
     }
 
-    public static boolean hasEquipped(LivingEntity livingEntity) {
+    public static boolean isEquipped(LivingEntity livingEntity) {
         return !CurioSearchHelper.findFirstEquippedStack(livingEntity, stack -> stack.getItem() instanceof ShijieFanyan).isEmpty();
     }
 
     @SubscribeEvent
     public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingAnyGun(attacker)) return;
 
@@ -105,7 +105,7 @@ public class ShijieFanyan extends BoundCurioItem {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !hasEquipped(attacker)) return;
+        if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingAnyGun(attacker)) return;
 
