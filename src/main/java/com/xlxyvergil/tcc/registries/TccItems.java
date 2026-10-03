@@ -24,6 +24,7 @@ import com.xlxyvergil.tcc.items.curios.tcc.HeavyFirepower;
 import com.xlxyvergil.tcc.items.curios.tcc.InfectedMagazine;
 import com.xlxyvergil.tcc.items.curios.tcc.InfernalChamber;
 import com.xlxyvergil.tcc.items.curios.tcc.KikakuIchijin;
+import com.xlxyvergil.tcc.items.curios.tcc.KongbaiZhijian;
 import com.xlxyvergil.tcc.items.curios.tcc.LimitSpeed;
 import com.xlxyvergil.tcc.items.curios.tcc.BurstReload;
 import com.xlxyvergil.tcc.items.curios.tcc.MalignantSpread;
@@ -181,6 +182,10 @@ public class TccItems {
     public static final Item SOLDIER_SPECIFIC_TAG = new SoldierSpecificTag(new Item.Properties()
             .stacksTo(64)
             .rarity(Rarity.EPIC));
+
+    public static final Item KONGBAI_ZHIJIAN = new KongbaiZhijian(new Item.Properties()
+            .stacksTo(64)
+            .rarity(RIFT));
     
     
     public static final Item HEAVY_CALIBER_TAG = new HeavyCaliberTag(new Item.Properties()
@@ -927,6 +932,7 @@ public class TccItems {
     public static void init(IForgeRegistry<Item> registry) {
         registry.register(id("soldier_basic_tag"), SOLDIER_BASIC_TAG);
         registry.register(id("soldier_specific_tag"), SOLDIER_SPECIFIC_TAG);
+        registry.register(id("kongbai_zhijian"), KONGBAI_ZHIJIAN);
         registry.register(id("heavy_caliber_tag"), HEAVY_CALIBER_TAG);
         registry.register(id("red_movement_tag"), RED_MOVEMENT_TAG);
         registry.register(id("summer_beach"), SUMMER_BEACH);

@@ -121,6 +121,7 @@ public class TccCreativeTab {
 
                 // 8. tcc 裂隙稀有度
                 output.accept(TccItems.KIKAKU_ICHIJIN);
+                output.accept(TccItems.KONGBAI_ZHIJIAN);
 
                 // 9. 神之键/逐火之蛾（按 achievement_definitions.json 进化链路排序）
                 // 系列1 涤罪七雷/渡鸦

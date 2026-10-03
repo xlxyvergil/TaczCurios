@@ -52,7 +52,8 @@ public class SwordWind extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double meleeDistanceBoost = TaczCuriosConfig.COMMON.swordWindMeleeRangeBoost.get();
-        tooltip.add(Component.translatable("item.tcc.sword_wind.effect", String.format("%.1f", meleeDistanceBoost))
+        tooltip.add(formatModifierTooltip(meleeDistanceBoost, "%.1f",
+                Component.translatable(AttributeHelper.ENTITY_REACH.getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

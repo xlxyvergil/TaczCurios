@@ -66,8 +66,8 @@ public class MalignantSpread extends TccCurioItem {
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadDamageBoost.get() ) * 100;
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.malignantSpreadAccuracyReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.malignant_spread.effect", String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
-            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(inaccuracyBoost, "%.0f%%", Component.translatable(AttributeHelper.INACCURACY.getDescriptionId())).withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 

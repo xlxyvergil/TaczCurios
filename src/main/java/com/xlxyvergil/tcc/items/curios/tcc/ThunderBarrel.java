@@ -55,8 +55,8 @@ public class ThunderBarrel extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.thunderBarrelCritChance.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.thunder_barrel.effect",
-                String.format("%+.0f", critChanceBoost))
+        tooltip.add(formatModifierTooltip(critChanceBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

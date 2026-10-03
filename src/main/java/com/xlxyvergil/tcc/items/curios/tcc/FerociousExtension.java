@@ -54,7 +54,8 @@ public class FerociousExtension extends TccCurioItem {
         tooltip.add(Component.literal(""));
         
         double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.ferocious_extension.effect", String.format("%+.0f", rangeBoost))
+        tooltip.add(formatModifierTooltip(rangeBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.EFFECTIVE_RANGE.getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
         
         tooltip.add(Component.literal(""));

@@ -65,9 +65,8 @@ public class InfectedMagazine extends TccCurioItem {
 
         double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get() ) * 100;
         double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.infected_magazine.effect", 
-                String.format("%+.0f", magazineCapacityBoost), String.format("%+.0f", reloadDebuff))
-            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(magazineCapacityBoost, "%.0f%%", Component.translatable(AttributeHelper.MAGAZINE_CAPACITY.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(reloadDebuff, "%.0f%%", Component.translatable(AttributeHelper.RELOAD_TIME.getDescriptionId())).withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 

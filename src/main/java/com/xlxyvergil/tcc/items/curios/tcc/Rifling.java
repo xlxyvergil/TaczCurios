@@ -76,8 +76,22 @@ public class Rifling extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.riflingDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.rifling.effect", String.format("%+.0f", damageBoost))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_RIFLE.getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SNIPER.getDescriptionId()))
+            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SMG.getDescriptionId()))
+            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LMG.getDescriptionId()))
+            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER.getDescriptionId()))
+            .withStyle(ChatFormatting.AQUA));
+        tooltip.add(Component.translatable("item.tcc.rifling.note").withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
 

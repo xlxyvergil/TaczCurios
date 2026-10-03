@@ -84,8 +84,14 @@ public class CarefulHeart extends TccCurioItem {
                 TaczCuriosConfig.COMMON.carefulHeartExplosionDamageBoost.get()) * 100;
         double explosionRadiusBoost = FusionData.from(stack).getActualValue(
                 TaczCuriosConfig.COMMON.carefulHeartExplosionRadiusBoost.get()) * 100;
-        tooltip.add(Component.translatable("item.tcc.careful_heart.effect", 
-                String.format("%+.0f", launcherDamageBoost), String.format("%+.0f", explosionDamageBoost), String.format("%+.0f", explosionRadiusBoost))
+        tooltip.add(formatModifierTooltip(launcherDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(explosionRadiusBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.EXPLOSION_RADIUS.getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

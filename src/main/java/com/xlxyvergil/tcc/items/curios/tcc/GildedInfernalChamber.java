@@ -56,8 +56,8 @@ public class GildedInfernalChamber extends TccCurioItem {
         double buffBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
-        tooltip.add(Component.translatable("item.tcc.gilded_infernal_chamber.effect_base",
-                String.format("%+.0f", baseBulletCount))
+        tooltip.add(formatModifierTooltip(baseBulletCount, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_COUNT.getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.gilded_infernal_chamber.effect_kill",
                 String.format("%+.0f", buffBulletCount), maxStacks, duration)

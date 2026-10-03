@@ -63,7 +63,11 @@ public class CorruptMagazine extends TccCurioItem {
 
         double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.corruptMagazineCapacityBoost.get() ) * 100;
         double reloadPenalty = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.corruptMagazineReloadSpeedReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.corrupt_magazine.effect", String.format("%+.0f", magazineBoost), String.format("%+.0f", reloadPenalty))
+        tooltip.add(formatModifierTooltip(magazineBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.MAGAZINE_CAPACITY.getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(reloadPenalty, "%.0f%%",
+                Component.translatable(AttributeHelper.RELOAD_TIME.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

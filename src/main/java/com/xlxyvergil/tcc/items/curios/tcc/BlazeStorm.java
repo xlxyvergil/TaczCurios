@@ -72,9 +72,13 @@ public class BlazeStorm extends TccCurioItem {
 
         double explosionRadiusBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionRadiusBoost.get() ) * 100;
         double explosionDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormExplosionDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.blaze_storm.effect", 
-                String.format("%+.0f", explosionRadiusBoost), String.format("%+.0f", explosionDamageBoost))
+        tooltip.add(formatModifierTooltip(explosionRadiusBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.EXPLOSION_RADIUS.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.blaze_storm.note").withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
 

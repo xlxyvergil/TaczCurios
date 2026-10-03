@@ -57,8 +57,8 @@ public class Dismemberment extends TccCurioItem {
 
 
         double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.dismembermentCritDamage.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.dismemberment.effect",
-                String.format("%+.0f", critDamageBoost))
+        tooltip.add(formatModifierTooltip(critDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

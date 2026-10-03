@@ -77,8 +77,8 @@ public class SacrificeOppression extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sacrificeOppressionMeleeDamage.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.sacrifice_oppression.effect",
-                String.format("%+.0f", meleeDamageBoost))
+        tooltip.add(formatModifierTooltip(meleeDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.ATTACK_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         double setBonusPct = (getSetBonusValue(stack) - 1.0) * 100;

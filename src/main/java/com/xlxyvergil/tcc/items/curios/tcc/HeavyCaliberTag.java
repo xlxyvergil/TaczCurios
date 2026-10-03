@@ -89,9 +89,12 @@ public class HeavyCaliberTag extends TccCurioItem {
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagDamageBoost.get() ) * 100;
         double inaccuracyBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.heavyCaliberTagInaccuracyBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.heavy_caliber_tag.effect", 
-                String.format("%+.0f", damageBoost), String.format("%+.0f", inaccuracyBoost))
-            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_RIFLE.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SNIPER.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SMG.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LMG.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER.getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(inaccuracyBoost, "%.0f%%", Component.translatable(AttributeHelper.INACCURACY.getDescriptionId())).withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 

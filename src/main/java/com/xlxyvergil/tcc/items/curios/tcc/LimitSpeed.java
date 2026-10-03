@@ -58,7 +58,8 @@ public class LimitSpeed extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double ammoSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.limit_speed.effect", String.format("%+.0f", ammoSpeedBoost))
+        tooltip.add(formatModifierTooltip(ammoSpeedBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.AMMO_SPEED.getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

@@ -63,8 +63,11 @@ public class CriticalDelay extends TccCurioItem {
 
         double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayCritChanceBoost.get() ) * 100;
         double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.criticalDelayFireRateReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.critical_delay.effect",
-                String.format("%+.0f", critChanceBoost), String.format("%+.0f", fireRateReduction))
+        tooltip.add(formatModifierTooltip(critChanceBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(fireRateReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.ROUNDS_PER_MINUTE.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

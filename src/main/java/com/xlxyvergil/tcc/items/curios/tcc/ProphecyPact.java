@@ -60,7 +60,8 @@ public class ProphecyPact extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.prophecy_pact.effect", String.format("%+.0f", damageBoost))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_PISTOL.getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

@@ -55,7 +55,8 @@ public class SustainedFire extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sustainedFireReloadSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.sustained_fire.effect", String.format("%+.0f", reloadBoost))
+        tooltip.add(formatModifierTooltip(reloadBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.RELOAD_TIME.getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

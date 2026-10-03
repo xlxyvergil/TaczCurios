@@ -55,8 +55,8 @@ public class DestructionPrime extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.destructionPrimeCritDamage.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.destruction_prime.effect",
-                String.format("%+.0f", critDamageBoost))
+        tooltip.add(formatModifierTooltip(critDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

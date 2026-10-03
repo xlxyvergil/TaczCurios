@@ -62,8 +62,11 @@ public class EvilAccuracy extends TccCurioItem {
         
         double recoilReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyRecoilReduction.get() ) * 100;
         double fireRateReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.evilAccuracyFireRateReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.evil_accuracy.effect", 
-                String.format("%+.0f", recoilReduction), String.format("%+.0f", fireRateReduction))
+        tooltip.add(formatModifierTooltip(recoilReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.RECOIL.getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(fireRateReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.ROUNDS_PER_MINUTE.getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
         
         tooltip.add(Component.literal(""));

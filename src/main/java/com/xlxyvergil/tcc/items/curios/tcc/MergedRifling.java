@@ -90,9 +90,25 @@ public class MergedRifling extends TccCurioItem {
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get() ) * 100;
         double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.merged_rifling.effect", 
-                String.format("%+.0f", damageBoost), String.format("%+.0f", speedBoost))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_RIFLE.getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SNIPER.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SMG.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LMG.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.MOVE_SPEED.getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("item.tcc.merged_rifling.note").withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
 

@@ -56,7 +56,8 @@ public class MagazineBoostPrime extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double magazineBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.magazineBoostPrimeCapacityBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.magazine_boost_prime.effect", String.format("%+.0f", magazineBoost))
+        tooltip.add(formatModifierTooltip(magazineBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.MAGAZINE_CAPACITY.getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
