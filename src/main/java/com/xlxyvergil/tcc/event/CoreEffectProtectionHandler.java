@@ -18,8 +18,7 @@ public class CoreEffectProtectionHandler {
             effect.getEffect() == TccMobEffects.HEAVEN_FIRE_APOCALYPSE_BUFF.get() ||
             effect.getEffect() == TccMobEffects.HEAVEN_FIRE_APOCALYPSE_DELAY.get() ||
             effect.getEffect() == TccMobEffects.IMAGINARY_INFECTION.get() ||
-            effect.getEffect() == TccMobEffects.IMAGINARY_COLLAPSE.get() ||
-            effect.getEffect() == TccMobEffects.EROSION.get()
+            effect.getEffect() == TccMobEffects.IMAGINARY_COLLAPSE.get()
         )) {
             event.setResult(Event.Result.DENY);
         }

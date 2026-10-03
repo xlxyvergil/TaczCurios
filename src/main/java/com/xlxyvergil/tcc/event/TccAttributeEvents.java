@@ -40,8 +40,8 @@ public class TccAttributeEvents {
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
 
     /**
-     * 重入防护：目标在 applyImaginaryDamage 的 hurt 路径结算期间加入本集合，
-     * 避免嵌套 LivingHurtEvent 二次结算、以及饰品监听器重复触发造成的递归。
+     * 重入防护：目标在 applyImaginaryDamage 的 hurt 路径期间加入本集合，
+     * 避免饰品监听器在虚数伤害结算过程中再次发起虚数伤害造成递归。
      */
     private static final Set<LivingEntity> IMAGINARY_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
 
@@ -60,15 +60,12 @@ public class TccAttributeEvents {
             || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
     }
 
-    /** 虚数伤害结算入口（含崩解）：由饰品命中或崩解 DoT 调用，统一走常规 hurt。 */
+    /** 虚数伤害入口（含崩解）：由饰品命中或崩解 DoT 调用，只传入基础值，抗性结算统一由 LivingHurtEvent 处理。 */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
         if (IMAGINARY_HURT_GUARD.contains(target)) return false;
 
         target.invulnerableTime = 0;
-
-        float finalDamage = resolveFinalImaginaryDamage(target, source, intendedDamage);
-        if (finalDamage <= 0) return false;
 
         if (source.getEntity() instanceof LivingEntity attacker) {
             target.setLastHurtByMob(attacker);
@@ -76,7 +73,7 @@ public class TccAttributeEvents {
 
         IMAGINARY_HURT_GUARD.add(target);
         try {
-            return target.hurt(source, finalDamage);
+            return target.hurt(source, intendedDamage);
         } finally {
             IMAGINARY_HURT_GUARD.remove(target);
         }
@@ -95,17 +92,8 @@ public class TccAttributeEvents {
 
         float damageAfterResistance = (float) (baseDamage * (1.0 - resistance / 100.0));
 
-        double ampPerLevel = TaczCuriosConfig.COMMON.imaginaryInfectionAmpPerLevel.get();
-        int infectionLevel = 0;
-        var infectionEffect = TccMobEffects.IMAGINARY_INFECTION.get();
-        if (infectionEffect != null) {
-            var effectInstance = target.getEffect(infectionEffect);
-            if (effectInstance != null) {
-                infectionLevel = effectInstance.getAmplifier() + 1;
-            }
-        }
-
-        return (float) ((float) Math.round((damageAfterResistance * (1.0 + infectionLevel * ampPerLevel)) * 10000.0) / 10000.0);
+        // 侵染不再直接增伤，伤害增益统一由侵染降低虚数抗性体现。
+        return (float) ((float) Math.round(damageAfterResistance * 10000.0) / 10000.0);
     }
 
     @SubscribeEvent
@@ -225,11 +213,14 @@ public class TccAttributeEvents {
         }
     }
 
+    /**
+     * 虚数伤害统一结算入口：显式入口（applyImaginaryDamage）与直接走 hurt 管线的虚数伤害都在此应用抗性结算。
+     * 抗性结算只在此处执行一次，避免重复结算。
+     */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void imaginaryDamageOnAttack(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
         if (target.level().isClientSide || target.isDeadOrDying()) return;
-        if (IMAGINARY_HURT_GUARD.contains(target)) return;
 
         DamageSource source = event.getSource();
 

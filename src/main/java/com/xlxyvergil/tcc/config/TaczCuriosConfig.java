@@ -39,7 +39,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
         
-        public final ForgeConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
         public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
@@ -553,8 +552,6 @@ public class TaczCuriosConfig {
 
         
         public final ForgeConfigSpec.DoubleValue collapsePercentPerLevel;
-        public final ForgeConfigSpec.DoubleValue collapsePercentPerDebuff;
-        public final ForgeConfigSpec.IntValue collapseMaxDebuffCount;
 
         public final ForgeConfigSpec.DoubleValue criticalDelayCritChanceBoost;
         public final ForgeConfigSpec.DoubleValue criticalDelayFireRateReduction;
@@ -746,10 +743,7 @@ public class TaczCuriosConfig {
             builder.pop();
             
             
-            builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤计算公式：最终伤害 = 伤害 × (1 + 层数 × ampPerLevel)）").push("imaginary_infection");
-            imaginaryInfectionAmpPerLevel = builder
-                    .comment("每层虚数侵染的增伤比例 (默认: 0.1 = 10%/层)")
-                    .defineInRange("ampPerLevel", 0.1, 0.01, 1.0);
+            builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤通过降低虚数抗性体现）").push("imaginary_infection");
             imaginaryInfectionMaxLevel = builder
                     .comment("虚数侵染效果最大等级上限 (默认: 99)")
                     .defineInRange("maxLevel", 99, 1, 99);
@@ -763,16 +757,10 @@ public class TaczCuriosConfig {
             
 
             
-            builder.comment("虚数崩解配置（虚数崩解基于虚数侵染层数和负面效果种数造成额外伤害）").push("imaginary_collapse");
+            builder.comment("虚数崩解配置（崩解按目标最大生命值比例每秒造成虚数伤害）").push("imaginary_collapse");
             collapsePercentPerLevel = builder
-                    .comment("崩解基础每秒造成的最大生命值伤害比例（不再随侵染等级线性放大；层数由通用侵染增伤体现） (默认: 0.025 ≈ 2.5%/秒)")
+                    .comment("崩解每秒造成的最大生命值伤害比例（不随侵染等级放大；侵染增益由降低虚数抗性体现） (默认: 0.025 ≈ 2.5%/秒)")
                     .defineInRange("percentPerLevel", 0.025, 0, 1);
-            collapsePercentPerDebuff = builder
-                    .comment("每种负面效果的崩解增伤比例 (默认: 0.1 = 10%/种)")
-                    .defineInRange("percentPerDebuff", 0.1, 0, 1);
-            collapseMaxDebuffCount = builder
-                    .comment("崩解计入的负面效果种数上限 (默认: 5)")
-                    .defineInRange("maxDebuffCount", 5, 1, 20);
             builder.pop();
 
             

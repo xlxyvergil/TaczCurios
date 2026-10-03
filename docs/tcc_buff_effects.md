@@ -6,7 +6,6 @@
 | `tcc:heaven_fire_bleeding` | 增益 | 天火流血 |
 | `tcc:imaginary_infection` | 中性 | **虚数侵染** |
 | `tcc:imaginary_collapse` | 中性 | **虚数崩解** |
-| `tcc:erosion` | 中性 | **侵蚀** |
 | `tcc:heaven_fire_apocalypse_delay` | 增益 | 延迟判定 |
 | `tcc:argon_scope` | 增益 | 氩晶瞄具 |
 | `tcc:gilded_argon_scope` | 增益 | 镀层氩晶瞄具 |
