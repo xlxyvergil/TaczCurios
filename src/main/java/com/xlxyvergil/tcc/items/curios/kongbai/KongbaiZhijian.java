@@ -1,8 +1,8 @@
-package com.xlxyvergil.tcc.items.curios.tcc;
+package com.xlxyvergil.tcc.items.curios.kongbai;
 
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.items.TccCurioItem;
+import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.link.AttributeLinkData;
 import com.xlxyvergil.tcc.link.AttributeLinkRegistry;
 import com.xlxyvergil.tcc.util.AttributeHelper;
@@ -32,13 +32,15 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 空白之键：由数据包驱动的联动饰品。
+ * 空白之键：由数据包驱动的联动饰品，占用独立槽位 {@code tcc_kb}。
  * <p>
  * 安装时读取一次数据包中固定槽位（slot）的 1 号槽位，命中规则后把规则记入饰品自身，
  * 之后持续按该规则读取实体属性总值 × 比例，作用于 TAA 通用枪伤。
- * 固定槽位没有命中规则的饰品时不允许安装，安装后不可卸下；无数据包配置时无任何效果。
+ * 固定槽位没有命中规则的饰品时不允许安装；可自由拆下（不消耗材料），
+ * 但装备仍绑定玩家（绑定与死亡不掉落逻辑由 {@link BoundCurioItem} 提供）。
+ * 无数据包配置时无任何效果。
  */
-public class KongbaiZhijian extends TccCurioItem {
+public class KongbaiZhijian extends BoundCurioItem {
 
     /** 属性修饰符 UUID，单条规则故固定一个。 */
     private static final UUID LINK_UUID = UUID.fromString("8b3f2c14-6d5a-4e79-9c1b-2f4a6d8e0b31");
@@ -69,11 +71,11 @@ public class KongbaiZhijian extends TccCurioItem {
     }
 
     /**
-     * 该饰品安装后不可卸下。
+     * 可自由拆下，不消耗任何材料；装备仍绑定玩家（由 {@link BoundCurioItem} 处理）。
      */
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
-        return false;
+        return true;
     }
 
     /**
@@ -124,6 +126,7 @@ public class KongbaiZhijian extends TccCurioItem {
         }
 
         tooltip.add(Component.literal(""));
+        appendBoundPlayer(stack, tooltip);
     }
 
     private static boolean isEquipped(LivingEntity entity) {

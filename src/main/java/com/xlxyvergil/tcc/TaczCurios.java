@@ -126,6 +126,7 @@ public class TaczCurios
         registerCurioType("tcc_slot", 8, false, new ResourceLocation(MODID, "slot/tcc_slot"));
         registerCurioType("tcc_3rd", 1, false, new ResourceLocation(MODID, "slot/tcc_3rd"));
         registerCurioType("tcc_tdk", 1, false, new ResourceLocation(MODID, "slot/tcc_tdk"));
+        registerCurioType("tcc_kb", 1, false, new ResourceLocation(MODID, "slot/tcc_kb"));
     }
 
     private void registerCurioType(final String identifier, final int slots, final boolean isHidden, final ResourceLocation icon) {

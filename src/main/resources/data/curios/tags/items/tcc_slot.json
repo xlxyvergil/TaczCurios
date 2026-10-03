@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "tcc:kongbai_zhijian",
     "tcc:soldier_basic_tag",
     "tcc:soldier_specific_tag", 
     "tcc:heavy_caliber_tag",

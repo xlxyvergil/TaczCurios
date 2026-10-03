@@ -24,7 +24,7 @@ import com.xlxyvergil.tcc.items.curios.tcc.HeavyFirepower;
 import com.xlxyvergil.tcc.items.curios.tcc.InfectedMagazine;
 import com.xlxyvergil.tcc.items.curios.tcc.InfernalChamber;
 import com.xlxyvergil.tcc.items.curios.tcc.KikakuIchijin;
-import com.xlxyvergil.tcc.items.curios.tcc.KongbaiZhijian;
+import com.xlxyvergil.tcc.items.curios.kongbai.KongbaiZhijian;
 import com.xlxyvergil.tcc.items.curios.tcc.LimitSpeed;
 import com.xlxyvergil.tcc.items.curios.tcc.BurstReload;
 import com.xlxyvergil.tcc.items.curios.tcc.MalignantSpread;
