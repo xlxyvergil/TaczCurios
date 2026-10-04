@@ -98,8 +98,13 @@ public class ZhenWo extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
                 1.0, KNOCKBACK_RESISTANCE_UUID, "tcc.zhen_wo.knockback_resistance",
                 AttributeModifier.Operation.ADDITION);
-            DamageResistanceHelper.setDamageReduction(livingEntity,
-                (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
+            if (livingEntity instanceof Player) {
+                DamageResistanceHelper.setDamageReduction(livingEntity,
+                    (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
+            } else {
+                // 真我减伤仅对玩家生效，非玩家清除可能的残留
+                DamageResistanceHelper.clearDamageReduction(livingEntity);
+            }
         } else {
             removeEffects(livingEntity);
         }
@@ -124,6 +129,18 @@ public class ZhenWo extends BoundCurioItem {
         if (entity.level().isClientSide) return;
 
         if (entity.isDeadOrDying()) return;
+
+        // 真我相关的免死与减伤仅对玩家生效：非玩家不再享有减伤、结界与免死触发，并清理历史残留。
+        if (!(entity instanceof Player)) {
+            ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
+            DamageResistanceHelper.clearDamageReduction(entity);
+            CompoundTag tag = stack.getTag();
+            if (tag != null && (tag.getInt(BARRIER_KEY) != 0 || tag.getInt(COOLDOWN_KEY) != 0)) {
+                tag.putInt(BARRIER_KEY, 0);
+                tag.putInt(COOLDOWN_KEY, 0);
+            }
+            return;
+        }
 
         CompoundTag tag = stack.getOrCreateTag();
         int barrierTicks = tag.getInt(BARRIER_KEY);
@@ -273,17 +290,23 @@ public class ZhenWo extends BoundCurioItem {
 
     /**
      * 重入保护：本方法会经 getHealth() 注入（DamageResistanceMixin）被调用，而其中的 Curios 库存查询
-     * 对部分实体（如车万女仆 EntityMaid 的 getCapability）会回调 isAlive()/getHealth()，形成
-     * getHealth → canPreventDeath → Curios 查询 → getHealth 的无限递归（栈溢出）。用线程内标记截断递归。
+     * 对部分实体（如冰火传说海马 EntityHippocampus、车万女仆 EntityMaid 的 getCapability）会回调
+     * isAlive()/getHealth()，形成 getHealth → canPreventDeath → Curios 查询 → getHealth 的无限递归
+     * （栈溢出）。现已在源头限制为仅玩家可触发，此处再用线程内标记兜底截断递归。
      */
     private static final ThreadLocal<Boolean> CAN_PREVENT_DEATH_GUARD = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     /**
      * 免死是否可用：佩戴真我，且结界未在冷却中。
      * 结界激活期间恒可用；结界结束后进入与结界相同的冷却，冷却期间不免死（正常死亡）。
+     * <p>
+     * 仅对玩家生效：非玩家实体（海马、女仆等）直接返回 false，既从源头切断其
+     * getCapability → getHealth 回环导致的栈溢出，也避免全局重入标记误伤同一调用栈内其他实体的免死判定。
      */
     public static boolean canPreventDeath(LivingEntity entity) {
         if (entity == null || entity.level() == null || entity.level().isClientSide) return false;
+        // 仅玩家享有真我死亡保护，非玩家实体直接放行（不进入 Curios 查询）
+        if (!(entity instanceof Player)) return false;
         // 已在本次查询内重入（getHealth 回调），直接返回 false，避免无限递归。
         if (Boolean.TRUE.equals(CAN_PREVENT_DEATH_GUARD.get())) return false;
         CAN_PREVENT_DEATH_GUARD.set(Boolean.TRUE);
@@ -388,6 +411,8 @@ public class ZhenWo extends BoundCurioItem {
      */
     public static void onLethalHealthBlocked(LivingEntity entity) {
         if (entity == null || entity.level() == null || entity.level().isClientSide) return;
+        // 真我免死仅对玩家生效
+        if (!(entity instanceof Player)) return;
         ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
         if (stack.isEmpty()) return;
 
@@ -408,6 +433,8 @@ public class ZhenWo extends BoundCurioItem {
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity player = event.getEntity();
         if (player.level().isClientSide) return;
+        // 真我免死仅对玩家生效
+        if (!(player instanceof Player)) return;
         ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player,
             s -> s.getItem() instanceof ZhenWo);
         if (stack.isEmpty()) return;
