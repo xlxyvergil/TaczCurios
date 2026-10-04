@@ -1,11 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
-import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.event.CurioAbsorptionEventHandler;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -20,14 +17,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import top.theillusivec4.curios.api.SlotContext;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class YuxiZhixia extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("b8c9d0e1-f2a3-4567-bcde-f01234567890");
 
@@ -52,6 +46,10 @@ public class YuxiZhixia extends BoundCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
+        // 只扣掉雨曦之匣维持的那一份黄心，保留外部来源（只减不压）
+        float absorptionTarget = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionAmount.get();
+        livingEntity.setAbsorptionAmount(Math.max(0.0F,
+            livingEntity.getAbsorptionAmount() - absorptionTarget));
     }
 
     @Override
@@ -64,20 +62,18 @@ public class YuxiZhixia extends BoundCurioItem {
             stack -> stack.getItem() instanceof YuxiZhixia).isEmpty();
     }
 
-    @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide()) return;
         if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 
-        CurioAbsorptionEventHandler.tryTriggerAbsorption(
-            entity,
-            TccItems.YUXI_ZHIXIA,
-            TaczCuriosConfig.COMMON.yuxiZhixiaTriggerHpRatio.get(),
-            TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionLevel.get(),
-            TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionDuration.get(),
-            TaczCuriosConfig.COMMON.yuxiZhixiaCooldownSeconds.get()
-        );
+        int interval = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionInterval.get() * 20;
+        if (entity.tickCount % interval != 0) return;
+
+        // 只抬不压，保留外部更高来源
+        float target = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionAmount.get();
+        entity.setAbsorptionAmount(Math.max(entity.getAbsorptionAmount(), target));
     }
 
     @Override
@@ -92,16 +88,14 @@ public class YuxiZhixia extends BoundCurioItem {
 
         appendImaginaryResistance(stack, tooltip);
 
-        double triggerHpRatio = TaczCuriosConfig.COMMON.yuxiZhixiaTriggerHpRatio.get() * 100;
-        int absorptionLevel = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionLevel.get();
-        int cooldownSeconds = TaczCuriosConfig.COMMON.yuxiZhixiaCooldownSeconds.get().intValue();
+        int absorptionInterval = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionInterval.get();
+        int absorptionAmount = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionAmount.get();
 
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("item.tcc.yuxi_zhixia.effect",
-                (int) triggerHpRatio,
-                absorptionLevel,
-                cooldownSeconds)
+                absorptionInterval,
+                absorptionAmount)
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

@@ -2,7 +2,9 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -10,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 饰品适应效果：LivingHurtEvent 对活跃适应实例执行减免，死亡时清空适应数据。
+ * 饰品适应效果：LivingHurtEvent 对活跃适应实例执行减免；每 tick 主动检查衰减（超时无伤立即清空）；死亡时清空适应数据。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AdaptationEventHandler {
@@ -32,6 +34,19 @@ public class AdaptationEventHandler {
             float[] ref = new float[]{event.getAmount()};
             handler.processAll(msgId, ref);
             event.setAmount(ref[0]);
+        });
+    }
+
+    /**
+     * 每 tick 主动检查适应衰减：超过 decayTicks 未受击的实例立即清空记忆（服务端）。
+     */
+    @SubscribeEvent
+    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide) return;
+        entity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(handler -> {
+            if (!handler.hasAny()) return;
+            handler.tick(entity.level().getGameTime());
         });
     }
 

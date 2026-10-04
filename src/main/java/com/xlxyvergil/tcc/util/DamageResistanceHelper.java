@@ -20,6 +20,12 @@ public final class DamageResistanceHelper {
     public static final Map<UUID, Integer> COOLDOWN_MAP = new ConcurrentHashMap<>();
     /** 单次受伤上限：限制单次 setHealth 扣血不超过该值（受击触发式）。 */
     public static final Map<UUID, Float> DAMAGE_CAP_MAP = new ConcurrentHashMap<>();
+    /**
+     * 受击自动冷却触发器：UUID → 每次实际扣血后自动进入的冷却时长（tick）。
+     * 已登记实体一旦真正掉血，setHealth 拦截会立即把它写入 COOLDOWN_MAP 进入冷却；冷却期内扣血归零。
+     * 用于"先扣一次血、随后无敌一小段、冷却结束再次受击才扣血"的饰品（格蕾修 / 繁星 / 绘世之卷）。
+     */
+    public static final Map<UUID, Integer> HURT_COOLDOWN_MAP = new ConcurrentHashMap<>();
 
     private DamageResistanceHelper() {}
 
@@ -34,6 +40,25 @@ public final class DamageResistanceHelper {
     public static void clearDamageCooldown(LivingEntity entity) {
         if (entity != null) {
             COOLDOWN_MAP.remove(entity.getUUID());
+        }
+    }
+
+    /**
+     * 登记/更新"受击后自动进入冷却"的时长（tick）：实体每次实际扣血后由 setHealth 拦截自动写入 COOLDOWN_MAP 进入冷却；
+     * 传入 &lt;= 0 视为解除。装备方需每 tick 刷新（武器限制变化时同步刷新/清除）。首次扣血照常生效，不会被打断。
+     */
+    public static void setHurtCooldown(LivingEntity entity, int cooldownTicks) {
+        if (entity == null) return;
+        if (cooldownTicks <= 0) {
+            clearHurtCooldown(entity);
+            return;
+        }
+        HURT_COOLDOWN_MAP.put(entity.getUUID(), cooldownTicks);
+    }
+
+    public static void clearHurtCooldown(LivingEntity entity) {
+        if (entity != null) {
+            HURT_COOLDOWN_MAP.remove(entity.getUUID());
         }
     }
 
@@ -56,6 +81,7 @@ public final class DamageResistanceHelper {
             UUID id = entity.getUUID();
             COOLDOWN_MAP.remove(id);
             DAMAGE_CAP_MAP.remove(id);
+            HURT_COOLDOWN_MAP.remove(id);
             DAMAGE_RETAIN_MAP.remove(id);
             REDUCTION_BASELINE_MAP.remove(id);
         }
@@ -101,7 +127,7 @@ public final class DamageResistanceHelper {
 
         float now = entity.getHealth();
 
-        // 血量归零致死处理：非完全减伤时让位给饰品自身的死亡取消/复活流程；
+        // 血量归零致死处理：非完全减伤时让位给饰品的死亡取消流程（onLivingDeath）；
         // 完全减伤（retain <= 0）时仍按对账回写血量，避免任何来源把玩家直接打死。
         if (entity.isDeadOrDying() && now <= 0.0F && retain > 0.0F) {
             REDUCTION_BASELINE_MAP.remove(id);

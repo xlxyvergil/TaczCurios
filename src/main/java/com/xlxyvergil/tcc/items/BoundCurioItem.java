@@ -11,8 +11,10 @@ import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -206,6 +208,15 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         tooltip.add(formatModifierTooltip(total, "%.0f",
                 Component.translatable(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get().getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
+    }
+
+    // 生成"效果名 + 等级"的 tooltip 组件（等级使用原版罗马数字本地化键）
+    protected static MutableComponent formatEffectTooltip(MobEffect effect, int amplifier) {
+        int level = amplifier + 1;
+        Component levelText = level <= 10
+                ? Component.translatable("enchantment.level." + level)
+                : Component.literal(String.valueOf(level));
+        return Component.translatable(effect.getDescriptionId()).append(" ").append(levelText);
     }
 
     

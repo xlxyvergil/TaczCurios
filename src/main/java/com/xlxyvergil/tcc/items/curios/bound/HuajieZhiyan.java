@@ -59,7 +59,6 @@ public class HuajieZhiyan extends BoundCurioItem {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
                     h.register(ADAPT_ID,
-                        TaczCuriosConfig.COMMON.huajieZhiyanMaxSlots.get(),
                         TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get(),
                         TaczCuriosConfig.COMMON.huajieZhiyanDecaySeconds.get());
                 });
@@ -107,7 +106,6 @@ public class HuajieZhiyan extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         appendImaginaryResistance(stack, tooltip);
-        int maxSlots = TaczCuriosConfig.COMMON.huajieZhiyanMaxSlots.get();
         double adaptFactor = TaczCuriosConfig.COMMON.huajieZhiyanAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.huajieZhiyanDecaySeconds.get();
 
@@ -127,8 +125,7 @@ public class HuajieZhiyan extends BoundCurioItem {
                 .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("item.tcc.huajie_zhiyan.special_adapt",
-                maxSlots,
-                String.format("%.2f", adaptFactor),
+                String.format("%.0f", adaptFactor),
                 decaySeconds)
             .withStyle(ChatFormatting.WHITE));
 

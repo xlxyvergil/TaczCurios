@@ -1,12 +1,12 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
-import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
@@ -19,18 +19,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HuishiZhijuan extends BoundCurioItem {
-    private static final String COOLDOWN_KEY = TaczCurios.MODID + ":huishi_hurt_cooldown";
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("a7b8c9d0-e1f2-3456-abcd-ef0123456789");
 
     public HuishiZhijuan(Properties properties) {
@@ -53,6 +48,20 @@ public class HuishiZhijuan extends BoundCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
+        DamageResistanceHelper.clearHurtCooldown(livingEntity);
+    }
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide) return;
+        // 受伤冷却仅在持枪时登记：持枪则注册受击自动冷却，非持枪则清除登记（已进入的冷却在剩余时间内继续生效）。
+        if (!GunTypeChecker.isHoldingAnyGun(entity)) {
+            DamageResistanceHelper.clearHurtCooldown(entity);
+            return;
+        }
+        int luck = (int) entity.getAttributeValue(AttributeHelper.LUCK);
+        DamageResistanceHelper.setHurtCooldown(entity, getCooldownTicks(luck));
     }
 
     @Override
@@ -68,35 +77,6 @@ public class HuishiZhijuan extends BoundCurioItem {
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity,
             stack -> stack.getItem() instanceof HuishiZhijuan);
-    }
-
-    @SubscribeEvent
-    public static void onLivingHurt(LivingHurtEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
-        if (!GunTypeChecker.isHoldingAnyGun(entity)) return;
-
-        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
-        if (cooldown > 0) {
-            event.setCanceled(true);
-        } else {
-            int luck = (int) entity.getAttributeValue(AttributeHelper.LUCK);
-            int cooldownTicks = TaczCuriosConfig.COMMON.huishiZhijuanBaseCooldown.get()
-                + (luck / 2) * TaczCuriosConfig.COMMON.huishiZhijuanLuckPerTick.get();
-            int maxCooldown = TaczCuriosConfig.COMMON.huishiZhijuanMaxCooldown.get();
-            if (cooldownTicks > maxCooldown) cooldownTicks = maxCooldown;
-            entity.getPersistentData().putInt(COOLDOWN_KEY, cooldownTicks);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!entity.isAlive()) return;
-        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
-        if (cooldown > 0) {
-            entity.getPersistentData().putInt(COOLDOWN_KEY, cooldown - 1);
-        }
     }
 
     public static int getCooldownTicks(int luck) {

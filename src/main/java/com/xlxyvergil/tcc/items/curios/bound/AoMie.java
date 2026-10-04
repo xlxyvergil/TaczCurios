@@ -59,7 +59,6 @@ public class AoMie extends BoundCurioItem {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
                     h.register(ADAPT_ID,
-                        TaczCuriosConfig.COMMON.aoMieMaxSlots.get(),
                         TaczCuriosConfig.COMMON.aoMieAdaptFactor.get(),
                         TaczCuriosConfig.COMMON.aoMieDecaySeconds.get());
                 });
@@ -107,7 +106,6 @@ public class AoMie extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         appendImaginaryResistance(stack, tooltip);
-        int maxSlots = TaczCuriosConfig.COMMON.aoMieMaxSlots.get();
         double adaptFactor = TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.aoMieDecaySeconds.get();
 
@@ -127,8 +125,7 @@ public class AoMie extends BoundCurioItem {
                 .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("item.tcc.aomie.special_adapt",
-                maxSlots,
-                String.format("%.2f", adaptFactor),
+                String.format("%.0f", adaptFactor),
                 decaySeconds)
             .withStyle(ChatFormatting.RED));
 

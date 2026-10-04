@@ -28,7 +28,6 @@ public class CurioAdaptationCapability {
      * 单个适应效果实例，每个饰品注册一个，互不干扰。
      */
     public static class AdaptInstance {
-        final int maxSlots;
         final double adaptFactor;
         final int decayTicks;          // 无伤害多少 tick 后重置
         final int maxAdaptCount;       // 同类型适应最大叠加次数
@@ -37,13 +36,12 @@ public class CurioAdaptationCapability {
         final ArrayList<String> memory = new ArrayList<>();
         final HashMap<String, Integer> counts = new HashMap<>();
 
-        AdaptInstance(int maxSlots, double adaptFactor, int decaySeconds) {
-            this(maxSlots, adaptFactor, decaySeconds,
+        AdaptInstance(double adaptFactor, int decaySeconds) {
+            this(adaptFactor, decaySeconds,
                 TaczCuriosConfig.COMMON.adaptationMaxCount.get());
         }
 
-        AdaptInstance(int maxSlots, double adaptFactor, int decaySeconds, int maxAdaptCount) {
-            this.maxSlots = maxSlots;
+        AdaptInstance(double adaptFactor, int decaySeconds, int maxAdaptCount) {
             this.adaptFactor = adaptFactor;
             this.decayTicks = decaySeconds * 20;
             this.maxAdaptCount = maxAdaptCount;
@@ -80,13 +78,9 @@ public class CurioAdaptationCapability {
                 double factor = Math.pow(1.0 - adaptFactor, count - 1);
                 amountRef[0] *= (float) factor;
             } else {
-                // 新类型 → 插入队首 + 初始化 + 淘汰最旧
+                // 新类型 → 插入队首 + 初始化（不做槽位限制，不淘汰旧类型）
                 memory.add(0, msgId);
                 counts.put(msgId, 1);
-                if (memory.size() > maxSlots) {
-                    String old = memory.remove(memory.size() - 1);
-                    counts.remove(old);
-                }
             }
         }
 
@@ -94,7 +88,6 @@ public class CurioAdaptationCapability {
 
         CompoundTag serialize() {
             CompoundTag tag = new CompoundTag();
-            tag.putInt("maxSlots", maxSlots);
             tag.putDouble("adaptFactor", adaptFactor);
             tag.putInt("decayTicks", decayTicks);
             tag.putInt("maxAdaptCount", maxAdaptCount);
@@ -114,7 +107,6 @@ public class CurioAdaptationCapability {
 
         static AdaptInstance deserialize(CompoundTag tag) {
             AdaptInstance inst = new AdaptInstance(
-                tag.getInt("maxSlots"),
                 tag.getDouble("adaptFactor"),
                 tag.getInt("decayTicks") / 20,
                 tag.getInt("maxAdaptCount")
@@ -148,8 +140,8 @@ public class CurioAdaptationCapability {
         }
 
         /** 注册一个适应效果（饰品 equip 时调用） */
-        public void register(String id, int maxSlots, double adaptFactor, int decaySeconds) {
-            instances.put(id, new AdaptInstance(maxSlots, adaptFactor, decaySeconds));
+        public void register(String id, double adaptFactor, int decaySeconds) {
+            instances.put(id, new AdaptInstance(adaptFactor, decaySeconds));
         }
 
         /** 注销一个适应效果（饰品 unequip 时调用） */
@@ -170,6 +162,16 @@ public class CurioAdaptationCapability {
             long tick = owner.level().getGameTime();
             for (AdaptInstance inst : instances.values()) {
                 inst.process(msgId, amountRef, tick);
+            }
+        }
+
+        /**
+         * 每 tick 主动检查衰减：任一时间超时未受击的实例立即清空记忆，
+         * 不再依赖"下次受击"才惰性清理。
+         */
+        public void tick(long currentTick) {
+            for (AdaptInstance inst : instances.values()) {
+                inst.checkDecay(currentTick);
             }
         }
 

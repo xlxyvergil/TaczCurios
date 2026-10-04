@@ -13,7 +13,6 @@ import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
-import com.xlxyvergil.tcc.util.ITccSynchedEntityData;
 
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -120,6 +119,11 @@ public class ZhenWo extends BoundCurioItem {
             KNOCKBACK_RESISTANCE_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
+        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        // 只扣掉真我维持的那一份黄心，保留外部来源（只减不压）
+        float absorptionTarget = TaczCuriosConfig.COMMON.zhenWoAbsorptionAmount.get();
+        livingEntity.setAbsorptionAmount(Math.max(0.0F,
+            livingEntity.getAbsorptionAmount() - absorptionTarget));
         ACTIVE_BARRIER_WEARERS.remove(livingEntity.getUUID());
     }
 
@@ -155,6 +159,19 @@ public class ZhenWo extends BoundCurioItem {
 
         DamageResistanceHelper.setDamageReduction(entity,
             (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
+
+        // 参考救世：周期性续期抗性提升，时长为无限，卸下时移除
+        if (entity.tickCount % 10 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, MobEffectInstance.INFINITE_DURATION,
+                TaczCuriosConfig.COMMON.zhenWoResistanceLevel.get(), false, false, true));
+        }
+
+        // 每间隔把黄心抬到保底值：只抬不压，若外部来源更高则保留，避免覆盖他人贡献
+        int absorptionInterval = TaczCuriosConfig.COMMON.zhenWoAbsorptionInterval.get() * 20;
+        if (entity.tickCount % absorptionInterval == 0) {
+            float target = TaczCuriosConfig.COMMON.zhenWoAbsorptionAmount.get();
+            entity.setAbsorptionAmount(Math.max(entity.getAbsorptionAmount(), target));
+        }
 
         if (barrierTicks > 0) {
             barrierTicks--;
@@ -288,38 +305,6 @@ public class ZhenWo extends BoundCurioItem {
         return ACTIVE_BARRIER_WEARERS.contains(entity.getUUID());
     }
 
-    /**
-     * 重入保护：本方法会经 getHealth() 注入（DamageResistanceMixin）被调用，而其中的 Curios 库存查询
-     * 对部分实体（如冰火传说海马 EntityHippocampus、车万女仆 EntityMaid 的 getCapability）会回调
-     * isAlive()/getHealth()，形成 getHealth → canPreventDeath → Curios 查询 → getHealth 的无限递归
-     * （栈溢出）。现已在源头限制为仅玩家可触发，此处再用线程内标记兜底截断递归。
-     */
-    private static final ThreadLocal<Boolean> CAN_PREVENT_DEATH_GUARD = ThreadLocal.withInitial(() -> Boolean.FALSE);
-
-    /**
-     * 免死是否可用：佩戴真我，且结界未在冷却中。
-     * 结界激活期间恒可用；结界结束后进入与结界相同的冷却，冷却期间不免死（正常死亡）。
-     * <p>
-     * 仅对玩家生效：非玩家实体（海马、女仆等）直接返回 false，既从源头切断其
-     * getCapability → getHealth 回环导致的栈溢出，也避免全局重入标记误伤同一调用栈内其他实体的免死判定。
-     */
-    public static boolean canPreventDeath(LivingEntity entity) {
-        if (entity == null || entity.level() == null || entity.level().isClientSide) return false;
-        // 仅玩家享有真我死亡保护，非玩家实体直接放行（不进入 Curios 查询）
-        if (!(entity instanceof Player)) return false;
-        // 已在本次查询内重入（getHealth 回调），直接返回 false，避免无限递归。
-        if (Boolean.TRUE.equals(CAN_PREVENT_DEATH_GUARD.get())) return false;
-        CAN_PREVENT_DEATH_GUARD.set(Boolean.TRUE);
-        try {
-            ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
-            if (stack.isEmpty()) return false;
-            CompoundTag tag = stack.getOrCreateTag();
-            return tag.getInt(BARRIER_KEY) > 0 || tag.getInt(COOLDOWN_KEY) <= 0;
-        } finally {
-            CAN_PREVENT_DEATH_GUARD.set(Boolean.FALSE);
-        }
-    }
-
     public static boolean isInsideActiveBarrier(LivingEntity entity) {
         if (entity == null || entity.level().isClientSide) return false;
         Level level = entity.level();
@@ -381,6 +366,7 @@ public class ZhenWo extends BoundCurioItem {
         }
     }
 
+    /** 开启结界：设结界计时、清冷却、回满血并刷新结界 buff 与效果。 */
     private static void activateBarrier(LivingEntity player, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
         int duration = TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20;
@@ -388,47 +374,16 @@ public class ZhenWo extends BoundCurioItem {
         tag.putInt(COOLDOWN_KEY, 0);
         ACTIVE_BARRIER_WEARERS.add(player.getUUID());
 
-        clearNegativeFloatData(player);
-
         player.setHealth(player.getMaxHealth());
 
         refreshBarrierBuff(player, duration);
         applyBarrierEffects(player);
     }
 
-    /** 把佩戴者同步数据里残留的负 Float 清零，解除第三方"负向血量修正"对血量判定的压制。 */
-    private static void clearNegativeFloatData(LivingEntity entity) {
-        if (entity.getEntityData() instanceof ITccSynchedEntityData data) {
-            data.tcc$clearNegativeFloat();
-        }
-    }
-
     /**
-     * 免死触发：佩戴者的同步血量即将被写成 0 / 负值时由同步数据层回调。
-     * <p>
-     * 必须在血量归零之前截断，否则客户端会收到 0 血而弹出死亡界面，随后服务端又把人救活，
-     * 造成客户端已死、服务端存活的状态错位（假死：无法攻击、无法交互）。
+     * 非结界期正门 hurt 致死兜底：仅玩家佩戴真我且不在冷却时，取消死亡并开启结界（结界已激活则回满血刷新结界）。
+     * 第三方绕过 hurt 直接写血的致死不在此列——非结界期 set 层不做免死兜底。
      */
-    public static void onLethalHealthBlocked(LivingEntity entity) {
-        if (entity == null || entity.level() == null || entity.level().isClientSide) return;
-        // 真我免死仅对玩家生效
-        if (!(entity instanceof Player)) return;
-        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity, s -> s.getItem() instanceof ZhenWo);
-        if (stack.isEmpty()) return;
-
-        CompoundTag tag = stack.getOrCreateTag();
-        // 结界已激活：仅清残留并回满血，结界继续计时
-        if (tag.getInt(BARRIER_KEY) > 0) {
-            clearNegativeFloatData(entity);
-            entity.setHealth(entity.getMaxHealth());
-            return;
-        }
-        // 冷却中：不介入，正常死亡
-        if (tag.getInt(COOLDOWN_KEY) > 0) return;
-
-        activateBarrier(entity, stack);
-    }
-
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity player = event.getEntity();
@@ -445,8 +400,6 @@ public class ZhenWo extends BoundCurioItem {
         if (!barrierActive && stack.getOrCreateTag().getInt(COOLDOWN_KEY) > 0) return;
 
         event.setCanceled(true);
-
-        clearNegativeFloatData(player);
 
         player.setDeltaMovement(Vec3.ZERO);
         player.hurtTime = 0;
@@ -490,11 +443,18 @@ public class ZhenWo extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.debuff_immunity")
             .withStyle(ChatFormatting.GOLD));
 
+        tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE,
+                TaczCuriosConfig.COMMON.zhenWoResistanceLevel.get())
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.absorption",
+                TaczCuriosConfig.COMMON.zhenWoAbsorptionInterval.get(),
+                TaczCuriosConfig.COMMON.zhenWoAbsorptionAmount.get())
+            .withStyle(ChatFormatting.GOLD));
+
         tooltip.add(Component.literal(""));
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger",
                 (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))
-            .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.world_pool")
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration",
                 TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),

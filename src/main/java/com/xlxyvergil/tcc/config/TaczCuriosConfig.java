@@ -222,17 +222,13 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue ravenSpeedMultiplier;
         public final ForgeConfigSpec.IntValue ravenInvisRefreshInterval;
         public final ForgeConfigSpec.IntValue ravenInvisDuration;
-        public final ForgeConfigSpec.IntValue ravenInvisBreakDelay;
 
         
         public final ForgeConfigSpec.DoubleValue islandBoomRavenArmorMultiplier;
         public final ForgeConfigSpec.DoubleValue islandBoomRavenSpeedMultiplier;
         public final ForgeConfigSpec.IntValue islandBoomRavenInvisRefreshInterval;
         public final ForgeConfigSpec.IntValue islandBoomRavenInvisDuration;
-        public final ForgeConfigSpec.IntValue islandBoomRavenInvisBreakDelay;
         public final ForgeConfigSpec.IntValue islandBoomRavenRegenAmplifier;
-        public final ForgeConfigSpec.IntValue islandBoomRavenRegenRefreshThreshold;
-        public final ForgeConfigSpec.IntValue islandBoomRavenRegenDuration;
         
         
         public final ForgeConfigSpec.DoubleValue salvationDamageReduction;
@@ -248,15 +244,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue endlessNearbyPlayerRadius;
 
         
-        
-        public final ForgeConfigSpec.DoubleValue curioAbsorptionTriggerHp;
-        
-        public final ForgeConfigSpec.IntValue curioAbsorptionLevel;
-        
-        public final ForgeConfigSpec.DoubleValue curioAbsorptionDuration;
-        
-        public final ForgeConfigSpec.DoubleValue curioAbsorptionCooldown;
-
         
         public final ForgeConfigSpec.DoubleValue soldierBasicTagDamageBoost;
         
@@ -335,10 +322,8 @@ public class TaczCuriosConfig {
         
 
         
-        public final ForgeConfigSpec.DoubleValue villVTriggerHpRatio;
-        public final ForgeConfigSpec.IntValue villVAbsorptionLevel;
-        public final ForgeConfigSpec.DoubleValue villVAbsorptionDuration;
-        public final ForgeConfigSpec.DoubleValue villVCooldownSeconds;
+        public final ForgeConfigSpec.IntValue villVAbsorptionAmount;
+        public final ForgeConfigSpec.IntValue villVAbsorptionInterval;
 
         
         public final ForgeConfigSpec.DoubleValue xukongWancangImaginaryDamage;
@@ -347,10 +332,8 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue xukongWancangHeatCooling;
 
         
-        public final ForgeConfigSpec.DoubleValue yuxiZhixiaTriggerHpRatio;
-        public final ForgeConfigSpec.IntValue yuxiZhixiaAbsorptionLevel;
-        public final ForgeConfigSpec.DoubleValue yuxiZhixiaAbsorptionDuration;
-        public final ForgeConfigSpec.DoubleValue yuxiZhixiaCooldownSeconds;
+        public final ForgeConfigSpec.IntValue yuxiZhixiaAbsorptionAmount;
+        public final ForgeConfigSpec.IntValue yuxiZhixiaAbsorptionInterval;
 
         
         public final ForgeConfigSpec.DoubleValue qishiZhijianImaginaryDamage;
@@ -360,8 +343,7 @@ public class TaczCuriosConfig {
 
         
         public final ForgeConfigSpec.IntValue luoxuanAbsorptionInterval;
-        public final ForgeConfigSpec.IntValue luoxuanAbsorptionLevel;
-        public final ForgeConfigSpec.IntValue luoxuanAbsorptionDuration;
+        public final ForgeConfigSpec.IntValue luoxuanAbsorptionAmount;
 
         
         public final ForgeConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamageScale;
@@ -374,7 +356,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue adaptationMaxCount;
 
         
-        public final ForgeConfigSpec.IntValue kalpasMaxSlots;
         public final ForgeConfigSpec.DoubleValue kalpasAdaptFactor;
         public final ForgeConfigSpec.IntValue kalpasDecaySeconds;
 
@@ -382,7 +363,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue imerAttackDamageBonus;
 
         
-        public final ForgeConfigSpec.IntValue huajieZhiyanMaxSlots;
         public final ForgeConfigSpec.DoubleValue huajieZhiyanAdaptFactor;
         public final ForgeConfigSpec.IntValue huajieZhiyanDecaySeconds;
         public final ForgeConfigSpec.DoubleValue huajieZhiyanHealthPerResistance;
@@ -391,7 +371,6 @@ public class TaczCuriosConfig {
 
 
         
-        public final ForgeConfigSpec.IntValue aoMieMaxSlots;
         public final ForgeConfigSpec.DoubleValue aoMieAdaptFactor;
         public final ForgeConfigSpec.IntValue aoMieDecaySeconds;
         public final ForgeConfigSpec.DoubleValue aoMieHealthPerResistance;
@@ -403,6 +382,7 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.DoubleValue suMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue suDamageTakenFactor;
+        public final ForgeConfigSpec.IntValue suResistanceLevel;
 
         
         public final ForgeConfigSpec.DoubleValue wanwuXiumianOverheal;
@@ -411,6 +391,7 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.DoubleValue juezheMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue juezheDamageTakenFactor;
+        public final ForgeConfigSpec.IntValue juezheResistanceLevel;
 
         
         public final ForgeConfigSpec.DoubleValue tingzhiZhijianOverheal;
@@ -421,6 +402,7 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue tianhuiMaxHealthReduction;
         public final ForgeConfigSpec.DoubleValue tianhuiResistanceScale;
         public final ForgeConfigSpec.DoubleValue tianhuiMinDamageFactor;
+        public final ForgeConfigSpec.IntValue tianhuiResistanceLevel;
 
         
         public final ForgeConfigSpec.DoubleValue yinguoZhuanlunOverheal;
@@ -437,6 +419,9 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.IntValue zhenWoBarrierDurationSeconds;
         public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
+        public final ForgeConfigSpec.IntValue zhenWoResistanceLevel;
+        public final ForgeConfigSpec.IntValue zhenWoAbsorptionAmount;
+        public final ForgeConfigSpec.IntValue zhenWoAbsorptionInterval;
 
         
 
@@ -1397,14 +1382,11 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             ravenInvisRefreshInterval = builder
-                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒)")
+                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒；普通隐身为永久，此间隔用于重复施加真实隐身)")
                     .defineInRange("invisRefreshInterval", 200, 1, 12000);
             ravenInvisDuration = builder
-                    .comment("隐身效果持续时间 (tick, 默认: 600 = 30秒)")
+                    .comment("真实隐身持续时间 (tick, 默认: 600 = 30秒；普通隐身为永久，此项仅用于真实隐身)")
                     .defineInRange("invisDuration", 600, 1, 12000);
-            ravenInvisBreakDelay = builder
-                    .comment("攻击后隐身破除延迟 (tick, 默认: 100 = 5秒)")
-                    .defineInRange("invisBreakDelay", 100, 0, 12000);
             builder.pop();
 
             
@@ -1416,23 +1398,14 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             islandBoomRavenInvisRefreshInterval = builder
-                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒)")
+                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒；普通隐身为永久，此间隔用于重复施加真实隐身)")
                     .defineInRange("invisRefreshInterval", 200, 1, 12000);
             islandBoomRavenInvisDuration = builder
-                    .comment("隐身效果持续时间 (tick, 默认: 600 = 30秒)")
+                    .comment("真实隐身持续时间 (tick, 默认: 600 = 30秒；普通隐身为永久，此项仅用于真实隐身)")
                     .defineInRange("invisDuration", 600, 1, 12000);
-            islandBoomRavenInvisBreakDelay = builder
-                    .comment("攻击后隐身破除延迟 (tick, 默认: 100 = 5秒)")
-                    .defineInRange("invisBreakDelay", 100, 0, 12000);
             islandBoomRavenRegenAmplifier = builder
-                    .comment("生命恢复等级 (默认: 1 = 再生 II)")
+                    .comment("生命恢复等级 (默认: 1 = 再生 II；时长为无限，装备期间每 10t 刷新)")
                     .defineInRange("regenAmplifier", 1, 0, 10);
-            islandBoomRavenRegenRefreshThreshold = builder
-                    .comment("生命恢复刷新阈值 (tick, 低于此时长重新施加, 默认: 40 = 2秒)")
-                    .defineInRange("regenRefreshThreshold", 40, 1, 12000);
-            islandBoomRavenRegenDuration = builder
-                    .comment("生命恢复持续时间 (tick, 默认: 120 = 6秒)")
-                    .defineInRange("regenDuration", 120, 1, 12000);
             builder.pop();
             
             
@@ -1579,20 +1552,7 @@ public class TaczCuriosConfig {
             builder.pop();
             
             
-            builder.comment("吸收饰品通用配置（低血量触发黄心）").push("curio_absorption");
-            curioAbsorptionTriggerHp = builder
-                    .comment("触发血量阈值 (0~1, 默认: 0.25 = 25%)")
-                    .defineInRange("triggerHp", 0.25, 0, 1);
-            curioAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 4 = ABSORPTION IV)")
-                    .defineInRange("absorptionLevel", 4, 1, 255);
-            curioAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 60)")
-                    .defineInRange("absorptionDuration", 60.0, 1, 2147483647);
-            curioAbsorptionCooldown = builder
-                    .comment("吸收效果冷却(秒) (默认: 180)")
-                    .defineInRange("cooldown", 180.0, 0, 2147483647);
-            builder.pop();
+            builder.comment("维尔薇饰品配置").push("vill_v");
 
             
             builder.comment("格蕾修饰品配置").push("griseo");
@@ -1671,18 +1631,12 @@ public class TaczCuriosConfig {
 
             
             builder.comment("维尔薇饰品配置").push("vill_v");
-            villVTriggerHpRatio = builder
-                    .comment("触发吸收效果的血量阈值 (默认: 0.2 = 20%)")
-                    .defineInRange("triggerHpRatio", 0.2, 0, 1);
-            villVAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 3 = ABSORPTION III)")
-                    .defineInRange("absorptionLevel", 3, 1, 255);
-            villVAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 60)")
-                    .defineInRange("absorptionDuration", 60.0, 1, 3600);
-            villVCooldownSeconds = builder
-                    .comment("吸收触发冷却时间(秒) (默认: 60)")
-                    .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            villVAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 100；2点=1颗黄心，即50颗黄心)")
+                    .defineInRange("absorptionAmount", 100, 1, 100000);
+            villVAbsorptionInterval = builder
+                    .comment("黄心补满间隔(秒) (默认: 15)")
+                    .defineInRange("absorptionInterval", 15, 1, 3600);
             builder.pop();
 
             
@@ -1703,18 +1657,12 @@ public class TaczCuriosConfig {
 
             
             builder.comment("愚戏之匣饰品配置").push("yuxi_zhixia");
-            yuxiZhixiaTriggerHpRatio = builder
-                    .comment("触发吸收效果的血量阈值 (默认: 0.3 = 30%)")
-                    .defineInRange("triggerHpRatio", 0.3, 0, 1);
-            yuxiZhixiaAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 6 = ABSORPTION VI)")
-                    .defineInRange("absorptionLevel", 6, 1, 255);
-            yuxiZhixiaAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 60)")
-                    .defineInRange("absorptionDuration", 60.0, 1, 3600);
-            yuxiZhixiaCooldownSeconds = builder
-                    .comment("吸收触发冷却时间(秒) (默认: 60)")
-                    .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            yuxiZhixiaAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 200；2点=1颗黄心，即100颗黄心)")
+                    .defineInRange("absorptionAmount", 200, 1, 100000);
+            yuxiZhixiaAbsorptionInterval = builder
+                    .comment("黄心补满间隔(秒) (默认: 15)")
+                    .defineInRange("absorptionInterval", 15, 1, 3600);
             builder.pop();
 
             
@@ -1736,14 +1684,11 @@ public class TaczCuriosConfig {
             
             builder.comment("螺旋饰品配置").push("luoxuan");
             luoxuanAbsorptionInterval = builder
-                    .comment("吸收效果施加间隔(秒) (默认: 30)")
-                    .defineInRange("absorptionInterval", 30, 1, 3600);
-            luoxuanAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 9 = ABSORPTION Ⅸ )")
-                    .defineInRange("absorptionLevel", 9, 1, 255);
-            luoxuanAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 30)")
-                    .defineInRange("absorptionDuration", 30, 1, 3600);
+                    .comment("黄心补满间隔(秒) (默认: 5)")
+                    .defineInRange("absorptionInterval", 5, 1, 3600);
+            luoxuanAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 400；2点=1颗黄心，即200颗黄心)")
+                    .defineInRange("absorptionAmount", 400, 1, 100000);
             builder.pop();
 
             
@@ -1774,9 +1719,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("千劫饰品配置").push("kalpas");
-            kalpasMaxSlots = builder
-                    .comment("适应最大槽位 (默认: 3)")
-                    .defineInRange("maxSlots", 3, 1, 100);
             kalpasAdaptFactor = builder
                     .comment("每层减伤比例 (默认: 0.2 = 20%)")
                     .defineInRange("adaptFactor", 0.2, 0.0, 1.0);
@@ -1794,9 +1736,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("坏劫之焱饰品配置").push("huajie_zhiyan");
-            huajieZhiyanMaxSlots = builder
-                    .comment("适应最大槽位 (默认: 4)")
-                    .defineInRange("maxSlots", 4, 1, 100);
             huajieZhiyanAdaptFactor = builder
                     .comment("每层减伤比例 (默认: 0.3 = 30%)")
                     .defineInRange("adaptFactor", 0.3, 0.0, 1.0);
@@ -1813,9 +1752,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("鏖灭饰品配置").push("aomie");
-            aoMieMaxSlots = builder
-                    .comment("适应最大槽位 (默认: 6)")
-                    .defineInRange("maxSlots", 6, 1, 100);
             aoMieAdaptFactor = builder
                     .comment("每层减伤比例 (默认: 0.5 = 50%)")
                     .defineInRange("adaptFactor", 0.5, 0.0, 1.0);
@@ -1845,6 +1781,9 @@ public class TaczCuriosConfig {
             suDamageTakenFactor = builder
                     .comment("受到伤害降低比例 (默认: 0.1 = 降低10%)")
                     .defineInRange("damageTakenFactor", 0.1, 0.0, 1.0);
+            suResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 0 = 抗性I)")
+                    .defineInRange("resistanceLevel", 0, 0, 10);
             builder.pop();
 
             
@@ -1865,6 +1804,9 @@ public class TaczCuriosConfig {
             juezheDamageTakenFactor = builder
                     .comment("受到伤害降低比例 (默认: 0.3 = 降低30%)")
                     .defineInRange("damageTakenFactor", 0.3, 0.0, 1.0);
+            juezheResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 2 = 抗性III)")
+                    .defineInRange("resistanceLevel", 2, 0, 10);
             builder.pop();
 
             
@@ -1891,6 +1833,9 @@ public class TaczCuriosConfig {
             tianhuiMinDamageFactor = builder
                     .comment("最低伤害乘算因子 (默认: 0.1 = 10%)")
                     .defineInRange("minDamageFactor", 0.1, 0.0, 1.0);
+            tianhuiResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 1 = 抗性II)")
+                    .defineInRange("resistanceLevel", 1, 0, 10);
             builder.pop();
 
             
@@ -1915,8 +1860,8 @@ public class TaczCuriosConfig {
                     .comment("全属性提升比例（乘法） (默认: 0.5 = +50%)")
                     .defineInRange("allAttributesPercent", 0.5, -1, 100);
             zhenWoTriggerHpRatio = builder
-                    .comment("触发结界时的血量比例阈值 (默认: 0.05 = 5%)")
-                    .defineInRange("triggerHpRatio", 0.05, 0.0, 1.0);
+                    .comment("触发结界时的血量比例阈值 (默认: 0.5 = 50%)")
+                    .defineInRange("triggerHpRatio", 0.5, 0.0, 1.0);
             zhenWoBarrierRadius = builder
                     .comment("结界影响半径（格） (默认: 64)")
                     .defineInRange("barrierRadius", 64.0, 1.0, 512.0);
@@ -1935,6 +1880,15 @@ public class TaczCuriosConfig {
             zhenWoDamageTakenFactor = builder
                     .comment("减伤（苏同款）：受到伤害降低比例 (默认: 0.8 = 降低80%)")
                     .defineInRange("damageTakenFactor", 0.8, 0.0, 1.0);
+            zhenWoResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 4 = 抗性V)")
+                    .defineInRange("resistanceLevel", 4, 0, 10);
+            zhenWoAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 600；2点=1颗黄心，即300颗黄心)")
+                    .defineInRange("absorptionAmount", 600, 1, 100000);
+            zhenWoAbsorptionInterval = builder
+                    .comment("黄心补满间隔(秒) (默认: 5)")
+                    .defineInRange("absorptionInterval", 5, 1, 3600);
             builder.pop();
 
             

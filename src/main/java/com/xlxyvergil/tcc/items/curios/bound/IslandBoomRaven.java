@@ -64,6 +64,16 @@ public class IslandBoomRaven extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR, ARMOR_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, MOVE_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
+        // 生命恢复改为无限时长，卸下时移除
+        livingEntity.removeEffect(MobEffects.REGENERATION);
+        // 隐身改为无限时长，卸下时移除
+        livingEntity.removeEffect(MobEffects.INVISIBILITY);
+        if (ModList.get().isLoaded("irons_spellbooks")) {
+            MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
+            if (trueInvis != null) {
+                livingEntity.removeEffect(trueInvis);
+            }
+        }
     }
 
     @Override
@@ -81,29 +91,22 @@ public class IslandBoomRaven extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
+        // 隐身为永久（无限时长），周期性刷新作为保险，卸下时移除
         if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {
-            int duration = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get();
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, duration, 0, false, false, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, MobEffectInstance.INFINITE_DURATION, 0, false, false, true));
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
                 if (trueInvis != null) {
-                    entity.addEffect(new MobEffectInstance(trueInvis, duration, 0, false, false, true));
+                    // 真实隐身保持原有时长（有限），按刷新间隔重复施加
+                    entity.addEffect(new MobEffectInstance(trueInvis, TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get(), 0, false, false, true));
                 }
             }
         }
 
-        int lastHurtTs = entity.getLastHurtMobTimestamp();
-        int breakDelay = TaczCuriosConfig.COMMON.islandBoomRavenInvisBreakDelay.get();
-        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == breakDelay) {
-            entity.removeEffect(MobEffects.INVISIBILITY);
-        }
-
-        MobEffectInstance regen = entity.getEffect(MobEffects.REGENERATION);
-        if (regen == null || regen.getAmplifier() < TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get()
-            || regen.getDuration() < TaczCuriosConfig.COMMON.islandBoomRavenRegenRefreshThreshold.get()) {
-            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION,
-                TaczCuriosConfig.COMMON.islandBoomRavenRegenDuration.get(),
+        // 生命恢复：与抗性提升一致，时长为无限、每 10t 刷新、卸下时移除
+        if (entity.tickCount % 10 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, MobEffectInstance.INFINITE_DURATION,
                 TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get(), false, false, true));
         }
     }
@@ -128,7 +131,7 @@ public class IslandBoomRaven extends BoundCurioItem {
         double armorBoost = TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get() * 100;
         double speedBoost = TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get() * 100;
         double invisIntervalSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() / 20.0;
-        double invisDurationSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0;
+        double trueInvisDurationSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0;
 
         appendImaginaryResistance(stack, tooltip);
 
@@ -138,12 +141,13 @@ public class IslandBoomRaven extends BoundCurioItem {
         tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%", Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
 
-        tooltip.add(Component.translatable("item.tcc.island_boom_raven.attr_regen")
+        tooltip.add(formatEffectTooltip(MobEffects.REGENERATION,
+                TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get())
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.special_invis",
                 String.format("%.1f", invisIntervalSecs),
-                String.format("%.1f", invisDurationSecs))
+                String.format("%.1f", trueInvisDurationSecs))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.silent_movement")

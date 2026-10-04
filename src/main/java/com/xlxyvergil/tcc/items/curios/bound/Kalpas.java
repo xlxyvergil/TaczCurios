@@ -50,7 +50,6 @@ public class Kalpas extends BoundCurioItem {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
                     h.register(ADAPT_ID,
-                        TaczCuriosConfig.COMMON.kalpasMaxSlots.get(),
                         TaczCuriosConfig.COMMON.kalpasAdaptFactor.get(),
                         TaczCuriosConfig.COMMON.kalpasDecaySeconds.get());
                 });
@@ -92,7 +91,6 @@ public class Kalpas extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         appendImaginaryResistance(stack, tooltip);
-        int maxSlots = TaczCuriosConfig.COMMON.kalpasMaxSlots.get();
         double adaptFactor = TaczCuriosConfig.COMMON.kalpasAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.kalpasDecaySeconds.get();
 
@@ -101,8 +99,7 @@ public class Kalpas extends BoundCurioItem {
 
 
         tooltip.add(Component.translatable("item.tcc.kalpas.effect",
-                maxSlots,
-                String.format("%.2f", adaptFactor),
+                String.format("%.0f", adaptFactor),
                 decaySeconds)
             .withStyle(ChatFormatting.GOLD));
 

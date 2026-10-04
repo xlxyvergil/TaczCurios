@@ -11,6 +11,8 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -59,6 +61,7 @@ public class Juezhe extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
+        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
     }
 
     @Override
@@ -66,6 +69,11 @@ public class Juezhe extends BoundCurioItem {
         super.curioTick(slotContext, stack);
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
+        // 抗性提升：只要装备即生效，移出枪械判定
+        if (entity.tickCount % 10 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, MobEffectInstance.INFINITE_DURATION,
+                TaczCuriosConfig.COMMON.juezheResistanceLevel.get(), false, false, true));
+        }
         if (!matchesRestriction(entity)) {
             DamageResistanceHelper.clearDamageReduction(entity);
             return;
@@ -104,6 +112,10 @@ public class Juezhe extends BoundCurioItem {
                 .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("tcc.tooltip.damage_reduction",
                 String.format("%.0f", damageTakenFactor))
+            .withStyle(ChatFormatting.WHITE));
+
+        tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE,
+                TaczCuriosConfig.COMMON.juezheResistanceLevel.get())
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));
