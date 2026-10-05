@@ -31,9 +31,6 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("e6e6a5a6-5b3b-4d79-8dbd-9b9c31a6f0f4");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("0f7f3eaa-8db2-4f8c-9f51-f06c9c0b0f17");
 
-    private static final String PROC_KEY = "tcc_seven_thunders_thunder_seen_proc";
-    private static final String PROC_USED_KEY = "tcc_seven_thunders_thunder_seen_proc_used";
-
     public SevenThundersThunderSeen(Properties properties) {
         super(properties);
     }
@@ -76,40 +73,24 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     }
 
     @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !isEquipped(attacker)) return;
-        if (!(attacker.level() instanceof ServerLevel)) return;
-        if (!GunTypeChecker.isHoldingSniper(attacker)) return;
-
-        if (event.isHeadShot()
-            && attacker.getRandom().nextFloat() < TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()
-            && event.getBullet() != null) {
-            event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
-            event.getBullet().getPersistentData().putBoolean(PROC_USED_KEY, false);
-        }
-    }
-
-    @SubscribeEvent
     public static void onGunHurt(EntityHurtByGunEvent.Post event) {
-        handleHit(event.getAttacker(), event.getHurtEntity(), event.getBullet());
+        handleHit(event.getAttacker(), event.getHurtEntity(), event.isHeadShot());
     }
 
     /** 致死命中只发 EntityKillByGunEvent（与 Post 互斥），同样需要触发范围溅射。 */
     @SubscribeEvent
     public static void onGunKill(EntityKillByGunEvent event) {
-        handleHit(event.getAttacker(), event.getKilledEntity(), event.getBullet());
+        handleHit(event.getAttacker(), event.getKilledEntity(), event.isHeadShot());
     }
 
-    private static void handleHit(LivingEntity attacker, Entity hurtEntity, Entity bullet) {
+    private static void handleHit(LivingEntity attacker, Entity hurtEntity, boolean headShot) {
+        // 爆头判定直接取事件信息，不再依赖 Pre 写入的子弹 NBT
+        if (!headShot) return;
         if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
-        if (bullet == null) return;
         if (!(hurtEntity instanceof LivingEntity target)) return;
-
-        var data = bullet.getPersistentData();
-        if (!data.getBoolean(PROC_KEY) || data.getBoolean(PROC_USED_KEY)) return;
+        if (attacker.getRandom().nextFloat() >= TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()) return;
 
         float extra = (float) (Math.round(target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 10000.0) / 10000.0);
         if (extra > 0) {
@@ -119,7 +100,6 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
             RavenKeyAimHandler.applySplashImaginary(attacker, target, splash,
                 TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get());
         }
-        data.putBoolean(PROC_USED_KEY, true);
     }
 
     @Override

@@ -33,10 +33,6 @@ public class JudgementKey extends BoundCurioItem {
     private static final UUID CRIT_CHANCE_UUID = UUID.fromString("f13a5b08-523d-4b62-b9f4-8a284f9c3bdf");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("2a1e47bd-1b05-44cf-9a2c-ea6c0612b47c");
 
-    private static final String PROC_KEY = "tcc_judgement_key_set_proc";
-    private static final String PROC_DAMAGE_KEY = "tcc_judgement_key_set_damage";
-    private static final String PROC_DAMAGE_AFTER_HEADSHOT_KEY = "tcc_judgement_key_set_damage_after_headshot";
-
     public JudgementKey(Properties properties) {
         super(properties);
     }
@@ -81,41 +77,28 @@ public class JudgementKey extends BoundCurioItem {
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
         ImaginaryConversionHelper.convertToImaginary(event);
-
-        if (!event.isHeadShot()) return;
-
-        if (event.getBullet() != null) {
-            event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
-            float damage = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.SNIPER_GUN_TYPES);
-            event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_KEY, damage);
-            float damageAfterHeadshot = damage * event.getHeadshotMultiplier();
-            event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY, damageAfterHeadshot);
-        }
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        handleHit(event.getAttacker(), event.getHurtEntity(), event.getBullet());
+        handleHit(event.getAttacker(), event.getHurtEntity(), event.isHeadShot(), event.getHeadshotMultiplier());
     }
 
     /** 致死命中只发 EntityKillByGunEvent（与 Post 互斥），同样需要触发范围溅射。 */
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onGunKill(EntityKillByGunEvent event) {
-        handleHit(event.getAttacker(), event.getKilledEntity(), event.getBullet());
+        handleHit(event.getAttacker(), event.getKilledEntity(), event.isHeadShot(), event.getHeadshotMultiplier());
     }
 
-    private static void handleHit(LivingEntity attacker, Entity hurtEntity, Entity bullet) {
+    private static void handleHit(LivingEntity attacker, Entity hurtEntity, boolean headShot, float headshotMultiplier) {
+        // 爆头判定直接取事件信息，不再依赖 Pre 写入的子弹 NBT
+        if (!headShot) return;
         if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
-        if (bullet == null) return;
-
-        var data = bullet.getPersistentData();
-        if (!data.getBoolean(PROC_KEY)) return;
-
-        float damageAfterHeadshot = data.getFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY);
-
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
+
+        float damageAfterHeadshot = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.SNIPER_GUN_TYPES) * headshotMultiplier;
 
         double setHealthProc = TaczCuriosConfig.COMMON.judgementProcChance.get();
         if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
