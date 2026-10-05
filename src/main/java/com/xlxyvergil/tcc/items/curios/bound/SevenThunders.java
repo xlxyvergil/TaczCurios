@@ -75,6 +75,10 @@ public class SevenThunders extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 

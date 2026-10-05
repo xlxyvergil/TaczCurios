@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.event.CurioEquipEvent;
@@ -64,6 +65,14 @@ public class ClientEventHandler {
         // 如果打开的是改装界面，强制刷新手持枪械属性
         if (event.getNewScreen() instanceof GunRefitScreen) {
             refreshHeldGunTooltip();
+        }
+    }
+
+    // 推进渡鸦神之键开镜蓄力进度条的客户端计时
+    @SubscribeEvent
+    public static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            RavenKeyChargeHud.tick();
         }
     }
 }

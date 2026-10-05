@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.network;
 
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.client.LootrHighlightClientData;
+import com.xlxyvergil.tcc.client.RavenKeyChargeHud;
 import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -61,6 +62,11 @@ final class ClientPacketHandler {
 
     static void handleSpawnerHighlights(SyncSpawnerHighlightsS2CPacket packet) {
         SpawnerHighlightClientData.setHighlights(packet.positions());
+    }
+
+    /** 服务端命中清零后，同步把本地蓄力计时归零，令 HUD 进度条与服务端增幅一致。 */
+    static void handleResetRavenCharge(ResetRavenChargeS2CPacket packet) {
+        RavenKeyChargeHud.resetCharge();
     }
 
     /**

@@ -96,6 +96,10 @@ public class SiZhiYi extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.infinite.key_effect",
                 String.format("%.0f", removeChance() * 100))
                 .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.serpent_splash",
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }
 }

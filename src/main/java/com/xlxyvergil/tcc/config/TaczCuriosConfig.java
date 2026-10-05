@@ -62,11 +62,21 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue judgementCollapseProcChance;
         public final ForgeConfigSpec.DoubleValue judgementKeyCritChance;
         public final ForgeConfigSpec.DoubleValue judgementKeyCritDamage;
+        /** 裁决之键：开镜蓄力达到满增伤所需时间（秒） */
+        public final ForgeConfigSpec.DoubleValue judgementKeyAimTimeToMax;
+        /** 裁决之键：开镜蓄力最高增伤（小数） */
+        public final ForgeConfigSpec.DoubleValue judgementKeyAimMaxAmp;
+        /** 裁决之键：附加虚数伤害溅射半径（格） */
+        public final ForgeConfigSpec.DoubleValue judgementKeySplashRadius;
 
         
         public final ForgeConfigSpec.DoubleValue sevenThundersHeadshotMultiplier;
         public final ForgeConfigSpec.DoubleValue sevenThundersCritChance;
         public final ForgeConfigSpec.DoubleValue sevenThundersCritDamage;
+        /** 涤罪七雷：开镜蓄力达到满增伤所需时间（秒） */
+        public final ForgeConfigSpec.DoubleValue sevenThundersAimTimeToMax;
+        /** 涤罪七雷：开镜蓄力最高增伤（小数） */
+        public final ForgeConfigSpec.DoubleValue sevenThundersAimMaxAmp;
 
         
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenHeadshotMultiplier;
@@ -74,6 +84,12 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenCritDamage;
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenProcChance;
         public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenExtraHpDamage;
+        /** 雷鸣见：开镜蓄力达到满增伤所需时间（秒） */
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenAimTimeToMax;
+        /** 雷鸣见：开镜蓄力最高增伤（小数） */
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenAimMaxAmp;
+        /** 雷鸣见：附加虚数伤害溅射半径（格） */
+        public final ForgeConfigSpec.DoubleValue sevenThundersThunderSeenSplashRadius;
 
         
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
@@ -508,6 +524,19 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue wangshiDeSheyingRemoveChance;
         public final ForgeConfigSpec.DoubleValue siZhiYiRemoveChance;
 
+        /** 枪击命中溅射：往世的蛇影 球型半径（格） */
+        public final ForgeConfigSpec.DoubleValue wangshiDeSheyingSplashRadius;
+        /** 枪击命中溅射：往世的蛇影 伤害占本次实际伤害比例（小数） */
+        public final ForgeConfigSpec.DoubleValue wangshiDeSheyingSplashPercent;
+        /** 枪击命中溅射：死之衣 球型半径（格） */
+        public final ForgeConfigSpec.DoubleValue siZhiYiSplashRadius;
+        /** 枪击命中溅射：死之衣 伤害占本次实际伤害比例（小数） */
+        public final ForgeConfigSpec.DoubleValue siZhiYiSplashPercent;
+        /** 枪击命中溅射：舍沙 球型半径（格） */
+        public final ForgeConfigSpec.DoubleValue sheshaSplashRadius;
+        /** 枪击命中溅射：舍沙 伤害占本次实际伤害比例（小数） */
+        public final ForgeConfigSpec.DoubleValue sheshaSplashPercent;
+
         
         public final ForgeConfigSpec.DoubleValue huaArmorPercent;
         public final ForgeConfigSpec.DoubleValue duchenZhiYuArmorPercent;
@@ -804,6 +833,15 @@ public class TaczCuriosConfig {
             judgementKeyCritDamage = builder
                     .comment("暴击伤害加成 (默认: 1.5 = +150%)")
                     .defineInRange("critDamage", 1.5, -1, 100);
+            judgementKeyAimTimeToMax = builder
+                    .comment("开镜蓄力达到满增伤所需时间（秒，默认: 5.0）")
+                    .defineInRange("aimTimeToMax", 5.0, 0.0, 60.0);
+            judgementKeyAimMaxAmp = builder
+                    .comment("开镜蓄力最高增伤（小数，默认: 3.0 = +300%）")
+                    .defineInRange("aimMaxAmp", 3.0, 0.0, 100.0);
+            judgementKeySplashRadius = builder
+                    .comment("爆头触发的附加虚数伤害以受击者为中心溅射的球型半径（格，默认: 40.0）")
+                    .defineInRange("splashRadius", 40.0, 0.0, 64.0);
             builder.pop();
 
             
@@ -817,6 +855,12 @@ public class TaczCuriosConfig {
             sevenThundersCritDamage = builder
                     .comment("暴击伤害加成 (默认: 0.5 = +50%)")
                     .defineInRange("critDamage", 0.5, -1, 100);
+            sevenThundersAimTimeToMax = builder
+                    .comment("开镜蓄力达到满增伤所需时间（秒，默认: 8.0）")
+                    .defineInRange("aimTimeToMax", 8.0, 0.0, 60.0);
+            sevenThundersAimMaxAmp = builder
+                    .comment("开镜蓄力最高增伤（小数，默认: 1.0 = +100%）")
+                    .defineInRange("aimMaxAmp", 1.0, 0.0, 100.0);
             builder.pop();
 
             
@@ -836,6 +880,15 @@ public class TaczCuriosConfig {
             sevenThundersThunderSeenExtraHpDamage = builder
                     .comment("触发时造成目标最大生命值的比例 (默认: 0.05 = 5%)")
                     .defineInRange("extraHpDamage", 0.05, 0, 1);
+            sevenThundersThunderSeenAimTimeToMax = builder
+                    .comment("开镜蓄力达到满增伤所需时间（秒，默认: 8.0）")
+                    .defineInRange("aimTimeToMax", 8.0, 0.0, 60.0);
+            sevenThundersThunderSeenAimMaxAmp = builder
+                    .comment("开镜蓄力最高增伤（小数，默认: 1.5 = +150%）")
+                    .defineInRange("aimMaxAmp", 1.5, 0.0, 100.0);
+            sevenThundersThunderSeenSplashRadius = builder
+                    .comment("爆头触发的附加虚数伤害以受击者为中心溅射的球型半径（格，默认: 20.0）")
+                    .defineInRange("splashRadius", 20.0, 0.0, 64.0);
             builder.pop();
             
             
@@ -2136,6 +2189,12 @@ public class TaczCuriosConfig {
             sheshaBuffRemovalFactor = builder
                     .comment("舍沙移除目标有益 buff 的概率系数：概率 = 佩戴者虚数抗性 × 本系数，封顶 100%（默认: 0.01 = 抗性/100）")
                     .defineInRange("buffRemovalFactor", 0.01, 0.0, 1.0);
+            sheshaSplashRadius = builder
+                    .comment("枪击命中后，以受击者为中心对周围生物施加额外虚数伤害的球型半径（格，默认: 40.0）")
+                    .defineInRange("splashRadius", 40.0, 0.0, 64.0);
+            sheshaSplashPercent = builder
+                    .comment("溅射虚数伤害占本次实际伤害的比例（小数，默认: 0.30 = 30%）")
+                    .defineInRange("splashPercent", 0.30, 0.0, 100.0);
             builder.pop();
 
             
@@ -2164,12 +2223,24 @@ public class TaczCuriosConfig {
             wangshiDeSheyingRemoveChance = builder
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.01 = 1%)")
                     .defineInRange("removeChance", 0.01, 0.0, 1.0);
+            wangshiDeSheyingSplashRadius = builder
+                    .comment("枪击命中后，以受击者为中心对周围生物施加额外虚数伤害的球型半径（格，默认: 20.0）")
+                    .defineInRange("splashRadius", 20.0, 0.0, 64.0);
+            wangshiDeSheyingSplashPercent = builder
+                    .comment("溅射虚数伤害占本次实际伤害的比例（小数，默认: 0.10 = 10%）")
+                    .defineInRange("splashPercent", 0.10, 0.0, 100.0);
             builder.pop();
 
             builder.comment("往世的蛇影·死之衣饰品配置").push("si_zhi_yi");
             siZhiYiRemoveChance = builder
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.05 = 5%)")
                     .defineInRange("removeChance", 0.05, 0.0, 1.0);
+            siZhiYiSplashRadius = builder
+                    .comment("枪击命中后，以受击者为中心对周围生物施加额外虚数伤害的球型半径（格，默认: 30.0）")
+                    .defineInRange("splashRadius", 30.0, 0.0, 64.0);
+            siZhiYiSplashPercent = builder
+                    .comment("溅射虚数伤害占本次实际伤害的比例（小数，默认: 0.20 = 20%）")
+                    .defineInRange("splashPercent", 0.20, 0.0, 100.0);
             builder.pop();
 
             

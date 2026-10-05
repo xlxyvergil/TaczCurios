@@ -114,6 +114,10 @@ public class Shesha extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltip.add(Component.translatable("tcc.tooltip.serpent_splash",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
         appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
