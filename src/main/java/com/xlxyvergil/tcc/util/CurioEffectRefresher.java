@@ -7,11 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.function.Predicate;
 
 /**
- * 统一重算佩戴者饰品属性效果的公共入口。
- * <p>
- * 背景：饰品的属性效果原先多数在 {@code curioTick} 中每 tick 重算，开销很大。
- * 改为事件驱动后，由本入口在「切枪 / 饰品槽变更 / 装备变更」等事件上统一重建，
- * 并对依赖其它属性值的饰品做低频兜底（Forge 1.20.1 没有属性变更事件）。
+ * 饰品属性效果的统一重算入口：在切枪、装备变更、击杀结算等事件上重建饰品效果。
  */
 public final class CurioEffectRefresher {
 
@@ -46,9 +42,7 @@ public final class CurioEffectRefresher {
         }
     }
 
-    /**
-     * 低频兜底：仅重算依赖其它属性值的饰品。这类属性没有变更事件可监听，只能定期对齐。
-     */
+    /** 仅重算依赖其它属性值的饰品，由击杀结算等事件触发。 */
     public static void refreshDerivedAttributes(LivingEntity entity) {
         if (entity == null || entity.level().isClientSide) {
             return;

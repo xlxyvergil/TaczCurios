@@ -7,8 +7,6 @@ import com.xlxyvergil.tcc.util.CurioEffectRefresher;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.tacz.guns.api.item.IGun;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
@@ -75,7 +73,7 @@ public class CuriosItemEventHandler {
      * 装备变更（穿脱护甲、切换手持物品等）会改变源属性值，实时重算佩戴者的联动规则。
      * <p>
      * 饰品槽位变化由 {@link #onCurioChange} 处理，两者合起来覆盖「属性会被拆装改变」的来源；
-     * 其余无法监听的属性来源由空白之键的低频 tick 兜底。
+     * 无法监听的来源由空白之键在攻击时对齐。
      */
     @SubscribeEvent
     public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
@@ -98,14 +96,9 @@ public class CuriosItemEventHandler {
     /** 上一次已处理的规则表版本；与当前版本不同即说明发生过 reload。 */
     private static int seenRuleVersion = -1;
 
-    /** 依赖其它属性值的饰品的兜底重算间隔（tick）。这类属性没有变更事件，只能定期对齐；幂等化后重算开销极低。 */
-    private static final int DERIVED_REFRESH_INTERVAL = 20;
-
     /**
      * 数据包规则表 reload（含世界加载）后，在下一 tick 用新规则重算所有佩戴者。
      * reload 在资源加载线程完成，故那里只自增版本号，真正的重算放在服务端主线程执行。
-     * <p>
-     * 同时对依赖其它属性值的饰品做低频兜底轮询。
      */
     @SubscribeEvent
     public static void onServerTick(TickEvent.ServerTickEvent event) {
@@ -116,16 +109,6 @@ public class CuriosItemEventHandler {
         if (current != seenRuleVersion) {
             seenRuleVersion = current;
             KongbaiZhijian.refreshAll();
-        }
-        MinecraftServer server = event.getServer();
-        if (server == null) {
-            return;
-        }
-        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            // 用玩家自身的 tick 计数错峰，避免所有玩家在同一 tick 集中重算
-            if (player.tickCount % DERIVED_REFRESH_INTERVAL == 0) {
-                CurioEffectRefresher.refreshDerivedAttributes(player);
-            }
         }
     }
     

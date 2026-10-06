@@ -199,6 +199,7 @@ public class ZhenWo extends BoundCurioItem {
     }
 
     private static void refreshBarrierBuff(LivingEntity player, int remainingTicks) {
+        // 仅作结界状态载体，客户端据此绘制特效。
         player.addEffect(new MobEffectInstance(TccMobEffects.ZHEN_WO_BARRIER.get(),
             remainingTicks, 0, false, false, true));
     }

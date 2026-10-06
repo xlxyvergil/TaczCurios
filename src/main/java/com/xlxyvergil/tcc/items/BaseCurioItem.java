@@ -141,9 +141,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
         applyEffects(entity, stack);
     }
 
-    /**
-     * 仅重算属性修饰符（不清理旧效果、不触发 TACZ 事件），供低频兜底轮询使用。
-     */
+    /** 仅重算属性修饰符，不清理旧效果、不触发 TACZ 事件。 */
     public final void reapplyEffects(LivingEntity entity, ItemStack stack) {
         applyEffects(entity, stack);
     }
@@ -157,8 +155,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     }
 
     /**
-     * 该饰品的效果是否依赖“其它属性”的当前值。
-     * Forge 1.20.1 没有属性变更事件，因此这类饰品需要低频兜底轮询来保持同步。默认 false。
+     * 该饰品的效果是否依赖其它属性的当前值。依赖则需在装备变更、击杀结算等事件里重算。默认 false。
      */
     public boolean dependsOnOtherAttributes() {
         return false;

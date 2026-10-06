@@ -76,6 +76,12 @@ public class AoMie extends BoundCurioItem {
         unregisterAdaptation(livingEntity);
     }
 
+    /** 最大生命由虚数抗性总值换算，需随其变化重算。 */
+    @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
+    }
+
     private void unregisterAdaptation(LivingEntity livingEntity) {
         if (livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
             livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {

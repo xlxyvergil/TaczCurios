@@ -38,4 +38,20 @@ public class TccRenderTypes extends RenderType {
                         .setDepthTestState(new DepthTestStateShard("always_depth_test", GL11.GL_ALWAYS))
                         .createCompositeState(false));
     }
+
+    /** 无纹理纯色四边形，用于结界地面环。 */
+    public static RenderType ring() {
+        return create("tcc_zhen_wo_ring",
+                DefaultVertexFormat.POSITION_COLOR,
+                VertexFormat.Mode.QUADS,
+                256,
+                false,
+                true,
+                RenderType.CompositeState.builder()
+                        .setShaderState(POSITION_COLOR_SHADER)
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setCullState(NO_CULL)
+                        .setDepthTestState(new DepthTestStateShard("always_depth_test", GL11.GL_ALWAYS))
+                        .createCompositeState(false));
+    }
 }

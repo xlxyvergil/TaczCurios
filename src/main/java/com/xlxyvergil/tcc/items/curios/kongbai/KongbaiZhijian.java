@@ -47,12 +47,11 @@ import java.util.UUID;
  * 每条规则自带「槽位 - 饰品id - 源属性 - 目标属性 - 倍率 - uuid」。
  * 命中规则由数据包全局表（{@link AttributeLinkRegistry}）与佩戴者当前槽位内容实时解析，
  * 并作为快照持久化到空白之键自身的 NBT（{@link #RULE_TAG}，另附规则表版本号）：
- * 快照让「卸下规则饰品」后仍能精确清除已写入的 uuid；数据包 reload 后由 {@link #refreshAll()}
- * 或兜底 tick 发现版本不符，用新规则表重算并覆盖快照。
+ * 快照用于在卸下规则饰品后精确清除已写入的 uuid；数据包 reload 后由 {@link #refreshAll()}
+ * 重算，或在攻击时发现版本不符后用新规则表重新解析并覆盖快照。
  * <p>
  * 检测到命中规则时，读取实体源属性总值 × 倍率，以该规则独立的 uuid 作用到其目标属性；
- * 源属性变化由「装备变更 / 饰品槽变动」事件实时触发重算，另以 {@link #UPDATE_INTERVAL}
- * 的低频 tick 兜底，因此多条规则可同时生效且互不冲突。
+ * 源属性变化由装备变动、攻击等事件触发重算，多条规则可同时生效且互不冲突。
  * 固定槽位没有命中规则时不允许安装；可自由拆下（不消耗材料），
  * 但装备仍绑定玩家（绑定与死亡不掉落逻辑由 {@link BoundCurioItem} 提供）。
  * 无数据包配置时无任何效果。
@@ -62,12 +61,6 @@ public class KongbaiZhijian extends BoundCurioItem {
     private static final String LINK_NAME = "tcc.kongbai_zhijian.link";
 
     private static final String SELF_ID = TaczCurios.MODID + ":kongbai_zhijian";
-
-    /**
-     * 兜底重算周期（tick）：属性变化已由装备/饰品变动事件实时驱动，
-     * 这里仅按 10 秒的低频兜底覆盖没有事件可监听的变化（如其它来源的属性修饰符）。
-     */
-    private static final int UPDATE_INTERVAL = 200;
 
     /** 命中的规则快照存放于空白之键自身 NBT 的该键下（compound 列表）。 */
     private static final String RULE_TAG = "TccKongbaiRule";
@@ -223,21 +216,21 @@ public class KongbaiZhijian extends BoundCurioItem {
     }
 
     /**
-     * 兜底：属性变化主要由事件实时驱动，这里仅每 {@link #UPDATE_INTERVAL} tick 结算一次，
-     * 覆盖没有事件可监听的属性来源；同时校验快照版本，发现数据包已 reload 就重新解析。
+     * 攻击时重算一次，覆盖没有事件可监听的临时来源。
+     * 快照缺失或版本过期时完整重算，否则只刷新数值。
      */
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        LivingEntity entity = slotContext.entity();
+    public static void recalculate(LivingEntity entity) {
         if (entity == null || entity.level().isClientSide) {
             return;
         }
-        if (entity.tickCount % UPDATE_INTERVAL != 0) {
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(entity,
+                s -> s.getItem() instanceof KongbaiZhijian);
+        if (!(stack.getItem() instanceof KongbaiZhijian item)) {
             return;
         }
         if (!hasSnapshot(stack) || isSnapshotStale(stack)) {
-            // 快照缺失（首次 tick、世界重载等）或规则表已变化：完整重算并覆盖快照
-            refreshEffects(entity, stack);
+            // 快照缺失（世界重载等）或规则表已变化：完整重算并覆盖快照
+            item.refreshEffects(entity, stack);
             return;
         }
         for (AttributeLinkData rule : readRules(stack)) {
@@ -248,8 +241,6 @@ public class KongbaiZhijian extends BoundCurioItem {
     /**
      * 数据包 reload 后用新规则表对在线玩家即时重算一次：先按物品 NBT 快照清除旧 uuid，
      * 再按新规则解析并覆盖快照，从而不残留旧数据。需在服务端主线程调用。
-     * <p>
-     * 非玩家实体（女仆等）没有遍历入口，靠自身兜底 tick 发现快照版本过期后自动重算。
      */
     public static void refreshAll() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();

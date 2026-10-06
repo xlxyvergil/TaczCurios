@@ -145,7 +145,7 @@ public class TaczCurios
     private void registerClientEventsSafely() throws ClassNotFoundException {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-            Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLevelRenderer");
+            Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLayer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");

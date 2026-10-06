@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -27,6 +28,11 @@ final class MaidCompatInternal {
 
     static boolean isMaid(Entity entity) {
         return entity instanceof EntityMaid;
+    }
+
+    /** 女仆实体类型。 */
+    static EntityType<? extends LivingEntity> getMaidEntityType() {
+        return EntityMaid.TYPE;
     }
 
     static List<LivingEntity> getMaids(Level level) {
