@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
@@ -24,7 +25,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -43,13 +43,6 @@ public class HeiyuanBaihua extends BoundCurioItem {
     @Override
     public List<String> getWeaponTypeRestriction() {
         return null;
-    }
-
-    /** 收束：黑渊白花仅玩家可佩戴，女仆等非玩家实体不可装备。 */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player)) return false;
-        return super.canEquip(slotContext, stack);
     }
 
     @Override
@@ -74,8 +67,9 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (target.isDeadOrDying()) return;
 
         DamageSource source = event.getSource();
-        // 收束：仅玩家可触发黑渊白花的效果
-        if (!(source.getEntity() instanceof Player attacker)) return;
+        if (!(source.getEntity() instanceof LivingEntity attacker)) return;
+        // 收束：仅玩家与女仆可触发黑渊白花的效果，其他实体直接跳过以削减开销
+        if (!(attacker instanceof Player) && !MaidCompat.isMaid(attacker)) return;
         if (target == attacker) return;
         if (!isEquipped(attacker)) return;
 
@@ -102,8 +96,10 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (!(event.getHurtEntity() instanceof LivingEntity target)) return;
         if (target.isDeadOrDying()) return;
 
-        // 收束：仅玩家可触发黑渊白花的效果
-        if (!(event.getAttacker() instanceof Player attacker)) return;
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null) return;
+        // 收束：仅玩家与女仆可触发黑渊白花的效果，其他实体直接跳过以削减开销
+        if (!(attacker instanceof Player) && !MaidCompat.isMaid(attacker)) return;
         if (!isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (target == attacker) return;

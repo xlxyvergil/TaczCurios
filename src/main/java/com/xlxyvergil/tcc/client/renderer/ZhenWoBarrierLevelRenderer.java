@@ -11,9 +11,11 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -46,6 +48,16 @@ public class ZhenWoBarrierLevelRenderer {
     private static float cachedRingRadius = Float.NaN;
     private static float[] cachedRingVerts;
 
+    /**
+     * 当前携带结界 buff 的实体列表，按游戏刻缓存。
+     * 真我可能被玩家或女仆佩戴，客户端只能以「buff 是否存在」作为登记信号，
+     * 且该 buff 由网络同步下发（不会触发 MobEffectEvent.Added），因此只能扫描实体表，
+     * 扫描结果按刻缓存、每帧复用。
+     */
+    private static ClientLevel cachedLevel;
+    private static long cachedGameTime = Long.MIN_VALUE;
+    private static List<LivingEntity> cachedWearers = List.of();
+
     @SubscribeEvent
     public static void onRenderLevelStage(RenderLevelStageEvent event) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
@@ -56,18 +68,36 @@ public class ZhenWoBarrierLevelRenderer {
         float alpha = 1.0F;
         Vec3 camPos = event.getCamera().getPosition();
 
-        // 真我已收束为仅玩家可佩戴，结界 buff 只会出现在玩家身上，
-        // 因此直接遍历玩家列表即可精确拿到携带者，无需全实体扫描或网络包同步。
-        List<Vec3> centers = new ArrayList<>();
-        for (Player player : mc.level.players()) {
-            if (player.isAlive() && player.getEffect(TccMobEffects.ZHEN_WO_BARRIER.get()) != null) {
-                centers.add(player.getPosition(event.getPartialTick()));
-            }
-        }
-        if (centers.isEmpty()) {
+        // 先收集所有带结界的实体中心：无结界实体时不做任何绘制，也避免后续 BufferBuilder 的空 begin/end。
+        // 真我可能被玩家或女仆佩戴，buff 由服务端仅在激活期间下发；故按实体表筛出携带者，
+        // 结果按游戏刻缓存，每帧直接复用，避免逐帧全表扫描。
+        List<LivingEntity> wearers = barrierWearers(mc);
+        if (wearers.isEmpty()) {
             return;
         }
+        List<Vec3> centers = new ArrayList<>(wearers.size());
+        for (LivingEntity wearer : wearers) {
+            centers.add(wearer.getPosition(event.getPartialTick()));
+        }
         renderAll(centers, alpha, event.getPoseStack(), camPos);
+    }
+
+    /** 返回当前携带结界 buff 的实体；同一次游戏刻内复用缓存，跨刻或换维度时重建。 */
+    private static List<LivingEntity> barrierWearers(Minecraft mc) {
+        long gameTime = mc.level.getGameTime();
+        if (mc.level != cachedLevel || gameTime != cachedGameTime) {
+            List<LivingEntity> wearers = new ArrayList<>();
+            for (Entity entity : mc.level.entitiesForRendering()) {
+                if (entity instanceof LivingEntity living && living.isAlive()
+                        && living.getEffect(TccMobEffects.ZHEN_WO_BARRIER.get()) != null) {
+                    wearers.add(living);
+                }
+            }
+            cachedLevel = mc.level;
+            cachedGameTime = gameTime;
+            cachedWearers = wearers;
+        }
+        return cachedWearers;
     }
 
     /**

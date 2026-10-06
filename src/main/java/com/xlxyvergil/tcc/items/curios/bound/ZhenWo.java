@@ -81,13 +81,6 @@ public class ZhenWo extends BoundCurioItem {
         return null;
     }
 
-    /** 收束：真我仅玩家可佩戴，女仆等非玩家实体不可装备。 */
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player)) return false;
-        return super.canEquip(slotContext, stack);
-    }
-
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
@@ -104,11 +97,11 @@ public class ZhenWo extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
                 1.0, KNOCKBACK_RESISTANCE_UUID, "tcc.zhen_wo.knockback_resistance",
                 AttributeModifier.Operation.ADDITION);
-            if (livingEntity instanceof Player) {
+            // 收束：仅玩家与女仆享有真我减伤，其他实体清除可能的残留
+            if (livingEntity instanceof Player || isMaid(livingEntity)) {
                 DamageResistanceHelper.setDamageReduction(livingEntity,
                     (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
             } else {
-                // 真我减伤仅对玩家生效，非玩家清除可能的残留
                 DamageResistanceHelper.clearDamageReduction(livingEntity);
             }
         } else {
@@ -141,8 +134,8 @@ public class ZhenWo extends BoundCurioItem {
 
         if (entity.isDeadOrDying()) return;
 
-        // 真我相关的免死与减伤仅对玩家生效：非玩家不再享有减伤、结界与免死触发，并清理历史残留。
-        if (!(entity instanceof Player)) {
+        // 收束：仅玩家与女仆触发真我效果；其他实体不再享有减伤、结界与免死，并清理历史残留。
+        if (!(entity instanceof Player) && !isMaid(entity)) {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
             DamageResistanceHelper.clearDamageReduction(entity);
             CompoundTag tag = stack.getTag();
@@ -326,6 +319,12 @@ public class ZhenWo extends BoundCurioItem {
                 return true;
             }
         }
+        for (LivingEntity maid : MaidCompat.getMaidsNear(level,
+                new AABB(pos, pos).inflate(radius), LivingEntity::isAlive)) {
+            if (isActiveBarrierWearer(maid, pos, radiusSq)) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -391,8 +390,8 @@ public class ZhenWo extends BoundCurioItem {
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity player = event.getEntity();
         if (player.level().isClientSide) return;
-        // 真我免死仅对玩家生效
-        if (!(player instanceof Player)) return;
+        // 收束：真我免死仅对玩家与女仆生效
+        if (!(player instanceof Player) && !isMaid(player)) return;
         ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player,
             s -> s.getItem() instanceof ZhenWo);
         if (stack.isEmpty()) return;
