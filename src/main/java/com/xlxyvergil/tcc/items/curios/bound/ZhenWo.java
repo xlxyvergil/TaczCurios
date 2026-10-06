@@ -81,6 +81,13 @@ public class ZhenWo extends BoundCurioItem {
         return null;
     }
 
+    /** 收束：真我仅玩家可佩戴，女仆等非玩家实体不可装备。 */
+    @Override
+    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
+        if (!(slotContext.entity() instanceof Player)) return false;
+        return super.canEquip(slotContext, stack);
+    }
+
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
@@ -204,13 +211,15 @@ public class ZhenWo extends BoundCurioItem {
     }
 
     private static void applyBarrierEffects(LivingEntity player) {
+        // 治疗、减速、粉色光柱本就以 20 tick 为周期，因此整体按周期执行，
+        // 避免每 tick 做一次昂贵的半径范围查询（getEntitiesOfClass）。
+        if (player.tickCount % 20 != 0) return;
+
         double radius = TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get();
         double radiusSq = radius * radius;
         AABB sphereBox = new AABB(player.blockPosition()).inflate(radius);
 
-        if (player.tickCount % 20 == 0) {
-            healAllies(player, radiusSq, sphereBox);
-        }
+        healAllies(player, radiusSq, sphereBox);
 
         List<LivingEntity> targets = player.level().getEntitiesOfClass(LivingEntity.class, sphereBox,
             e -> e != player && !(e instanceof Player) && !isMaid(e) && e.isAlive()
@@ -219,17 +228,15 @@ public class ZhenWo extends BoundCurioItem {
 
         if (targets.isEmpty()) return;
 
-        if (player.tickCount % 20 == 0) {
-            int slownessDuration = TaczCuriosConfig.COMMON.zhenWoSlownessDurationSeconds.get() * 20;
-            int slownessAmplifier = TaczCuriosConfig.COMMON.zhenWoSlownessAmplifier.get();
-            MobEffectInstance slowness = new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
-                slownessDuration, slownessAmplifier, false, false, true);
+        int slownessDuration = TaczCuriosConfig.COMMON.zhenWoSlownessDurationSeconds.get() * 20;
+        int slownessAmplifier = TaczCuriosConfig.COMMON.zhenWoSlownessAmplifier.get();
+        MobEffectInstance slowness = new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
+            slownessDuration, slownessAmplifier, false, false, true);
 
-            for (LivingEntity target : targets) {
-                target.addEffect(slowness);
-                if (target.isDeadOrDying()) continue;
-                startPinkBeam(player, target);
-            }
+        for (LivingEntity target : targets) {
+            target.addEffect(slowness);
+            if (target.isDeadOrDying()) continue;
+            startPinkBeam(player, target);
         }
     }
 
@@ -302,6 +309,8 @@ public class ZhenWo extends BoundCurioItem {
         if (entity.level().isClientSide) {
             return entity.hasEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
         }
+        // 服务端：无人处于结界激活状态时直接返回，省去 getUUID() + 集合查找。
+        if (ACTIVE_BARRIER_WEARERS.isEmpty()) return false;
         return ACTIVE_BARRIER_WEARERS.contains(entity.getUUID());
     }
 
@@ -314,12 +323,6 @@ public class ZhenWo extends BoundCurioItem {
 
         for (Player player : level.players()) {
             if (isActiveBarrierWearer(player, pos, radiusSq)) {
-                return true;
-            }
-        }
-        for (LivingEntity maid : MaidCompat.getMaidsNear(level,
-                new AABB(pos, pos).inflate(radius), LivingEntity::isAlive)) {
-            if (isActiveBarrierWearer(maid, pos, radiusSq)) {
                 return true;
             }
         }

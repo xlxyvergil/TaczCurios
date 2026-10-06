@@ -24,7 +24,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -55,8 +54,13 @@ public class DominanceKey extends BoundCurioItem {
     }
 
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity(), stack);
+    public boolean isEventDriven() {
+        return true;
+    }
+
+    @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
     }
 
     @Override

@@ -4,23 +4,20 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.items.BaseCurioItem;
+import com.xlxyvergil.tcc.util.CurioEffectRefresher;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -185,7 +182,7 @@ public final class StatPollingEventHandler {
 
         if (!LivingDeathEventHandler.passesExtraRequirements(player, null, rule.requirements)) return;
 
-        ItemStack tracked = findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
+        ItemStack tracked = CurioSearchHelper.findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
         if (tracked.isEmpty()) return;
 
         CompoundTag tag = tracked.getOrCreateTag();
@@ -213,6 +210,8 @@ public final class StatPollingEventHandler {
 
         if (tracked.getItem() instanceof BaseCurioItem curio) {
             curio.refreshEffects(player, tracked);
+            // 该饰品的属性变化可能被其它派生于它的饰品读取，立即联动重算
+            CurioEffectRefresher.refreshDerivedAttributes(player);
         }
     }
 
@@ -228,7 +227,7 @@ public final class StatPollingEventHandler {
 
         if (!LivingDeathEventHandler.passesExtraRequirements(player, null, rule.requirements)) return;
 
-        ItemStack tracked = findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
+        ItemStack tracked = CurioSearchHelper.findFirstEquippedStack(player, stack -> rule.item.equals(itemId(stack)));
         if (tracked.isEmpty()) return;
 
         String appliedKey = APPLIED_NBT_PREFIX + rule.ruleId.replace(':', '_');
@@ -245,6 +244,8 @@ public final class StatPollingEventHandler {
 
         if (tracked.getItem() instanceof BaseCurioItem curio) {
             curio.refreshEffects(player, tracked);
+            // 该饰品的属性变化可能被其它派生于它的饰品读取，立即联动重算
+            CurioEffectRefresher.refreshDerivedAttributes(player);
         }
     }
 
@@ -261,22 +262,6 @@ public final class StatPollingEventHandler {
         }
         if (registered == null) return 0;
         return player.getStats().getValue(Stats.CUSTOM.get(registered));
-    }
-
-    private static ItemStack findFirstEquippedStack(Player player, Predicate<ItemStack> predicate) {
-        if (player == null) return ItemStack.EMPTY;
-        ICuriosItemHandler inv = CuriosApi.getCuriosInventory(player).orElse(null);
-        if (inv == null) return ItemStack.EMPTY;
-        for (var entry : inv.getCurios().entrySet()) {
-            ICurioStacksHandler stacksHandler = entry.getValue();
-            if (stacksHandler == null) continue;
-            var handler = stacksHandler.getStacks();
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack stack = handler.getStackInSlot(i);
-                if (!stack.isEmpty() && predicate.test(stack)) return stack;
-            }
-        }
-        return ItemStack.EMPTY;
     }
 
     private static String itemId(ItemStack stack) {

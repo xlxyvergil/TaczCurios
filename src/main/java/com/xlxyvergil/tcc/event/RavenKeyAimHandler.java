@@ -18,7 +18,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -193,32 +192,39 @@ public final class RavenKeyAimHandler {
         if (attacker == null) {
             return null;
         }
-        AimParams params = paramsFor(attacker, JudgementKey.class);
-        if (params != null) {
-            return params;
-        }
-        params = paramsFor(attacker, SevenThundersThunderSeen.class);
-        if (params != null) {
-            return params;
-        }
-        return paramsFor(attacker, SevenThunders.class);
-    }
+        // 单次遍历饰品快照，同时判定三件神之键的佩戴与限制条件，避免多次扫描与重复分配谓词。
+        boolean[] matched = new boolean[3];
+        boolean[] allowed = new boolean[3];
+        CurioSearchHelper.forEachEquippedStack(attacker, stack -> {
+            int index;
+            if (stack.getItem() instanceof JudgementKey) {
+                index = 0;
+            } else if (stack.getItem() instanceof SevenThundersThunderSeen) {
+                index = 1;
+            } else if (stack.getItem() instanceof SevenThunders) {
+                index = 2;
+            } else {
+                return;
+            }
+            if (matched[index]) {
+                return;
+            }
+            matched[index] = true;
+            allowed[index] = ((BaseCurioItem) stack.getItem()).matchesRestriction(attacker);
+        });
 
-    @Nullable
-    private static AimParams paramsFor(LivingEntity attacker, Class<? extends BaseCurioItem> type) {
-        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(attacker, s -> type.isInstance(s.getItem()));
-        if (stack.isEmpty() || !((BaseCurioItem) stack.getItem()).matchesRestriction(attacker)) {
-            return null;
-        }
-        if (type == JudgementKey.class) {
+        if (matched[0] && allowed[0]) {
             return new AimParams(TaczCuriosConfig.COMMON.judgementKeyAimTimeToMax.get(),
                     TaczCuriosConfig.COMMON.judgementKeyAimMaxAmp.get());
         }
-        if (type == SevenThundersThunderSeen.class) {
+        if (matched[1] && allowed[1]) {
             return new AimParams(TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimTimeToMax.get(),
                     TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimMaxAmp.get());
         }
-        return new AimParams(TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get(),
-                TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get());
+        if (matched[2] && allowed[2]) {
+            return new AimParams(TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get(),
+                    TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get());
+        }
+        return null;
     }
 }

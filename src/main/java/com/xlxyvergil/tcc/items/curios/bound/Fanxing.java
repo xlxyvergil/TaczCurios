@@ -64,10 +64,14 @@ public class Fanxing extends BoundCurioItem {
     }
 
     @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
+    }
+
+    @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity == null) return;
-        applyEffects(entity, stack);
         if (entity.level().isClientSide) return;
         // 受伤冷却仅在持枪时登记：持枪则注册受击自动冷却，非持枪则清除登记（已进入的冷却在剩余时间内继续生效）。
         if (!GunTypeChecker.isHoldingAnyGun(entity)) {

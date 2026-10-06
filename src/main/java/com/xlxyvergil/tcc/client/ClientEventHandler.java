@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.client;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.gui.GunRefitScreen;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
@@ -20,12 +21,14 @@ public class ClientEventHandler {
     
     @SubscribeEvent
     public static void onCurioEquip(CurioEquipEvent event) {
+        CurioSearchHelper.invalidate(event.getEntity());
         refreshHeldGunTooltip();
         refreshRefitScreen();
     }
     
     @SubscribeEvent
     public static void onCurioUnequip(CurioUnequipEvent event) {
+        CurioSearchHelper.invalidate(event.getEntity());
         refreshHeldGunTooltip();
         refreshRefitScreen();
     }

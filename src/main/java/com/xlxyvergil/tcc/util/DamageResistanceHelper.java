@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.util;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.Map;
@@ -27,7 +28,47 @@ public final class DamageResistanceHelper {
      */
     public static final Map<UUID, Integer> HURT_COOLDOWN_MAP = new ConcurrentHashMap<>();
 
+    /**
+     * 登记标记键：在实体自身的持久化数据（NBT）中打标，表示该实体佩戴了相关饰品、需承受本类的减伤/冷却/上限逻辑。
+     * <p>
+     * 标记随实体一同保存/加载（区块重载、跨维度、重登后依然有效），无需维护全局集合与清理。
+     * mixin 的每 tick / setHealth 钩子入口先读该标记，未打标实体直接返回，从而避免为绝大多数生物
+     * 计算 UUID 并多次查表。对任意 LivingEntity（玩家、女仆等）通用。
+     */
+    private static final String TRACKED_KEY = "tcc_damage_tracked";
+
     private DamageResistanceHelper() {}
+
+    /** 实体是否已被登记（佩戴了相关饰品，需承受本类的减伤/冷却/上限逻辑）。 */
+    public static boolean isTracked(LivingEntity entity) {
+        return entity != null && entity.getPersistentData().getBoolean(TRACKED_KEY);
+    }
+
+    /** 为实体打上登记标记（幂等，已打标时不重复写入）。 */
+    private static void markTracked(LivingEntity entity) {
+        CompoundTag data = entity.getPersistentData();
+        if (!data.getBoolean(TRACKED_KEY)) {
+            data.putBoolean(TRACKED_KEY, true);
+        }
+    }
+
+    /** 重新评估实体是否仍需被登记：四个状态表均无记录时清除标记。 */
+    public static void refreshTracked(LivingEntity entity) {
+        if (entity == null) return;
+        UUID id = entity.getUUID();
+        boolean active = DAMAGE_RETAIN_MAP.containsKey(id)
+                || COOLDOWN_MAP.containsKey(id)
+                || HURT_COOLDOWN_MAP.containsKey(id)
+                || DAMAGE_CAP_MAP.containsKey(id);
+        CompoundTag data = entity.getPersistentData();
+        if (active) {
+            if (!data.getBoolean(TRACKED_KEY)) {
+                data.putBoolean(TRACKED_KEY, true);
+            }
+        } else if (data.contains(TRACKED_KEY)) {
+            data.remove(TRACKED_KEY);
+        }
+    }
 
     /**
      * 设置受伤冷却（受击触发式）：cooldownTicks 内该实体所有血量下降都会被拦截归零。
@@ -35,11 +76,13 @@ public final class DamageResistanceHelper {
     public static void setDamageCooldown(LivingEntity entity, int cooldownTicks) {
         if (entity == null || cooldownTicks <= 0) return;
         COOLDOWN_MAP.put(entity.getUUID(), cooldownTicks);
+        markTracked(entity);
     }
 
     public static void clearDamageCooldown(LivingEntity entity) {
         if (entity != null) {
             COOLDOWN_MAP.remove(entity.getUUID());
+            refreshTracked(entity);
         }
     }
 
@@ -54,11 +97,13 @@ public final class DamageResistanceHelper {
             return;
         }
         HURT_COOLDOWN_MAP.put(entity.getUUID(), cooldownTicks);
+        markTracked(entity);
     }
 
     public static void clearHurtCooldown(LivingEntity entity) {
         if (entity != null) {
             HURT_COOLDOWN_MAP.remove(entity.getUUID());
+            refreshTracked(entity);
         }
     }
 
@@ -68,11 +113,13 @@ public final class DamageResistanceHelper {
     public static void setDamageCap(LivingEntity entity, float maxDamage) {
         if (entity == null || maxDamage <= 0) return;
         DAMAGE_CAP_MAP.put(entity.getUUID(), maxDamage);
+        markTracked(entity);
     }
 
     public static void clearDamageCap(LivingEntity entity) {
         if (entity != null) {
             DAMAGE_CAP_MAP.remove(entity.getUUID());
+            refreshTracked(entity);
         }
     }
 
@@ -84,6 +131,7 @@ public final class DamageResistanceHelper {
             HURT_COOLDOWN_MAP.remove(id);
             DAMAGE_RETAIN_MAP.remove(id);
             REDUCTION_BASELINE_MAP.remove(id);
+            refreshTracked(entity);
         }
     }
 
@@ -97,19 +145,28 @@ public final class DamageResistanceHelper {
             return;
         }
         UUID id = entity.getUUID();
-        boolean wasProtected = DAMAGE_RETAIN_MAP.containsKey(id);
+        Float previous = DAMAGE_RETAIN_MAP.get(id);
+        // 比例与佩戴状态均未变化：跳过重复写入与打标（佩戴方每 tick 刷新时的常见路径）。
+        if (previous != null && previous.floatValue() == retainedFactor) {
+            return;
+        }
         DAMAGE_RETAIN_MAP.put(id, retainedFactor);
         // 仅首次进入保护时重置基线；持续佩戴/切换比例时不重置，否则每 tick 清零基线会使对账无从比较。
-        if (!wasProtected) {
+        if (previous == null) {
             REDUCTION_BASELINE_MAP.remove(id);
         }
+        markTracked(entity);
     }
 
     public static void clearDamageReduction(LivingEntity entity) {
         if (entity != null) {
             UUID id = entity.getUUID();
-            DAMAGE_RETAIN_MAP.remove(id);
+            if (DAMAGE_RETAIN_MAP.remove(id) == null) {
+                // 本无比例减伤登记：无需触碰基线与打标状态
+                return;
+            }
             REDUCTION_BASELINE_MAP.remove(id);
+            refreshTracked(entity);
         }
     }
 
@@ -121,7 +178,10 @@ public final class DamageResistanceHelper {
         UUID id = entity.getUUID();
         Float retain = DAMAGE_RETAIN_MAP.get(id);
         if (retain == null) {
-            REDUCTION_BASELINE_MAP.remove(id);
+            // 仅在确有历史基线时才做移除，避免无人登记时对每个生物每 tick 做一次无谓的哈希表删除
+            if (!REDUCTION_BASELINE_MAP.isEmpty()) {
+                REDUCTION_BASELINE_MAP.remove(id);
+            }
             return;
         }
 

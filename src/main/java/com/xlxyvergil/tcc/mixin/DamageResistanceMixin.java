@@ -30,6 +30,11 @@ public abstract class DamageResistanceMixin {
     private void tcc$tickCooldown(CallbackInfo ci) {
         LivingEntity self = (LivingEntity) (Object) this;
         if (self.level().isClientSide) return;
+
+        // 仅对已登记实体（佩戴了相关饰品）生效：本钩子对所有生物每 tick 触发，未登记实体直接跳过，
+        // 避免为绝大多数生物计算 UUID 并查询多个哈希表。
+        if (!DamageResistanceHelper.isTracked(self)) return;
+
         UUID id = self.getUUID();
 
         Integer cooldown = DamageResistanceHelper.COOLDOWN_MAP.get(id);
@@ -37,6 +42,8 @@ public abstract class DamageResistanceMixin {
             int newVal = cooldown - 1;
             if (newVal <= 0) {
                 DamageResistanceHelper.COOLDOWN_MAP.remove(id);
+                // 冷却结束，若该实体已无任何登记状态则移出登记集合
+                DamageResistanceHelper.refreshTracked(self);
             } else {
                 DamageResistanceHelper.COOLDOWN_MAP.put(id, newVal);
             }
@@ -54,6 +61,11 @@ public abstract class DamageResistanceMixin {
     @Inject(method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
     private void tcc$barrierImmune(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         LivingEntity self = (LivingEntity) (Object) this;
+        // 登记判断优先：服务端未佩戴相关饰品的实体直接放行（结界佩戴者在服务端必然已登记）。
+        // 客户端不维护登记状态，跳过该早退并按同步的结界 buff 兜底判定。
+        if (!self.level().isClientSide && !DamageResistanceHelper.isTracked(self)) {
+            return;
+        }
         if (ZhenWoGuard.isBarrierActiveWearer(self)) {
             cir.setReturnValue(false);
         }
@@ -71,10 +83,17 @@ public abstract class DamageResistanceMixin {
         // 仅拦截受伤
         if (delta >= 0.0F) return health;
 
+        // 登记判断优先：服务端未佩戴相关饰品的实体直接放行（结界佩戴者在服务端必然已登记）。
+        // 客户端不维护登记状态，跳过该早退以保留下面的结界兜底判定。
+        if (!self.level().isClientSide && !DamageResistanceHelper.isTracked(self)) return health;
+
         // 真我结界激活期间：扣血一律归零，兜住绕过 hurt 的直接写血
         if (ZhenWoGuard.isBarrierActiveWearer(self)) {
             return current;
         }
+
+        // 客户端仅承担结界兜底判定，减伤 / 冷却 / 单次上限均为服务端权威
+        if (self.level().isClientSide) return health;
 
         UUID id = self.getUUID();
 

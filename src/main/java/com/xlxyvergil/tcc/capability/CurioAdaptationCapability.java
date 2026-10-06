@@ -165,16 +165,6 @@ public class CurioAdaptationCapability {
             }
         }
 
-        /**
-         * 每 tick 主动检查衰减：任一时间超时未受击的实例立即清空记忆，
-         * 不再依赖"下次受击"才惰性清理。
-         */
-        public void tick(long currentTick) {
-            for (AdaptInstance inst : instances.values()) {
-                inst.checkDecay(currentTick);
-            }
-        }
-
         // NBT
 
         CompoundTag serializeNBT() {

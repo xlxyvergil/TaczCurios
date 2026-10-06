@@ -34,6 +34,10 @@ public final class EvolutionRegistry {
     private static volatile boolean loaded;
     private static final Map<String, Rule> RULES = new HashMap<>();
     private static final Map<String, List<Rule>> RULES_BY_TRIGGER = new HashMap<>();
+    /** 按类型索引，避免按类型查询时全量遍历。 */
+    private static final Map<RuleType, List<Rule>> RULES_BY_TYPE = new HashMap<>();
+    /** 按「类型 + 物品」索引（key 见 {@link #typeItemKey}），供客户端 tooltip 逐帧查询复用。 */
+    private static final Map<String, List<Rule>> RULES_BY_TYPE_AND_ITEM = new HashMap<>();
 
     private EvolutionRegistry() {
     }
@@ -125,24 +129,16 @@ public final class EvolutionRegistry {
         if (itemId == null || itemId.isBlank()) {
             return Collections.emptyList();
         }
-        List<Rule> out = new ArrayList<>();
-        for (Rule rule : RULES.values()) {
-            if (rule.type == type && itemId.equals(rule.item)) {
-                out.add(rule);
-            }
-        }
-        return List.copyOf(out);
+        return RULES_BY_TYPE_AND_ITEM.getOrDefault(typeItemKey(type, itemId), Collections.emptyList());
     }
 
     public static List<Rule> getRulesByType(RuleType type) {
         loadOnce();
-        List<Rule> out = new ArrayList<>();
-        for (Rule rule : RULES.values()) {
-            if (rule.type == type) {
-                out.add(rule);
-            }
-        }
-        return List.copyOf(out);
+        return RULES_BY_TYPE.getOrDefault(type, Collections.emptyList());
+    }
+
+    private static String typeItemKey(RuleType type, String itemId) {
+        return type.name() + '|' + itemId;
     }
 
     public static List<KillRequirement> getKillRequirementsOrEmpty(String ruleId) {
@@ -202,6 +198,24 @@ public final class EvolutionRegistry {
         }
         for (var entry : RULES_BY_TRIGGER.entrySet()) {
             entry.setValue(List.copyOf(entry.getValue()));
+        }
+
+        // 同步重建「类型」「类型+物品」索引，使按类型/按物品查询不再全量遍历。
+        RULES_BY_TYPE.clear();
+        RULES_BY_TYPE_AND_ITEM.clear();
+        Map<RuleType, List<Rule>> byType = new HashMap<>();
+        Map<String, List<Rule>> byTypeItem = new HashMap<>();
+        for (Rule rule : RULES.values()) {
+            byType.computeIfAbsent(rule.type, k -> new ArrayList<>()).add(rule);
+            if (rule.item != null && !rule.item.isBlank()) {
+                byTypeItem.computeIfAbsent(typeItemKey(rule.type, rule.item), k -> new ArrayList<>()).add(rule);
+            }
+        }
+        for (var entry : byType.entrySet()) {
+            RULES_BY_TYPE.put(entry.getKey(), List.copyOf(entry.getValue()));
+        }
+        for (var entry : byTypeItem.entrySet()) {
+            RULES_BY_TYPE_AND_ITEM.put(entry.getKey(), List.copyOf(entry.getValue()));
         }
     }
 
