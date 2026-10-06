@@ -1,0 +1,13 @@
+{
+  "links": [
+    {
+      "slot": "tcc_slot",
+      "curio": "tcc:example_curio",
+      "source": "minecraft:generic.attack_damage",
+      "target": "minecraft:generic.attack_speed",
+      "ratio": 0.5,
+      "operation": "multiply_base",
+      "uuid": "8b3f2c14-6d5a-4e79-9c1b-2f4a6d8e0b31"
+    }
+  ]
+}

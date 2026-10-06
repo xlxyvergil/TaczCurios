@@ -16,9 +16,12 @@ import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 数据包驱动的属性联动规则注册表。
@@ -26,13 +29,21 @@ import java.util.Map;
  * 扫描 data/&lt;命名空间&gt;/tcc_links/*.json，文件形如：
  * <pre>
  * {
- *   "slot": "tcc_slot",
  *   "links": [
- *     { "curio": "tcc:xxx", "attribute": "attributeslib:crit_damage", "ratio": 0.5, "operation": "multiply_base" }
+ *     {
+ *       "slot": "tcc_slot",
+ *       "curio": "tcc:xxx",
+ *       "source": "attributeslib:crit_damage",
+ *       "target": "tacz:bullet_gundamage",
+ *       "ratio": 0.5,
+ *       "operation": "multiply_base",
+ *       "uuid": "8b3f2c14-6d5a-4e79-9c1b-2f4a6d8e0b31"
+ *     }
  *   ]
  * }
  * </pre>
- * slot 为固定读取的槽位类型；每个饰品 id 至多一条规则，重复的以首次出现为准。
+ * 每条规则自带槽位、来源饰品、源属性、目标属性、倍率与独立 uuid，
+ * 同一槽位可配置多条规则，彼此 uuid 不同即可同时生效。
  * 未提供任何文件时规则为空，此时空白之键不产生任何效果。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -42,11 +53,21 @@ public class AttributeLinkRegistry extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = new Gson();
     private static final String DIRECTORY = "tcc_links";
 
-    private static volatile String slot = null;
-    private static volatile Map<String, AttributeLinkData> links = Collections.emptyMap();
+    private static volatile Map<String, List<AttributeLinkData>> linksBySlot = Collections.emptyMap();
+
+    /** reload / 世界加载重建规则表后自增；佩戴者据此判断自身 NBT 快照是否过期。 */
+    private static volatile int version = 0;
 
     public AttributeLinkRegistry() {
         super(GSON, DIRECTORY);
+    }
+
+    /**
+     * 规则表版本号：每次重建后自增，初始为 0。
+     * 佩戴者把该值随规则快照一并写入物品 NBT，之后版本不相等即说明规则表已变化，需要重新解析。
+     */
+    public static int getVersion() {
+        return version;
     }
 
     @SubscribeEvent
@@ -54,72 +75,82 @@ public class AttributeLinkRegistry extends SimpleJsonResourceReloadListener {
         event.addListener(new AttributeLinkRegistry());
     }
 
-    /** 固定读取的槽位类型，未配置时为 null。 */
-    public static String getSlot() {
-        return slot;
+    /** 槽位 → 该槽位下全部规则（可能多条）。 */
+    public static Map<String, List<AttributeLinkData>> getLinksBySlot() {
+        return linksBySlot;
     }
 
-    /** 按饰品 id 查询其唯一规则，未配置时返回 null。 */
-    public static AttributeLinkData getLink(String curio) {
-        return links.get(curio);
+    /** 按槽位查询规则列表，未配置时返回空列表。 */
+    public static List<AttributeLinkData> getLinks(String slot) {
+        return linksBySlot.getOrDefault(slot, Collections.emptyList());
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> objects, ResourceManager resourceManager, ProfilerFiller profiler) {
-        String parsedSlot = null;
-        Map<String, AttributeLinkData> parsedLinks = new LinkedHashMap<>();
+        Map<String, List<AttributeLinkData>> parsed = new LinkedHashMap<>();
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : objects.entrySet()) {
             try {
                 JsonObject root = entry.getValue().getAsJsonObject();
-                if (parsedSlot == null && root.has("slot")) {
-                    parsedSlot = root.get("slot").getAsString();
-                }
                 JsonArray array = root.getAsJsonArray("links");
                 if (array == null) {
                     continue;
                 }
                 for (JsonElement element : array) {
-                    AttributeLinkData data = parseLink(element.getAsJsonObject());
+                    AttributeLinkData data = parseLink(element.getAsJsonObject(), entry.getKey());
                     if (data == null) {
                         continue;
                     }
-                    // 每个 item 仅允许一条规则，重复的以首次出现为准
-                    if (parsedLinks.putIfAbsent(data.curio(), data) != null) {
-                        LOGGER.warn("[TCC] 属性联动规则存在重复的 curio: {}（来源 {}），已忽略后续重复项", data.curio(), entry.getKey());
-                    }
+                    parsed.computeIfAbsent(data.slot(), k -> new ArrayList<>()).add(data);
                 }
             } catch (Exception e) {
                 LOGGER.warn("[TCC] 解析属性联动数据包失败: {}", entry.getKey(), e);
             }
         }
 
-        if (parsedSlot != null && parsedSlot.isBlank()) {
-            parsedSlot = null;
-        }
-        slot = parsedSlot;
-        links = Collections.unmodifiableMap(parsedLinks);
-        LOGGER.info("[TCC] 属性联动规则已加载: slot={}, 规则数={}", parsedSlot, parsedLinks.size());
+        Map<String, List<AttributeLinkData>> frozen = new LinkedHashMap<>();
+        parsed.forEach((slot, list) -> frozen.put(slot, List.copyOf(list)));
+        linksBySlot = Collections.unmodifiableMap(frozen);
+        int total = frozen.values().stream().mapToInt(List::size).sum();
+        LOGGER.info("[TCC] 属性联动规则已加载: 槽位数={}, 规则数={}", frozen.size(), total);
+        // 版本自增：服务端据此触发在线玩家重算，佩戴者也据此判断 NBT 快照是否过期
+        version++;
     }
 
-    private AttributeLinkData parseLink(JsonObject obj) {
-        if (!obj.has("curio") || !obj.has("attribute") || !obj.has("ratio")) {
+    private AttributeLinkData parseLink(JsonObject obj, ResourceLocation sourceFile) {
+        if (!obj.has("slot") || !obj.has("curio") || !obj.has("source") || !obj.has("target")
+                || !obj.has("ratio") || !obj.has("uuid")) {
+            LOGGER.warn("[TCC] 属性联动规则缺少必要字段（slot/curio/source/target/ratio/uuid），来源 {}，已忽略", sourceFile);
             return null;
         }
+        String slot = obj.get("slot").getAsString();
         String curio = obj.get("curio").getAsString();
-        String attribute = obj.get("attribute").getAsString();
+        String source = obj.get("source").getAsString();
+        String target = obj.get("target").getAsString();
         double ratio = obj.get("ratio").getAsDouble();
+        if (slot.isBlank() || curio.isBlank() || source.isBlank() || target.isBlank()) {
+            return null;
+        }
         if (ratio == 0) {
             return null;
         }
+
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(obj.get("uuid").getAsString());
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("[TCC] 属性联动规则 uuid 非法: {}，来源 {}，已忽略", obj.get("uuid").getAsString(), sourceFile);
+            return null;
+        }
+
         AttributeModifier.Operation operation = AttributeModifier.Operation.MULTIPLY_BASE;
         if (obj.has("operation")) {
-            AttributeModifier.Operation parsed = parseOperation(obj.get("operation").getAsString());
-            if (parsed != null) {
-                operation = parsed;
+            AttributeModifier.Operation parse = parseOperation(obj.get("operation").getAsString());
+            if (parse != null) {
+                operation = parse;
             }
         }
-        return new AttributeLinkData(curio, attribute, ratio, operation);
+        return new AttributeLinkData(slot, curio, source, target, ratio, operation, uuid);
     }
 
     private AttributeModifier.Operation parseOperation(String name) {

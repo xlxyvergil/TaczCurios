@@ -126,7 +126,8 @@ public class TaczCurios
         registerCurioType("tcc_slot", 8, false, new ResourceLocation(MODID, "slot/tcc_slot"));
         registerCurioType("tcc_3rd", 1, false, new ResourceLocation(MODID, "slot/tcc_3rd"));
         registerCurioType("tcc_tdk", 1, false, new ResourceLocation(MODID, "slot/tcc_tdk"));
-        registerCurioType("tcc_kb", 1, false, new ResourceLocation(MODID, "slot/tcc_kb"));
+        // 空白之键槽位图标直接采用该道具自身的图标（空槽时按 16x16 缩放渲染该贴图）
+        registerCurioType("tcc_kb", 1, false, new ResourceLocation(MODID, "item/kongbai_zhijian"));
     }
 
     private void registerCurioType(final String identifier, final int slots, final boolean isHidden, final ResourceLocation icon) {

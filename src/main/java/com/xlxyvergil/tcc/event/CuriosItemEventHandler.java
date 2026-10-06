@@ -1,12 +1,18 @@
 package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.items.curios.kongbai.KongbaiZhijian;
+import com.xlxyvergil.tcc.link.AttributeLinkRegistry;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.tacz.guns.api.item.IGun;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.event.CurioEquipEvent;
 import top.theillusivec4.curios.api.event.CurioUnequipEvent;
 
@@ -27,6 +33,75 @@ public class CuriosItemEventHandler {
         // Curios 内部已调用 onUnequip（由 BaseCurioItem 处理属性+TACZ缓存）
         // 此处仅作为兜底确保缓存更新（支持玩家、女仆等所有 LivingEntity）
         updateTacZCache(entity);
+    }
+
+    /**
+     * 槽内物品变化（装上/卸下规则饰品）后，实时重算佩戴者身上空白之键的联动规则。
+     * <p>
+     * 这里用 {@link CurioChangeEvent}（服务端、槽位内容变动后触发），而不用
+     * {@link CurioEquipEvent}/{@link CurioUnequipEvent}——后两者是 canEquip/canUnequip
+     * 检查阶段的前置事件，触发时槽位内容尚未变更，且可能因模拟取出被重复调用。
+     */
+    @SubscribeEvent
+    public static void onCurioChange(CurioChangeEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity == null || entity.level().isClientSide) {
+            return;
+        }
+        String slot = event.getIdentifier();
+        // 只关心数据包规则涉及到的槽位，其它槽位变化直接忽略
+        if (slot == null || AttributeLinkRegistry.getLinks(slot).isEmpty()) {
+            return;
+        }
+        ItemStack kongbai = CurioSearchHelper.findFirstEquippedStack(entity,
+                stack -> stack.getItem() instanceof KongbaiZhijian);
+        if (!(kongbai.getItem() instanceof KongbaiZhijian item)) {
+            return;
+        }
+        // 重新解析当前槽位命中的规则：卸下的规则随之移除，装回的规则立即恢复
+        item.refreshEffects(entity, kongbai);
+    }
+
+    /**
+     * 装备变更（穿脱护甲、切换手持物品等）会改变源属性值，实时重算佩戴者的联动规则。
+     * <p>
+     * 饰品槽位变化由 {@link #onCurioChange} 处理，两者合起来覆盖「属性会被拆装改变」的来源；
+     * 其余无法监听的属性来源由空白之键的低频 tick 兜底。
+     */
+    @SubscribeEvent
+    public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity == null || entity.level().isClientSide) {
+            return;
+        }
+        if (AttributeLinkRegistry.getLinksBySlot().isEmpty()) {
+            return;
+        }
+        ItemStack kongbai = CurioSearchHelper.findFirstEquippedStack(entity,
+                stack -> stack.getItem() instanceof KongbaiZhijian);
+        if (kongbai.getItem() instanceof KongbaiZhijian item) {
+            item.refreshEffects(entity, kongbai);
+        }
+    }
+
+    /** 上一次已处理的规则表版本；与当前版本不同即说明发生过 reload。 */
+    private static int seenRuleVersion = -1;
+
+    /**
+     * 数据包规则表 reload（含世界加载）后，在下一 tick 用新规则重算所有佩戴者。
+     * reload 在资源加载线程完成，故那里只自增版本号，真正的重算放在服务端主线程执行。
+     */
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) {
+            return;
+        }
+        int current = AttributeLinkRegistry.getVersion();
+        if (current == seenRuleVersion) {
+            return;
+        }
+        seenRuleVersion = current;
+        KongbaiZhijian.refreshAll();
     }
     
     public static void onCurioEquip(LivingEntity entity, ItemStack stack) {
