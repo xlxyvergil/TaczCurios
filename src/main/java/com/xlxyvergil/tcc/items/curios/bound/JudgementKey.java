@@ -103,10 +103,10 @@ public class JudgementKey extends BoundCurioItem {
         double setHealthProc = TaczCuriosConfig.COMMON.judgementProcChance.get();
         if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
             double directPercent = TaczCuriosConfig.COMMON.judgementDirectDamagePercent.get();
-            // 附加虚数伤害改为以受击者为中心的范围溅射，并叠加开镜蓄力增幅
+            // 附加魔法伤害改为以受击者为中心的范围溅射，并叠加开镜蓄力增幅
             double amp = RavenKeyAimHandler.getAmp(attacker);
             float splash = (float) (damageAfterHeadshot * directPercent * (1.0 + amp));
-            RavenKeyAimHandler.applySplashImaginary(attacker, targetLiving, splash,
+            RavenKeyAimHandler.applySplashMagic(attacker, targetLiving, splash,
                 TaczCuriosConfig.COMMON.judgementKeySplashRadius.get());
         }
 

@@ -15,6 +15,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 渡鸦的神之键系列（涤罪七雷 / 涤罪七雷·雷鸣见 / 裁决之键）开镜蓄力增伤：
  * 从按下开镜开始自定义计时，持续开镜经过 timeToMax 秒达到满增伤，松镜立即清零重置。
- * 增幅同时作用于本枪构造伤害与饰品附加的虚数伤害。
+ * 增幅同时作用于本枪构造伤害与饰品附加的魔法伤害。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class RavenKeyAimHandler {
@@ -156,11 +157,11 @@ public final class RavenKeyAimHandler {
     }
 
     /**
-     * 以受击者为中心，对球型范围内的生物（含受击者本身）施加虚数伤害。
+     * 以受击者为中心，对球型范围内的生物（含受击者本身）施加魔法伤害。
      * 用于渡鸦神之键附加伤害的范围溅射。
      */
-    public static void applySplashImaginary(@Nullable LivingEntity attacker, @Nullable LivingEntity victim,
-                                            float amount, double radius) {
+    public static void applySplashMagic(@Nullable LivingEntity attacker, @Nullable LivingEntity victim,
+                                        float amount, double radius) {
         if (attacker == null || victim == null || amount <= 0.0F || radius <= 0.0) {
             return;
         }
@@ -171,9 +172,10 @@ public final class RavenKeyAimHandler {
         AABB box = victim.getBoundingBox().inflate(radius);
         List<Mob> targets = serverLevel.getEntitiesOfClass(Mob.class, box,
                 mob -> mob != attacker && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
+        DamageSource source = TccDamageSources.magicDamage(serverLevel, attacker);
         for (Mob mob : targets) {
-            TccAttributeEvents.applyImaginaryDamage(mob,
-                    TccDamageSources.imaginaryDamage(serverLevel, attacker), amount);
+            mob.invulnerableTime = 0;
+            mob.hurt(source, amount);
         }
     }
 

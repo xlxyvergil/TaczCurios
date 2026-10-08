@@ -94,10 +94,10 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
 
         float extra = (float) (Math.round(target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 10000.0) / 10000.0);
         if (extra > 0) {
-            // 附加虚数伤害改为以受击者为中心的范围溅射，并叠加开镜蓄力增幅
+            // 附加魔法伤害改为以受击者为中心的范围溅射，并叠加开镜蓄力增幅
             double amp = RavenKeyAimHandler.getAmp(attacker);
             float splash = (float) (extra * (1.0 + amp));
-            RavenKeyAimHandler.applySplashImaginary(attacker, target, splash,
+            RavenKeyAimHandler.applySplashMagic(attacker, target, splash,
                 TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get());
         }
     }

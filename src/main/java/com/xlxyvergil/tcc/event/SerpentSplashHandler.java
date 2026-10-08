@@ -10,12 +10,15 @@ import com.xlxyvergil.tcc.items.curios.bound.Shesha;
 import com.xlxyvergil.tcc.items.curios.bound.SiZhiYi;
 import com.xlxyvergil.tcc.items.curios.bound.WangshiDeSheying;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,16 +28,13 @@ import java.util.List;
 
 /**
  * 神之键·梅比乌斯线（往世的蛇影 / 死之衣 / 舍沙）枪击命中溅射：
- * 命中后以受击者为中心，对球型范围内的生物额外施加「本次实际伤害 × 百分比」的虚数伤害。
- * 实际伤害 = Pre 记录的总血量（含吸收） - 结算后的总血量，即过护甲/抗性后的最终值。
+ * 命中后以受击者为中心，对球型范围内的生物（含受击者本身）额外施加
+ * 「主手枪械面板伤害 × 百分比」的魔法伤害（参考裁决之键的实现）。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class SerpentSplashHandler {
 
-    /** 记录受击者命中前总血量的 NBT 前缀；按子弹 id 区分，避免穿透/连击串扰 */
-    private static final String PRE_TOTAL_HEALTH_KEY_PREFIX = "tcc_serpent_splash_total_";
-
-    /** 溅射重入防护：枪击事件本身不会因溅射再次触发，这里作为异常再入的双保险 */
+    /** 溅射重入防护：避免溅射伤害结算过程中再次进入本处理器 */
     private static final ThreadLocal<Boolean> IN_SPLASH = ThreadLocal.withInitial(() -> Boolean.FALSE);
 
     private SerpentSplashHandler() {
@@ -44,34 +44,22 @@ public final class SerpentSplashHandler {
     private record SplashParams(double radius, double percent) {
     }
 
-    @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        if (event.getLogicalSide().isClient()) {
-            return;
-        }
-        if (resolveParams(event.getAttacker()) == null) {
-            return;
-        }
-        Entity bullet = event.getBullet();
-        if (bullet == null || !(event.getHurtEntity() instanceof LivingEntity target)) {
-            return;
-        }
-        target.getPersistentData().putFloat(healthKey(bullet),
-                target.getHealth() + target.getAbsorptionAmount());
-    }
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        applySplash(event.getAttacker(), event.getHurtEntity(), event.getBullet());
+        applySplash(event.getAttacker(), event.getHurtEntity());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onGunKill(EntityKillByGunEvent event) {
-        applySplash(event.getAttacker(), event.getKilledEntity(), event.getBullet());
+        applySplash(event.getAttacker(), event.getKilledEntity());
     }
 
-    private static void applySplash(@Nullable LivingEntity attacker, @Nullable Entity hurtEntity, @Nullable Entity bullet) {
-        if (attacker == null || bullet == null || !(hurtEntity instanceof LivingEntity victim)) {
+    private static void applySplash(@Nullable LivingEntity attacker, @Nullable Entity hurtEntity) {
+        if (attacker == null || IN_SPLASH.get()) {
+            return;
+        }
+        LivingEntity victim = resolveLivingEntity(hurtEntity);
+        if (victim == null) {
             return;
         }
         SplashParams params = resolveParams(attacker);
@@ -82,36 +70,42 @@ public final class SerpentSplashHandler {
             return;
         }
 
-        var data = victim.getPersistentData();
-        String key = healthKey(bullet);
-        if (!data.contains(key)) {
-            return;
-        }
-        float preTotal = data.getFloat(key);
-        data.remove(key);
-
-        float actualDamage = Math.max(0.0F, preTotal - (victim.getHealth() + victim.getAbsorptionAmount()));
-        float splashDamage = (float) (actualDamage * params.percent());
-        if (splashDamage <= 0.0F || IN_SPLASH.get()) {
+        // 伤害基准为主手枪械面板伤害（与裁决之键一致），不再依赖命中前后血量差
+        double panelDamage = GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.SNIPER_GUN_TYPES);
+        float splashDamage = (float) (panelDamage * params.percent());
+        if (splashDamage <= 0.0F) {
             return;
         }
 
         double radius = params.radius();
         double radiusSq = radius * radius;
         AABB box = victim.getBoundingBox().inflate(radius);
+        // 包含受击者本身，仅排除攻击者
         List<Mob> targets = serverLevel.getEntitiesOfClass(Mob.class, box,
-                mob -> mob != victim && mob != attacker && mob.isAlive()
-                        && mob.distanceToSqr(victim) <= radiusSq);
+                mob -> mob != attacker && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
 
+        DamageSource source = TccDamageSources.magicDamage(serverLevel, attacker);
         IN_SPLASH.set(Boolean.TRUE);
         try {
             for (Mob mob : targets) {
-                TccAttributeEvents.applyImaginaryDamage(mob,
-                        TccDamageSources.imaginaryDamage(serverLevel, attacker), splashDamage);
+                mob.invulnerableTime = 0;
+                mob.hurt(source, splashDamage);
             }
         } finally {
             IN_SPLASH.set(Boolean.FALSE);
         }
+    }
+
+    /** 受击者可能为多部位实体（如末影龙部位），解析到其本体后再计算。 */
+    @Nullable
+    private static LivingEntity resolveLivingEntity(@Nullable Entity hurtEntity) {
+        if (hurtEntity instanceof LivingEntity living) {
+            return living;
+        }
+        if (hurtEntity instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
+            return living;
+        }
+        return null;
     }
 
     @Nullable
@@ -146,9 +140,5 @@ public final class SerpentSplashHandler {
         }
         return new SplashParams(TaczCuriosConfig.COMMON.wangshiDeSheyingSplashRadius.get(),
                 TaczCuriosConfig.COMMON.wangshiDeSheyingSplashPercent.get());
-    }
-
-    private static String healthKey(Entity bullet) {
-        return PRE_TOTAL_HEALTH_KEY_PREFIX + bullet.getId();
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
@@ -27,5 +28,12 @@ public class TccDamageSources {
         return new DamageSource(
             level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(IMAGINARY_DAMAGE),
             bullet, attacker);
+    }
+
+    /** 原版魔法伤害（minecraft:magic），击杀归属 attacker；用于梅比乌斯线的命中溅射。 */
+    public static DamageSource magicDamage(Level level, Entity attacker) {
+        return new DamageSource(
+            level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MAGIC),
+            attacker, attacker);
     }
 }
