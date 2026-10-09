@@ -5,7 +5,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
-import com.xlxyvergil.tcc.util.AiStopHelper;
+import com.xlxyvergil.tcc.util.SpeedZeroHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
@@ -28,10 +28,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Yuduchen extends BoundCurioItem {
-    private static int stopDuration() {
-        return TaczCuriosConfig.COMMON.yuduchenStopDurationSeconds.get() * 20;
-    }
-
     private static double stopChance() {
         return TaczCuriosConfig.COMMON.yuduchenStopChance.get();
     }
@@ -90,7 +86,7 @@ public class Yuduchen extends BoundCurioItem {
             return;
         }
         if (attacker.getRandom().nextDouble() < stopChance()) {
-            AiStopHelper.apply(target, stopDuration());
+            SpeedZeroHelper.apply(target);
         }
         double armor = attacker.getAttributeValue(Attributes.ARMOR);
         float imaginary = (float) (armor * armorImaginaryScale());

@@ -18,7 +18,7 @@ import java.util.UUID;
  * - 常驻比例减伤采用每 tick 血量对账（DamageResistanceHelper.reconcileHealth）对任意来源（含绕过
  *   setHealth 的直接写入）统一按保留因子削减；
  * - 真我结界激活期间在 hurt 入口取消一切伤害；
- * - setHealth 拦截处理三类受击触发逻辑：结界激活期扣血归零、完全免伤（保留因子 &lt;= 0）、受伤冷却与单次上限；
+ * - setHealth 拦截处理四类受击触发逻辑：结界激活期扣血归零、完全免伤（保留因子 &lt;= 0）、受伤冷却与单次上限；
  *   其中"受击自动冷却"（HURT_COOLDOWN_MAP）在未冷却时放行首次扣血并顺带开启冷却，实现"先扣一次血、随后无敌一小段"。
  */
 @Mixin(value = LivingEntity.class, priority = 2000)

@@ -7,7 +7,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.util.AiStopHelper;
+import com.xlxyvergil.tcc.util.SpeedZeroHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
@@ -31,10 +31,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BushiShiwu extends BoundCurioItem {
-    private static int stopDuration() {
-        return TaczCuriosConfig.COMMON.bushiShiwuStopDurationSeconds.get() * 20;
-    }
-
     private static double armorImaginaryScale() {
         return TaczCuriosConfig.COMMON.bushiShiwuArmorImaginaryScale.get();
     }
@@ -89,7 +85,7 @@ public class BushiShiwu extends BoundCurioItem {
             return;
         }
         if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
-            AiStopHelper.apply(target, stopDuration());
+            SpeedZeroHelper.apply(target);
         }
         double armor = attacker.getAttributeValue(Attributes.ARMOR);
         double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());

@@ -97,13 +97,7 @@ public class ZhenWo extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
                 1.0, KNOCKBACK_RESISTANCE_UUID, "tcc.zhen_wo.knockback_resistance",
                 AttributeModifier.Operation.ADDITION);
-            // 收束：仅玩家与女仆享有真我减伤，其他实体清除可能的残留
-            if (livingEntity instanceof Player || isMaid(livingEntity)) {
-                DamageResistanceHelper.setDamageReduction(livingEntity,
-                    (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
-            } else {
-                DamageResistanceHelper.clearDamageReduction(livingEntity);
-            }
+            applyForcedDamageReduction(livingEntity, stack);
         } else {
             removeEffects(livingEntity);
         }
@@ -118,13 +112,25 @@ public class ZhenWo extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
             KNOCKBACK_RESISTANCE_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
-        DamageResistanceHelper.clearDamageReduction(livingEntity);
+        DamageResistanceHelper.clearForcedDamageReduction(livingEntity);
         livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
         // 只扣掉真我维持的那一份黄心，保留外部来源（只减不压）
         float absorptionTarget = TaczCuriosConfig.COMMON.zhenWoAbsorptionAmount.get();
         livingEntity.setAbsorptionAmount(Math.max(0.0F,
             livingEntity.getAbsorptionAmount() - absorptionTarget));
         ACTIVE_BARRIER_WEARERS.remove(livingEntity.getUUID());
+    }
+
+    /** 写血出口强制免伤：仅玩家享有；结界激活期间提升为 100% 免伤。 */
+    private static void applyForcedDamageReduction(LivingEntity entity, ItemStack stack) {
+        if (!(entity instanceof Player)) {
+            DamageResistanceHelper.clearForcedDamageReduction(entity);
+            return;
+        }
+        float retain = stack.getOrCreateTag().getInt(BARRIER_KEY) > 0
+                ? 0.0F
+                : (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
+        DamageResistanceHelper.setForcedDamageReduction(entity, retain);
     }
 
     @Override
@@ -134,10 +140,10 @@ public class ZhenWo extends BoundCurioItem {
 
         if (entity.isDeadOrDying()) return;
 
-        // 收束：仅玩家与女仆触发真我效果；其他实体不再享有减伤、结界与免死，并清理历史残留。
+        // 收束：仅玩家触发真我效果；其他实体不再享有减伤、结界与免死，并清理历史残留。
         if (!(entity instanceof Player) && !isMaid(entity)) {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
-            DamageResistanceHelper.clearDamageReduction(entity);
+            DamageResistanceHelper.clearForcedDamageReduction(entity);
             CompoundTag tag = stack.getTag();
             if (tag != null && (tag.getInt(BARRIER_KEY) != 0 || tag.getInt(COOLDOWN_KEY) != 0)) {
                 tag.putInt(BARRIER_KEY, 0);
@@ -157,8 +163,8 @@ public class ZhenWo extends BoundCurioItem {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
         }
 
-        DamageResistanceHelper.setDamageReduction(entity,
-            (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get()));
+        // 强制免伤（写血出口）：仅玩家享有，结界激活期间提升为 100%
+        applyForcedDamageReduction(entity, stack);
 
         // 参考救世：周期性续期抗性提升，时长为无限，卸下时移除
         if (entity.tickCount % 10 == 0) {

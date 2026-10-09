@@ -543,12 +543,9 @@ public class TaczCuriosConfig {
 
         
         public final ForgeConfigSpec.DoubleValue yuduchenStopChance;
-        public final ForgeConfigSpec.IntValue yuduchenStopDurationSeconds;
         public final ForgeConfigSpec.DoubleValue yuduchenArmorImaginaryScale;
         public final ForgeConfigSpec.DoubleValue fanchenNanduStopChance;
-        public final ForgeConfigSpec.IntValue fanchenNanduStopDurationSeconds;
         public final ForgeConfigSpec.DoubleValue fanchenNanduArmorImaginaryScale;
-        public final ForgeConfigSpec.IntValue bushiShiwuStopDurationSeconds;
         public final ForgeConfigSpec.DoubleValue bushiShiwuArmorImaginaryScale;
 
         
@@ -2259,11 +2256,8 @@ public class TaczCuriosConfig {
             
             builder.comment("羽渡尘饰品配置").push("yuduchen");
             yuduchenStopChance = builder
-                    .comment("攻击停止目标 AI 概率 (默认: 0.05 = 5%)")
+                    .comment("攻击使目标移动速度归零的概率 (默认: 0.05 = 5%)")
                     .defineInRange("stopChance", 0.05, 0.0, 1.0);
-            yuduchenStopDurationSeconds = builder
-                    .comment("停止 AI 时长（秒） (默认: 5)")
-                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
             yuduchenArmorImaginaryScale = builder
                     .comment("攻击时附加（护甲值 × 该比例）的虚数伤害 (默认: 0.30 = 30%)")
                     .defineInRange("armorImaginaryScale", 0.30, 0.0, 100.0);
@@ -2271,20 +2265,15 @@ public class TaczCuriosConfig {
 
             builder.comment("凡尘难渡饰品配置").push("fanchen_nandu");
             fanchenNanduStopChance = builder
-                    .comment("攻击停止目标 AI 概率 (默认: 0.15 = 15%)")
+                    .comment("攻击使目标移动速度归零的概率 (默认: 0.15 = 15%)")
                     .defineInRange("stopChance", 0.15, 0.0, 1.0);
-            fanchenNanduStopDurationSeconds = builder
-                    .comment("停止 AI 时长（秒） (默认: 5)")
-                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
             fanchenNanduArmorImaginaryScale = builder
                     .comment("攻击时附加（护甲值 × 该比例）的虚数伤害 (默认: 0.50 = 50%)")
                     .defineInRange("armorImaginaryScale", 0.50, 0.0, 100.0);
             builder.pop();
 
             builder.comment("不识时务饰品配置").push("bushi_shiwu");
-            bushiShiwuStopDurationSeconds = builder
-                    .comment("停止 AI 时长（秒） (默认: 5)")
-                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            // 触发概率取佩戴者的虚数抗性概率（见 ImaginaryResistanceHelper），命中时使目标移动速度归零
             bushiShiwuArmorImaginaryScale = builder
                     .comment("攻击时附加（虚数抗性值/100 × 护甲值 × 该比例）的虚数伤害 (默认: 1.0)")
                     .defineInRange("armorImaginaryScale", 1.0, 0.0, 100.0);
