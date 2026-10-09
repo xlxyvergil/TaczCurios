@@ -64,7 +64,7 @@ public class Raven extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR, ARMOR_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, MOVE_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
-        // 隐身改为无限时长，卸下时移除
+        // 隐身时长 2 分钟，卸下时移除
         livingEntity.removeEffect(MobEffects.INVISIBILITY);
         if (ModList.get().isLoaded("irons_spellbooks")) {
             MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
@@ -91,9 +91,9 @@ public class Raven extends BoundCurioItem {
 
         if (!matchesRestriction(entity)) return;
 
-        // 隐身为永久（无限时长），周期性刷新作为保险，卸下时移除
+        // 隐身时长 2 分钟，按配置间隔周期续期，卸下时移除
         if (entity.tickCount % TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, MobEffectInstance.INFINITE_DURATION, 0, false, false, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2 * 60 * 20, 0, false, false, true));
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));

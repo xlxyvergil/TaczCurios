@@ -52,6 +52,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
         super(properties);
     }
 
+
     
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {

@@ -175,230 +175,230 @@ public class TccItems {
     
     
     public static final Item SOLDIER_BASIC_TAG = new SoldierBasicTag(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item SOLDIER_SPECIFIC_TAG = new SoldierSpecificTag(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     public static final Item KONGBAI_ZHIJIAN = new KongbaiZhijian(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
     
     
     public static final Item HEAVY_CALIBER_TAG = new HeavyCaliberTag(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item RED_MOVEMENT_TAG = new RedMovementTag(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item SUMMER_BEACH = new SummerBeach(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item BRAHMA_BEASTS = new BrahmaBeasts(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item SALVATION = new Salvation(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     public static final Item XIORA = new Xiora(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     public static final Item RAVEN = new Raven(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     public static final Item ISLAND_BOOM_RAVEN = new IslandBoomRaven(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
     
     
     public static final Item HEAVEN_FIRE_APOCALYPSE_ENDLESS = new HeavenFireApocalypseEndless(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     public static final Item SEVEN_THUNDERS = new SevenThunders(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     public static final Item SEVEN_THUNDERS_THUNDER_SEEN = new SevenThundersThunderSeen(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     public static final Item JUDGEMENT_KEY = new JudgementKey(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
     
     
     public static final Item URAL_WOLF_TAG = new UralWolfTag(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item HEAVEN_FIRE_JUDGMENT = new HeavenFireJudgment(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item HEAVEN_FIRE_APOCALYPSE = new HeavenFireApocalypse(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
     
     
     public static final Item DESPICABLE_ACCELERATION = new DespicableAcceleration(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item MERGED_RIFLING = new MergedRifling(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item ALLOY_DRILL = new AlloyDrill(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item CAREFUL_HEART = new CarefulHeart(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item BLAZE_STORM = new BlazeStorm(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item BLAZE_STORM_PRIME = new BlazeStormPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item RIPPING_PRIME = new RippingPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item CLOSE_COMBAT_PRIME = new CloseCombatPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item EVIL_ACCURACY = new EvilAccuracy(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item LIMIT_SPEED = new LimitSpeed(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item FEROCIOUS_EXTENSION = new FerociousExtension(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item RIFLING = new Rifling(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item CLOSE_RANGE_SHOT = new CloseRangeShot(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item HEAVY_FIREPOWER = new HeavyFirepower(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item WASP_STINGER = new WaspStinger(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item PROPHECY_PACT = new ProphecyPact(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item MALIGNANT_SPREAD = new MalignantSpread(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item CHAMBER = new Chamber(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item CHAMBER_PRIME = new ChamberPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item BURST_RELOAD = new BurstReload(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item CORRUPT_MAGAZINE = new CorruptMagazine(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item SPLIT_CHAMBER = new SplitChamber(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item TACTICAL_RELOAD = new TacticalReload(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item OVERLOADED_MAGAZINE = new OverloadedMagazine(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item INFERNAL_CHAMBER = new InfernalChamber(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item SUSTAINED_FIRE = new SustainedFire(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item INFECTED_MAGAZINE = new InfectedMagazine(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item DEADLY_SURGE = new DeadlySurge(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item BULLET_SPREAD = new BulletSpread(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
@@ -413,238 +413,238 @@ public class TccItems {
     
     
     public static final Item OPPRESSION_POINT = new OppressionPoint(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item OPPRESSION_POINT_PRIME = new OppressionPointPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item SWORD_WIND = new SwordWind(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item SWORD_WIND_PRIME = new SwordWindPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item DEPLETED_RELOAD = new DepletedReload(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item BURST_RELOAD_PRIME = new BurstReloadPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item TACTICAL_RELOAD_PRIME = new TacticalReloadPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item SHOTGUN_EXPANSION_PRIME = new ShotgunExpansionPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item MAGAZINE_BOOST_PRIME = new MagazineBoostPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item TANDEM_MAGAZINE_PRIME = new TandemMagazinePrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item SHOTGUN_EXPANSION = new ShotgunExpansion(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item MAGAZINE_BOOST = new MagazineBoost(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item TANDEM_MAGAZINE = new TandemMagazine(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item KIKAKU_ICHIJIN = new KikakuIchijin(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
     
     
     
     
     public static final Item CRITICAL_DELAY = new CriticalDelay(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item LETHAL_CRIT = new LethalCrit(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item WEAKNESS_SENSE = new WeaknessSense(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item DESTRUCTION = new Destruction(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item DESTRUCTION_PRIME = new DestructionPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item THUNDER_BARREL = new ThunderBarrel(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item THUNDER_BARREL_PRIME = new ThunderBarrelPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item WEAKNESS_MASTERY = new WeaknessMastery(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
     
     
     public static final Item WEAKNESS_MASTERY_PRIME = new WeaknessMasteryPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item HOLLOW_POINT = new HollowPoint(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
     
     
     public static final Item PISTOL_MASTERY = new PistolMastery(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item PISTOL_MASTERY_PRIME = new PistolMasteryPrime(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item STEEL_SLASH = new SteelSlash(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item DISMEMBERMENT = new Dismemberment(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
     
     
     public static final Item SACRIFICE_OPPRESSION = new SacrificeOppression(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
     
     
     public static final Item SACRIFICE_STEEL = new SacrificeSteel(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
 
     
     public static final Item ARGON_SCOPE = new ArgonScope(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item GILDED_ARGON_SCOPE = new GildedArgonScope(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item SHARP_BULLET = new SharpBullet(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
 
     
     public static final Item GILDED_SPLIT_CHAMBER = new GildedSplitChamber(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item LASER_SCOPE = new LaserScope(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
 
     
     public static final Item FRAGMENT_SHOT = new FragmentShot(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
 
     
     public static final Item GILDED_INFERNAL_CHAMBER = new GildedInfernalChamber(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item HYDRAULIC_CROSSHAIR = new HydraulicCrosshair(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.COMMON));
 
     
     public static final Item GILDED_HYDRAULIC_CROSSHAIR = new GildedHydraulicCrosshair(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item SHARP_AMMO = new SharpAmmo(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.UNCOMMON));
 
     
     public static final Item GILDED_BULLET_SPREAD = new GildedBulletSpread(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item GILDED_STEEL_SLASH = new GildedSteelSlash(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
 
     
     public static final Item GILDED_RIFLE_APTITUDE = new GildedRifleAptitude(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item GILDED_SHOTGUN_SAVVY = new GildedShotgunSavvy(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item GILDED_MARKSMAN = new GildedMarksman(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item CONDITION_OVERLOAD = new ConditionOverload(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
@@ -659,128 +659,128 @@ public class TccItems {
 
     
     public static final Item GRISEO = new Griseo(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item QIANJIE_YICHENG = new QianjieYicheng(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item HUISHI_ZHIJUAN = new HuishiZhijuan(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item YONGJIE_ZHIJIAN = new YongjieZhijian(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item FANXING = new Fanxing(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
     public static final Item SHIJIE_FANYAN = new ShijieFanyan(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
 
     
     public static final Item VILL_V = new VillV(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item XUKONG_WANCANG = new XukongWancang(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item YUXI_ZHIXIA = new YuxiZhixia(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item QISHI_ZHIJIAN = new QishiZhijian(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item LUOXUAN = new Luoxuan(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
     public static final Item XUKONG_WANCANG_YZTH = new XukongWancangYZTH(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
 
     
     public static final Item KALPAS = new Kalpas(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item IMER = new Imer(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item HUAJIE_ZHIYAN = new HuajieZhiyan(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item DOMINANCE_KEY = new DominanceKey(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item AOMIE = new AoMie(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
     public static final Item META_MORPH = new MetaMorph(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
 
     
     public static final Item SU = new Su(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item WANWU_XIUMIAN = new WanwuXiumian(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.RARE));
 
     
     public static final Item JUEZHE = new Juezhe(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item TINGZHI_ZHIJIAN = new TingzhiZhijian(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(Rarity.EPIC));
 
     
     public static final Item TIANHUI = new Tianhui(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
     public static final Item YINGUO_ZHUANLUN = new YinguoZhuanlun(new Item.Properties()
-            .stacksTo(64)
+            .stacksTo(1)
             .rarity(RIFT));
 
     
@@ -788,144 +788,144 @@ public class TccItems {
     
     
     public static final Item APONIA = new Aponia(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item SHENZUI_ZHIJIAN = new ShenzuiZhijian(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item JIELV = new Jielv(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item WANGSHI_DE_KUQIU = new WangshiDeKuqiu(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item WANGSHI_DE_KUQIU_MINGZHIQI = new WangshiDeKuqiuMingzhiqi(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item SHENEN_JIEJIE = new ShenenJiejie(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item EDEN = new Eden(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item CUIYAO_ZHI_GE = new CuiyaoZhiGe(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item HUANGJIN = new Huangjin(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item EDEN_STAR = new EdenStar(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item TUNTIAN_ZHIJIAN = new TuntianZhijian(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item QIDIAN_CHONGGOU = new QidianChonggou(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item KOSMA = new Kosma(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item LIMING_ZHI_SHAO = new LimingZhiShao(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item XUGUANG = new Xuguang(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item DIZANG_YUHUN = new DizangYuhun(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item QINSHI_ZHIJIAN = new QinshiZhijian(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item YUHUN_SHIXIAN = new YuhunShixian(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item MEBIUS = new Mebius(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item SHIJIE_ZHI_SHE = new ShijieZhiShe(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item WUXIAN = new Wuxian(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item WANGSHI_DE_SHEYING = new WangshiDeSheying(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item SHESHA = new Shesha(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
     
     public static final Item SI_ZHI_YI = new SiZhiYi(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
 
     
     
     public static final Item HUA = new Hua(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item DUCHEN_ZHI_YU = new DuchenZhiYu(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item FUSHENG = new Fusheng(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item YUDUCHEN = new Yuduchen(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item FANCHEN_NANDU = new FanchenNandu(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item BUSHI_SHIWU = new BushiShiwu(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item PADO_PHILIPIS = new PadoPhilipis(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item LUEJI_ZHI_SHOU = new LuejiZhiShou(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
     
     public static final Item KONGMENG = new Kongmeng(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     
     public static final Item WANGSHI_DE_HUANMENG = new WangshiDeHuanmeng(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.RARE));
+            .stacksTo(1).rarity(Rarity.RARE));
     
     public static final Item LA_ZHI_YAN = new LaZhiYan(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
     
     public static final Item YE_ZHI_TONG = new YeZhiTong(new Item.Properties()
-            .stacksTo(64).rarity(Rarity.EPIC));
+            .stacksTo(1).rarity(Rarity.EPIC));
 
     
 
     
     public static final Item ZEN_WO = new ZhenWo(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     
     public static final Item HEIYUAN_BAIHUA = new HeiyuanBaihua(new Item.Properties()
-            .stacksTo(64).rarity(RIFT));
+            .stacksTo(1).rarity(RIFT));
 
     private TccItems() {}
 

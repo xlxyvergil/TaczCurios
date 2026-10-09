@@ -166,9 +166,9 @@ public class ZhenWo extends BoundCurioItem {
         // 强制免伤（写血出口）：仅玩家享有，结界激活期间提升为 100%
         applyForcedDamageReduction(entity, stack);
 
-        // 参考救世：周期性续期抗性提升，时长为无限，卸下时移除
-        if (entity.tickCount % 10 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, MobEffectInstance.INFINITE_DURATION,
+        // 参考救世：每 10 秒续期抗性提升（时长 2 分钟），卸下时移除
+        if (entity.tickCount % 200 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.zhenWoResistanceLevel.get(), false, false, true));
         }
 

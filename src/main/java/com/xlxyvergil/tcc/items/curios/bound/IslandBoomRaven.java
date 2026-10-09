@@ -91,9 +91,9 @@ public class IslandBoomRaven extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        // 隐身为永久（无限时长），周期性刷新作为保险，卸下时移除
+        // 隐身时长 2 分钟，按配置间隔周期续期，卸下时移除
         if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, MobEffectInstance.INFINITE_DURATION, 0, false, false, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2 * 60 * 20, 0, false, false, true));
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 MobEffect trueInvis = ForgeRegistries.MOB_EFFECTS.getValue(new ResourceLocation("irons_spellbooks", "true_invisibility"));
@@ -104,9 +104,9 @@ public class IslandBoomRaven extends BoundCurioItem {
             }
         }
 
-        // 生命恢复：与抗性提升一致，时长为无限、每 10t 刷新、卸下时移除
-        if (entity.tickCount % 10 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, MobEffectInstance.INFINITE_DURATION,
+        // 生命恢复：与抗性提升一致，时长 2 分钟、每 10 秒刷新、卸下时移除
+        if (entity.tickCount % 200 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get(), false, false, true));
         }
     }

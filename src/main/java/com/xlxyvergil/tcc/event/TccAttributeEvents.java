@@ -58,8 +58,8 @@ public class TccAttributeEvents {
         if (intendedDamage <= 0) return false;
         if (IMAGINARY_HURT_GUARD.contains(target)) return false;
 
-        target.invulnerableTime = 0;
-
+        // 无需清空 invulnerableTime：虚数伤害类型挂了 minecraft:bypasses_cooldown，
+        // 原版 hurt 会跳过无敌帧判断、直接走完整伤害分支。
         if (source.getEntity() instanceof LivingEntity attacker) {
             target.setLastHurtByMob(attacker);
         }

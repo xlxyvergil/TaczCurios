@@ -68,7 +68,7 @@ public class Salvation extends BoundCurioItem {
             livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
             livingEntity.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
-                MobEffectInstance.INFINITE_DURATION,
+                2 * 60 * 20,
                 2,
                 false, false, true));
             
@@ -132,11 +132,11 @@ public class Salvation extends BoundCurioItem {
         if (event.phase != TickEvent.Phase.END) return;
         if (event.player.level().isClientSide()) return;
         if (!isEquipped(event.player)) return;
-        // 抗性提升：只要装备即生效，移出枪械判定
-        if (event.player.tickCount % 10 == 0) {
+        // 抗性提升：只要装备即生效，移出枪械判定；每 10 秒续期（时长 2 分钟）
+        if (event.player.tickCount % 200 == 0) {
             event.player.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
-                MobEffectInstance.INFINITE_DURATION, TaczCuriosConfig.COMMON.salvationResistanceLevel.get(), false, false, true));
+                2 * 60 * 20, TaczCuriosConfig.COMMON.salvationResistanceLevel.get(), false, false, true));
         }
         if (!GunTypeChecker.isHoldingPistol(event.player)) {
             DamageResistanceHelper.clearDamageReduction(event.player);

@@ -60,6 +60,8 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        // 虚数伤害由本饰品自身发起，直接跳过，避免重复施加侵染（防重入由 applyImaginaryDamage 兜底）。
+        if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (event.getEntity().level().isClientSide) return;
 

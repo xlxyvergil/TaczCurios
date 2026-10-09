@@ -73,9 +73,9 @@ public class Tianhui extends BoundCurioItem {
         super.curioTick(slotContext, stack);
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
-        // 抗性提升：只要装备即生效，移出枪械判定
-        if (entity.tickCount % 10 == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, MobEffectInstance.INFINITE_DURATION,
+        // 抗性提升：只要装备即生效，移出枪械判定；每 10 秒续期（时长 2 分钟）
+        if (entity.tickCount % 200 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.tianhuiResistanceLevel.get(), false, false, true));
         }
         if (!matchesRestriction(entity)) {

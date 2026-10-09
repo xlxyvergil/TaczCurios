@@ -75,6 +75,8 @@ public class DominanceKey extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingHurtEvent event) {
+        // 虚数伤害由本饰品自身发起，直接跳过，省去无谓的前置检查（防重入由 applyImaginaryDamage 兜底）。
+        if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         LivingEntity attacker = resolveAttacker(event);
         if (attacker == null || !isEquipped(attacker)) return;
