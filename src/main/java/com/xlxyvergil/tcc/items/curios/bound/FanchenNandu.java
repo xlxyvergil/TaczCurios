@@ -95,7 +95,7 @@ public class FanchenNandu extends BoundCurioItem {
         double armor = attacker.getAttributeValue(Attributes.ARMOR);
         float imaginary = (float) (armor * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
-                TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+                TccDamageSources.imaginaryDamageMelee(target.level(), attacker), imaginary);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {

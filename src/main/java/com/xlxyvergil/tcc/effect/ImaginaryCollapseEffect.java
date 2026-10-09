@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.effect;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.evolution.GunKillDebugFallbackHandler;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.server.level.ServerLevel;
@@ -50,10 +49,6 @@ public class ImaginaryCollapseEffect extends MobEffect {
         if (finalDamage > 0) {
             // 从 NBT 读取侵染来源 attacker（由 TccAttributeEvents.applyImaginaryInfection 写入）
             LivingEntity attacker = resolveInfectionAttacker(entity);
-            // 刷新枪杀判定窗口，确保虚数崩 DoT 击杀时能通过 onLivingDeath 的时间窗口校验
-            if (attacker instanceof ServerPlayer sp) {
-                GunKillDebugFallbackHandler.refreshGunKillWindow(entity, sp);
-            }
             TccAttributeEvents.applyCollapseDamage(
                 entity,
                 TccDamageSources.imaginaryDamage(entity.level(), attacker),

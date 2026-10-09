@@ -8,11 +8,8 @@ import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -45,10 +42,6 @@ public class TccAttributeEvents {
      */
     private static final Set<LivingEntity> IMAGINARY_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
 
-    /** tacz:bullets：TACZ 枪械子弹伤害 tag */
-    private static final TagKey<DamageType> TACZ_BULLETS_TAG =
-        TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullets"));
-
     /**
      * 是否为主动攻击来源：玩家/生物普攻、枪械子弹（tacz:bullets）、虚数枪伤（tcc:imaginary_damage）。
      * 用于过滤其它模组在 LivingHurtEvent 中再入产生的强制子伤害（IN_FIRE / WIND_FLOW 等），避免栈溢出。
@@ -56,7 +49,7 @@ public class TccAttributeEvents {
     public static boolean isActiveAttackSource(DamageSource source) {
         return source.is(DamageTypes.PLAYER_ATTACK)
             || source.is(DamageTypes.MOB_ATTACK)
-            || source.is(TACZ_BULLETS_TAG)
+            || source.is(TccDamageSources.TACZ_BULLETS_TAG)
             || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
     }
 

@@ -95,7 +95,7 @@ public class BushiShiwu extends BoundCurioItem {
         double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
-                TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+                TccDamageSources.imaginaryDamageMelee(target.level(), attacker), imaginary);
         // 攻击命中时同时施加虚数侵染
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
     }

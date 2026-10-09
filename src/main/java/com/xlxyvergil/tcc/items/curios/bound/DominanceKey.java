@@ -88,7 +88,7 @@ public class DominanceKey extends BoundCurioItem {
         float imaginaryBonus = (float) (Math.round(imaginaryResistance * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
+            TccDamageSources.imaginaryDamageMelee(targetLiving.level(), attacker),
             imaginaryBonus
         );
     }

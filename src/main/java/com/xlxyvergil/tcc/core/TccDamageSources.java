@@ -18,6 +18,23 @@ public class TccDamageSources {
     public static final TagKey<DamageType> IMAGINARY_DAMAGE_TAG =
         TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tcc", "imaginary_damage"));
 
+    /**
+     * 近战专属虚数伤害类型：与枪械虚数共用 tcc:imaginary_damage tag（抗性结算/侵染逻辑一致），
+     * 但类型本身独立，供枪杀判定区分近战与枪械来源。
+     */
+    public static final ResourceKey<DamageType> IMAGINARY_DAMAGE_MELEE =
+        ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tcc", "imaginary_damage_melee"));
+
+    /** tacz:bullets：TACZ 枪械子弹伤害 tag（bullet / bullet_ignore_armor / bullet_void / bullet_void_ignore_armor）。 */
+    public static final TagKey<DamageType> TACZ_BULLETS_TAG =
+        TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("tacz", "bullets"));
+
+    public static DamageSource imaginaryDamageMelee(Level level, Entity attacker) {
+        return new DamageSource(
+            level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(IMAGINARY_DAMAGE_MELEE),
+            attacker, attacker);
+    }
+
     public static DamageSource imaginaryDamage(Level level, Entity attacker) {
         return new DamageSource(
             level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(IMAGINARY_DAMAGE),

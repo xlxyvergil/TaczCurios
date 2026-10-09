@@ -107,7 +107,7 @@ public class MetaMorph extends BoundCurioItem {
             * TaczCuriosConfig.COMMON.metaMorphImaginaryDamageScale.get());
         TccAttributeEvents.applyImaginaryDamage(
             target,
-            TccDamageSources.imaginaryDamage(target.level(), attacker),
+            TccDamageSources.imaginaryDamageMelee(target.level(), attacker),
             imaginaryBonus
         );
         // 攻击命中时同时施加虚数侵染

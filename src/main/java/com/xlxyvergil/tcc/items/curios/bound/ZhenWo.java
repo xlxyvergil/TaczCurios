@@ -284,7 +284,7 @@ public class ZhenWo extends BoundCurioItem {
                 if (beam.owner != null && beam.owner.isAlive() && !target.isDeadOrDying()) {
                     float imaginaryResistance = (float) beam.owner.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
                     float damage = (imaginaryResistance / 100.0f) * beam.owner.getMaxHealth();
-                    DamageSource source = TccDamageSources.imaginaryDamage(beam.owner.level(), beam.owner);
+                    DamageSource source = TccDamageSources.imaginaryDamageMelee(beam.owner.level(), beam.owner);
                     TccAttributeEvents.applyImaginaryDamage(target, source, damage);
                 }
             }

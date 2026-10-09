@@ -235,4 +235,10 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         tooltip.add(Component.translatable("tcc.tooltip.always_imaginary_collapse")
                 .withStyle(ChatFormatting.RED));
     }
+
+    // 仅枪械命中才触发虚数崩解的 tooltip（用于黑渊白花等崩解改为枪械专属的饰品）
+    protected void appendGunImaginaryCollapse(List<Component> tooltip) {
+        tooltip.add(Component.translatable("tcc.tooltip.gun_imaginary_collapse")
+                .withStyle(ChatFormatting.RED));
+    }
 }

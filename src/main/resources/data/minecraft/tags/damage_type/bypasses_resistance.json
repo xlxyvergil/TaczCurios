@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "tcc:imaginary_damage"
+    "tcc:imaginary_damage",
+    "tcc:imaginary_damage_melee"
   ]
 }

@@ -99,10 +99,8 @@ public class YuhunShixian extends BoundCurioItem {
                     -stripToughness, TOUGHNESS_STRIP_UUID,
                     "tcc.dawn_key.toughness_strip", AttributeModifier.Operation.ADDITION);
         }
-        // 攻击命中时同时施加虚数侵染
+        // 攻击命中时施加虚数侵染（崩解已不再由近战神之键施加）
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
-        // 先施侵染，再施加剧增崩解，确保崩解结算时目标带侵染
-        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingHurtEvent event) {
@@ -123,8 +121,6 @@ public class YuhunShixian extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
 
-        tooltip.add(Component.literal(""));
-        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

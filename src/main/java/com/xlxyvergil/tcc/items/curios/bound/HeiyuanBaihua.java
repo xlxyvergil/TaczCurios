@@ -79,13 +79,11 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (damage <= 0) return;
 
         TccAttributeEvents.applyImaginaryDamage(target,
-            TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
+            TccDamageSources.imaginaryDamageMelee(target.level(), attacker), damage);
 
-        // 先施加侵染，再施加剧增崩解，确保崩解结算时目标带侵染
+        // 近战路径只施加虚数侵染；崩解改为仅枪械命中时由 onGunHurtPost 施加
         TccAttributeEvents.applyInfection(target, attacker,
             TaczCuriosConfig.COMMON.specialImaginaryInfectionMaxLevel.get());
-
-        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -141,7 +139,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        appendAlwaysImaginaryCollapse(tooltip);
+        appendGunImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }
