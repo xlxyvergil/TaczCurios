@@ -59,8 +59,8 @@ public class SteelSlash extends TccCurioItem {
 
 
         double critChanceBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.steelSlashCritChance.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.steel_slash.effect",
-                String.format("%+.0f", critChanceBoost))
+        tooltip.add(formatModifierTooltip(critChanceBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_CHANCE.value().getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

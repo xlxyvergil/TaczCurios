@@ -7,7 +7,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.util.AiStopHelper;
+import com.xlxyvergil.tcc.util.SpeedZeroHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
@@ -33,10 +33,6 @@ import java.util.List;
 
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public class BushiShiwu extends BoundCurioItem {
-    private static int stopDuration() {
-        return TaczCuriosConfig.COMMON.bushiShiwuStopDurationSeconds.get() * 20;
-    }
-
     private static double armorImaginaryScale() {
         return TaczCuriosConfig.COMMON.bushiShiwuArmorImaginaryScale.get();
     }
@@ -70,6 +66,8 @@ public class BushiShiwu extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
+        // 虚数伤害由本饰品自身发起，直接跳过，避免重复施加侵染（防重入由 applyImaginaryDamage 兜底）。
+        if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
@@ -91,13 +89,13 @@ public class BushiShiwu extends BoundCurioItem {
             return;
         }
         if (attacker.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(attacker)) {
-            AiStopHelper.apply(target, stopDuration());
+            SpeedZeroHelper.apply(target);
         }
         double armor = attacker.getAttributeValue(Attributes.ARMOR);
         double resistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE);
         float imaginary = (float) (armor * (resistance / 100.0) * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
-                TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+                TccDamageSources.imaginaryDamageMelee(target.level(), attacker), imaginary);
         // 攻击命中时同时施加虚数侵染
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
     }

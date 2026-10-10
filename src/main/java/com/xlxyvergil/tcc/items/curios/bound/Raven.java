@@ -65,6 +65,14 @@ public class Raven extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR, ARMOR_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, MOVE_SPEED_ID);
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
+        // 隐身时长 2 分钟，卸下时移除
+        livingEntity.removeEffect(MobEffects.INVISIBILITY);
+        if (ModList.get().isLoaded("irons_spellbooks")) {
+            Holder<MobEffect> trueInvis = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "true_invisibility")).orElse(null);
+            if (trueInvis != null) {
+                livingEntity.removeEffect(trueInvis);
+            }
+        }
     }
 
     @Override
@@ -84,22 +92,17 @@ public class Raven extends BoundCurioItem {
 
         if (!matchesRestriction(entity)) return;
 
+        // 隐身时长 2 分钟，按配置间隔周期续期，卸下时移除
         if (entity.tickCount % TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() == 0) {
-            int duration = TaczCuriosConfig.COMMON.ravenInvisDuration.get();
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, duration, 0, false, false, true));
+            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2 * 60 * 20, 0, false, false, true));
 
             if (ModList.get().isLoaded("irons_spellbooks")) {
                 Holder<MobEffect> trueInvis = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "true_invisibility")).orElse(null);
                 if (trueInvis != null) {
-                    entity.addEffect(new MobEffectInstance(trueInvis, duration, 0, false, false, true));
+                    // 真实隐身保持原有时长（有限），按刷新间隔重复施加
+                    entity.addEffect(new MobEffectInstance(trueInvis, TaczCuriosConfig.COMMON.ravenInvisDuration.get(), 0, false, false, true));
                 }
             }
-        }
-
-        int lastHurtTs = entity.getLastHurtMobTimestamp();
-        int breakDelay = TaczCuriosConfig.COMMON.ravenInvisBreakDelay.get();
-        if (lastHurtTs > 0 && entity.tickCount - lastHurtTs == breakDelay) {
-            entity.removeEffect(MobEffects.INVISIBILITY);
         }
     }
 
@@ -124,7 +127,7 @@ public class Raven extends BoundCurioItem {
         double armorBoost = TaczCuriosConfig.COMMON.ravenArmorMultiplier.get() * 100;
         double speedBoost = TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get() * 100;
         double invisIntervalSecs = TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() / 20.0;
-        double invisDurationSecs = TaczCuriosConfig.COMMON.ravenInvisDuration.get() / 20.0;
+        double trueInvisDurationSecs = TaczCuriosConfig.COMMON.ravenInvisDuration.get() / 20.0;
 
         appendImaginaryResistance(stack, tooltip);
 
@@ -134,7 +137,7 @@ public class Raven extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.raven.special_invis",
                 String.format("%.1f", invisIntervalSecs),
-                String.format("%.1f", invisDurationSecs))
+                String.format("%.1f", trueInvisDurationSecs))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("tcc.tooltip.silent_movement")

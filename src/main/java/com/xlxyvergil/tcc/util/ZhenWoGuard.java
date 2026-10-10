@@ -19,16 +19,7 @@ public final class ZhenWoGuard {
         return ZhenWo.isBarrierActiveWearer(entity);
     }
 
-    public static boolean canPreventDeath(LivingEntity entity) {
-        return ZhenWo.canPreventDeath(entity);
-    }
-
     public static boolean isInsideActiveBarrier(LivingEntity entity) {
         return ZhenWo.isInsideActiveBarrier(entity);
-    }
-
-    /** 同步血量即将被写成 0 / 负值时的免死回调，由 ZhenWo 实现。 */
-    public static void onLethalHealthBlocked(LivingEntity entity) {
-        ZhenWo.onLethalHealthBlocked(entity);
     }
 }

@@ -16,11 +16,26 @@ import net.minecraft.world.item.Item;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AttributeHelper {
 
     /** 记录修饰符 ID → 来源饰品 Item，供客户端属性面板显示来源图标。 */
     private static final Map<ResourceLocation, Item> MODIFIER_SOURCES = new ConcurrentHashMap<>();
+
+    /**
+     * 修饰符变更版本号：本类每次「实际增删」修饰符时自增。
+     * 客户端可据此失效由属性修饰符派生的缓存（如属性面板的来源索引），避免每 tick 无条件重建。
+     */
+    private static final AtomicInteger MODIFIER_VERSION = new AtomicInteger();
+
+    public static int getModifierVersion() {
+        return MODIFIER_VERSION.get();
+    }
+
+    private static void bumpModifierVersion() {
+        MODIFIER_VERSION.incrementAndGet();
+    }
 
     /** 登记某个修饰符的来源饰品。 */
     public static void registerSourceItem(ResourceLocation id, Item item) {
@@ -156,18 +171,25 @@ public class AttributeHelper {
         AttributeInstance instance = getInstance(entity, attribute);
 
         if (instance != null) {
+            AttributeModifier existing = instance.getModifier(id);
+            // 幂等：数值与运算方式均未变化时直接跳过，避免反复移除/重加触发属性重算与客户端同步。
+            if (existing != null && existing.amount() == value && existing.operation() == operation) {
+                return;
+            }
             instance.removeModifier(id);
 
             AttributeModifier modifier = new AttributeModifier(id, value, operation);
             instance.addPermanentModifier(modifier);
+            bumpModifierVersion();
         }
     }
 
     public static void removeModifier(LivingEntity entity, Holder<Attribute> attribute, ResourceLocation id) {
         AttributeInstance instance = getInstance(entity, attribute);
 
-        if (instance != null) {
+        if (instance != null && instance.getModifier(id) != null) {
             instance.removeModifier(id);
+            bumpModifierVersion();
         }
     }
 
@@ -184,9 +206,16 @@ public class AttributeHelper {
             old = oldModifier.amount();
         }
         double newValue = old + delta;
+        // 幂等：叠加量为 0（结果未变）时无需重建修饰符。
+        if (oldModifier != null && old == newValue) {
+            return;
+        }
         instance.removeModifier(id);
         if (newValue != 0.0) {
             instance.addPermanentModifier(new AttributeModifier(id, newValue, operation));
+        }
+        if (oldModifier != null || newValue != 0.0) {
+            bumpModifierVersion();
         }
     }
 
@@ -206,6 +235,7 @@ public class AttributeHelper {
     private static void applyAllAttributesModifier(LivingEntity entity, ResourceLocation id,
                                                    double value, AttributeModifier.Operation operation,
                                                    Collection<? extends String> blacklist) {
+        boolean changed = false;
         for (Holder.Reference<Attribute> holder : BuiltInRegistries.ATTRIBUTE.holders().toList()) {
             if (blacklist != null && !blacklist.isEmpty()) {
                 ResourceLocation key = holder.key().location();
@@ -217,10 +247,27 @@ public class AttributeHelper {
             if (instance == null) {
                 continue;
             }
-            instance.removeModifier(id);
-            if (value != 0.0) {
-                instance.addTransientModifier(new AttributeModifier(id, value, operation));
+            AttributeModifier existing = instance.getModifier(id);
+            if (value == 0.0) {
+                // 清零：仅在修饰符确实存在时才移除，避免无谓的属性重算。
+                if (existing != null) {
+                    instance.removeModifier(id);
+                    changed = true;
+                }
+                continue;
             }
+            // 幂等：数值与运算方式均未变化时跳过，避免遍历全属性表时反复移除/重加。
+            if (existing != null && existing.amount() == value && existing.operation() == operation) {
+                continue;
+            }
+            if (existing != null) {
+                instance.removeModifier(id);
+            }
+            instance.addTransientModifier(new AttributeModifier(id, value, operation));
+            changed = true;
+        }
+        if (changed) {
+            bumpModifierVersion();
         }
     }
 }

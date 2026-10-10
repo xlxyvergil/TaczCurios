@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -20,20 +21,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.common.EventBusSubscriber;
+import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
-@EventBusSubscriber(modid = TaczCurios.MODID)
 public class Griseo extends BoundCurioItem {
-    private static final String COOLDOWN_KEY = TaczCurios.MODID + ":griseo_hurt_cooldown";
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "griseo_c8d9e0f1_6790");
 
     public Griseo(Properties properties) {
@@ -56,6 +51,7 @@ public class Griseo extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             IMAGINARY_RESISTANCE_ID);
+        DamageResistanceHelper.clearHurtCooldown(livingEntity);
     }
 
     public static boolean isEquipped(LivingEntity entity) {
@@ -68,29 +64,16 @@ public class Griseo extends BoundCurioItem {
             stack -> stack.getItem() instanceof Griseo);
     }
 
-    @SubscribeEvent
-    public static void onLivingHurt(LivingIncomingDamageEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
-        if (!GunTypeChecker.isHoldingAnyGun(entity)) return;
-
-        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
-        if (cooldown > 0) {
-            event.setCanceled(true);
-        } else {
-            entity.getPersistentData().putInt(COOLDOWN_KEY,
-                TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get());
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide) return;
+        // 受伤冷却仅在持枪时登记：持枪则注册受击自动冷却，非持枪则清除登记（已进入的冷却在剩余时间内继续生效）。
+        if (!GunTypeChecker.isHoldingAnyGun(entity)) {
+            DamageResistanceHelper.clearHurtCooldown(entity);
+            return;
         }
-    }
-
-    @SubscribeEvent
-    public static void onLivingTick(EntityTickEvent.Post event) {
-        if (!(event.getEntity() instanceof LivingEntity entity)) return;
-        if (!entity.isAlive()) return;
-        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
-        if (cooldown > 0) {
-            entity.getPersistentData().putInt(COOLDOWN_KEY, cooldown - 1);
-        }
+        DamageResistanceHelper.setHurtCooldown(entity, TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get());
     }
 
     @Override

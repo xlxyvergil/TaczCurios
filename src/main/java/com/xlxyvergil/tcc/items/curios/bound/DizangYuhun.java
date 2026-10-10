@@ -2,13 +2,14 @@ package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -69,8 +70,9 @@ public class DizangYuhun extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
-        // 仅响应真正的主动攻击，过滤 FastHurt 再入的强制子伤害，避免削甲削韧被子伤害重复触发
-        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
+        // 仅响应攻击者发起的近战攻击本身，不响应虚数伤害（近战附加子伤害、崩解 DoT）
+        DamageSource source = event.getSource();
+        if (!source.is(DamageTypes.PLAYER_ATTACK) && !source.is(DamageTypes.MOB_ATTACK)) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
         }
@@ -90,8 +92,11 @@ public class DizangYuhun extends BoundCurioItem {
         if (target.isDeadOrDying()) {
             return;
         }
-        double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * stripPercent() * 100.0) / 100.0;
-        double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * stripPercent() * 100.0) / 100.0;
+        // 削甲/削韧最多降至 0：削减量不超过属性当前值
+        double armor = target.getAttributeValue(Attributes.ARMOR);
+        double toughness = target.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
+        double stripArmor = Math.min(Math.round(armor * stripPercent() * 100.0) / 100.0, Math.max(0.0, armor));
+        double stripToughness = Math.min(Math.round(toughness * stripPercent() * 100.0) / 100.0, Math.max(0.0, toughness));
         if (stripArmor > 0) {
             AttributeHelper.applyStackingModifier(target, Attributes.ARMOR,
                     -stripArmor, ARMOR_STRIP_ID, AttributeModifier.Operation.ADD_VALUE);

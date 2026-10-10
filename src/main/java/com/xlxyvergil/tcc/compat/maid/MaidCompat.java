@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +29,11 @@ public final class MaidCompat {
 
     public static boolean isMaid(Entity entity) {
         return isLoaded() && MaidCompatInternal.isMaid(entity);
+    }
+
+    /** 女仆实体类型；女仆模组未加载时返回 null。 */
+    public static EntityType<? extends LivingEntity> getMaidEntityType() {
+        return isLoaded() ? MaidCompatInternal.getMaidEntityType() : null;
     }
 
     public static List<LivingEntity> getMaids(Level level) {

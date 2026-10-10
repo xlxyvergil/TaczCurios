@@ -50,7 +50,8 @@ public class OppressionPoint extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double meleeDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.oppressionPointMeleeDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.oppression_point.effect", String.format("%+.0f", meleeDamageBoost))
+        tooltip.add(formatModifierTooltip(meleeDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.ATTACK_DAMAGE.value().getDescriptionId()))
             .withStyle(ChatFormatting.BLUE));
 
         tooltip.add(Component.literal(""));

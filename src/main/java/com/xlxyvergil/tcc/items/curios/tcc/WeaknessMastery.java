@@ -57,8 +57,8 @@ public class WeaknessMastery extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.weakness_mastery.effect",
-                String.format("%+.0f", critDamageBoost))
+        tooltip.add(formatModifierTooltip(critDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.value().getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

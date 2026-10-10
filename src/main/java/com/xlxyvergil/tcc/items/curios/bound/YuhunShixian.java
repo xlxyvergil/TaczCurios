@@ -10,6 +10,8 @@ import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -66,9 +68,9 @@ public class YuhunShixian extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
-        // 仅响应真正的主动攻击（近战/枪械/虚数伤），过滤 FastHurt 再入产生的强制子伤害（残血 GENERIC_KILL 等），
-        // 避免崩解/侵染/削甲特效被子伤害重复触发，造成递归施加
-        if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
+        // 仅响应攻击者发起的近战攻击本身，不响应虚数伤害（近战附加子伤害、崩解 DoT）
+        DamageSource source = event.getSource();
+        if (!source.is(DamageTypes.PLAYER_ATTACK) && !source.is(DamageTypes.MOB_ATTACK)) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
         }
@@ -89,8 +91,11 @@ public class YuhunShixian extends BoundCurioItem {
             return;
         }
         double pct = ImaginaryResistanceHelper.getResistanceValue(attacker) / 100.0;
-        double stripArmor = Math.round(target.getAttributeValue(Attributes.ARMOR) * pct * 100.0) / 100.0;
-        double stripToughness = Math.round(target.getAttributeValue(Attributes.ARMOR_TOUGHNESS) * pct * 100.0) / 100.0;
+        // 削甲/削韧最多降至 0：削减量不超过属性当前值
+        double armor = target.getAttributeValue(Attributes.ARMOR);
+        double toughness = target.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
+        double stripArmor = Math.min(Math.round(armor * pct * 100.0) / 100.0, Math.max(0.0, armor));
+        double stripToughness = Math.min(Math.round(toughness * pct * 100.0) / 100.0, Math.max(0.0, toughness));
         if (stripArmor > 0) {
             AttributeHelper.applyStackingModifier(target, Attributes.ARMOR,
                     -stripArmor, ARMOR_STRIP_ID, AttributeModifier.Operation.ADD_VALUE);
@@ -99,10 +104,8 @@ public class YuhunShixian extends BoundCurioItem {
             AttributeHelper.applyStackingModifier(target, Attributes.ARMOR_TOUGHNESS,
                     -stripToughness, TOUGHNESS_STRIP_ID, AttributeModifier.Operation.ADD_VALUE);
         }
-        // 攻击命中时同时施加虚数侵染
+        // 攻击命中时施加虚数侵染（崩解已不再由近战神之键施加）
         TccAttributeEvents.applyInfection(target, attacker, ImaginaryInfectionHelper.resolveMaxLevel(attacker));
-        // 先施侵染，再施加剧增崩解，确保崩解结算时目标带侵染
-        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     private static LivingEntity resolveAttacker(LivingIncomingDamageEvent event) {
@@ -124,8 +127,6 @@ public class YuhunShixian extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
 
-        tooltip.add(Component.literal(""));
-        appendAlwaysImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

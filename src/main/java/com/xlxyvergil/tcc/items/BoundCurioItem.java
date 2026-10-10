@@ -1,43 +1,27 @@
 package com.xlxyvergil.tcc.items;
 
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.api.items.IBindable;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.items.materials.CollapseCrystal;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import net.minecraft.ChatFormatting;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import net.minecraft.nbt.CompoundTag;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import net.minecraft.network.chat.Component;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import net.minecraft.world.damagesource.DamageSource;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import net.minecraft.world.entity.player.Player;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import net.minecraft.world.item.ItemStack;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import top.theillusivec4.curios.api.SlotContext;
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
-import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import java.util.List;
 
 
@@ -230,6 +214,15 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     }
 
     
+    // 生成"效果名 + 等级"的 tooltip 组件（等级使用原版罗马数字本地化键）
+    protected static MutableComponent formatEffectTooltip(MobEffect effect, int amplifier) {
+        int level = amplifier + 1;
+        Component levelText = level <= 10
+                ? Component.translatable("enchantment.level." + level)
+                : Component.literal(String.valueOf(level));
+        return Component.translatable(effect.getDescriptionId()).append(" ").append(levelText);
+    }
+
     protected void appendBoundPlayer(ItemStack stack, List<Component> tooltip) {
         CompoundTag tag = ItemNbtHelper.getTag(stack);
         if (tag != null && tag.getBoolean("IsBound")) {
@@ -243,6 +236,12 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
     
     protected void appendAlwaysImaginaryCollapse(List<Component> tooltip) {
         tooltip.add(Component.translatable("tcc.tooltip.always_imaginary_collapse")
+                .withStyle(ChatFormatting.RED));
+    }
+
+    // 仅枪械命中才触发虚数崩解的 tooltip（用于黑渊白花等崩解改为枪械专属的饰品）
+    protected void appendGunImaginaryCollapse(List<Component> tooltip) {
+        tooltip.add(Component.translatable("tcc.tooltip.gun_imaginary_collapse")
                 .withStyle(ChatFormatting.RED));
     }
 }

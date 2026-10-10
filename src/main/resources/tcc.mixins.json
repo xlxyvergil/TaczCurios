@@ -9,12 +9,11 @@
   "mixins": [
     "DamageResistanceMixin",
     "ImaginaryDeathDropMixin",
-    "LevelGetEntitiesMixin",
     "LivingEntityEffectProtectionMixin",
     "RaidMixin",
-    "ServerLevelPlayersMixin",
     "SynchedEntityDataMixin"
   ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   },

@@ -84,8 +84,13 @@ public class ShijieFanyan extends BoundCurioItem {
     }
 
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity(), stack);
+    public boolean isEventDriven() {
+        return true;
+    }
+
+    @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
     }
 
     public static boolean isEquipped(LivingEntity livingEntity) {

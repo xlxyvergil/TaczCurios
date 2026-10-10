@@ -53,7 +53,8 @@ public class UralWolfTag extends TccCurioItem {
         tooltip.add(Component.literal(""));
         
         double multiplierBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.uralWolfTagHeadshotMultiplierBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.ural_wolf_tag.effect", String.format("%+.0f", multiplierBoost))
+        tooltip.add(formatModifierTooltip(multiplierBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.value().getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
         
         tooltip.add(Component.literal(""));

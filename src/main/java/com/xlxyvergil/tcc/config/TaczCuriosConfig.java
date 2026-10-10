@@ -53,7 +53,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.IntValue heavenFireApocalypseDelayDuration;
         
         
-        public final ModConfigSpec.DoubleValue imaginaryInfectionAmpPerLevel;
         public final ModConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ModConfigSpec.IntValue imaginaryInfectionDuration;
         public final ModConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
@@ -77,11 +76,21 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue judgementCollapseProcChance;
         public final ModConfigSpec.DoubleValue judgementKeyCritChance;
         public final ModConfigSpec.DoubleValue judgementKeyCritDamage;
+        /** 裁决之键：开镜蓄力达到满增伤所需时间（秒） */
+        public final ModConfigSpec.DoubleValue judgementKeyAimTimeToMax;
+        /** 裁决之键：开镜蓄力最高增伤（小数） */
+        public final ModConfigSpec.DoubleValue judgementKeyAimMaxAmp;
+        /** 裁决之键：附加魔法伤害溅射半径（格） */
+        public final ModConfigSpec.DoubleValue judgementKeySplashRadius;
 
         
         public final ModConfigSpec.DoubleValue sevenThundersHeadshotMultiplier;
         public final ModConfigSpec.DoubleValue sevenThundersCritChance;
         public final ModConfigSpec.DoubleValue sevenThundersCritDamage;
+        /** 涤罪七雷：开镜蓄力达到满增伤所需时间（秒） */
+        public final ModConfigSpec.DoubleValue sevenThundersAimTimeToMax;
+        /** 涤罪七雷：开镜蓄力最高增伤（小数） */
+        public final ModConfigSpec.DoubleValue sevenThundersAimMaxAmp;
 
         
         public final ModConfigSpec.DoubleValue sevenThundersThunderSeenHeadshotMultiplier;
@@ -89,6 +98,12 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue sevenThundersThunderSeenCritDamage;
         public final ModConfigSpec.DoubleValue sevenThundersThunderSeenProcChance;
         public final ModConfigSpec.DoubleValue sevenThundersThunderSeenExtraHpDamage;
+        /** 雷鸣见：开镜蓄力达到满增伤所需时间（秒） */
+        public final ModConfigSpec.DoubleValue sevenThundersThunderSeenAimTimeToMax;
+        /** 雷鸣见：开镜蓄力最高增伤（小数） */
+        public final ModConfigSpec.DoubleValue sevenThundersThunderSeenAimMaxAmp;
+        /** 雷鸣见：附加魔法伤害溅射半径（格） */
+        public final ModConfigSpec.DoubleValue sevenThundersThunderSeenSplashRadius;
 
         
         public final ModConfigSpec.DoubleValue heavenFireApocalypseDamageBoost;
@@ -237,17 +252,13 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue ravenSpeedMultiplier;
         public final ModConfigSpec.IntValue ravenInvisRefreshInterval;
         public final ModConfigSpec.IntValue ravenInvisDuration;
-        public final ModConfigSpec.IntValue ravenInvisBreakDelay;
 
         
         public final ModConfigSpec.DoubleValue islandBoomRavenArmorMultiplier;
         public final ModConfigSpec.DoubleValue islandBoomRavenSpeedMultiplier;
         public final ModConfigSpec.IntValue islandBoomRavenInvisRefreshInterval;
         public final ModConfigSpec.IntValue islandBoomRavenInvisDuration;
-        public final ModConfigSpec.IntValue islandBoomRavenInvisBreakDelay;
         public final ModConfigSpec.IntValue islandBoomRavenRegenAmplifier;
-        public final ModConfigSpec.IntValue islandBoomRavenRegenRefreshThreshold;
-        public final ModConfigSpec.IntValue islandBoomRavenRegenDuration;
         
         
         public final ModConfigSpec.DoubleValue salvationDamageReduction;
@@ -261,16 +272,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.IntValue endlessNearbyPlayerPotionAmplifier;
         public final ModConfigSpec.IntValue endlessNearbyPlayerDuration;
         public final ModConfigSpec.DoubleValue endlessNearbyPlayerRadius;
-
-        
-        
-        public final ModConfigSpec.DoubleValue curioAbsorptionTriggerHp;
-        
-        public final ModConfigSpec.IntValue curioAbsorptionLevel;
-        
-        public final ModConfigSpec.DoubleValue curioAbsorptionDuration;
-        
-        public final ModConfigSpec.DoubleValue curioAbsorptionCooldown;
 
         
         public final ModConfigSpec.DoubleValue soldierBasicTagDamageBoost;
@@ -350,10 +351,8 @@ public class TaczCuriosConfig {
         
 
         
-        public final ModConfigSpec.DoubleValue villVTriggerHpRatio;
-        public final ModConfigSpec.IntValue villVAbsorptionLevel;
-        public final ModConfigSpec.DoubleValue villVAbsorptionDuration;
-        public final ModConfigSpec.DoubleValue villVCooldownSeconds;
+        public final ModConfigSpec.IntValue villVAbsorptionAmount;
+        public final ModConfigSpec.IntValue villVAbsorptionInterval;
 
         
         public final ModConfigSpec.DoubleValue xukongWancangImaginaryDamage;
@@ -362,10 +361,8 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue xukongWancangHeatCooling;
 
         
-        public final ModConfigSpec.DoubleValue yuxiZhixiaTriggerHpRatio;
-        public final ModConfigSpec.IntValue yuxiZhixiaAbsorptionLevel;
-        public final ModConfigSpec.DoubleValue yuxiZhixiaAbsorptionDuration;
-        public final ModConfigSpec.DoubleValue yuxiZhixiaCooldownSeconds;
+        public final ModConfigSpec.IntValue yuxiZhixiaAbsorptionAmount;
+        public final ModConfigSpec.IntValue yuxiZhixiaAbsorptionInterval;
 
         
         public final ModConfigSpec.DoubleValue qishiZhijianImaginaryDamage;
@@ -375,8 +372,7 @@ public class TaczCuriosConfig {
 
         
         public final ModConfigSpec.IntValue luoxuanAbsorptionInterval;
-        public final ModConfigSpec.IntValue luoxuanAbsorptionLevel;
-        public final ModConfigSpec.IntValue luoxuanAbsorptionDuration;
+        public final ModConfigSpec.IntValue luoxuanAbsorptionAmount;
 
         
         public final ModConfigSpec.DoubleValue xukongWancangYZTHImaginaryDamageScale;
@@ -389,7 +385,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.IntValue adaptationMaxCount;
 
         
-        public final ModConfigSpec.IntValue kalpasMaxSlots;
         public final ModConfigSpec.DoubleValue kalpasAdaptFactor;
         public final ModConfigSpec.IntValue kalpasDecaySeconds;
 
@@ -397,7 +392,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue imerAttackDamageBonus;
 
         
-        public final ModConfigSpec.IntValue huajieZhiyanMaxSlots;
         public final ModConfigSpec.DoubleValue huajieZhiyanAdaptFactor;
         public final ModConfigSpec.IntValue huajieZhiyanDecaySeconds;
         public final ModConfigSpec.DoubleValue huajieZhiyanHealthPerResistance;
@@ -406,7 +400,6 @@ public class TaczCuriosConfig {
 
 
         
-        public final ModConfigSpec.IntValue aoMieMaxSlots;
         public final ModConfigSpec.DoubleValue aoMieAdaptFactor;
         public final ModConfigSpec.IntValue aoMieDecaySeconds;
         public final ModConfigSpec.DoubleValue aoMieHealthPerResistance;
@@ -418,6 +411,7 @@ public class TaczCuriosConfig {
         
         public final ModConfigSpec.DoubleValue suMaxHealthReduction;
         public final ModConfigSpec.DoubleValue suDamageTakenFactor;
+        public final ModConfigSpec.IntValue suResistanceLevel;
 
         
         public final ModConfigSpec.DoubleValue wanwuXiumianOverheal;
@@ -426,6 +420,7 @@ public class TaczCuriosConfig {
         
         public final ModConfigSpec.DoubleValue juezheMaxHealthReduction;
         public final ModConfigSpec.DoubleValue juezheDamageTakenFactor;
+        public final ModConfigSpec.IntValue juezheResistanceLevel;
 
         
         public final ModConfigSpec.DoubleValue tingzhiZhijianOverheal;
@@ -436,6 +431,7 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue tianhuiMaxHealthReduction;
         public final ModConfigSpec.DoubleValue tianhuiResistanceScale;
         public final ModConfigSpec.DoubleValue tianhuiMinDamageFactor;
+        public final ModConfigSpec.IntValue tianhuiResistanceLevel;
 
         
         public final ModConfigSpec.DoubleValue yinguoZhuanlunOverheal;
@@ -452,6 +448,9 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.IntValue zhenWoBarrierDurationSeconds;
         public final ModConfigSpec.IntValue zhenWoCooldownSeconds;
         public final ModConfigSpec.DoubleValue zhenWoDamageTakenFactor;
+        public final ModConfigSpec.IntValue zhenWoResistanceLevel;
+        public final ModConfigSpec.IntValue zhenWoAbsorptionAmount;
+        public final ModConfigSpec.IntValue zhenWoAbsorptionInterval;
 
         
 
@@ -538,18 +537,28 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue wangshiDeSheyingRemoveChance;
         public final ModConfigSpec.DoubleValue siZhiYiRemoveChance;
 
+        /** 枪击命中溅射：往世的蛇影 球型半径（格） */
+        public final ModConfigSpec.DoubleValue wangshiDeSheyingSplashRadius;
+        /** 枪击命中溅射：往世的蛇影 溅射魔法伤害占主手枪械面板伤害的比例（小数） */
+        public final ModConfigSpec.DoubleValue wangshiDeSheyingSplashPercent;
+        /** 枪击命中溅射：死之衣 球型半径（格） */
+        public final ModConfigSpec.DoubleValue siZhiYiSplashRadius;
+        /** 枪击命中溅射：死之衣 溅射魔法伤害占主手枪械面板伤害的比例（小数） */
+        public final ModConfigSpec.DoubleValue siZhiYiSplashPercent;
+        /** 枪击命中溅射：舍沙 球型半径（格） */
+        public final ModConfigSpec.DoubleValue sheshaSplashRadius;
+        /** 枪击命中溅射：舍沙 溅射魔法伤害占主手枪械面板伤害的比例（小数） */
+        public final ModConfigSpec.DoubleValue sheshaSplashPercent;
+
         
         public final ModConfigSpec.DoubleValue huaArmorPercent;
         public final ModConfigSpec.DoubleValue duchenZhiYuArmorPercent;
 
         
         public final ModConfigSpec.DoubleValue yuduchenStopChance;
-        public final ModConfigSpec.IntValue yuduchenStopDurationSeconds;
         public final ModConfigSpec.DoubleValue yuduchenArmorImaginaryScale;
         public final ModConfigSpec.DoubleValue fanchenNanduStopChance;
-        public final ModConfigSpec.IntValue fanchenNanduStopDurationSeconds;
         public final ModConfigSpec.DoubleValue fanchenNanduArmorImaginaryScale;
-        public final ModConfigSpec.IntValue bushiShiwuStopDurationSeconds;
         public final ModConfigSpec.DoubleValue bushiShiwuArmorImaginaryScale;
 
         
@@ -567,8 +576,6 @@ public class TaczCuriosConfig {
 
         
         public final ModConfigSpec.DoubleValue collapsePercentPerLevel;
-        public final ModConfigSpec.DoubleValue collapsePercentPerDebuff;
-        public final ModConfigSpec.IntValue collapseMaxDebuffCount;
 
         public final ModConfigSpec.DoubleValue criticalDelayCritChanceBoost;
         public final ModConfigSpec.DoubleValue criticalDelayFireRateReduction;
@@ -759,10 +766,7 @@ public class TaczCuriosConfig {
             builder.pop();
             
             
-            builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤计算公式：最终伤害 = 伤害 × (1 + 层数 × ampPerLevel)）").push("imaginary_infection");
-            imaginaryInfectionAmpPerLevel = builder
-                    .comment("每层虚数侵染的增伤比例 (默认: 0.1 = 10%/层)")
-                    .defineInRange("ampPerLevel", 0.1, 0.01, 1.0);
+            builder.comment("虚数侵染效果配置（纯标记，不再直接造成流血。流血由虚数崩解处理。增伤通过降低虚数抗性体现）").push("imaginary_infection");
             imaginaryInfectionMaxLevel = builder
                     .comment("虚数侵染效果最大等级上限 (默认: 99)")
                     .defineInRange("maxLevel", 99, 1, 99);
@@ -776,16 +780,10 @@ public class TaczCuriosConfig {
             
 
             
-            builder.comment("虚数崩解配置（虚数崩解基于虚数侵染层数和负面效果种数造成额外伤害）").push("imaginary_collapse");
+            builder.comment("虚数崩解配置（崩解按目标最大生命值比例每秒造成虚数伤害）").push("imaginary_collapse");
             collapsePercentPerLevel = builder
-                    .comment("崩解基础每秒造成的最大生命值伤害比例（不再随侵染等级线性放大；层数由通用侵染增伤体现） (默认: 0.025 ≈ 2.5%/秒)")
+                    .comment("崩解每秒造成的最大生命值伤害比例（不随侵染等级放大；侵染增益由降低虚数抗性体现） (默认: 0.025 ≈ 2.5%/秒)")
                     .defineInRange("percentPerLevel", 0.025, 0, 1);
-            collapsePercentPerDebuff = builder
-                    .comment("每种负面效果的崩解增伤比例 (默认: 0.1 = 10%/种)")
-                    .defineInRange("percentPerDebuff", 0.1, 0, 1);
-            collapseMaxDebuffCount = builder
-                    .comment("崩解计入的负面效果种数上限 (默认: 5)")
-                    .defineInRange("maxDebuffCount", 5, 1, 20);
             builder.pop();
 
             
@@ -833,7 +831,7 @@ public class TaczCuriosConfig {
                     .comment("爆头时触发额外伤害的几率 (默认: 0.1 = 10%)")
                     .defineInRange("procChance", 0.1, 0, 1);
             judgementDirectDamagePercent = builder
-                    .comment("直接真实伤害的比例（对无限伤实体） (默认: 0.3 = 30%)")
+                    .comment("附加魔法伤害（范围溅射）占爆头伤害的比例 (默认: 0.3 = 30%)")
                     .defineInRange("directDamagePercent", 0.3, 0, 1);
             judgementCollapseProcChance = builder
                     .comment("爆头时触发虚数崩解效果的几率 (默认: 0.5 = 50%)")
@@ -844,6 +842,15 @@ public class TaczCuriosConfig {
             judgementKeyCritDamage = builder
                     .comment("暴击伤害加成 (默认: 1.5 = +150%)")
                     .defineInRange("critDamage", 1.5, -1, 100);
+            judgementKeyAimTimeToMax = builder
+                    .comment("开镜蓄力达到满增伤所需时间（秒，默认: 5.0）")
+                    .defineInRange("aimTimeToMax", 5.0, 0.0, 60.0);
+            judgementKeyAimMaxAmp = builder
+                    .comment("开镜蓄力最高增伤（小数，默认: 3.0 = +300%）")
+                    .defineInRange("aimMaxAmp", 3.0, 0.0, 100.0);
+            judgementKeySplashRadius = builder
+                    .comment("爆头触发的附加魔法伤害以受击者为中心溅射的球型半径（格，默认: 20.0）")
+                    .defineInRange("splashRadius", 20.0, 0.0, 64.0);
             builder.pop();
 
             
@@ -857,6 +864,12 @@ public class TaczCuriosConfig {
             sevenThundersCritDamage = builder
                     .comment("暴击伤害加成 (默认: 0.5 = +50%)")
                     .defineInRange("critDamage", 0.5, -1, 100);
+            sevenThundersAimTimeToMax = builder
+                    .comment("开镜蓄力达到满增伤所需时间（秒，默认: 8.0）")
+                    .defineInRange("aimTimeToMax", 8.0, 0.0, 60.0);
+            sevenThundersAimMaxAmp = builder
+                    .comment("开镜蓄力最高增伤（小数，默认: 1.0 = +100%）")
+                    .defineInRange("aimMaxAmp", 1.0, 0.0, 100.0);
             builder.pop();
 
             
@@ -876,6 +889,15 @@ public class TaczCuriosConfig {
             sevenThundersThunderSeenExtraHpDamage = builder
                     .comment("触发时造成目标最大生命值的比例 (默认: 0.05 = 5%)")
                     .defineInRange("extraHpDamage", 0.05, 0, 1);
+            sevenThundersThunderSeenAimTimeToMax = builder
+                    .comment("开镜蓄力达到满增伤所需时间（秒，默认: 8.0）")
+                    .defineInRange("aimTimeToMax", 8.0, 0.0, 60.0);
+            sevenThundersThunderSeenAimMaxAmp = builder
+                    .comment("开镜蓄力最高增伤（小数，默认: 1.5 = +150%）")
+                    .defineInRange("aimMaxAmp", 1.5, 0.0, 100.0);
+            sevenThundersThunderSeenSplashRadius = builder
+                    .comment("爆头触发的附加魔法伤害以受击者为中心溅射的球型半径（格，默认: 10.0）")
+                    .defineInRange("splashRadius", 10.0, 0.0, 64.0);
             builder.pop();
             
             
@@ -1422,14 +1444,11 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             ravenInvisRefreshInterval = builder
-                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒)")
+                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒；普通隐身为永久，此间隔用于重复施加真实隐身)")
                     .defineInRange("invisRefreshInterval", 200, 1, 12000);
             ravenInvisDuration = builder
-                    .comment("隐身效果持续时间 (tick, 默认: 600 = 30秒)")
+                    .comment("真实隐身持续时间 (tick, 默认: 600 = 30秒；普通隐身为永久，此项仅用于真实隐身)")
                     .defineInRange("invisDuration", 600, 1, 12000);
-            ravenInvisBreakDelay = builder
-                    .comment("攻击后隐身破除延迟 (tick, 默认: 100 = 5秒)")
-                    .defineInRange("invisBreakDelay", 100, 0, 12000);
             builder.pop();
 
             
@@ -1441,23 +1460,14 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             islandBoomRavenInvisRefreshInterval = builder
-                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒)")
+                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒；普通隐身为永久，此间隔用于重复施加真实隐身)")
                     .defineInRange("invisRefreshInterval", 200, 1, 12000);
             islandBoomRavenInvisDuration = builder
-                    .comment("隐身效果持续时间 (tick, 默认: 600 = 30秒)")
+                    .comment("真实隐身持续时间 (tick, 默认: 600 = 30秒；普通隐身为永久，此项仅用于真实隐身)")
                     .defineInRange("invisDuration", 600, 1, 12000);
-            islandBoomRavenInvisBreakDelay = builder
-                    .comment("攻击后隐身破除延迟 (tick, 默认: 100 = 5秒)")
-                    .defineInRange("invisBreakDelay", 100, 0, 12000);
             islandBoomRavenRegenAmplifier = builder
-                    .comment("生命恢复等级 (默认: 1 = 再生 II)")
+                    .comment("生命恢复等级 (默认: 1 = 再生 II；时长为无限，装备期间每 10t 刷新)")
                     .defineInRange("regenAmplifier", 1, 0, 10);
-            islandBoomRavenRegenRefreshThreshold = builder
-                    .comment("生命恢复刷新阈值 (tick, 低于此时长重新施加, 默认: 40 = 2秒)")
-                    .defineInRange("regenRefreshThreshold", 40, 1, 12000);
-            islandBoomRavenRegenDuration = builder
-                    .comment("生命恢复持续时间 (tick, 默认: 120 = 6秒)")
-                    .defineInRange("regenDuration", 120, 1, 12000);
             builder.pop();
             
             
@@ -1604,22 +1614,6 @@ public class TaczCuriosConfig {
             builder.pop();
             
             
-            builder.comment("吸收饰品通用配置（低血量触发黄心）").push("curio_absorption");
-            curioAbsorptionTriggerHp = builder
-                    .comment("触发血量阈值 (0~1, 默认: 0.25 = 25%)")
-                    .defineInRange("triggerHp", 0.25, 0, 1);
-            curioAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 4 = ABSORPTION IV)")
-                    .defineInRange("absorptionLevel", 4, 1, 255);
-            curioAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 60)")
-                    .defineInRange("absorptionDuration", 60.0, 1, 2147483647);
-            curioAbsorptionCooldown = builder
-                    .comment("吸收效果冷却(秒) (默认: 180)")
-                    .defineInRange("cooldown", 180.0, 0, 2147483647);
-            builder.pop();
-
-            
             builder.comment("格蕾修饰品配置").push("griseo");
             griseoHurtCooldownTicks = builder
                     .comment("受伤冷却基础冷却(tick) (默认: 10 = 0.5秒)")
@@ -1696,18 +1690,12 @@ public class TaczCuriosConfig {
 
             
             builder.comment("维尔薇饰品配置").push("vill_v");
-            villVTriggerHpRatio = builder
-                    .comment("触发吸收效果的血量阈值 (默认: 0.2 = 20%)")
-                    .defineInRange("triggerHpRatio", 0.2, 0, 1);
-            villVAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 3 = ABSORPTION III)")
-                    .defineInRange("absorptionLevel", 3, 1, 255);
-            villVAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 60)")
-                    .defineInRange("absorptionDuration", 60.0, 1, 3600);
-            villVCooldownSeconds = builder
-                    .comment("吸收触发冷却时间(秒) (默认: 60)")
-                    .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            villVAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 100；2点=1颗黄心，即50颗黄心)")
+                    .defineInRange("absorptionAmount", 100, 1, 100000);
+            villVAbsorptionInterval = builder
+                    .comment("黄心补满间隔(秒) (默认: 15)")
+                    .defineInRange("absorptionInterval", 15, 1, 3600);
             builder.pop();
 
             
@@ -1728,18 +1716,12 @@ public class TaczCuriosConfig {
 
             
             builder.comment("愚戏之匣饰品配置").push("yuxi_zhixia");
-            yuxiZhixiaTriggerHpRatio = builder
-                    .comment("触发吸收效果的血量阈值 (默认: 0.3 = 30%)")
-                    .defineInRange("triggerHpRatio", 0.3, 0, 1);
-            yuxiZhixiaAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 6 = ABSORPTION VI)")
-                    .defineInRange("absorptionLevel", 6, 1, 255);
-            yuxiZhixiaAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 60)")
-                    .defineInRange("absorptionDuration", 60.0, 1, 3600);
-            yuxiZhixiaCooldownSeconds = builder
-                    .comment("吸收触发冷却时间(秒) (默认: 60)")
-                    .defineInRange("cooldownSeconds", 60.0, 1, 3600);
+            yuxiZhixiaAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 200；2点=1颗黄心，即100颗黄心)")
+                    .defineInRange("absorptionAmount", 200, 1, 100000);
+            yuxiZhixiaAbsorptionInterval = builder
+                    .comment("黄心补满间隔(秒) (默认: 15)")
+                    .defineInRange("absorptionInterval", 15, 1, 3600);
             builder.pop();
 
             
@@ -1761,14 +1743,11 @@ public class TaczCuriosConfig {
             
             builder.comment("螺旋饰品配置").push("luoxuan");
             luoxuanAbsorptionInterval = builder
-                    .comment("吸收效果施加间隔(秒) (默认: 30)")
-                    .defineInRange("absorptionInterval", 30, 1, 3600);
-            luoxuanAbsorptionLevel = builder
-                    .comment("吸收效果等级 (默认: 9 = ABSORPTION Ⅸ )")
-                    .defineInRange("absorptionLevel", 9, 1, 255);
-            luoxuanAbsorptionDuration = builder
-                    .comment("吸收效果持续时间(秒) (默认: 30)")
-                    .defineInRange("absorptionDuration", 30, 1, 3600);
+                    .comment("黄心补满间隔(秒) (默认: 5)")
+                    .defineInRange("absorptionInterval", 5, 1, 3600);
+            luoxuanAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 400；2点=1颗黄心，即200颗黄心)")
+                    .defineInRange("absorptionAmount", 400, 1, 100000);
             builder.pop();
 
             
@@ -1799,9 +1778,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("千劫饰品配置").push("kalpas");
-            kalpasMaxSlots = builder
-                    .comment("适应最大槽位 (默认: 3)")
-                    .defineInRange("maxSlots", 3, 1, 100);
             kalpasAdaptFactor = builder
                     .comment("每层减伤比例 (默认: 0.2 = 20%)")
                     .defineInRange("adaptFactor", 0.2, 0.0, 1.0);
@@ -1819,9 +1795,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("坏劫之焱饰品配置").push("huajie_zhiyan");
-            huajieZhiyanMaxSlots = builder
-                    .comment("适应最大槽位 (默认: 4)")
-                    .defineInRange("maxSlots", 4, 1, 100);
             huajieZhiyanAdaptFactor = builder
                     .comment("每层减伤比例 (默认: 0.3 = 30%)")
                     .defineInRange("adaptFactor", 0.3, 0.0, 1.0);
@@ -1838,9 +1811,6 @@ public class TaczCuriosConfig {
 
             
             builder.comment("鏖灭饰品配置").push("aomie");
-            aoMieMaxSlots = builder
-                    .comment("适应最大槽位 (默认: 6)")
-                    .defineInRange("maxSlots", 6, 1, 100);
             aoMieAdaptFactor = builder
                     .comment("每层减伤比例 (默认: 0.5 = 50%)")
                     .defineInRange("adaptFactor", 0.5, 0.0, 1.0);
@@ -1870,6 +1840,9 @@ public class TaczCuriosConfig {
             suDamageTakenFactor = builder
                     .comment("受到伤害降低比例 (默认: 0.1 = 降低10%)")
                     .defineInRange("damageTakenFactor", 0.1, 0.0, 1.0);
+            suResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 0 = 抗性I)")
+                    .defineInRange("resistanceLevel", 0, 0, 10);
             builder.pop();
 
             
@@ -1890,6 +1863,9 @@ public class TaczCuriosConfig {
             juezheDamageTakenFactor = builder
                     .comment("受到伤害降低比例 (默认: 0.3 = 降低30%)")
                     .defineInRange("damageTakenFactor", 0.3, 0.0, 1.0);
+            juezheResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 2 = 抗性III)")
+                    .defineInRange("resistanceLevel", 2, 0, 10);
             builder.pop();
 
             
@@ -1916,6 +1892,9 @@ public class TaczCuriosConfig {
             tianhuiMinDamageFactor = builder
                     .comment("最低伤害乘算因子 (默认: 0.1 = 10%)")
                     .defineInRange("minDamageFactor", 0.1, 0.0, 1.0);
+            tianhuiResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 1 = 抗性II)")
+                    .defineInRange("resistanceLevel", 1, 0, 10);
             builder.pop();
 
             
@@ -1940,8 +1919,8 @@ public class TaczCuriosConfig {
                     .comment("全属性提升比例（乘法） (默认: 0.5 = +50%)")
                     .defineInRange("allAttributesPercent", 0.5, -1, 100);
             zhenWoTriggerHpRatio = builder
-                    .comment("触发结界时的血量比例阈值 (默认: 0.05 = 5%)")
-                    .defineInRange("triggerHpRatio", 0.05, 0.0, 1.0);
+                    .comment("触发结界时的血量比例阈值 (默认: 0.5 = 50%)")
+                    .defineInRange("triggerHpRatio", 0.5, 0.0, 1.0);
             zhenWoBarrierRadius = builder
                     .comment("结界影响半径（格） (默认: 64)")
                     .defineInRange("barrierRadius", 64.0, 1.0, 512.0);
@@ -1960,6 +1939,15 @@ public class TaczCuriosConfig {
             zhenWoDamageTakenFactor = builder
                     .comment("减伤（苏同款）：受到伤害降低比例 (默认: 0.8 = 降低80%)")
                     .defineInRange("damageTakenFactor", 0.8, 0.0, 1.0);
+            zhenWoResistanceLevel = builder
+                    .comment("抗性提升等级 (默认: 4 = 抗性V)")
+                    .defineInRange("resistanceLevel", 4, 0, 10);
+            zhenWoAbsorptionAmount = builder
+                    .comment("黄心吸收量 (默认: 600；2点=1颗黄心，即300颗黄心)")
+                    .defineInRange("absorptionAmount", 600, 1, 100000);
+            zhenWoAbsorptionInterval = builder
+                    .comment("黄心补满间隔(秒) (默认: 5)")
+                    .defineInRange("absorptionInterval", 5, 1, 3600);
             builder.pop();
 
             
@@ -2207,6 +2195,12 @@ public class TaczCuriosConfig {
             sheshaBuffRemovalFactor = builder
                     .comment("舍沙移除目标有益 buff 的概率系数：概率 = 佩戴者虚数抗性 × 本系数，封顶 100%（默认: 0.01 = 抗性/100）")
                     .defineInRange("buffRemovalFactor", 0.01, 0.0, 1.0);
+            sheshaSplashRadius = builder
+                    .comment("枪击命中后，以受击者为中心对周围生物（含受击者）施加额外魔法伤害的球型半径（格，默认: 20.0）")
+                    .defineInRange("splashRadius", 20.0, 0.0, 64.0);
+            sheshaSplashPercent = builder
+                    .comment("溅射魔法伤害占主手枪械面板伤害的比例（小数，默认: 0.30 = 30%）")
+                    .defineInRange("splashPercent", 0.30, 0.0, 100.0);
             builder.pop();
 
             
@@ -2226,7 +2220,7 @@ public class TaczCuriosConfig {
                             "taa:ads_time", "taa:heat_overheat_time", "taa:reload_time",
                             "taa:explosion_destroy_blocknew", "taa:explosion_delay",
                             "gunsmithlib:vert_recoil", "gunsmithlib:horz_recoil", "gunsmithlib:reload_speed",
-                            "sometaczaddon:gun_recoil_effect"
+                            "sometaczaddon:gun_recoil_effect", "forge:step_height_addition"
                     ), o -> o instanceof String);
             builder.pop();
 
@@ -2235,12 +2229,24 @@ public class TaczCuriosConfig {
             wangshiDeSheyingRemoveChance = builder
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.01 = 1%)")
                     .defineInRange("removeChance", 0.01, 0.0, 1.0);
+            wangshiDeSheyingSplashRadius = builder
+                    .comment("枪击命中后，以受击者为中心对周围生物（含受击者）施加额外魔法伤害的球型半径（格，默认: 10.0）")
+                    .defineInRange("splashRadius", 10.0, 0.0, 64.0);
+            wangshiDeSheyingSplashPercent = builder
+                    .comment("溅射魔法伤害占主手枪械面板伤害的比例（小数，默认: 0.10 = 10%）")
+                    .defineInRange("splashPercent", 0.10, 0.0, 100.0);
             builder.pop();
 
             builder.comment("往世的蛇影·死之衣饰品配置").push("si_zhi_yi");
             siZhiYiRemoveChance = builder
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.05 = 5%)")
                     .defineInRange("removeChance", 0.05, 0.0, 1.0);
+            siZhiYiSplashRadius = builder
+                    .comment("枪击命中后，以受击者为中心对周围生物（含受击者）施加额外魔法伤害的球型半径（格，默认: 15.0）")
+                    .defineInRange("splashRadius", 15.0, 0.0, 64.0);
+            siZhiYiSplashPercent = builder
+                    .comment("溅射魔法伤害占主手枪械面板伤害的比例（小数，默认: 0.20 = 20%）")
+                    .defineInRange("splashPercent", 0.20, 0.0, 100.0);
             builder.pop();
 
             
@@ -2259,11 +2265,8 @@ public class TaczCuriosConfig {
             
             builder.comment("羽渡尘饰品配置").push("yuduchen");
             yuduchenStopChance = builder
-                    .comment("攻击停止目标 AI 概率 (默认: 0.05 = 5%)")
+                    .comment("攻击使目标移动速度归零的概率 (默认: 0.05 = 5%)")
                     .defineInRange("stopChance", 0.05, 0.0, 1.0);
-            yuduchenStopDurationSeconds = builder
-                    .comment("停止 AI 时长（秒） (默认: 5)")
-                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
             yuduchenArmorImaginaryScale = builder
                     .comment("攻击时附加（护甲值 × 该比例）的虚数伤害 (默认: 0.30 = 30%)")
                     .defineInRange("armorImaginaryScale", 0.30, 0.0, 100.0);
@@ -2271,20 +2274,15 @@ public class TaczCuriosConfig {
 
             builder.comment("凡尘难渡饰品配置").push("fanchen_nandu");
             fanchenNanduStopChance = builder
-                    .comment("攻击停止目标 AI 概率 (默认: 0.15 = 15%)")
+                    .comment("攻击使目标移动速度归零的概率 (默认: 0.15 = 15%)")
                     .defineInRange("stopChance", 0.15, 0.0, 1.0);
-            fanchenNanduStopDurationSeconds = builder
-                    .comment("停止 AI 时长（秒） (默认: 5)")
-                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
             fanchenNanduArmorImaginaryScale = builder
                     .comment("攻击时附加（护甲值 × 该比例）的虚数伤害 (默认: 0.50 = 50%)")
                     .defineInRange("armorImaginaryScale", 0.50, 0.0, 100.0);
             builder.pop();
 
             builder.comment("不识时务饰品配置").push("bushi_shiwu");
-            bushiShiwuStopDurationSeconds = builder
-                    .comment("停止 AI 时长（秒） (默认: 5)")
-                    .defineInRange("stopDurationSeconds", 5, 1, 3600);
+            // 触发概率取佩戴者的虚数抗性概率（见 ImaginaryResistanceHelper），命中时使目标移动速度归零
             bushiShiwuArmorImaginaryScale = builder
                     .comment("攻击时附加（虚数抗性值/100 × 护甲值 × 该比例）的虚数伤害 (默认: 1.0)")
                     .defineInRange("armorImaginaryScale", 1.0, 0.0, 100.0);

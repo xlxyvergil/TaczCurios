@@ -64,8 +64,11 @@ public class HollowPoint extends TccCurioItem {
 
         double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.hollowPointCritDamage.get() ) * 100;
         double pistolDamageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.hollowPointPistolDamageReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.hollow_point.effect",
-                String.format("%+.0f", critDamageBoost), String.format("%+.0f", pistolDamageReduction))
+        tooltip.add(formatModifierTooltip(critDamageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.CRIT_DAMAGE.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(pistolDamageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_PISTOL.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

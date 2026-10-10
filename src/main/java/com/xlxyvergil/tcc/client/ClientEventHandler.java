@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.client;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.client.gui.GunRefitScreen;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
@@ -8,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -19,6 +21,7 @@ public class ClientEventHandler {
     
     @SubscribeEvent
     public static void onCurioChanged(SlotModifiersUpdatedEvent event) {
+        CurioSearchHelper.invalidate(event.getEntity());
         refreshHeldGunTooltip();
         refreshRefitScreen();
     }
@@ -59,5 +62,11 @@ public class ClientEventHandler {
         if (event.getNewScreen() instanceof GunRefitScreen) {
             refreshHeldGunTooltip();
         }
+    }
+
+    // 推进渡鸦神之键开镜蓄力进度条的客户端计时
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        RavenKeyChargeHud.tick();
     }
 }

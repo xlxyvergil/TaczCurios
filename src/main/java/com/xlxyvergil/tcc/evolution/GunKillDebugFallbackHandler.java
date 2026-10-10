@@ -4,6 +4,7 @@ import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.capability.GunKillDataCapability;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
+import com.xlxyvergil.tcc.core.TccDamageSources;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,22 +23,7 @@ import net.neoforged.fml.LogicalSide;
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class GunKillDebugFallbackHandler {
 
-    
-    private static final long DEATH_WINDOW_TICKS = 40L;
-
     private GunKillDebugFallbackHandler() {
-    }
-
-    
-    public static void refreshGunKillWindow(LivingEntity target, ServerPlayer attacker) {
-        // 复用已有 gunId，避免虚数崩解 DoT 刷新窗口时丢失枪械类型判定（如 pistol）
-        String gunId = "";
-        GunKillDataCapability.GunKillData existing = GunKillDataCapability.getData(target);
-        if (existing != null && existing.gunId != null) {
-            gunId = existing.gunId;
-        }
-        GunKillDataCapability.setGunData(target,
-            attacker.getStringUUID(), gunId, attacker.level().getGameTime(), target.getStringUUID());
     }
 
     @SubscribeEvent
@@ -72,10 +58,17 @@ public final class GunKillDebugFallbackHandler {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
-        if (!(event.getEntity().level() instanceof ServerLevel level)) {
+        if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
         }
         LivingEntity killed = event.getEntity();
+
+        // 致命来源必须为枪械伤害：TACZ 子弹（tacz:bullets）或枪械虚数伤害（精确 tcc:imaginary_damage，
+        // 不含近战专属 tcc:imaginary_damage_melee）；以此取代旧的命中后时间窗口判定。
+        DamageSource source = event.getSource();
+        if (!isGunKillSource(source)) {
+            return;
+        }
 
         
         GunKillDataCapability.GunKillData data = GunKillDataCapability.getData(killed);
@@ -90,7 +83,6 @@ public final class GunKillDebugFallbackHandler {
 
         
         String attackerUuid = data.attacker;
-        DamageSource source = event.getSource();
         Entity sourceEntity = source.getEntity();
         if (sourceEntity == null || !sourceEntity.getUUID().toString().equals(attackerUuid)) {
             return;
@@ -98,12 +90,6 @@ public final class GunKillDebugFallbackHandler {
         
         Player player = MaidCompat.resolveOwnerPlayer(sourceEntity);
         if (!(player instanceof ServerPlayer)) {
-            return;
-        }
-
-        
-        long now = level.getGameTime();
-        if (now - data.tick > DEATH_WINDOW_TICKS) {
             return;
         }
 
@@ -118,6 +104,12 @@ public final class GunKillDebugFallbackHandler {
         }
 
         GunKillEventHandler.handleGunKill(player, killed, gunId);
+    }
+
+    /** 致命来源是否为枪械：TACZ 子弹伤害，或枪械虚数伤害（精确匹配，排除近战虚数类型）。 */
+    private static boolean isGunKillSource(DamageSource source) {
+        return source.is(TccDamageSources.TACZ_BULLETS_TAG)
+            || source.is(TccDamageSources.IMAGINARY_DAMAGE);
     }
 
     private static LivingEntity resolveHurtEntity(EntityHurtByGunEvent.Pre event) {

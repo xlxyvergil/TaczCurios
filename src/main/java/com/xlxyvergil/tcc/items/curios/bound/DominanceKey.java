@@ -26,7 +26,6 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,8 +55,13 @@ public class DominanceKey extends BoundCurioItem {
     }
 
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity(), stack);
+    public boolean isEventDriven() {
+        return true;
+    }
+
+    @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
     }
 
     @Override
@@ -72,6 +76,8 @@ public class DominanceKey extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
+        // 虚数伤害由本饰品自身发起，直接跳过，省去无谓的前置检查（防重入由 applyImaginaryDamage 兜底）。
+        if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         LivingEntity attacker = resolveAttacker(event);
         if (attacker == null || !isEquipped(attacker)) return;
@@ -85,7 +91,7 @@ public class DominanceKey extends BoundCurioItem {
         float imaginaryBonus = (float) (Math.round(imaginaryResistance * 10000.0) / 10000.0);
         TccAttributeEvents.applyImaginaryDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
+            TccDamageSources.imaginaryDamageMelee(targetLiving.level(), attacker),
             imaginaryBonus
         );
     }

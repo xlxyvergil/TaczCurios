@@ -58,7 +58,8 @@ public class SplitChamber extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double ammoBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.split_chamber.effect", String.format("%+.0f", ammoBoost))
+        tooltip.add(formatModifierTooltip(ammoBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_COUNT.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

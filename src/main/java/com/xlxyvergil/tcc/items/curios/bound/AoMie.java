@@ -58,7 +58,6 @@ public class AoMie extends BoundCurioItem {
         if (matchesRestriction(livingEntity)) {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 CurioAdaptationCapability.of(livingEntity).register(ADAPT_ID,
-                    TaczCuriosConfig.COMMON.aoMieMaxSlots.get(),
                     TaczCuriosConfig.COMMON.aoMieAdaptFactor.get(),
                     TaczCuriosConfig.COMMON.aoMieDecaySeconds.get());
                 livingEntity.getPersistentData().putBoolean(ADAPT_REGISTERED_KEY, true);
@@ -73,6 +72,12 @@ public class AoMie extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_ID);
         unregisterAdaptation(livingEntity);
+    }
+
+    /** 最大生命由虚数抗性总值换算，需随其变化重算。 */
+    @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
     }
 
     private void unregisterAdaptation(LivingEntity livingEntity) {
@@ -104,7 +109,6 @@ public class AoMie extends BoundCurioItem {
         super.appendHoverText(stack, context, tooltip, flag);
 
         appendImaginaryResistance(stack, tooltip);
-        int maxSlots = TaczCuriosConfig.COMMON.aoMieMaxSlots.get();
         double adaptFactor = TaczCuriosConfig.COMMON.aoMieAdaptFactor.get() * 100;
         int decaySeconds = TaczCuriosConfig.COMMON.aoMieDecaySeconds.get();
 
@@ -124,8 +128,7 @@ public class AoMie extends BoundCurioItem {
                 .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("item.tcc.aomie.special_adapt",
-                maxSlots,
-                String.format("%.2f", adaptFactor),
+                String.format("%.0f", adaptFactor),
                 decaySeconds)
             .withStyle(ChatFormatting.RED));
 

@@ -79,10 +79,6 @@ public class LaZhiYan extends BoundCurioItem {
         if (player.getRandom().nextDouble() < ImaginaryResistanceHelper.getResistanceProbability(player)) {
             event.setAmount(event.getAmount() * damageMultiplier());
         }
-        LivingEntity target = event.getEntity();
-        if (!target.isDeadOrDying()) {
-            TccAttributeEvents.applyCollapse(target, player);
-        }
     }
 
     @SubscribeEvent
@@ -99,6 +95,19 @@ public class LaZhiYan extends BoundCurioItem {
         ImaginaryConversionHelper.convertToImaginary(event);
     }
 
+    @SubscribeEvent
+    public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
+        if (event.getLogicalSide().isClient()) return;
+        LivingEntity attacker = event.getAttacker();
+        if (attacker == null) return;
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(attacker,
+                stack -> stack.getItem() instanceof LaZhiYan);
+        if (equipped.isEmpty()) return;
+        if (!(event.getHurtEntity() instanceof LivingEntity target)) return;
+        if (target.isDeadOrDying() || target == attacker) return;
+        TccAttributeEvents.applyCollapse(target, attacker);
+    }
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
@@ -111,7 +120,7 @@ public class LaZhiYan extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
-        appendAlwaysImaginaryCollapse(tooltip);
+        appendGunImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

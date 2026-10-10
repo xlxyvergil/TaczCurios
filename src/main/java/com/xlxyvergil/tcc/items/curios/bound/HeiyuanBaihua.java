@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
@@ -14,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -58,6 +60,8 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
+        // 虚数伤害由本饰品自身发起，直接跳过，避免重复施加侵染（防重入由 applyImaginaryDamage 兜底）。
+        if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (event.getEntity().level().isClientSide) return;
 
@@ -66,6 +70,8 @@ public class HeiyuanBaihua extends BoundCurioItem {
 
         DamageSource source = event.getSource();
         if (!(source.getEntity() instanceof LivingEntity attacker)) return;
+        // 收束：仅玩家与女仆可触发黑渊白花的效果，其他实体直接跳过以削减开销
+        if (!(attacker instanceof Player) && !MaidCompat.isMaid(attacker)) return;
         if (target == attacker) return;
         if (!isEquipped(attacker)) return;
 
@@ -75,13 +81,11 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (damage <= 0) return;
 
         TccAttributeEvents.applyImaginaryDamage(target,
-            TccDamageSources.imaginaryDamage(target.level(), attacker), damage);
+            TccDamageSources.imaginaryDamageMelee(target.level(), attacker), damage);
 
-        // 先施加侵染，再施加剧增崩解，确保崩解结算时目标带侵染
+        // 近战路径只施加虚数侵染；崩解改为仅枪械命中时由 onGunHurtPost 施加
         TccAttributeEvents.applyInfection(target, attacker,
             TaczCuriosConfig.COMMON.specialImaginaryInfectionMaxLevel.get());
-
-        TccAttributeEvents.applyCollapse(target, attacker);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -93,7 +97,10 @@ public class HeiyuanBaihua extends BoundCurioItem {
         if (target.isDeadOrDying()) return;
 
         LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !isEquipped(attacker)) return;
+        if (attacker == null) return;
+        // 收束：仅玩家与女仆可触发黑渊白花的效果，其他实体直接跳过以削减开销
+        if (!(attacker instanceof Player) && !MaidCompat.isMaid(attacker)) return;
+        if (!isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (target == attacker) return;
 
@@ -135,7 +142,7 @@ public class HeiyuanBaihua extends BoundCurioItem {
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
         tooltip.add(Component.literal(""));
-        appendAlwaysImaginaryCollapse(tooltip);
+        appendGunImaginaryCollapse(tooltip);
         appendBoundPlayer(stack, tooltip);
     }
 }

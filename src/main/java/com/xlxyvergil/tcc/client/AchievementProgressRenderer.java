@@ -18,7 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @OnlyIn(Dist.CLIENT)
@@ -43,48 +45,64 @@ public final class AchievementProgressRenderer {
         try {
             ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
             if (itemId == null) return;
-            String currentId = itemId.toString();
 
-            for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.all()) {
-                if (!def.isEnabled()) continue;
-                AchievementDefinitions.Reward reward = def.reward();
-                if (reward == null || !reward.isEvolve()) continue;
+            // 按「进化源物品」建索引，避免每帧遍历全部成就。
+            AchievementDefinitions.AchievementDef def = getEvolveSourceIndex().get(itemId.toString());
+            if (def == null) return;
 
-                
-                boolean isSource = currentId.equals(reward.item());
-                if (!isSource && reward.linkedEvolves() != null) {
-                    for (AchievementDefinitions.LinkedEvolveRef ref : reward.linkedEvolves()) {
-                        if (ref.item() != null && currentId.equals(ref.item())) {
-                            isSource = true;
-                            break;
-                        }
-                    }
-                }
-                if (!isSource) continue;
+            if (def.display() == null || def.display().description() == null) return;
+            tooltip.add(Component.literal(""));
 
-                if (def.display() == null || def.display().description() == null) return;
-                tooltip.add(Component.literal(""));
-
-                
-                if (!Screen.hasShiftDown()) {
-                    tooltip.add(Component.translatable("tcc.tooltip.next_evolution_hint")
-                            .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-                    return;
-                }
-
-                
-                String locale = TaczCuriosClientTooltip.getClientLocale();
-                String text = def.display().description().get(locale);
-                if (text == null) text = def.display().description().get("en_us");
-                if (text == null) return;
-
-                tooltip.add(Component.literal(text)
-                        .withStyle(ChatFormatting.GRAY));
+            
+            if (!Screen.hasShiftDown()) {
+                tooltip.add(Component.translatable("tcc.tooltip.next_evolution_hint")
+                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
                 return;
             }
+
+            
+            String locale = TaczCuriosClientTooltip.getClientLocale();
+            String text = def.display().description().get(locale);
+            if (text == null) text = def.display().description().get("en_us");
+            if (text == null) return;
+
+            tooltip.add(Component.literal(text)
+                    .withStyle(ChatFormatting.GRAY));
         } catch (Exception ignored) {
             
         }
+    }
+
+    /** 进化源物品 ID → 对应成就（首个命中者优先，与原先按列表顺序取第一个匹配项一致）。 */
+    private static Map<String, AchievementDefinitions.AchievementDef> evolveSourceIndex;
+
+    /** 成就数据被同步替换后清空派生索引，使下次 tooltip 用新数据重建。 */
+    public static void invalidateCaches() {
+        evolveSourceIndex = null;
+    }
+
+    private static Map<String, AchievementDefinitions.AchievementDef> getEvolveSourceIndex() {
+        if (evolveSourceIndex != null) {
+            return evolveSourceIndex;
+        }
+        Map<String, AchievementDefinitions.AchievementDef> map = new HashMap<>();
+        for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.all()) {
+            if (!def.isEnabled()) continue;
+            AchievementDefinitions.Reward reward = def.reward();
+            if (reward == null || !reward.isEvolve()) continue;
+            if (reward.item() != null) {
+                map.putIfAbsent(reward.item(), def);
+            }
+            if (reward.linkedEvolves() != null) {
+                for (AchievementDefinitions.LinkedEvolveRef ref : reward.linkedEvolves()) {
+                    if (ref.item() != null) {
+                        map.putIfAbsent(ref.item(), def);
+                    }
+                }
+            }
+        }
+        evolveSourceIndex = map;
+        return map;
     }
 
     private static void doAppendProgress(ItemStack stack, List<Component> tooltip) {

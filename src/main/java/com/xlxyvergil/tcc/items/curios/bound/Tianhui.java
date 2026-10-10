@@ -14,6 +14,8 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -64,6 +66,7 @@ public class Tianhui extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_ID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
+        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
     }
 
     @Override
@@ -71,6 +74,11 @@ public class Tianhui extends BoundCurioItem {
         super.curioTick(slotContext, stack);
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
+        // 抗性提升：只要装备即生效，移出枪械判定；每 10 秒续期（时长 2 分钟）
+        if (entity.tickCount % 200 == 0) {
+            entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
+                TaczCuriosConfig.COMMON.tianhuiResistanceLevel.get(), false, false, true));
+        }
         if (!matchesRestriction(entity)) {
             DamageResistanceHelper.clearDamageReduction(entity);
             return;
@@ -123,6 +131,10 @@ public class Tianhui extends BoundCurioItem {
 
         int minDamagePercent = (int)(TaczCuriosConfig.COMMON.tianhuiMinDamageFactor.get() * 100);
         tooltip.add(Component.translatable("item.tcc.tianhui.special_damage_limit", minDamagePercent)
+            .withStyle(ChatFormatting.RED));
+
+        tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE.value(),
+                TaczCuriosConfig.COMMON.tianhuiResistanceLevel.get())
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")

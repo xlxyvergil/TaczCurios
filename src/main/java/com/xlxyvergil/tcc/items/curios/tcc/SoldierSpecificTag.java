@@ -56,7 +56,8 @@ public class SoldierSpecificTag extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.soldierSpecificTagDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.soldier_specific_tag.effect", String.format("%+.0f", damageBoost))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.value().getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

@@ -16,8 +16,7 @@ public class CoreEffectProtectionHandler {
                 || effect == TccMobEffects.HEAVEN_FIRE_APOCALYPSE_BUFF.get()
                 || effect == TccMobEffects.HEAVEN_FIRE_APOCALYPSE_DELAY.get()
                 || effect == TccMobEffects.IMAGINARY_INFECTION.get()
-                || effect == TccMobEffects.IMAGINARY_COLLAPSE.get()
-                || effect == TccMobEffects.EROSION.get()) {
+                || effect == TccMobEffects.IMAGINARY_COLLAPSE.get()) {
             event.setCanceled(true);
         }
     }

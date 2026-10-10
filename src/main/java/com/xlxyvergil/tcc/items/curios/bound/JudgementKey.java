@@ -1,9 +1,10 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccDamageSources;
+import com.xlxyvergil.tcc.event.RavenKeyAimHandler;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -33,10 +34,6 @@ import net.minecraft.resources.ResourceLocation;
 public class JudgementKey extends BoundCurioItem {
     private static final ResourceLocation CRIT_CHANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "judgement_key_f13a5b08_3bdf");
     private static final ResourceLocation CRIT_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "judgement_key_2a1e47bd_b47c");
-
-    private static final String PROC_KEY = "tcc_judgement_key_set_proc";
-    private static final String PROC_DAMAGE_KEY = "tcc_judgement_key_set_damage";
-    private static final String PROC_DAMAGE_AFTER_HEADSHOT_KEY = "tcc_judgement_key_set_damage_after_headshot";
 
     public JudgementKey(Properties properties) {
         super(properties);
@@ -80,43 +77,41 @@ public class JudgementKey extends BoundCurioItem {
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
 
         ImaginaryConversionHelper.convertToImaginary(event);
-
-        if (!event.isHeadShot()) return;
-
-        if (event.getBullet() != null) {
-            event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
-            float damage = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.SNIPER_GUN_TYPES);
-            event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_KEY, damage);
-            float damageAfterHeadshot = damage * event.getHeadshotMultiplier();
-            event.getBullet().getPersistentData().putFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY, damageAfterHeadshot);
-        }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void onGunHurtPost(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
+        handleHit(event.getAttacker(), event.getHurtEntity(), event.isHeadShot(), event.getHeadshotMultiplier());
+    }
+
+    /** 致死命中只发 EntityKillByGunEvent（与 Post 互斥），同样需要触发范围溅射。 */
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void onGunKill(EntityKillByGunEvent event) {
+        handleHit(event.getAttacker(), event.getKilledEntity(), event.isHeadShot(), event.getHeadshotMultiplier());
+    }
+
+    private static void handleHit(LivingEntity attacker, Entity hurtEntity, boolean headShot, float headshotMultiplier) {
+        // 爆头判定直接取事件信息，不再依赖 Pre 写入的子弹 NBT
+        if (!headShot) return;
         if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
-
-        Entity bullet = event.getBullet();
-        if (bullet == null) return;
-
-        var data = bullet.getPersistentData();
-        if (!data.getBoolean(PROC_KEY)) return;
-
-        float damageAfterHeadshot = data.getFloat(PROC_DAMAGE_AFTER_HEADSHOT_KEY);
-
-        Entity hurtEntity = event.getHurtEntity();
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
-        if (targetLiving.isDeadOrDying()) return;
+
+        float damageAfterHeadshot = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.SNIPER_GUN_TYPES) * headshotMultiplier;
 
         double setHealthProc = TaczCuriosConfig.COMMON.judgementProcChance.get();
         if (attacker.getRandom().nextDouble() < setHealthProc && damageAfterHeadshot > 0) {
             double directPercent = TaczCuriosConfig.COMMON.judgementDirectDamagePercent.get();
-            float directDamage = (float) (damageAfterHeadshot * directPercent);
-            TccAttributeEvents.applyImaginaryDamage(targetLiving, TccDamageSources.imaginaryDamage(targetLiving.level(), attacker), directDamage);
+            // 附加魔法伤害改为以受击者为中心的范围溅射，并叠加开镜蓄力增幅
+            double amp = RavenKeyAimHandler.getAmp(attacker);
+            float splash = (float) (damageAfterHeadshot * directPercent * (1.0 + amp));
+            RavenKeyAimHandler.applySplashMagic(attacker, targetLiving, splash,
+                TaczCuriosConfig.COMMON.judgementKeySplashRadius.get());
         }
+
+        // 目标已死亡时不再施加坍缩（无意义）
+        if (targetLiving.isDeadOrDying()) return;
 
         double collapseProc = TaczCuriosConfig.COMMON.judgementCollapseProcChance.get();
         if (attacker.getRandom().nextDouble() < collapseProc) {
@@ -146,6 +141,13 @@ public class JudgementKey extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.judgement_key.special")
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.raven_splash",
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeySplashRadius.get()))
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp",
+                String.format("%.1f", TaczCuriosConfig.COMMON.judgementKeyAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeyAimMaxAmp.get() * 100))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

@@ -129,9 +129,37 @@ public abstract class BaseCurioItem extends Item implements ICurioItem {
     }
 
     public final void refreshEffects(LivingEntity entity, ItemStack stack) {
+        rebuildEffects(entity, stack);
+        AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
+    }
+
+    /**
+     * 重建属性效果（先移除再重新施加），但不触发 TACZ 缓存变更事件。
+     * 供批量刷新入口统一调用，避免逐个饰品重复触发昂贵的缓存重算。
+     */
+    public final void rebuildEffects(LivingEntity entity, ItemStack stack) {
         removeEffects(entity);
         applyEffects(entity, stack);
-        AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
+    }
+
+    /** 仅重算属性修饰符，不清理旧效果、不触发 TACZ 事件。 */
+    public final void reapplyEffects(LivingEntity entity, ItemStack stack) {
+        applyEffects(entity, stack);
+    }
+
+    /**
+     * 该饰品的属性效果是否已改为“事件驱动”：不再在 curioTick 中每 tick 重算，
+     * 而由切枪、装备变更等事件统一刷新。默认 false，保持每 tick 刷新的原有行为。
+     */
+    public boolean isEventDriven() {
+        return false;
+    }
+
+    /**
+     * 该饰品的效果是否依赖其它属性的当前值。依赖则需在装备变更、击杀结算等事件里重算。默认 false。
+     */
+    public boolean dependsOnOtherAttributes() {
+        return false;
     }
 
     protected abstract void applyEffects(LivingEntity entity, ItemStack stack);
@@ -158,8 +186,8 @@ public abstract class BaseCurioItem extends Item implements ICurioItem {
     
     protected static MutableComponent formatModifierTooltip(double value, String valueFormat, Component attrName) {
         String formatted = String.format(valueFormat, value >= 0 ? value : -value);
-        String sign = value >= 0 ? "+" : "-";
-        return Component.literal(sign + formatted + " ").append(attrName);
+        String key = value >= 0 ? "attributeslib.modifier.plus" : "attributeslib.modifier.take";
+        return Component.translatable(key, formatted, attrName);
     }
 
     

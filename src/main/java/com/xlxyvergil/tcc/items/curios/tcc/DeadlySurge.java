@@ -62,8 +62,8 @@ public class DeadlySurge extends TccCurioItem {
 
         double roundsPerMinuteBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeFireRateBoost.get() ) * 100;
         double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.deadlySurgeBulletCountBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.deadly_surge.effect", String.format("%+.0f", roundsPerMinuteBoost), String.format("%+.0f", bulletCountBoost))
-            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(roundsPerMinuteBoost, "%.0f%%", Component.translatable(AttributeHelper.ROUNDS_PER_MINUTE.value().getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(bulletCountBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_COUNT.value().getDescriptionId())).withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 

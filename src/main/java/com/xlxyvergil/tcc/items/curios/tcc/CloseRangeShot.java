@@ -51,7 +51,8 @@ public class CloseRangeShot extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.closeRangeShotDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.close_range_shot.effect", String.format("%+.0f", damageBoost))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN.value().getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

@@ -75,8 +75,10 @@ public class Chamber extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.chamberSniperDamageBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.chamber.effect", String.format("%+.0f", damageBoost))
+        tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.chamber.note").withStyle(ChatFormatting.GRAY));
 
         tooltip.add(Component.literal(""));
 

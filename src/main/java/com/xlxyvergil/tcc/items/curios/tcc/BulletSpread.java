@@ -59,7 +59,8 @@ public class BulletSpread extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double bulletCountBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.bulletSpreadBulletCountBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.bullet_spread.effect", String.format("%+.0f", bulletCountBoost))
+        tooltip.add(formatModifierTooltip(bulletCountBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_COUNT.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -64,9 +64,8 @@ public class OverloadedMagazine extends TccCurioItem {
 
         double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.overloadedMagazineCapacityBoost.get() ) * 100;
         double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.overloadedMagazineReloadSpeedReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.overloaded_magazine.effect", 
-                String.format("%+.0f", magazineCapacityBoost), String.format("%+.0f", reloadDebuff))
-            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(magazineCapacityBoost, "%.0f%%", Component.translatable(AttributeHelper.MAGAZINE_CAPACITY.value().getDescriptionId())).withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(reloadDebuff, "%.0f%%", Component.translatable(AttributeHelper.RELOAD_TIME.value().getDescriptionId())).withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
 

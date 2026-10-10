@@ -11,7 +11,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 /**
- * 饰品适应效果：LivingIncomingDamageEvent 对活跃适应实例执行减免，死亡时清空适应数据。
+ * 饰品适应效果：LivingIncomingDamageEvent 对活跃适应实例执行减免；死亡时清空适应数据。
+ * <p>
+ * 衰减采用「受击时惰性判定」（与 L2Hostility AdaptingTrait 一致）：在受击处理中比较距上次受伤的间隔，
+ * 超过 decayTicks 即视为过期并清空记忆，因此无需每 tick 扫描全部生物。
  */
 @EventBusSubscriber(modid = "tcc")
 public class AdaptationEventHandler {

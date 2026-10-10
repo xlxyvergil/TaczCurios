@@ -31,6 +31,7 @@ public final class NetworkHandler {
         registrar.playToClient(SyncSpawnerHighlightsS2CPacket.TYPE, SyncSpawnerHighlightsS2CPacket.STREAM_CODEC, SyncSpawnerHighlightsS2CPacket::handle);
         registrar.playToClient(SyncConfigS2CPacket.TYPE, SyncConfigS2CPacket.STREAM_CODEC, SyncConfigS2CPacket::handle);
         registrar.playToClient(SyncDataFilesS2CPacket.TYPE, SyncDataFilesS2CPacket.STREAM_CODEC, SyncDataFilesS2CPacket::handle);
+        registrar.playToClient(ResetRavenChargeS2CPacket.TYPE, ResetRavenChargeS2CPacket.STREAM_CODEC, ResetRavenChargeS2CPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
@@ -53,6 +54,11 @@ public final class NetworkHandler {
 
     public static void sendSpawnerHighlights(ServerPlayer player, List<BlockPos> positions) {
         sendToPlayer(player, new SyncSpawnerHighlightsS2CPacket(positions));
+    }
+
+    /** 命中造成伤害后通知客户端清零渡鸦神之键的开镜蓄力 HUD。 */
+    public static void resetRavenCharge(ServerPlayer player) {
+        sendToPlayer(player, new ResetRavenChargeS2CPacket());
     }
 
     public static void syncAchievementProgress(ServerPlayer player, String achievementId, int progress) {

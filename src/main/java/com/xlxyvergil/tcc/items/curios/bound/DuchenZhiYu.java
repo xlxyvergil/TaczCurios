@@ -20,7 +20,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -88,8 +87,8 @@ public class DuchenZhiYu extends BoundCurioItem {
     }
 
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        applyEffects(slotContext.entity(), stack);
+    public boolean isEventDriven() {
+        return true;
     }
 
     @OnlyIn(Dist.CLIENT)

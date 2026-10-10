@@ -58,7 +58,8 @@ public class BurstReloadPrime extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.burstReloadPrimeReloadSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.burst_reload_prime.effect", String.format("%+.0f", reloadBoost))
+        tooltip.add(formatModifierTooltip(reloadBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.RELOAD_TIME.value().getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

@@ -5,7 +5,7 @@ import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
-import com.xlxyvergil.tcc.util.AiStopHelper;
+import com.xlxyvergil.tcc.util.SpeedZeroHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
@@ -30,10 +30,6 @@ import java.util.List;
 
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public class Yuduchen extends BoundCurioItem {
-    private static int stopDuration() {
-        return TaczCuriosConfig.COMMON.yuduchenStopDurationSeconds.get() * 20;
-    }
-
     private static double stopChance() {
         return TaczCuriosConfig.COMMON.yuduchenStopChance.get();
     }
@@ -71,6 +67,8 @@ public class Yuduchen extends BoundCurioItem {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
+        // 虚数伤害由本饰品自身发起，直接跳过，省去无谓的前置检查（防重入由 applyImaginaryDamage 兜底）。
+        if (event.getSource().is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
         if (!TccAttributeEvents.isActiveAttackSource(event.getSource())) return;
         if (!(event.getEntity().level() instanceof ServerLevel)) {
             return;
@@ -92,12 +90,12 @@ public class Yuduchen extends BoundCurioItem {
             return;
         }
         if (attacker.getRandom().nextDouble() < stopChance()) {
-            AiStopHelper.apply(target, stopDuration());
+            SpeedZeroHelper.apply(target);
         }
         double armor = attacker.getAttributeValue(Attributes.ARMOR);
         float imaginary = (float) (armor * armorImaginaryScale());
         TccAttributeEvents.applyImaginaryDamage(target,
-                TccDamageSources.imaginaryDamage(target.level(), attacker), imaginary);
+                TccDamageSources.imaginaryDamageMelee(target.level(), attacker), imaginary);
     }
 
     private static LivingEntity resolveAttacker(LivingIncomingDamageEvent event) {

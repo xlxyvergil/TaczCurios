@@ -61,8 +61,11 @@ public class RippingPrime extends TccCurioItem {
 
         double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get() ) * 100;
         double penetrationBoost = TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get();
-        tooltip.add(Component.translatable("item.tcc.ripping_prime.effect", 
-                String.format("%+.0f", fireRateBoost), String.format("%.1f", penetrationBoost))
+        tooltip.add(formatModifierTooltip(fireRateBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.ROUNDS_PER_MINUTE.value().getDescriptionId()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(formatModifierTooltip(penetrationBoost, "%.1f",
+                Component.translatable(AttributeHelper.PIERCE.value().getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

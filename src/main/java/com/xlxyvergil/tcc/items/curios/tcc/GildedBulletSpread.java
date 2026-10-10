@@ -58,8 +58,8 @@ public class GildedBulletSpread extends TccCurioItem {
         double buffBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
-        tooltip.add(Component.translatable("item.tcc.gilded_bullet_spread.effect_base",
-                String.format("%+.0f", baseBulletCount))
+        tooltip.add(formatModifierTooltip(baseBulletCount, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_COUNT.value().getDescriptionId()))
             .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.gilded_bullet_spread.effect_kill",
                 String.format("%+.0f", buffBulletCount), maxStacks, duration)

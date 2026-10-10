@@ -10,8 +10,6 @@ import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -51,6 +49,10 @@ public class Luoxuan extends BoundCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
+        // 只扣掉螺旋维持的那一份黄心，保留外部来源（只减不压）
+        float absorptionTarget = TaczCuriosConfig.COMMON.luoxuanAbsorptionAmount.get();
+        livingEntity.setAbsorptionAmount(Math.max(0.0F,
+            livingEntity.getAbsorptionAmount() - absorptionTarget));
     }
 
     @Override
@@ -72,16 +74,8 @@ public class Luoxuan extends BoundCurioItem {
         int interval = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get() * 20;
         if (entity.tickCount % interval != 0) return;
 
-        int level = TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get();
-        int duration = TaczCuriosConfig.COMMON.luoxuanAbsorptionDuration.get() * 20;
-        int amplifier = level - 1;
-
-        MobEffectInstance existing = entity.getEffect(MobEffects.ABSORPTION);
-        if (existing == null || existing.getAmplifier() < amplifier
-            || existing.getDuration() < duration / 2) {
-            entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, duration, amplifier,
-                false, false, true));
-        }
+        float target = TaczCuriosConfig.COMMON.luoxuanAbsorptionAmount.get();
+        entity.setAbsorptionAmount(Math.max(entity.getAbsorptionAmount(), target));
     }
 
     @Override
@@ -97,15 +91,15 @@ public class Luoxuan extends BoundCurioItem {
 
         appendImaginaryResistance(stack, tooltip);
 
-        double absorptionIntervalSecs = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get() / 20.0;
-        int absorptionLevel = TaczCuriosConfig.COMMON.luoxuanAbsorptionLevel.get();
+        double absorptionIntervalSecs = TaczCuriosConfig.COMMON.luoxuanAbsorptionInterval.get();
+        int absorptionAmount = TaczCuriosConfig.COMMON.luoxuanAbsorptionAmount.get();
 
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("item.tcc.luoxuan.special_absorption",
                 "",
                 absorptionIntervalSecs,
-                absorptionLevel)
+                absorptionAmount)
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.literal(""));

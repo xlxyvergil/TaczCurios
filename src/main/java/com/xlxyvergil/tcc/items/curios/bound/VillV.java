@@ -3,9 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.event.CurioAbsorptionEventHandler;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -21,16 +19,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.common.EventBusSubscriber;
+import top.theillusivec4.curios.api.SlotContext;
 import javax.annotation.Nullable;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
-@EventBusSubscriber(modid = TaczCurios.MODID)
 public class VillV extends BoundCurioItem {
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "vill_v_b2c3d4e5_8901");
 
@@ -54,6 +48,10 @@ public class VillV extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             IMAGINARY_RESISTANCE_ID);
+        // 只扣掉维尔薇维持的那一份黄心，保留外部来源（只减不压）
+        float absorptionTarget = TaczCuriosConfig.COMMON.villVAbsorptionAmount.get();
+        livingEntity.setAbsorptionAmount(Math.max(0.0F,
+            livingEntity.getAbsorptionAmount() - absorptionTarget));
     }
 
     public static boolean isEquipped(LivingEntity entity) {
@@ -66,20 +64,18 @@ public class VillV extends BoundCurioItem {
             stack -> stack.getItem() instanceof VillV);
     }
 
-    @SubscribeEvent
-    public static void onLivingHurt(LivingIncomingDamageEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide()) return;
         if (!GunTypeChecker.isHoldingHeavyWeapon(entity)) return;
 
-        CurioAbsorptionEventHandler.tryTriggerAbsorption(
-            entity,
-            TccItems.VILL_V,
-            TaczCuriosConfig.COMMON.villVTriggerHpRatio.get(),
-            TaczCuriosConfig.COMMON.villVAbsorptionLevel.get(),
-            TaczCuriosConfig.COMMON.villVAbsorptionDuration.get(),
-            TaczCuriosConfig.COMMON.villVCooldownSeconds.get()
-        );
+        int interval = TaczCuriosConfig.COMMON.villVAbsorptionInterval.get() * 20;
+        if (entity.tickCount % interval != 0) return;
+
+        // 只抬不压，保留外部更高来源
+        float target = TaczCuriosConfig.COMMON.villVAbsorptionAmount.get();
+        entity.setAbsorptionAmount(Math.max(entity.getAbsorptionAmount(), target));
     }
 
     @Override
@@ -95,16 +91,14 @@ public class VillV extends BoundCurioItem {
 
         appendImaginaryResistance(stack, tooltip);
 
-        double triggerHpRatio = TaczCuriosConfig.COMMON.villVTriggerHpRatio.get() * 100;
-        int absorptionLevel = TaczCuriosConfig.COMMON.villVAbsorptionLevel.get();
-        int cooldownSeconds = TaczCuriosConfig.COMMON.villVCooldownSeconds.get().intValue();
+        int absorptionInterval = TaczCuriosConfig.COMMON.villVAbsorptionInterval.get();
+        int absorptionAmount = TaczCuriosConfig.COMMON.villVAbsorptionAmount.get();
 
         tooltip.add(Component.literal(""));
 
         tooltip.add(Component.translatable("item.tcc.vill_v.effect",
-                (int) triggerHpRatio,
-                absorptionLevel,
-                cooldownSeconds)
+                absorptionInterval,
+                absorptionAmount)
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

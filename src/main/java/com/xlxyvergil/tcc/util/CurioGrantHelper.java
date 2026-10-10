@@ -71,6 +71,8 @@ public final class CurioGrantHelper {
                 continue;
             }
             handler.setStackInSlot(i, stack);
+            // 槽位内容已变化，立即失效饰品快照，确保随后 onEquip 内的查询看到新内容
+            CurioSearchHelper.invalidate(player);
             onEquip(player, slotId, stacksHandler, i, stack);
             return true;
         }
@@ -91,6 +93,7 @@ public final class CurioGrantHelper {
                 }
                 ItemStack old = handler.getStackInSlot(0);
                 handler.setStackInSlot(0, stack);
+                CurioSearchHelper.invalidate(player);
                 onEquip(player, slotId, stacksHandler, 0, stack);
                 if (!old.isEmpty()) {
                     player.getInventory().placeItemBackInInventory(old);

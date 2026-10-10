@@ -57,7 +57,8 @@ public class TacticalReload extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.tacticalReloadSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.tactical_reload.effect", String.format("%+.0f", reloadBoost))
+        tooltip.add(formatModifierTooltip(reloadBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.RELOAD_TIME.value().getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

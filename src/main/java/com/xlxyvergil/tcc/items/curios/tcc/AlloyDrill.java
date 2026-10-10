@@ -61,7 +61,8 @@ public class AlloyDrill extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double armorIgnoreBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.alloy_drill.effect", String.format("%+.0f", armorIgnoreBoost))
+        tooltip.add(formatModifierTooltip(armorIgnoreBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.ARMOR_IGNORE.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

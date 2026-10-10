@@ -53,7 +53,8 @@ public class RedMovementTag extends TccCurioItem {
         tooltip.add(Component.literal(""));
 
         double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.redMovementTagSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.red_movement_tag.effect", String.format("%+.0f", speedBoost))
+        tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.MOVE_SPEED.value().getDescriptionId()))
             .withStyle(ChatFormatting.AQUA));
 
         tooltip.add(Component.literal(""));

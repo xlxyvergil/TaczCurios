@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.evolution;
 
+import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EvolutionNbtKeys;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import net.minecraft.nbt.CompoundTag;
@@ -95,6 +96,8 @@ public final class EvolutionExecutor {
                 oldCurio.onUnequip(slotContext, ItemStack.EMPTY, oldStack);
             }
             stackHandler.setStackInSlot(i, newStack);
+            // 槽位内容已变化，立即失效饰品快照，确保随后的 onEquip 查询看到新饰品
+            CurioSearchHelper.invalidate(entity);
             if (newStack.getItem() instanceof ICurioItem newCurio) {
                 newCurio.onEquip(slotContext, oldStack, newStack);
             }

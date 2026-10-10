@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
@@ -23,20 +24,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.common.EventBusSubscriber;
 import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
-@EventBusSubscriber(modid = TaczCurios.MODID)
 public class Fanxing extends BoundCurioItem {
-    private static final String COOLDOWN_KEY = TaczCurios.MODID + ":fanxing_hurt_cooldown";
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fanxing_e1f2a3b4_7801");
     private static final ResourceLocation LUCK_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fanxing_d4e5f6a7_9004");
 
@@ -69,14 +63,34 @@ public class Fanxing extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_ID);
+        DamageResistanceHelper.clearHurtCooldown(livingEntity);
+    }
+
+    @Override
+    public boolean dependsOnOtherAttributes() {
+        return true;
     }
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
-        if (entity != null) {
-            applyEffects(entity, stack);
+        if (entity == null) return;
+        if (entity.level().isClientSide) return;
+        // 受伤冷却仅在持枪时登记：持枪则注册受击自动冷却，非持枪则清除登记（已进入的冷却在剩余时间内继续生效）。
+        if (!GunTypeChecker.isHoldingAnyGun(entity)) {
+            DamageResistanceHelper.clearHurtCooldown(entity);
+            return;
         }
+        DamageResistanceHelper.setHurtCooldown(entity, computeCooldownTicks(entity));
+    }
+
+    /** 依据当前幸运值计算受伤冷却时长（tick），并受配置上限约束。 */
+    private static int computeCooldownTicks(LivingEntity entity) {
+        int luck = (int) entity.getAttributeValue(AttributeHelper.LUCK);
+        int cooldownTicks = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get()
+            + (luck / 2) * TaczCuriosConfig.COMMON.fanxingLuckPerTick.get();
+        int maxCooldown = TaczCuriosConfig.COMMON.fanxingMaxCooldown.get();
+        return Math.min(cooldownTicks, maxCooldown);
     }
 
     @Override
@@ -92,35 +106,6 @@ public class Fanxing extends BoundCurioItem {
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity,
             stack -> stack.getItem() instanceof Fanxing);
-    }
-
-    @SubscribeEvent
-    public static void onLivingHurt(LivingIncomingDamageEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (!isEquipped(entity)) return;
-        if (!GunTypeChecker.isHoldingAnyGun(entity)) return;
-
-        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
-        if (cooldown > 0) {
-            event.setCanceled(true);
-        } else {
-            int luck = (int) entity.getAttributeValue(AttributeHelper.LUCK);
-            int cooldownTicks = TaczCuriosConfig.COMMON.fanxingBaseCooldown.get()
-                + (luck / 2) * TaczCuriosConfig.COMMON.fanxingLuckPerTick.get();
-            int maxCooldown = TaczCuriosConfig.COMMON.fanxingMaxCooldown.get();
-            if (cooldownTicks > maxCooldown) cooldownTicks = maxCooldown;
-            entity.getPersistentData().putInt(COOLDOWN_KEY, cooldownTicks);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onLivingTick(EntityTickEvent.Post event) {
-        if (!(event.getEntity() instanceof LivingEntity entity)) return;
-        if (!entity.isAlive()) return;
-        int cooldown = entity.getPersistentData().getInt(COOLDOWN_KEY);
-        if (cooldown > 0) {
-            entity.getPersistentData().putInt(COOLDOWN_KEY, cooldown - 1);
-        }
     }
 
     @Override

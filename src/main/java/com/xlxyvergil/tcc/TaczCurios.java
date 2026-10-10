@@ -110,6 +110,8 @@ public class TaczCurios
         registerCurioType("tcc_slot", 8, false, ResourceLocation.fromNamespaceAndPath(MODID, "slot/tcc_slot"));
         registerCurioType("tcc_3rd", 1, false, ResourceLocation.fromNamespaceAndPath(MODID, "slot/tcc_3rd"));
         registerCurioType("tcc_tdk", 1, false, ResourceLocation.fromNamespaceAndPath(MODID, "slot/tcc_tdk"));
+        // 空白之键槽位图标直接采用该道具自身的图标（空槽时按 16x16 缩放渲染该贴图）
+        registerCurioType("tcc_kb", 1, false, ResourceLocation.fromNamespaceAndPath(MODID, "item/kongbai_zhijian"));
     }
 
     @SuppressWarnings("removal")
@@ -128,7 +130,7 @@ public class TaczCurios
     private void registerClientEventsSafely() throws ClassNotFoundException {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-            Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLevelRenderer");
+            Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLayer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");

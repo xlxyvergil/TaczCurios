@@ -1,10 +1,10 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
+import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.event.TccAttributeEvents;
+import com.xlxyvergil.tcc.event.RavenKeyAimHandler;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -32,9 +32,6 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     private static final ResourceLocation HEADSHOT_MULTIPLIER_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "seven_thunders_thunder_seen_de0a7b0e_9f15");
     private static final ResourceLocation CRIT_CHANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "seven_thunders_thunder_seen_e6e6a5a6_f0f4");
     private static final ResourceLocation CRIT_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "seven_thunders_thunder_seen_0f7f3eaa_0f17");
-
-    private static final String PROC_KEY = "tcc_seven_thunders_thunder_seen_proc";
-    private static final String PROC_USED_KEY = "tcc_seven_thunders_thunder_seen_proc_used";
 
     public SevenThundersThunderSeen(Properties properties) {
         super(properties);
@@ -75,41 +72,33 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     }
 
     @SubscribeEvent
-    public static void onGunHurtPre(EntityHurtByGunEvent.Pre event) {
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null || !isEquipped(attacker)) return;
-        if (!(attacker.level() instanceof ServerLevel)) return;
-        if (!GunTypeChecker.isHoldingSniper(attacker)) return;
-
-        if (event.isHeadShot()
-            && attacker.getRandom().nextFloat() < TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()
-            && event.getBullet() != null) {
-            event.getBullet().getPersistentData().putBoolean(PROC_KEY, true);
-            event.getBullet().getPersistentData().putBoolean(PROC_USED_KEY, false);
-        }
+    public static void onGunHurt(EntityHurtByGunEvent.Post event) {
+        handleHit(event.getAttacker(), event.getHurtEntity(), event.isHeadShot());
     }
 
+    /** 致死命中只发 EntityKillByGunEvent（与 Post 互斥），同样需要触发范围溅射。 */
     @SubscribeEvent
-    public static void onGunHurt(EntityHurtByGunEvent.Post event) {
-        LivingEntity attacker = event.getAttacker();
+    public static void onGunKill(EntityKillByGunEvent event) {
+        handleHit(event.getAttacker(), event.getKilledEntity(), event.isHeadShot());
+    }
+
+    private static void handleHit(LivingEntity attacker, Entity hurtEntity, boolean headShot) {
+        // 爆头判定直接取事件信息，不再依赖 Pre 写入的子弹 NBT
+        if (!headShot) return;
         if (attacker == null || !isEquipped(attacker)) return;
         if (!(attacker.level() instanceof ServerLevel)) return;
         if (!GunTypeChecker.isHoldingSniper(attacker)) return;
+        if (!(hurtEntity instanceof LivingEntity target)) return;
+        if (attacker.getRandom().nextFloat() >= TaczCuriosConfig.COMMON.sevenThundersThunderSeenProcChance.get().floatValue()) return;
 
-        Entity bullet = event.getBullet();
-        if (bullet == null) return;
-
-        if (!(event.getHurtEntity() instanceof LivingEntity target) || target.isDeadOrDying()) return;
-
-        var data = bullet.getPersistentData();
-        if (!data.getBoolean(PROC_KEY) || data.getBoolean(PROC_USED_KEY)) return;
-
-        float extra = (float) ((float) Math.round(target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 10000.0) / 10000.0);
+        float extra = (float) (Math.round(target.getMaxHealth() * TaczCuriosConfig.COMMON.sevenThundersThunderSeenExtraHpDamage.get() * 10000.0) / 10000.0);
         if (extra > 0) {
-            TccAttributeEvents.applyImaginaryDamage(target,
-                TccDamageSources.imaginaryDamage(target.level(), attacker), extra);
+            // 附加魔法伤害改为以受击者为中心的范围溅射，并叠加开镜蓄力增幅
+            double amp = RavenKeyAimHandler.getAmp(attacker);
+            float splash = (float) (extra * (1.0 + amp));
+            RavenKeyAimHandler.applySplashMagic(attacker, target, splash,
+                TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get());
         }
-        data.putBoolean(PROC_USED_KEY, true);
     }
 
     @Override
@@ -137,6 +126,13 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
                 .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.special",
                 sttsHeadshotStr, sttsCritChanceStr, sttsCritDamageStr, sttsProcStr, sttsExtraHpStr)
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("tcc.tooltip.raven_splash",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get()))
+            .withStyle(ChatFormatting.WHITE));
+        tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimMaxAmp.get() * 100))
             .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.literal(""));

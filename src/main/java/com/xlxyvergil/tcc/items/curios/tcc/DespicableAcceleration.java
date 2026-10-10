@@ -112,8 +112,32 @@ public class DespicableAcceleration extends TccCurioItem {
         
         double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get() ) * 100;
         double damageReduction = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationDamageReduction.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.despicable_acceleration.effect", 
-                String.format("%+.0f", firingSpeedBoost), String.format("%+.0f", damageReduction))
+        tooltip.add(formatModifierTooltip(firingSpeedBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.ROUNDS_PER_MINUTE.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_RIFLE.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SNIPER.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SMG.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LMG.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_PISTOL.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(damageReduction, "%.0f%%",
+                Component.translatable(AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
         
         tooltip.add(Component.literal(""));

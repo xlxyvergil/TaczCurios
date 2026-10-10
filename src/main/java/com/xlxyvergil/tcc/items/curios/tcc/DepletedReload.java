@@ -63,9 +63,11 @@ public class DepletedReload extends TccCurioItem {
 
         double magazinePenalty = Math.abs(FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadMagazineCapacityPenalty.get() ) * 100);
         double reloadBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.depletedReloadReloadSpeedBoost.get() ) * 100;
-        tooltip.add(Component.translatable("item.tcc.depleted_reload.effect", 
-                                          String.format("%+.0f", magazinePenalty), 
-                                          String.format("%+.0f", reloadBoost))
+        tooltip.add(formatModifierTooltip(magazinePenalty, "%.0f%%",
+                Component.translatable(AttributeHelper.MAGAZINE_CAPACITY.value().getDescriptionId()))
+            .withStyle(ChatFormatting.GOLD));
+        tooltip.add(formatModifierTooltip(reloadBoost, "%.0f%%",
+                Component.translatable(AttributeHelper.RELOAD_TIME.value().getDescriptionId()))
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));

@@ -75,7 +75,7 @@ public class Salvation extends BoundCurioItem {
             livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
             livingEntity.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
-                300,
+                2 * 60 * 20,
                 2,
                 false, false, true));
             
@@ -119,7 +119,10 @@ public class Salvation extends BoundCurioItem {
         
         appendImaginaryResistance(stack, tooltip);
         
-        tooltip.add(Component.translatable("item.tcc.salvation.passive_bonuses")
+        tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE.value(),
+                TaczCuriosConfig.COMMON.salvationResistanceLevel.get())
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.salvation.knockback_immunity")
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
             .withStyle(ChatFormatting.RED));
@@ -136,6 +139,12 @@ public class Salvation extends BoundCurioItem {
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (event.getEntity().level().isClientSide()) return;
         if (!isEquipped(event.getEntity())) return;
+        // 抗性提升：只要装备即生效，移出枪械判定；每 10 秒续期（时长 2 分钟）
+        if (event.getEntity().tickCount % 200 == 0) {
+            event.getEntity().addEffect(new MobEffectInstance(
+                MobEffects.DAMAGE_RESISTANCE,
+                2 * 60 * 20, TaczCuriosConfig.COMMON.salvationResistanceLevel.get(), false, false, true));
+        }
         if (!GunTypeChecker.isHoldingPistol(event.getEntity())) {
             DamageResistanceHelper.clearDamageReduction(event.getEntity());
             return;
@@ -143,14 +152,6 @@ public class Salvation extends BoundCurioItem {
 
         DamageResistanceHelper.setDamageReduction(event.getEntity(),
             (float) (1 - TaczCuriosConfig.COMMON.salvationDamageReduction.get()));
-
-        if (event.getEntity().tickCount % 280 == 0) {
-            int level = TaczCuriosConfig.COMMON.salvationResistanceLevel.get();
-            event.getEntity().removeEffect(MobEffects.DAMAGE_RESISTANCE);
-            event.getEntity().addEffect(new MobEffectInstance(
-                MobEffects.DAMAGE_RESISTANCE,
-                300, level, false, false, true));
-        }
     }
     
     @Override

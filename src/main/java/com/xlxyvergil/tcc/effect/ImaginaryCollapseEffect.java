@@ -2,7 +2,6 @@ package com.xlxyvergil.tcc.effect;
 
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.evolution.GunKillDebugFallbackHandler;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.server.level.ServerLevel;
@@ -17,9 +16,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 虚数崩解流血效果：伤害 = 目标最大血量 × percentPerLevel × (1 + min(debuff数, maxDebuff) × percentPerDebuff)；
- * 侵染等级不再于崩解基础中线性放大，统一由通用虚数伤害入口的侵染增伤（1 + 侵染等级 × ampPerLevel）体现。
- * 负面数量增益只在目标带侵蚀时生效。
+ * 虚数崩解流血效果：每秒造成 目标最大血量 × percentPerLevel 的虚数伤害；
+ * 侵染等级仅用于判定是否触发崩解，不参与伤害放大。抗性结算统一由虚数伤害通用入口处理。
  */
 public class ImaginaryCollapseEffect extends MobEffect {
 
@@ -47,31 +45,12 @@ public class ImaginaryCollapseEffect extends MobEffect {
         if (infectionLevel <= 0) return true;
 
         double percentPerLevel = TaczCuriosConfig.COMMON.collapsePercentPerLevel.get();
-        double debuffMultiplier = 1.0;
 
-        // 仅当目标带有侵蚀效果时，才统计负面效果数量增益
-        if (entity.hasEffect(TccMobEffects.EROSION)) {
-            int debuffCount = 0;
-            for (MobEffectInstance instance : entity.getActiveEffects()) {
-                if (instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
-                    debuffCount++;
-                }
-            }
-            int maxDebuff = TaczCuriosConfig.COMMON.collapseMaxDebuffCount.get();
-            double percentPerDebuff = TaczCuriosConfig.COMMON.collapsePercentPerDebuff.get();
-            int effectiveDebuffs = Math.min(debuffCount, maxDebuff);
-            debuffMultiplier = Math.round((1.0 + (1.0 + effectiveDebuffs) * percentPerDebuff) * 10000.0) / 10000.0;
-        }
-
-        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * debuffMultiplier * 10000.0) / 10000.0);
+        float finalDamage = (float) ((float) Math.round(entity.getMaxHealth() * percentPerLevel * 10000.0) / 10000.0);
 
         if (finalDamage > 0) {
             // 从 NBT 读取侵染来源 attacker（由 TccAttributeEvents.applyImaginaryInfection 写入）
             LivingEntity attacker = resolveInfectionAttacker(entity);
-            // 刷新枪杀判定窗口，确保虚数崩 DoT 击杀时能通过 onLivingDeath 的时间窗口校验
-            if (attacker instanceof ServerPlayer sp) {
-                GunKillDebugFallbackHandler.refreshGunKillWindow(entity, sp);
-            }
             TccAttributeEvents.applyCollapseDamage(
                 entity,
                 TccDamageSources.imaginaryDamage(entity.level(), attacker),
