@@ -131,6 +131,10 @@ public final class LootrLootBoxHighlightHandler {
                 }
             }
         }
+
+        // 运输矿车是实体而非方块实体，需单独按实体遍历（Lootr 会把它替换为 LootrChestMinecartEntity）。
+        LootrCompat.collectUnopenedCarts(level, base, RADIUS, player.getUUID(), result);
+
         return result;
     }
 }

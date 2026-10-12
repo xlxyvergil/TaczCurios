@@ -6,6 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.ModList;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -47,5 +48,18 @@ public final class LootrCompat {
             return false;
         }
         return LootrCompatInternal.isUnopened(level, pos, be, playerId);
+    }
+
+    /**
+     * 收集以 {@code center} 为中心、{@code radius} 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 {@code out}。
+     *
+     * 运输矿车是实体，不在方块实体集合中，需要单独按实体遍历。
+     */
+    public static void collectUnopenedCarts(ServerLevel level, BlockPos center, int radius, UUID playerId,
+                                            List<BlockPos> out) {
+        if (!isLoaded()) {
+            return;
+        }
+        LootrCompatInternal.collectUnopenedCarts(level, center, radius, playerId, out);
     }
 }

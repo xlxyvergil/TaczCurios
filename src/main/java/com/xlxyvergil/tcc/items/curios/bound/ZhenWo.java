@@ -113,11 +113,7 @@ public class ZhenWo extends BoundCurioItem {
             KNOCKBACK_RESISTANCE_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearForcedDamageReduction(livingEntity);
-        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
-        // 只扣掉真我维持的那一份黄心，保留外部来源（只减不压）
-        float absorptionTarget = TaczCuriosConfig.COMMON.zhenWoAbsorptionAmount.get();
-        livingEntity.setAbsorptionAmount(Math.max(0.0F,
-            livingEntity.getAbsorptionAmount() - absorptionTarget));
+        // 抗性提升 buff 与伤害吸收黄心不再主动移除：前者自然到期，后者避免误伤金苹果等外部来源
         ACTIVE_BARRIER_WEARERS.remove(livingEntity.getUUID());
     }
 

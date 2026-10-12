@@ -61,7 +61,7 @@ public class Su extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
-        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        // 抗性提升 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
     }
 
     @Override

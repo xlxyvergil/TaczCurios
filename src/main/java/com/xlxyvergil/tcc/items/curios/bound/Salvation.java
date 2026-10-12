@@ -65,7 +65,7 @@ public class Salvation extends BoundCurioItem {
             imaginaryResistance, IMAGINARY_RESISTANCE_UUID, "tcc_salvation_imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
         if (matchesRestriction(livingEntity)) {
-            livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+            // 不再移除旧抗性（避免误删外部更高等级来源），直接施加自身等级的抗性提升
             livingEntity.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
                 2 * 60 * 20,
@@ -83,7 +83,7 @@ public class Salvation extends BoundCurioItem {
             IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
             KNOCKBACK_RESISTANCE_UUID);
-        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        // 抗性提升 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
     }

@@ -46,10 +46,7 @@ public class VillV extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             IMAGINARY_RESISTANCE_UUID);
-        // 只扣掉维尔薇维持的那一份黄心，保留外部来源（只减不压）
-        float absorptionTarget = TaczCuriosConfig.COMMON.villVAbsorptionAmount.get();
-        livingEntity.setAbsorptionAmount(Math.max(0.0F,
-            livingEntity.getAbsorptionAmount() - absorptionTarget));
+        // 伤害吸收黄心不再主动扣减：无法区分来源，扣减会误伤金苹果等外部效果；改为自然消耗/消失
     }
 
     public static boolean isEquipped(LivingEntity entity) {
