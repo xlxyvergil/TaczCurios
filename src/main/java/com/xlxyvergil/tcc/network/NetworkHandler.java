@@ -32,6 +32,7 @@ public final class NetworkHandler {
         registrar.playToClient(SyncConfigS2CPacket.TYPE, SyncConfigS2CPacket.STREAM_CODEC, SyncConfigS2CPacket::handle);
         registrar.playToClient(SyncDataFilesS2CPacket.TYPE, SyncDataFilesS2CPacket.STREAM_CODEC, SyncDataFilesS2CPacket::handle);
         registrar.playToClient(ResetRavenChargeS2CPacket.TYPE, ResetRavenChargeS2CPacket.STREAM_CODEC, ResetRavenChargeS2CPacket::handle);
+        registrar.playToClient(SyncAttributeLinksS2CPacket.TYPE, SyncAttributeLinksS2CPacket.STREAM_CODEC, SyncAttributeLinksS2CPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
@@ -46,6 +47,11 @@ public final class NetworkHandler {
     /** 把服务端实际生效的成就/进化/阶位 JSON 下发给玩家，使客户端显示与服务端一致。 */
     public static void syncDataFiles(ServerPlayer player) {
         sendToPlayer(player, SyncDataFilesS2CPacket.capture());
+    }
+
+    /** 下发空白之键联动规则，使客户端 tooltip 与服务端一致。 */
+    public static void syncAttributeLinks(ServerPlayer player) {
+        sendToPlayer(player, SyncAttributeLinksS2CPacket.capture());
     }
 
     public static void sendLootrHighlights(ServerPlayer player, List<BlockPos> positions) {
