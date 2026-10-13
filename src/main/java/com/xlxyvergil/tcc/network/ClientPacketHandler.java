@@ -9,6 +9,7 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
+import com.xlxyvergil.tcc.link.AttributeLinkRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -86,5 +87,10 @@ final class ClientPacketHandler {
         EvolutionRegistry.applySyncedText(packet.evolution());
         KeyTierRegistry.applySyncedText(packet.tiers());
         TaczCuriosClientTooltip.invalidateCache();
+    }
+
+    /** 用服务端下发的规则覆盖本地联动规则表。 */
+    static void handleSyncAttributeLinks(SyncAttributeLinksS2CPacket packet) {
+        AttributeLinkRegistry.applySyncedJson(packet.json());
     }
 }

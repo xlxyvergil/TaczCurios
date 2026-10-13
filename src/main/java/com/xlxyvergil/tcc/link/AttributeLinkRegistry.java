@@ -97,7 +97,7 @@ public class AttributeLinkRegistry extends SimpleJsonResourceReloadListener {
                     continue;
                 }
                 for (JsonElement element : array) {
-                    AttributeLinkData data = parseLink(element.getAsJsonObject(), entry.getKey());
+                    AttributeLinkData data = parseLink(element.getAsJsonObject(), entry.getKey().toString());
                     if (data == null) {
                         continue;
                     }
@@ -117,7 +117,54 @@ public class AttributeLinkRegistry extends SimpleJsonResourceReloadListener {
         version++;
     }
 
-    private AttributeLinkData parseLink(JsonObject obj, ResourceLocation sourceFile) {
+    /** 序列化当前规则表为 JSON，供服务端下发给客户端。 */
+    public static String toJson() {
+        JsonArray array = new JsonArray();
+        for (List<AttributeLinkData> list : linksBySlot.values()) {
+            for (AttributeLinkData data : list) {
+                JsonObject obj = new JsonObject();
+                obj.addProperty("slot", data.slot());
+                obj.addProperty("curio", data.curio());
+                obj.addProperty("source", data.source());
+                obj.addProperty("target", data.target());
+                obj.addProperty("ratio", data.ratio());
+                obj.addProperty("operation", data.operation().name());
+                obj.addProperty("uuid", data.uuid().toString());
+                array.add(obj);
+            }
+        }
+        JsonObject root = new JsonObject();
+        root.add("links", array);
+        return GSON.toJson(root);
+    }
+
+    /** 客户端专用：用服务端下发的 JSON 覆盖本地规则表，解析失败时保留原规则。 */
+    public static void applySyncedJson(String json) {
+        Map<String, List<AttributeLinkData>> parsed = new LinkedHashMap<>();
+        try {
+            JsonObject root = GSON.fromJson(json, JsonObject.class);
+            JsonArray array = root == null ? null : root.getAsJsonArray("links");
+            if (array != null) {
+                for (JsonElement element : array) {
+                    AttributeLinkData data = parseLink(element.getAsJsonObject(), "sync");
+                    if (data == null) {
+                        continue;
+                    }
+                    parsed.computeIfAbsent(data.slot(), k -> new ArrayList<>()).add(data);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.warn("[TCC] 解析服务端下发的属性联动规则失败", e);
+            return;
+        }
+
+        Map<String, List<AttributeLinkData>> frozen = new LinkedHashMap<>();
+        parsed.forEach((slot, list) -> frozen.put(slot, List.copyOf(list)));
+        linksBySlot = Collections.unmodifiableMap(frozen);
+        version++;
+    }
+
+    private static AttributeLinkData parseLink(JsonObject obj, String sourceFile) {
         if (!obj.has("slot") || !obj.has("curio") || !obj.has("source") || !obj.has("target")
                 || !obj.has("ratio") || !obj.has("uuid")) {
             LOGGER.warn("[TCC] 属性联动规则缺少必要字段（slot/curio/source/target/ratio/uuid），来源 {}，已忽略", sourceFile);
@@ -153,7 +200,7 @@ public class AttributeLinkRegistry extends SimpleJsonResourceReloadListener {
         return new AttributeLinkData(slot, curio, source, target, ratio, operation, uuid);
     }
 
-    private AttributeModifier.Operation parseOperation(String name) {
+    private static AttributeModifier.Operation parseOperation(String name) {
         return switch (name.toLowerCase(java.util.Locale.ROOT)) {
             case "addition", "add" -> AttributeModifier.Operation.ADDITION;
             case "multiply_base" -> AttributeModifier.Operation.MULTIPLY_BASE;

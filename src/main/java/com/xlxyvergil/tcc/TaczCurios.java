@@ -74,6 +74,7 @@ public class TaczCurios
                 NetworkHandler.syncAllForPlayer(sp);
                 NetworkHandler.syncConfig(sp);
                 NetworkHandler.syncDataFiles(sp);
+                NetworkHandler.syncAttributeLinks(sp);
             }
         });
         
