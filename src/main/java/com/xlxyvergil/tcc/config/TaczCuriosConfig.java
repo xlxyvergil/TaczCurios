@@ -808,8 +808,8 @@ public class TaczCuriosConfig {
                     .comment("1阶饰品是否可直接卸下 (默认: true)")
                     .define("tier1", true);
             tier2CurioRemovable = builder
-                    .comment("2阶饰品是否可直接卸下 (默认: false)")
-                    .define("tier2", false);
+                    .comment("2阶饰品是否可直接卸下 (默认: true)")
+                    .define("tier2", true);
             tier3CurioRemovable = builder
                     .comment("3阶饰品是否可直接卸下 (默认: false)")
                     .define("tier3", false);

@@ -16,9 +16,8 @@ public final class AchievementRewards {
 
         if (reward.isGrant()) {
             return executeGrant(player, reward);
-        } else if (reward.isEvolve()) {
-            return executeEvolve(player, reward);
         }
+        // evolve 奖励不再自动原地替换：改为玩家在铁砧用「已绑定饰品 + 崩坏结晶」手动合成（见 AnvilEvolutionHandler）
         return false;
     }
 
@@ -34,42 +33,4 @@ public final class AchievementRewards {
         return CurioGrantHelper.give(player, stack, reward.getOverflow());
     }
 
-    private static boolean executeEvolve(Player player, AchievementDefinitions.Reward reward) {
-        if (reward.item() == null || reward.to() == null) return false;
-        Item toItem = BuiltInRegistries.ITEM.get(ResourceLocation.parse(reward.to()));
-        if (toItem == null) return false;
-
-        boolean ok = EvolutionExecutor.evolve(player,
-                stack -> reward.item().equals(itemId(stack)),
-                () -> new ItemStack(toItem),
-                EvolutionExecutor.NbtMode.COPY_ALL, java.util.Collections.emptyList(),
-                (oldStack, newStack) -> {
-                    LivingDeathEventHandler.resetCapCountersForItem(reward.to(), newStack);
-                    if (reward.shouldBind()) {
-                        LivingDeathEventHandler.bindToPlayer(newStack, player);
-                    }
-                }, true);
-
-        if (ok && reward.linkedEvolves() != null) {
-            for (AchievementDefinitions.LinkedEvolveRef linked : reward.linkedEvolves()) {
-                if (linked.to() == null || linked.item() == null) continue;
-                Item linkedTo = BuiltInRegistries.ITEM.get(ResourceLocation.parse(linked.to()));
-                if (linkedTo == null) continue;
-                EvolutionExecutor.evolve(player,
-                        stack -> linked.item().equals(itemId(stack)),
-                        () -> new ItemStack(linkedTo),
-                        EvolutionExecutor.NbtMode.COPY_ALL, java.util.Collections.emptyList(),
-                        (oldStack, newStack) -> LivingDeathEventHandler.resetCapCountersForItem(linked.to(), newStack),
-                        true);
-            }
-        }
-
-        return ok;
-    }
-
-    private static String itemId(ItemStack stack) {
-        if (stack.isEmpty()) return "";
-        var key = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        return key != null ? key.toString() : "";
-    }
 }

@@ -83,6 +83,11 @@ public class KongbaiZhijian extends BoundCurioItem {
 
     /**
      * 仅玩家可用，且至少命中一条规则时才允许安装。
+     * <p>
+     * 例外：物品已带规则快照（{@link #RULE_TAG}，即此前装备过）时直接放行。
+     * 因为重生/换维度时 Curios 会在 {@code readTag} 里逐个槽位用 canEquip 校验旧内容，
+     * 而此时佩戴者的饰品栏尚未恢复，实时解析必然为空；若不放行会被判为无效栈而退回背包。
+     * 放行后由随后的 onEquip / tick 重算覆盖快照并施加效果。
      */
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
@@ -92,7 +97,7 @@ public class KongbaiZhijian extends BoundCurioItem {
         if (!super.canEquip(slotContext, stack)) {
             return false;
         }
-        return !resolveRules(slotContext.entity()).isEmpty();
+        return !resolveRules(slotContext.entity()).isEmpty() || hasSnapshot(stack);
     }
 
     /**

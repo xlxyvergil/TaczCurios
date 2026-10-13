@@ -72,7 +72,7 @@ public class Salvation extends BoundCurioItem {
             imaginaryResistance, IMAGINARY_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
 
         if (matchesRestriction(livingEntity)) {
-            livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+            // 不再移除旧抗性（避免误删外部更高等级来源），直接施加自身等级的抗性提升
             livingEntity.addEffect(new MobEffectInstance(
                 MobEffects.DAMAGE_RESISTANCE,
                 2 * 60 * 20,
@@ -90,7 +90,7 @@ public class Salvation extends BoundCurioItem {
             IMAGINARY_RESISTANCE_ID);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
             KNOCKBACK_RESISTANCE_ID);
-        livingEntity.removeEffect(MobEffects.DAMAGE_RESISTANCE);
+        // 抗性提升 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
         DamageResistanceHelper.clearDamageCap(livingEntity);
         DamageResistanceHelper.clearDamageReduction(livingEntity);
     }

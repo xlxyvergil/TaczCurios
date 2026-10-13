@@ -4,9 +4,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SyncedDataHolder;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Final;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(value = SynchedEntityData.class, priority = 2000)
 public abstract class SynchedEntityDataMixin {
 
-    @Shadow @Final private Entity entity;
+    @Shadow @Final private SyncedDataHolder entity;
 
     @WrapOperation(
             method = "set(Lnet/minecraft/network/syncher/EntityDataAccessor;Ljava/lang/Object;Z)V",

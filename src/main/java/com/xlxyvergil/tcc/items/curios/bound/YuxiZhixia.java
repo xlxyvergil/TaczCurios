@@ -48,10 +48,7 @@ public class YuxiZhixia extends BoundCurioItem {
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
-        // 只扣掉雨曦之匣维持的那一份黄心，保留外部来源（只减不压）
-        float absorptionTarget = TaczCuriosConfig.COMMON.yuxiZhixiaAbsorptionAmount.get();
-        livingEntity.setAbsorptionAmount(Math.max(0.0F,
-            livingEntity.getAbsorptionAmount() - absorptionTarget));
+        // 伤害吸收黄心不再主动扣减：无法区分来源，扣减会误伤金苹果等外部效果；改为自然消耗/消失
     }
 
     @Override
