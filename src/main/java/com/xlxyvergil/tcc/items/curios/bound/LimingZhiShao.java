@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -11,6 +12,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -27,7 +30,7 @@ import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.TaczCurios;
-public class LimingZhiShao extends BoundCurioItem {
+public class LimingZhiShao extends BoundCurioItem implements IFluidWalk {
     private static final ResourceLocation ATTACK_SPEED_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "liming_zhi_shao_4a08b49f_0c3e");
     private static final ResourceLocation ATTACK_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "liming_zhi_shao_1df8d94e_a8d0");
     private static final ResourceLocation CRIT_CHANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "liming_zhi_shao_07a0819e_b79d");
@@ -52,6 +55,11 @@ public class LimingZhiShao extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return state.is(FluidTags.LAVA);
     }
 
     @Override
@@ -122,6 +130,10 @@ public class LimingZhiShao extends BoundCurioItem {
             tooltip.add(formatModifierTooltip(critChance() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.value().getDescriptionId()))
                     .withStyle(ChatFormatting.GOLD));
         }
+        tooltip.add(Component.translatable("tcc.tooltip.lava_walk")
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
+                .withStyle(ChatFormatting.RED));
         appendBoundPlayer(stack, tooltip);
     }
 }

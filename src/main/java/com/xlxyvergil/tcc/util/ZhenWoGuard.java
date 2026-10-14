@@ -4,7 +4,7 @@ import com.xlxyvergil.tcc.items.curios.bound.ZhenWo;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 真我结界 / 免死判定的中转入口。
+ * 真我结界判定的中转入口。
  * <p>
  * mixin 类不能直接引用 ZhenWo：它继承 Item，Mixin 在目标类（如 Player）加载过程中
  * 解析其调用目标的类元数据时会递归加载继承链，触发 ClassMetadataNotFoundException 导致启动崩溃。
@@ -13,10 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 public final class ZhenWoGuard {
 
     private ZhenWoGuard() {
-    }
-
-    public static boolean isBarrierActiveWearer(LivingEntity entity) {
-        return ZhenWo.isBarrierActiveWearer(entity);
     }
 
     public static boolean isInsideActiveBarrier(LivingEntity entity) {

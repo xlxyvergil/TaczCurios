@@ -1,14 +1,12 @@
 package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.items.curios.bound.Juezhe;
 import com.xlxyvergil.tcc.items.curios.bound.Su;
 import com.xlxyvergil.tcc.items.curios.bound.Tianhui;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.ImmunityHelper;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -28,14 +26,8 @@ public class SuSeriesImmunityProtectionHandler {
     /** 苏系列逐火之蛾提供的免疫类别。 */
     private static final Set<ImmunityHelper.Type> IMMUNITIES = Set.of(ImmunityHelper.Type.PROJECTILE);
 
-    /** 是否为受保护的佩戴者：玩家或女仆，且佩戴任一苏系列逐火之蛾。 */
+    /** 是否佩戴任一苏系列逐火之蛾（调用方已先过滤玩家/女仆）。 */
     private static boolean isProtected(LivingEntity entity) {
-        if (entity == null) {
-            return false;
-        }
-        if (!(entity instanceof Player) && !MaidCompat.isMaid(entity)) {
-            return false;
-        }
         return !CurioSearchHelper.findFirstEquippedStack(entity,
                 SuSeriesImmunityProtectionHandler::isSuSeries).isEmpty();
     }

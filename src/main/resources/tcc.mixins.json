@@ -7,11 +7,10 @@
     "minVersion": "0.5.0"
   },
   "mixins": [
-    "DamageResistanceMixin",
     "ImaginaryDeathDropMixin",
     "LivingEntityEffectProtectionMixin",
     "RaidMixin",
-    "SynchedEntityDataMixin"
+    "FluidWalkMixin"
   ],
   "client": [],
   "injectors": {

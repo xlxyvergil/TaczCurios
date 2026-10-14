@@ -1,6 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IDamageMitigation;
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -10,7 +12,6 @@ import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -55,7 +57,7 @@ import java.util.UUID;
 
 import net.minecraft.resources.ResourceLocation;
 @EventBusSubscriber(modid = TaczCurios.MODID)
-public class ZhenWo extends BoundCurioItem {
+public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidWalk {
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "zhen_wo_2df6423f_f4c8");
     private static final ResourceLocation ALL_ATTRIBUTES_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "zhen_wo_8f851e69_1cc7");
     private static final ResourceLocation KNOCKBACK_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "zhen_wo_9b7d1c2e_3d4e");
@@ -72,6 +74,14 @@ public class ZhenWo extends BoundCurioItem {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
                 s -> s.getItem() instanceof ZhenWo).isEmpty();
+    }
+
+    /**
+     * 真我佩戴者可在水面与岩浆表面行走，故对两类流体一并放行。
+     */
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return true;
     }
 
     @Override
@@ -98,7 +108,6 @@ public class ZhenWo extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
                 1.0, KNOCKBACK_RESISTANCE_ID,
                 AttributeModifier.Operation.ADD_VALUE);
-            applyForcedDamageReduction(livingEntity, stack);
         } else {
             removeEffects(livingEntity);
         }
@@ -111,27 +120,24 @@ public class ZhenWo extends BoundCurioItem {
         AttributeHelper.applyAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_ID, 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
             KNOCKBACK_RESISTANCE_ID);
-        DamageResistanceHelper.clearDamageCap(livingEntity);
-        DamageResistanceHelper.clearForcedDamageReduction(livingEntity);
         // 抗性提升 buff 与伤害吸收黄心不再主动移除：前者自然到期，后者避免误伤金苹果等外部来源
         ACTIVE_BARRIER_WEARERS.remove(livingEntity.getUUID());
     }
 
-    /** 写血出口强制免伤：仅玩家享有；结界激活期间提升为 100% 免伤。 */
-    private static void applyForcedDamageReduction(LivingEntity entity, ItemStack stack) {
-        if (!(entity instanceof Player)) {
-            DamageResistanceHelper.clearForcedDamageReduction(entity);
-            return;
-        }
-        float retain = ItemNbtHelper.getTag(stack).getInt(BARRIER_KEY) > 0
-                ? 0.0F
-                : (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
-        DamageResistanceHelper.setForcedDamageReduction(entity, retain);
+    /** 仅玩家享有：佩戴时按配置比例减伤，结界激活期间完全免伤；受击当刻现算，卸下即失效。 */
+    @Override
+    public Float retainFactor(LivingEntity wearer, DamageSource source, float amount) {
+        if (!(wearer instanceof Player)) return null;
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(wearer, s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) return null;
+        if (ItemNbtHelper.getTag(stack).getInt(BARRIER_KEY) > 0) return 0.0F;
+        return (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
     }
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
+
         if (entity.level().isClientSide) return;
 
         if (entity.isDeadOrDying()) return;
@@ -139,7 +145,6 @@ public class ZhenWo extends BoundCurioItem {
         // 收束：仅玩家触发真我效果；其他实体不再享有减伤、结界与免死，并清理历史残留。
         if (!(entity instanceof Player) && !isMaid(entity)) {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
-            DamageResistanceHelper.clearForcedDamageReduction(entity);
             CompoundTag tag = ItemNbtHelper.getTag(stack);
             if (tag.getInt(BARRIER_KEY) != 0 || tag.getInt(COOLDOWN_KEY) != 0) {
                 tag.putInt(BARRIER_KEY, 0);
@@ -160,10 +165,7 @@ public class ZhenWo extends BoundCurioItem {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
         }
 
-        // 强制免伤（写血出口）：仅玩家享有，结界激活期间提升为 100%
-        applyForcedDamageReduction(entity, stack);
-
-        // 参考救世：每 10 秒续期抗性提升（时长 2 分钟），卸下时移除
+        // 每 10 秒续期抗性提升（时长 2 分钟），卸下时移除
         if (entity.tickCount % 200 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.zhenWoResistanceLevel.get(), false, false, true));
@@ -366,7 +368,9 @@ public class ZhenWo extends BoundCurioItem {
     @SubscribeEvent
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         LivingEntity entity = event.getEntity();
-        if (entity == null || entity.level().isClientSide) return;
+        // 真我仅玩家/女仆可佩戴，先廉价短路其它实体，再做后续判断
+        if (!MaidCompat.isPlayerOrMaid(entity)) return;
+        if (entity.level().isClientSide) return;
         MobEffectInstance effect = event.getEffectInstance();
         if (effect == null) return;
         if (effect.getEffect().value().getCategory() != MobEffectCategory.HARMFUL) return;
@@ -454,6 +458,12 @@ public class ZhenWo extends BoundCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("tcc.tooltip.environment_immunity")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.water_walk")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.lava_walk")
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE.value(),

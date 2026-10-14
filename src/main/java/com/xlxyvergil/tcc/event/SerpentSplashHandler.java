@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.event;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.BaseCurioItem;
@@ -110,7 +111,9 @@ public final class SerpentSplashHandler {
 
     @Nullable
     private static SplashParams resolveParams(@Nullable LivingEntity attacker) {
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
+        // 溅射仅玩家/女仆佩戴者可触发，先廉价短路其它实体，再做后续判断
+        if (attacker == null || !MaidCompat.isPlayerOrMaid(attacker)
+                || !(attacker.level() instanceof ServerLevel)) {
             return null;
         }
         SplashParams params = equippedParams(attacker, Shesha.class);

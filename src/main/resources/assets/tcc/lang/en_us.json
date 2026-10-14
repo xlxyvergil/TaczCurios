@@ -508,6 +508,8 @@
   "effect.tcc.zhen_wo_barrier": "True Self Barrier",
   "tcc.tooltip.damage_reduction": "Reduces damage taken by %1$s%%",
   "tcc.tooltip.fire_lava_immunity": "While worn, immune to fire and lava damage, and continuously extinguishes fire",
+  "tcc.tooltip.water_walk": "While worn, you can walk on water",
+  "tcc.tooltip.lava_walk": "While worn, you can walk on lava",
   "tcc.tooltip.silent_movement": "While worn, movement produces no vibration and does not trigger sculk shriekers",
   "tcc.tooltip.cooked_drops": "When you kill an entity, its edible drops are smelted as if cooked in a furnace (requires a smelting recipe)",
   "tcc.tooltip.debuff_immunity": "Immune to negative effects",

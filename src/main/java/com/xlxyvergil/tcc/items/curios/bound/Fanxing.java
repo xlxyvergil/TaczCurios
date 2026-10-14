@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IDamageMitigation;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -9,7 +10,6 @@ import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
@@ -24,13 +24,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
-public class Fanxing extends BoundCurioItem {
+public class Fanxing extends BoundCurioItem implements IDamageMitigation {
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fanxing_e1f2a3b4_7801");
     private static final ResourceLocation LUCK_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fanxing_d4e5f6a7_9004");
 
@@ -63,7 +62,6 @@ public class Fanxing extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_ID);
-        DamageResistanceHelper.clearHurtCooldown(livingEntity);
     }
 
     @Override
@@ -71,17 +69,11 @@ public class Fanxing extends BoundCurioItem {
         return true;
     }
 
+    /** 持任意枪时提供受击冷却，冷却时长随幸运值提升；受击当刻现算，卸下即失效。 */
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        LivingEntity entity = slotContext.entity();
-        if (entity == null) return;
-        if (entity.level().isClientSide) return;
-        // 受伤冷却仅在持枪时登记：持枪则注册受击自动冷却，非持枪则清除登记（已进入的冷却在剩余时间内继续生效）。
-        if (!GunTypeChecker.isHoldingAnyGun(entity)) {
-            DamageResistanceHelper.clearHurtCooldown(entity);
-            return;
-        }
-        DamageResistanceHelper.setHurtCooldown(entity, computeCooldownTicks(entity));
+    public Integer hurtCooldownTicks(LivingEntity wearer) {
+        if (!GunTypeChecker.isHoldingAnyGun(wearer)) return null;
+        return computeCooldownTicks(wearer);
     }
 
     /** 依据当前幸运值计算受伤冷却时长（tick），并受配置上限约束。 */

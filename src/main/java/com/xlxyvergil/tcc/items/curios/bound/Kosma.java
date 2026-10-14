@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -11,6 +12,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -19,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -27,7 +30,7 @@ import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.TaczCurios;
-public class Kosma extends BoundCurioItem {
+public class Kosma extends BoundCurioItem implements IFluidWalk {
     private static final ResourceLocation ATTACK_SPEED_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "kosma_e46b57b8_666e");
     private static final ResourceLocation ATTACK_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "kosma_9bd59d29_b938");
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "kosma_b8d1e4a6_2d90");
@@ -47,6 +50,11 @@ public class Kosma extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return state.is(FluidTags.LAVA);
     }
 
     @Override
@@ -106,6 +114,10 @@ public class Kosma extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(attackDamagePct() * 100, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.value().getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.lava_walk")
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
+                .withStyle(ChatFormatting.RED));
         appendBoundPlayer(stack, tooltip);
     }
 }

@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -16,6 +17,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +27,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.EventPriority;
@@ -37,7 +40,7 @@ import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 @EventBusSubscriber(modid = TaczCurios.MODID)
-public class ShenzuiZhijian extends BoundCurioItem {
+public class ShenzuiZhijian extends BoundCurioItem implements IFluidWalk {
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "shenzui_zhijian_b5e2c9a4_7c15");
 
     private static double debuffChance() {
@@ -59,6 +62,11 @@ public class ShenzuiZhijian extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return state.is(FluidTags.WATER);
     }
 
     @Override
@@ -122,6 +130,8 @@ public class ShenzuiZhijian extends BoundCurioItem {
         Level level = context.level();
         super.appendHoverText(stack, context, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
+        tooltip.add(Component.translatable("tcc.tooltip.water_walk")
+                .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.discipline.curio_effect", debuffCount())
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);

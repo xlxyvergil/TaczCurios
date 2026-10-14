@@ -4,6 +4,7 @@ import com.tacz.guns.api.entity.IGunOperator;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.BaseCurioItem;
@@ -188,7 +189,8 @@ public final class RavenKeyAimHandler {
     /** 取佩戴中最高阶（裁决之键 > 雷鸣见 > 七雷）的开镜蓄力参数；未佩戴时为 null。客户端亦可用。 */
     @Nullable
     public static AimParams getAimParams(@Nullable LivingEntity attacker) {
-        if (attacker == null) {
+        // 渡鸦神之键仅玩家/女仆可佩戴，先廉价短路其它实体，再做后续判断
+        if (attacker == null || !MaidCompat.isPlayerOrMaid(attacker)) {
             return null;
         }
         // 单次遍历饰品快照，同时判定三件神之键的佩戴与限制条件，避免多次扫描与重复分配谓词。

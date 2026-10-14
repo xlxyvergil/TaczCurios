@@ -64,8 +64,7 @@ public final class CurioEffectRefresher {
 
     /**
      * 遍历佩戴者的饰品，对通过筛选的饰品重建属性效果。
-     *
-     * @return 是否至少重建了一个饰品
+     * 返回是否至少重建了一个饰品。
      */
     private static boolean rebuild(LivingEntity entity, Predicate<BaseCurioItem> filter) {
         if (entity == null) {

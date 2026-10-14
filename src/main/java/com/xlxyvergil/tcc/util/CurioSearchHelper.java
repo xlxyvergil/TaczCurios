@@ -53,6 +53,11 @@ public final class CurioSearchHelper {
         return ItemStack.EMPTY;
     }
 
+    /** 该实体当前佩戴饰品栈的快照（本 tick 内共享、只读），供需要遍历并聚合的调用方使用。 */
+    public static List<ItemStack> equippedStacks(LivingEntity livingEntity) {
+        return livingEntity == null ? List.of() : snapshot(livingEntity);
+    }
+
     /** 遍历实体所有饰品槽位中的物品，对每个非空 ItemStack 执行回调。 */
     public static void forEachEquippedStack(LivingEntity livingEntity, Consumer<ItemStack> consumer) {
         if (livingEntity == null || consumer == null) {

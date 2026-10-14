@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -11,6 +12,7 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -26,7 +29,7 @@ import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.TaczCurios;
-public class Xuguang extends BoundCurioItem {
+public class Xuguang extends BoundCurioItem implements IFluidWalk {
     private static final ResourceLocation ATTACK_SPEED_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "xuguang_161e973d_68d7");
     private static final ResourceLocation ATTACK_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "xuguang_ca6fabe6_01b5");
     private static final ResourceLocation CRIT_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "xuguang_71aa144b_f2e0");
@@ -51,6 +54,11 @@ public class Xuguang extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return state.is(FluidTags.LAVA);
     }
 
     @Override
@@ -121,6 +129,10 @@ public class Xuguang extends BoundCurioItem {
             tooltip.add(formatModifierTooltip(critDamage() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.value().getDescriptionId()))
                     .withStyle(ChatFormatting.GOLD));
         }
+        tooltip.add(Component.translatable("tcc.tooltip.lava_walk")
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
+                .withStyle(ChatFormatting.RED));
         appendBoundPlayer(stack, tooltip);
     }
 }

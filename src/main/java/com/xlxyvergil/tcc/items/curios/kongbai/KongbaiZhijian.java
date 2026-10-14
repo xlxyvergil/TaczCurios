@@ -432,8 +432,7 @@ public class KongbaiZhijian extends BoundCurioItem {
      * 清除 entity 上由「传入的快照规则 ∪ 当前数据包规则表全部规则」对应的修饰符。
      * <p>
      * 并集保证：规则被数据包热删后，其 id 只存在于物品快照中也能被移除。
-     *
-     * @param cached 上一轮写入快照的规则，可为 null
+     * cached 为上一轮写入快照的规则，可为 null。
      */
     private static void clearModifiers(LivingEntity entity, @Nullable List<AttributeLinkData> cached) {
         if (entity == null) {

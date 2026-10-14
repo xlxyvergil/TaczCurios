@@ -1,13 +1,13 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
- import com.xlxyvergil.tcc.attribute.TccAttributes;
+ import com.xlxyvergil.tcc.api.items.IDamageMitigation;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
 import net.minecraft.ChatFormatting;
@@ -21,14 +21,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
-public class Griseo extends BoundCurioItem {
+public class Griseo extends BoundCurioItem implements IDamageMitigation {
     private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "griseo_c8d9e0f1_6790");
 
     public Griseo(Properties properties) {
@@ -51,7 +50,13 @@ public class Griseo extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             IMAGINARY_RESISTANCE_ID);
-        DamageResistanceHelper.clearHurtCooldown(livingEntity);
+    }
+
+    /** 持任意枪时提供受击冷却：受击后一段时间内伤害归零；受击当刻现算，卸下即失效。 */
+    @Override
+    public Integer hurtCooldownTicks(LivingEntity wearer) {
+        if (!GunTypeChecker.isHoldingAnyGun(wearer)) return null;
+        return TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get();
     }
 
     public static boolean isEquipped(LivingEntity entity) {
@@ -62,18 +67,6 @@ public class Griseo extends BoundCurioItem {
     private static ItemStack findEquippedStack(LivingEntity livingEntity) {
         return CurioSearchHelper.findFirstEquippedStack(livingEntity,
             stack -> stack.getItem() instanceof Griseo);
-    }
-
-    @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        LivingEntity entity = slotContext.entity();
-        if (entity.level().isClientSide) return;
-        // 受伤冷却仅在持枪时登记：持枪则注册受击自动冷却，非持枪则清除登记（已进入的冷却在剩余时间内继续生效）。
-        if (!GunTypeChecker.isHoldingAnyGun(entity)) {
-            DamageResistanceHelper.clearHurtCooldown(entity);
-            return;
-        }
-        DamageResistanceHelper.setHurtCooldown(entity, TaczCuriosConfig.COMMON.griseoHurtCooldownTicks.get());
     }
 
     @Override
