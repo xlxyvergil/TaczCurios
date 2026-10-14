@@ -2211,7 +2211,7 @@ public class TaczCuriosConfig {
                             "taa:ads_time", "taa:heat_overheat_time", "taa:reload_time",
                             "taa:explosion_destroy_blocknew", "taa:explosion_delay",
                             "gunsmithlib:vert_recoil", "gunsmithlib:horz_recoil", "gunsmithlib:reload_speed",
-                            "sometaczaddon:gun_recoil_effect", "forge:step_height_addition"
+                            "sometaczaddon:gun_recoil_effect", "forge:step_height_addition", "forge:entity_gravity"
                     ), o -> o instanceof String);
             builder.pop();
 
