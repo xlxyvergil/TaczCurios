@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IDamageMitigation;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -9,7 +10,6 @@ import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import net.minecraft.ChatFormatting;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
@@ -52,7 +52,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ZhenWo extends BoundCurioItem {
+public class ZhenWo extends BoundCurioItem implements IDamageMitigation {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2df6423f-42bc-4629-8624-ebb8cf4ff4c8");
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("8f851e69-0217-4e14-af7f-ee655b4a1cc7");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("9b7d1c2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e");
@@ -97,7 +97,6 @@ public class ZhenWo extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
                 1.0, KNOCKBACK_RESISTANCE_UUID, "tcc.zhen_wo.knockback_resistance",
                 AttributeModifier.Operation.ADDITION);
-            applyForcedDamageReduction(livingEntity, stack);
         } else {
             removeEffects(livingEntity);
         }
@@ -111,22 +110,18 @@ public class ZhenWo extends BoundCurioItem {
             "tcc.zhen_wo.all_attributes", 0, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE,
             KNOCKBACK_RESISTANCE_UUID);
-        DamageResistanceHelper.clearDamageCap(livingEntity);
-        DamageResistanceHelper.clearForcedDamageReduction(livingEntity);
         // 抗性提升 buff 与伤害吸收黄心不再主动移除：前者自然到期，后者避免误伤金苹果等外部来源
         ACTIVE_BARRIER_WEARERS.remove(livingEntity.getUUID());
     }
 
-    /** 写血出口强制免伤：仅玩家享有；结界激活期间提升为 100% 免伤。 */
-    private static void applyForcedDamageReduction(LivingEntity entity, ItemStack stack) {
-        if (!(entity instanceof Player)) {
-            DamageResistanceHelper.clearForcedDamageReduction(entity);
-            return;
-        }
-        float retain = stack.getOrCreateTag().getInt(BARRIER_KEY) > 0
-                ? 0.0F
-                : (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
-        DamageResistanceHelper.setForcedDamageReduction(entity, retain);
+    /** 仅玩家享有：佩戴时按配置比例减伤，结界激活期间完全免伤；受击当刻现算，卸下即失效。 */
+    @Override
+    public Float retainFactor(LivingEntity wearer, DamageSource source, float amount) {
+        if (!(wearer instanceof Player)) return null;
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(wearer, s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) return null;
+        if (stack.getOrCreateTag().getInt(BARRIER_KEY) > 0) return 0.0F;
+        return (float) (1 - TaczCuriosConfig.COMMON.zhenWoDamageTakenFactor.get());
     }
 
     @Override
@@ -139,7 +134,6 @@ public class ZhenWo extends BoundCurioItem {
         // 收束：仅玩家触发真我效果；其他实体不再享有减伤、结界与免死，并清理历史残留。
         if (!(entity instanceof Player) && !isMaid(entity)) {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
-            DamageResistanceHelper.clearForcedDamageReduction(entity);
             CompoundTag tag = stack.getTag();
             if (tag != null && (tag.getInt(BARRIER_KEY) != 0 || tag.getInt(COOLDOWN_KEY) != 0)) {
                 tag.putInt(BARRIER_KEY, 0);
@@ -159,10 +153,7 @@ public class ZhenWo extends BoundCurioItem {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
         }
 
-        // 强制免伤（写血出口）：仅玩家享有，结界激活期间提升为 100%
-        applyForcedDamageReduction(entity, stack);
-
-        // 参考救世：每 10 秒续期抗性提升（时长 2 分钟），卸下时移除
+        // 每 10 秒续期抗性提升（时长 2 分钟），卸下时移除
         if (entity.tickCount % 200 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.zhenWoResistanceLevel.get(), false, false, true));
@@ -364,7 +355,9 @@ public class ZhenWo extends BoundCurioItem {
     @SubscribeEvent
     public static void onEffectApplicable(MobEffectEvent.Applicable event) {
         LivingEntity entity = event.getEntity();
-        if (entity == null || entity.level().isClientSide) return;
+        // 真我仅玩家/女仆可佩戴，先廉价短路其它实体，再做后续判断
+        if (!MaidCompat.isPlayerOrMaid(entity)) return;
+        if (entity.level().isClientSide) return;
         MobEffectInstance effect = event.getEffectInstance();
         if (effect == null) return;
         if (effect.getEffect().getCategory() != MobEffectCategory.HARMFUL) return;

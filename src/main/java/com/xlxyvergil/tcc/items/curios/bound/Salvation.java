@@ -1,21 +1,23 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.api.items.IDamageMitigation;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -31,7 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class Salvation extends BoundCurioItem {
+public class Salvation extends BoundCurioItem implements IDamageMitigation {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("c3d4e5f6-a7b8-9012-cdef-123456789012");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("f6a7b8c9-d0e1-2345-f012-456789012345");
     
@@ -84,8 +86,14 @@ public class Salvation extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
             KNOCKBACK_RESISTANCE_UUID);
         // 抗性提升 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
-        DamageResistanceHelper.clearDamageCap(livingEntity);
-        DamageResistanceHelper.clearDamageReduction(livingEntity);
+    }
+
+    /** 玩家持手枪时按配置比例减伤；受击当刻现算，卸下即失效。 */
+    @Override
+    public Float retainFactor(LivingEntity wearer, DamageSource source, float amount) {
+        if (!(wearer instanceof Player)) return null;
+        if (!GunTypeChecker.isHoldingPistol(wearer)) return null;
+        return (float) (1 - TaczCuriosConfig.COMMON.salvationDamageReduction.get());
     }
 
     @Override
@@ -138,13 +146,6 @@ public class Salvation extends BoundCurioItem {
                 MobEffects.DAMAGE_RESISTANCE,
                 2 * 60 * 20, TaczCuriosConfig.COMMON.salvationResistanceLevel.get(), false, false, true));
         }
-        if (!GunTypeChecker.isHoldingPistol(event.player)) {
-            DamageResistanceHelper.clearDamageReduction(event.player);
-            return;
-        }
-
-        DamageResistanceHelper.setDamageReduction(event.player,
-            (float) (1 - TaczCuriosConfig.COMMON.salvationDamageReduction.get()));
     }
     
     @Override

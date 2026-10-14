@@ -17,9 +17,7 @@ import java.util.function.Supplier;
  * 而实际结算发生在服务端。两边文件不一致时显示会与实际行为错位，
  * 因此登录时由服务端把自身实际生效的文件内容下发，客户端覆盖本地文件后重新加载。
  *
- * @param achievements achievement_definitions.json 文本，无内容时为 null
- * @param evolution    evolution_rules.json 文本，无内容时为 null
- * @param tiers        key_tiers.json 文本，无内容时为 null
+ * 三个字段分别为 achievement_definitions / evolution_rules / key_tiers 的文本，无内容时为 null。
  */
 public record SyncDataFilesS2CPacket(String achievements, String evolution, String tiers) {
 

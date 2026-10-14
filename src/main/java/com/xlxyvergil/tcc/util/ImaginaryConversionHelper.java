@@ -95,7 +95,7 @@ public final class ImaginaryConversionHelper {
         forceAddEffect(target, instance);
     }
 
-    /** 绕过 maxLevel 限制强制写入效果（参考 ShijieFanyan） */
+    /** 绕过 maxLevel 限制强制写入效果 */
     private static void forceAddEffect(LivingEntity entity, MobEffectInstance instance) {
         MobEffect effect = instance.getEffect();
         MobEffectInstance old = entity.getActiveEffectsMap().get(effect);

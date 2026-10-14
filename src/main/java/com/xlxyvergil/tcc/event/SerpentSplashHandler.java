@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.event;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.items.BaseCurioItem;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * 神之键·梅比乌斯线（往世的蛇影 / 死之衣 / 舍沙）枪击命中溅射：
  * 命中后以受击者为中心，对球型范围内的生物（含受击者本身）额外施加
- * 「主手枪械面板伤害 × 百分比」的魔法伤害（参考裁决之键的实现）。
+ * 「主手枪械面板伤害 × 百分比」的魔法伤害。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class SerpentSplashHandler {
@@ -110,7 +111,9 @@ public final class SerpentSplashHandler {
 
     @Nullable
     private static SplashParams resolveParams(@Nullable LivingEntity attacker) {
-        if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
+        // 溅射仅玩家/女仆佩戴者可触发，先廉价短路其它实体，再做后续判断
+        if (attacker == null || !MaidCompat.isPlayerOrMaid(attacker)
+                || !(attacker.level() instanceof ServerLevel)) {
             return null;
         }
         SplashParams params = equippedParams(attacker, Shesha.class);

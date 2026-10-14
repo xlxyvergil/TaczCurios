@@ -1,16 +1,17 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IDamageMitigation;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class Su extends BoundCurioItem {
+public class Su extends BoundCurioItem implements IDamageMitigation {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("90b6f508-6de3-4f7e-913b-ac7c509be823");
     private static final UUID MAX_HEALTH_UUID = UUID.fromString("3b900565-c385-48b6-8d45-b08b5399d6c5");
 
@@ -59,9 +60,14 @@ public class Su extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
-        DamageResistanceHelper.clearDamageCap(livingEntity);
-        DamageResistanceHelper.clearDamageReduction(livingEntity);
         // 抗性提升 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
+    }
+
+    /** 持步枪时按配置比例减伤；受击当刻现算，卸下即失效。 */
+    @Override
+    public Float retainFactor(LivingEntity wearer, DamageSource source, float amount) {
+        if (!matchesRestriction(wearer)) return null;
+        return (float) (1 - TaczCuriosConfig.COMMON.suDamageTakenFactor.get());
     }
 
     @Override
@@ -74,12 +80,6 @@ public class Su extends BoundCurioItem {
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.suResistanceLevel.get(), false, false, true));
         }
-        if (!matchesRestriction(entity)) {
-            DamageResistanceHelper.clearDamageReduction(entity);
-            return;
-        }
-        DamageResistanceHelper.setDamageReduction(entity,
-            (float) (1 - TaczCuriosConfig.COMMON.suDamageTakenFactor.get()));
     }
 
     public static boolean isEquipped(LivingEntity entity) {

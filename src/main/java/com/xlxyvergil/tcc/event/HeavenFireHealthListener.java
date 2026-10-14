@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.event;
 
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.items.curios.bound.HeavenFireApocalypse;
 import com.xlxyvergil.tcc.items.curios.bound.HeavenFireJudgment;
 
@@ -18,7 +19,11 @@ public class HeavenFireHealthListener {
     @SubscribeEvent
     public static void onLivingHurt(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
-        if (target == null || target.level().isClientSide()) {
+        // 天火系列仅玩家/女仆可佩戴，先廉价短路非佩戴者，再做后续判断
+        if (!MaidCompat.isPlayerOrMaid(target)) {
+            return;
+        }
+        if (target.level().isClientSide()) {
             return;
         }
         
@@ -31,7 +36,11 @@ public class HeavenFireHealthListener {
     @SubscribeEvent
     public static void onLivingHeal(LivingHealEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity == null || entity.level().isClientSide()) {
+        // 天火系列仅玩家/女仆可佩戴，先廉价短路非佩戴者，再做后续判断
+        if (!MaidCompat.isPlayerOrMaid(entity)) {
+            return;
+        }
+        if (entity.level().isClientSide()) {
             return;
         }
         

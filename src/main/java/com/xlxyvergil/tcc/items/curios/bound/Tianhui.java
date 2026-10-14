@@ -1,16 +1,17 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IDamageMitigation;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
-import com.xlxyvergil.tcc.util.DamageResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,7 +30,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class Tianhui extends BoundCurioItem {
+public class Tianhui extends BoundCurioItem implements IDamageMitigation {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("e5f6a7b8-c9d0-1234-ef56-7890abcdef02");
     private static final UUID MAX_HEALTH_UUID = UUID.fromString("f6a7b8c9-d0e1-2345-f678-90abcdef0123");
 
@@ -63,9 +64,14 @@ public class Tianhui extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.MAX_HEALTH, MAX_HEALTH_UUID);
-        DamageResistanceHelper.clearDamageCap(livingEntity);
-        DamageResistanceHelper.clearDamageReduction(livingEntity);
         // 抗性提升 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
+    }
+
+    /** 持步枪时按当前虚数抗性减伤；受击当刻现算，卸下即失效。 */
+    @Override
+    public Float retainFactor(LivingEntity wearer, DamageSource source, float amount) {
+        if (!matchesRestriction(wearer)) return null;
+        return calculateRetainFactor(wearer);
     }
 
     @Override
@@ -78,11 +84,6 @@ public class Tianhui extends BoundCurioItem {
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.tianhuiResistanceLevel.get(), false, false, true));
         }
-        if (!matchesRestriction(entity)) {
-            DamageResistanceHelper.clearDamageReduction(entity);
-            return;
-        }
-        DamageResistanceHelper.setDamageReduction(entity, calculateRetainFactor(entity));
     }
 
     private static float calculateRetainFactor(LivingEntity entity) {

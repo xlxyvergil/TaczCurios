@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.util;
 
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.KeyTierRegistry;
 import com.xlxyvergil.tcc.evolution.KeyTierRegistry.KeyTier;
@@ -15,7 +16,8 @@ public final class ImaginaryInfectionHelper {
 
     /** 根据攻击者身上已装备神之键的最高阶位，确定对目标施加的虚数侵染允许堆叠到的最大层数。 */
     public static int resolveMaxLevel(LivingEntity attacker) {
-        if (attacker == null) {
+        // 神之键仅玩家/女仆可佩戴，非佩戴者直接返回默认阶位，免去槽位扫描
+        if (attacker == null || !MaidCompat.isPlayerOrMaid(attacker)) {
             return TaczCuriosConfig.COMMON.tier1ImaginaryInfectionMaxLevel.get();
         }
         KeyTier[] best = { KeyTier.NONE };

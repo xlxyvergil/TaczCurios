@@ -1,11 +1,9 @@
 package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
-import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.items.curios.bound.ZhenWo;
 import com.xlxyvergil.tcc.util.ImmunityHelper;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -32,14 +30,8 @@ public class ZhenWoImmunityProtectionHandler {
             ImmunityHelper.Type.DROWNING,
             ImmunityHelper.Type.CRAMMING);
 
-    /** 是否为受保护的佩戴者：玩家或女仆，且佩戴真我。 */
+    /** 是否佩戴真我（调用方已先过滤玩家/女仆）。 */
     private static boolean isProtected(LivingEntity entity) {
-        if (entity == null) {
-            return false;
-        }
-        if (!(entity instanceof Player) && !MaidCompat.isMaid(entity)) {
-            return false;
-        }
         return ZhenWo.isEquipped(entity);
     }
 

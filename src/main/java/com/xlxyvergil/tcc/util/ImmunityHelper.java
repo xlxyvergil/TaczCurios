@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.util;
 
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -17,6 +18,9 @@ import java.util.function.Predicate;
  * <p>
  * 把「弹射物无法命中 / 免疫指定伤害 / 免疫火焰效果」抽成与具体饰品无关的静态方法，
  * 「谁免疫」由调用方传入的 protector 判定，便于各饰品按需组合复用。
+ * <p>
+ * 相关饰品仅玩家/女仆可佩戴，故三个入口统一先做玩家/女仆判定：非玩家/女仆直接短路，
+ * 不进入后续伤害匹配与饰品槽扫描。
  */
 public final class ImmunityHelper {
 
@@ -60,8 +64,7 @@ public final class ImmunityHelper {
 
     /**
      * 弹射物无法命中：命中判定指向受保护实体时，让弹射物如同该实体不存在般穿过，不做任何命中处理。
-     *
-     * @return 是否已跳过本次命中
+     * 返回是否已跳过本次命中。
      */
     public static boolean skipProjectileHit(ProjectileImpactEvent event, Predicate<LivingEntity> protector) {
         Projectile projectile = event.getProjectile();
@@ -74,6 +77,10 @@ public final class ImmunityHelper {
         if (!(entityHit.getEntity() instanceof LivingEntity target)) {
             return false;
         }
+        // 先廉价短路非玩家/女仆，免去后续槽位扫描
+        if (!MaidCompat.isPlayerOrMaid(target)) {
+            return false;
+        }
         if (!protector.test(target)) {
             return false;
         }
@@ -83,11 +90,14 @@ public final class ImmunityHelper {
 
     /**
      * 取消受保护实体受到的指定类别伤害；类别含 FIRE（已涵盖岩浆）时顺带灭火。
-     *
-     * @return 是否已取消本次伤害
+     * 返回是否已取消本次伤害。
      */
     public static boolean cancelDamage(LivingAttackEvent event, Set<Type> types, Predicate<LivingEntity> protector) {
         LivingEntity entity = event.getEntity();
+        // 先廉价短路非玩家/女仆，免去后续伤害匹配与槽位扫描
+        if (!MaidCompat.isPlayerOrMaid(entity)) {
+            return false;
+        }
         if (entity.level().isClientSide) {
             return false;
         }
@@ -107,10 +117,13 @@ public final class ImmunityHelper {
 
     /**
      * 免疫火焰效果：受保护实体着火时立即熄灭。
-     *
-     * @return 是否已熄灭
+     * 返回是否已熄灭。
      */
     public static boolean extinguishFire(LivingEntity entity, Predicate<LivingEntity> protector) {
+        // 先廉价短路非玩家/女仆，免去后续判定与槽位扫描
+        if (!MaidCompat.isPlayerOrMaid(entity)) {
+            return false;
+        }
         if (entity.level().isClientSide || !entity.isOnFire()) {
             return false;
         }

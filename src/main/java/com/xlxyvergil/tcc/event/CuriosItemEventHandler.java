@@ -1,6 +1,7 @@
 package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.items.curios.kongbai.KongbaiZhijian;
 import com.xlxyvergil.tcc.link.AttributeLinkRegistry;
 import com.xlxyvergil.tcc.util.CurioEffectRefresher;
@@ -78,7 +79,11 @@ public class CuriosItemEventHandler {
     @SubscribeEvent
     public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
         LivingEntity entity = event.getEntity();
-        if (entity == null || entity.level().isClientSide) {
+        // 只有玩家/女仆会佩戴饰品，先廉价短路其它实体，再做后续判断
+        if (!MaidCompat.isPlayerOrMaid(entity)) {
+            return;
+        }
+        if (entity.level().isClientSide) {
             return;
         }
         // 装备变更可能改变饰品效果的输入（手持武器等），统一重建事件驱动饰品
