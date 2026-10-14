@@ -166,6 +166,8 @@ public class Eden extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.golden.curio_effect",
                 (int) auraRange(), buffAmplifier() + 1)
                 .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.suffocation_drowning_cramming_immunity")
+                .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
     }
 }

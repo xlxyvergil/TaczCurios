@@ -42,8 +42,8 @@ public class CuriosItemEventHandler {
     /**
      * 槽内物品变化（装上/卸下规则饰品）后，实时重算佩戴者身上空白之键的联动规则。
      * <p>
-     * 这里用 {@link CurioChangeEvent}（服务端、槽位内容变动后触发），而不用
-     * {@link CurioCanEquipEvent}/{@link CurioCanUnequipEvent}——后两者是 canEquip/canUnequip
+     * 这里用 CurioChangeEvent（服务端、槽位内容变动后触发），而不用
+     * CurioCanEquipEvent/CurioCanUnequipEvent——后两者是 canEquip/canUnequip
      * 检查阶段的前置事件，触发时槽位内容尚未变更，且可能因模拟取出被重复调用。
      */
     @SubscribeEvent
@@ -73,7 +73,7 @@ public class CuriosItemEventHandler {
     /**
      * 装备变更（穿脱护甲、切换手持物品等）会改变源属性值，实时重算佩戴者的联动规则。
      * <p>
-     * 饰品槽位变化由 {@link #onCurioChange} 处理，两者合起来覆盖「属性会被拆装改变」的来源；
+     * 饰品槽位变化由 onCurioChange 处理，两者合起来覆盖「属性会被拆装改变」的来源；
      * 无法监听的来源由空白之键在攻击时对齐。
      */
     @SubscribeEvent

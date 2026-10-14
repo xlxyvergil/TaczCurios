@@ -8,8 +8,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 /**
- * 客户端渲染：把 {@link SpawnerHighlightClientData} 中记录的每一个刷怪笼
- * 交给 {@link HighlightPillarRenderer} 画成红色光柱。
+ * 客户端渲染：把 SpawnerHighlightClientData 中记录的每一个刷怪笼
+ * 交给 HighlightPillarRenderer 画成红色光柱。
  *
  * 坐标由服务端下发、仅发给该玩家本人，因此光柱只在对应玩家客户端显示。
  */

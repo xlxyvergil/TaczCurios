@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * 客户端保存的"当前玩家尚未开启的 Lootr 箱子"坐标集合。
- * 由 {@code SyncLootrHighlightsS2CPacket} 从服务端同步而来，供光柱渲染使用。
+ * 由 SyncLootrHighlightsS2CPacket 从服务端同步而来，供光柱渲染使用。
  */
 @OnlyIn(Dist.CLIENT)
 public final class LootrHighlightClientData {

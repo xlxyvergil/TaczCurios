@@ -56,11 +56,11 @@ public record SyncConfigS2CPacket(String toml) implements CustomPacketPayload {
     }
 
     /**
-     * 递归收集配置项：{@code getValues()} 的节点要么是叶子 {@link ModConfigSpec.ConfigValue}，
-     * 要么是分组 {@link Config}，与 {@code ModConfigSpec#resetCaches} 的遍历方式一致；
-     * {@code getSpec()} 与之同构，用于取出注释。
+     * 递归收集配置项：getValues() 的节点要么是叶子 ModConfigSpec.ConfigValue，
+     * 要么是分组 Config，与 ModConfigSpec#resetCaches 的遍历方式一致；
+     * getSpec() 与之同构，用于取出注释。
      *
-     * 注释必须一并写出：客户端载入时 {@code ModConfigSpec#acceptConfig} 会先做一次配置校验，
+     * 注释必须一并写出：客户端载入时 ModConfigSpec#acceptConfig 会先做一次配置校验，
      * 校验同时比对注释，注释缺失会被判定为配置不正确并触发修正与告警日志。
      */
     private static void collect(Map<String, Object> specNodes, Map<String, Object> valueNodes,

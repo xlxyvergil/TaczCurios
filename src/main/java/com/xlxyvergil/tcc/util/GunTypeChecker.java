@@ -114,7 +114,7 @@ public class GunTypeChecker {
     /**
      * 读取持枪者主手 TACZ 枪械的子弹实际伤害，并限定枪械类型。<br>
      * 直接读取 TAA 计算后的实时缓存（配件伤害 × 玩家枪械伤害属性 × 弹丸数），与枪械面板显示的伤害一致。<br>
-     * 仅当主手枪械类型属于 {@code gunTypes} 时才返回伤害值，否则返回 0。
+     * 仅当主手枪械类型属于 gunTypes 时才返回伤害值，否则返回 0。
      */
     public static double getMainHandGunDamage(LivingEntity livingEntity, Set<String> gunTypes) {
         if (livingEntity == null || gunTypes == null || gunTypes.isEmpty()) {

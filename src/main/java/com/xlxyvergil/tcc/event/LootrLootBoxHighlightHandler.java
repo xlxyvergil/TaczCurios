@@ -28,10 +28,10 @@ import java.util.UUID;
 
 /**
  * 服务端扫描：对<strong>佩戴 pado_philipis / lueji_zhi_shou / kongmeng 之一</strong>的玩家，
- * 每 {@link #SCAN_INTERVAL} tick 检测其周围 {@link #RADIUS} 格内"自己尚未开启的 Lootr 战利品箱子"，
- * 并将这些箱子的坐标通过 {@link SyncLootrHighlightsS2CPacket} 定向发给该玩家。
+ * 每 SCAN_INTERVAL tick 检测其周围 RADIUS 格内"自己尚未开启的 Lootr 战利品箱子"，
+ * 并将这些箱子的坐标通过 SyncLootrHighlightsS2CPacket 定向发给该玩家。
  *
- * 由于"某玩家是否开过"由 Lootr 的 {@code ChestData}（服务端 SavedData）记录，客户端无法读取，
+ * 由于"某玩家是否开过"由 Lootr 的 ChestData（服务端 SavedData）记录，客户端无法读取，
  * 因此判断全部在服务端完成，客户端只负责把收到的坐标渲染成光柱。
  */
 @EventBusSubscriber(modid = TaczCurios.MODID)
@@ -75,7 +75,7 @@ public final class LootrLootBoxHighlightHandler {
 
     /**
      * 玩家打开容器（含 Lootr 箱子）时立即重扫一次，使刚被开启的箱子光柱即时消失。
-     * 此时战利品已填充到 {@code ChestData}，因此 {@link #scanUnopenedChests} 会立刻将其剔除。
+     * 此时战利品已填充到 ChestData，因此 scanUnopenedChests 会立刻将其剔除。
      */
     @SubscribeEvent
     public static void onPlayerOpenContainer(PlayerContainerEvent.Open event) {

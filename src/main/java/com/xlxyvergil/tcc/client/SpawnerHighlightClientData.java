@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * 客户端保存的"当前玩家周围的刷怪笼"坐标集合。
- * 由 {@code SyncSpawnerHighlightsS2CPacket} 从服务端同步而来，供光柱渲染使用。
+ * 由 SyncSpawnerHighlightsS2CPacket 从服务端同步而来，供光柱渲染使用。
  */
 @OnlyIn(Dist.CLIENT)
 public final class SpawnerHighlightClientData {

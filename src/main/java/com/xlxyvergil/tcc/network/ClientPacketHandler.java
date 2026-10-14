@@ -71,7 +71,7 @@ final class ClientPacketHandler {
     }
 
     /**
-     * 用服务端下发的 TOML 覆盖本地配置值，覆盖后客户端所有 {@code COMMON_SPEC} 读取
+     * 用服务端下发的 TOML 覆盖本地配置值，覆盖后客户端所有 COMMON_SPEC 读取
      * 都会返回服务端值。失败时保留本地配置，不影响正常游玩。
      */
     static void handleSyncConfig(SyncConfigS2CPacket packet) {

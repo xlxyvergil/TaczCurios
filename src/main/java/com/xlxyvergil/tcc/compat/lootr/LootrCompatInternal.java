@@ -16,8 +16,8 @@ import java.util.UUID;
 /**
  * Lootr 类型隔离层。
  *
- * 本类是唯一允许出现 {@code noobanidus.mods.lootr.*} 类型的地方，且必须是包私有（包外无从引用）。
- * 它只会被 {@link LootrCompat} 在 {@code ModList.get().isLoaded("lootr")} 为真时调用，
+ * 本类是唯一允许出现 noobanidus.mods.lootr.* 类型的地方，且必须是包私有（包外无从引用）。
+ * 它只会被 LootrCompat 在 ModList.get().isLoaded("lootr") 为真时调用，
  * 因此 Lootr 缺失时本类永远不会被加载/校验，也就不会解析到缺失的类型。
  */
 final class LootrCompatInternal {
@@ -48,11 +48,11 @@ final class LootrCompatInternal {
     }
 
     /**
-     * 收集以 {@code center} 为中心、{@code radius} 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 {@code out}。
+     * 收集以 center 为中心、radius 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 out。
      *
-     * Lootr 会把带战利品表的原版运输矿车替换为 {@link LootrChestMinecartEntity}（实现 {@code ILootrEntity}），
+     * Lootr 会把带战利品表的原版运输矿车替换为 LootrChestMinecartEntity（实现 ILootrEntity），
      * 它是实体而非方块实体，因此无法通过方块实体遍历扫描到；这里单独按实体遍历，
-     * 并用 {@code getInventory(playerId) == null}（尚未生成独立库存）判断该玩家是否开过。
+     * 并用 getInventory(playerId) == null（尚未生成独立库存）判断该玩家是否开过。
      */
     static void collectUnopenedCarts(ServerLevel level, BlockPos center, int radius, UUID playerId, List<BlockPos> out) {
         if (playerId == null) {

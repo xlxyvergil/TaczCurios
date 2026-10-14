@@ -36,7 +36,7 @@ public final class EvolutionRegistry {
     private static final Map<String, List<Rule>> RULES_BY_TRIGGER = new HashMap<>();
     /** 按类型索引，避免按类型查询时全量遍历。 */
     private static final Map<RuleType, List<Rule>> RULES_BY_TYPE = new HashMap<>();
-    /** 按「类型 + 物品」索引（key 见 {@link #typeItemKey}），供客户端 tooltip 逐帧查询复用。 */
+    /** 按「类型 + 物品」索引（key 见 typeItemKey），供客户端 tooltip 逐帧查询复用。 */
     private static final Map<String, List<Rule>> RULES_BY_TYPE_AND_ITEM = new HashMap<>();
 
     private EvolutionRegistry() {

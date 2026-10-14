@@ -9,8 +9,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 /**
- * 客户端渲染：把 {@link LootrHighlightClientData} 中记录的每一个"该玩家尚未开启的 Lootr 箱子"
- * 交给 {@link HighlightPillarRenderer} 画成绿色光柱。
+ * 客户端渲染：把 LootrHighlightClientData 中记录的每一个"该玩家尚未开启的 Lootr 箱子"
+ * 交给 HighlightPillarRenderer 画成绿色光柱。
  *
  * 坐标由服务端下发、仅发给该玩家本人，因此光柱只在对应玩家客户端显示。
  */

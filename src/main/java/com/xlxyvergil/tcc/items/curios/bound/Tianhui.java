@@ -140,6 +140,9 @@ public class Tianhui extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));
 
+        tooltip.add(Component.translatable("tcc.tooltip.projectile_immunity")
+            .withStyle(ChatFormatting.RED));
+
         tooltip.add(Component.literal(""));
 
         appendBoundPlayer(stack, tooltip);

@@ -13,10 +13,10 @@ import org.joml.Matrix4f;
 import java.util.Collection;
 
 /**
- * 光柱的统一绘制工具：把一批方块坐标画成从方块中心向上 {@link #HEIGHT} 格的半透明光柱。
+ * 光柱的统一绘制工具：把一批方块坐标画成从方块中心向上 HEIGHT 格的半透明光柱。
  *
- * 由 Lootr 战利品箱子高亮（{@code LootrHighlightsRenderer}，绿色）与刷怪笼高亮
- * （{@code SpawnerHighlightsRenderer}，红色）共同调用，颜色由调用方传入；
+ * 由 Lootr 战利品箱子高亮（LootrHighlightsRenderer，绿色）与刷怪笼高亮
+ * （SpawnerHighlightsRenderer，红色）共同调用，颜色由调用方传入；
  * 坐标均由服务端定向下发、仅发给触发玩家本人。
  */
 public final class HighlightPillarRenderer {
@@ -30,7 +30,7 @@ public final class HighlightPillarRenderer {
 
     private HighlightPillarRenderer() {}
 
-    /** 在 {@link RenderLevelStageEvent.Stage#AFTER_ENTITIES} 阶段把给定坐标渲染成指定颜色的光柱；坐标为空时不做任何事。 */
+    /** 在 RenderLevelStageEvent.Stage.AFTER_ENTITIES 阶段把给定坐标渲染成指定颜色的光柱；坐标为空时不做任何事。 */
     public static void render(RenderLevelStageEvent event, Collection<BlockPos> positions,
                               float red, float green, float blue) {
         if (positions.isEmpty()) {

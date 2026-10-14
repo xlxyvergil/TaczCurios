@@ -13,15 +13,15 @@ import java.util.UUID;
  * Lootr 兼容入口。
  *
  * 本 mod 对 Lootr 是<strong>软依赖（compileOnly）</strong>，未安装时必须完全不触碰 Lootr 类型。
- * 因此按 {@code MaidCompat} / {@code MaidCompatInternal} 的同样方式做类型隔离：
- * 本类<strong>不引用任何 {@code noobanidus.mods.lootr.*} 类型</strong>，可以安全进出；
- * 所有真正调用 Lootr API 的代码都放在 {@link LootrCompatInternal} 里，
- * 且只在本类的 {@link #isLoaded()} 判断通过后才会被解析到（JVM 对类引用的解析是惰性的，
- * 只有执行到那一行才会加载 {@link LootrCompatInternal}）。
+ * 因此按 MaidCompat / MaidCompatInternal 的同样方式做类型隔离：
+ * 本类<strong>不引用任何 noobanidus.mods.lootr.* 类型</strong>，可以安全进出；
+ * 所有真正调用 Lootr API 的代码都放在 LootrCompatInternal 里，
+ * 且只在本类的 isLoaded() 判断通过后才会被解析到（JVM 对类引用的解析是惰性的，
+ * 只有执行到那一行才会加载 LootrCompatInternal）。
  *
- * 反面例子：把 {@code isLoaded()} 写在引用 Lootr 类型的类里是无效守卫——调用该类的任何静态方法，
- * JVM 都要先加载并校验整个类，校验方法体时会解析 {@code LootrAPI.getData(ILootrInfoProvider)}
- * 这类描述符中的缺失类型，直接在调用处抛 {@link NoClassDefFoundError}，守卫根本没机会执行。
+ * 反面例子：把 isLoaded() 写在引用 Lootr 类型的类里是无效守卫——调用该类的任何静态方法，
+ * JVM 都要先加载并校验整个类，校验方法体时会解析 LootrAPI.getData(ILootrInfoProvider)
+ * 这类描述符中的缺失类型，直接在调用处抛 NoClassDefFoundError，守卫根本没机会执行。
  */
 public final class LootrCompat {
 
@@ -45,14 +45,14 @@ public final class LootrCompat {
     /**
      * 判断指定玩家是否<strong>尚未开过</strong>这个 Lootr 箱子。
      *
-     * 只有当前相存在、且该玩家还没有生成过独立库存时才返回 {@code true}。
+     * 只有当前相存在、且该玩家还没有生成过独立库存时才返回 true。
      */
     public static boolean isUnopened(ServerLevel level, BlockPos pos, @Nullable BlockEntity be, UUID playerId) {
         return isLoaded() && LootrCompatInternal.isUnopened(level, pos, be, playerId);
     }
 
     /**
-     * 收集以 {@code center} 为中心、{@code radius} 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 {@code out}。
+     * 收集以 center 为中心、radius 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 out。
      *
      * 运输矿车是实体，不在方块实体集合中，需要单独按实体遍历。
      */
