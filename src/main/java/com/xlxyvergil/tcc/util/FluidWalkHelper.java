@@ -47,12 +47,23 @@ public final class FluidWalkHelper {
         if (!MaidCompat.isPlayerOrMaid(entity)) return;
         // 潜行时不吸附也不推举，交还原版流体物理，供玩家主动沉入
         if (entity.isCrouching()) return;
-        if (!entity.isInWater() && !entity.isInLava()) return;
 
-        FluidState feet = entity.level().getFluidState(entity.blockPosition());
+        // 脚底贴在液面上时已不算「在水中」，故不能用 isInWater 做闸门，改判脚所在格是否为可走流体
+        BlockPos pos = entity.blockPosition();
+        FluidState feet = entity.level().getFluidState(pos);
         if (!isWalkable(entity, feet)) return;
 
         if (isAtSurface(entity)) {
+            // 流体没有碰撞箱：只接管物理分支不会把实体托出液面，重力会把它压到表层判定的下限，脚因此浸在水中。
+            // 故显式把脚底抬到液面之上。必须离开「在水中」判定：
+            // 否则原版会判为游泳姿态，水面就只能走、无法疾跑。
+            double surfaceY = pos.getY() + feet.getHeight(entity.level(), pos) + 0.001D;
+            Vec3 motion = entity.getDeltaMovement();
+            // 保留向上的速度分量，避免把跳跃一并抹掉；下沉分量清零，落地不再回弹。
+            entity.setDeltaMovement(motion.x, Math.max(motion.y, 0.0D), motion.z);
+            if (entity.getY() < surfaceY) {
+                entity.setPos(entity.getX(), surfaceY, entity.getZ());
+            }
             entity.setOnGround(true);
         } else {
             // 只衰减垂直分量，保留水平速度，避免拖慢泳速；
