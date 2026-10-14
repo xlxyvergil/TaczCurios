@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 /**
  * 渡鸦神之键「开镜蓄力」进度条：仅在开镜蓄力期间显示于准心正下方。
  *
- * <p>进度在客户端本地按与服务端相同的「整秒阶梯」换算，配置值由 {@code SyncConfigS2CPacket}
+ * <p>进度在客户端本地按与服务端相同的「整秒阶梯」换算，配置值由 SyncConfigS2CPacket
  * 从服务端同步，因此显示与服务端结算一致，且无需每 tick 发包。</p>
  */
 @OnlyIn(Dist.CLIENT)
@@ -47,7 +47,7 @@ public final class RavenKeyChargeHud implements IGuiOverlay {
         event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "raven_key_charge", new RavenKeyChargeHud());
     }
 
-    /** 由 FORGE 总线的 {@link ClientEventHandler} 每客户端 tick 调用一次。 */
+    /** 由 FORGE 总线的 ClientEventHandler 每客户端 tick 调用一次。 */
     public static void tick() {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;

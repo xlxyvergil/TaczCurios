@@ -51,7 +51,7 @@ public final class CurioEffectRefresher {
     }
 
     /**
-     * 只重算修饰符、不做清理，避免误触发部分饰品 {@code removeEffects} 中的副作用。
+     * 只重算修饰符、不做清理，避免误触发部分饰品 removeEffects 中的副作用。
      * 武器类型等会改变“是否生效”的输入由切枪事件负责清理，不依赖此处。
      */
     private static void reapplyDerived(LivingEntity entity) {

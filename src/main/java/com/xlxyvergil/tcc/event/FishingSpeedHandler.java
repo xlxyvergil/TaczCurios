@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 /**
  * 钓鱼加速统一监听器。
  * 帕朵菲利斯 / 掠集之兽 / 空梦三件饰品佩戴后，等待鱼咬钩的时间减半。
- * 只改 {@code timeUntilLured}（等待咬钩）这一个可写字段，不动 {@code lureSpeed}，
+ * 只改 timeUntilLured（等待咬钩）这一个可写字段，不动 lureSpeed，
  * 因此与 Aquaculture 等渔业 mod 的加速机制各改各的、可叠加且不冲突。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID)

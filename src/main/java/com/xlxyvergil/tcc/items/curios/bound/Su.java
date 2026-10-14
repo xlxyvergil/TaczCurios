@@ -112,6 +112,9 @@ public class Su extends BoundCurioItem {
                 TaczCuriosConfig.COMMON.suResistanceLevel.get())
             .withStyle(ChatFormatting.GOLD));
 
+        tooltip.add(Component.translatable("tcc.tooltip.projectile_immunity")
+            .withStyle(ChatFormatting.GOLD));
+
         tooltip.add(Component.literal(""));
         appendBoundPlayer(stack, tooltip);
     }

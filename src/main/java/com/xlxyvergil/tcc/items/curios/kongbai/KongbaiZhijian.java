@@ -42,18 +42,18 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 空白之键：由数据包驱动的联动饰品，占用独立槽位 {@code tcc_kb}。
+ * 空白之键：由数据包驱动的联动饰品，占用独立槽位 tcc_kb。
  * <p>
  * 每条规则自带「槽位 - 饰品id - 源属性 - 目标属性 - 倍率 - uuid」。
- * 命中规则由数据包全局表（{@link AttributeLinkRegistry}）与佩戴者当前槽位内容实时解析，
- * 并作为快照持久化到空白之键自身的 NBT（{@link #RULE_TAG}，另附规则表版本号）：
- * 快照用于在卸下规则饰品后精确清除已写入的 uuid；数据包 reload 后由 {@link #refreshAll()}
+ * 命中规则由数据包全局表（AttributeLinkRegistry）与佩戴者当前槽位内容实时解析，
+ * 并作为快照持久化到空白之键自身的 NBT（RULE_TAG，另附规则表版本号）：
+ * 快照用于在卸下规则饰品后精确清除已写入的 uuid；数据包 reload 后由 refreshAll()
  * 重算，或在攻击时发现版本不符后用新规则表重新解析并覆盖快照。
  * <p>
  * 检测到命中规则时，读取实体源属性总值 × 倍率，以该规则独立的 uuid 作用到其目标属性；
  * 源属性变化由装备变动、攻击等事件触发重算，多条规则可同时生效且互不冲突。
  * 固定槽位没有命中规则时不允许安装；可自由拆下（不消耗材料），
- * 但装备仍绑定玩家（绑定与死亡不掉落逻辑由 {@link BoundCurioItem} 提供）。
+ * 但装备仍绑定玩家（绑定与死亡不掉落逻辑由 BoundCurioItem 提供）。
  * 无数据包配置时无任何效果。
  */
 public class KongbaiZhijian extends BoundCurioItem {
@@ -83,8 +83,8 @@ public class KongbaiZhijian extends BoundCurioItem {
     /**
      * 仅玩家可用，且至少命中一条规则时才允许安装。
      * <p>
-     * 例外：物品已带规则快照（{@link #RULE_TAG}，即此前装备过）时直接放行。
-     * 因为重生/换维度时 Curios 会在 {@code readTag} 里逐个槽位用 canEquip 校验旧内容，
+     * 例外：物品已带规则快照（RULE_TAG，即此前装备过）时直接放行。
+     * 因为重生/换维度时 Curios 会在 readTag 里逐个槽位用 canEquip 校验旧内容，
      * 而此时佩戴者的饰品栏尚未恢复，实时解析必然为空；若不放行会被判为无效栈而退回背包。
      * 放行后由随后的 onEquip / tick 重算覆盖快照并施加效果。
      */
@@ -100,7 +100,7 @@ public class KongbaiZhijian extends BoundCurioItem {
     }
 
     /**
-     * 可自由拆下，不消耗任何材料；装备仍绑定玩家（由 {@link BoundCurioItem} 处理）。
+     * 可自由拆下，不消耗任何材料；装备仍绑定玩家（由 BoundCurioItem 处理）。
      */
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
@@ -423,7 +423,7 @@ public class KongbaiZhijian extends BoundCurioItem {
      * <p>
      * 并集保证：规则被数据包热删后，其 uuid 只存在于物品快照中也能被移除。
      *
-     * @param cached 上一轮写入快照的规则，可为 {@code null}
+     * @param cached 上一轮写入快照的规则，可为 null
      */
     private static void clearModifiers(LivingEntity entity, @Nullable List<AttributeLinkData> cached) {
         if (entity == null) {

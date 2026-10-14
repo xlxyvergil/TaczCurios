@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.util;
 
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -77,7 +78,8 @@ public final class DamageResistanceHelper {
      * 设置受伤冷却（受击触发式）：cooldownTicks 内该实体所有血量下降都会被拦截归零。
      */
     public static void setDamageCooldown(LivingEntity entity, int cooldownTicks) {
-        if (entity == null || cooldownTicks <= 0) return;
+        // 仅玩家或女仆可被登记，避免其他生物被打标后进入减伤逻辑
+        if (entity == null || cooldownTicks <= 0 || !MaidCompat.isPlayerOrMaid(entity)) return;
         COOLDOWN_MAP.put(entity.getUUID(), cooldownTicks);
         markTracked(entity);
     }
@@ -99,6 +101,8 @@ public final class DamageResistanceHelper {
             clearHurtCooldown(entity);
             return;
         }
+        // 仅玩家或女仆可被登记（解除路径不受限，允许清理任意实体）
+        if (!MaidCompat.isPlayerOrMaid(entity)) return;
         HURT_COOLDOWN_MAP.put(entity.getUUID(), cooldownTicks);
         markTracked(entity);
     }
@@ -114,7 +118,8 @@ public final class DamageResistanceHelper {
      * 设置单次受伤上限（受击触发式）：限制单次 setHealth 扣血不超过 maxDamage。
      */
     public static void setDamageCap(LivingEntity entity, float maxDamage) {
-        if (entity == null || maxDamage <= 0) return;
+        // 仅玩家或女仆可被登记
+        if (entity == null || maxDamage <= 0 || !MaidCompat.isPlayerOrMaid(entity)) return;
         DAMAGE_CAP_MAP.put(entity.getUUID(), maxDamage);
         markTracked(entity);
     }
@@ -148,6 +153,8 @@ public final class DamageResistanceHelper {
             clearDamageReduction(entity);
             return;
         }
+        // 仅玩家或女仆可被登记（解除路径不受限，允许清理任意实体）
+        if (!MaidCompat.isPlayerOrMaid(entity)) return;
         UUID id = entity.getUUID();
         Float previous = DAMAGE_RETAIN_MAP.get(id);
         // 比例与佩戴状态均未变化：跳过重复写入与打标（佩戴方每 tick 刷新时的常见路径）。
@@ -181,6 +188,8 @@ public final class DamageResistanceHelper {
             clearForcedDamageReduction(entity);
             return;
         }
+        // 仅玩家或女仆可被登记（解除路径不受限，允许清理任意实体）
+        if (!MaidCompat.isPlayerOrMaid(entity)) return;
         UUID id = entity.getUUID();
         Float previous = FORCED_RETAIN_MAP.get(id);
         // 比例与佩戴状态均未变化：跳过重复写入与打标（佩戴方每 tick 刷新时的常见路径）。

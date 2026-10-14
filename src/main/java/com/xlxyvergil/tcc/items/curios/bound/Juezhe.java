@@ -118,6 +118,9 @@ public class Juezhe extends BoundCurioItem {
                 TaczCuriosConfig.COMMON.juezheResistanceLevel.get())
             .withStyle(ChatFormatting.WHITE));
 
+        tooltip.add(Component.translatable("tcc.tooltip.projectile_immunity")
+            .withStyle(ChatFormatting.WHITE));
+
         tooltip.add(Component.literal(""));
 
         appendBoundPlayer(stack, tooltip);

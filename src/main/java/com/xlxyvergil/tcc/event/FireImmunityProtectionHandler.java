@@ -4,12 +4,14 @@ import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.items.curios.bound.BrahmaBeasts;
 import com.xlxyvergil.tcc.items.curios.bound.Salvation;
 import com.xlxyvergil.tcc.items.curios.bound.SummerBeach;
-import net.minecraft.tags.DamageTypeTags;
+import com.xlxyvergil.tcc.util.ImmunityHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Set;
 
 /**
  * 火焰/岩浆免疫统一监听器。
@@ -19,6 +21,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID)
 public class FireImmunityProtectionHandler {
 
+    private static final Set<ImmunityHelper.Type> IMMUNITIES = Set.of(ImmunityHelper.Type.FIRE);
+
     private static boolean hasFireImmunity(LivingEntity entity) {
         return SummerBeach.isEquipped(entity)
                 || BrahmaBeasts.isEquipped(entity)
@@ -27,27 +31,11 @@ public class FireImmunityProtectionHandler {
 
     @SubscribeEvent
     public static void onLivingAttack(LivingAttackEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (entity.level().isClientSide) {
-            return;
-        }
-        if (!event.getSource().is(DamageTypeTags.IS_FIRE)) {
-            return;
-        }
-        if (hasFireImmunity(entity)) {
-            entity.clearFire();
-            event.setCanceled(true);
-        }
+        ImmunityHelper.cancelDamage(event, IMMUNITIES, FireImmunityProtectionHandler::hasFireImmunity);
     }
 
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        LivingEntity entity = event.getEntity();
-        if (entity.level().isClientSide || !entity.isOnFire()) {
-            return;
-        }
-        if (hasFireImmunity(entity)) {
-            entity.clearFire();
-        }
+        ImmunityHelper.extinguishFire(event.getEntity(), FireImmunityProtectionHandler::hasFireImmunity);
     }
 }

@@ -13,8 +13,8 @@ import java.util.UUID;
  * Lootr 兼容入口。
  *
  * 本 mod 对 Lootr 是<strong>软依赖（compileOnly）</strong>：只有在 Lootr 已安装时该功能才生效。
- * 所有 {@code noobanidus.mods.lootr.*} 类型引用均隔离在 {@link LootrCompatInternal}，
- * 本类只在 {@link #isLoaded()} 为真时才会触碰它，避免 Lootr 缺失时触发 {@link NoClassDefFoundError}。
+ * 所有 noobanidus.mods.lootr.* 类型引用均隔离在 LootrCompatInternal，
+ * 本类只在 isLoaded() 为真时才会触碰它，避免 Lootr 缺失时触发 NoClassDefFoundError。
  */
 public final class LootrCompat {
 
@@ -41,7 +41,7 @@ public final class LootrCompat {
     /**
      * 判断指定玩家是否<strong>尚未开过</strong>这个 Lootr 箱子。
      *
-     * 只有当前相（{@code ChestData}）存在、且该玩家还没有生成过独立库存时才返回 {@code true}。
+     * 只有当前相（ChestData）存在、且该玩家还没有生成过独立库存时才返回 true。
      */
     public static boolean isUnopened(ServerLevel level, BlockPos pos, @Nullable BlockEntity be, UUID playerId) {
         if (!isLoaded()) {
@@ -51,7 +51,7 @@ public final class LootrCompat {
     }
 
     /**
-     * 收集以 {@code center} 为中心、{@code radius} 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 {@code out}。
+     * 收集以 center 为中心、radius 格范围内该玩家尚未开启的 Lootr 运输矿车坐标，追加到 out。
      *
      * 运输矿车是实体，不在方块实体集合中，需要单独按实体遍历。
      */

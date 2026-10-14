@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -138,15 +137,17 @@ public class ZhenWoBarrierLayer<T extends LivingEntity, M extends EntityModel<T>
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
     private static void attachMaid(EntityRenderersEvent.AddLayers event) {
         EntityType<? extends LivingEntity> maidType = MaidCompat.getMaidEntityType();
         if (maidType == null) {
             return;
         }
-        EntityRenderer<?> renderer = event.getEntityRenderer(maidType);
-        if (renderer instanceof LivingEntityRenderer livingRenderer) {
-            livingRenderer.addLayer(new ZhenWoBarrierLayer<>(livingRenderer));
+        // 用 getRenderer 而非 getEntityRenderer：前者自 47.4.0 起就存在，47.4.23 仍保留，
+        // 兼容性更好；后者在 47.4.0 上不存在，会抛 NoSuchMethodError。
+        LivingEntityRenderer renderer = event.getRenderer(maidType);
+        if (renderer != null) {
+            renderer.addLayer(new ZhenWoBarrierLayer<>(renderer));
         }
     }
 }

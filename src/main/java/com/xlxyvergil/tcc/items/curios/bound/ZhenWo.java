@@ -185,6 +185,8 @@ public class ZhenWo extends BoundCurioItem {
                 tag.putInt(COOLDOWN_KEY, TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get() * 20);
                 return;
             }
+            // 结界展开期间：佩戴者自身每 tick 回满血
+            entity.setHealth(entity.getMaxHealth());
             applyBarrierEffects(entity);
             return;
         }
@@ -446,6 +448,12 @@ public class ZhenWo extends BoundCurioItem {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("tcc.tooltip.debuff_immunity")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.projectile_immunity")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.environment_immunity")
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE,
