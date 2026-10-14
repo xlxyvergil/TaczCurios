@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.api.items.IDamageMitigation;
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -52,7 +54,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ZhenWo extends BoundCurioItem implements IDamageMitigation {
+public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidWalk {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2df6423f-42bc-4629-8624-ebb8cf4ff4c8");
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("8f851e69-0217-4e14-af7f-ee655b4a1cc7");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("9b7d1c2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e");
@@ -69,6 +71,14 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation {
     public static boolean isEquipped(LivingEntity entity) {
         return !CurioSearchHelper.findFirstEquippedStack(entity,
                 s -> s.getItem() instanceof ZhenWo).isEmpty();
+    }
+
+    /**
+     * 真我佩戴者可在水面与岩浆表面行走，故对两类流体一并放行。
+     */
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return true;
     }
 
     @Override
@@ -127,6 +137,7 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
+
         if (entity.level().isClientSide) return;
 
         if (entity.isDeadOrDying()) return;
@@ -447,6 +458,12 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation {
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.translatable("tcc.tooltip.environment_immunity")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.water_walk")
+            .withStyle(ChatFormatting.GOLD));
+
+        tooltip.add(Component.translatable("tcc.tooltip.lava_walk")
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(formatEffectTooltip(MobEffects.DAMAGE_RESISTANCE,

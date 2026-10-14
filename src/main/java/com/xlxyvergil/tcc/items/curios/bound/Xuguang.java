@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -9,12 +10,14 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class Xuguang extends BoundCurioItem {
+public class Xuguang extends BoundCurioItem implements IFluidWalk {
     private static final UUID ATTACK_SPEED_UUID = UUID.fromString("161e973d-170a-4654-83d9-c258b7a368d7");
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("ca6fabe6-07dd-4cd6-92fe-28c49e9b01b5");
     private static final UUID CRIT_DAMAGE_UUID = UUID.fromString("71aa144b-16ee-45da-a2fb-f9438400f2e0");
@@ -47,6 +50,11 @@ public class Xuguang extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return state.is(FluidTags.LAVA);
     }
 
     @Override
@@ -120,6 +128,10 @@ public class Xuguang extends BoundCurioItem {
             tooltip.add(formatModifierTooltip(critDamage() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                     .withStyle(ChatFormatting.GOLD));
         }
+        tooltip.add(Component.translatable("tcc.tooltip.lava_walk")
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("tcc.tooltip.fire_lava_immunity")
+                .withStyle(ChatFormatting.RED));
         appendBoundPlayer(stack, tooltip);
     }
 }

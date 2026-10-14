@@ -6,7 +6,8 @@
   "mixins": [
     "ImaginaryDeathDropMixin",
     "LivingEntityEffectProtectionMixin",
-    "RaidMixin"
+    "RaidMixin",
+    "FluidWalkMixin"
   ],
   "client": [],
   "injectors": {

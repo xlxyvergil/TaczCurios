@@ -2,6 +2,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.api.items.IFluidWalk;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
@@ -13,6 +14,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -31,7 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class Jielv extends BoundCurioItem {
+public class Jielv extends BoundCurioItem implements IFluidWalk {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("1c7e4d9f-5a2b-4e6c-b8f1-3d9a6c2e7b48");
 
     private static double debuffChance() {
@@ -53,6 +56,11 @@ public class Jielv extends BoundCurioItem {
     @Override
     protected boolean isBoundItem() {
         return true;
+    }
+
+    @Override
+    public boolean canStandOnFluid(LivingEntity wearer, FluidState state) {
+        return state.is(FluidTags.WATER);
     }
 
     @Override
@@ -116,6 +124,8 @@ public class Jielv extends BoundCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         appendImaginaryResistance(stack, tooltip);
+        tooltip.add(Component.translatable("tcc.tooltip.water_walk")
+                .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.discipline.curio_effect", debuffCount())
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
