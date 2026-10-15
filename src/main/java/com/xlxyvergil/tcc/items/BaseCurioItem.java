@@ -185,8 +185,11 @@ public abstract class BaseCurioItem extends Item implements ICurioItem {
 
     
     protected static MutableComponent formatModifierTooltip(double value, String valueFormat, Component attrName) {
-        String formatted = String.format(valueFormat, value >= 0 ? value : -value);
-        String key = value >= 0 ? "attributeslib.modifier.plus" : "attributeslib.modifier.take";
+        // 1.21.1 起 Apothic Attributes 不再提供 attributeslib.modifier.* 翻译键，
+        // 与 NeoForge / Apotheosis 1.21 保持一致改用 neoforge.modifier.plus / take。
+        // 注意 neoforge.modifier.take 的文案为 "%s %s"（不含负号），故数值需保留自身符号。
+        String formatted = String.format(valueFormat, value);
+        String key = value >= 0 ? "neoforge.modifier.plus" : "neoforge.modifier.take";
         return Component.translatable(key, formatted, attrName);
     }
 
