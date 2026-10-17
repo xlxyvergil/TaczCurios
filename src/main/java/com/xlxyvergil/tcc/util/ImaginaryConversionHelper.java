@@ -6,7 +6,6 @@ import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,37 +24,34 @@ public final class ImaginaryConversionHelper {
     }
 
     /**
-     * 替换伤害源为虚数并标记子弹；在 Pre 阶段被 3 阶神之键调用。TACZ 近战（枪托等）也触发该事件，此时 bullet 为 null，改用无子弹重载。
+     * 替换伤害源为虚数并标记子弹；在 Pre 阶段被 3 阶神之键调用。
+     * 仅子弹伤害转换：该事件由 EntityKineticBullet 命中实体时发布，bullet 恒为子弹实体本身。
+     * bullet 为 null 属于异常（如客户端同步包未能按 id 取回实体），此时不做转换。
      */
     public static void convertToImaginary(EntityHurtByGunEvent.Pre event) {
         LivingEntity attacker = event.getAttacker();
         if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
             return;
         }
-        if (event.getBullet() != null) {
-            event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
-                    TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
-            event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
-                    TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
-            event.getBullet().getPersistentData().putBoolean(INFECTION_KEY, true);
-        } else {
-            // 近战攻击：无子弹，直接替换伤害源为虚数（attacker 作为直接来源）
-            event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
-                    TccDamageSources.imaginaryDamage(attacker.level(), attacker));
-            event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
-                    TccDamageSources.imaginaryDamage(attacker.level(), attacker));
+        if (event.getBullet() == null) {
+            return;
         }
+        event.setDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING,
+                TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
+        event.setDamageSource(GunDamageSourcePart.ARMOR_PIERCING,
+                TccDamageSources.imaginaryDamage(attacker.level(), event.getBullet(), attacker));
+        event.getBullet().getPersistentData().putBoolean(INFECTION_KEY, true);
     }
 
     /**
-     * 为被击中目标施加不限等级虚数侵染；Post 阶段被 3 阶神之键调用。direct 为 true（近战，bullet 为 null）时不依赖子弹标记直接施加。
+     * 为被击中目标施加不限等级虚数侵染；Post 阶段被 3 阶神之键调用。
+     * 仅子弹命中生效：依赖 Pre 阶段写入子弹的 INFECTION_KEY 标记。
      */
-    public static void applyInfection(EntityHurtByGunEvent.Post event, LivingEntity attacker, boolean direct) {
+    public static void applyInfection(EntityHurtByGunEvent.Post event, LivingEntity attacker) {
         if (attacker == null || !(attacker.level() instanceof ServerLevel)) {
             return;
         }
-        boolean flagged = event.getBullet() != null && event.getBullet().getPersistentData().getBoolean(INFECTION_KEY);
-        if (!direct && !flagged) {
+        if (event.getBullet() == null || !event.getBullet().getPersistentData().getBoolean(INFECTION_KEY)) {
             return;
         }
         Entity hurtEntity = event.getHurtEntity();
@@ -69,8 +65,10 @@ public final class ImaginaryConversionHelper {
                 0,
                 false, false, true
         );
-        target.addEffect(instance, attacker);
-        forceAddEffect(target, instance);
+        // 强制写入：原版实现直接操作 LivingEntity#activeEffects 字段，
+        // 不经过可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()，
+        // 同时绕过 MobEffectEvent.Added 被其他 mod 取消。
+        target.forceAddEffect(instance, attacker);
     }
 
     /**
@@ -87,28 +85,8 @@ public final class ImaginaryConversionHelper {
                 amplifier,
                 false, false, true
         );
-        if (source != null) {
-            target.addEffect(instance, source);
-        } else {
-            target.addEffect(instance);
-        }
-        forceAddEffect(target, instance);
-    }
-
-    /** 绕过 maxLevel 限制强制写入效果 */
-    private static void forceAddEffect(LivingEntity entity, MobEffectInstance instance) {
-        MobEffect effect = instance.getEffect();
-        MobEffectInstance old = entity.getActiveEffectsMap().get(effect);
-        if (old == null) {
-            entity.getActiveEffectsMap().put(effect, instance);
-            effect.addAttributeModifiers(entity, entity.getAttributes(), instance.getAmplifier());
-            entity.onEffectAdded(instance, null);
-        } else {
-            int prevAmp = old.getAmplifier();
-            old.update(instance);
-            if (old.getAmplifier() != prevAmp) {
-                effect.addAttributeModifiers(entity, entity.getAttributes(), old.getAmplifier());
-            }
-        }
+        // 强制写入：原版实现直接操作 LivingEntity#activeEffects 字段，
+        // 绕过可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap() 与 MobEffectEvent.Added 拦截。
+        target.forceAddEffect(instance, source);
     }
 }

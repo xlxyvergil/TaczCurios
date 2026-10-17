@@ -122,7 +122,7 @@ public class ShijieFanyan extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        ImaginaryConversionHelper.applyInfection(event, attacker, false);
+        ImaginaryConversionHelper.applyInfection(event, attacker);
 
         int luck = (int) attacker.getAttributeValue(AttributeHelper.LUCK);
         double collapseChance = Math.round((TaczCuriosConfig.COMMON.shijieFanyanCollapseBaseChance.get()

@@ -122,8 +122,10 @@ public class TccAttributeEvents {
             false, false, true
         );
 
-        forceAddEffect(living, newInstance);
-        living.addEffect(newInstance, attacker);
+        // 强制写入：原版实现直接操作 LivingEntity#activeEffects 字段，
+        // 不经过可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()，
+        // 同时绕过 MobEffectEvent.Added 被其他 mod 取消。
+        living.forceAddEffect(newInstance, attacker);
 
         // 记录来源攻击者用于击杀归属（女仆则记其主人）。
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
@@ -148,8 +150,7 @@ public class TccAttributeEvents {
             0,
             false, false, true
         );
-        forceAddEffect(target, collapseInstance);
-        target.addEffect(collapseInstance, attacker);
+        target.forceAddEffect(collapseInstance, attacker);
 
         // 记录来源攻击者用于击杀归属（女仆则记其主人）。
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
@@ -186,23 +187,6 @@ public class TccAttributeEvents {
             attacker.setAbsorptionAmount(
                 Math.min(maxOverheal, attacker.getAbsorptionAmount() + effectiveDamage * overheal)
             );
-        }
-    }
-
-    private static void forceAddEffect(LivingEntity e, MobEffectInstance ins) {
-        MobEffect effect = ins.getEffect();
-        MobEffectInstance old = e.getActiveEffectsMap().get(effect);
-        if (old == null) {
-            e.getActiveEffectsMap().put(effect, ins);
-            effect.addAttributeModifiers(e, e.getAttributes(), ins.getAmplifier());
-
-            e.onEffectAdded(ins, null);
-        } else {
-            int prevAmp = old.getAmplifier();
-            old.update(ins);
-            if (old.getAmplifier() != prevAmp) {
-                effect.addAttributeModifiers(e, e.getAttributes(), old.getAmplifier());
-            }
         }
     }
 
@@ -257,7 +241,8 @@ public class TccAttributeEvents {
 
         var key = ForgeRegistries.MOB_EFFECTS.getKey(effect);
         if (key != null && key.getNamespace().equals("tcc")) {
-            MobEffectInstance instance = entity.getActiveEffectsMap().get(effect);
+            // 直接取事件自带的效果实例，不翻阅可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()
+            MobEffectInstance instance = event.getEffectInstance();
             if (instance != null && instance.getDuration() > 0) {
                 event.setCanceled(true);
             }
