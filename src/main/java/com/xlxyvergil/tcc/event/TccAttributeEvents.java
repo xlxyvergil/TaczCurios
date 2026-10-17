@@ -126,8 +126,10 @@ public class TccAttributeEvents {
             false, false, true
         );
 
+        // 强制写入：原版实现直接操作 LivingEntity#activeEffects 字段，
+        // 不经过可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()，
+        // 同时绕过 MobEffectEvent.Added 被其他 mod 取消。
         living.forceAddEffect(newInstance, attacker);
-        living.addEffect(newInstance, attacker);
 
         // 记录侵染来源攻击者，使虚数崩解击杀能正确归属
         // （若攻击者是女仆，转换为女仆主人，以让崩解击杀计入主人名下）
@@ -154,8 +156,10 @@ public class TccAttributeEvents {
             0,
             false, false, true
         );
+        // 强制写入：原版实现直接操作 LivingEntity#activeEffects 字段，
+        // 不经过可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()，
+        // 同时绕过 MobEffectEvent.Added 被其他 mod 取消。
         target.forceAddEffect(collapseInstance, attacker);
-        target.addEffect(collapseInstance, attacker);
 
         // 记录侵染来源攻击者，使崩解击杀能正确归属（女仆转换为女仆主人）
         LivingEntity credited = MaidCompat.resolveOwnerPlayer(attacker);
@@ -245,7 +249,8 @@ public class TccAttributeEvents {
 
         var key = BuiltInRegistries.MOB_EFFECT.getKey(effect.value());
         if (key != null && key.getNamespace().equals("tcc")) {
-            MobEffectInstance instance = entity.getEffect(effect);
+            // 直接取事件自带的效果实例，不翻阅可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()
+            MobEffectInstance instance = event.getEffectInstance();
             if (instance != null && instance.getDuration() > 0) {
                 event.setCanceled(true);
             }
