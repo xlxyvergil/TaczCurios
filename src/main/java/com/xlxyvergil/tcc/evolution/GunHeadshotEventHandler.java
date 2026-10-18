@@ -1,14 +1,12 @@
 package com.xlxyvergil.tcc.evolution;
 
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
-import com.xlxyvergil.tcc.capability.GunKillDataCapability;
+import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
+import com.xlxyvergil.tcc.util.KillEventDedupe;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -19,8 +17,8 @@ public final class GunHeadshotEventHandler {
     public static final String TRIGGER_GUN_HEADSHOT_HIT = "gun_headshot_hit";
     public static final String TRIGGER_GUN_HEADSHOT_KILL = "gun_headshot_kill";
 
-    
-    private static final long DEATH_WINDOW_TICKS = 2L;
+    /** 多弹头去重：与 gun_kill 使用不同实例，保证两条触发器各自都能计到首次事件。 */
+    private static final KillEventDedupe HEADSHOT_KILL_DEDUPE = new KillEventDedupe();
 
     private GunHeadshotEventHandler() {}
 
@@ -35,47 +33,32 @@ public final class GunHeadshotEventHandler {
         if (player.level().isClientSide) return;
 
         LivingEntity hurt = resolveHurt(event);
-        if (hurt != null) {
-            GunKillDataCapability.setHeadshotData(hurt,
-                player.getStringUUID(),
-                player.level().getGameTime(),
-                event.getGunId() != null ? event.getGunId().toString() : "");
-        }
-
         handleTrigger(player, hurt, event.getGunId(), TRIGGER_GUN_HEADSHOT_HIT);
     }
 
-    
+    /**
+     * 爆头击杀主路径：TACZ 在致死只发 EntityKillByGunEvent，且事件自带 headshot 标记，
+     * 因此直接判定，不再依赖爆头命中与死亡之间的时间窗。
+     */
     @SubscribeEvent
-    public static void onLivingDeath(LivingDeathEvent event) {
-        LivingEntity killed = event.getEntity();
-        if (killed.level().isClientSide) return;
+    public static void onGunKill(EntityKillByGunEvent event) {
+        if (event.getLogicalSide().isClient()) return;
+        if (!event.isHeadShot()) return;
 
-        DamageSource source = event.getSource();
-        Entity sourceEntity = source.getEntity();
-        
-        Player player = MaidCompat.resolveOwnerPlayer(sourceEntity);
-        if (player == null) return;
+        LivingEntity attacker = event.getAttacker();
+        LivingEntity killed = event.getKilledEntity();
+        if (attacker == null || killed == null) return;
 
-        var cap = killed.getCapability(GunKillDataCapability.CAPABILITY);
-        if (!cap.isPresent()) return;
-        var data = cap.orElse(null).data();
-        if (!player.getStringUUID().equals(data.headshotAttacker)) return;
-        if (player.level().getGameTime() - data.headshotTime > DEATH_WINDOW_TICKS) return;
+        Player player = MaidCompat.resolveOwnerPlayer(attacker);
+        if (!(player instanceof ServerPlayer sp)) return;
 
-        net.minecraft.resources.ResourceLocation gunId = null;
-        if (!data.headshotGunId.isBlank()) {
-            try {
-                gunId = new net.minecraft.resources.ResourceLocation(data.headshotGunId);
-            } catch (Exception ignored) {
-                gunId = null;
-            }
-        }
+        // 多弹头武器会在同一次击杀中重复触发该事件，保证一次爆头击杀只计一次
+        if (HEADSHOT_KILL_DEDUPE.isDuplicate(killed.getUUID(), sp.level().getGameTime())) return;
 
-        triggerHeadshotKill(player, killed, source, gunId);
+        triggerHeadshotKill(sp, killed, event.getGunId());
     }
 
-    private static void triggerHeadshotKill(Player player, LivingEntity killed, DamageSource source,
+    private static void triggerHeadshotKill(ServerPlayer player, LivingEntity killed,
                                              net.minecraft.resources.ResourceLocation gunId) {
         handleTrigger(player, killed, gunId, TRIGGER_GUN_HEADSHOT_KILL);
     }

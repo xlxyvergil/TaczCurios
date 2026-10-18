@@ -49,7 +49,7 @@ public class TccAttributeEvents {
     public static boolean isActiveAttackSource(DamageSource source) {
         return source.is(DamageTypes.PLAYER_ATTACK)
             || source.is(DamageTypes.MOB_ATTACK)
-            || source.is(TccDamageSources.TACZ_BULLETS_TAG)
+            || TccDamageSources.isTaczBulletSource(source)
             || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
     }
 

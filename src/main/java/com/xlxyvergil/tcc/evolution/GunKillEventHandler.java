@@ -1,7 +1,11 @@
 package com.xlxyvergil.tcc.evolution;
 
+import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
+import com.xlxyvergil.tcc.util.KillEventDedupe;
+import com.tacz.guns.api.event.common.EntityKillByGunEvent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,6 +13,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -17,12 +23,47 @@ import java.util.function.Predicate;
 
 /**
  * gun_kill 触发器的成就/属性规则处理器。
- * 击杀判定统一由 GunKillDebugFallbackHandler.onLivingDeath 处理，本类不再监听 EntityKillByGunEvent，handleGunKill 由 fallback 确认枪杀后调用。
+ * 直接监听 TACZ 的 EntityKillByGunEvent（枪械击杀事件）：致死命中时 TACZ 必定发出该事件，
+ * 且事件自带 attacker / killedEntity / gunId / headshot，无需依赖 damage source 或 tag 判定。
  */
+@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillEventHandler {
     public static final String TRIGGER_GUN_KILL = "gun_kill";
 
+    /** 多弹头去重：每个触发器独立实例，避免与其它触发器的记录互相干扰。 */
+    private static final KillEventDedupe GUN_KILL_DEDUPE = new KillEventDedupe();
+
     private GunKillEventHandler() {}
+
+    /**
+     * 枪械击杀主路径：监听 TACZ 官方击杀事件。
+     * 致死命中时 TACZ 只发 EntityKillByGunEvent（与 EntityHurtByGunEvent.Post 互斥），且事件自带 gunId，
+     * 因此不需要也无法用 damage source tag 二次确认。
+     */
+    @SubscribeEvent
+    public static void onGunKill(EntityKillByGunEvent event) {
+        if (event.getLogicalSide().isClient()) {
+            return;
+        }
+        LivingEntity attacker = event.getAttacker();
+        LivingEntity killed = event.getKilledEntity();
+        if (attacker == null || killed == null) {
+            return;
+        }
+        Player player = MaidCompat.resolveOwnerPlayer(attacker);
+        if (!(player instanceof ServerPlayer sp)) {
+            return;
+        }
+        ResourceLocation gunId = event.getGunId();
+
+        // 多弹头武器（霰弹/多弹头狙击）会在同一次击杀中连续触发多次 EntityKillByGunEvent，
+        // 这里按被杀实体做短窗口去重，保证一次击杀只计一次。
+        if (GUN_KILL_DEDUPE.isDuplicate(killed.getUUID(), sp.level().getGameTime())) {
+            return;
+        }
+
+        handleGunKill(sp, killed, gunId);
+    }
 
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
