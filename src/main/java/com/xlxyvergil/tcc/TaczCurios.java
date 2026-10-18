@@ -1,7 +1,6 @@
 package com.xlxyvergil.tcc;
 
 import com.xlxyvergil.tcc.capability.CurioAdaptationCapability;
-import com.xlxyvergil.tcc.capability.GunKillDataCapability;
 import com.xlxyvergil.tcc.capability.TccPlayerDataCapability;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
@@ -41,7 +40,6 @@ public class TaczCurios
         modEventBus.addListener(this::intermodStuff);
 
         CurioAdaptationCapability.ATTACHMENT_TYPES.register(modEventBus);
-        GunKillDataCapability.ATTACHMENT_TYPES.register(modEventBus);
         TccPlayerDataCapability.ATTACHMENT_TYPES.register(modEventBus);
 
         modEventBus.addListener((RegisterEvent event) -> {
