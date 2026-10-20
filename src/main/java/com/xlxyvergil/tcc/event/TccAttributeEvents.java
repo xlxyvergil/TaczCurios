@@ -160,37 +160,6 @@ public class TccAttributeEvents {
         return true;
     }
 
-    @SubscribeEvent
-    public static void onGunOverheal(EntityHurtByGunEvent.Post event) {
-        if (event.getLogicalSide().isClient()) return;
-
-        LivingEntity attacker = event.getAttacker();
-        if (attacker == null) return;
-
-        DamageSource source = event.getDamageSource(GunDamageSourcePart.NON_ARMOR_PIERCING);
-        if (!source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) return;
-
-        if (source.getDirectEntity() instanceof LivingEntity) return;
-
-        Attribute overhealAttr = ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "overheal"));
-        if (overhealAttr == null) return;
-        float overheal = (float) attacker.getAttributeValue(overhealAttr);
-        if (overheal <= 0) return;
-
-        float damage = event.getBaseAmount();
-        if (event.isHeadShot()) damage *= event.getHeadshotMultiplier();
-
-        if (!(event.getHurtEntity() instanceof LivingEntity target)) return;
-        float effectiveDamage = Math.min(damage, target.getMaxHealth());
-
-        float maxOverheal = attacker.getMaxHealth() * 0.5F;
-        if (attacker.getAbsorptionAmount() < maxOverheal) {
-            attacker.setAbsorptionAmount(
-                Math.min(maxOverheal, attacker.getAbsorptionAmount() + effectiveDamage * overheal)
-            );
-        }
-    }
-
     /**
      * 虚数伤害统一结算入口：显式入口（applyImaginaryDamage）与直接走 hurt 管线的虚数伤害都在此应用抗性结算。
      * 抗性结算只在此处执行一次，避免重复结算。
@@ -204,6 +173,10 @@ public class TccAttributeEvents {
 
         if (source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG)) {
             event.setAmount(resolveFinalImaginaryDamage(target, source, event.getAmount()));
+            // 生命偷取/过量治疗：虚数伤害在抗性结算后统一处理（覆盖枪械子弹来源）
+            if (source.getEntity() instanceof LivingEntity attacker && attacker != target) {
+                LifeStealOverhealHandler.applyImaginary(attacker, target, event.getAmount());
+            }
         }
     }
 

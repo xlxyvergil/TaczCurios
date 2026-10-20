@@ -2,7 +2,8 @@ package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.taa.attribute.EntityAttributeRegistry;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import dev.shadowsoffire.attributeslib.api.ALObjects;
+import com.xlxyvergil.fusedcritical.attribute.FusedAttributes;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -79,16 +80,16 @@ public class AttributeHelper {
     
     
     
-    public static final Attribute CRIT_CHANCE = ALObjects.Attributes.CRIT_CHANCE.get();
+    public static final Attribute CRIT_CHANCE = FusedAttributes.CRIT_CHANCE.get();
     
     
-    public static final Attribute CRIT_DAMAGE = ALObjects.Attributes.CRIT_DAMAGE.get();
+    public static final Attribute CRIT_DAMAGE = FusedAttributes.CRIT_DAMAGE.get();
     
     
-    public static final Attribute LIFE_STEAL = ALObjects.Attributes.LIFE_STEAL.get();
+    public static final Attribute LIFE_STEAL = TccAttributes.LIFE_STEAL.get();
     
     
-    public static final Attribute OVERHEAL = ALObjects.Attributes.OVERHEAL.get();
+    public static final Attribute OVERHEAL = TccAttributes.OVERHEAL.get();
     
     
     
