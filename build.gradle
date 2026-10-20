@@ -82,13 +82,20 @@ neoForge {
     runs {
         client {
             client()
+            // 独立的 run 目录：客户端和服务端共用一个目录会因文件锁导致客户端登录超时。
+            gameDirectory = file('run-client')
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+            // 直接连本机开发服务端，省去手动点多人游戏。
+            programArguments.addAll '--quickPlayMultiplayer', '127.0.0.1:25566'
         }
 
         server {
             server()
+            gameDirectory = file('run-server')
             programArgument '--nogui'
+            // 25566 是本机开发服务端端口，客户端 quickPlay 连的就是它。
+            programArguments.addAll '--port', '25566'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
@@ -136,14 +143,15 @@ dependencies {
     implementation "curse.maven:tacz-1-21-1-1353462:${tacz_curse_version}"
     // Apothic Attributes（生物属性/效果）
     implementation "curse.maven:apothic-attributes-898963:${attributeslib_curse_version}"
+    // Placebo 是 Apothic Attributes 的运行时前置（mod 元数据里声明了依赖），
+    // 只放 compileOnly 会让 dev 环境启动时因 "placebo is not installed" 直接崩。
+    implementation "curse.maven:placebo-283644:${placebo_cf}"
 
     // === 可选依赖（compileOnly，运行时按需加载） ===
     // Touhou Little Maid（女仆兼容）
     compileOnly "curse.maven:touhou-little-maid-355044:${touhou_maid_cf}"
     // Apotheosis（词缀系统）
     compileOnly "curse.maven:apotheosis-313970:${apotheosis_cf}"
-    // Placebo（Apotheosis 前置库）
-    compileOnly "curse.maven:placebo-283644:${placebo_cf}"
     // Iron's Spells 'n Spellbooks（true_invisibility 效果）
     compileOnly "curse.maven:irons-spells-n-spellbooks-855414:${irons_spells_cf}"
     // Lootr（高亮未开启的战利品箱）
