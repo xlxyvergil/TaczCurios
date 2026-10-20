@@ -48,7 +48,7 @@ public class IslandBoomRaven extends BoundCurioItem {
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
             "tcc.island_boom_raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
-        if (matchesRestriction(livingEntity)) {
+        if (matchesRestrictionEitherHand(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get(), ARMOR_UUID,
                 "tcc.island_boom_raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get(), MOVE_SPEED_UUID,
@@ -78,16 +78,16 @@ public class IslandBoomRaven extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        // 与渡鸦一致：气息遮蔽与生命恢复只在手持狙击枪时续期，切走武器后不再刷新、自然到期
-        if (!matchesRestriction(entity)) return;
+        // 前置：主手或副手任一持有狙击枪，气息遮蔽与生命恢复才续期；切走后不再刷新、自然到期
+        if (!matchesRestrictionEitherHand(entity)) return;
 
-        // 气息遮蔽，按刷新间隔续期，卸下后自然到期
+        // 气息遮蔽：按刷新间隔续期，卸下后自然到期
         if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {
             entity.addEffect(new MobEffectInstance(TccMobEffects.QI_XI_ZHE_BI.get(),
                 TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get(), 0, false, false, true));
         }
 
-        // 生命恢复：与抗性提升一致，时长 2 分钟、每 10 秒刷新、卸下后自然到期
+        // 生命恢复：每 10 秒刷新一次，时长 2 分钟，卸下后自然到期
         if (entity.tickCount % 200 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.islandBoomRavenRegenAmplifier.get(), false, false, true));

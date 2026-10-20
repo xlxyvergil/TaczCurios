@@ -47,7 +47,7 @@ public class Raven extends BoundCurioItem {
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), total, IMAGINARY_RESISTANCE_UUID,
             "tcc.raven.imaginary_resistance", AttributeModifier.Operation.ADDITION);
 
-        if (matchesRestriction(livingEntity)) {
+        if (matchesRestrictionEitherHand(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR, TaczCuriosConfig.COMMON.ravenArmorMultiplier.get(), ARMOR_UUID,
                 "tcc.raven.armor", AttributeModifier.Operation.MULTIPLY_TOTAL);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, TaczCuriosConfig.COMMON.ravenSpeedMultiplier.get(), MOVE_SPEED_UUID,
@@ -77,9 +77,9 @@ public class Raven extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        if (!matchesRestriction(entity)) return;
+        // 前置：主手或副手任一持有狙击枪；气息遮蔽按刷新间隔续期，卸下后自然到期
+        if (!matchesRestrictionEitherHand(entity)) return;
 
-        // 气息遮蔽，按刷新间隔续期，卸下后自然到期
         if (entity.tickCount % TaczCuriosConfig.COMMON.ravenInvisRefreshInterval.get() == 0) {
             entity.addEffect(new MobEffectInstance(TccMobEffects.QI_XI_ZHE_BI.get(),
                 TaczCuriosConfig.COMMON.ravenInvisDuration.get(), 0, false, false, true));

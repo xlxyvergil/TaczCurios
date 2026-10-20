@@ -63,18 +63,36 @@ public class GunTypeChecker {
     }
     
     public static boolean isHoldingValidGunType(LivingEntity livingEntity, Set<String> validTypes) {
-        ItemStack mainHandItem = livingEntity.getMainHandItem();
-        IGun iGun = IGun.getIGunOrNull(mainHandItem);
-        
+        return matchesHeldGunType(livingEntity.getMainHandItem(), validTypes);
+    }
+
+    /**
+     * 单件手持物是否是指定类型的 TACZ 枪械。
+     * 拆出来供"主手或副手"判定复用，避免两处逻辑漂移。
+     */
+    private static boolean matchesHeldGunType(ItemStack heldItem, Set<String> validTypes) {
+        IGun iGun = IGun.getIGunOrNull(heldItem);
+
         if (iGun != null) {
-            ResourceLocation gunId = iGun.getGunId(mainHandItem);
+            ResourceLocation gunId = iGun.getGunId(heldItem);
             return TimelessAPI.getCommonGunIndex(gunId)
                 .map(CommonGunIndex::getType)
                 .map(validTypes::contains)
                 .orElse(false);
         }
-        
+
         return false;
+    }
+
+    /** 主手或副手任一持有指定类型的 TACZ 枪械。 */
+    public static boolean isHoldingValidGunTypeEitherHand(LivingEntity livingEntity, Set<String> validTypes) {
+        ItemStack mainHand = livingEntity.getMainHandItem();
+        ItemStack offHand = livingEntity.getOffhandItem();
+        if (matchesHeldGunType(mainHand, validTypes)) {
+            return true;
+        }
+        // 副手与主手是同一个栈时（理论上不会发生）不必重复判定
+        return offHand != mainHand && matchesHeldGunType(offHand, validTypes);
     }
     
     public static boolean isHoldingDmgBoostGunType(LivingEntity livingEntity) {
@@ -150,10 +168,21 @@ public class GunTypeChecker {
      * 检查是否持有近战武器：物品可执行 ToolActions.SWORD_DIG（剑类行为），或主手基础 ATTACK_DAMAGE 属性值大于 0，满足任一即视为近战武器。
      */
     public static boolean isHoldingMeleeWeapon(LivingEntity livingEntity) {
+        return isMeleeWeapon(livingEntity.getMainHandItem());
+    }
+
+    /** 主手或副手任一持有近战武器。 */
+    public static boolean isHoldingMeleeWeaponEitherHand(LivingEntity livingEntity) {
         ItemStack mainHand = livingEntity.getMainHandItem();
-        if (mainHand.isEmpty()) return false;
-        return mainHand.canPerformAction(ToolActions.SWORD_DIG)
-            || mainHand.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, mainHand)
+        ItemStack offHand = livingEntity.getOffhandItem();
+        return isMeleeWeapon(mainHand) || (offHand != mainHand && isMeleeWeapon(offHand));
+    }
+
+    /** 单件手持物是否算近战武器：可执行剑类行为，或基础 ATTACK_DAMAGE 大于 0。 */
+    private static boolean isMeleeWeapon(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+        return stack.canPerformAction(ToolActions.SWORD_DIG)
+            || stack.getItem().getAttributeModifiers(EquipmentSlot.MAINHAND, stack)
                 .get(Attributes.ATTACK_DAMAGE).stream()
                 .anyMatch(m -> m.getAmount() > 0);
     }
@@ -199,6 +228,11 @@ public class GunTypeChecker {
 
     public static boolean isHoldingConfiguredGunTypes(LivingEntity livingEntity, List<? extends String> gunTypes) {
         return isHoldingValidGunType(livingEntity, new HashSet<>(gunTypes));
+    }
+
+    /** 主手或副手任一持有列表内类型的 TACZ 枪械。 */
+    public static boolean isHoldingConfiguredGunTypesEitherHand(LivingEntity livingEntity, List<? extends String> gunTypes) {
+        return isHoldingValidGunTypeEitherHand(livingEntity, new HashSet<>(gunTypes));
     }
 
     public static boolean matchesGunTypes(ResourceLocation gunId, List<? extends String> gunTypes) {

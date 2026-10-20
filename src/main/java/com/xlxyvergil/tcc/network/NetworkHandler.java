@@ -71,6 +71,11 @@ public final class NetworkHandler {
                 SyncAttributeLinksS2CPacket::decode,
                 SyncAttributeLinksS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, ActivateHighlightC2SPacket.class,
+                ActivateHighlightC2SPacket::encode,
+                ActivateHighlightC2SPacket::decode,
+                ActivateHighlightC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
@@ -98,6 +103,11 @@ public final class NetworkHandler {
 
     public static void sendSpawnerHighlights(ServerPlayer player, List<BlockPos> positions) {
         sendToPlayer(player, new SyncSpawnerHighlightsS2CPacket(positions));
+    }
+
+    /** 客户端按键后请求服务端扫描并刷新高亮（只应在客户端调用）。 */
+    public static void sendActivateHighlight() {
+        CHANNEL.sendToServer(new ActivateHighlightC2SPacket());
     }
 
     /** 命中造成伤害后通知客户端清零渡鸦神之键的开镜蓄力 HUD。 */

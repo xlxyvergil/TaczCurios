@@ -9,15 +9,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * 客户端渲染：把 LootrHighlightClientData 中记录的每一个"该玩家尚未开启的 Lootr 箱子"
- * 交给 HighlightPillarRenderer 画成绿色光柱。
+ * 客户端渲染：把 LootrHighlightClientData 中记录的每一个"该玩家尚未开启的 Lootr 箱子/运输矿车"
+ * 交给 HighlightOutlineRenderer 画成方块线框轮廓（隔墙可见）。
  *
- * 坐标由服务端下发、仅发给该玩家本人，因此光柱只在对应玩家客户端显示。
+ * 坐标由服务端下发、仅发给该玩家本人，因此轮廓只在对应玩家客户端显示。
  */
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class LootrHighlightsRenderer {
 
-    /** 战利品箱光柱颜色（绿色）。 */
+    /** 战利品箱辉光颜色（绿色）。 */
     private static final float RED = 0.22F;
     private static final float GREEN = 0.95F;
     private static final float BLUE = 0.35F;
@@ -33,6 +33,10 @@ public final class LootrHighlightsRenderer {
         if (!LootrCompat.isLoaded()) {
             return;
         }
-        HighlightPillarRenderer.render(event, LootrHighlightClientData.getHighlights(), RED, GREEN, BLUE);
+        // 只在收到的 30 秒内绘制
+        if (!LootrHighlightClientData.isActive()) {
+            return;
+        }
+        HighlightOutlineRenderer.render(event, LootrHighlightClientData.getHighlights(), RED, GREEN, BLUE);
     }
 }

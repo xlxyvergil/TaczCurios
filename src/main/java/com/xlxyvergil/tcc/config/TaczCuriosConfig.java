@@ -1403,11 +1403,11 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 0.5 = +50%)")
                     .defineInRange("speedMultiplier", 0.5, -1, 100);
             xioraInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 1200 = 60秒)")
-                    .defineInRange("invisRefreshInterval", 1200, 20, 72000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 600 = 30秒)")
+                    .defineInRange("invisRefreshInterval", 600, 20, 72000);
             xioraInvisDuration = builder
-                    .comment("气息遮蔽持续时间 (tick, 默认: 1200 = 60秒)")
-                    .defineInRange("invisDuration", 1200, 20, 72000);
+                    .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
+                    .defineInRange("invisDuration", 600, 20, 72000);
             builder.pop();
 
             
@@ -1441,7 +1441,7 @@ public class TaczCuriosConfig {
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);
             islandBoomRavenRegenAmplifier = builder
-                    .comment("生命恢复等级 (默认: 1 = 再生 II；时长为无限，装备期间每 10t 刷新)")
+                    .comment("生命恢复等级 (默认: 1 = 再生 II；佩戴即生效，每 200 tick = 10 秒刷新一次，时长 2400 tick = 2 分钟)")
                     .defineInRange("regenAmplifier", 1, 0, 10);
             builder.pop();
             

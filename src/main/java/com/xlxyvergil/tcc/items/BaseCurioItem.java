@@ -206,6 +206,28 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
         return GunTypeChecker.isHoldingConfiguredGunTypes(entity, restriction);
     }
 
+    /**
+     * 与 {@link #matchesRestriction} 相同的武器类型限制，但<strong>主手或副手任一满足</strong>即可。
+     *
+     * 用于气息遮蔽 / 生命恢复这类"佩戴者持枪就生效"的被动：副手拿着狙击枪时不该被判成不合格。
+     * 护甲/移速这类属性修饰符仍走 {@link #matchesRestriction}（只看主手），属性面板口径不变。
+     */
+    protected boolean matchesRestrictionEitherHand(LivingEntity entity) {
+        List<String> restriction = getWeaponTypeRestriction();
+        if (restriction == null || restriction.isEmpty()) {
+            return true;
+        }
+        if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
+            return GunTypeChecker.isHoldingMeleeWeaponEitherHand(entity);
+        }
+
+        if (restriction.equals(GunTypeChecker.ALL_GUN_TYPES_LIST)) {
+            return GunTypeChecker.isHoldingValidGunTypeEitherHand(entity, GunTypeChecker.ALL_GUN_TYPES);
+        }
+
+        return GunTypeChecker.isHoldingConfiguredGunTypesEitherHand(entity, restriction);
+    }
+
     
     protected static MutableComponent formatModifierTooltip(double value, String valueFormat, Component attrName) {
         String formatted = String.format(valueFormat, value >= 0 ? value : -value);
