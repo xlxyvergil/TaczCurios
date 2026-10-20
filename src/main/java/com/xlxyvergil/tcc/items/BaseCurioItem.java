@@ -21,31 +21,51 @@ import java.util.*;
 
 public abstract class BaseCurioItem extends Item implements ICurioItem {
 
-    /**
-     * 冲突表延迟到首次使用时构建。@EventBusSubscriber 的类扫描发生在配置注册/加载之前，
-     * 若在静态初始化块里读取配置会抛 "Cannot get config value before config is loaded"。
-     */
-    private static final class ConflictMapHolder {
-        private static final Map<String, Set<String>> MAP = build();
+    /** 饰品互斥表。构造期读不到配置，所以首次使用时构建，配置载入/重载后重建。 */
+    private static volatile Map<String, Set<String>> conflictMap;
 
-        private static Map<String, Set<String>> build() {
-            Map<String, Set<String>> map = new HashMap<>();
-            List<? extends String> conflictGroups = TaczCuriosConfig.COMMON.curioConflicts.get();
+    /** 按配置构建互斥表；配置还没载入时返回 null，调用方不要缓存这个结果。 */
+    private static Map<String, Set<String>> buildConflictsFromConfig() {
+        if (!TaczCuriosConfig.COMMON_SPEC.isLoaded()) {
+            return null;
+        }
+        List<? extends String> conflictGroups = TaczCuriosConfig.COMMON.curioConflicts.get();
 
-            for (String group : conflictGroups) {
-                String[] items = group.split(",");
-                Set<String> groupSet = new HashSet<>();
-                for (String item : items) {
-                    groupSet.add(item.trim());
-                }
-
-                for (String itemName : groupSet) {
-                    Set<String> conflicts = map.computeIfAbsent(itemName, k -> new HashSet<>());
-                    conflicts.addAll(groupSet);
-                    conflicts.add(itemName);
-                }
+        Map<String, Set<String>> map = new HashMap<>();
+        for (String group : conflictGroups) {
+            String[] items = group.split(",");
+            Set<String> groupSet = new HashSet<>();
+            for (String item : items) {
+                groupSet.add(item.trim());
             }
+
+            for (String itemName : groupSet) {
+                // 同一组的成员互相冲突（含自身），与旧实现语义一致
+                map.computeIfAbsent(itemName, k -> new HashSet<>()).addAll(groupSet);
+            }
+        }
+        return map;
+    }
+
+    /** 取互斥表；配置还没加载时返回空表且不缓存，等配置加载事件再重建。 */
+    private static Map<String, Set<String>> conflicts() {
+        Map<String, Set<String>> map = conflictMap;
+        if (map != null) {
             return map;
+        }
+        map = buildConflictsFromConfig();
+        if (map == null) {
+            return Collections.emptyMap();
+        }
+        conflictMap = map;
+        return map;
+    }
+
+    /** 配置加载/重载（含客户端接收服务端配置）后调用，重建互斥表。 */
+    public static synchronized void reloadConflicts() {
+        Map<String, Set<String>> map = buildConflictsFromConfig();
+        if (map != null) {
+            conflictMap = map;
         }
     }
 
@@ -93,7 +113,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem {
         String slotId = slotContext.identifier();
         LivingEntity entity = (LivingEntity) slotContext.entity();
         String currentRegName = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-        Set<String> conflictNames = ConflictMapHolder.MAP.getOrDefault(currentRegName, new HashSet<>());
+        Set<String> conflictNames = conflicts().getOrDefault(currentRegName, Collections.emptySet());
 
         if (!conflictNames.isEmpty()) {
             Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(entity);

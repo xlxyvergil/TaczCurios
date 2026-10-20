@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.GildedBulletSpreadEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
@@ -55,7 +56,7 @@ public class GildedBulletSpread extends TccCurioItem {
         tooltip.add(Component.literal(""));
         double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountBase.get()) * 100;
         int fusionLevel = FusionData.from(stack).level();
-        double buffBulletCount = TaczCuriosConfig.COMMON.gildedBulletSpreadBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
+        double buffBulletCount = GildedBulletSpreadEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedBulletSpreadDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedBulletSpreadMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(formatModifierTooltip(baseBulletCount, "%.0f%%",

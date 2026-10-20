@@ -1,5 +1,7 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.GildedArgonScopeKillEffect;
+import com.xlxyvergil.tcc.effect.GildedArgonScopeEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
@@ -41,8 +43,8 @@ public class GildedArgonScope extends TccCurioItem {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.literal(""));
         int fusionLevel = FusionData.from(stack).level();
-        double baseCrit = TaczCuriosConfig.COMMON.gildedArgonScopeBaseCritChance.get() * 100 * (fusionLevel + 1);
-        double buffCrit = TaczCuriosConfig.COMMON.gildedArgonScopeCritChancePerLevel.get() * 100 * (fusionLevel + 1);
+        double baseCrit = GildedArgonScopeEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
+        double buffCrit = GildedArgonScopeKillEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedArgonScopeDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedArgonScopeMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_argon_scope.effect_base",

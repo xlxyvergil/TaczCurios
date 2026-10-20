@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
+import com.xlxyvergil.tcc.effect.HeavenFireApocalypseBuffEffect;
 import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -93,7 +94,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get() * 100;
         double healthCost = TaczCuriosConfig.COMMON.heavenFireApocalypseHealthCost.get() * 100;
         double nearbyPlayerRadius = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerRadius.get();
-        int nearbyPlayerDamageBoost = (int)(TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDamageBoost.get() * 100);
+        int nearbyPlayerDamageBoost = (int)(HeavenFireApocalypseBuffEffect.VALUE_PER_LEVEL * 100);
         int potionAmplifier = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerPotionAmplifier.get();
         int totalNearbyPlayerDamageBoost = nearbyPlayerDamageBoost * (potionAmplifier + 1);
         int nearbyPlayerDuration = TaczCuriosConfig.COMMON.heavenFireApocalypseNearbyPlayerDuration.get();

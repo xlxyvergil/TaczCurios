@@ -23,6 +23,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;
@@ -90,7 +91,11 @@ public class TaczCurios
         NeoForge.EVENT_BUS.register(new HeavenFireSettlementHandler());
         
         container.registerConfig(ModConfig.Type.COMMON, TaczCuriosConfig.COMMON_SPEC);
-        
+
+        // 配置在构造器之后才载入，依赖配置的静态数据只能在这两个事件里重建
+        modEventBus.addListener((ModConfigEvent.Loading event) -> TaczCuriosConfig.onConfigChanged(event));
+        modEventBus.addListener((ModConfigEvent.Reloading event) -> TaczCuriosConfig.onConfigChanged(event));
+
         registerClientEventsSafely();
         
     }

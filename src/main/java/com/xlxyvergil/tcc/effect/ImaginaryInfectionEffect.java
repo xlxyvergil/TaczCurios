@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.effect;
 
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -17,6 +16,8 @@ import com.xlxyvergil.tcc.TaczCurios;
  * 虚数侵染标记：每级降低目标虚数抗性，伤害由虚数崩解独立处理。
  */
 public class ImaginaryInfectionEffect extends MobEffect {
+    /** 每级数值。注册期读不到配置，所以写死在常量里；tooltip 复用同一个常量。 */
+    public static final double VALUE_PER_LEVEL = 5.0D;
 
     private static final ResourceLocation RESISTANCE_REDUCTION_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "imaginary_infection_effect_d7e8f9a0_0123");
 
@@ -25,7 +26,7 @@ public class ImaginaryInfectionEffect extends MobEffect {
         this.addAttributeModifier(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             RESISTANCE_REDUCTION_ID,
             AttributeModifier.Operation.ADD_VALUE,
-            amplifier -> -(amplifier + 1) * TaczCuriosConfig.getOrDefault(TaczCuriosConfig.COMMON.imaginaryInfectionResistanceReduction));
+            amplifier -> -(amplifier + 1) * VALUE_PER_LEVEL);
     }
 
     /**

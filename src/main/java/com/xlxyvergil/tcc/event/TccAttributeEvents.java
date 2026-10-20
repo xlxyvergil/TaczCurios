@@ -7,6 +7,7 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.ImaginaryInfectionHelper;
+import com.xlxyvergil.tcc.util.TccEffectGuard;
 import com.xlxyvergil.tcc.registries.TccMobEffects;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -240,15 +241,23 @@ public class TccAttributeEvents {
         }
     }
 
+    /**
+     * tcc 效果未到期时拒绝批量移除（/effect clear、牛奶桶、净化）。
+     *
+     * 批量路径的顺序是 post(Remove) → onEffectRemoved → iterator.remove()，
+     * 只有在这里取消才来得及，否则属性已经被清掉、实例却还留着。
+     * 点名移除由 LivingEntityEffectProtectionMixin 拦，直接改表由 GuardedEffectMap 拦。
+     * 自然到期走 MobEffectEvent.Expired，不经过这里；死亡时放行。
+     */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onEffectRemove(MobEffectEvent.Remove event) {
         LivingEntity entity = event.getEntity();
+        // 死亡时放行：允许尸体/复活流程清空 tcc 效果
         if (entity.isDeadOrDying()) return;
 
         Holder<MobEffect> effect = event.getEffect();
 
-        var key = BuiltInRegistries.MOB_EFFECT.getKey(effect.value());
-        if (key != null && key.getNamespace().equals("tcc")) {
+        if (TccEffectGuard.isOwnEffect(effect)) {
             // 直接取事件自带的效果实例，不翻阅可能被 mixin 覆盖为不可变 Map 的 getActiveEffectsMap()
             MobEffectInstance instance = event.getEffectInstance();
             if (instance != null && instance.getDuration() > 0) {

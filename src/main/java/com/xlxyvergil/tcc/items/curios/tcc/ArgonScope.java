@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.ArgonScopeEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
@@ -40,7 +41,7 @@ public class ArgonScope extends TccCurioItem {
         Level level = context.level();
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCrit = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.argonScopeBaseCritChance.get() ) * 100;
+        double baseCrit = FusionData.from(stack).getActualValue(ArgonScopeEffect.VALUE_PER_LEVEL) * 100;
         int duration = TaczCuriosConfig.COMMON.argonScopeDuration.get();
         tooltip.add(Component.translatable("item.tcc.argon_scope.effect",
                 String.format("%+.0f", baseCrit), duration)

@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.GildedSteelSlashEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
@@ -57,7 +58,7 @@ public class GildedSteelSlash extends TccCurioItem {
 
         double baseCritChance = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedSteelSlashCritChanceBase.get()) * 100;
         int fusionLevel = FusionData.from(stack).level();
-        double buffCritDmg = TaczCuriosConfig.COMMON.gildedSteelSlashCritDamagePerLevel.get() * 100 * (fusionLevel + 1);
+        double buffCritDmg = GildedSteelSlashEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedSteelSlashDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedSteelSlashMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(formatModifierTooltip(baseCritChance, "%.0f%%",
