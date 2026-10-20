@@ -148,9 +148,9 @@ dependencies {
     compileOnly "curse.maven:apothic-attributes-898963:${attributeslib_curse_version}"
     // Fused Critical（modid: fusedcritical）：硬依赖，编译期+运行期。
     // 提供 fusedcritical:crit_chance / crit_damage，并接管暴击计算。
-    // 暂时固定在 8940286：9271023 那个构建的 META-INF/neoforge.mods.toml 含非法 UTF-8 字节，
-    // FML 判 "not a valid mod file"、加载即失败（作者已在修）。修复版发布后把这里的 fileId 换成新的即可。
-    implementation "curse.maven:fused-critical-1678871:8940286"
+    // 注意：9271023 那个构建的 META-INF/neoforge.mods.toml 含非法 UTF-8 字节，FML 判
+    // "not a valid mod file"、加载即失败；9271655 已修复该编码问题（中途曾临时用 8940286 顶替）。
+    implementation "curse.maven:fused-critical-1678871:9271655"
 
     // === 可选依赖（compileOnly，运行时按需加载） ===
     // Touhou Little Maid（女仆兼容）
