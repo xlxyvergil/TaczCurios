@@ -83,11 +83,16 @@ public final class HighlightSkillHandler {
         refresh(player);
     }
 
-    /** 重新扫描并下发两份坐标（战利品箱 + 刷怪笼）。 */
+    /** 重新扫描并下发高亮坐标（战利品目标 + 刷怪笼）；箱子与矿车的颜色区分在客户端做。 */
     private static void refresh(ServerPlayer player) {
         ServerLevel level = (ServerLevel) player.level();
-        NetworkHandler.sendLootrHighlights(player,
-                LootrCompat.isLoaded() ? scanUnopenedLootChests(level, player) : List.of());
+        List<BlockPos> loot = new ArrayList<>();
+        if (LootrCompat.isLoaded()) {
+            scanUnopenedLootChests(level, player, loot);
+            // 运输矿车是实体而非方块实体，需单独按实体遍历（Lootr 会把它替换为 LootrChestMinecartEntity）。
+            LootrCompat.collectUnopenedCarts(level, player.blockPosition(), RADIUS, player.getUUID(), loot);
+        }
+        NetworkHandler.sendLootrHighlights(player, loot);
         NetworkHandler.sendSpawnerHighlights(player, scanSpawners(level, player));
     }
 
@@ -136,10 +141,9 @@ public final class HighlightSkillHandler {
         return !found.isEmpty();
     }
 
-    /** 收集玩家周围未开启的 Lootr 战利品箱坐标。 */
-    private static List<BlockPos> scanUnopenedLootChests(ServerLevel level, ServerPlayer player) {
+    /** 收集玩家周围未开启的 Lootr 战利品箱坐标，追加到 out（矿车由调用方单独追加）。 */
+    private static void scanUnopenedLootChests(ServerLevel level, ServerPlayer player, List<BlockPos> out) {
         BlockPos base = player.blockPosition();
-        List<BlockPos> result = new ArrayList<>();
 
         int minCX = (base.getX() - RADIUS) >> 4;
         int maxCX = (base.getX() + RADIUS) >> 4;
@@ -158,15 +162,11 @@ public final class HighlightSkillHandler {
                         continue;
                     }
                     if (LootrCompat.isUnopened(level, pos, be, player.getUUID())) {
-                        result.add(pos);
+                        out.add(pos);
                     }
                 }
             }
         }
-
-        // 运输矿车是实体而非方块实体，需单独按实体遍历（Lootr 会把它替换为 LootrChestMinecartEntity）。
-        LootrCompat.collectUnopenedCarts(level, base, RADIUS, player.getUUID(), result);
-        return result;
     }
 
     /** 收集玩家周围的刷怪笼坐标。 */

@@ -510,7 +510,7 @@
   "item.tcc.transient.key_effect_armor_imaginary_resistance": "On hit deal about %1$s extra imaginary damage",
   "item.tcc.dream.curio_effect_fish": "0.01%% chance while fishing to obtain Nether Star or Dragon Egg",
   "item.tcc.dream.curio_effect_loot": "Kill loot doubled",
-  "item.tcc.dream.lootr_highlight": "While worn, press the skill key (default V) to outline unopened Lootr loot chests and chest minecarts within 64 blocks in green for 30 seconds (visible through blocks, only to you)",
+  "item.tcc.dream.lootr_highlight": "While worn, press the skill key (default V) to outline unopened loot targets within 64 blocks for 30 seconds: chests in green, loot minecarts in blue (visible through blocks, only to you)",
   "item.tcc.dream.spawner_highlight": "While worn, press the skill key (default V) to outline mob spawners within 64 blocks in red for 30 seconds (visible through blocks, only to you)",
   "item.tcc.dream.key_effect": "Chance to deal %sx damage",
   "item.tcc.dream.fall_immunity": "Immune to fall damage",

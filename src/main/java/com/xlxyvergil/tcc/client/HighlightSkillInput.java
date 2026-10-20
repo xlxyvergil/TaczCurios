@@ -28,7 +28,7 @@ public final class HighlightSkillInput {
         }
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.player == null) {
-            LootrHighlightClientData.setHighlights(List.of());
+            LootrHighlightClientData.clear();
             SpawnerHighlightClientData.setHighlights(List.of());
             return;
         }
