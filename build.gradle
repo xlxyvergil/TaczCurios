@@ -138,7 +138,8 @@ repositories {
         }
     }
 
-    // CurseMaven for Apotheosis dependencies
+    // CurseMaven for Apothic Attributes (modid: attributeslib) and its dependency Placebo.
+    // Apotheosis (CurseForge 313970) is NOT a Gradle dependency of this project.
     maven {
         url "https://www.cursemaven.com"
         content {
@@ -188,7 +189,9 @@ dependencies {
     // Placebo is a runtime requirement of attributeslib (Apothic Attributes),
     // so it must be on the dev runtime classpath, not compile-only.
     implementation fg.deobf("curse.maven:placebo-283644:6274231")
-    // Apothic-Attributes as runtime dependency for mob effects
+    // Apothic Attributes (modid: attributeslib): hard compile+runtime dependency.
+    // Provides ALObjects attributes (crit/lifesteal/overheal, used by mob effects too)
+    // and the client ModifierSourceType API used by ApothicCurioModifierSource.
     implementation fg.deobf("curse.maven:apothic-attributes-898963:5634071")
     // Iron's Spells 'n Spellbooks (optional, for true_invisibility effect)
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
