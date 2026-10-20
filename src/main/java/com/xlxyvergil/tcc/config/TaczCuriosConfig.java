@@ -240,6 +240,8 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.DoubleValue xioraArmorMultiplier;
         public final ForgeConfigSpec.DoubleValue xioraSpeedMultiplier;
+        public final ForgeConfigSpec.IntValue xioraInvisRefreshInterval;
+        public final ForgeConfigSpec.IntValue xioraInvisDuration;
 
         
         public final ForgeConfigSpec.DoubleValue ravenArmorMultiplier;
@@ -1400,6 +1402,12 @@ public class TaczCuriosConfig {
             xioraSpeedMultiplier = builder
                     .comment("移速乘数 (默认: 0.5 = +50%)")
                     .defineInRange("speedMultiplier", 0.5, -1, 100);
+            xioraInvisRefreshInterval = builder
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 1200 = 60秒)")
+                    .defineInRange("invisRefreshInterval", 1200, 20, 72000);
+            xioraInvisDuration = builder
+                    .comment("气息遮蔽持续时间 (tick, 默认: 1200 = 60秒)")
+                    .defineInRange("invisDuration", 1200, 20, 72000);
             builder.pop();
 
             
@@ -1411,8 +1419,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             ravenInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 400 = 20秒)")
-                    .defineInRange("invisRefreshInterval", 400, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 600 = 30秒)")
+                    .defineInRange("invisRefreshInterval", 600, 1, 12000);
             ravenInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);

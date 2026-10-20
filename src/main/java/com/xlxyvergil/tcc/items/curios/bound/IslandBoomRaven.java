@@ -61,7 +61,6 @@ public class IslandBoomRaven extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR, ARMOR_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, MOVE_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
-        // 生命恢复、隐身等 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
     }
 
     @Override
@@ -78,6 +77,9 @@ public class IslandBoomRaven extends BoundCurioItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
+
+        // 与渡鸦一致：气息遮蔽与生命恢复只在手持狙击枪时续期，切走武器后不再刷新、自然到期
+        if (!matchesRestriction(entity)) return;
 
         // 气息遮蔽，按刷新间隔续期，卸下后自然到期
         if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {

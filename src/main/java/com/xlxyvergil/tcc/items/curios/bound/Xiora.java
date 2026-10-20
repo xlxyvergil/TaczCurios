@@ -3,17 +3,20 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.SlotContext;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -63,6 +66,20 @@ public class Xiora extends BoundCurioItem {
         return java.util.List.of("sniper");
     }
 
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        LivingEntity entity = slotContext.entity();
+        if (entity.level().isClientSide) return;
+
+        if (!matchesRestriction(entity)) return;
+
+        // 气息遮蔽，按刷新间隔续期，卸下后自然到期（与渡鸦一致）
+        if (entity.tickCount % TaczCuriosConfig.COMMON.xioraInvisRefreshInterval.get() == 0) {
+            entity.addEffect(new MobEffectInstance(TccMobEffects.QI_XI_ZHE_BI.get(),
+                TaczCuriosConfig.COMMON.xioraInvisDuration.get(), 0, false, false, true));
+        }
+    }
+
     public static boolean isEquipped(LivingEntity livingEntity) {
         return !findEquippedStack(livingEntity).isEmpty();
     }
@@ -87,6 +104,13 @@ public class Xiora extends BoundCurioItem {
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(speedBoost, "%.0f%%", Component.translatable(AttributeHelper.MOVEMENT_SPEED.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
+
+        double invisIntervalSecs = TaczCuriosConfig.COMMON.xioraInvisRefreshInterval.get() / 20.0;
+        double invisDurationSecs = TaczCuriosConfig.COMMON.xioraInvisDuration.get() / 20.0;
+        tooltip.add(Component.translatable("item.tcc.xiora.special_invis",
+                String.format("%.1f", invisIntervalSecs),
+                String.format("%.1f", invisDurationSecs))
+            .withStyle(ChatFormatting.WHITE));
 
         tooltip.add(Component.translatable("tcc.tooltip.silent_movement")
                 .withStyle(ChatFormatting.RED));
