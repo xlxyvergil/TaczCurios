@@ -20,6 +20,8 @@ build
 # other
 eclipse
 run
+run-client
+run-server
 ck
 libs
 落幕曲恶咒
@@ -33,3 +35,4 @@ docs/新系列成就链规划.md
 docs/成就触发条件灵感.md
 docs/MoonsTeams属性提升灵感.md
 .dbg/undead-tag-kill.env
+/.mcdev
