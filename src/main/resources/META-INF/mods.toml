@@ -44,23 +44,9 @@ ordering="AFTER"
 side="BOTH"
 
 [[dependencies.tcc]]
-modId="attributeslib"
+modId="fusedcritical"
 mandatory=true
-versionRange="*"
-ordering="AFTER"
-side="BOTH"
-
-[[dependencies.tcc]]
-modId="goetyrevelation"
-mandatory=false
-versionRange="*"
-ordering="AFTER"
-side="BOTH"
-
-[[dependencies.tcc]]
-modId="revelationfix"
-mandatory=false
-versionRange="*"
+versionRange="[1.0,)"
 ordering="AFTER"
 side="BOTH"
 

@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.RegisterEvent;
@@ -152,7 +153,10 @@ public class TaczCurios
             Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLayer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
-            Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");
+            // Apothic Attributes（attributeslib）是软依赖：只有装了它才加载属性面板来源集成
+            if (ModList.get().isLoaded("attributeslib")) {
+                Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");
+            }
         }
     }
 

@@ -186,13 +186,14 @@ dependencies {
     implementation fg.deobf("maven.modrinth:timeless-and-classics-zero:1.1.7-hotfix")
     // Touhou Little Maid (optional dependency, compile only)
     compileOnly fg.deobf("maven.modrinth:touhou-little-maid:1.1.14")
-    // Placebo is a runtime requirement of attributeslib (Apothic Attributes),
-    // so it must be on the dev runtime classpath, not compile-only.
-    implementation fg.deobf("curse.maven:placebo-283644:6274231")
-    // Apothic Attributes (modid: attributeslib): hard compile+runtime dependency.
-    // Provides ALObjects attributes (crit/lifesteal/overheal, used by mob effects too)
-    // and the client ModifierSourceType API used by ApothicCurioModifierSource.
-    implementation fg.deobf("curse.maven:apothic-attributes-898963:5634071")
+    // Apothic Attributes (modid: attributeslib) is OPTIONAL and only used at compile time:
+    // the single client class ApothicCurioModifierSource registers an attribute-panel source type,
+    // and it is loaded behind a ModList.isLoaded("attributeslib") check. Placebo is only a
+    // runtime requirement of attributeslib, so this project does not need it at all.
+    compileOnly fg.deobf("curse.maven:apothic-attributes-898963:5634071")
+    // Fused Critical (modid: fusedcritical): hard compile+runtime dependency, from CurseForge.
+    // Provides fusedcritical:crit_chance / crit_damage and owns the crit calculation (LivingHurtEvent).
+    implementation fg.deobf("curse.maven:fused-critical-1678871:8940528")
     // Iron's Spells 'n Spellbooks (optional, for true_invisibility effect)
     compileOnly fg.deobf("curse.maven:irons-spells-n-spellbooks-855414:8202274")
     // Lootr (optional, compile only) - 用于"高亮未开启的 Lootr 战利品箱子"功能
