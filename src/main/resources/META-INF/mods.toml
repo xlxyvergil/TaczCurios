@@ -51,13 +51,6 @@ ordering="AFTER"
 side="BOTH"
 
 [[dependencies.tcc]]
-modId="irons_spellbooks"
-mandatory=false
-versionRange="*"
-ordering="AFTER"
-side="BOTH"
-
-[[dependencies.tcc]]
 modId="goetyrevelation"
 mandatory=false
 versionRange="*"

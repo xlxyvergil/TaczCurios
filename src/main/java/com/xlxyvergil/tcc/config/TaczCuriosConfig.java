@@ -1411,10 +1411,10 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             ravenInvisRefreshInterval = builder
-                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒；普通隐身为永久，此间隔用于重复施加真实隐身)")
-                    .defineInRange("invisRefreshInterval", 200, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 400 = 20秒)")
+                    .defineInRange("invisRefreshInterval", 400, 1, 12000);
             ravenInvisDuration = builder
-                    .comment("真实隐身持续时间 (tick, 默认: 600 = 30秒；普通隐身为永久，此项仅用于真实隐身)")
+                    .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);
             builder.pop();
 
@@ -1427,10 +1427,10 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             islandBoomRavenInvisRefreshInterval = builder
-                    .comment("隐身刷新间隔 (tick, 默认: 200 = 10秒；普通隐身为永久，此间隔用于重复施加真实隐身)")
-                    .defineInRange("invisRefreshInterval", 200, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 400 = 20秒)")
+                    .defineInRange("invisRefreshInterval", 400, 1, 12000);
             islandBoomRavenInvisDuration = builder
-                    .comment("真实隐身持续时间 (tick, 默认: 600 = 30秒；普通隐身为永久，此项仅用于真实隐身)")
+                    .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);
             islandBoomRavenRegenAmplifier = builder
                     .comment("生命恢复等级 (默认: 1 = 再生 II；时长为无限，装备期间每 10t 刷新)")
@@ -2064,8 +2064,8 @@ public class TaczCuriosConfig {
             
             builder.comment("黄金系列（伊甸/璀耀之歌/黄金）正面 buff 黑名单：命中的效果不会被随机施加，填入效果注册名（如 minecraft:speed）").push("golden_buff_blacklist");
             goldenBeneficialBuffBlacklist = builder
-                    .comment("黑名单中的正面效果注册名列表（默认包含天火流血：tcc:heaven_fire_bleeding）")
-                    .defineList("effects", List.of("tcc:heaven_fire_bleeding"), o -> o instanceof String);
+                    .comment("黑名单中的正面效果注册名列表（默认包含天火流血：tcc:heaven_fire_bleeding、气息遮蔽：tcc:qi_xi_zhe_bi）")
+                    .defineList("effects", List.of("tcc:heaven_fire_bleeding", "tcc:qi_xi_zhe_bi"), o -> o instanceof String);
             builder.pop();
 
             
