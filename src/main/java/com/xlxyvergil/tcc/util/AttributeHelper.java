@@ -1,8 +1,9 @@
 package com.xlxyvergil.tcc.util;
 
 import com.xlxyvergil.taa.attribute.EntityAttributeRegistry;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
-import dev.shadowsoffire.apothic_attributes.api.ALObjects;
+import com.xlxyvergil.fusedcritical.attribute.FusedAttributes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -66,13 +67,13 @@ public class AttributeHelper {
     public static final Holder<Attribute> BLOCK_REACH = Attributes.BLOCK_INTERACTION_RANGE;
 
 
-    public static final Holder<Attribute> CRIT_CHANCE = ALObjects.Attributes.CRIT_CHANCE;
+    public static final Holder<Attribute> CRIT_CHANCE = FusedAttributes.CRIT_CHANCE;
 
-    public static final Holder<Attribute> CRIT_DAMAGE = ALObjects.Attributes.CRIT_DAMAGE;
+    public static final Holder<Attribute> CRIT_DAMAGE = FusedAttributes.CRIT_DAMAGE;
 
-    public static final Holder<Attribute> LIFE_STEAL = ALObjects.Attributes.LIFE_STEAL;
+    public static final Holder<Attribute> LIFE_STEAL = TccAttributes.LIFE_STEAL;
 
-    public static final Holder<Attribute> OVERHEAL = ALObjects.Attributes.OVERHEAL;
+    public static final Holder<Attribute> OVERHEAL = TccAttributes.OVERHEAL;
 
 
     public static final Holder<Attribute> BULLET_GUNDAMAGE = EntityAttributeRegistry.BULLET_GUNDAMAGE;

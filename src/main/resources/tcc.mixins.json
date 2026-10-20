@@ -10,6 +10,8 @@
     "ImaginaryDeathDropMixin",
     "LivingEntityActiveEffectsGuardMixin",
     "LivingEntityEffectProtectionMixin",
+    "QiXiZheBiMixin",
+    "QiXiZheBiTargetingMixin",
     "RaidMixin",
     "FluidWalkMixin"
   ],

@@ -8,6 +8,8 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
+import java.util.OptionalDouble;
+
 /**
  * 自定义 RenderType（纯客户端）：结界地面特效平铺贴图用。基于 entityTranslucent，
  * 改 CullFace 为 NO_CULL（避免俯视平面被背面剔除）、DepthTest 为 GL_ALWAYS（避免贴地 quad 被地面深度遮挡），
@@ -53,5 +55,30 @@ public class TccRenderTypes extends RenderType {
                         .setCullState(NO_CULL)
                         .setDepthTestState(new DepthTestStateShard("always_depth_test", GL11.GL_ALWAYS))
                         .createCompositeState(false));
+    }
+
+    /**
+     * 方块线框轮廓（高亮技能用）：DEBUG_LINES + POSITION_COLOR，关闭深度测试使轮廓隔墙可见，
+     * 不写深度避免影响后续渲染，线宽 2px。
+     *
+     * 单例持有——BufferSource 以 RenderType 实例为 key，每次新建实例会导致 endBatch 找不到批次。
+     */
+    private static final RenderType HIGHLIGHT_OUTLINE = create("tcc_highlight_outline",
+            DefaultVertexFormat.POSITION_COLOR,
+            VertexFormat.Mode.DEBUG_LINES,
+            256,
+            false,
+            true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(POSITION_COLOR_SHADER)
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setCullState(NO_CULL)
+                    .setDepthTestState(NO_DEPTH_TEST)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setLineState(new LineStateShard(OptionalDouble.of(2.0D)))
+                    .createCompositeState(false));
+
+    public static RenderType highlightOutline() {
+        return HIGHLIGHT_OUTLINE;
     }
 }

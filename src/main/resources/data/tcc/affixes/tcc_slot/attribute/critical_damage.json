@@ -1,6 +1,6 @@
 {
     "type": "apotheosis:attribute",
-    "attribute": "apothic_attributes:crit_damage",
+    "attribute": "fusedcritical:crit_damage",
     "operation": "MULTIPLY_BASE",
     "values": {
         "common": {

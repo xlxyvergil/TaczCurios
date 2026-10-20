@@ -47,9 +47,9 @@ ordering="AFTER"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
-modId="apothic_attributes"
+modId="fusedcritical"
 type="required"
-versionRange="[2.0,)"
+versionRange="[1.0,)"
 ordering="AFTER"
 side="BOTH"
 

@@ -3,6 +3,7 @@ package com.xlxyvergil.tcc.items.curios.bound;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
+import com.xlxyvergil.tcc.registries.TccMobEffects;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -65,7 +66,6 @@ public class IslandBoomRaven extends BoundCurioItem {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR, ARMOR_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MOVEMENT_SPEED, MOVE_SPEED_ID);
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
-        // 生命恢复、隐身等 buff 卸下后不再主动移除，让其自然到期（时长 2 分钟）
     }
 
     @Override
@@ -83,17 +83,13 @@ public class IslandBoomRaven extends BoundCurioItem {
         LivingEntity entity = slotContext.entity();
         if (entity.level().isClientSide) return;
 
-        // 隐身时长 2 分钟，按配置间隔周期续期，卸下后自然到期
-        if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {
-            entity.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 2 * 60 * 20, 0, false, false, true));
+        // 与渡鸦一致：气息遮蔽与生命恢复只在手持狙击枪时续期，切走武器后不再刷新、自然到期
+        if (!matchesRestrictionEitherHand(entity)) return;
 
-            if (ModList.get().isLoaded("irons_spellbooks")) {
-                Holder<MobEffect> trueInvis = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.fromNamespaceAndPath("irons_spellbooks", "true_invisibility")).orElse(null);
-                if (trueInvis != null) {
-                    // 真实隐身保持原有时长（有限），按刷新间隔重复施加
-                    entity.addEffect(new MobEffectInstance(trueInvis, TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get(), 0, false, false, true));
-                }
-            }
+        // 气息遮蔽，按刷新间隔续期，卸下后自然到期
+        if (entity.tickCount % TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() == 0) {
+            entity.addEffect(new MobEffectInstance(TccMobEffects.QI_XI_ZHE_BI,
+                TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get(), 0, false, false, true));
         }
 
         // 生命恢复：与抗性提升一致，时长 2 分钟、每 10 秒刷新、卸下后自然到期
@@ -124,7 +120,7 @@ public class IslandBoomRaven extends BoundCurioItem {
         double armorBoost = TaczCuriosConfig.COMMON.islandBoomRavenArmorMultiplier.get() * 100;
         double speedBoost = TaczCuriosConfig.COMMON.islandBoomRavenSpeedMultiplier.get() * 100;
         double invisIntervalSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisRefreshInterval.get() / 20.0;
-        double trueInvisDurationSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0;
+        double invisDurationSecs = TaczCuriosConfig.COMMON.islandBoomRavenInvisDuration.get() / 20.0;
 
         appendImaginaryResistance(stack, tooltip);
 
@@ -140,7 +136,7 @@ public class IslandBoomRaven extends BoundCurioItem {
 
         tooltip.add(Component.translatable("item.tcc.island_boom_raven.special_invis",
                 String.format("%.1f", invisIntervalSecs),
-                String.format("%.1f", trueInvisDurationSecs))
+                String.format("%.1f", invisDurationSecs))
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.silent_movement")
