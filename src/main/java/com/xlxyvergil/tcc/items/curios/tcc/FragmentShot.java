@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.FragmentShotEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
@@ -38,7 +39,7 @@ public class FragmentShot extends TccCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCritDmg = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.fragmentShotBaseCritDamage.get() ) * 100;
+        double baseCritDmg = FusionData.from(stack).getActualValue(FragmentShotEffect.VALUE_PER_LEVEL) * 100;
         int duration = TaczCuriosConfig.COMMON.fragmentShotDuration.get();
         tooltip.add(Component.translatable("item.tcc.fragment_shot.effect",
                 String.format("%+.0f", baseCritDmg), duration)

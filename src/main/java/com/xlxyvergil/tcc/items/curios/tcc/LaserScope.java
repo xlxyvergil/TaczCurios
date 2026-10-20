@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.LaserScopeEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
@@ -33,7 +34,7 @@ public class LaserScope extends TccCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCrit = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.laserScopeBaseCritChance.get() ) * 100;
+        double baseCrit = FusionData.from(stack).getActualValue(LaserScopeEffect.VALUE_PER_LEVEL) * 100;
         int duration = TaczCuriosConfig.COMMON.laserScopeDuration.get();
         tooltip.add(Component.translatable("item.tcc.laser_scope.effect",
                 String.format("%+.0f", baseCrit), duration)

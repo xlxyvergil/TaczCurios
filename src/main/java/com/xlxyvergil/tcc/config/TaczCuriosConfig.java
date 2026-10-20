@@ -7,13 +7,20 @@ import java.util.Set;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.items.BaseCurioItem;
+import com.xlxyvergil.tcc.util.TccEffectGuard;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class TaczCuriosConfig {
+
+    private static final Logger LOGGER = LogManager.getLogger();
     public static final ForgeConfigSpec COMMON_SPEC;
     public static final Common COMMON;
     
@@ -28,6 +35,9 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> fishFoodItems;
 
+        /** 效果表装饰器开关，判据与默认值见 TccEffectGuard。 */
+        public final ForgeConfigSpec.BooleanValue coreEffectMapGuard;
+
         
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentDamageBoost;
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
@@ -41,7 +51,6 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.IntValue imaginaryInfectionMaxLevel;
         public final ForgeConfigSpec.IntValue imaginaryInfectionDuration;
-        public final ForgeConfigSpec.DoubleValue imaginaryInfectionResistanceReduction;
         
         
         public final ForgeConfigSpec.IntValue tier1ImaginaryInfectionMaxLevel;
@@ -97,7 +106,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseExplosionDamage;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseHealthCost;
         public final ForgeConfigSpec.DoubleValue brahmaBeastsHealthCostReduction;
-        public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerDamageBoost;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerPotionAmplifier;
         public final ForgeConfigSpec.IntValue heavenFireApocalypseNearbyPlayerDuration;
         public final ForgeConfigSpec.DoubleValue heavenFireApocalypseNearbyPlayerRadius;
@@ -568,31 +576,23 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue criticalDelayFireRateReduction;
         public final ForgeConfigSpec.DoubleValue lethalCritCritChance;
         public final ForgeConfigSpec.DoubleValue weaknessSenseCritDamage;
-        public final ForgeConfigSpec.DoubleValue argonScopeBaseCritChance;
         public final ForgeConfigSpec.IntValue argonScopeDuration;
-        public final ForgeConfigSpec.DoubleValue gildedArgonScopeBaseCritChance;
-        public final ForgeConfigSpec.DoubleValue gildedArgonScopeCritChancePerLevel;
         public final ForgeConfigSpec.DoubleValue gildedArgonScopeHeadshotKillExtra;
         public final ForgeConfigSpec.IntValue gildedArgonScopeDuration;
         public final ForgeConfigSpec.IntValue gildedArgonScopeMaxStacks;
-        public final ForgeConfigSpec.DoubleValue sharpBulletBaseCritDamage;
         public final ForgeConfigSpec.IntValue sharpBulletDuration;
         public final ForgeConfigSpec.DoubleValue gildedRifleAptitudePerHarmful;
         public final ForgeConfigSpec.DoubleValue gildedSplitChamberBulletCountBase;
-        public final ForgeConfigSpec.DoubleValue gildedSplitChamberBulletCountPerLevel;
         public final ForgeConfigSpec.IntValue gildedSplitChamberDuration;
         public final ForgeConfigSpec.IntValue gildedSplitChamberMaxStacks;
         public final ForgeConfigSpec.DoubleValue destructionCritDamage;
         public final ForgeConfigSpec.DoubleValue destructionPrimeCritDamage;
         public final ForgeConfigSpec.DoubleValue thunderBarrelCritChance;
         public final ForgeConfigSpec.DoubleValue thunderBarrelPrimeCritChance;
-        public final ForgeConfigSpec.DoubleValue laserScopeBaseCritChance;
         public final ForgeConfigSpec.IntValue laserScopeDuration;
-        public final ForgeConfigSpec.DoubleValue fragmentShotBaseCritDamage;
         public final ForgeConfigSpec.IntValue fragmentShotDuration;
         public final ForgeConfigSpec.DoubleValue gildedShotgunSavvyPerHarmful;
         public final ForgeConfigSpec.DoubleValue gildedInfernalChamberBulletCountBase;
-        public final ForgeConfigSpec.DoubleValue gildedInfernalChamberBulletCountPerLevel;
         public final ForgeConfigSpec.IntValue gildedInfernalChamberDuration;
         public final ForgeConfigSpec.IntValue gildedInfernalChamberMaxStacks;
         public final ForgeConfigSpec.DoubleValue weaknessMasteryCritDamage;
@@ -601,18 +601,13 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue hollowPointPistolDamageReduction;
         public final ForgeConfigSpec.DoubleValue pistolMasteryCritChance;
         public final ForgeConfigSpec.DoubleValue pistolMasteryPrimeCritChance;
-        public final ForgeConfigSpec.DoubleValue hydraulicCrosshairBaseCritChance;
         public final ForgeConfigSpec.IntValue hydraulicCrosshairDuration;
-        public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairBaseCritChance;
-        public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairCritChancePerLevel;
         public final ForgeConfigSpec.DoubleValue gildedHydraulicCrosshairHeadshotKillExtra;
         public final ForgeConfigSpec.IntValue gildedHydraulicCrosshairDuration;
         public final ForgeConfigSpec.IntValue gildedHydraulicCrosshairMaxStacks;
-        public final ForgeConfigSpec.DoubleValue sharpAmmoBaseCritDamage;
         public final ForgeConfigSpec.IntValue sharpAmmoDuration;
         public final ForgeConfigSpec.DoubleValue gildedMarksmanPerHarmful;
         public final ForgeConfigSpec.DoubleValue gildedBulletSpreadBulletCountBase;
-        public final ForgeConfigSpec.DoubleValue gildedBulletSpreadBulletCountPerLevel;
         public final ForgeConfigSpec.IntValue gildedBulletSpreadDuration;
         public final ForgeConfigSpec.IntValue gildedBulletSpreadMaxStacks;
         public final ForgeConfigSpec.DoubleValue steelSlashCritChance;
@@ -620,7 +615,6 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue sacrificeOppressionMeleeDamage;
         public final ForgeConfigSpec.DoubleValue sacrificeSteelCritChance;
         public final ForgeConfigSpec.DoubleValue gildedSteelSlashCritChanceBase;
-        public final ForgeConfigSpec.DoubleValue gildedSteelSlashCritDamagePerLevel;
         public final ForgeConfigSpec.IntValue gildedSteelSlashDuration;
         public final ForgeConfigSpec.IntValue gildedSteelSlashMaxStacks;
         public final ForgeConfigSpec.DoubleValue conditionOverloadPerHarmful;
@@ -650,6 +644,11 @@ public class TaczCuriosConfig {
         
         public Common(ForgeConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
+
+            coreEffectMapGuard = builder
+                    .comment("效果保护：效果列表的 getter 返回受控视图，禁止通过直接改表移除 tcc 效果",
+                             "关闭后只剩 API 级保护（removeEffect / MobEffectEvent.Remove）")
+                    .define("coreEffectMapGuard", true);
 
             
             builder.comment("统计为食用鱼类的物品注册名列表（如 minecraft:cod），吃到该列表中的物品后 tcc:fish_food_eaten +1").push("fish_food_items");
@@ -761,9 +760,6 @@ public class TaczCuriosConfig {
             imaginaryInfectionDuration = builder
                     .comment("虚数侵染效果持续时间(秒) (默认: 15)")
                     .defineInRange("duration", 15, 1, 300);
-            imaginaryInfectionResistanceReduction = builder
-                    .comment("虚数侵染降低的虚数抗性值 (默认: 5)")
-                    .defineInRange("resistanceReduction", 5.0, 0, 100);
             builder.pop();
             
 
@@ -905,9 +901,6 @@ public class TaczCuriosConfig {
             brahmaBeastsHealthCostReduction = builder
                     .comment("装备梵天百兽时天火劫灭扣血比例的减少值 (默认: 0.6 = 从扣100%变为扣40%，即保留60%血量)")
                     .defineInRange("brahmaBeastsHealthCostReduction", 0.6, 0, 1);
-            heavenFireApocalypseNearbyPlayerDamageBoost = builder
-                    .comment("附近玩家获得的 bullet_gundamage 每级伤害加成 (默认: 0.5 = 50%/级)")
-                    .defineInRange("nearbyPlayerDamageBoost", 0.5, -1, 100);
             heavenFireApocalypseNearbyPlayerPotionAmplifier = builder
                     .comment("附近玩家获得的药水效果等级 (0=1级, 默认: 0)")
                     .defineInRange("nearbyPlayerPotionAmplifier", 0, 0, 999);
@@ -996,14 +989,11 @@ public class TaczCuriosConfig {
             
             
             builder.comment("氩晶瞄具饰品配置").push("argon_scope");
-            argonScopeBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.15)").defineInRange("baseCritChance", 0.15, -1, 100);
             argonScopeDuration = builder.comment("Buff持续时间(秒) (基础值: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             
             builder.comment("镀层氩晶瞄具饰品配置").push("gilded_argon_scope");
-            gildedArgonScopeBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.11)").defineInRange("baseCritChance", 0.11, -1, 100);
-            gildedArgonScopeCritChancePerLevel = builder.comment("叠层Buff每级暴击几率 (基础值: 0.033, 满级: +40%/级)").defineInRange("critChancePerLevel", 0.033, -1, 100);
             gildedArgonScopeHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (基础值: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
             gildedArgonScopeDuration = builder.comment("Buff持续时间(秒) (基础值: 12)").defineInRange("duration", 12, 1, 300);
             gildedArgonScopeMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
@@ -1011,7 +1001,6 @@ public class TaczCuriosConfig {
             
             
             builder.comment("尖刃弹头饰品配置").push("sharp_bullet");
-            sharpBulletBaseCritDamage = builder.comment("基础暴击伤害 (基础值: 0.13)").defineInRange("baseCritDamage", 0.13, -1, 100);
             sharpBulletDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -1023,7 +1012,6 @@ public class TaczCuriosConfig {
             
             builder.comment("镀层分裂膛室饰品配置").push("gilded_split_chamber");
             gildedSplitChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 0.8)").defineInRange("bulletCountBase", 0.8, -1, 100);
-            gildedSplitChamberBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
             gildedSplitChamberDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
             gildedSplitChamberMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
@@ -1050,13 +1038,11 @@ public class TaczCuriosConfig {
             
             
             builder.comment("雷射瞄具饰品配置").push("laser_scope");
-            laserScopeBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.13)").defineInRange("baseCritChance", 0.13, -1, 100);
             laserScopeDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             
             builder.comment("破片射击饰品配置").push("fragment_shot");
-            fragmentShotBaseCritDamage = builder.comment("基础暴击伤害 (基础值: 0.11)").defineInRange("baseCritDamage", 0.11, -1, 100);
             fragmentShotDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -1068,7 +1054,6 @@ public class TaczCuriosConfig {
             
             builder.comment("镀层地狱弹膛饰品配置").push("gilded_infernal_chamber");
             gildedInfernalChamberBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
-            gildedInfernalChamberBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
             gildedInfernalChamberDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
             gildedInfernalChamberMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
             builder.pop();
@@ -1101,14 +1086,11 @@ public class TaczCuriosConfig {
             
             
             builder.comment("液压准心饰品配置").push("hydraulic_crosshair");
-            hydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.15)").defineInRange("baseCritChance", 0.15, -1, 100);
             hydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
             
             builder.comment("镀层液压准心饰品配置").push("gilded_hydraulic_crosshair");
-            gildedHydraulicCrosshairBaseCritChance = builder.comment("基础暴击几率 (基础值: 0.11)").defineInRange("baseCritChance", 0.11, -1, 100);
-            gildedHydraulicCrosshairCritChancePerLevel = builder.comment("叠层Buff每级暴击几率 (基础值: 0.033, 满级: +40%/级)").defineInRange("critChancePerLevel", 0.033, -1, 100);
             gildedHydraulicCrosshairHeadshotKillExtra = builder.comment("爆头击杀暴击率额外加成 (基础值: 0.4)").defineInRange("headshotKillExtra", 0.4, -1, 100);
             gildedHydraulicCrosshairDuration = builder.comment("Buff持续时间(秒) (基础值: 12)").defineInRange("duration", 12, 1, 300);
             gildedHydraulicCrosshairMaxStacks = builder.comment("最大buff等级 (基础值: 60)").defineInRange("maxStacks", 60, 1, 200);
@@ -1116,7 +1098,6 @@ public class TaczCuriosConfig {
             
             
             builder.comment("尖锐子弹饰品配置").push("sharp_ammo");
-            sharpAmmoBaseCritDamage = builder.comment("基础暴击伤害 (基础值: 0.08)").defineInRange("baseCritDamage", 0.08, -1, 100);
             sharpAmmoDuration = builder.comment("Buff持续时间(秒) (默认: 9)").defineInRange("duration", 9, 1, 300);
             builder.pop();
             
@@ -1128,7 +1109,6 @@ public class TaczCuriosConfig {
             
             builder.comment("镀层弹头扩散饰品配置").push("gilded_bullet_spread");
             gildedBulletSpreadBulletCountBase = builder.comment("基础弹头数量加成 (基础值: 1.1)").defineInRange("bulletCountBase", 1.1, -1, 100);
-            gildedBulletSpreadBulletCountPerLevel = builder.comment("叠层Buff每级额外弹头数量 (基础值: 0.025, 满级: +30%/级)").defineInRange("bulletCountPerLevel", 0.025, -1, 100);
             gildedBulletSpreadDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
             gildedBulletSpreadMaxStacks = builder.comment("最大buff等级 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
             builder.pop();
@@ -1156,7 +1136,6 @@ public class TaczCuriosConfig {
             
             builder.comment("镀层斩铁饰品配置").push("gilded_steel_slash");
             gildedSteelSlashCritChanceBase = builder.comment("基础暴击几率 (基础值: 1.1)").defineInRange("critChanceBase", 1.1, -1, 100);
-            gildedSteelSlashCritDamagePerLevel = builder.comment("叠层Buff每级暴击伤害 (基础值: 0.025, 满级: +30%/级)").defineInRange("critDamagePerLevel", 0.025, -1, 100);
             gildedSteelSlashDuration = builder.comment("Buff持续时间(秒) (基础值: 20)").defineInRange("duration", 20, 1, 300);
             gildedSteelSlashMaxStacks = builder.comment("最大buff等级 (基础值: 48)").defineInRange("maxStacks", 48, 1, 200);
             builder.pop();
@@ -2413,11 +2392,25 @@ public class TaczCuriosConfig {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_SPEC);
     }
 
+    /** 配置载入/重载后重建派生数据。只认 COMMON，避免 CLIENT/SERVER 事件触发无谓重建。 */
+    public static void onConfigChanged(ModConfigEvent event) {
+        if (event.getConfig().getSpec() != COMMON_SPEC) {
+            return;
+        }
+        reloadDerivedData();
+        LOGGER.debug("[TCC] COMMON 配置已{}，派生数据已重建", event instanceof ModConfigEvent.Reloading ? "重载" : "载入");
+    }
+
     /**
-     * 客户端收到服务端配置后调用：把服务端 TOML 写入本地配置文件并让配置值立即生效。
-     * 写盘后重新载入 FileConfig 再交给 spec，使 FileConfig 的数据与服务端一致，
-     * 退出游戏时 Forge 保存配置便不会把本地旧值写回文件；任一步失败都保留本地配置。
+     * 重建依赖配置的数据：饰品互斥表、效果保护开关。
+     * 效果数值不在这里，它们在各自 effect 的 VALUE_PER_LEVEL 里（注册期读不到配置）。
      */
+    public static void reloadDerivedData() {
+        BaseCurioItem.reloadConflicts();
+        TccEffectGuard.setMapGuardFromConfig();
+    }
+
+    /** 客户端收到服务端配置后调用：写盘并让配置立即生效。失败时保留本地配置。 */
     public static void applySyncedConfig(String toml) {
         ModConfig config = findCommonConfig();
         if (config == null || !(config.getConfigData() instanceof CommentedFileConfig fileConfig)) {
@@ -2427,8 +2420,12 @@ public class TaczCuriosConfig {
             Files.writeString(fileConfig.getNioPath(), toml, StandardCharsets.UTF_8);
             fileConfig.load();
             COMMON_SPEC.acceptConfig(fileConfig);
-        } catch (Exception ignored) {
+            // acceptConfig 不会触发 ModConfigEvent，依赖配置的静态数据需要显式重建
+            reloadDerivedData();
+            LOGGER.debug("[TCC] 已应用服务端下发的 COMMON 配置，派生数据已重建");
+        } catch (Exception e) {
             // 同步失败时保持本地配置
+            LOGGER.debug("[TCC] 应用服务端下发的 COMMON 配置失败，保留本地配置", e);
         }
     }
 

@@ -1,5 +1,8 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.HydraulicCrosshairEffect;
+import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairKillEffect;
+import com.xlxyvergil.tcc.effect.GildedHydraulicCrosshairEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
@@ -39,8 +42,8 @@ public class GildedHydraulicCrosshair extends TccCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
         int fusionLevel = FusionData.from(stack).level();
-        double baseCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get() * 100 * (fusionLevel + 1);
-        double buffCrit = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairCritChancePerLevel.get() * 100 * (fusionLevel + 1);
+        double baseCrit = GildedHydraulicCrosshairEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
+        double buffCrit = GildedHydraulicCrosshairKillEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(Component.translatable("item.tcc.gilded_hydraulic_crosshair.effect_base",

@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.GildedInfernalChamberEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
@@ -53,7 +54,7 @@ public class GildedInfernalChamber extends TccCurioItem {
         tooltip.add(Component.literal(""));
         double baseBulletCount = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountBase.get()) * 100;
         int fusionLevel = FusionData.from(stack).level();
-        double buffBulletCount = TaczCuriosConfig.COMMON.gildedInfernalChamberBulletCountPerLevel.get() * 100 * (fusionLevel + 1);
+        double buffBulletCount = GildedInfernalChamberEffect.VALUE_PER_LEVEL * 100 * (fusionLevel + 1);
         int duration = TaczCuriosConfig.COMMON.gildedInfernalChamberDuration.get();
         int maxStacks = TaczCuriosConfig.COMMON.gildedInfernalChamberMaxStacks.get() / TaczCuriosConfig.COMMON.fusionMaxLevelEpic.get();
         tooltip.add(formatModifierTooltip(baseBulletCount, "%.0f%%",

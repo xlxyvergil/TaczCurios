@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.effect;
 
-import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.registries.TccItems;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import net.minecraft.world.effect.MobEffect;
@@ -10,11 +9,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import java.util.UUID;
 
 public class GildedHydraulicCrosshairEffect extends MobEffect {
+    /** 每级数值。注册期读不到配置，所以写死在常量里；tooltip 复用同一个常量。 */
+    public static final double VALUE_PER_LEVEL = 0.11D;
+
     public GildedHydraulicCrosshairEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xFFBB66);
-        double perLevelValue = TaczCuriosConfig.COMMON.gildedHydraulicCrosshairBaseCritChance.get();
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
-            "2a51f151-cd51-4617-8192-af104611e7aa", perLevelValue, AttributeModifier.Operation.MULTIPLY_BASE);
+            "2a51f151-cd51-4617-8192-af104611e7aa", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
         AttributeHelper.registerSourceItem(UUID.fromString("2a51f151-cd51-4617-8192-af104611e7aa"), TccItems.GILDED_HYDRAULIC_CROSSHAIR);
     }
 

@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
+import com.xlxyvergil.tcc.effect.SharpAmmoEffect;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.items.TccCurioItem;
 import com.xlxyvergil.tcc.util.FusionData;
@@ -38,7 +39,7 @@ public class SharpAmmo extends TccCurioItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.literal(""));
-        double baseCritDmg = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.sharpAmmoBaseCritDamage.get() ) * 100;
+        double baseCritDmg = FusionData.from(stack).getActualValue(SharpAmmoEffect.VALUE_PER_LEVEL) * 100;
         int duration = TaczCuriosConfig.COMMON.sharpAmmoDuration.get();
         tooltip.add(Component.translatable("item.tcc.sharp_ammo.effect",
                 String.format("%+.0f", baseCritDmg), duration)

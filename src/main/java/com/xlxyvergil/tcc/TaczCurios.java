@@ -22,6 +22,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -104,7 +105,11 @@ public class TaczCurios
         MinecraftForge.EVENT_BUS.register(new HeavenFireSettlementHandler());
         
         TaczCuriosConfig.registerConfigs();
-        
+
+        // 配置在 CONSTRUCT 之后才载入，依赖配置的静态数据只能在这两个事件里重建
+        modEventBus.addListener((ModConfigEvent.Loading event) -> TaczCuriosConfig.onConfigChanged(event));
+        modEventBus.addListener((ModConfigEvent.Reloading event) -> TaczCuriosConfig.onConfigChanged(event));
+
         registerClientEventsSafely();
         
     }
