@@ -158,6 +158,9 @@ public class Mebius extends BoundCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
         appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.infinite.curio_effect",
                 String.format("%.1f", perTypeBonus() * 100))
@@ -166,5 +169,7 @@ public class Mebius extends BoundCurioItem {
                 String.format("%.1f", getKilledTypeCount(stack) * perTypeBonus() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
+
+        tooltip.add(Component.literal(""));
     }
 }

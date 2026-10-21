@@ -126,6 +126,9 @@ public class LuejiZhiShou extends BoundCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
         appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.dream.curio_effect_fish")
                 .withStyle(ChatFormatting.GOLD));
@@ -144,5 +147,7 @@ public class LuejiZhiShou extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
+
+        tooltip.add(Component.literal(""));
     }
 }
