@@ -5,6 +5,11 @@ import com.xlxyvergil.tcc.compat.lootr.LootrCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import java.util.UUID;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -28,6 +33,8 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LuejiZhiShou extends BoundCurioItem {
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("e6a2b8d4-71c5-4f39-a208-3d5b9c1f46b7");
+
     private static double specialFishChance() {
         return TaczCuriosConfig.COMMON.luejiZhiShouSpecialFishChance.get();
     }
@@ -43,10 +50,23 @@ public class LuejiZhiShou extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 虚数抗性不受武器类型限制，装备即生效（与渡鸦/小岛一致：基础值 1 + 共享进度）。
+        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof LuejiZhiShou);
+        CompoundTag equippedTag = (equipped.isEmpty() ? stack : equipped).getTag();
+        double totalResistance = ImaginaryResistanceHelper.calculateTotalResistance(1, equippedTag);
+        AttributeHelper.applyModifier(livingEntity,
+                TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                totalResistance, IMAGINARY_RESISTANCE_UUID, "tcc.lueji_zhi_shou.imaginary_resistance",
+                AttributeModifier.Operation.ADDITION);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity,
+                TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                IMAGINARY_RESISTANCE_UUID);
     }
 
     @Override
