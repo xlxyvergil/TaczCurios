@@ -2,14 +2,17 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
+import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.KillEventDedupe;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
+import com.tacz.guns.entity.EntityKineticBullet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +29,8 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
 
 /**
  * gun_kill 触发器的成就/属性规则处理器。
@@ -71,13 +76,28 @@ public final class GunKillEventHandler {
                     gunId, event.isHeadShot());
         }
 
-        // 多弹头武器（霰弹/多弹头狙击）会在同一次击杀中连续触发多次 EntityKillByGunEvent，
-        // 这里按被杀实体做短窗口去重，保证一次击杀只计一次。
-        if (GUN_KILL_DEDUPE.isDuplicate(killed.getUUID(), sp.level().getGameTime())) {
-            return;
-        }
-
+        // 多弹头武器（霰弹/多弹头狙击）会在同一次击杀中连续触发多次 EntityKillByGunEvent；
+        // 去重统一放在 handleGunKill 入口，与死亡兜底路径共用同一份记录。
         handleGunKill(sp, killed, gunId);
+    }
+
+    /**
+     * 从致死伤害来源反推枪械 id，供死亡兜底使用。
+     * <p>
+     * 原版末影龙在非停驻阶段被打到 0 血时，{@code EnderDragon#hurt(DragonPart, …)} 会立刻
+     * {@code setHealth(1.0F)} 并切到 DYING 阶段，TACZ 在伤害结算后判断
+     * {@code isDeadOrDying()} 得到 false，于是只发 {@code EntityHurtByGunEvent.Post}、
+     * 不发 {@code EntityKillByGunEvent} —— gun_kill 类成就永远等不到事件。
+     * 这类目标只能从死亡事件补记，枪械 id 由子弹实体反查。
+     */
+    @Nullable
+    public static ResourceLocation resolveGunIdFromDamage(@Nullable DamageSource source) {
+        if (source == null) return null;
+        // 子弹伤害本身，或三阶神之键把子弹伤害转成的虚数伤害（直接实体仍然是子弹）
+        boolean gunDamage = TccDamageSources.isTaczBulletSource(source)
+                || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
+        if (!gunDamage) return null;
+        return source.getDirectEntity() instanceof EntityKineticBullet bullet ? bullet.getGunId() : null;
     }
 
     /**
@@ -101,6 +121,12 @@ public final class GunKillEventHandler {
 
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
+
+        // 同一被杀实体在短窗口内只计一次：致死命中可能同时走 EntityKillByGunEvent
+        // 与 LivingDeathEvent 两条路径（末影龙先 die() 再被回血续命就是这种情况）。
+        if (GUN_KILL_DEDUPE.isDuplicate(killed.getUUID(), player.level().getGameTime())) {
+            return;
+        }
 
         // 成就驱动的发放 / 进化
         if (serverPlayer != null) {
