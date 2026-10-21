@@ -329,7 +329,7 @@
       ]
     },
 
-    "tcc_aponia_imaginary_from_nether": {
+    "tcc_aponia_imaginary_from_zombie": {
       "enabled": true,
       "trigger": "gun_kill",
       "type": "attribute",
