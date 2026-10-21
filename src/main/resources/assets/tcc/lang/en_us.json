@@ -41,7 +41,7 @@
   "item.tcc.ural_wolf_tag": "§bUral Silver Wolf",
   "item.tcc.ural_wolf_tag.effect": "%1$s%% headshot multiplier",
   "item.tcc.heaven_fire_judgment": "§fHeaven Fire Judgment",
-  "item.tcc.heaven_fire_judgment.special": "%s%% current health Apply bleeding: %s%% max health/level for %s seconds Disabled below 40%% health Can evolve to Heaven Fire Apocalypse on bleeding settlement",
+  "item.tcc.heaven_fire_judgment.special": "%s%% current health, applies Heaven Fire Bleeding; disabled below 40%% health",
   "item.tcc.heaven_fire_apocalypse": "§dHeaven Fire Apocalypse",
   "item.tcc.heaven_fire_apocalypse.special": "At 100%% health Lose %1$s%% max health Bleeding after 5s delay %3$s%% universal firearm damage to players within %2$s blocks for %4$s seconds Cannot unequip Kept on death",
   "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
