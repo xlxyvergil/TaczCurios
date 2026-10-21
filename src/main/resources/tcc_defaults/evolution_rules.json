@@ -17,7 +17,9 @@
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
-        "cap": 20.0
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_summer_beach_imaginary"
       },
       "kills": [
         {
@@ -45,7 +47,9 @@
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
-        "cap": 20.0
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_brahma_beasts_imaginary"
       },
       "kills": [
         {
@@ -72,7 +76,9 @@
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
-        "cap": 20.0
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_xiora_imaginary"
       },
       "kills": [
         {
@@ -98,7 +104,9 @@
       "progress": {
         "attribute": "tcc:imaginary_damage_resistance",
         "operation": "ADDITION",
-        "cap": 20.0
+        "cap": 20.0,
+        "nbtKey": "Progress_tcc_imaginary_damage_resistance",
+        "capCounterKey": "CapCounter_raven_imaginary"
       },
       "kills": [
         {
@@ -388,8 +396,8 @@
       "type": "attribute",
       "item": "tcc:eden",
       "description": {
-        "zh_cn": "使用手枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.05虚数抗性（上限20）",
-        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with pistol, +0.05 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用手枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.2虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with pistol, +0.2 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": [
