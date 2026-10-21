@@ -120,8 +120,20 @@ public class TaczCuriosClientTooltip {
         if (text == null) return;
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("tcc.tooltip.how_to_obtain", def.title(locale), text)
-                .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+
+        String title = def.title(locale);
+        String oneLine = Component.translatable("tcc.tooltip.how_to_obtain", title, text).getString();
+        if (Minecraft.getInstance().font.width(oneLine) <= CurioFusionTooltipHandler.MAX_TOOLTIP_WIDTH) {
+            tooltip.add(Component.translatable("tcc.tooltip.how_to_obtain", title, text)
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        } else {
+            // 放不下一行时拆成两条：前缀一行、描述缩进一行，
+            // 避免原版自动折行把「30次」这类数字从中间断开。
+            tooltip.add(Component.translatable("tcc.tooltip.how_to_obtain_title", title)
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("tcc.tooltip.how_to_obtain_body", text)
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        }
     }
 
     
@@ -142,8 +154,8 @@ public class TaczCuriosClientTooltip {
             if (text == null) continue;
 
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.growth_condition", text)
-                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("tcc.tooltip.growth_condition.line1").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+        tooltip.add(Component.translatable("tcc.tooltip.growth_condition.line2", text).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
         }
     }
 

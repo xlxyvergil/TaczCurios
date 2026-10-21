@@ -46,11 +46,11 @@ public class HeiyuanBaihua extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
     }
 
     public static boolean isEquipped(LivingEntity entity) {
@@ -134,9 +134,15 @@ public class HeiyuanBaihua extends BoundCurioItem {
             }
         }
         double damageScale = TaczCuriosConfig.COMMON.heiyuanBaihuaImaginaryDamageScale.get();
-        tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect",
+                tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect.line1",
                 (int) (resistancePercent * damageScale))
             .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect.line2",
+                (int) (resistancePercent * damageScale))
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.heiyuan_baihua.effect.line3",
+                (int) (resistancePercent * damageScale))
+            .withStyle(ChatFormatting.RED));;
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
             .withStyle(ChatFormatting.LIGHT_PURPLE));

@@ -14,7 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-
 @OnlyIn(Dist.CLIENT)
 final class ClientPacketHandler {
 

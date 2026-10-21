@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-
 public final class TccBlocks {
 
     public static final Block TESHIN_WORKBENCH = new Block(

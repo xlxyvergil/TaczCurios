@@ -17,7 +17,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.util.UUID;
 
-
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class ZombieVillagerCureHandler {
 

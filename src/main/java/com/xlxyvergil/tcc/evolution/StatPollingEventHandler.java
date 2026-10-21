@@ -20,7 +20,6 @@ import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import java.util.List;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 
-
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class StatPollingEventHandler {
 

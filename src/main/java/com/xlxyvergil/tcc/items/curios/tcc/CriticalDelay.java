@@ -30,10 +30,7 @@ public class CriticalDelay extends TccCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(FIRE_RATE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         // 仅在主手持有符合武器类型（任意枪械）时才生效；切换武器时由 GunSwitchEventHandler 触发 refreshEffects 重新评估
         if (!matchesRestriction(livingEntity)) return;
 
@@ -45,7 +42,7 @@ public class CriticalDelay extends TccCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, FIRE_RATE_ID);
     }

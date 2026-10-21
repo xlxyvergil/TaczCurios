@@ -18,7 +18,6 @@ public class GildedBulletSpreadEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_bullet_spread_effect_78e5804f_52ee"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_bullet_spread_effect_78e5804f_52ee"), TccItems.GILDED_BULLET_SPREAD);
     }
 
 }

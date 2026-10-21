@@ -12,42 +12,53 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class AttributeHelper {
 
-    /** 记录修饰符 ID → 来源饰品 Item，供客户端属性面板显示来源图标。 */
-    private static final Map<ResourceLocation, Item> MODIFIER_SOURCES = new ConcurrentHashMap<>();
-
     /**
-     * 修饰符变更版本号：本类每次「实际增删」修饰符时自增。
-     * 客户端可据此失效由属性修饰符派生的缓存（如属性面板的来源索引），避免每 tick 无条件重建。
+     * 声明收集栈：栈非空时处于「只登记不施加」模式。饰品的 {@code declareModifiers} 在这层里运行，
+     * 由 {@link #collectDeclarations} 收集成一份修饰符表交给 Curios 官方通道
+     * （CurioAttributeModifierEvent → getAttributeModifiers），属性面板因此能按 Curios 的规则
+     * 把修饰符映射回佩戴的饰品栈显示来源图标。
+     * <p>
+     * 用栈而不是单个变量，是为了容忍嵌套调用（声明期间又触发了别的饰品计算）。
      */
-    private static final AtomicInteger MODIFIER_VERSION = new AtomicInteger();
+    private static final ThreadLocal<ArrayDeque<Multimap<Holder<Attribute>, AttributeModifier>>> DECLARATION_SINK =
+        ThreadLocal.withInitial(ArrayDeque::new);
 
-    public static int getModifierVersion() {
-        return MODIFIER_VERSION.get();
+    /** 当前线程是否处于声明收集模式。声明代码里禁止做收集以外的副作用。 */
+    public static boolean isCollecting() {
+        return !DECLARATION_SINK.get().isEmpty();
     }
 
-    private static void bumpModifierVersion() {
-        MODIFIER_VERSION.incrementAndGet();
-    }
-
-    /** 登记某个修饰符的来源饰品。 */
-    public static void registerSourceItem(ResourceLocation id, Item item) {
-        if (id != null && item != null) {
-            MODIFIER_SOURCES.putIfAbsent(id, item);
+    public static Multimap<Holder<Attribute>, AttributeModifier> collectDeclarations(Runnable declarations) {
+        ArrayDeque<Multimap<Holder<Attribute>, AttributeModifier>> stack = DECLARATION_SINK.get();
+        Multimap<Holder<Attribute>, AttributeModifier> sink = LinkedHashMultimap.create();
+        stack.push(sink);
+        try {
+            declarations.run();
+        } finally {
+            stack.pop();
+            if (stack.isEmpty()) {
+                DECLARATION_SINK.remove();
+            }
         }
+        return sink;
     }
 
-    /** 按修饰符 ID 查询来源饰品。 */
-    public static Item getSourceItem(ResourceLocation id) {
-        return id == null ? null : MODIFIER_SOURCES.get(id);
+    /** 收集模式下登记一个修饰符并返回 true；非收集模式返回 false，交给调用方真正写入实体。 */
+    private static boolean collect(Holder<Attribute> attribute, AttributeModifier modifier) {
+        ArrayDeque<Multimap<Holder<Attribute>, AttributeModifier>> stack = DECLARATION_SINK.get();
+        if (stack.isEmpty() || attribute == null) {
+            return false;
+        }
+        stack.peek().put(attribute, modifier);
+        return true;
     }
 
 
@@ -169,6 +180,13 @@ public class AttributeHelper {
     }
 
     public static void applyModifier(LivingEntity entity, Holder<Attribute> attribute, double value, ResourceLocation id, AttributeModifier.Operation operation) {
+        // 收集模式：只登记声明，是否真正写到实体由调用方统一交给 Curios 官方通道。
+        // 这里不做幂等短路——面板/工具提示依赖完整声明，缺项会直接丢来源图标。
+        AttributeModifier modifier = new AttributeModifier(id, value, operation);
+        if (collect(attribute, modifier)) {
+            return;
+        }
+
         AttributeInstance instance = getInstance(entity, attribute);
 
         if (instance != null) {
@@ -178,19 +196,19 @@ public class AttributeHelper {
                 return;
             }
             instance.removeModifier(id);
-
-            AttributeModifier modifier = new AttributeModifier(id, value, operation);
             instance.addPermanentModifier(modifier);
-            bumpModifierVersion();
         }
     }
 
     public static void removeModifier(LivingEntity entity, Holder<Attribute> attribute, ResourceLocation id) {
+        // 收集模式下「移除」没有意义：整份声明会被整体替换。
+        if (isCollecting()) {
+            return;
+        }
         AttributeInstance instance = getInstance(entity, attribute);
 
         if (instance != null && instance.getModifier(id) != null) {
             instance.removeModifier(id);
-            bumpModifierVersion();
         }
     }
 
@@ -207,6 +225,10 @@ public class AttributeHelper {
             old = oldModifier.amount();
         }
         double newValue = old + delta;
+        // 收集模式：产出「叠加后的目标值」，与真正施加时的口径一致（施加前旧值就是当前实例值）。
+        if (newValue != 0.0 && collect(attribute, new AttributeModifier(id, newValue, operation))) {
+            return;
+        }
         // 幂等：叠加量为 0（结果未变）时无需重建修饰符。
         if (oldModifier != null && old == newValue) {
             return;
@@ -214,9 +236,6 @@ public class AttributeHelper {
         instance.removeModifier(id);
         if (newValue != 0.0) {
             instance.addPermanentModifier(new AttributeModifier(id, newValue, operation));
-        }
-        if (oldModifier != null || newValue != 0.0) {
-            bumpModifierVersion();
         }
     }
 
@@ -236,13 +255,19 @@ public class AttributeHelper {
     private static void applyAllAttributesModifier(LivingEntity entity, ResourceLocation id,
                                                    double value, AttributeModifier.Operation operation,
                                                    Collection<? extends String> blacklist) {
-        boolean changed = false;
         for (Holder.Reference<Attribute> holder : BuiltInRegistries.ATTRIBUTE.holders().toList()) {
             if (blacklist != null && !blacklist.isEmpty()) {
                 ResourceLocation key = holder.key().location();
                 if (blacklist.contains(key.toString())) {
                     continue;
                 }
+            }
+            // 收集模式：全属性声明不依赖实体已有实例，逐个登记后由 Curios 统一施加。
+            if (isCollecting()) {
+                if (value != 0.0) {
+                    collect(holder, new AttributeModifier(id, value, operation));
+                }
+                continue;
             }
             AttributeInstance instance = entity.getAttributes().getInstance(holder);
             if (instance == null) {
@@ -253,7 +278,6 @@ public class AttributeHelper {
                 // 清零：仅在修饰符确实存在时才移除，避免无谓的属性重算。
                 if (existing != null) {
                     instance.removeModifier(id);
-                    changed = true;
                 }
                 continue;
             }
@@ -265,10 +289,6 @@ public class AttributeHelper {
                 instance.removeModifier(id);
             }
             instance.addTransientModifier(new AttributeModifier(id, value, operation));
-            changed = true;
-        }
-        if (changed) {
-            bumpModifierVersion();
         }
     }
 }

@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-
 public final class TccPlayerDataCapability {
 
     private static final String TAG_ACHIEVEMENT_PROGRESS = "achievementProgress";

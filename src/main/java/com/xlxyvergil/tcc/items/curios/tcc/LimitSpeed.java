@@ -18,8 +18,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 
-
-
 import net.minecraft.resources.ResourceLocation;
 import com.xlxyvergil.tcc.TaczCurios;
 public class LimitSpeed extends TccCurioItem {
@@ -31,9 +29,7 @@ public class LimitSpeed extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(AMMO_SPEED_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double ammoSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.AMMO_SPEED, ammoSpeedBoost, AMMO_SPEED_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
@@ -41,16 +37,14 @@ public class LimitSpeed extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.AMMO_SPEED, AMMO_SPEED_ID);
     }
-
 
     @Override
     public java.util.List<String> getWeaponTypeRestriction() {
         return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
-
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {

@@ -167,7 +167,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-
 public class TccItems {
 
     public static final Rarity RIFT = TccRarity.RIFT_PROXY.getValue();

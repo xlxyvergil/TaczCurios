@@ -21,12 +21,12 @@ public class GildedMarksman extends TccCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         // 无基础属性，伤害乘算在其他处理器中处理
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
     }
 
     @Override
@@ -46,6 +46,5 @@ public class GildedMarksman extends TccCurioItem {
         tooltip.add(Component.literal(""));
         
     }
-
 
 }

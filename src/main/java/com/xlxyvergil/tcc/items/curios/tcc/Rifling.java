@@ -35,10 +35,8 @@ public class Rifling extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         for (ResourceLocation uuid : DAMAGE_IDS) {
-            AttributeHelper.registerSourceItem(uuid, stack.getItem());
         }
         if (matchesRestriction(livingEntity)) {
             double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.riflingDamageBoost.get());
@@ -52,7 +50,7 @@ public class Rifling extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, DAMAGE_IDS[0]);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, DAMAGE_IDS[1]);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SMG, DAMAGE_IDS[2]);

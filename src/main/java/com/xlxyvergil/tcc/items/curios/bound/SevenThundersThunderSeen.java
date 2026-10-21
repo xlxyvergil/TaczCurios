@@ -38,11 +38,7 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(HEADSHOT_MULTIPLIER_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_DAMAGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER,
                 TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get(), HEADSHOT_MULTIPLIER_ID, AttributeModifier.Operation.ADD_VALUE);
@@ -51,12 +47,12 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
                 TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritDamage.get(), CRIT_DAMAGE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, HEADSHOT_MULTIPLIER_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_ID);
@@ -110,7 +106,6 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         Level level = context.level();
         super.appendHoverText(stack, context, tooltip, flag);
-
         tooltip.add(Component.literal(""));
 
         String sttsHeadshotStr = String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenHeadshotMultiplier.get() * 100);
@@ -124,17 +119,40 @@ public class SevenThundersThunderSeen extends BoundCurioItem {
                 .withStyle(ChatFormatting.WHITE));
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersThunderSeenCritDamage.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.value().getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.special",
+                                                                tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.special.line1",
                 sttsHeadshotStr, sttsCritChanceStr, sttsCritDamageStr, sttsProcStr, sttsExtraHpStr)
             .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("tcc.tooltip.raven_splash",
+                                tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.special.line2",
+                sttsHeadshotStr, sttsCritChanceStr, sttsCritDamageStr, sttsProcStr, sttsExtraHpStr)
+            .withStyle(ChatFormatting.WHITE));
+                                tooltip.add(Component.translatable("item.tcc.seven_thunders_thunder_seen.special.line3",
+                sttsHeadshotStr, sttsCritChanceStr, sttsCritDamageStr, sttsProcStr, sttsExtraHpStr)
+            .withStyle(ChatFormatting.WHITE));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_splash.line1",
                 String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get()))
             .withStyle(ChatFormatting.WHITE));
-        tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp",
+                tooltip.add(Component.translatable("tcc.tooltip.raven_splash.line2",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get()))
+            .withStyle(ChatFormatting.WHITE));
+                tooltip.add(Component.translatable("tcc.tooltip.raven_splash.line3",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenSplashRadius.get()))
+            .withStyle(ChatFormatting.WHITE));
+                                                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line1",
                 String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimTimeToMax.get()),
                 String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimMaxAmp.get() * 100))
             .withStyle(ChatFormatting.WHITE));
-
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line2",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.WHITE));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line3",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.WHITE));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line4",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersThunderSeenAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.WHITE));
         tooltip.add(Component.literal(""));
 
         appendBoundPlayer(stack, tooltip);

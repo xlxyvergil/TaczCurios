@@ -32,7 +32,6 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
 
-
 @EventBusSubscriber(modid = "tcc")
 public class TccAttributeEvents {
 

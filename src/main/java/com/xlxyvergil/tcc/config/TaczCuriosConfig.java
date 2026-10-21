@@ -326,7 +326,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.BooleanValue kikakuIchijinDestroyNormalBlocks;
         
 
-
         
 
         
@@ -408,7 +407,6 @@ public class TaczCuriosConfig {
 
         
 
-
         
         public final ModConfigSpec.DoubleValue aoMieAdaptFactor;
         public final ModConfigSpec.IntValue aoMieDecaySeconds;
@@ -463,7 +461,6 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.IntValue zhenWoAbsorptionInterval;
 
         
-
 
         
 
@@ -983,7 +980,6 @@ public class TaczCuriosConfig {
                     .defineInRange("explosionEnabled", 2.0, -1, 100);
             builder.pop();
             
-
 
             
             builder.comment("关键延迟饰品配置").push("critical_delay");
@@ -1795,7 +1791,6 @@ public class TaczCuriosConfig {
 
             
 
-
             
             builder.comment("鏖灭饰品配置").push("aomie");
             aoMieAdaptFactor = builder
@@ -1938,7 +1933,6 @@ public class TaczCuriosConfig {
             builder.pop();
 
             
-
 
             
 

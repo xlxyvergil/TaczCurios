@@ -18,6 +18,5 @@ public class SharpBulletEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_bullet_effect_7de1fac5_8194"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_bullet_effect_7de1fac5_8194"), TccItems.SHARP_BULLET);
     }
 }

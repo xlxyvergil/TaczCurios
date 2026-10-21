@@ -18,6 +18,5 @@ public class LaserScopeEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "laser_scope_effect_b9fb5573_6169"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "laser_scope_effect_b9fb5573_6169"), TccItems.LASER_SCOPE);
     }
 }

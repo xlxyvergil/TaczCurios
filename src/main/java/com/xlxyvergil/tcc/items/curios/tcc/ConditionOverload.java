@@ -21,12 +21,12 @@ public class ConditionOverload extends TccCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         // 无基础属性，伤害乘算在LivingIncomingDamageEvent中处理
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         // 无基础属性
     }
 

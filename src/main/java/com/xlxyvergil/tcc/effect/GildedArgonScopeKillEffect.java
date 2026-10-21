@@ -18,7 +18,6 @@ public class GildedArgonScopeKillEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_argon_scope_kill_effect_3da691c2_d1ee"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_argon_scope_kill_effect_3da691c2_d1ee"), TccItems.GILDED_ARGON_SCOPE);
     }
 
 }

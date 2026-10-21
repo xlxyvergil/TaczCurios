@@ -23,7 +23,6 @@ import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 import java.util.List;
 
-
 public abstract class BoundCurioItem extends BaseCurioItem implements IBindable {
     
     private static final String[] BOUND_SLOT_IDS = {"tcc_3rd", "tcc_tdk"};
@@ -227,8 +226,8 @@ public abstract class BoundCurioItem extends BaseCurioItem implements IBindable 
         if (tag != null && tag.getBoolean("IsBound")) {
             String boundPlayerName = tag.getString("BoundPlayerName");
             tooltip.add(Component.literal(""));
-            tooltip.add(Component.translatable("tcc.tooltip.bound", boundPlayerName)
-                    .withStyle(ChatFormatting.RED));
+            tooltip.add(Component.translatable("tcc.tooltip.bound.line1").withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("tcc.tooltip.bound.line2", boundPlayerName).withStyle(ChatFormatting.RED));
         }
     }
 

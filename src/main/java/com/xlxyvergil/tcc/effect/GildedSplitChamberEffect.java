@@ -18,7 +18,6 @@ public class GildedSplitChamberEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_split_chamber_effect_0f372759_8a01"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_split_chamber_effect_0f372759_8a01"), TccItems.GILDED_SPLIT_CHAMBER);
     }
 
 }

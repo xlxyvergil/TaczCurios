@@ -9,7 +9,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
 public record PacketSyncPlayTime(long griseo, long huishiZhijuan, long fanxing, long qishiZhijian) implements CustomPacketPayload {
-
     public static final CustomPacketPayload.Type<PacketSyncPlayTime> TYPE =
             new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sync_play_time"));
 

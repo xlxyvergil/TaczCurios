@@ -9,7 +9,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
-
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class ItemCraftedEventHandler {
 

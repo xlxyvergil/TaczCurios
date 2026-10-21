@@ -33,12 +33,7 @@ public class CarefulHeart extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(LAUNCHER_DAMAGE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(EXPLOSION_DAMAGE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(EXPLOSION_RADIUS_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(EXPLOSION_ENABLED_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double launcherDamageBoost = FusionData.from(stack).getActualValue(
                     TaczCuriosConfig.COMMON.carefulHeartLauncherDamageBoost.get());
@@ -56,7 +51,7 @@ public class CarefulHeart extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_LAUNCHER, LAUNCHER_DAMAGE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, EXPLOSION_RADIUS_ID);

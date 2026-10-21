@@ -18,7 +18,6 @@ public class GildedInfernalChamberEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_infernal_chamber_effect_d64182ae_7823"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_infernal_chamber_effect_d64182ae_7823"), TccItems.GILDED_INFERNAL_CHAMBER);
     }
 
 }

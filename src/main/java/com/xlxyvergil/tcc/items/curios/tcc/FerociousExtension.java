@@ -28,9 +28,7 @@ public class FerociousExtension extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(EFFECTIVE_RANGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double rangeBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.ferociousExtensionRangeBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EFFECTIVE_RANGE, rangeBoost, EFFECTIVE_RANGE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
@@ -38,7 +36,7 @@ public class FerociousExtension extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EFFECTIVE_RANGE, EFFECTIVE_RANGE_ID);
     }
     

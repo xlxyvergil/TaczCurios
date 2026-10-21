@@ -18,6 +18,5 @@ public class FragmentShotEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fragment_shot_effect_05ef1a76_52fd"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "fragment_shot_effect_05ef1a76_52fd"), TccItems.FRAGMENT_SHOT);
     }
 }

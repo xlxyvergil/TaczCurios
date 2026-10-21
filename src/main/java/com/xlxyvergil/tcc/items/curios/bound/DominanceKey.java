@@ -40,9 +40,7 @@ public class DominanceKey extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ATTACK_DAMAGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         double resistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE);
         double attackBonus = resistance * 0.5;
         AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
@@ -50,7 +48,7 @@ public class DominanceKey extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_ID);
     }
 
@@ -118,8 +116,6 @@ public class DominanceKey extends BoundCurioItem {
         super.appendHoverText(stack, context, tooltip, flag);
 
         tooltip.add(Component.literal(""));
-
-
 
         double attackFromResistance = 0;
         double imaginaryDamage = 0;

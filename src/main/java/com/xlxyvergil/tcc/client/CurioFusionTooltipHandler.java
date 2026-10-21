@@ -12,13 +12,18 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +35,13 @@ public class CurioFusionTooltipHandler {
 
     private static final TagKey<Item> TCC_SLOT = TagKey.create(Registries.ITEM,
             ResourceLocation.fromNamespaceAndPath("curios", "tcc_slot"));
+
+    /** 本模组饰品 tooltip 的宽度上限（像素）。
+     * 取 160：与 MoonsTeams 的排版对齐（其语言行宽度 p50=99、p75=144、p80=159、
+     * p90=195，160 能让约 80% 的效果行不折行，再宽就比它胖了）。 */
+    static final int MAX_TOOLTIP_WIDTH = 160;
+    /** 屏幕底部为其它模组的固定 UI（如 JEI 右下角面板）预留的高度，避免 tooltip 伸进去被盖住。 */
+    private static final int RESERVED_BOTTOM = 64;
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
@@ -65,23 +77,28 @@ public class CurioFusionTooltipHandler {
 
         List<String> restriction = curioItem.getWeaponTypeRestriction();
         if (restriction != null && !restriction.isEmpty()) {
-            Component restrictionText = buildRestrictionComponent(restriction);
-            if (restrictionText != null) {
-                tooltip.add(insertIdx, restrictionText);
+            for (Component line : buildRestrictionComponents(restriction)) {
+                tooltip.add(insertIdx++, line);
             }
         }
     }
 
-    @Nullable
-    private static Component buildRestrictionComponent(List<String> restriction) {
+    /** 「限定：xxx」统一两行：前缀一行、内容一行。 */
+    private static List<Component> buildRestrictionComponents(List<String> restriction) {
         if (restriction.size() == 1 && "melee".equals(restriction.get(0))) {
-            return Component.translatable("tcc.tooltip.restricted_melee");
+            return List.of(
+                Component.translatable("tcc.tooltip.restricted_melee.line1"),
+                Component.translatable("tcc.tooltip.restricted_melee.line2"));
         }
         if (restriction.equals(GunTypeChecker.ALL_GUN_TYPES_LIST)) {
-            return Component.translatable("tcc.tooltip.restricted_all_guns");
+            return List.of(
+                Component.translatable("tcc.tooltip.restricted_all_guns.line1"),
+                Component.translatable("tcc.tooltip.restricted_all_guns.line2"));
         }
         String gunTypes = GunTypeChecker.formatGunTypes(restriction);
-        return Component.translatable("tcc.tooltip.restricted_gun_types", gunTypes);
+        return List.of(
+            Component.translatable("tcc.tooltip.restricted_gun_types.line1"),
+            Component.translatable("tcc.tooltip.restricted_gun_types.line2", gunTypes));
     }
 
     @Nullable
@@ -92,5 +109,44 @@ public class CurioFusionTooltipHandler {
         if (rarity == Rarity.EPIC)      return "tcc.tooltip.rarity.epic";
         if (rarity == TccItems.RIFT)    return "tcc.tooltip.rarity.rift";
         return null;
+    }
+
+    /**
+     * 限宽：本模组饰品的 tooltip 宽度压到 {@link #MAX_TOOLTIP_WIDTH} 以内。
+     * 原版按「屏幕宽度的一半」换行，宽屏下会长到伸进屏幕底部/右侧的其它 mod UI。
+     */
+    @SubscribeEvent
+    public static void onGatherComponents(RenderTooltipEvent.GatherComponents event) {
+        if (!(event.getItemStack().getItem() instanceof BaseCurioItem)) {
+            return;
+        }
+        int max = event.getMaxWidth();
+        if (max < 0 || max > MAX_TOOLTIP_WIDTH) {
+            event.setMaxWidth(MAX_TOOLTIP_WIDTH);
+        }
+    }
+
+    /**
+     * 夹紧：把 tooltip 往上夹，使其底边不进入屏幕底部的预留区域（JEI 等固定 UI 所在处）。
+     * <p>
+     * 原版 {@code DefaultTooltipPositioner} 的最终 y 是「锚点 y - 12」，只在超出屏幕时才夹到
+     * {@code screenHeight - height - 6}，因此这里提前把锚点降低，让最终位置落在预留区之上。
+     */
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void onTooltipPre(RenderTooltipEvent.Pre event) {
+        if (!(event.getItemStack().getItem() instanceof BaseCurioItem)) {
+            return;
+        }
+        Font font = event.getFont();
+        int height = 8; // 上下内边距
+        for (ClientTooltipComponent component : event.getComponents()) {
+            height += component.getHeight();
+        }
+        int screenHeight = event.getScreenHeight();
+        int desiredY = Math.max(4, screenHeight - RESERVED_BOTTOM - height);
+        int maxAnchorY = desiredY + 12;
+        if (event.getY() > maxAnchorY) {
+            event.setY(maxAnchorY);
+        }
     }
 }

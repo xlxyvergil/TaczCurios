@@ -30,20 +30,18 @@ public class Imer extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ATTACK_DAMAGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             double attackBonus = TaczCuriosConfig.COMMON.imerAttackDamageBonus.get();
             AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
                 attackBonus, ATTACK_DAMAGE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_ID);
     }
 
@@ -64,8 +62,6 @@ public class Imer extends BoundCurioItem {
         super.appendHoverText(stack, context, tooltip, flag);
 
         tooltip.add(Component.literal(""));
-
-
 
         double bonusPercent = TaczCuriosConfig.COMMON.imerAttackDamageBonus.get() * 100;
         tooltip.add(formatModifierTooltip(bonusPercent, "%.0f%%", Component.translatable(AttributeHelper.ATTACK_DAMAGE.value().getDescriptionId()))

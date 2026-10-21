@@ -18,6 +18,5 @@ public class HydraulicCrosshairEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "hydraulic_crosshair_effect_f32f9e0d_b349"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "hydraulic_crosshair_effect_f32f9e0d_b349"), TccItems.HYDRAULIC_CROSSHAIR);
     }
 }

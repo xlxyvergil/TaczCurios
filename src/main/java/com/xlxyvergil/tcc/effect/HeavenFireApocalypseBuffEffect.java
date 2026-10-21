@@ -21,6 +21,5 @@ public class HeavenFireApocalypseBuffEffect extends MobEffect {
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL
         );
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "heaven_fire_apocalypse_buff_effect_ba764054_012d"), TccItems.HEAVEN_FIRE_APOCALYPSE);
     }
 }

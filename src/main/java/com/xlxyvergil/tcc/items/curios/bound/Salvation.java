@@ -63,15 +63,21 @@ public class Salvation extends BoundCurioItem implements IDamageMitigation {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(KNOCKBACK_RESISTANCE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         // 虚数抗性不受武器类型限制，装备即生效。
         double imaginaryResistance = getSalvationResistance(livingEntity);
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             imaginaryResistance, IMAGINARY_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
 
+        if (matchesRestriction(livingEntity)) {
+            AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
+                1.0, KNOCKBACK_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
+        }
+    }
+
+    /** 抗性提升不是属性修饰符，作为副作用放在这里：收集模式（面板/工具提示求声明）不会重复下发。 */
+    @Override
+    protected void applySideEffects(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             // 不再移除旧抗性（避免误删外部更高等级来源），直接施加自身等级的抗性提升
             livingEntity.addEffect(new MobEffectInstance(
@@ -79,14 +85,11 @@ public class Salvation extends BoundCurioItem implements IDamageMitigation {
                 2 * 60 * 20,
                 2,
                 false, false, true));
-            
-            AttributeHelper.applyModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 
-                1.0, KNOCKBACK_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
         }
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, 
             IMAGINARY_RESISTANCE_ID);
         AttributeHelper.removeModifier(livingEntity, Attributes.KNOCKBACK_RESISTANCE, 

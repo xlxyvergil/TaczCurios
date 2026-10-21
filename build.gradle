@@ -141,11 +141,9 @@ dependencies {
     implementation "curse.maven:taczattributeadd-1393583:${taa_cf}"
     // TACZ 1.21.1（ChloePrime 发行版，modId 仍为 tacz）
     implementation "curse.maven:tacz-1-21-1-1353462:${tacz_curse_version}"
-    // Apothic Attributes（modid: apothic_attributes）是 OPTIONAL，仅编译期使用：
-    // 唯一消费点是客户端 ApothicCurioModifierSource（注册属性面板来源类型），
-    // 运行时由 ModList.isLoaded("apothic_attributes") 守卫。Placebo 只是它的运行时前置，
-    // 本工程不再需要。
-    compileOnly "curse.maven:apothic-attributes-898963:${attributeslib_curse_version}"
+    // Apothic Attributes 已从构建依赖中移除：属性声明改走 Curios 官方事件
+    // （CurioAttributeModifierEvent → getAttributeModifiers），属性面板的来源图标由
+    // Apothic Attributes 自带的 CuriosCompat 处理，本模组不再引用其任何类。
     // Fused Critical（modid: fusedcritical）：硬依赖，编译期+运行期。
     // 提供 fusedcritical:crit_chance / crit_damage，并接管暴击计算。
     // 注意：9271023 那个构建的 META-INF/neoforge.mods.toml 含非法 UTF-8 字节，FML 判

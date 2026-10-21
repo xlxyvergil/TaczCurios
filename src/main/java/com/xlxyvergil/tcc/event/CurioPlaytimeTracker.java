@@ -17,7 +17,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.minecraft.core.registries.BuiltInRegistries;
 
-
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public final class CurioPlaytimeTracker {
 

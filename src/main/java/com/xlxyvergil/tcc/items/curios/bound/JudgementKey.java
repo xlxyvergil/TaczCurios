@@ -40,22 +40,19 @@ public class JudgementKey extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_DAMAGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_CHANCE,
                 TaczCuriosConfig.COMMON.judgementKeyCritChance.get(), CRIT_CHANCE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
                 TaczCuriosConfig.COMMON.judgementKeyCritDamage.get(), CRIT_DAMAGE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_ID);
     }
@@ -128,28 +125,47 @@ public class JudgementKey extends BoundCurioItem {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         Level level = context.level();
         super.appendHoverText(stack, context, tooltip, flag);
-
         tooltip.add(Component.literal(""));
 
         double critChance = TaczCuriosConfig.COMMON.judgementKeyCritChance.get() * 100;
         double critDamage = TaczCuriosConfig.COMMON.judgementKeyCritDamage.get() * 100;
-
         tooltip.add(formatModifierTooltip(critChance, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.value().getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(critDamage, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.value().getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
             .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("item.tcc.judgement_key.special")
+                                                                tooltip.add(Component.translatable("item.tcc.judgement_key.special.line1")
             .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("tcc.tooltip.raven_splash",
+                                tooltip.add(Component.translatable("item.tcc.judgement_key.special.line2")
+            .withStyle(ChatFormatting.RED));
+                                tooltip.add(Component.translatable("item.tcc.judgement_key.special.line3")
+            .withStyle(ChatFormatting.RED));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_splash.line1",
                 String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeySplashRadius.get()))
             .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp",
+                tooltip.add(Component.translatable("tcc.tooltip.raven_splash.line2",
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeySplashRadius.get()))
+            .withStyle(ChatFormatting.RED));
+                tooltip.add(Component.translatable("tcc.tooltip.raven_splash.line3",
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeySplashRadius.get()))
+            .withStyle(ChatFormatting.RED));
+                                                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line1",
                 String.format("%.1f", TaczCuriosConfig.COMMON.judgementKeyAimTimeToMax.get()),
                 String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeyAimMaxAmp.get() * 100))
             .withStyle(ChatFormatting.RED));
-
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line2",
+                String.format("%.1f", TaczCuriosConfig.COMMON.judgementKeyAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeyAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.RED));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line3",
+                String.format("%.1f", TaczCuriosConfig.COMMON.judgementKeyAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeyAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.RED));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line4",
+                String.format("%.1f", TaczCuriosConfig.COMMON.judgementKeyAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.judgementKeyAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.RED));
         tooltip.add(Component.literal(""));
 
         appendAlwaysImaginaryCollapse(tooltip);

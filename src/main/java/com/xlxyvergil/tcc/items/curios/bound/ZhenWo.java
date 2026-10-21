@@ -95,11 +95,7 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(ALL_ATTRIBUTES_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(KNOCKBACK_RESISTANCE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
                 TaczCuriosConfig.COMMON.zhenWoImaginaryResistance.get(), IMAGINARY_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
@@ -109,12 +105,12 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
                 1.0, KNOCKBACK_RESISTANCE_ID,
                 AttributeModifier.Operation.ADD_VALUE);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
             IMAGINARY_RESISTANCE_ID);
         AttributeHelper.applyAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_ID, 0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
@@ -476,13 +472,24 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger",
+                tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger.line1",
                 (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))
             .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration",
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger.line2",
+                (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))
+            .withStyle(ChatFormatting.RED));;
+                tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration.line1",
                 TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),
                 TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().intValue())
             .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration.line2",
+                TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),
+                TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().intValue())
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration.line3",
+                TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),
+                TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().intValue())
+            .withStyle(ChatFormatting.RED));;
         double imaginaryDamage = 0;
         if (level != null && level.isClientSide()) {
             LivingEntity wearer = TaczCuriosClientTooltip.resolveWearer(stack);

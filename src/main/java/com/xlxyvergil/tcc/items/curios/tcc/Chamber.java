@@ -33,9 +33,7 @@ public class Chamber extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(DAMAGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         boolean shouldApply = matchesRestriction(livingEntity) && GunTypeChecker.isHoldingGunWithFullMagazine(livingEntity);
 
         if (shouldApply) {
@@ -45,11 +43,16 @@ public class Chamber extends TccCurioItem {
             AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, DAMAGE_ID);
         }
 
+    }
+
+    /** TACZ 缓存刷新是副作用，不能出现在声明里。 */
+    @Override
+    protected void applySideEffects(LivingEntity livingEntity, ItemStack stack) {
         updateTaczCache(livingEntity);
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, DAMAGE_ID);
         updateTaczCache(livingEntity);
     }
@@ -60,7 +63,6 @@ public class Chamber extends TccCurioItem {
             AttachmentPropertyManager.postChangeEvent(livingEntity, mainHandItem);
         }
     }
-
 
     @Override
     public java.util.List<String> getWeaponTypeRestriction() {

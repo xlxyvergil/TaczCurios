@@ -28,10 +28,7 @@ public class RippingPrime extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ROUNDS_PER_MINUTE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(PIERCE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double fireRateBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimeFireRateBoost.get());
             double penetrationBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.rippingPrimePenetrationBoost.get());
@@ -42,7 +39,7 @@ public class RippingPrime extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, ROUNDS_PER_MINUTE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.PIERCE, PIERCE_ID);
     }

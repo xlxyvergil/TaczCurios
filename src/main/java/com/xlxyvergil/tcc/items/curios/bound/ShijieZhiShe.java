@@ -78,10 +78,7 @@ public class ShijieZhiShe extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ALL_ATTRIBUTES_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
 
         // 虚数抗性不受武器类型限制，装备即生效（与渡鸦/小岛一致：基础值 1 + 共享进度）。
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
@@ -102,7 +99,7 @@ public class ShijieZhiShe extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_ID, 0);
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
                 IMAGINARY_RESISTANCE_ID);

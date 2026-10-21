@@ -18,7 +18,6 @@ public class GildedHydraulicCrosshairKillEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_hydraulic_crosshair_kill_effect_410756c5_75a2"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "gilded_hydraulic_crosshair_kill_effect_410756c5_75a2"), TccItems.GILDED_HYDRAULIC_CROSSHAIR);
     }
 
 }

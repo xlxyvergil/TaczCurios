@@ -55,11 +55,7 @@ public class Hua extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ARMOR_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(TOUGHNESS_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof Hua);
         CompoundTag tag = ItemNbtHelper.getTag(equipped);
@@ -80,7 +76,7 @@ public class Hua extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE, IMAGINARY_RESISTANCE_ID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR, ARMOR_ID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR_TOUGHNESS, TOUGHNESS_ID);

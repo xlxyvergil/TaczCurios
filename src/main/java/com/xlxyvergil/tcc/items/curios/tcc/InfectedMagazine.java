@@ -32,10 +32,7 @@ public class InfectedMagazine extends TccCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(MAGAZINE_CAPACITY_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(RELOAD_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double magazineCapacityBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineCapacityBoost.get());
             double reloadDebuff = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.infectedMagazineReloadSpeedReduction.get());
@@ -46,11 +43,10 @@ public class InfectedMagazine extends TccCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.MAGAZINE_CAPACITY, MAGAZINE_CAPACITY_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.RELOAD_TIME, RELOAD_ID);
     }
-
 
     @Override
     public java.util.List<String> getWeaponTypeRestriction() {

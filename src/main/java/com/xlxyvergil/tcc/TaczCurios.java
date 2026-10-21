@@ -18,7 +18,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.common.Mod;
@@ -141,10 +140,6 @@ public class TaczCurios
             // 高亮技能的按键注册与输入处理
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillKeys");
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillInput");
-            // Apothic Attributes（apothic_attributes）是软依赖：装了才加载属性面板来源集成
-            if (ModList.get().isLoaded("apothic_attributes")) {
-                Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");
-            }
         }
     }
 

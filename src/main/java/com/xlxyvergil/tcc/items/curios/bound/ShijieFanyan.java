@@ -44,11 +44,7 @@ public class ShijieFanyan extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_DAMAGE_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(LUCK_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
                 TaczCuriosConfig.COMMON.shijieFanyanLuck.get(), LUCK_ID, AttributeModifier.Operation.ADD_VALUE);
@@ -62,12 +58,12 @@ public class ShijieFanyan extends BoundCurioItem {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE,
                 critDamage, CRIT_DAMAGE_ID, AttributeModifier.Operation.ADD_VALUE);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_ID);

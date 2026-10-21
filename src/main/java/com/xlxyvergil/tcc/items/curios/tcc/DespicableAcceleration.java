@@ -47,12 +47,8 @@ public class DespicableAcceleration extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(FIRING_SPEED_ID, stack.getItem());
-        AttributeHelper.registerSourceItem(GENERAL_DAMAGE_ID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         for (ResourceLocation uuid : DAMAGE_IDS.values()) {
-            AttributeHelper.registerSourceItem(uuid, stack.getItem());
         }
         if (matchesRestriction(livingEntity)) {
             double firingSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.despicableAccelerationFireRateBoost.get());
@@ -71,7 +67,7 @@ public class DespicableAcceleration extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ROUNDS_PER_MINUTE, FIRING_SPEED_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GENERAL_DAMAGE_ID);
         

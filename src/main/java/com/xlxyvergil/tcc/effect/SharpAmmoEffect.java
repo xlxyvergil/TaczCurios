@@ -18,6 +18,5 @@ public class SharpAmmoEffect extends MobEffect {
             ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_ammo_effect_7ebabc7f_3673"),
             AttributeModifier.Operation.ADD_MULTIPLIED_BASE,
             amplifier -> (amplifier + 1) * VALUE_PER_LEVEL);
-        AttributeHelper.registerSourceItem(ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "sharp_ammo_effect_7ebabc7f_3673"), TccItems.SHARP_AMMO);
     }
 }
