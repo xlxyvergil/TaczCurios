@@ -1,8 +1,10 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -12,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -31,6 +34,7 @@ public class Wuxian extends BoundCurioItem {
     public static final String KILL_KEY_PREFIX = "tcc_kill_count_";
 
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("0a604a5e-227a-44fb-ad3f-2389ef36de85");
+    private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("5f8b3c2d-9a1e-4d76-b2c4-7e1f6a3d8c05");
 
     private static double perTypeBonus() {
         return TaczCuriosConfig.COMMON.wuxianPerTypeBonus.get();
@@ -73,15 +77,26 @@ public class Wuxian extends BoundCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
         AttributeHelper.registerSourceItem(ALL_ATTRIBUTES_UUID, stack.getItem());
+        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
+
+        // 虚数抗性不受武器类型限制，装备即生效（与渡鸦/梅比乌斯/噬界之蛇一致：基础值 1 + 共享进度）。
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof Wuxian);
+        CompoundTag equippedTag = (equipped.isEmpty() ? stack : equipped).getTag();
+        double totalResistance = ImaginaryResistanceHelper.calculateTotalResistance(1, equippedTag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                totalResistance, IMAGINARY_RESISTANCE_UUID, "tcc.wuxian.imaginary_resistance",
+                AttributeModifier.Operation.ADDITION);
+
         if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                    s -> s.getItem() instanceof Wuxian);
             int types = getKilledTypeCount(equipped.isEmpty() ? stack : equipped);
             double bonus = types * perTypeBonus();
             AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
                     "tcc.infinite.all_attributes", bonus);
         } else {
-            removeEffects(livingEntity);
+            // 只清全属性加成，虚数抗性继续生效
+            AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
+                    "tcc.infinite.all_attributes", 0);
         }
     }
 
@@ -89,6 +104,8 @@ public class Wuxian extends BoundCurioItem {
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_UUID,
                 "tcc.infinite.all_attributes", 0);
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
+                IMAGINARY_RESISTANCE_UUID);
     }
 
     @Override
