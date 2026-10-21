@@ -64,6 +64,13 @@ public final class GunKillEventHandler {
         }
         ResourceLocation gunId = event.getGunId();
 
+        // 击杀末影龙时先记录事件本身是否到达：用于区分「TACZ 没发击杀事件」和「发了但被过滤掉」
+        if (killed.getType() == EntityType.ENDER_DRAGON) {
+            LOGGER.info("[tcc][achievement] EntityKillByGunEvent 到达：attacker={} killed={} gun={} headshot={}",
+                    attacker.getName().getString(), killed.getType(),
+                    gunId, event.isHeadShot());
+        }
+
         // 多弹头武器（霰弹/多弹头狙击）会在同一次击杀中连续触发多次 EntityKillByGunEvent，
         // 这里按被杀实体做短窗口去重，保证一次击杀只计一次。
         if (GUN_KILL_DEDUPE.isDuplicate(killed.getUUID(), sp.level().getGameTime())) {
