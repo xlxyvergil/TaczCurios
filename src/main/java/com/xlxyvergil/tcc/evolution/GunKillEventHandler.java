@@ -2,16 +2,13 @@ package com.xlxyvergil.tcc.evolution;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
-import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.KillEventDedupe;
 import com.tacz.guns.api.event.common.EntityKillByGunEvent;
-import com.tacz.guns.entity.EntityKineticBullet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,16 +21,10 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.function.Predicate;
 
-import javax.annotation.Nullable;
-
 /**
  * gun_kill 触发器的成就/属性规则处理器。
  * 直接监听 TACZ 的 EntityKillByGunEvent（枪械击杀事件）：致死命中时 TACZ 必定发出该事件，
  * 且事件自带 attacker / killedEntity / gunId / headshot，无需依赖 damage source 或 tag 判定。
- * <p>
- * 例外：原版末影龙在非停驻阶段被打到 0 血时会被 {@code setHealth(1.0F)} 回血并切到 DYING 阶段，
- * TACZ 结算后判断 {@code isDeadOrDying()} 为 false，因而不会发出击杀事件。
- * 这类目标由 {@link LivingDeathEventHandler} 按致死伤害来源补记，统一走 {@link #handleGunKill}。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillEventHandler {
@@ -64,25 +55,6 @@ public final class GunKillEventHandler {
             return;
         }
         handleGunKill(sp, killed, event.getGunId());
-    }
-
-    /**
-     * 从致死伤害来源反推枪械 id，供死亡兜底使用。
-     * <p>
-     * 原版末影龙在非停驻阶段被打到 0 血时，{@code EnderDragon#hurt(DragonPart, …)} 会立刻
-     * {@code setHealth(1.0F)} 并切到 DYING 阶段，TACZ 在伤害结算后判断
-     * {@code isDeadOrDying()} 得到 false，于是只发 {@code EntityHurtByGunEvent.Post}、
-     * 不发 {@code EntityKillByGunEvent} —— gun_kill 类成就永远等不到事件。
-     * 这类目标只能从死亡事件补记，枪械 id 由子弹实体反查。
-     */
-    @Nullable
-    public static ResourceLocation resolveGunIdFromDamage(@Nullable DamageSource source) {
-        if (source == null) return null;
-        // 子弹伤害本身，或三阶神之键把子弹伤害转成的虚数伤害（直接实体仍然是子弹）
-        boolean gunDamage = TccDamageSources.isTaczBulletSource(source)
-                || source.is(TccDamageSources.IMAGINARY_DAMAGE_TAG);
-        if (!gunDamage) return null;
-        return source.getDirectEntity() instanceof EntityKineticBullet bullet ? bullet.getGunId() : null;
     }
 
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {

@@ -56,14 +56,6 @@ public final class LivingDeathEventHandler {
             String killedKey = BuiltInRegistries.ENTITY_TYPE.getKey(killed.getType()).toString();
             handleTrigger(killerPlayer, killed, killedKey, sourceEntity, source,
                     TRIGGER_LIVING_DEATH, false, false);
-
-            // 枪械击杀兜底：末影龙在非停驻阶段被打到 0 血时会被原版 setHealth(1.0F) 回血续命，
-            // TACZ 随后判断 isDeadOrDying()=false，不发 EntityKillByGunEvent，gun_kill 类成就等不到事件。
-            // 这里按致死伤害来源补记一次，与击杀事件共用 handleGunKill 的去重。
-            ResourceLocation gunId = GunKillEventHandler.resolveGunIdFromDamage(source);
-            if (gunId != null) {
-                GunKillEventHandler.handleGunKill(killerPlayer, killed, gunId);
-            }
         }
 
         if (killed instanceof Player victimPlayer) {
