@@ -16,7 +16,6 @@ public class GildedArgonScopeKillEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFFBB44);
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "3da691c2-0f73-48cc-938a-d8c9152ed1ee", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("3da691c2-0f73-48cc-938a-d8c9152ed1ee"), TccItems.GILDED_ARGON_SCOPE);
     }
 
 }

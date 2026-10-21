@@ -18,8 +18,6 @@ import java.util.List;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
-
-
 public class LimitSpeed extends TccCurioItem {
     private static final UUID AMMO_SPEED_UUID = UUID.fromString("ad27e195-8647-4497-8792-9720043e1e95");
     
@@ -30,9 +28,7 @@ public class LimitSpeed extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(AMMO_SPEED_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double ammoSpeedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.limitSpeedBulletSpeedBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.AMMO_SPEED, ammoSpeedBoost, AMMO_SPEED_UUID, AMMO_SPEED_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -40,16 +36,14 @@ public class LimitSpeed extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.AMMO_SPEED, AMMO_SPEED_UUID);
     }
-
 
     @Override
     public java.util.List<String> getWeaponTypeRestriction() {
         return GunTypeChecker.ALL_GUN_TYPES_LIST;
     }
-
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {

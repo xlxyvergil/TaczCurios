@@ -41,10 +41,7 @@ public class QishiZhijian extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(HEAT_MAX_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(HEAT_COOLING_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEAT_MAX,
                 TaczCuriosConfig.COMMON.qishiZhijianHeatMax.get(), HEAT_MAX_UUID,
@@ -59,7 +56,7 @@ public class QishiZhijian extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEAT_MAX, HEAT_MAX_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEAT_COOLING, HEAT_COOLING_UUID);
     }

@@ -66,10 +66,7 @@ public class CuiyaoZhiGe extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(BASE_GUN_DAMAGE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof CuiyaoZhiGe);
         CompoundTag tag = equipped.getTag();
@@ -85,7 +82,7 @@ public class CuiyaoZhiGe extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, BASE_GUN_DAMAGE_UUID);
     }
@@ -157,7 +154,13 @@ public class CuiyaoZhiGe extends BoundCurioItem {
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.cuiyaoZhiGeGunDamageReduction.get() * 100,
                 "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("item.tcc.golden.curio_effect",
+                                                                tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line1",
+                (int) auraRange(), buffAmplifier() + 1)
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line2",
+                (int) auraRange(), buffAmplifier() + 1)
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line3",
                 (int) auraRange(), buffAmplifier() + 1)
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.suffocation_drowning_cramming_immunity")

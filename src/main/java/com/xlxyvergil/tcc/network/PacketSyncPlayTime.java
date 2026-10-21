@@ -7,7 +7,6 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-
 public record PacketSyncPlayTime(long griseo, long huishiZhijuan, long fanxing, long qishiZhijian) {
 
     public void encode(FriendlyByteBuf buf) {

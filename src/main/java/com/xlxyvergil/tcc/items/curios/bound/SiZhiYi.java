@@ -41,11 +41,11 @@ public class SiZhiYi extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
     }
 
     @Override
@@ -96,7 +96,19 @@ public class SiZhiYi extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.infinite.key_effect",
                 String.format("%.0f", removeChance() * 100))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.serpent_splash",
+                                                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line1",
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line2",
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line3",
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line4",
                 String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashRadius.get()),
                 String.format("%.0f", TaczCuriosConfig.COMMON.siZhiYiSplashPercent.get() * 100))
                 .withStyle(ChatFormatting.GOLD));

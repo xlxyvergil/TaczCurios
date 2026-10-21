@@ -17,8 +17,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-
-
 public class BlazeStormPrime extends TccCurioItem {
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID EXPLOSION_RADIUS_UUID = UUID.fromString("248f06a5-5144-47a0-b56a-6d830ade21b9");
@@ -35,11 +33,7 @@ public class BlazeStormPrime extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(EXPLOSION_RADIUS_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(EXPLOSION_DAMAGE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(EXPLOSION_ENABLED_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double explosionRadiusBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionRadiusBoost.get());
             double explosionDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.blazeStormPrimeExplosionDamageBoost.get());
@@ -54,7 +48,7 @@ public class BlazeStormPrime extends TccCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_RADIUS, EXPLOSION_RADIUS_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_ENABLED, EXPLOSION_ENABLED_UUID);

@@ -16,7 +16,6 @@ public class GildedBulletSpreadEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
             "78e5804f-3c3c-4563-a6e9-589d540f52ee", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("78e5804f-3c3c-4563-a6e9-589d540f52ee"), TccItems.GILDED_BULLET_SPREAD);
     }
 
 }

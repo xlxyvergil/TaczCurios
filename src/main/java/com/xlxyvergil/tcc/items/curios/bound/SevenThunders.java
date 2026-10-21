@@ -26,11 +26,7 @@ public class SevenThunders extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(HEADSHOT_MULTIPLIER_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_DAMAGE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER,
                 TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get(), HEADSHOT_MULTIPLIER_UUID,
@@ -42,12 +38,12 @@ public class SevenThunders extends BoundCurioItem {
                 TaczCuriosConfig.COMMON.sevenThundersCritDamage.get(), CRIT_DAMAGE_UUID,
                 "tcc.seven_thunders.crit_damage", AttributeModifier.Operation.MULTIPLY_BASE);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.HEADSHOT_MULTIPLIER, HEADSHOT_MULTIPLIER_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
@@ -66,20 +62,29 @@ public class SevenThunders extends BoundCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-
         tooltip.add(Component.literal(""));
-
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersHeadshotMultiplier.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.HEADSHOT_MULTIPLIER.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritChance.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_CHANCE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.sevenThundersCritDamage.get() * 100, "%.0f%%", Component.translatable(AttributeHelper.CRIT_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-        tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp",
+                                                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line1",
                 String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get()),
                 String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get() * 100))
             .withStyle(ChatFormatting.GOLD));
-
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line2",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line3",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.raven_aim_amp.line4",
+                String.format("%.1f", TaczCuriosConfig.COMMON.sevenThundersAimTimeToMax.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sevenThundersAimMaxAmp.get() * 100))
+            .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.literal(""));
 
         appendBoundPlayer(stack, tooltip);

@@ -1,12 +1,21 @@
 package com.xlxyvergil.tcc.items;
 
 import com.tacz.guns.resource.modifier.AttachmentPropertyManager;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Vanishable;
@@ -16,10 +25,11 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import javax.annotation.Nullable;
 import java.util.*;
-
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishable {
     
@@ -75,7 +85,6 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
         super(properties);
     }
 
-
     
     @Override
     public DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
@@ -97,7 +106,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
-        applyEffects(entity, stack);
+        applyDeclaredEffects(entity, stack);
         
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
     }
@@ -106,7 +115,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         LivingEntity entity = slotContext.entity();
-        removeEffects(entity);
+        removeModifiers(entity);
         
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
     }
@@ -115,6 +124,12 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
         String slotId = slotContext.identifier();
         LivingEntity entity = (LivingEntity) slotContext.entity();
+        if (!isAllowedInSlot(slotId, stack)) {
+            return false;
+        }
+        if (isSameItemAlreadyWorn(entity, slotContext, stack)) {
+            return false;
+        }
         String currentRegName = net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem()).toString();
         Set<String> conflictNames = conflicts().getOrDefault(currentRegName, Collections.emptySet());
 
@@ -151,6 +166,75 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
         return canEquip(slotContext, stack);
     }
 
+    /**
+     * 属性行由各饰品在 {@code appendHoverText} 里手写（统一走 {@code formatModifierTooltip}），
+     * 因此这里把 Curios 官方属性段整段关掉：
+     * <ul>
+     *   <li>官方段只能追加在 tooltip 末尾，位置不可控；</li>
+     *   <li>全属性加成类饰品会把每个属性各展开一行，长达上百行；</li>
+     *   <li>官方段按「佩戴时当前是否生效」求值，没拿枪时属性行会整段消失。</li>
+     * </ul>
+     * 属性面板里的来源图标不受影响（那边用的是 {@code getAttributeModifiers}）。
+     */
+    @Override
+    public List<Component> getAttributesTooltip(List<Component> tooltips, ItemStack stack) {
+        return List.of();
+    }
+
+    /**
+     * 本模组的饰品只认「自己声明过的栏位」，即 data/curios/tags/items/&lt;slot&gt;.json 里登记的物品标签。
+     * <p>
+     * 为什么需要这个额外判断：Curios 的 {@code isStackValid} 里写死了
+     * {@code id.equals("curio") || slots.contains(id) || slots.contains("curio")}，
+     * 也就是**通用「curio」栏位接受任何饰品**（客户端/服务端都不例外）。
+     * 本模组的栏位是分开设计的（Tacz饰品栏 / 逐火之蛾 / 神之键 / 空白之键），
+     * 因此在这里把不属于该饰品的栏位（含通用「curio」）一律拒绝。
+     */
+    protected static boolean isAllowedInSlot(String identifier, ItemStack stack) {
+        if (identifier == null || identifier.equals(CURIO_GENERIC_SLOT)) {
+            return false;
+        }
+        return stack.is(slotTag(identifier));
+    }
+
+    private static TagKey<Item> slotTag(String identifier) {
+        return SLOT_TAGS.computeIfAbsent(identifier,
+            id -> ItemTags.create(new ResourceLocation(CuriosApi.MODID, id)));
+    }
+
+    /** Curios 的通用栏位标识；该栏位按 Curios 设计接受一切饰品，本模组不使用。 */
+    private static final String CURIO_GENERIC_SLOT = "curio";
+
+    /** 栏位 → 物品标签缓存（Curios 同款：curios:&lt;slot&gt;）。 */
+    private static final Map<String, TagKey<Item>> SLOT_TAGS = new ConcurrentHashMap<>();
+
+    /**
+     * 同一件饰品不允许同时占两个槽位。
+     * <p>
+     * 饰品的修饰符 UUID 是按物品固定的（客户端来源图标也按物品匹配），装两件会互相覆盖、
+     * 面板上只剩一个来源图标，因此直接禁止。
+     */
+    private static boolean isSameItemAlreadyWorn(LivingEntity entity, SlotContext slotContext, ItemStack stack) {
+        if (entity == null || stack.isEmpty()) {
+            return false;
+        }
+        return CuriosApi.getCuriosInventory(entity).map(inv -> {
+            for (Map.Entry<String, ICurioStacksHandler> entry : inv.getCurios().entrySet()) {
+                ICurioStacksHandler handler = entry.getValue();
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    if (i == slotContext.index() && entry.getKey().equals(slotContext.identifier())) {
+                        continue;
+                    }
+                    ItemStack worn = handler.getStacks().getStackInSlot(i);
+                    if (!worn.isEmpty() && worn.getItem() == stack.getItem()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }).orElse(false);
+    }
+
     public final void refreshEffects(LivingEntity entity, ItemStack stack) {
         rebuildEffects(entity, stack);
         AttachmentPropertyManager.postChangeEvent(entity, entity.getMainHandItem());
@@ -161,13 +245,91 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
      * 供批量刷新入口统一调用，避免逐个饰品重复触发昂贵的缓存重算。
      */
     public final void rebuildEffects(LivingEntity entity, ItemStack stack) {
-        removeEffects(entity);
-        applyEffects(entity, stack);
+        removeModifiers(entity);
+        applyDeclaredEffects(entity, stack);
     }
 
     /** 仅重算属性修饰符，不清理旧效果、不触发 TACZ 事件。 */
     public final void reapplyEffects(LivingEntity entity, ItemStack stack) {
-        applyEffects(entity, stack);
+        applyDeclaredEffects(entity, stack);
+    }
+
+    /**
+     * 声明该饰品在当前条件下应当施加的属性修饰符（<strong>只计算、不写入实体</strong>）。
+     * <p>
+     * 由 {@link #declareModifiers} 经 {@link AttributeHelper#collectDeclarations} 的收集模式汇总而来。
+     * 同一份数据有两个用途：一是真正施加（见 {@link #applyDeclaredEffects}），
+     * 二是经 {@code CurioAttributeModifierEvent} 交给 Curios 官方通道，
+     * 属性面板与工具提示据此把修饰符映射回佩戴的饰品栈（显示来源图标 / 官方属性行）。
+     */
+    public final Multimap<Attribute, AttributeModifier> declaredEffects(LivingEntity entity, ItemStack stack) {
+        if (entity == null || stack.isEmpty()) {
+            return LinkedHashMultimap.create();
+        }
+        // 面板与工具提示会在一帧内多次查询同一件饰品；按（实体 + tick）缓存，避免逐帧重跑全部声明。
+        DeclarationCache cache = DECLARATION_CACHE.get();
+        if (cache.entity != entity || cache.tick != entity.tickCount) {
+            cache.entity = entity;
+            cache.tick = entity.tickCount;
+            cache.byStack.clear();
+        }
+        Multimap<Attribute, AttributeModifier> cached = cache.byStack.get(stack);
+        if (cached != null) {
+            return cached;
+        }
+        Multimap<Attribute, AttributeModifier> declared =
+            AttributeHelper.collectDeclarations(() -> declareModifiers(entity, stack));
+        cache.byStack.put(stack, declared);
+        return declared;
+    }
+
+    /**
+     * 施加 {@link #declaredEffects} 的结果，再执行声明之外的副作用。
+     * <p>
+     * 逐个按 UUID 比对后再写入：值与运算方式都没变就跳过，避免切枪/击杀结算这类高频刷新
+     * 无谓地替属性实例打脏标记（丢脏即重算 + 额外同步包）。
+     */
+    public final void applyDeclaredEffects(LivingEntity entity, ItemStack stack) {
+        if (entity == null) {
+            return;
+        }
+        Multimap<Attribute, AttributeModifier> declared = declaredEffects(entity, stack);
+        for (Map.Entry<Attribute, AttributeModifier> entry : declared.entries()) {
+            applyIfChanged(entity, entry.getKey(), entry.getValue());
+        }
+        applySideEffects(entity, stack);
+    }
+
+    /** 用 Curios 同款原语写入单个修饰符；值/方式未变化时不写。 */
+    private static void applyIfChanged(LivingEntity entity, Attribute attribute, AttributeModifier modifier) {
+        AttributeInstance instance = entity.getAttributes().getInstance(attribute);
+        if (instance == null) {
+            return;
+        }
+        AttributeModifier existing = instance.getModifier(modifier.getId());
+        if (existing != null
+            && existing.getAmount() == modifier.getAmount()
+            && existing.getOperation() == modifier.getOperation()) {
+            return;
+        }
+        instance.addTransientModifier(modifier);
+    }
+
+    /**
+     * 声明之外的副作用（直接下发药水效果等）写在这里。
+     * 只在真正施加时调用；收集模式下不会执行，因此面板逐帧刷新不会重复触发。
+     */
+    protected void applySideEffects(LivingEntity entity, ItemStack stack) {
+    }
+
+    /** declaredEffects 的每线程缓存。客户端与集成服务端可能共用静态字段，必须按线程隔离。 */
+    private static final ThreadLocal<DeclarationCache> DECLARATION_CACHE =
+        ThreadLocal.withInitial(DeclarationCache::new);
+
+    private static final class DeclarationCache {
+        private LivingEntity entity;
+        private int tick = Integer.MIN_VALUE;
+        private final Map<ItemStack, Multimap<Attribute, AttributeModifier>> byStack = new IdentityHashMap<>();
     }
 
     /**
@@ -185,9 +347,15 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
         return false;
     }
 
-    protected abstract void applyEffects(LivingEntity entity, ItemStack stack);
+    /**
+     * 声明该饰品想要施加的属性修饰符：条件判断（手持武器类型等）与数值计算都写在这里，
+     * 通过 {@code AttributeHelper.applyModifier} 等方法「登记」。<strong>禁止副作用</strong>
+     * ——收集模式下本方法只登记不施加，真正的写入由 {@link #applyDeclaredEffects} 统一完成，
+     * 药水效果之类的副作用请放 {@link #applySideEffects}。
+     */
+    protected abstract void declareModifiers(LivingEntity entity, ItemStack stack);
 
-    protected abstract void removeEffects(LivingEntity entity);
+    protected abstract void removeModifiers(LivingEntity entity);
 
     
     public boolean matchesRestriction(LivingEntity entity) {

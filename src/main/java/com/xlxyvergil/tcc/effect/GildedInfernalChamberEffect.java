@@ -15,7 +15,6 @@ public class GildedInfernalChamberEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
             "d64182ae-c6b7-43b3-a451-f6844b197823", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("d64182ae-c6b7-43b3-a451-f6844b197823"), TccItems.GILDED_INFERNAL_CHAMBER);
     }
 
 }

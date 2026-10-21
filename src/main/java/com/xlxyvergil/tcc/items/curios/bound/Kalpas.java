@@ -34,9 +34,7 @@ public class Kalpas extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof Kalpas);
         CompoundTag tag = equipped.getTag();
@@ -45,7 +43,11 @@ public class Kalpas extends BoundCurioItem {
         AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             total, IMAGINARY_RESISTANCE_UUID,
             "tcc.kalpas.imaginary_resistance", AttributeModifier.Operation.ADDITION);
+    }
 
+    /** 适应度登记会写 capability 与 persistentData，属于副作用，不能出现在声明里。 */
+    @Override
+    protected void applySideEffects(LivingEntity livingEntity, ItemStack stack) {
         if (GunTypeChecker.isHoldingMeleeWeapon(livingEntity)) {
             if (!livingEntity.getPersistentData().getBoolean(ADAPT_REGISTERED_KEY)) {
                 livingEntity.getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(h -> {
@@ -61,7 +63,7 @@ public class Kalpas extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         unregisterAdaptation(livingEntity);
     }
@@ -95,8 +97,6 @@ public class Kalpas extends BoundCurioItem {
         int decaySeconds = TaczCuriosConfig.COMMON.kalpasDecaySeconds.get();
 
         tooltip.add(Component.literal(""));
-
-
 
         tooltip.add(Component.translatable("item.tcc.kalpas.effect",
                 String.format("%.0f", adaptFactor),

@@ -15,7 +15,6 @@ public class LaserScopeEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF8844);
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "b9fb5573-bd2f-4c82-98e4-8eeb2b6b6169", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("b9fb5573-bd2f-4c82-98e4-8eeb2b6b6169"), TccItems.LASER_SCOPE);
     }
 
 }

@@ -27,9 +27,7 @@ public class WeaknessMastery extends TccCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(CRIT_DAMAGE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double critDamageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.weaknessMasteryCritDamage.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, critDamageBoost, CRIT_DAMAGE_UUID, CRIT_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -39,7 +37,7 @@ public class WeaknessMastery extends TccCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);
     }
 
@@ -62,6 +60,5 @@ public class WeaknessMastery extends TccCurioItem {
         tooltip.add(Component.literal(""));
         
     }
-
 
 }

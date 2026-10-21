@@ -21,7 +21,6 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
-
 public final class AchievementDefinitions {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final String DIR_NAME = "tcc";

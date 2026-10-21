@@ -16,7 +16,6 @@ public class GildedSplitChamberEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0x44AAFF);
         this.addAttributeModifier(AttributeHelper.BULLET_COUNT,
             "0f372759-929e-4699-b253-dc73336e8a01", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("0f372759-929e-4699-b253-dc73336e8a01"), TccItems.GILDED_SPLIT_CHAMBER);
     }
 
 }

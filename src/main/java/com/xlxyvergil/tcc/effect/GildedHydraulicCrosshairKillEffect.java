@@ -16,7 +16,6 @@ public class GildedHydraulicCrosshairKillEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFFCC44);
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "410756c5-8d3b-4bcf-ab77-9bc3728175a2", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("410756c5-8d3b-4bcf-ab77-9bc3728175a2"), TccItems.GILDED_HYDRAULIC_CROSSHAIR);
     }
 
 }

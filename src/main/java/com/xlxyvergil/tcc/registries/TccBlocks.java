@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
-
 public final class TccBlocks {
 
     public static final Block TESHIN_WORKBENCH = new Block(

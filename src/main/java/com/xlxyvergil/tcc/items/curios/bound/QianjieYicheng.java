@@ -27,21 +27,19 @@ public class QianjieYicheng extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(LUCK_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             int luck = TaczCuriosConfig.COMMON.qianjieYichengLuck.get();
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
                 luck, LUCK_UUID,
                 "tcc.qianjie_yicheng.luck", AttributeModifier.Operation.ADDITION);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_UUID);
     }
 

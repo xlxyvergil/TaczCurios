@@ -15,7 +15,6 @@ public class HydraulicCrosshairEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF9944);
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "f32f9e0d-9078-4da4-985b-c3ac3636b349", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("f32f9e0d-9078-4da4-985b-c3ac3636b349"), TccItems.HYDRAULIC_CROSSHAIR);
     }
 
 }

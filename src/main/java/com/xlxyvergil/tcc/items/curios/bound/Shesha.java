@@ -40,11 +40,11 @@ public class Shesha extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
     }
 
     @Override
@@ -114,7 +114,19 @@ public class Shesha extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.gun_to_imaginary")
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance").withStyle(ChatFormatting.LIGHT_PURPLE));
-        tooltip.add(Component.translatable("tcc.tooltip.serpent_splash",
+                                                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line1",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line2",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line3",
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashRadius.get()),
+                String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashPercent.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
+                                tooltip.add(Component.translatable("tcc.tooltip.serpent_splash.line4",
                 String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashRadius.get()),
                 String.format("%.0f", TaczCuriosConfig.COMMON.sheshaSplashPercent.get() * 100))
                 .withStyle(ChatFormatting.GOLD));

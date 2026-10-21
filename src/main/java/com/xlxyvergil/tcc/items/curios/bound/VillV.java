@@ -30,9 +30,7 @@ public class VillV extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = findEquippedStack(livingEntity);
         CompoundTag tag = equipped.getTag();
         double total = 1.0
@@ -43,7 +41,7 @@ public class VillV extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
             IMAGINARY_RESISTANCE_UUID);
         // 伤害吸收黄心不再主动扣减：无法区分来源，扣减会误伤金苹果等外部效果；改为自然消耗/消失

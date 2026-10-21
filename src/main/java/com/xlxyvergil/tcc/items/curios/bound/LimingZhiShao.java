@@ -69,12 +69,7 @@ public class LimingZhiShao extends BoundCurioItem implements IFluidWalk {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(ATTACK_SPEED_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(ATTACK_DAMAGE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof LimingZhiShao);
         CompoundTag tag = equipped.getTag();
@@ -104,7 +99,7 @@ public class LimingZhiShao extends BoundCurioItem implements IFluidWalk {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_SPEED, ATTACK_SPEED_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);

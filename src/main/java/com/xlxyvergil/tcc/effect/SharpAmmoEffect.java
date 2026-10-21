@@ -15,7 +15,6 @@ public class SharpAmmoEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             "7ebabc7f-2ccd-4217-8602-ea39b9263673", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("7ebabc7f-2ccd-4217-8602-ea39b9263673"), TccItems.SHARP_AMMO);
     }
 
 }

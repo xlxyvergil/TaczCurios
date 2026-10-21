@@ -15,7 +15,6 @@ public class SharpBulletEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             "7de1fac5-2f2f-4462-b6b2-1ab5d1b88194", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("7de1fac5-2f2f-4462-b6b2-1ab5d1b88194"), TccItems.SHARP_BULLET);
     }
 
 }

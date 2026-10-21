@@ -31,7 +31,6 @@ import java.util.function.Predicate;
 public final class LivingDeathEventHandler {
     public static final String TRIGGER_LIVING_DEATH = "living_death";
 
-
     private LivingDeathEventHandler() {}
 
     @SubscribeEvent

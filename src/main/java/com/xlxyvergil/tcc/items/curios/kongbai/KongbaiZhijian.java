@@ -38,6 +38,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -127,8 +128,25 @@ public class KongbaiZhijian extends BoundCurioItem {
         }
 
         if (wearer == null) {
-            tooltip.add(Component.translatable("item.tcc.kongbai_zhijian.unworn")
-                    .withStyle(ChatFormatting.DARK_GRAY));
+            // 未安装：预览全部联动配置（背包/创造模式标签页里可确认有哪些联动）。
+            // 安装后不显示这一块，只显示当前实际生效的联动。
+            Map<String, List<AttributeLinkData>> configured = AttributeLinkRegistry.getLinksBySlot();
+            boolean hasAny = configured.values().stream().anyMatch(list -> !list.isEmpty());
+            if (!hasAny) {
+                tooltip.add(Component.translatable("item.tcc.kongbai_zhijian.no_link_configured")
+                        .withStyle(ChatFormatting.DARK_GRAY));
+            } else {
+                tooltip.add(Component.translatable("item.tcc.kongbai_zhijian.all_links_header")
+                        .withStyle(ChatFormatting.GOLD));
+                for (List<AttributeLinkData> rules : configured.values()) {
+                    for (AttributeLinkData rule : rules) {
+                        tooltip.add(Component.translatable("item.tcc.kongbai_zhijian.link_rule",
+                                        describeAttributeName(rule.source()), formatRatio(rule.ratio()),
+                                        describeAttributeName(rule.target()))
+                                .withStyle(ChatFormatting.GRAY));
+                    }
+                }
+            }
         } else {
             List<AttributeLinkData> rules = resolveRules(wearer);
             if (rules.isEmpty()) {
@@ -186,27 +204,31 @@ public class KongbaiZhijian extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity entity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity entity, ItemStack stack) {
         if (entity == null) {
             return;
         }
         // 先按物品上的旧快照清除上一轮写入的 uuid，再解析并覆盖快照，
         // 这样数据包热改/热删 uuid 后也不会残留旧修饰符
-        clearModifiers(entity, readRules(stack));
+        // 清理旧快照 + 写回新快照都会改 NBT，收集模式下必须跳过（否则面板逐帧求声明会反复写栈）
+        if (!AttributeHelper.isCollecting()) {
+            clearModifiers(entity, readRules(stack));
+        }
         List<AttributeLinkData> rules = resolveRules(entity);
-        writeRules(stack, rules);
+        if (!AttributeHelper.isCollecting()) {
+            writeRules(stack, rules);
+        }
         for (AttributeLinkData rule : rules) {
-            AttributeHelper.registerSourceItem(rule.uuid(), stack.getItem());
             applyValue(entity, rule);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity entity) {
+    protected void removeModifiers(LivingEntity entity) {
         if (entity == null) {
             return;
         }
-        // 不携带 stack 时的兜底清除：按当前规则表逐条移除（uuid 已不在表中者由 applyEffects 处理）
+        // 不携带 stack 时的兜底清除：按当前规则表逐条移除（uuid 已不在表中者由 declareModifiers 处理）
         clearModifiers(entity, null);
     }
 

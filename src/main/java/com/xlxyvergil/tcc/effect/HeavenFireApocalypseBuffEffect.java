@@ -21,7 +21,6 @@ public class HeavenFireApocalypseBuffEffect extends MobEffect {
             VALUE_PER_LEVEL,
             AttributeModifier.Operation.MULTIPLY_BASE
         );
-        AttributeHelper.registerSourceItem(UUID.fromString("ba764054-9ad7-493e-b1bd-a6def116012d"), TccItems.HEAVEN_FIRE_APOCALYPSE);
     }
 
 }

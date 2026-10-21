@@ -156,10 +156,6 @@ public class TaczCurios
             // 高亮技能的按键注册与输入处理
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillKeys");
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillInput");
-            // Apothic Attributes（attributeslib）是软依赖：只有装了它才加载属性面板来源集成
-            if (ModList.get().isLoaded("attributeslib")) {
-                Class.forName("com.xlxyvergil.tcc.client.ApothicCurioModifierSource");
-            }
         }
     }
 

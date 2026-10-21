@@ -51,11 +51,7 @@ public class DuchenZhiYu extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ARMOR_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(TOUGHNESS_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof DuchenZhiYu);
         CompoundTag tag = equipped.getTag();
@@ -79,7 +75,7 @@ public class DuchenZhiYu extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(), IMAGINARY_RESISTANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR, ARMOR_UUID);
         AttributeHelper.removeModifier(livingEntity, Attributes.ARMOR_TOUGHNESS, TOUGHNESS_UUID);

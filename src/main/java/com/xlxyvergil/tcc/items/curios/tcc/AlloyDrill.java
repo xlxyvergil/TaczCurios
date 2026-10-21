@@ -18,7 +18,6 @@ import java.util.List;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import java.util.UUID;
 
-
 public class AlloyDrill extends TccCurioItem {
     // 属性修饰符UUID - 用于唯一标识这些修饰符
     private static final UUID ARMOR_IGNORE_UUID = UUID.fromString("06d45b6d-c8d2-4372-bdfd-b427651a2366");
@@ -33,9 +32,7 @@ public class AlloyDrill extends TccCurioItem {
 
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ARMOR_IGNORE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double armorIgnoreBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.alloyDrillArmorPenetrationBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, armorIgnoreBoost, ARMOR_IGNORE_UUID, ARMOR_IGNORE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -43,7 +40,7 @@ public class AlloyDrill extends TccCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.ARMOR_IGNORE, ARMOR_IGNORE_UUID);
     }
 

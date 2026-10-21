@@ -168,7 +168,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.IForgeRegistry;
 
-
 public class TccItems {
 
     public static final Rarity RIFT = Rarity.create("tcc_rift", ChatFormatting.LIGHT_PURPLE);

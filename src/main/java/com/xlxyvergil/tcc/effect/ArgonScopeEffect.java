@@ -16,7 +16,6 @@ public class ArgonScopeEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFFAA44);
         this.addAttributeModifier(AttributeHelper.CRIT_CHANCE,
             "a46002d7-028e-4b39-b90c-c7f949aee441", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("a46002d7-028e-4b39-b90c-c7f949aee441"), TccItems.ARGON_SCOPE);
     }
 
 }

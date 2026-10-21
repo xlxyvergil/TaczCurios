@@ -44,10 +44,7 @@ public class MetaMorph extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(ATTACK_DAMAGE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(LIFE_STEAL_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         double totalResistance = livingEntity.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
         AttributeHelper.applyModifier(livingEntity, Attributes.ATTACK_DAMAGE,
             totalResistance, ATTACK_DAMAGE_UUID,
@@ -60,7 +57,7 @@ public class MetaMorph extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, Attributes.ATTACK_DAMAGE, ATTACK_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LIFE_STEAL, LIFE_STEAL_UUID);
     }
@@ -125,8 +122,6 @@ public class MetaMorph extends BoundCurioItem {
         super.appendHoverText(stack, level, tooltip, flag);
 
         tooltip.add(Component.literal(""));
-
-
 
         double attackFromResistance = 0;
         double lifeStealFromResistance = 0;

@@ -19,7 +19,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class StatPollingEventHandler {
 

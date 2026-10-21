@@ -23,12 +23,12 @@ public class GildedHydraulicCrosshair extends TccCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         // 不再有装备常驻效果，+120%由爆头Buff提供
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         // 不再有装备常驻效果需要清除
     }
 
@@ -55,6 +55,5 @@ public class GildedHydraulicCrosshair extends TccCurioItem {
         tooltip.add(Component.literal(""));
         
     }
-
 
 }

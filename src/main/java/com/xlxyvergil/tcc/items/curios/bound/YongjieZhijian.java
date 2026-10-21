@@ -30,11 +30,7 @@ public class YongjieZhijian extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(CRIT_CHANCE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(CRIT_DAMAGE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(LUCK_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.LUCK,
                 TaczCuriosConfig.COMMON.yongjieZhijianLuck.get(), LUCK_UUID,
@@ -51,12 +47,12 @@ public class YongjieZhijian extends BoundCurioItem {
                 critDamage, CRIT_DAMAGE_UUID,
                 "tcc.yongjie_zhijian.crit_damage", AttributeModifier.Operation.ADDITION);
         } else {
-            removeEffects(livingEntity);
+            removeModifiers(livingEntity);
         }
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.LUCK, LUCK_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_CHANCE, CRIT_CHANCE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.CRIT_DAMAGE, CRIT_DAMAGE_UUID);

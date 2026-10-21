@@ -16,7 +16,6 @@ public class FragmentShotEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF6644);
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             "05ef1a76-86f4-492f-adc0-3d78e54e52fd", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("05ef1a76-86f4-492f-adc0-3d78e54e52fd"), TccItems.FRAGMENT_SHOT);
     }
 
 }

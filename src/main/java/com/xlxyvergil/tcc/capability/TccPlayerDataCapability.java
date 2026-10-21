@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-
 public final class TccPlayerDataCapability {
 
     public static final ResourceLocation ID = new ResourceLocation("tcc", "player_data");

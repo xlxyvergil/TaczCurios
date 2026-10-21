@@ -49,9 +49,8 @@ public class LuejiZhiShou extends BoundCurioItem {
     }
 
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         // 虚数抗性不受武器类型限制，装备即生效（与渡鸦/小岛一致：基础值 1 + 共享进度）。
-        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_UUID, stack.getItem());
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
                 s -> s.getItem() instanceof LuejiZhiShou);
         CompoundTag equippedTag = (equipped.isEmpty() ? stack : equipped).getTag();
@@ -63,7 +62,7 @@ public class LuejiZhiShou extends BoundCurioItem {
     }
 
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity,
                 TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get(),
                 IMAGINARY_RESISTANCE_UUID);
@@ -126,7 +125,6 @@ public class LuejiZhiShou extends BoundCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-
         tooltip.add(Component.literal(""));
 
         appendImaginaryResistance(stack, tooltip);
@@ -139,15 +137,24 @@ public class LuejiZhiShou extends BoundCurioItem {
         tooltip.add(Component.translatable("item.tcc.dream.fishing_speed")
                 .withStyle(ChatFormatting.GOLD));
         if (LootrCompat.isLoaded()) {
-            tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight")
+                                                tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight.line1")
                     .withStyle(ChatFormatting.GREEN));
-        }
-        tooltip.add(Component.translatable("item.tcc.dream.spawner_highlight")
+                        tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight.line2")
+                    .withStyle(ChatFormatting.GREEN));
+                        tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight.line3")
+                    .withStyle(ChatFormatting.GREEN));
+                        tooltip.add(Component.translatable("item.tcc.dream.lootr_highlight.line4")
+                    .withStyle(ChatFormatting.GREEN));
+                                }
+                                tooltip.add(Component.translatable("item.tcc.dream.spawner_highlight.line1")
                 .withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
+                tooltip.add(Component.translatable("item.tcc.dream.spawner_highlight.line2")
+                .withStyle(ChatFormatting.GREEN));
+                tooltip.add(Component.translatable("item.tcc.dream.spawner_highlight.line3")
+                .withStyle(ChatFormatting.GREEN));
+                        tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
-
         tooltip.add(Component.literal(""));
     }
 }

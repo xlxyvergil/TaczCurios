@@ -14,12 +14,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
-
-
 
 public class MergedRifling extends TccCurioItem {
     private static final UUID[] DAMAGE_UUIDS = {
@@ -45,12 +42,7 @@ public class MergedRifling extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(MOVEMENT_SPEED_UUID, stack.getItem());
-        for (UUID uuid : DAMAGE_UUIDS) {
-            AttributeHelper.registerSourceItem(uuid, stack.getItem());
-        }
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingDamageBoost.get());
         double speedBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.mergedRiflingMovementSpeedBoost.get());
         
@@ -67,7 +59,7 @@ public class MergedRifling extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_RIFLE, DAMAGE_UUIDS[0]);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SNIPER, DAMAGE_UUIDS[1]);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_SMG, DAMAGE_UUIDS[2]);

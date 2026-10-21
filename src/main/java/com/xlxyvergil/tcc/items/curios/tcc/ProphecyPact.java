@@ -18,8 +18,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-
-
 public class ProphecyPact extends TccCurioItem {
     private static final UUID DAMAGE_UUID = UUID.fromString("6edbaedf-2502-4fe0-8e2c-9054d6a9ecc1");
     
@@ -34,9 +32,7 @@ public class ProphecyPact extends TccCurioItem {
      * 提升手枪伤害（加算）
      */
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(DAMAGE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double damageBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.prophecyPactDamageBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, damageBoost, DAMAGE_UUID, DAMAGE_NAME, AttributeModifier.Operation.ADDITION);
@@ -44,7 +40,7 @@ public class ProphecyPact extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE_PISTOL, DAMAGE_UUID);
     }
 

@@ -28,8 +28,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-
-
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HeavenFireApocalypse extends BoundCurioItem {
     private static final UUID GUN_DAMAGE_UUID = UUID.fromString("8c87e97e-cc63-415f-b92d-6ac2e521b219");
@@ -45,9 +43,8 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        // 属性已由 super.onEquip 统一施加，这里不需要再算一遍
         super.onEquip(slotContext, prevStack, stack);
-        LivingEntity entity = (LivingEntity) slotContext.entity();
-        applyEffects(entity, stack);
     }
 
     @Override
@@ -56,10 +53,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(GUN_DAMAGE_UUID, stack.getItem());
-        AttributeHelper.registerSourceItem(EXPLOSION_DAMAGE_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double damageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseDamageBoost.get();
             double explosionDamageBoost = TaczCuriosConfig.COMMON.heavenFireApocalypseExplosionDamage.get();
@@ -70,7 +64,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
     }
@@ -203,11 +197,11 @@ public class HeavenFireApocalypse extends BoundCurioItem {
         
         if (healthPercentage >= 1.0) {
             // 满血时恢复属性
-            instance.applyEffects(entity, equippedStack);
+            instance.reapplyEffects(entity, equippedStack);
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
         } else {
             // 非满血时移除属性
-            instance.removeEffects(entity);
+            instance.removeModifiers(entity);
             AttachmentPropertyManager.postChangeEvent(entity, mainHandItem);
         }
     }

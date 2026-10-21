@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.items.curios.tcc;
 
-
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.TccCurioItem;
@@ -30,9 +29,7 @@ public class SplitChamber extends TccCurioItem {
     }
     
     @Override
-    protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
-        // 登记该饰品施加的修饰符 UUID → 来源饰品，供客户端属性面板显示来源图标。
-        AttributeHelper.registerSourceItem(AMMO_UUID, stack.getItem());
+    protected void declareModifiers(LivingEntity livingEntity, ItemStack stack) {
         if (matchesRestriction(livingEntity)) {
             double ammoBoost = FusionData.from(stack).getActualValue(TaczCuriosConfig.COMMON.splitChamberBulletCountBoost.get());
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_COUNT, ammoBoost, AMMO_UUID, AMMO_NAME, AttributeModifier.Operation.ADDITION);
@@ -40,7 +37,7 @@ public class SplitChamber extends TccCurioItem {
     }
     
     @Override
-    protected void removeEffects(LivingEntity livingEntity) {
+    protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_COUNT, AMMO_UUID);
     }
     

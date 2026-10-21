@@ -16,7 +16,6 @@ public class GildedSteelSlashEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xFF8866);
         this.addAttributeModifier(AttributeHelper.CRIT_DAMAGE,
             "f7508ebd-4a0e-461c-a9cc-97c658ad7364", VALUE_PER_LEVEL, AttributeModifier.Operation.MULTIPLY_BASE);
-        AttributeHelper.registerSourceItem(UUID.fromString("f7508ebd-4a0e-461c-a9cc-97c658ad7364"), TccItems.GILDED_STEEL_SLASH);
     }
 
 }
