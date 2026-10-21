@@ -2183,7 +2183,7 @@ public class TaczCuriosConfig {
                     .comment("舍沙移除目标有益 buff 的概率系数：概率 = 佩戴者虚数抗性 × 本系数，封顶 100%（默认: 0.01 = 抗性/100）")
                     .defineInRange("buffRemovalFactor", 0.01, 0.0, 1.0);
             sheshaSplashRadius = builder
-                    .comment("枪击命中后，以受击者为中心对周围生物（含受击者）施加额外魔法伤害的球型半径（格，默认: 20.0）")
+                    .comment("枪击命中后，以受击者为中心对周围其他生物（不含受击者自身）施加额外魔法伤害的球型半径（格，默认: 20.0）")
                     .defineInRange("splashRadius", 20.0, 0.0, 64.0);
             sheshaSplashPercent = builder
                     .comment("溅射魔法伤害占主手枪械面板伤害的比例（小数，默认: 0.30 = 30%）")
@@ -2217,7 +2217,7 @@ public class TaczCuriosConfig {
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.01 = 1%)")
                     .defineInRange("removeChance", 0.01, 0.0, 1.0);
             wangshiDeSheyingSplashRadius = builder
-                    .comment("枪击命中后，以受击者为中心对周围生物（含受击者）施加额外魔法伤害的球型半径（格，默认: 10.0）")
+                    .comment("枪击命中后，以受击者为中心对周围其他生物（不含受击者自身）施加额外魔法伤害的球型半径（格，默认: 10.0）")
                     .defineInRange("splashRadius", 10.0, 0.0, 64.0);
             wangshiDeSheyingSplashPercent = builder
                     .comment("溅射魔法伤害占主手枪械面板伤害的比例（小数，默认: 0.10 = 10%）")
@@ -2229,7 +2229,7 @@ public class TaczCuriosConfig {
                     .comment("造成伤害移除目标正面 buff 概率 (默认: 0.05 = 5%)")
                     .defineInRange("removeChance", 0.05, 0.0, 1.0);
             siZhiYiSplashRadius = builder
-                    .comment("枪击命中后，以受击者为中心对周围生物（含受击者）施加额外魔法伤害的球型半径（格，默认: 15.0）")
+                    .comment("枪击命中后，以受击者为中心对周围其他生物（不含受击者自身）施加额外魔法伤害的球型半径（格，默认: 15.0）")
                     .defineInRange("splashRadius", 15.0, 0.0, 64.0);
             siZhiYiSplashPercent = builder
                     .comment("溅射魔法伤害占主手枪械面板伤害的比例（小数，默认: 0.20 = 20%）")

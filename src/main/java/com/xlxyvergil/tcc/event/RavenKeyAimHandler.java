@@ -155,7 +155,7 @@ public final class RavenKeyAimHandler {
     }
 
     /**
-     * 以受击者为中心，对球型范围内的生物（含受击者本身）施加魔法伤害。
+     * 以受击者为中心，对球型范围内的其它生物（不含受击者本身）施加魔法伤害。
      * 用于渡鸦神之键附加伤害的范围溅射。
      */
     public static void applySplashMagic(@Nullable LivingEntity attacker, @Nullable LivingEntity victim,
@@ -168,8 +168,10 @@ public final class RavenKeyAimHandler {
         }
         double radiusSq = radius * radius;
         AABB box = victim.getBoundingBox().inflate(radius);
+        // 排除攻击者与本次命中的受击者：溅射只结算到周围其它生物
         List<Mob> targets = serverLevel.getEntitiesOfClass(Mob.class, box,
-                mob -> mob != attacker && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
+                mob -> mob != attacker && mob != victim && mob.isAlive()
+                        && mob.distanceToSqr(victim) <= radiusSq);
         DamageSource source = TccDamageSources.magicDamage(serverLevel, attacker);
         for (Mob mob : targets) {
             mob.invulnerableTime = 0;
