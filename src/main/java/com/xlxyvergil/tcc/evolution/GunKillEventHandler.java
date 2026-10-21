@@ -3,7 +3,6 @@ package com.xlxyvergil.tcc.evolution;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.KillEventDedupe;
@@ -13,21 +12,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
@@ -36,6 +30,10 @@ import javax.annotation.Nullable;
  * gun_kill 触发器的成就/属性规则处理器。
  * 直接监听 TACZ 的 EntityKillByGunEvent（枪械击杀事件）：致死命中时 TACZ 必定发出该事件，
  * 且事件自带 attacker / killedEntity / gunId / headshot，无需依赖 damage source 或 tag 判定。
+ * <p>
+ * 例外：原版末影龙在非停驻阶段被打到 0 血时会被 {@code setHealth(1.0F)} 回血并切到 DYING 阶段，
+ * TACZ 结算后判断 {@code isDeadOrDying()} 为 false，因而不会发出击杀事件。
+ * 这类目标由 {@link LivingDeathEventHandler} 按致死伤害来源补记，统一走 {@link #handleGunKill}。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillEventHandler {
@@ -43,8 +41,6 @@ public final class GunKillEventHandler {
 
     /** 多弹头去重：每个触发器独立实例，避免与其它触发器的记录互相干扰。 */
     private static final KillEventDedupe GUN_KILL_DEDUPE = new KillEventDedupe();
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     private GunKillEventHandler() {}
 
@@ -67,18 +63,7 @@ public final class GunKillEventHandler {
         if (!(player instanceof ServerPlayer sp)) {
             return;
         }
-        ResourceLocation gunId = event.getGunId();
-
-        // 击杀末影龙时先记录事件本身是否到达：用于区分「TACZ 没发击杀事件」和「发了但被过滤掉」
-        if (killed.getType() == EntityType.ENDER_DRAGON) {
-            LOGGER.info("[tcc][achievement] EntityKillByGunEvent 到达：attacker={} killed={} gun={} headshot={}",
-                    attacker.getName().getString(), killed.getType(),
-                    gunId, event.isHeadShot());
-        }
-
-        // 多弹头武器（霰弹/多弹头狙击）会在同一次击杀中连续触发多次 EntityKillByGunEvent；
-        // 去重统一放在 handleGunKill 入口，与死亡兜底路径共用同一份记录。
-        handleGunKill(sp, killed, gunId);
+        handleGunKill(sp, killed, event.getGunId());
     }
 
     /**
@@ -100,25 +85,6 @@ public final class GunKillEventHandler {
         return source.getDirectEntity() instanceof EntityKineticBullet bullet ? bullet.getGunId() : null;
     }
 
-    /**
-     * 末影龙命中审计：EntityHurtByGunEvent.Post 只在“这一发没有打死”时发出（致死走 EntityKillByGunEvent）。
-     * 配合 [tcc][death] 的死亡审计，可以判定龙的最后一击到底是不是子弹。
-     */
-    @SubscribeEvent
-    public static void onGunHurtPostAudit(com.tacz.guns.api.event.common.EntityHurtByGunEvent.Post event) {
-        if (event.getLogicalSide().isClient()) {
-            return;
-        }
-        if (!(event.getHurtEntity() instanceof LivingEntity hurt) || hurt.getType() != EntityType.ENDER_DRAGON) {
-            return;
-        }
-        LivingEntity attacker = event.getAttacker();
-        LOGGER.info("[tcc][gunhurt] 子弹命中末影龙 剩余血量={}/{} 枪={} 爆头={} 子弹伤害源={} 攻击者={}",
-                hurt.getHealth(), hurt.getMaxHealth(), event.getGunId(), event.isHeadShot(),
-                event.getDamageSource(com.tacz.guns.api.event.common.GunDamageSourcePart.NON_ARMOR_PIERCING).getMsgId(),
-                attacker != null ? attacker.getName().getString() : "null");
-    }
-
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
 
@@ -130,40 +96,16 @@ public final class GunKillEventHandler {
 
         // 成就驱动的发放 / 进化
         if (serverPlayer != null) {
-            // 击杀末影龙时输出判定明细：前置成就缺失 / 条件不满足都会静默跳过，
-            // 没有日志就无从判断「杀龙成就无法完成」到底卡在哪一步。
-            boolean dragonKill = killed.getType() == EntityType.ENDER_DRAGON;
-            if (dragonKill) {
-                LOGGER.info("[tcc][achievement] 枪械击杀末影龙 player={} gun={} curios={}",
-                        player.getName().getString(), gunId, equippedIds(player));
-            }
-
             for (AchievementDefinitions.AchievementDef def : AchievementDefinitions.getByTrigger(TRIGGER_GUN_KILL)) {
                 if (def.reward() == null) continue;
 
                 if (!def.isEnabled()) continue;
 
-                if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) {
-                    if (dragonKill) {
-                        LOGGER.info("[tcc][achievement] {} 跳过：前置成就不满足 {}",
-                                def.id(), def.prerequisites());
-                    }
-                    continue;
-                }
+                if (!RuleAdvancementMapping.arePrerequisitesMet(serverPlayer, def)) continue;
 
                 if (RuleAdvancementMapping.isAdvancementDone(serverPlayer, def.id())) continue;
 
-                if (!AchievementConditionMatcher.matchesKillConditions(player, killed, gunId, def)) {
-                    if (dragonKill) {
-                        AchievementDefinitions.AchievementConditions c = def.conditions();
-                        LOGGER.info("[tcc][achievement] {} 跳过：条件不满足（需要饰品={} 枪种={} 最小距离={}）",
-                                def.id(),
-                                c != null ? c.equippedCurios() : null,
-                                c != null ? c.holdingGunTypes() : null,
-                                c != null ? c.minDistance() : null);
-                    }
-                    continue;
-                }
+                if (!AchievementConditionMatcher.matchesKillConditions(player, killed, gunId, def)) continue;
 
                 // 每次击杀授予 1 步进度
                 var kills = def.conditions() != null ? def.conditions().kills() : null;
@@ -173,9 +115,6 @@ public final class GunKillEventHandler {
                 } else {
                     RuleAdvancementMapping.awardSteps(
                             serverPlayer, def.id(), def.targetCount(), 1);
-                }
-                if (dragonKill) {
-                    LOGGER.info("[tcc][achievement] {} 击杀已记入", def.id());
                 }
             }
         }
@@ -253,13 +192,6 @@ public final class GunKillEventHandler {
         return key != null ? key.toString() : "";
     }
 
-    /** 当前佩戴的全部饰品 id，仅用于诊断日志。 */
-    private static List<String> equippedIds(LivingEntity livingEntity) {
-        List<String> ids = new ArrayList<>();
-        CurioSearchHelper.forEachEquippedStack(livingEntity, stack -> ids.add(itemId(stack)));
-        return ids;
-    }
-
     static ItemStack findFirstEquippedStack(LivingEntity livingEntity, Predicate<ItemStack> predicate) {
         if (livingEntity == null) return ItemStack.EMPTY;
         ICuriosItemHandler inv = CuriosApi.getCuriosInventory(livingEntity).orElse(null);
@@ -275,5 +207,5 @@ public final class GunKillEventHandler {
         }
         return ItemStack.EMPTY;
     }
-    
+
 }

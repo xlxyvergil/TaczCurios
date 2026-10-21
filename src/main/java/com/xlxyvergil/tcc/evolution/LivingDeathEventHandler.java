@@ -14,7 +14,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +24,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.function.Predicate;
 
@@ -34,7 +31,6 @@ import java.util.function.Predicate;
 public final class LivingDeathEventHandler {
     public static final String TRIGGER_LIVING_DEATH = "living_death";
 
-    private static final Logger LOGGER = LogManager.getLogger();
 
     private LivingDeathEventHandler() {}
 
@@ -45,13 +41,6 @@ public final class LivingDeathEventHandler {
 
         DamageSource source = event.getSource();
         Entity sourceEntity = resolveKillerEntity(source, killed);
-
-        // 末影龙死亡审计：记录真实致死来源。若这里看到的不是枪械子弹，
-        // 说明最后一击被其它伤害抢走，gun_kill 类成就自然不会触发。
-        if (killed.getType() == EntityType.ENDER_DRAGON) {
-            LOGGER.info("[tcc][death] 末影龙死亡 死因={} 责任实体={} 直接实体={} 击杀信用={}",
-                    source.getMsgId(), source.getEntity(), source.getDirectEntity(), killed.getKillCredit());
-        }
 
         
         Player killerPlayer = MaidCompat.resolveOwnerPlayer(sourceEntity);

@@ -11,7 +11,6 @@ import com.xlxyvergil.tcc.villagers.TccVillagers;
 import com.xlxyvergil.tcc.creativetab.TccCreativeTab;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
-import com.xlxyvergil.tcc.evolution.AchievementDiagnostics;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,21 +32,14 @@ import net.minecraftforge.registries.RegisterEvent;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.InterModComms;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Mod(TaczCurios.MODID)
 public class TaczCurios
 {
     public static final String MODID = "tcc";
 
-    /** 启动标记：用于在服务端日志里确认当前运行的是哪一版 jar。 */
-    private static final Logger LOGGER = LogManager.getLogger();
-
     public TaczCurios() throws ClassNotFoundException
     {
-        LOGGER.info("[tcc][boot] TaczCurios 载入完成（含末影龙击杀审计日志）");
-
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
@@ -83,7 +75,6 @@ public class TaczCurios
                 NetworkHandler.syncConfig(sp);
                 NetworkHandler.syncDataFiles(sp);
                 NetworkHandler.syncAttributeLinks(sp);
-                AchievementDiagnostics.logGateState(sp);
             }
         });
         
