@@ -50,7 +50,7 @@
       "trigger": "gun_headshot_kill",
       "conditions": {
         "equippedCurios": ["tcc:seven_thunders"],
-        "requiredEffects": ["tcc:qi_xi_zhe_bi"],
+        "requiredEffects": ["minecraft:invisibility"],
         "holdingGunTypes": ["sniper"],
         "kills": [
           { "entity": "*", "criteria_count": 10 }
@@ -594,8 +594,8 @@
         },
         "icon": "tcc:imer",
         "description": {
-          "zh_cn": "佩戴千劫，承受伤害达到10000，并在下界击杀任意30只生物",
-          "en_us": "Damage Taken reaches 10000 while wearing Kalpas, and kill 30 mobs in the Nether"
+          "zh_cn": "佩戴千劫，承受伤害达到10000，并在下界击杀任意实体30次",
+          "en_us": "Damage Taken reaches 10000 while wearing Kalpas, and kill 30 entities in the Nether"
         },
         "frame": "goal",
         "hidden": false
@@ -1131,8 +1131,8 @@
         },
         "icon": "tcc:aponia",
         "description": {
-          "zh_cn": "霰弹枪击杀任意生物50次",
-          "en_us": "Kill any entity 50 times with a shotgun"
+          "zh_cn": "在主世界用霰弹枪击杀任意实体50次",
+          "en_us": "Kill any entity 50 times with a shotgun in the Overworld"
         },
         "frame": "task",
         "hidden": false
@@ -1318,8 +1318,8 @@
         },
         "icon": "tcc:eden",
         "description": {
-          "zh_cn": "手枪击杀任意生物50次",
-          "en_us": "Kill any entity 50 times with a pistol"
+          "zh_cn": "在主世界用手枪击杀任意实体50次",
+          "en_us": "Kill any entity 50 times with a pistol in the Overworld"
         },
         "frame": "task",
         "hidden": false
@@ -1508,8 +1508,8 @@
         },
         "icon": "tcc:kosma",
         "description": {
-          "zh_cn": "击杀任意生物200次",
-          "en_us": "Kill any entity 200 times"
+          "zh_cn": "在主世界击杀任意实体200次",
+          "en_us": "Kill any entity 200 times in the Overworld"
         },
         "frame": "task",
         "hidden": false
@@ -1541,7 +1541,7 @@
         },
         "icon": "tcc:dizang_yuhun",
         "description": {
-          "zh_cn": "装备科斯魔，在下界击杀任意生物300次",
+          "zh_cn": "装备科斯魔，在下界击杀任意实体300次",
           "en_us": "Kill 300 mobs in the Nether while wearing Kosma"
         },
         "frame": "goal",
@@ -1575,7 +1575,7 @@
         },
         "icon": "tcc:qinshi_zhijian",
         "description": {
-          "zh_cn": "装备黎明之哨，在下界击杀任意生物500次",
+          "zh_cn": "装备黎明之哨，在下界击杀任意实体500次",
           "en_us": "Kill 500 mobs in the Nether while wearing Sentinel of Dawn"
         },
         "frame": "goal",
@@ -1609,7 +1609,7 @@
         },
         "icon": "tcc:liming_zhi_shao",
         "description": {
-          "zh_cn": "装备地藏御魂，在末地击杀任意生物100次",
+          "zh_cn": "装备地藏御魂，在末地击杀任意实体100次",
           "en_us": "Kill 100 mobs in the End while wearing Sentience of Dizang"
         },
         "frame": "goal",
@@ -1702,8 +1702,8 @@
         },
         "icon": "tcc:mebius",
         "description": {
-          "zh_cn": "狙击枪击杀任意生物40次",
-          "en_us": "Kill any entity 40 times with a sniper"
+          "zh_cn": "在主世界用狙击枪击杀任意实体40次",
+          "en_us": "Kill any entity 40 times with a sniper in the Overworld"
         },
         "frame": "task",
         "hidden": false
@@ -1900,8 +1900,8 @@
         },
         "icon": "tcc:hua",
         "description": {
-          "zh_cn": "击杀任意生物200次",
-          "en_us": "Kill any entity 200 times"
+          "zh_cn": "在主世界击杀任意实体200次",
+          "en_us": "Kill any entity 200 times in the Overworld"
         },
         "frame": "task",
         "hidden": false
@@ -1963,7 +1963,7 @@
         },
         "icon": "tcc:fanchen_nandu",
         "description": {
-          "zh_cn": "装备渡尘之羽，在下界击杀任意生物500次",
+          "zh_cn": "装备渡尘之羽，在下界击杀任意实体500次",
           "en_us": "Kill 500 mobs in the Nether while wearing Feather of Dust"
         },
         "frame": "goal",
@@ -2148,7 +2148,7 @@
         },
         "icon": "tcc:ye_zhi_tong",
         "description": {
-          "zh_cn": "装备掠集之兽，在下界击杀任意生物300次",
+          "zh_cn": "装备掠集之兽，在下界击杀任意实体300次",
           "en_us": "Kill 300 mobs in the Nether while wearing Beast of Gathering"
         },
         "frame": "goal",
@@ -2182,7 +2182,7 @@
         },
         "icon": "tcc:lueji_zhi_shou",
         "description": {
-          "zh_cn": "装备往世的幻梦，在末地击杀任意生物100次",
+          "zh_cn": "装备往世的幻梦，在末地击杀任意实体100次",
           "en_us": "Kill 100 mobs in the End while wearing Dream of the Past"
         },
         "frame": "goal",
