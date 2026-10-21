@@ -80,6 +80,25 @@ public final class GunKillEventHandler {
         handleGunKill(sp, killed, gunId);
     }
 
+    /**
+     * 末影龙命中审计：EntityHurtByGunEvent.Post 只在“这一发没有打死”时发出（致死走 EntityKillByGunEvent）。
+     * 配合 [tcc][death] 的死亡审计，可以判定龙的最后一击到底是不是子弹。
+     */
+    @SubscribeEvent
+    public static void onGunHurtPostAudit(com.tacz.guns.api.event.common.EntityHurtByGunEvent.Post event) {
+        if (event.getLogicalSide().isClient()) {
+            return;
+        }
+        if (!(event.getHurtEntity() instanceof LivingEntity hurt) || hurt.getType() != EntityType.ENDER_DRAGON) {
+            return;
+        }
+        LivingEntity attacker = event.getAttacker();
+        LOGGER.info("[tcc][gunhurt] 子弹命中末影龙 剩余血量={}/{} 枪={} 爆头={} 子弹伤害源={} 攻击者={}",
+                hurt.getHealth(), hurt.getMaxHealth(), event.getGunId(), event.isHeadShot(),
+                event.getDamageSource(com.tacz.guns.api.event.common.GunDamageSourcePart.NON_ARMOR_PIERCING).getMsgId(),
+                attacker != null ? attacker.getName().getString() : "null");
+    }
+
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
 
