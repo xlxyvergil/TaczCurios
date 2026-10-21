@@ -554,8 +554,8 @@
       "type": "attribute",
       "item": "tcc:mebius",
       "description": {
-        "zh_cn": "使用狙击枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.2虚数抗性（上限20）",
-        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with sniper, +0.2 Imaginary Resistance per kill (cap 20)"
+        "zh_cn": "使用狙击枪击杀僵尸猪灵/凋灵骷髅/恶魂/烈焰人/岩浆怪，每次+0.05虚数抗性（上限20）",
+        "en_us": "Kill Zombified Piglin/Wither Skeleton/Ghast/Blaze/Magma Cube with sniper, +0.05 Imaginary Resistance per kill (cap 20)"
       },
       "requirements": {
         "holdingGunTypes": [
