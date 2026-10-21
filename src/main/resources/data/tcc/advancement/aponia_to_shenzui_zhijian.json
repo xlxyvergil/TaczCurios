@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:wangshi_de_kuqiu_to_wangshi_de_kuqiu_mingzhiqi",
+    "parent":  "tcc:wangshi_de_kuqiu_grant",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.aponia_to_shenzui_zhijian.description"

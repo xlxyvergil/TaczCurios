@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:eden_star_to_tuntian_zhijian",
+    "parent":  "tcc:eden_star_grant",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.eden_to_cuiyao_zhi_ge.description"

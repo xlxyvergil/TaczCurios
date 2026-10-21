@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:kosma_to_liming_zhi_shao",
+    "parent":  "tcc:dizang_yuhun_to_qinshi_zhijian",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.liming_zhi_shao_to_xuguang.description"

@@ -1,8 +1,10 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
+import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
@@ -14,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -35,6 +38,7 @@ public class Mebius extends BoundCurioItem {
     public static final String KILL_KEY_PREFIX = "tcc_kill_count_";
 
     private static final ResourceLocation ALL_ATTRIBUTES_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "mebius_0b52d9a4_bb3a");
+    private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "mebius_7c1e4f2a_71e5");
 
     private static double perTypeBonus() {
         return TaczCuriosConfig.COMMON.mebiusPerTypeBonus.get();
@@ -77,20 +81,31 @@ public class Mebius extends BoundCurioItem {
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
         // 登记该饰品施加的修饰符 ID → 来源饰品，供客户端属性面板显示来源图标。
         AttributeHelper.registerSourceItem(ALL_ATTRIBUTES_ID, stack.getItem());
+        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_ID, stack.getItem());
+
+        // 虚数抗性不受武器类型限制，装备即生效（与渡鸦/小岛一致：基础值 1 + 共享进度）。
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof Mebius);
+        CompoundTag equippedTag = ItemNbtHelper.getTag(equipped.isEmpty() ? stack : equipped);
+        double totalResistance = ImaginaryResistanceHelper.calculateTotalResistance(1, equippedTag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
+                totalResistance, IMAGINARY_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
+
         if (matchesRestriction(livingEntity)) {
-            ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
-                    s -> s.getItem() instanceof Mebius);
             int types = getKilledTypeCount(equipped.isEmpty() ? stack : equipped);
             double bonus = types * perTypeBonus();
             AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_ID, bonus);
         } else {
-            removeEffects(livingEntity);
+            // 只清全属性加成，虚数抗性继续生效
+            AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_ID, 0);
         }
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
         AttributeHelper.applyInfiniteAllAttributesModifier(livingEntity, ALL_ATTRIBUTES_ID, 0);
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
+                IMAGINARY_RESISTANCE_ID);
     }
 
     @Override
@@ -145,6 +160,9 @@ public class Mebius extends BoundCurioItem {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         Level level = context.level();
         super.appendHoverText(stack, context, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
         appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.infinite.curio_effect",
                 String.format("%.1f", perTypeBonus() * 100))
@@ -153,5 +171,7 @@ public class Mebius extends BoundCurioItem {
                 String.format("%.1f", getKilledTypeCount(stack) * perTypeBonus() * 100))
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);
+
+        tooltip.add(Component.literal(""));
     }
 }

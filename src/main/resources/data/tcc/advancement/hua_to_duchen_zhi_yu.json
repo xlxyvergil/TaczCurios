@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:yuduchen_to_fanchen_nandu",
+    "parent":  "tcc:yuduchen_grant",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.hua_to_duchen_zhi_yu.description"

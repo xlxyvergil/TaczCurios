@@ -1,16 +1,22 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
 import com.xlxyvergil.tcc.TaczCurios;
+import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.compat.lootr.LootrCompat;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.helpers.ImaginaryResistanceHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
+import com.xlxyvergil.tcc.util.AttributeHelper;
+import com.xlxyvergil.tcc.util.ItemNbtHelper;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +36,8 @@ import java.util.List;
 
 @EventBusSubscriber(modid = TaczCurios.MODID)
 public class LuejiZhiShou extends BoundCurioItem {
+    private static final ResourceLocation IMAGINARY_RESISTANCE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "lueji_zhi_shou_e6a2b8d4_46b7");
+
     private static double specialFishChance() {
         return TaczCuriosConfig.COMMON.luejiZhiShouSpecialFishChance.get();
     }
@@ -45,10 +53,20 @@ public class LuejiZhiShou extends BoundCurioItem {
 
     @Override
     protected void applyEffects(LivingEntity livingEntity, ItemStack stack) {
+        // 虚数抗性不受武器类型限制，装备即生效（与渡鸦/小岛一致：基础值 1 + 共享进度）。
+        AttributeHelper.registerSourceItem(IMAGINARY_RESISTANCE_ID, stack.getItem());
+        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(livingEntity,
+                s -> s.getItem() instanceof LuejiZhiShou);
+        CompoundTag equippedTag = ItemNbtHelper.getTag(equipped.isEmpty() ? stack : equipped);
+        double totalResistance = ImaginaryResistanceHelper.calculateTotalResistance(1, equippedTag);
+        AttributeHelper.applyModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
+                totalResistance, IMAGINARY_RESISTANCE_ID, AttributeModifier.Operation.ADD_VALUE);
     }
 
     @Override
     protected void removeEffects(LivingEntity livingEntity) {
+        AttributeHelper.removeModifier(livingEntity, TccAttributes.IMAGINARY_DAMAGE_RESISTANCE,
+                IMAGINARY_RESISTANCE_ID);
     }
 
     @Override
@@ -109,6 +127,9 @@ public class LuejiZhiShou extends BoundCurioItem {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         Level level = context.level();
         super.appendHoverText(stack, context, tooltip, flag);
+
+        tooltip.add(Component.literal(""));
+
         appendImaginaryResistance(stack, tooltip);
         tooltip.add(Component.translatable("item.tcc.dream.curio_effect_fish")
                 .withStyle(ChatFormatting.GOLD));
@@ -127,5 +148,7 @@ public class LuejiZhiShou extends BoundCurioItem {
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
         appendBoundPlayer(stack, tooltip);
+
+        tooltip.add(Component.literal(""));
     }
 }
