@@ -158,8 +158,10 @@ public final class RavenKeyAimHandler {
     }
 
     /**
-     * 以受击者为中心，对球型范围内的生物（含受击者本身）施加魔法伤害。
+     * 以受击者为中心，对球型范围内的生物（不含受击者本身）施加魔法伤害。
      * 用于渡鸦神之键附加伤害的范围溅射。
+     * 受击者本身被排除：溅射为魔法伤害，若抢到致死一击会让 TACZ 不再发出
+     * EntityKillByGunEvent，导致 gun_kill 类成就（击杀末影龙等）永远无法达成。
      */
     public static void applySplashMagic(@Nullable LivingEntity attacker, @Nullable LivingEntity victim,
                                         float amount, double radius) {
@@ -172,7 +174,8 @@ public final class RavenKeyAimHandler {
         double radiusSq = radius * radius;
         AABB box = victim.getBoundingBox().inflate(radius);
         List<Mob> targets = serverLevel.getEntitiesOfClass(Mob.class, box,
-                mob -> mob != attacker && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
+                mob -> mob != attacker && mob != victim
+                        && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
         DamageSource source = TccDamageSources.magicDamage(serverLevel, attacker);
         for (Mob mob : targets) {
             mob.invulnerableTime = 0;

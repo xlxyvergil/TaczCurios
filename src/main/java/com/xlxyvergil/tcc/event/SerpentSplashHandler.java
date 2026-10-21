@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * 神之键·梅比乌斯线（往世的蛇影 / 死之衣 / 舍沙）枪击命中溅射：
- * 命中后以受击者为中心，对球型范围内的生物（含受击者本身）额外施加
+ * 命中后以受击者为中心，对球型范围内的其它生物（不含受击者本身）额外施加
  * 「主手枪械面板伤害 × 百分比」的魔法伤害。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -81,9 +81,11 @@ public final class SerpentSplashHandler {
         double radius = params.radius();
         double radiusSq = radius * radius;
         AABB box = victim.getBoundingBox().inflate(radius);
-        // 包含受击者本身，仅排除攻击者
+        // 排除攻击者与受击者本身：溅射为魔法伤害，若抢到致死一击会让 TACZ 不再发出
+        // EntityKillByGunEvent，导致 gun_kill 类成就（击杀末影龙等）永远无法达成。
         List<Mob> targets = serverLevel.getEntitiesOfClass(Mob.class, box,
-                mob -> mob != attacker && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
+                mob -> mob != attacker && mob != victim
+                        && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
 
         DamageSource source = TccDamageSources.magicDamage(serverLevel, attacker);
         IN_SPLASH.set(Boolean.TRUE);
