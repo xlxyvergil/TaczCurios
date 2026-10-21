@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:eden_to_cuiyao_zhi_ge",
+    "parent":  "tcc:eden_star_to_tuntian_zhijian",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.cuiyao_zhi_ge_to_huangjin.description"

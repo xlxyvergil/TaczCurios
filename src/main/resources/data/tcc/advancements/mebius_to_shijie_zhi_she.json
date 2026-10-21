@@ -4,7 +4,7 @@
                                     "trigger":  "minecraft:impossible"
                                 }
                  },
-    "parent":  "tcc:wangshi_de_sheying_to_si_zhi_yi",
+    "parent":  "tcc:wangshi_de_sheying_grant",
     "display":  {
                     "description":  {
                                         "translate":  "advancement.tcc.mebius_to_shijie_zhi_she.description"
