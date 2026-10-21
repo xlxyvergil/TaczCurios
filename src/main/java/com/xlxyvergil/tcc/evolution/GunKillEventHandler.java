@@ -5,13 +5,15 @@ import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.util.EntityConditionHelper;
 import com.xlxyvergil.tcc.util.GunTypeChecker;
 import com.xlxyvergil.tcc.util.KillEventDedupe;
-import com.tacz.guns.api.event.common.EntityKillByGunEvent;
+import com.tacz.guns.entity.EntityKineticBullet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,45 +25,50 @@ import java.util.function.Predicate;
 
 /**
  * gun_kill 触发器的成就/属性规则处理器。
- * 直接监听 TACZ 的 EntityKillByGunEvent（枪械击杀事件）：致死命中时 TACZ 必定发出该事件，
- * 且事件自带 attacker / killedEntity / gunId / headshot，无需依赖 damage source 或 tag 判定。
+ * <p>
+ * 判定入口是 {@link LivingDeathEvent}，而不是 TACZ 的 {@code EntityKillByGunEvent}：
+ * 原版末影龙在非停驻阶段被打到 0 血时，{@code EnderDragon#hurt(DragonPart, …)} 会在同一次调用里
+ * {@code setHealth(1.0F)} 并切到 DYING 阶段，TACZ 结算完再判断 {@code isDeadOrDying()} 得到 false，
+ * 因此永远不会发出击杀事件 —— 依赖该事件会让「击杀末影龙」类成就永远无法在飞行阶段完成。
+ * <p>
+ * 死亡事件不受此影响，且致死伤害的直接实体就是 TACZ 的子弹实体
+ * （{@code tacz:bullet}），枪械 id 可直接由 {@link EntityKineticBullet#getGunId()} 反查，
+ * 因此不需要依赖伤害类型 tag，也不受数据包改写 tag 的影响。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GunKillEventHandler {
     public static final String TRIGGER_GUN_KILL = "gun_kill";
 
-    /** 多弹头去重：每个触发器独立实例，避免与其它触发器的记录互相干扰。 */
+    /** 同一被杀实体的重复死亡记录去重（复活类模组/异常重入时兜底）。 */
     private static final KillEventDedupe GUN_KILL_DEDUPE = new KillEventDedupe();
 
     private GunKillEventHandler() {}
 
     /**
-     * 枪械击杀主路径：监听 TACZ 官方击杀事件。
-     * 致死命中时 TACZ 只发 EntityKillByGunEvent（与 EntityHurtByGunEvent.Post 互斥），且事件自带 gunId，
-     * 因此不需要也无法用 damage source tag 二次确认。
+     * 枪械击杀判定：致死伤害的直接实体是 TACZ 子弹即视为枪械击杀。
+     * 不查伤害类型 tag，因此对「子弹伤害被转成虚数伤害」的三阶神之键同样成立。
      */
     @SubscribeEvent
-    public static void onGunKill(EntityKillByGunEvent event) {
-        if (event.getLogicalSide().isClient()) {
-            return;
-        }
-        LivingEntity attacker = event.getAttacker();
-        LivingEntity killed = event.getKilledEntity();
-        if (attacker == null || killed == null) {
-            return;
-        }
-        Player player = MaidCompat.resolveOwnerPlayer(attacker);
-        if (!(player instanceof ServerPlayer sp)) {
-            return;
-        }
-        handleGunKill(sp, killed, event.getGunId());
+    public static void onLivingDeath(LivingDeathEvent event) {
+        LivingEntity killed = event.getEntity();
+        if (killed.level().isClientSide) return;
+
+        DamageSource source = event.getSource();
+        if (!(source.getDirectEntity() instanceof EntityKineticBullet bullet)) return;
+
+        ResourceLocation gunId = bullet.getGunId();
+        if (gunId == null) return;
+
+        Player player = MaidCompat.resolveOwnerPlayer(source.getEntity());
+        if (!(player instanceof ServerPlayer sp)) return;
+
+        handleGunKill(sp, killed, gunId);
     }
 
     public static void handleGunKill(Player player, LivingEntity killed, ResourceLocation gunId) {
         ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
 
-        // 同一被杀实体在短窗口内只计一次：致死命中可能同时走 EntityKillByGunEvent
-        // 与 LivingDeathEvent 两条路径（末影龙先 die() 再被回血续命就是这种情况）。
+        // 同一被杀实体在短窗口内只计一次（含复活/重入导致死亡事件重复的极端情况）。
         if (GUN_KILL_DEDUPE.isDuplicate(killed.getUUID(), player.level().getGameTime())) {
             return;
         }
