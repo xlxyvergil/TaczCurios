@@ -76,6 +76,11 @@ public final class NetworkHandler {
                 ActivateHighlightC2SPacket::decode,
                 ActivateHighlightC2SPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        CHANNEL.registerMessage(packetId++, ActivateZhenWoBarrierC2SPacket.class,
+                ActivateZhenWoBarrierC2SPacket::encode,
+                ActivateZhenWoBarrierC2SPacket::decode,
+                ActivateZhenWoBarrierC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
@@ -108,6 +113,11 @@ public final class NetworkHandler {
     /** 客户端按键后请求服务端扫描并刷新高亮（只应在客户端调用）。 */
     public static void sendActivateHighlight() {
         CHANNEL.sendToServer(new ActivateHighlightC2SPacket());
+    }
+
+    /** 客户端按下真我结界技能键后请求服务端校验并展开结界（只应在客户端调用）。 */
+    public static void sendActivateZhenWoBarrier() {
+        CHANNEL.sendToServer(new ActivateZhenWoBarrierC2SPacket());
     }
 
     /** 命中造成伤害后通知客户端清零渡鸦神之键的开镜蓄力 HUD。 */

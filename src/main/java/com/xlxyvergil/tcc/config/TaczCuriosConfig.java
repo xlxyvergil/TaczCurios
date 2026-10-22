@@ -35,7 +35,7 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> fishFoodItems;
 
-        /** 效果表装饰器开关，判据与默认值见 TccEffectGuard。 */
+        /** 效果表装饰器开关。 */
         public final ForgeConfigSpec.BooleanValue coreEffectMapGuard;
 
         
@@ -436,12 +436,10 @@ public class TaczCuriosConfig {
         
         public final ForgeConfigSpec.DoubleValue zhenWoImaginaryResistance;
         public final ForgeConfigSpec.DoubleValue zhenWoAllAttributesPercent;
-        public final ForgeConfigSpec.DoubleValue zhenWoTriggerHpRatio;
         public final ForgeConfigSpec.DoubleValue zhenWoBarrierRadius;
         public final ForgeConfigSpec.IntValue zhenWoSlownessAmplifier;
         public final ForgeConfigSpec.IntValue zhenWoSlownessDurationSeconds;
         public final ForgeConfigSpec.IntValue zhenWoBarrierDurationSeconds;
-        public final ForgeConfigSpec.IntValue zhenWoCooldownSeconds;
         public final ForgeConfigSpec.DoubleValue zhenWoDamageTakenFactor;
         public final ForgeConfigSpec.IntValue zhenWoResistanceLevel;
         public final ForgeConfigSpec.IntValue zhenWoAbsorptionAmount;
@@ -1891,9 +1889,6 @@ public class TaczCuriosConfig {
             zhenWoAllAttributesPercent = builder
                     .comment("全属性提升比例（乘法） (默认: 0.5 = +50%)")
                     .defineInRange("allAttributesPercent", 0.5, -1, 100);
-            zhenWoTriggerHpRatio = builder
-                    .comment("触发结界时的血量比例阈值 (默认: 0.5 = 50%)")
-                    .defineInRange("triggerHpRatio", 0.5, 0.0, 1.0);
             zhenWoBarrierRadius = builder
                     .comment("结界影响半径（格） (默认: 64)")
                     .defineInRange("barrierRadius", 64.0, 1.0, 512.0);
@@ -1904,11 +1899,8 @@ public class TaczCuriosConfig {
                     .comment("缓慢效果持续时间（秒） (默认: 60)")
                     .defineInRange("slownessDurationSeconds", 60, 1, 600);
             zhenWoBarrierDurationSeconds = builder
-                    .comment("结界持续时间（秒） (默认: 30)")
+                    .comment("结界持续时间（秒），到点自动结束；持续期间按技能键不会续期 (默认: 30)")
                     .defineInRange("barrierDurationSeconds", 30, 1, 600);
-            zhenWoCooldownSeconds = builder
-                    .comment("结界触发后的冷却时间（秒） (默认: 60)")
-                    .defineInRange("cooldownSeconds", 60, 1, 3600);
             zhenWoDamageTakenFactor = builder
                     .comment("减伤（苏同款）：受到伤害降低比例 (默认: 0.8 = 降低80%)")
                     .defineInRange("damageTakenFactor", 0.8, 0.0, 1.0);
@@ -2254,7 +2246,7 @@ public class TaczCuriosConfig {
             builder.pop();
 
             builder.comment("不识时务饰品配置").push("bushi_shiwu");
-            // 触发概率取佩戴者的虚数抗性概率（见 ImaginaryResistanceHelper），命中时使目标移动速度归零
+            // 触发概率取佩戴者的虚数抗性概率，命中时使目标移动速度归零
             bushiShiwuArmorImaginaryScale = builder
                     .comment("攻击时附加（虚数抗性值/100 × 护甲值 × 该比例）的虚数伤害 (默认: 1.0)")
                     .defineInRange("armorImaginaryScale", 1.0, 0.0, 100.0);

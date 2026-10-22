@@ -27,7 +27,7 @@ public class TccAttributes {
 
     /**
      * 生命偷取：造成物理伤害时按比例转化为自身治疗。1.0 = 100%。
-     * 结算见 {@link com.xlxyvergil.tcc.event.LifeStealOverhealHandler}。
+     * 由受击结算统一处理。
      */
     public static final RegistryObject<Attribute> LIFE_STEAL =
         ATTRIBUTES.register("life_steal",
@@ -35,8 +35,7 @@ public class TccAttributes {
 
     /**
      * 过量治疗：造成物理伤害时按比例转化为伤害吸收（金心），上限为攻击者最大生命的一半。1.0 = 100%。
-     * 结算见 {@link com.xlxyvergil.tcc.event.LifeStealOverhealHandler}；虚数伤害（含枪械子弹转换来的）
-     * 由 TccAttributeEvents#imaginaryDamageOnAttack 在抗性结算后转入同一入口。
+     * 虚数伤害（含枪械子弹转换来的）在抗性结算后转入同一入口。
      */
     public static final RegistryObject<Attribute> OVERHEAL =
         ATTRIBUTES.register("overheal",

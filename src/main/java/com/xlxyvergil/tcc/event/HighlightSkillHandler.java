@@ -2,15 +2,11 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.lootr.LootrCompat;
-import com.xlxyvergil.tcc.items.curios.bound.Kongmeng;
-import com.xlxyvergil.tcc.items.curios.bound.LuejiZhiShou;
-import com.xlxyvergil.tcc.items.curios.bound.PadoPhilipis;
 import com.xlxyvergil.tcc.network.NetworkHandler;
-import com.xlxyvergil.tcc.util.CurioSearchHelper;
+import com.xlxyvergil.tcc.util.HighlightSkillCurios;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -33,14 +29,18 @@ import java.util.UUID;
  *
  * 佩戴 pado_philipis / lueji_zhi_shou / kongmeng 之一后，按下技能键（默认 V）即扫描一次
  * 周围 RADIUS 格内"自身尚未开启的 Lootr 战利品箱子/运输矿车"与"刷怪笼"，
- * 坐标定向下发给该玩家，客户端一直保留并渲染（绿 = 战利品，红 = 刷怪笼）。
+ * 坐标定向下发给该玩家；客户端保留并渲染 30 秒，之后自动收掉
+ * （绿 = 战利品箱子，蓝 = 战利品矿车，红 = 刷怪笼）。
  *
  * 与旧实现的关键差别：<strong>没有周期轮询</strong>。旧版每 200 tick 全量扫描并下发一次，
  * 不管玩家在不在看；现在只有玩家按键才扫描，服务端在没人按键时零开销。
  *
- * 冷却为 0（玩家要求"按一次显示一次周边"），这里只保留 {@link #MIN_INTERVAL}
+ * 冷却为 0（玩家要求"按一次显示一次周边"），这里只保留 MIN_INTERVAL
  * 这个防连按门槛，用来挡住按住键/宏连发造成的重复全量扫描——它不是玩法冷却，
  * 正常手动按是碰不到的。
+ *
+ * 按键的<strong>佩戴门禁在客户端</strong>：没戴饰品时客户端根本不发包，按键等于不存在。
+ * 本类的 hasHighlightingCurio 是同一判定的第二次校验，只在客户端与服务端不同步时才会拦下请求。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class HighlightSkillHandler {
@@ -70,9 +70,8 @@ public final class HighlightSkillHandler {
         }
         LAST_ACTIVATE.put(player.getUUID(), now);
 
-        // 没戴饰品：不发新坐标，改为清空显示。
-        // 这样"摘掉饰品后残留的辉光"有一条确定的收尾方式（再按一次技能键），
-        // 而不需要为了发现摘除去轮询饰品栏。
+        // 没戴饰品：正常情况下客户端已经拦掉这个包，走到这里说明两端饰品栏不同步，
+        // 于是顺手清掉显示并撤销记录，避免残留辉光照旧挂着。
         if (!hasHighlightingCurio(player)) {
             ACTIVE_PLAYERS.remove(player.getUUID());
             NetworkHandler.sendLootrHighlights(player, List.of());
@@ -132,13 +131,14 @@ public final class HighlightSkillHandler {
         LAST_ACTIVATE.remove(player.getUUID());
     }
 
-    /** 玩家是否佩戴了授予高亮技能的三件饰品之一。 */
+    /**
+     * 玩家是否佩戴了授予高亮技能的三件饰品之一。
+     *
+     * 与客户端的按键门禁共用 HighlightSkillCurios.isWorn 这一份判定：
+     * 客户端负责"没戴就什么都不做"，这里只是防止客户端与服务端不同步时的越权请求。
+     */
     private static boolean hasHighlightingCurio(ServerPlayer player) {
-        ItemStack found = CurioSearchHelper.findFirstEquippedStack(player, stack ->
-                stack.getItem() instanceof PadoPhilipis
-                        || stack.getItem() instanceof LuejiZhiShou
-                        || stack.getItem() instanceof Kongmeng);
-        return !found.isEmpty();
+        return HighlightSkillCurios.isWorn(player);
     }
 
     /** 收集玩家周围未开启的 Lootr 战利品箱坐标，追加到 out（矿车由调用方单独追加）。 */

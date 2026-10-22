@@ -257,8 +257,8 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     /**
      * 声明该饰品在当前条件下应当施加的属性修饰符（<strong>只计算、不写入实体</strong>）。
      * <p>
-     * 由 {@link #declareModifiers} 经 {@link AttributeHelper#collectDeclarations} 的收集模式汇总而来。
-     * 同一份数据有两个用途：一是真正施加（见 {@link #applyDeclaredEffects}），
+     * 由 declareModifiers 经 AttributeHelper.collectDeclarations 的收集模式汇总而来。
+     * 同一份数据有两个用途：一是真正施加，
      * 二是经 {@code CurioAttributeModifierEvent} 交给 Curios 官方通道，
      * 属性面板与工具提示据此把修饰符映射回佩戴的饰品栈（显示来源图标 / 官方属性行）。
      */
@@ -284,7 +284,7 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     }
 
     /**
-     * 施加 {@link #declaredEffects} 的结果，再执行声明之外的副作用。
+     * 施加 declaredEffects 的结果，再执行声明之外的副作用。
      * <p>
      * 逐个按 UUID 比对后再写入：值与运算方式都没变就跳过，避免切枪/击杀结算这类高频刷新
      * 无谓地替属性实例打脏标记（丢脏即重算 + 额外同步包）。
@@ -350,8 +350,8 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     /**
      * 声明该饰品想要施加的属性修饰符：条件判断（手持武器类型等）与数值计算都写在这里，
      * 通过 {@code AttributeHelper.applyModifier} 等方法「登记」。<strong>禁止副作用</strong>
-     * ——收集模式下本方法只登记不施加，真正的写入由 {@link #applyDeclaredEffects} 统一完成，
-     * 药水效果之类的副作用请放 {@link #applySideEffects}。
+     * ——收集模式下本方法只登记不施加，真正的写入由 applyDeclaredEffects 统一完成，
+     * 药水效果之类的副作用请放 applySideEffects。
      */
     protected abstract void declareModifiers(LivingEntity entity, ItemStack stack);
 
@@ -375,10 +375,10 @@ public abstract class BaseCurioItem extends Item implements ICurioItem, Vanishab
     }
 
     /**
-     * 与 {@link #matchesRestriction} 相同的武器类型限制，但<strong>主手或副手任一满足</strong>即可。
+     * 与 matchesRestriction 相同的武器类型限制，但<strong>主手或副手任一满足</strong>即可。
      *
      * 用于气息遮蔽 / 生命恢复这类"佩戴者持枪就生效"的被动：副手拿着狙击枪时不该被判成不合格。
-     * 护甲/移速这类属性修饰符仍走 {@link #matchesRestriction}（只看主手），属性面板口径不变。
+     * 护甲/移速这类属性修饰符仍走 matchesRestriction（只看主手），属性面板口径不变。
      */
     protected boolean matchesRestrictionEitherHand(LivingEntity entity) {
         List<String> restriction = getWeaponTypeRestriction();

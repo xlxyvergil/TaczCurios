@@ -156,6 +156,9 @@ public class TaczCurios
             // 高亮技能的按键注册与输入处理
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillKeys");
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillInput");
+            // 真我结界的按键注册与输入处理
+            Class.forName("com.xlxyvergil.tcc.client.ZhenWoBarrierKeys");
+            Class.forName("com.xlxyvergil.tcc.client.ZhenWoBarrierInput");
         }
     }
 

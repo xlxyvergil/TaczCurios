@@ -26,13 +26,13 @@ import java.util.function.Predicate;
 /**
  * gun_kill 触发器的成就/属性规则处理器。
  * <p>
- * 判定入口是 {@link LivingDeathEvent}，而不是 TACZ 的 {@code EntityKillByGunEvent}：
+ * 判定入口是 LivingDeathEvent，而不是 TACZ 的 {@code EntityKillByGunEvent}：
  * 原版末影龙在非停驻阶段被打到 0 血时，{@code EnderDragon#hurt(DragonPart, …)} 会在同一次调用里
  * {@code setHealth(1.0F)} 并切到 DYING 阶段，TACZ 结算完再判断 {@code isDeadOrDying()} 得到 false，
  * 因此永远不会发出击杀事件 —— 依赖该事件会让「击杀末影龙」类成就永远无法在飞行阶段完成。
  * <p>
  * 死亡事件不受此影响，且致死伤害的直接实体就是 TACZ 的子弹实体
- * （{@code tacz:bullet}），枪械 id 可直接由 {@link EntityKineticBullet#getGunId()} 反查，
+ * （{@code tacz:bullet}），枪械 id 可直接由 EntityKineticBullet.getGunId() 反查，
  * 因此不需要依赖伤害类型 tag，也不受数据包改写 tag 的影响。
  */
 @Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)

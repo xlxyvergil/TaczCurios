@@ -19,6 +19,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -38,7 +39,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -58,8 +58,8 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("2df6423f-42bc-4629-8624-ebb8cf4ff4c8");
     private static final UUID ALL_ATTRIBUTES_UUID = UUID.fromString("8f851e69-0217-4e14-af7f-ee655b4a1cc7");
     private static final UUID KNOCKBACK_RESISTANCE_UUID = UUID.fromString("9b7d1c2e-3f4a-5b6c-7d8e-9f0a1b2c3d4e");
+    /** 结界剩余 tick；> 0 表示结界正在展开（也是技能键"能否开启"的唯一判定）。 */
     private static final String BARRIER_KEY = "tcc_zhen_wo_barrier";
-    private static final String COOLDOWN_KEY = "tcc_zhen_wo_cooldown";
 
     /** 真我结界激活中的佩戴者 UUID 集合（仅服务端维护），供两参 getEntities 过滤使用。 */
     private static final Set<UUID> ACTIVE_BARRIER_WEARERS = new HashSet<>();
@@ -138,20 +138,18 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
 
         if (entity.isDeadOrDying()) return;
 
-        // 收束：仅玩家触发真我效果；其他实体不再享有减伤、结界与免死，并清理历史残留。
+        // 收束：真我只对玩家与女仆生效；其他实体不再享有减伤与结界，并清理它们身上的历史残留。
         if (!(entity instanceof Player) && !isMaid(entity)) {
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
             CompoundTag tag = stack.getTag();
-            if (tag != null && (tag.getInt(BARRIER_KEY) != 0 || tag.getInt(COOLDOWN_KEY) != 0)) {
+            if (tag != null && tag.getInt(BARRIER_KEY) != 0) {
                 tag.putInt(BARRIER_KEY, 0);
-                tag.putInt(COOLDOWN_KEY, 0);
             }
             return;
         }
 
         CompoundTag tag = stack.getOrCreateTag();
         int barrierTicks = tag.getInt(BARRIER_KEY);
-        int cooldownTicks = tag.getInt(COOLDOWN_KEY);
 
         // 同步结界激活中标记，供两参 getEntities 过滤
         if (barrierTicks > 0) {
@@ -160,7 +158,7 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
             ACTIVE_BARRIER_WEARERS.remove(entity.getUUID());
         }
 
-        // 每 10 秒续期抗性提升（时长 2 分钟），卸下时移除
+        // 每 10 秒续期抗性提升（单次时长 2 分钟）；卸下后不再续期，由它自然到期
         if (entity.tickCount % 200 == 0) {
             entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2 * 60 * 20,
                 TaczCuriosConfig.COMMON.zhenWoResistanceLevel.get(), false, false, true));
@@ -180,7 +178,9 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
                 refreshBarrierBuff(entity, barrierTicks);
             }
             if (barrierTicks <= 0) {
-                tag.putInt(COOLDOWN_KEY, TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get() * 20);
+                // 唯一结束途径：计时走完。撤掉状态 buff 让客户端立刻停画，
+                // 而不是等它自己那几 tick 的续期余量过期；之后才能再按 X 开下一次。
+                entity.removeEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
                 return;
             }
             // 结界展开期间：佩戴者自身每 tick 回满血
@@ -189,15 +189,8 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
             return;
         }
 
-        if (cooldownTicks > 0) {
-            tag.putInt(COOLDOWN_KEY, cooldownTicks - 1);
-            return;
-        }
-
-        double triggerRatio = TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get();
-        if (entity.getHealth() / entity.getMaxHealth() < triggerRatio) {
-            activateBarrier(entity, stack);
-        }
+        // 结界只由技能键开启，且只在未开启时生效；
+        // 没有任何自动触发、没有冷却、也没有"按键关闭"——结束只靠上面那条计时走完。
     }
 
     private static void refreshBarrierBuff(LivingEntity player, int remainingTicks) {
@@ -373,12 +366,11 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
         }
     }
 
-    /** 开启结界：设结界计时、清冷却、回满血并刷新结界 buff 与效果。 */
+    /** 开启结界：设结界计时、回满血并刷新结界 buff 与效果（只有这一个入口，无冷却）。 */
     private static void activateBarrier(LivingEntity player, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
         int duration = TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20;
         tag.putInt(BARRIER_KEY, duration);
-        tag.putInt(COOLDOWN_KEY, 0);
         ACTIVE_BARRIER_WEARERS.add(player.getUUID());
 
         player.setHealth(player.getMaxHealth());
@@ -388,37 +380,26 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
     }
 
     /**
-     * 非结界期正门 hurt 致死兜底：仅玩家佩戴真我且不在冷却时，取消死亡并开启结界（结界已激活则回满血刷新结界）。
-     * 第三方绕过 hurt 直接写血的致死不在此列——非结界期 set 层不做免死兜底。
+     * 按键开启（服务端）：技能键只做"开"这一件事。
+     *
+     * 开启条件只看一件事——<strong>佩戴者当前是否已经开着结界</strong>：
+     * 已开启时按键什么都不发生（不续期、不重启、也不关闭），没有冷却，
+     * 也没有任何自动触发。结界的唯一结束途径是 {@code zhenWoBarrierDurationSeconds}
+     * 走完，之后才能再按 X 开下一次。
      */
-    @SubscribeEvent
-    public static void onLivingDeath(LivingDeathEvent event) {
-        LivingEntity player = event.getEntity();
-        if (player.level().isClientSide) return;
-        // 收束：真我免死仅对玩家与女仆生效
-        if (!(player instanceof Player) && !isMaid(player)) return;
-        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player,
-            s -> s.getItem() instanceof ZhenWo);
-        if (stack.isEmpty()) return;
-
-        boolean barrierActive = stack.getOrCreateTag().getInt(BARRIER_KEY) > 0;
-
-        // 免死与结界共用同一冷却：冷却期间免死不生效，正常死亡。
-        if (!barrierActive && stack.getOrCreateTag().getInt(COOLDOWN_KEY) > 0) return;
-
-        event.setCanceled(true);
-
-        player.setDeltaMovement(Vec3.ZERO);
-        player.hurtTime = 0;
-        player.deathTime = 0;
-        player.invulnerableTime = 100;
-
-        if (barrierActive) {
-            player.setHealth(player.getMaxHealth());
-            refreshBarrierBuff(player, stack.getOrCreateTag().getInt(BARRIER_KEY));
-        } else {
-            activateBarrier(player, stack);
+    public static void activateByKey(ServerPlayer player) {
+        if (player == null || player.isDeadOrDying()) {
+            return;
         }
+        ItemStack stack = CurioSearchHelper.findFirstEquippedStack(player, s -> s.getItem() instanceof ZhenWo);
+        if (stack.isEmpty()) {
+            return;
+        }
+        // 已开启：按键静默无效
+        if (stack.getOrCreateTag().getInt(BARRIER_KEY) > 0) {
+            return;
+        }
+        activateBarrier(player, stack);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -472,13 +453,11 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
             .withStyle(ChatFormatting.GOLD));
 
         tooltip.add(Component.literal(""));
-                tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger.line1",
-                (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger.line1")
             .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger.line2",
-                (int) (TaczCuriosConfig.COMMON.zhenWoTriggerHpRatio.get() * 100))
-            .withStyle(ChatFormatting.RED));;
-                tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration.line1",
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.trigger.line2")
+            .withStyle(ChatFormatting.RED));
+        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.duration.line1",
                 TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get(),
                 TaczCuriosConfig.COMMON.zhenWoBarrierRadius.get().intValue())
             .withStyle(ChatFormatting.RED));
@@ -503,9 +482,6 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
         tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.damage",
                 TaczCuriosConfig.COMMON.zhenWoSlownessAmplifier.get() + 1,
                 String.format("%.2f", imaginaryDamage))
-            .withStyle(ChatFormatting.RED));
-        tooltip.add(Component.translatable("item.tcc.zhen_wo.effect.cooldown",
-                TaczCuriosConfig.COMMON.zhenWoCooldownSeconds.get())
             .withStyle(ChatFormatting.RED));
 
         tooltip.add(Component.translatable("tcc.tooltip.affected_by_imaginary_resistance")
