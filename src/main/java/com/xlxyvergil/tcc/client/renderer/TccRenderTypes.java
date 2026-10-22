@@ -6,14 +6,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.lwjgl.opengl.GL11;
-
 import java.util.OptionalDouble;
 
 /**
- * 自定义 RenderType（纯客户端）：结界地面特效平铺贴图用。基于 entityTranslucent，
- * 改 CullFace 为 NO_CULL（避免俯视平面被背面剔除）、DepthTest 为 GL_ALWAYS（避免贴地 quad 被地面深度遮挡），
- * 状态写入 RenderType 而不污染全局 GL。
+ * 本模组的自定义 RenderType（纯客户端）：把绘制状态写在 RenderType 里，而不是逐帧改全局 GL。
+ *
+ * <p>1.21.1 侧全部走 {@code MultiBufferSource + VertexConsumer}（见 {@link HighlightOutlineRenderer}
+ * 与 {@link ZhenWoBarrierRenderer}）：真我结界的贴地花朵/边界环与高亮线框各自一条通道。
  */
 @OnlyIn(Dist.CLIENT)
 public class TccRenderTypes extends RenderType {
@@ -23,38 +22,60 @@ public class TccRenderTypes extends RenderType {
         super(name, format, mode, bufferSize, hasCrumbling, sortOnUpload, setup, clear);
     }
 
-    public static RenderType barrier(ResourceLocation texture) {
-        return create("tcc_zhen_wo_barrier",
-                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
-                VertexFormat.Mode.QUADS,
-                256,
-                false,
-                true,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
-                        .setTextureState(new TextureStateShard(texture, false, false))
-                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                        .setLightmapState(LIGHTMAP)
-                        .setOverlayState(OVERLAY)
-                        .setCullState(NO_CULL)
-                        .setDepthTestState(new DepthTestStateShard("always_depth_test", GL11.GL_ALWAYS))
-                        .createCompositeState(false));
+    /**
+     * 真我结界的地面边界环：纯色四边形，半透明、不剔除背面、不写深度
+     * （只留深度测试，使环带被地形正常遮挡，但不会挡住之后画的东西）。
+     */
+    private static final RenderType ZHEN_WO_BOUNDARY = create("tcc_zhen_wo_boundary",
+            DefaultVertexFormat.POSITION_COLOR,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(POSITION_COLOR_SHADER)
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setCullState(NO_CULL)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .createCompositeState(false));
+
+    public static RenderType zhenWoBoundary() {
+        return ZHEN_WO_BOUNDARY;
     }
 
-    /** 无纹理纯色四边形，用于结界地面环。 */
-    public static RenderType ring() {
-        return create("tcc_zhen_wo_ring",
-                DefaultVertexFormat.POSITION_COLOR,
-                VertexFormat.Mode.QUADS,
-                256,
-                false,
-                true,
-                RenderType.CompositeState.builder()
-                        .setShaderState(POSITION_COLOR_SHADER)
-                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                        .setCullState(NO_CULL)
-                        .setDepthTestState(new DepthTestStateShard("always_depth_test", GL11.GL_ALWAYS))
-                        .createCompositeState(false));
+    /**
+     * 真我结界的脚下花朵：贴图四边形，用<strong>标准 alpha 混合</strong>（不是加算）。
+     *
+     * 加算混合会把贴图亮度叠到地面上，草地一衬就糊成一片白，透明度也不好控制；
+     * 这里改用 {@code TRANSLUCENT_TRANSPARENCY}（SRC_ALPHA / ONE_MINUS_SRC_ALPHA），
+     * 贴图按自身颜色与顶点 alpha 正常叠在地表，强度由顶点 alpha 直接决定。
+     *
+     * 1.21.1 没有 position_tex_color 核心着色器，这里用 vanilla 现成的
+     * POSITION_COLOR_TEX_LIGHTMAP + 同名 shard：顶点色提供 alpha，贴图提供花纹，
+     * 亮度由顶点灯光值（全亮）决定，不受环境明暗影响。
+     *
+     * 单例持有（与 highlightOutline 同理）：BufferSource 以 RenderType 实例为 key，
+     * 每次新建实例会让 endBatch 找不到批次，花朵画不出来。
+     */
+    private static final RenderType ZHEN_WO_FLOWER = create("tcc_zhen_wo_flower",
+            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+            VertexFormat.Mode.QUADS,
+            256,
+            false,
+            true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(POSITION_COLOR_TEX_LIGHTMAP_SHADER)
+                    .setTextureState(new TextureStateShard(
+                            ResourceLocation.fromNamespaceAndPath("tcc", "textures/mob_effect/zhen_wo_barrier.png"),
+                            false, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setLightmapState(LIGHTMAP)
+                    .setCullState(NO_CULL)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .createCompositeState(false));
+
+    public static RenderType zhenWoFlower() {
+        return ZHEN_WO_FLOWER;
     }
 
     /**

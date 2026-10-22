@@ -21,8 +21,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
  * </ul>
  * 基数取 {@code min(本次伤害, 目标剩余血量)}，避免溢出倒杀的虚高转化。
  *
- * <p>两个入口：普通物理伤害走 {@link #onLivingHurt}；虚数伤害（含枪械子弹转换来的虚数伤害）
- * 走 {@link #applyImaginary}，由 {@link TccAttributeEvents#imaginaryDamageOnAttack} 在抗性结算后调用。
+ * <p>两个入口：普通物理伤害走 onLivingHurt；虚数伤害（含枪械子弹转换来的虚数伤害）
+ * 走 applyImaginary，由 TccAttributeEvents.imaginaryDamageOnAttack 在抗性结算后调用。
  *
  * <p>1.21.1 迁移说明：Forge 的 {@code LivingHurtEvent} 在 NeoForge 1.21 已由
  * {@link LivingIncomingDamageEvent} 取代（同为护甲减免前的受击入口，{@code getAmount()} 语义一致）。
@@ -36,7 +36,7 @@ public final class LifeStealOverhealHandler {
     /**
      * 普通物理伤害入口：近战/生物攻击取 {@code directEntity}；TACZ 枪械子弹的 {@code directEntity}
      * 是弹体，退回到 {@code getEntity()}（射手）。箭等其它投掷物不在支持范围。
-     * 虚数伤害（含枪械转换来的）走 {@link #applyImaginary}，在抗性结算后处理。
+     * 虚数伤害（含枪械转换来的）走 applyImaginary，在抗性结算后处理。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {

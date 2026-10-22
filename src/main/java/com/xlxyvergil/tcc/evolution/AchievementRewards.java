@@ -17,7 +17,7 @@ public final class AchievementRewards {
         if (reward.isGrant()) {
             return executeGrant(player, reward);
         }
-        // evolve 奖励不再自动原地替换：改为玩家在铁砧用「已绑定饰品 + 崩坏结晶」手动合成（见 AnvilEvolutionHandler）
+        // evolve 奖励不再自动原地替换：改为玩家在铁砧用「已绑定饰品 + 崩坏结晶」手动合成
         return false;
     }
 

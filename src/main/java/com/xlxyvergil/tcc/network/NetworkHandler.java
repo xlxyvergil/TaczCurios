@@ -33,7 +33,9 @@ public final class NetworkHandler {
         registrar.playToClient(SyncDataFilesS2CPacket.TYPE, SyncDataFilesS2CPacket.STREAM_CODEC, SyncDataFilesS2CPacket::handle);
         registrar.playToClient(ResetRavenChargeS2CPacket.TYPE, ResetRavenChargeS2CPacket.STREAM_CODEC, ResetRavenChargeS2CPacket::handle);
         registrar.playToClient(SyncAttributeLinksS2CPacket.TYPE, SyncAttributeLinksS2CPacket.STREAM_CODEC, SyncAttributeLinksS2CPacket::handle);
+        registrar.playToClient(SyncZhenWoBarrierS2CPacket.TYPE, SyncZhenWoBarrierS2CPacket.STREAM_CODEC, SyncZhenWoBarrierS2CPacket::handle);
         registrar.playToServer(ActivateHighlightC2SPacket.TYPE, ActivateHighlightC2SPacket.STREAM_CODEC, ActivateHighlightC2SPacket::handle);
+        registrar.playToServer(ActivateZhenWoBarrierC2SPacket.TYPE, ActivateZhenWoBarrierC2SPacket.STREAM_CODEC, ActivateZhenWoBarrierC2SPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
@@ -66,6 +68,20 @@ public final class NetworkHandler {
     /** 客户端按键后请求服务端扫描并刷新高亮（只应在客户端调用）。 */
     public static void sendActivateHighlight() {
         PacketDistributor.sendToServer(new ActivateHighlightC2SPacket());
+    }
+
+    /** 客户端按下真我结界技能键后请求服务端校验并展开结界（只应在客户端调用）。 */
+    public static void sendActivateZhenWoBarrier() {
+        PacketDistributor.sendToServer(new ActivateZhenWoBarrierC2SPacket());
+    }
+
+    /**
+     * 结界开启后把剩余 tick 发给"佩戴者本人 + 所有正在追踪他的玩家"，
+     * 使结界在多人环境下对谁都可见，且客户端可以自己倒计时。
+     */
+    public static void syncZhenWoBarrier(ServerPlayer player, int remainingTicks) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player,
+                new SyncZhenWoBarrierS2CPacket(player.getId(), remainingTicks));
     }
 
     /** 命中造成伤害后通知客户端清零渡鸦神之键的开镜蓄力 HUD。 */

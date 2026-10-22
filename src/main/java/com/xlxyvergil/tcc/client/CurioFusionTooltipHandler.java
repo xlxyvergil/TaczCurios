@@ -112,7 +112,7 @@ public class CurioFusionTooltipHandler {
     }
 
     /**
-     * 限宽：本模组饰品的 tooltip 宽度压到 {@link #MAX_TOOLTIP_WIDTH} 以内。
+     * 限宽：本模组饰品的 tooltip 宽度压到 MAX_TOOLTIP_WIDTH 以内。
      * 原版按「屏幕宽度的一半」换行，宽屏下会长到伸进屏幕底部/右侧的其它 mod UI。
      */
     @SubscribeEvent

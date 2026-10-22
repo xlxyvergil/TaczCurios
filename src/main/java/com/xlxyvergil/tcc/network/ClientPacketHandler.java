@@ -5,6 +5,7 @@ import com.xlxyvergil.tcc.client.LootrHighlightClientData;
 import com.xlxyvergil.tcc.client.RavenKeyChargeHud;
 import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
+import com.xlxyvergil.tcc.client.ZhenWoBarrierClientData;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
@@ -62,6 +63,11 @@ final class ClientPacketHandler {
 
     static void handleSpawnerHighlights(SyncSpawnerHighlightsS2CPacket packet) {
         SpawnerHighlightClientData.setHighlights(packet.positions());
+    }
+
+    /** 真我结界开启：记下该实体的剩余 tick，倒计时与渲染全部由客户端负责。 */
+    static void handleZhenWoBarrier(SyncZhenWoBarrierS2CPacket packet) {
+        ZhenWoBarrierClientData.set(packet.entityId(), packet.remainingTicks());
     }
 
     /** 服务端命中清零后，同步把本地蓄力计时归零，令 HUD 进度条与服务端增幅一致。 */

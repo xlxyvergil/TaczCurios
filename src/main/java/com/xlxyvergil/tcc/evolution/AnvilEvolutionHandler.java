@@ -19,7 +19,7 @@ import net.neoforged.neoforge.event.AnvilUpdateEvent;
  * <p>
  * 服务端校验门槛：合成者已完成对应进化成就；饰品的绑定者与合成者一致。
  * 经验消耗 1 级、崩坏结晶 1 个。
- * 原「达成成就自动原地进化」已停用（见 AchievementRewards）。
+ * 原「达成成就自动原地进化」已停用。
  * <p>
  * 仅在服务端产出：铁砧结果槽由服务端同步给客户端，客户端无需另做校验。
  */

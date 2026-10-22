@@ -134,12 +134,15 @@ public class TaczCurios
     private void registerClientEventsSafely() throws ClassNotFoundException {
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Class.forName("com.xlxyvergil.tcc.client.ClientEventHandler");
-            Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierLayer");
+            Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
             // 高亮技能的按键注册与输入处理
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillKeys");
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillInput");
+            // 真我结界的按键注册与输入处理
+            Class.forName("com.xlxyvergil.tcc.client.ZhenWoBarrierKeys");
+            Class.forName("com.xlxyvergil.tcc.client.ZhenWoBarrierInput");
         }
     }
 

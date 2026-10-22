@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * 把饰品的属性声明接进 Curios 官方通道。
  *
- * <p>Curios 在计算某件饰品当前该施加的修饰符时会触发 {@link CurioAttributeModifierEvent}：
+ * <p>Curios 在计算某件饰品当前该施加的修饰符时会触发 CurioAttributeModifierEvent：
  * 装备/卸下时在服务端触发（用于施加与移除），工具提示与属性面板在客户端触发
  * （用于显示属性行与来源图标）。这里把饰品声明的修饰符补进事件，于是：
  * <ul>
@@ -25,7 +25,7 @@ import java.util.Map;
  *   <li>Apothic Attributes 的 {@code CuriosCompat} 能把修饰符映射回佩戴的饰品栈，显示来源图标。</li>
  * </ul>
  *
- * <p>声明本身由 {@link BaseCurioItem#declaredEffects} 在收集模式下求得，条件判断（手持武器类型等）
+ * <p>声明本身由 BaseCurioItem.declaredEffects 在收集模式下求得，条件判断（手持武器类型等）
  * 仍在各饰品的 {@code declareModifiers} 里求值，客户端与服务端的口径一致。
  *
  * <p>1.21.1 侧：事件在 {@code NeoForge.EVENT_BUS}（游戏总线）上派发，

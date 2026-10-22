@@ -15,7 +15,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 /**
  * 切枪驱动：主手/副手的枪械<strong>类型</strong>发生变化时重建饰品属性效果。
  *
- * 直接用 {@link LivingEquipmentChangeEvent}——原版在 LivingEntity 的每 tick 装备差分里
+ * 直接用 LivingEquipmentChangeEvent——原版在 LivingEntity 的每 tick 装备差分里
  * （detectEquipmentUpdates 遍历全部 EquipmentSlot，含 MAINHAND / OFFHAND）就会发这个事件，
  * 主手换枪、副手换枪、快捷栏切换、背包拖拽都能覆盖到，不需要自己比对手部状态。
  *
@@ -48,7 +48,7 @@ public class GunSwitchEventHandler {
         CurioEffectRefresher.refreshAll(entity);
     }
 
-    /** 手持物的枪械类型；不是枪械（或查不到枪械数据）时返回 {@link #NO_GUN_TYPE}。 */
+    /** 手持物的枪械类型；不是枪械（或查不到枪械数据）时返回 NO_GUN_TYPE。 */
     private static String gunType(ItemStack stack) {
         IGun gun = IGun.getIGunOrNull(stack);
         if (gun == null) {

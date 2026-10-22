@@ -22,7 +22,7 @@ public class AttributeHelper {
 
     /**
      * 声明收集栈：栈非空时处于「只登记不施加」模式。饰品的 {@code declareModifiers} 在这层里运行，
-     * 由 {@link #collectDeclarations} 收集成一份修饰符表交给 Curios 官方通道
+     * 由 collectDeclarations 收集成一份修饰符表交给 Curios 官方通道
      * （CurioAttributeModifierEvent → getAttributeModifiers），属性面板因此能按 Curios 的规则
      * 把修饰符映射回佩戴的饰品栈显示来源图标。
      * <p>

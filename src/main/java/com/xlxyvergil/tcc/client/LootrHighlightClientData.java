@@ -20,7 +20,7 @@ import java.util.Set;
  * 服务端只下发一组坐标，区分在客户端完成——矿车是实体，按坐标查一下有没有矿车实体即可。
  * 分类在收到下发时做一次（此时客户端 level 可用），而不是每帧查询，避免逐帧的实体检索开销。
  *
- * 每次收到下发改写 {@link #expiresAt}：轮廓只在收到的 {@link #DURATION_TICKS} tick 内显示。
+ * 每次收到下发改写 expiresAt：轮廓只在收到的 DURATION_TICKS tick 内显示。
  */
 @OnlyIn(Dist.CLIENT)
 public final class LootrHighlightClientData {
