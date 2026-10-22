@@ -1,6 +1,5 @@
 package com.xlxyvergil.tcc.client.renderer;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
@@ -119,10 +118,9 @@ public final class ZhenWoBarrierRenderer {
         }
         BufferUploader.drawWithShader(rings.end());
 
-        // 2) 中心花朵（贴图）：用加算混合，贴图自带的粉色光晕会发光而不是压在草地上成色块
+        // 2) 中心花朵（贴图）：标准 alpha 混合（沿用上面的 defaultBlendFunc）
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, SIGIL);
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         BufferBuilder flowers = Tesselator.getInstance().getBuilder();
         flowers.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         for (Player wearer : wearers) {
@@ -136,7 +134,6 @@ public final class ZhenWoBarrierRenderer {
                     SIGIL_FLOWER_HALF, -spin, 0.80F * fade);
         }
         BufferUploader.drawWithShader(flowers.end());
-        RenderSystem.defaultBlendFunc();
 
         RenderSystem.depthMask(true);
         RenderSystem.enableDepthTest();
