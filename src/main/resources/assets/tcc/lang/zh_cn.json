@@ -536,7 +536,6 @@
   "tcc.tooltip.always_infection": "攻击必定触发虚数侵染",
   "tcc.tooltip.always_imaginary_collapse": "攻击必定触发虚数崩解",
   "tcc.tooltip.gun_imaginary_collapse": "枪械攻击必定触发虚数崩解",
-  "effect.tcc.zhen_wo_barrier": "真我结界",
   "effect.tcc.qi_xi_zhe_bi": "气息遮蔽",
   "// 逐火之蛾系列饰品": "",
   "tcc.tooltip.damage_reduction": "降低受到的伤害%1$s%%",

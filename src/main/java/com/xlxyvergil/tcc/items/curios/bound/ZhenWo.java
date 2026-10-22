@@ -7,7 +7,7 @@ import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.core.TccDamageSources;
 import com.xlxyvergil.tcc.event.TccAttributeEvents;
-import com.xlxyvergil.tcc.registries.TccMobEffects;
+import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.util.AttributeHelper;
 import com.xlxyvergil.tcc.items.BoundCurioItem;
 import com.xlxyvergil.tcc.util.CurioSearchHelper;
@@ -174,13 +174,8 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
         if (barrierTicks > 0) {
             barrierTicks--;
             tag.putInt(BARRIER_KEY, barrierTicks);
-            if (entity.tickCount % 5 == 0) {
-                refreshBarrierBuff(entity, barrierTicks);
-            }
             if (barrierTicks <= 0) {
-                // 唯一结束途径：计时走完。撤掉状态 buff 让客户端立刻停画，
-                // 而不是等它自己那几 tick 的续期余量过期；之后才能再按 X 开下一次。
-                entity.removeEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
+                // 唯一结束途径：计时走完。客户端本地倒计时同步归零，视觉自行收掉。
                 return;
             }
             // 结界展开期间：佩戴者自身每 tick 回满血
@@ -191,12 +186,6 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
 
         // 结界只由技能键开启，且只在未开启时生效；
         // 没有任何自动触发、没有冷却、也没有"按键关闭"——结束只靠上面那条计时走完。
-    }
-
-    private static void refreshBarrierBuff(LivingEntity player, int remainingTicks) {
-        // 仅作结界状态载体，客户端据此绘制特效。
-        player.addEffect(new MobEffectInstance(TccMobEffects.ZHEN_WO_BARRIER.get(),
-            remainingTicks, 0, false, false, true));
     }
 
     private static void applyBarrierEffects(LivingEntity player) {
@@ -292,13 +281,10 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
         level.sendParticles(pink, x, headY, z, 8, 0.18, 0.25, 0.18, 0.0);
     }
 
-    /** 该实体当前是否为真我结界激活中的佩戴者（不校验距离）。服务端查集合，客户端用同步的结界 buff 判定。 */
+    /** 该实体当前是否为真我结界激活中的佩戴者（不校验距离，仅服务端有意义）。 */
     public static boolean isBarrierActiveWearer(LivingEntity entity) {
-        if (entity == null) return false;
-        if (entity.level().isClientSide) {
-            return entity.hasEffect(TccMobEffects.ZHEN_WO_BARRIER.get());
-        }
-        // 服务端：无人处于结界激活状态时直接返回，省去 getUUID() + 集合查找。
+        if (entity == null || entity.level().isClientSide) return false;
+        // 无人处于结界激活状态时直接返回，省去 getUUID() + 集合查找。
         if (ACTIVE_BARRIER_WEARERS.isEmpty()) return false;
         return ACTIVE_BARRIER_WEARERS.contains(entity.getUUID());
     }
@@ -366,8 +352,8 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
         }
     }
 
-    /** 开启结界：设结界计时、回满血并刷新结界 buff 与效果（只有这一个入口，无冷却）。 */
-    private static void activateBarrier(LivingEntity player, ItemStack stack) {
+    /** 开启结界：设结界计时、回满血并生效（只有这一个入口，无冷却）。 */
+    private static void activateBarrier(ServerPlayer player, ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTag();
         int duration = TaczCuriosConfig.COMMON.zhenWoBarrierDurationSeconds.get() * 20;
         tag.putInt(BARRIER_KEY, duration);
@@ -375,7 +361,8 @@ public class ZhenWo extends BoundCurioItem implements IDamageMitigation, IFluidW
 
         player.setHealth(player.getMaxHealth());
 
-        refreshBarrierBuff(player, duration);
+        // 客户端靠这一包自己倒计时并绘制；不再用效果承载状态
+        NetworkHandler.syncZhenWoBarrier(player, duration);
         applyBarrierEffects(player);
     }
 

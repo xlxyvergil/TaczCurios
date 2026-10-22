@@ -498,7 +498,6 @@
   "item.tcc.dream.key_effect": "Chance to deal %sx damage",
   "item.tcc.dream.fall_immunity": "Immune to fall damage",
   "item.tcc.dream.fishing_speed": "While worn, halves the wait time before a fish bites",
-  "effect.tcc.zhen_wo_barrier": "True Self Barrier",
   "effect.tcc.qi_xi_zhe_bi": "Presence Concealment",
   "tcc.tooltip.damage_reduction": "Reduces damage taken by %1$s%%",
   "tcc.tooltip.fire_lava_immunity": "While worn, immune to fire and lava damage, and continuously extinguishes fire",

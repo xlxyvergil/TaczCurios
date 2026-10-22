@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.List;
@@ -81,6 +82,11 @@ public final class NetworkHandler {
                 ActivateZhenWoBarrierC2SPacket::decode,
                 ActivateZhenWoBarrierC2SPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        CHANNEL.registerMessage(packetId++, SyncZhenWoBarrierS2CPacket.class,
+                SyncZhenWoBarrierS2CPacket::encode,
+                SyncZhenWoBarrierS2CPacket::decode,
+                SyncZhenWoBarrierS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
@@ -118,6 +124,15 @@ public final class NetworkHandler {
     /** 客户端按下真我结界技能键后请求服务端校验并展开结界（只应在客户端调用）。 */
     public static void sendActivateZhenWoBarrier() {
         CHANNEL.sendToServer(new ActivateZhenWoBarrierC2SPacket());
+    }
+
+    /**
+     * 结界开启后把剩余 tick 发给"佩戴者本人 + 所有正在追踪他的玩家"，
+     * 使结界在多人环境下对谁都可见，且客户端可以自己倒计时。
+     */
+    public static void syncZhenWoBarrier(ServerPlayer player, int remainingTicks) {
+        CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+                new SyncZhenWoBarrierS2CPacket(player.getId(), remainingTicks));
     }
 
     /** 命中造成伤害后通知客户端清零渡鸦神之键的开镜蓄力 HUD。 */
