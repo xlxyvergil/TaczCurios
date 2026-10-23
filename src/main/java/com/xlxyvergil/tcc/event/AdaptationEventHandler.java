@@ -12,21 +12,21 @@ import net.minecraftforge.fml.common.Mod;
 /**
  * 饰品适应效果：LivingHurtEvent 对活跃适应实例执行减免；死亡时清空适应数据。
  * <p>
- * 衰减采用「受击时惰性判定」（与 L2Hostility AdaptingTrait 一致）：在受击处理中比较距上次受伤的间隔，
+ * 衰减采用「受击时惰性判定」：在受击处理中比较距上次受伤的间隔，
  * 超过 decayTicks 即视为过期并清空记忆，因此无需每 tick 扫描全部生物。
  */
 @Mod.EventBusSubscriber(modid = "tcc", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AdaptationEventHandler {
 
     /**
-     * 优先级 LOW，与 L2Hostility AdaptingTrait 同级。
+     * 优先级 LOW：等其它模组的加伤/减伤结算完成后再做适应减免。
      */
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onLivingHurt(LivingHurtEvent event) {
         event.getEntity().getCapability(CurioAdaptationCapability.CAPABILITY).ifPresent(handler -> {
             if (!handler.hasAny()) return;
 
-            // bypass 检查（与 L2Hostility AdaptingTrait 一致）
+            // bypass 检查：穿透无敌与效果减免的伤害不参与适应
             if (event.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)
              || event.getSource().is(DamageTypeTags.BYPASSES_EFFECTS))
                 return;

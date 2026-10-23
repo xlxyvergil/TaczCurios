@@ -26,16 +26,16 @@ public class TccAttributes {
             () -> new RangedAttribute("attribute.name.tcc.imaginary_damage_resistance", 20.0D, -100.0D, 100.0D).setSyncable(true));
 
     /**
-     * 生命偷取：造成物理伤害时按比例转化为自身治疗。1.0 = 100%。
-     * 由受击结算统一处理。
+     * 生命偷取：造成伤害时按比例转化为自身治疗。1.0 = 100%。
+     * 由受击结算统一处理，对所有伤害类型生效。
      */
     public static final RegistryObject<Attribute> LIFE_STEAL =
         ATTRIBUTES.register("life_steal",
             () -> AttributesLibCompat.create("attribute.name.tcc.life_steal", 0.0D, 0.0D, 10.0D).setSyncable(true));
 
     /**
-     * 过量治疗：造成物理伤害时按比例转化为伤害吸收（金心），上限为攻击者最大生命的一半。1.0 = 100%。
-     * 虚数伤害（含枪械子弹转换来的）在抗性结算后转入同一入口。
+     * 过量治疗：造成伤害时按比例转化为伤害吸收（金心），上限为攻击者最大生命的一半。1.0 = 100%。
+     * 对所有伤害类型生效；虚数伤害（含枪械子弹转换来的）在抗性结算后转入同一入口。
      */
     public static final RegistryObject<Attribute> OVERHEAL =
         ATTRIBUTES.register("overheal",

@@ -1673,7 +1673,7 @@ public class TaczCuriosConfig {
             
             builder.comment("虚空万藏饰品配置").push("xukong_wancang");
             xukongWancangImaginaryDamage = builder
-                    .comment("攻击触发额外虚数伤害 (默认: 10.0)")
+                    .comment("攻击触发额外魔法伤害 (默认: 10.0)")
                     .defineInRange("imaginaryDamage", 10.0, 0, 10000);
             xukongWancangAmmoRegenPercent = builder
                     .comment("每秒弹药恢复比例 (默认: 0.05 = 5%)")
@@ -1699,7 +1699,7 @@ public class TaczCuriosConfig {
             
             builder.comment("启示之键饰品配置").push("qishi_zhijian");
             qishiZhijianImaginaryDamage = builder
-                    .comment("攻击触发额外虚数伤害 (默认: 20.0)")
+                    .comment("攻击触发额外魔法伤害 (默认: 20.0)")
                     .defineInRange("imaginaryDamage", 20.0, 0, 10000);
             qishiZhijianAmmoRegenPercent = builder
                     .comment("每秒弹药恢复比例 (默认: 0.1 = 10%)")
@@ -1725,7 +1725,7 @@ public class TaczCuriosConfig {
             
             builder.comment("虚空万藏·雨众天华饰品配置").push("xukong_wancang_yzth");
             xukongWancangYZTHImaginaryDamageScale = builder
-                    .comment("附加虚数伤害系数 (默认: 1.0；最终伤害 = 子弹基础伤害 × 虚数抗性/100 × 系数)")
+                    .comment("附加魔法伤害系数 (默认: 1.0；最终伤害 = 子弹基础伤害 × 虚数抗性/100 × 系数)")
                     .defineInRange("imaginaryDamageScale", 1.0, 0.0, 1000.0);
             xukongWancangYZTHAmmoRegenPercent = builder
                     .comment("每秒弹药恢复比例 (默认: 0.2 = 20%)")

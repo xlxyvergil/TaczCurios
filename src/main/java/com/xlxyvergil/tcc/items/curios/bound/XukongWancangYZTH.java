@@ -98,12 +98,12 @@ public class XukongWancangYZTH extends BoundCurioItem {
 
         float baseDamage = (float) GunTypeChecker.getMainHandGunDamage(attacker, GunTypeChecker.HEAVY_WEAPON_TYPES);
         double imaginaryResistance = attacker.getAttributeValue(TccAttributes.IMAGINARY_DAMAGE_RESISTANCE.get());
-        float imaginaryBonus = (float) (baseDamage * (imaginaryResistance / 100.0)
+        float magicBonus = (float) (baseDamage * (imaginaryResistance / 100.0)
             * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get());
-        TccAttributeEvents.applyImaginaryDamage(
+        TccAttributeEvents.applyMagicDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
-            imaginaryBonus
+            TccDamageSources.magicDamage(targetLiving.level(), attacker),
+            magicBonus
         );
 
         if (event.getBullet() == null) return;
@@ -142,7 +142,8 @@ public class XukongWancangYZTH extends BoundCurioItem {
         tooltip.add(Component.literal(""));
 
         double ammoRegen = TaczCuriosConfig.COMMON.xukongWancangYZTHAmmoRegenPercent.get() * 100;
-        // 实际附加伤害 = 主手枪械实际子弹伤害 × 虚数抗性/100 × 系数（真正动态，随主手枪械与虚数抗性变化）
+        // 附加伤害 = 主手枪械实际子弹伤害 × 佩戴者虚数抗性/100 × 系数（真正动态，随主手枪械与虚数抗性变化），
+        // 结算类型为魔法伤害；枪械主伤害本身仍整体转为虚数伤害。
         double resistance = 0;
         double gunDamage = 0;
         if (level != null && level.isClientSide()) {
@@ -152,10 +153,10 @@ public class XukongWancangYZTH extends BoundCurioItem {
                 gunDamage = GunTypeChecker.getMainHandGunDamage(wearer, GunTypeChecker.HEAVY_WEAPON_TYPES);
             }
         }
-        double imaginaryDamage = gunDamage * (resistance / 100.0) * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get();
+        double magicDamage = gunDamage * (resistance / 100.0) * TaczCuriosConfig.COMMON.xukongWancangYZTHImaginaryDamageScale.get();
 
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.damage",
-                String.format("%.2f", imaginaryDamage))
+                String.format("%.2f", magicDamage))
             .withStyle(ChatFormatting.RED));
         tooltip.add(Component.translatable("item.tcc.xukong_wancang_yzth.effect.ammo",
                 String.format("%.0f", ammoRegen))

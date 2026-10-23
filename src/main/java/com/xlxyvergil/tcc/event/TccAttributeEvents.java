@@ -37,10 +37,10 @@ public class TccAttributeEvents {
     public static final String INFECTION_ATTACKER_KEY = "tcc_infection_attacker";
 
     /**
-     * 重入防护：目标在 applyImaginaryDamage 的 hurt 路径期间加入本集合，
-     * 避免饰品监听器在虚数伤害结算过程中再次发起虚数伤害造成递归。
+     * 重入防护：目标在 applyImaginaryDamage / applyMagicDamage 的 hurt 路径期间加入本集合，
+     * 避免饰品监听器在附加伤害结算过程中再次发起附加伤害造成递归。
      */
-    private static final Set<LivingEntity> IMAGINARY_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
+    private static final Set<LivingEntity> BONUS_HURT_GUARD = Collections.newSetFromMap(new IdentityHashMap<>());
 
     /**
      * 是否为主动攻击来源：玩家/生物普攻、枪械子弹（tacz:bullets）、虚数枪伤（tcc:imaginary_damage）。
@@ -56,7 +56,7 @@ public class TccAttributeEvents {
     /** 虚数伤害入口（含崩解）：由饰品命中或崩解 DoT 调用，只传入基础值，抗性结算统一由 LivingHurtEvent 处理。 */
     public static boolean applyImaginaryDamage(LivingEntity target, DamageSource source, float intendedDamage) {
         if (intendedDamage <= 0) return false;
-        if (IMAGINARY_HURT_GUARD.contains(target)) return false;
+        if (BONUS_HURT_GUARD.contains(target)) return false;
 
         // 无需清空 invulnerableTime：虚数伤害类型挂了 minecraft:bypasses_cooldown，
         // 原版 hurt 会跳过无敌帧判断、直接走完整伤害分支。
@@ -64,11 +64,33 @@ public class TccAttributeEvents {
             target.setLastHurtByMob(attacker);
         }
 
-        IMAGINARY_HURT_GUARD.add(target);
+        BONUS_HURT_GUARD.add(target);
         try {
             return target.hurt(source, intendedDamage);
         } finally {
-            IMAGINARY_HURT_GUARD.remove(target);
+            BONUS_HURT_GUARD.remove(target);
+        }
+    }
+
+    /**
+     * 魔法伤害入口：走原版 minecraft:magic 管线（无视护甲，受保护附魔与抗性药水减免，计入 forge:is_magic），
+     * 与渡鸦之键 / 裁决之键溅射的魔法伤害口径一致。命中后的第二笔结算必须先清空无敌帧，
+     * 否则会被本次枪械命中的无敌帧吞掉。
+     */
+    public static boolean applyMagicDamage(LivingEntity target, DamageSource source, float intendedDamage) {
+        if (intendedDamage <= 0) return false;
+        if (BONUS_HURT_GUARD.contains(target)) return false;
+
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            target.setLastHurtByMob(attacker);
+        }
+
+        BONUS_HURT_GUARD.add(target);
+        target.invulnerableTime = 0;
+        try {
+            return target.hurt(source, intendedDamage);
+        } finally {
+            BONUS_HURT_GUARD.remove(target);
         }
     }
 

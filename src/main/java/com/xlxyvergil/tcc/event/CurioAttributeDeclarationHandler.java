@@ -17,12 +17,12 @@ import java.util.Map;
  * 把饰品的属性声明接进 Curios 官方通道。
  *
  * <p>Curios 在计算某件饰品当前该施加的修饰符时会触发 CurioAttributeModifierEvent：
- * 装备/卸下时在服务端触发（用于施加与移除），工具提示和 Apothic Attributes 的属性面板在客户端触发
+ * 装备/卸下时在服务端触发（用于施加与移除），工具提示与属性面板在客户端触发
  * （用于显示属性行与来源图标）。这里把饰品声明的修饰符补进事件，于是：
  * <ul>
  *   <li>Curios 自己负责装备时的施加与卸下时的移除；</li>
  *   <li>物品工具提示使用 Curios 官方的属性段，不需要各饰品手写；</li>
- *   <li>Apothic Attributes 的 {@code CuriosCompat} 能把修饰符映射回佩戴的饰品栈，显示来源图标。</li>
+ *   <li>属性面板据此把修饰符映射回佩戴的饰品栈，显示来源图标。</li>
  * </ul>
  *
  * <p>声明本身由 BaseCurioItem.declaredEffects 在收集模式下求得，条件判断（手持武器类型等）

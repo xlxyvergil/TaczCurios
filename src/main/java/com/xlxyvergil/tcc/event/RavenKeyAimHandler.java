@@ -48,6 +48,9 @@ public final class RavenKeyAimHandler {
     /** 玩家 UUID → 连续开镜 tick 数（仅服务端维护，松镜/未持枪/未佩戴时移除，命中结算后清除） */
     private static final Map<UUID, Integer> AIM_TICKS = new ConcurrentHashMap<>();
 
+    /** 溅射重入防护：避免溅射伤害结算过程中再次进入溅射施加 */
+    private static final ThreadLocal<Boolean> IN_SPLASH = ThreadLocal.withInitial(() -> Boolean.FALSE);
+
     private RavenKeyAimHandler() {
     }
 
@@ -168,6 +171,9 @@ public final class RavenKeyAimHandler {
         if (attacker == null || victim == null || amount <= 0.0F || radius <= 0.0) {
             return;
         }
+        if (IN_SPLASH.get()) {
+            return;
+        }
         if (!(victim.level() instanceof ServerLevel serverLevel)) {
             return;
         }
@@ -177,9 +183,13 @@ public final class RavenKeyAimHandler {
                 mob -> mob != attacker && mob != victim
                         && mob.isAlive() && mob.distanceToSqr(victim) <= radiusSq);
         DamageSource source = TccDamageSources.magicDamage(serverLevel, attacker);
-        for (Mob mob : targets) {
-            mob.invulnerableTime = 0;
-            mob.hurt(source, amount);
+        IN_SPLASH.set(Boolean.TRUE);
+        try {
+            for (Mob mob : targets) {
+                TccAttributeEvents.applyMagicDamage(mob, source, amount);
+            }
+        } finally {
+            IN_SPLASH.set(Boolean.FALSE);
         }
     }
 
