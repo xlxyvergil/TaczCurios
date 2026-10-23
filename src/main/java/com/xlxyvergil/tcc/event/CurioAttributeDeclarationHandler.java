@@ -22,7 +22,7 @@ import java.util.Map;
  * （用于显示属性行与来源图标）。这里把饰品声明的修饰符补进事件，于是：
  * <ul>
  *   <li>Curios 自己负责装备时的施加与卸下时的移除；</li>
- *   <li>Apothic Attributes 的 {@code CuriosCompat} 能把修饰符映射回佩戴的饰品栈，显示来源图标。</li>
+ *   <li>属性面板据此把修饰符映射回佩戴的饰品栈，显示来源图标。</li>
  * </ul>
  *
  * <p>声明本身由 BaseCurioItem.declaredEffects 在收集模式下求得，条件判断（手持武器类型等）

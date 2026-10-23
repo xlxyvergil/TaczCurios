@@ -77,9 +77,9 @@ public class XukongWancang extends BoundCurioItem {
         if (!(hurtEntity instanceof LivingEntity targetLiving)) return;
         if (targetLiving.isDeadOrDying()) return;
 
-        TccAttributeEvents.applyImaginaryDamage(
+        TccAttributeEvents.applyMagicDamage(
             targetLiving,
-            TccDamageSources.imaginaryDamage(targetLiving.level(), attacker),
+            TccDamageSources.magicDamage(targetLiving.level(), attacker),
             TaczCuriosConfig.COMMON.xukongWancangImaginaryDamage.get().floatValue()
         );
     }
@@ -113,11 +113,11 @@ public class XukongWancang extends BoundCurioItem {
 
         tooltip.add(Component.literal(""));
 
-        double imaginaryDamage = TaczCuriosConfig.COMMON.xukongWancangImaginaryDamage.get();
+        double magicDamage = TaczCuriosConfig.COMMON.xukongWancangImaginaryDamage.get();
         double ammoRegen = TaczCuriosConfig.COMMON.xukongWancangAmmoRegenPercent.get() * 100;
 
         tooltip.add(Component.translatable("item.tcc.xukong_wancang.effect",
-                String.format("%.2f", imaginaryDamage),
+                String.format("%.2f", magicDamage),
                 String.format("%.0f", ammoRegen))
             .withStyle(ChatFormatting.GOLD));
 

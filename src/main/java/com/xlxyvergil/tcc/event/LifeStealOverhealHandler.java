@@ -2,9 +2,7 @@ package com.xlxyvergil.tcc.event;
 
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.core.TccDamageSources;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.bus.api.EventPriority;
@@ -14,15 +12,19 @@ import net.neoforged.fml.common.EventBusSubscriber;
 /**
  * tcc:life_steal / tcc:overheal 的结算。
  *
- * <p>语义与原 Apothic Attributes 的实现保持一致：
+ * <p>语义：
  * <ul>
  *   <li>LIFE_STEAL：伤害的 x% 转化为攻击者治疗；</li>
  *   <li>OVERHEAL：伤害的 x% 转化为攻击者的伤害吸收（金心），上限为攻击者最大生命的一半。</li>
  * </ul>
  * 基数取 {@code min(本次伤害, 目标剩余血量)}，避免溢出倒杀的虚高转化。
  *
- * <p>两个入口：普通物理伤害走 onLivingHurt；虚数伤害（含枪械子弹转换来的虚数伤害）
- * 走 applyImaginary，由 TccAttributeEvents.imaginaryDamageOnAttack 在抗性结算后调用。
+ * <p>对所有伤害类型生效，分两个入口：
+ * <ul>
+ *   <li>除虚数伤害外的所有伤害（物理、魔法、弹体、爆炸、火焰等）走 onLivingHurt；</li>
+ *   <li>虚数伤害走 applyImaginary，由 TccAttributeEvents.imaginaryDamageOnAttack 在抗性结算后调用，
+ *       既不使用未结算的数值，也不会与 onLivingHurt 重复结算。</li>
+ * </ul>
  *
  * <p>1.21.1 迁移说明：Forge 的 {@code LivingHurtEvent} 在 NeoForge 1.21 已由
  * {@link LivingIncomingDamageEvent} 取代（同为护甲减免前的受击入口，{@code getAmount()} 语义一致）。
@@ -34,9 +36,9 @@ public final class LifeStealOverhealHandler {
     }
 
     /**
-     * 普通物理伤害入口：近战/生物攻击取 {@code directEntity}；TACZ 枪械子弹的 {@code directEntity}
-     * 是弹体，退回到 {@code getEntity()}（射手）。箭等其它投掷物不在支持范围。
-     * 虚数伤害（含枪械转换来的）走 applyImaginary，在抗性结算后处理。
+     * 除虚数伤害外的所有伤害入口：近战/生物攻击取 {@code directEntity}；
+     * 弹体、投掷物、法术等直接来源不是生物的，退回到 {@code getEntity()}（射手 / 施法者）。
+     * 虚数伤害走 applyImaginary，在抗性结算后处理。
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLivingHurt(LivingIncomingDamageEvent event) {
@@ -52,21 +54,15 @@ public final class LifeStealOverhealHandler {
         if (attacker == null || attacker == target) {
             return;
         }
-        if (!isPhysicalDamage(source)) {
-            return;
-        }
         apply(attacker, target, event.getAmount());
     }
 
-    /** 近战/生物攻击取直接来源；TACZ 枪械子弹的直接来源是弹体，退回到射手。 */
+    /** 近战/生物攻击取直接来源；弹体、投掷物、法术等退回伤害归属实体（射手 / 施法者）。 */
     private static LivingEntity resolveAttacker(DamageSource source) {
         if (source.getDirectEntity() instanceof LivingEntity direct) {
             return direct;
         }
-        if (TccDamageSources.isTaczBulletSource(source) && source.getEntity() instanceof LivingEntity shooter) {
-            return shooter;
-        }
-        return null;
+        return source.getEntity() instanceof LivingEntity owner ? owner : null;
     }
 
     /**
@@ -102,13 +98,5 @@ public final class LifeStealOverhealHandler {
         if (overheal > 0.0D && attacker.getAbsorptionAmount() < cap) {
             attacker.setAbsorptionAmount((float) Math.min(cap, attacker.getAbsorptionAmount() + base * overheal));
         }
-    }
-
-    /** 物理伤害判定：排除魔法、间接魔法、火焰与爆炸（与 Apothic Attributes 一致）。 */
-    private static boolean isPhysicalDamage(DamageSource source) {
-        return !source.is(DamageTypes.MAGIC)
-                && !source.is(DamageTypes.INDIRECT_MAGIC)
-                && !source.is(DamageTypeTags.IS_FIRE)
-                && !source.is(DamageTypeTags.IS_EXPLOSION);
     }
 }

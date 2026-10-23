@@ -39,8 +39,9 @@ public final class ZhenWoBarrierRenderer {
     private static final float SIGIL_FLOWER_HALF = 1.2F;
 
     /**
-     * 花朵叠加强度：标准 alpha 混合下顶点 alpha 直接就是"盖住地面的比例"，
-     * 0.55 既能看清纹样，又不会把草地整片刷白。
+     * 花朵叠加强度：标准 alpha 混合下顶点 alpha 直接就是"盖住地面的比例"。
+     * 1.20.1 在 2a2731e4 之后用同一个混合模式 + 0.80；1.21.1 经实机观感比对后取 0.55
+     * （0.80 在 1.21.1 的色调映射下明显偏亮），两侧仅此数值不同，混合模式一致。
      */
     private static final float FLOWER_ALPHA = 0.55F;
 
@@ -113,7 +114,7 @@ public final class ZhenWoBarrierRenderer {
         }
         bufferSource.endBatch(TccRenderTypes.zhenWoBoundary());
 
-        // 2) 中心花朵（贴图 + 加算混合），比边界环略高一丁点，避免同一平面打架
+        // 2) 中心花朵（贴图 + 标准 alpha 混合），比边界环略高一丁点，避免同一平面打架
         VertexConsumer flower = bufferSource.getBuffer(TccRenderTypes.zhenWoFlower());
         for (Player wearer : wearers) {
             float fade = fadeOf(wearer);

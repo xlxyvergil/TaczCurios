@@ -91,8 +91,7 @@ public final class SerpentSplashHandler {
         IN_SPLASH.set(Boolean.TRUE);
         try {
             for (Mob mob : targets) {
-                mob.invulnerableTime = 0;
-                mob.hurt(source, splashDamage);
+                TccAttributeEvents.applyMagicDamage(mob, source, splashDamage);
             }
         } finally {
             IN_SPLASH.set(Boolean.FALSE);
