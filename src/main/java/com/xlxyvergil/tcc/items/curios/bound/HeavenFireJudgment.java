@@ -36,6 +36,13 @@ public class HeavenFireJudgment extends BoundCurioItem {
     
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_judgment.gun_damage";
     
+    private static final UUID IGNITE_UUID = UUID.fromString("eded0508-6655-4608-8894-c5feefd10364");
+    
+    private static final String IGNITE_NAME = "tcc.heaven_fire_judgment.ignite";
+    
+    /** taa:ignitefire 是 RangedAttribute(默认 1.0, 范围 0.01~3.0)，>= 2.0 才会点燃，+2.0 必定生效。 */
+    private static final double IGNITE_BONUS = 2.0D;
+    
     public HeavenFireJudgment(Properties properties) {
         super(properties);
     }
@@ -45,12 +52,16 @@ public class HeavenFireJudgment extends BoundCurioItem {
         if (matchesRestriction(livingEntity)) {
             double damageMultiplier = TaczCuriosConfig.COMMON.heavenFireJudgmentDamageBoost.get();
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageMultiplier, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            
+            double igniteBonus = IGNITE_BONUS;
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.IGNITE, igniteBonus, IGNITE_UUID, IGNITE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
     
     @Override
     protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.IGNITE, IGNITE_UUID);
     }
     
 
@@ -72,6 +83,12 @@ public class HeavenFireJudgment extends BoundCurioItem {
         double healthCost = TaczCuriosConfig.COMMON.heavenFireJudgmentHealthCost.get() * 100;
         tooltip.add(formatModifierTooltip(damageBoost, "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.WHITE));
+        double igniteBonus = IGNITE_BONUS;
+        tooltip.add(formatModifierTooltip(igniteBonus, "%.0f", Component.translatable(AttributeHelper.IGNITE.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_burning_bonus",
+                String.format("%.0f", TaczCuriosConfig.COMMON.heavenFireBurningDamageBonus.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_judgment.special",
                 String.format("%+.0f", healthCost))
             .withStyle(ChatFormatting.WHITE));

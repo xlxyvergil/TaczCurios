@@ -36,6 +36,13 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     private static final String GUN_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.gun_damage";
     private static final String EXPLOSION_DAMAGE_NAME = "tcc.heaven_fire_apocalypse.explosion_damage";
     
+    private static final UUID IGNITE_UUID = UUID.fromString("5e6093b6-a805-45f4-97f0-ad7f83998e57");
+    
+    private static final String IGNITE_NAME = "tcc.heaven_fire_apocalypse.ignite";
+    
+    /** taa:ignitefire 是 RangedAttribute(默认 1.0, 范围 0.01~3.0)，>= 2.0 才会点燃，+2.0 必定生效。 */
+    private static final double IGNITE_BONUS = 2.0D;
+    
     
     public HeavenFireApocalypse(Properties properties) {
         super(properties);
@@ -60,6 +67,9 @@ public class HeavenFireApocalypse extends BoundCurioItem {
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_UUID, GUN_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_UUID, EXPLOSION_DAMAGE_NAME, AttributeModifier.Operation.MULTIPLY_BASE);
+            
+            double igniteBonus = IGNITE_BONUS;
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.IGNITE, igniteBonus, IGNITE_UUID, IGNITE_NAME, AttributeModifier.Operation.ADDITION);
         }
     }
     
@@ -67,6 +77,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_UUID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_UUID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.IGNITE, IGNITE_UUID);
     }
     
     @Override
@@ -94,6 +105,12 @@ public class HeavenFireApocalypse extends BoundCurioItem {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
+        double igniteBonus = IGNITE_BONUS;
+        tooltip.add(formatModifierTooltip(igniteBonus, "%.0f", Component.translatable(AttributeHelper.IGNITE.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_burning_bonus",
+                String.format("%.0f", TaczCuriosConfig.COMMON.heavenFireBurningDamageBonus.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.special",
                 String.format("%.0f", healthCost),
                 String.format("%.0f", nearbyPlayerRadius), 

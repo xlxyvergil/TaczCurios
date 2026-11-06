@@ -47,6 +47,7 @@
   "item.tcc.heaven_fire_apocalypse.special": "At 100%% health Lose %1$s%% max health Bleeding after 5s delay %3$s%% universal firearm damage to players within %2$s blocks for %4$s seconds Cannot unequip Kept on death",
   "item.tcc.heaven_fire_apocalypse_endless": "§4Heaven Fire Apocalypse Endless",
   "item.tcc.heaven_fire_apocalypse_endless.special": "Provides Heaven Fire Boost III to players within %s blocks for %s seconds Cannot unequip Kept on death",
+  "item.tcc.heaven_fire_burning_bonus": "+%s%% damage to burning targets",
   "item.tcc.burst_reload": "§9Burst Reload",
   "item.tcc.burst_reload.effect": "%1$s%% rifle, sniper rifle, SMG, LMG, and launcher reload time",
   "item.tcc.corrupt_magazine": "§6Corrupt Magazine",

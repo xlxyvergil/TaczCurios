@@ -43,6 +43,9 @@ public class TaczCuriosConfig {
         public final ForgeConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
         
         
+        public final ForgeConfigSpec.DoubleValue heavenFireBurningDamageBonus;
+        
+        
         public final ForgeConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
         public final ForgeConfigSpec.IntValue heavenFireBleedingMaxLevel;
         public final ForgeConfigSpec.IntValue heavenFireBleedingDuration;
@@ -731,6 +734,12 @@ public class TaczCuriosConfig {
             heavenFireJudgmentHealthCost = builder
                     .comment("触发时扣除的当前生命值比例 (默认: -0.3 = -30%)")
                     .defineInRange("healthCost", -0.3, -1, 1);
+            builder.pop();
+            
+            builder.comment("天火系列神之键燃烧增伤配置（圣裁/劫灭/无烬终焉共用）").push("heaven_fire_ignite");
+            heavenFireBurningDamageBonus = builder
+                    .comment("攻击处于着火状态的目标时的额外伤害比例（0.5 = +50%） (默认: 0.5)")
+                    .defineInRange("burningDamageBonus", 0.5, 0.0, 10.0);
             builder.pop();
             
             

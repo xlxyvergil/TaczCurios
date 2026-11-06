@@ -56,6 +56,7 @@
   "item.tcc.heaven_fire_apocalypse.special": "血量100%%时 自损%s%%最大生命值  为周围%s格内玩家%s%%通用枪械伤害 持续%s秒",
   "item.tcc.heaven_fire_apocalypse_endless": "§4天火劫灭·无烬终焉",
   "item.tcc.heaven_fire_apocalypse_endless.special": "为周围%s格内玩家提供 天火强化Ⅲ 持续%s秒",
+  "item.tcc.heaven_fire_burning_bonus": "对燃烧中的目标伤害+%s%%",
   "item.tcc.burst_reload": "§9爆发装填",
   "item.tcc.burst_reload.effect": "%1$s%%步枪、狙击枪、冲锋枪、机枪、重型武器装填时间",
   "item.tcc.corrupt_magazine": "§6腐败弹匣",
