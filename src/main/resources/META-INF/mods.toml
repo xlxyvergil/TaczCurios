@@ -43,6 +43,14 @@ versionRange="[1.4.2,)"
 ordering="AFTER"
 side="BOTH"
 
+# TACZ（modId 仍为 tacz）：编译期与运行期均为硬依赖，事件与枪械类型判定都来自它的 API
+[[dependencies.tcc]]
+modId="tacz"
+mandatory=true
+versionRange="[1.2.0,)"
+ordering="AFTER"
+side="BOTH"
+
 [[dependencies.tcc]]
 modId="fusedcritical"
 mandatory=true
