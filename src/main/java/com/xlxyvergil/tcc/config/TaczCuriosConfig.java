@@ -1397,8 +1397,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 0.5 = +50%)")
                     .defineInRange("speedMultiplier", 0.5, -1, 100);
             xioraInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 600 = 30秒)")
-                    .defineInRange("invisRefreshInterval", 600, 20, 72000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 580 = 29秒)")
+                    .defineInRange("invisRefreshInterval", 580, 20, 72000);
             xioraInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 20, 72000);
@@ -1413,8 +1413,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             ravenInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 600 = 30秒)")
-                    .defineInRange("invisRefreshInterval", 600, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 480 = 24秒)")
+                    .defineInRange("invisRefreshInterval", 480, 1, 12000);
             ravenInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);
@@ -1429,8 +1429,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             islandBoomRavenInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 400 = 20秒)")
-                    .defineInRange("invisRefreshInterval", 400, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 380 = 19秒)")
+                    .defineInRange("invisRefreshInterval", 380, 1, 12000);
             islandBoomRavenInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);
