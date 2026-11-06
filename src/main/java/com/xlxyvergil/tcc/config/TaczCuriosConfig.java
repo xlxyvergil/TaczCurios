@@ -57,6 +57,9 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue heavenFireJudgmentHealthCost;
         
         
+        public final ModConfigSpec.DoubleValue heavenFireBurningDamageBonus;
+        
+        
         public final ModConfigSpec.DoubleValue heavenFireBleedingDamagePerLevel;
         public final ModConfigSpec.IntValue heavenFireBleedingMaxLevel;
         public final ModConfigSpec.IntValue heavenFireBleedingDuration;
@@ -745,6 +748,12 @@ public class TaczCuriosConfig {
                     .defineInRange("healthCost", -0.3, -1, 1);
             builder.pop();
             
+            builder.comment("天火系列神之键燃烧增伤配置（圣裁/劫灭/无烬终焉共用）").push("heaven_fire_ignite");
+            heavenFireBurningDamageBonus = builder
+                    .comment("攻击处于着火状态的目标时的额外伤害比例（0.5 = +50%） (默认: 0.5)")
+                    .defineInRange("burningDamageBonus", 0.5, 0.0, 10.0);
+            builder.pop();
+            
             
             builder.comment("天火流血效果配置（两个饰品共用）").push("heaven_fire_bleeding");
             heavenFireBleedingDamagePerLevel = builder
@@ -1409,8 +1418,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 0.5 = +50%)")
                     .defineInRange("speedMultiplier", 0.5, -1, 100);
             xioraInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 600 = 30秒)")
-                    .defineInRange("invisRefreshInterval", 600, 20, 72000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 580 = 29秒)")
+                    .defineInRange("invisRefreshInterval", 580, 20, 72000);
             xioraInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 20, 72000);
@@ -1425,8 +1434,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             ravenInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 600 = 30秒)")
-                    .defineInRange("invisRefreshInterval", 600, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 480 = 24秒)")
+                    .defineInRange("invisRefreshInterval", 480, 1, 12000);
             ravenInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);
@@ -1441,8 +1450,8 @@ public class TaczCuriosConfig {
                     .comment("移速乘数 (默认: 1.0 = +100%)")
                     .defineInRange("speedMultiplier", 1.0, -1, 100);
             islandBoomRavenInvisRefreshInterval = builder
-                    .comment("气息遮蔽刷新间隔 (tick, 默认: 400 = 20秒)")
-                    .defineInRange("invisRefreshInterval", 400, 1, 12000);
+                    .comment("气息遮蔽刷新间隔 (tick, 默认: 380 = 19秒)")
+                    .defineInRange("invisRefreshInterval", 380, 1, 12000);
             islandBoomRavenInvisDuration = builder
                     .comment("气息遮蔽持续时间 (tick, 默认: 600 = 30秒)")
                     .defineInRange("invisDuration", 600, 1, 12000);

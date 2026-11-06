@@ -41,3 +41,4 @@ repo/
 /run-client
 /run-server
 /.trae
+/.tmp

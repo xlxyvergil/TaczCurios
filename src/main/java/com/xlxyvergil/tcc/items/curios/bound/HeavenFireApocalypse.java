@@ -36,6 +36,10 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     private static final ResourceLocation GUN_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "heaven_fire_apocalypse_8c87e97e_b219");
     private static final ResourceLocation EXPLOSION_DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "heaven_fire_apocalypse_3de85a73_c951");
     
+    private static final ResourceLocation IGNITE_ID = ResourceLocation.fromNamespaceAndPath(TaczCurios.MODID, "heaven_fire_apocalypse_ignite");
+    
+    /** taa:ignitefire 是 RangedAttribute(默认 1.0, 范围 0.01~3.0)，>= 2.0 才会点燃，+2.0 必定生效。 */
+    private static final double IGNITE_BONUS = 2.0D;
     
     
     public HeavenFireApocalypse(Properties properties) {
@@ -61,6 +65,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
 
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, damageBoost, GUN_DAMAGE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
             AttributeHelper.applyModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, explosionDamageBoost, EXPLOSION_DAMAGE_ID, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            AttributeHelper.applyModifier(livingEntity, AttributeHelper.IGNITE, IGNITE_BONUS, IGNITE_ID, AttributeModifier.Operation.ADD_VALUE);
         }
     }
     
@@ -68,6 +73,7 @@ public class HeavenFireApocalypse extends BoundCurioItem {
     protected void removeModifiers(LivingEntity livingEntity) {
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.BULLET_GUNDAMAGE, GUN_DAMAGE_ID);
         AttributeHelper.removeModifier(livingEntity, AttributeHelper.EXPLOSION_DAMAGE, EXPLOSION_DAMAGE_ID);
+        AttributeHelper.removeModifier(livingEntity, AttributeHelper.IGNITE, IGNITE_ID);
     }
     
     @Override
@@ -96,6 +102,11 @@ public class HeavenFireApocalypse extends BoundCurioItem {
                 .withStyle(ChatFormatting.RED));
         tooltip.add(formatModifierTooltip(explosionDamageBoost, "%.0f%%", Component.translatable(AttributeHelper.EXPLOSION_DAMAGE.value().getDescriptionId()))
                 .withStyle(ChatFormatting.RED));
+        tooltip.add(formatModifierTooltip(IGNITE_BONUS, "%.0f", Component.translatable(AttributeHelper.IGNITE.value().getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.heaven_fire_burning_bonus",
+                String.format("%.0f", TaczCuriosConfig.COMMON.heavenFireBurningDamageBonus.get() * 100))
+                .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("item.tcc.heaven_fire_apocalypse.special",
                 String.format("%.0f", healthCost),
                 String.format("%.0f", nearbyPlayerRadius), 

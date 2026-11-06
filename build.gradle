@@ -139,8 +139,8 @@ dependencies {
     implementation "curse.maven:curios-309927:${curios_cf}"
     // TaczAttributeAdd（属性系统，1.4.3 起提供新的弹匣容量兼容链 API）
     implementation "curse.maven:taczattributeadd-1393583:${taa_cf}"
-    // TACZ 1.21.1（ChloePrime 发行版，modId 仍为 tacz）
-    implementation "curse.maven:tacz-1-21-1-1353462:${tacz_curse_version}"
+    // TACZ 1.21.1 官方版 1.2.0（curse.maven:timeless-and-classics-zero-1028108，modId 仍为 tacz）
+    implementation "curse.maven:timeless-and-classics-zero-1028108:${tacz_curse_version}"
     // Apothic Attributes 已从构建依赖中移除：属性声明改走 Curios 官方事件
     // （CurioAttributeModifierEvent → getAttributeModifiers），属性面板的来源图标由
     // Apothic Attributes 自带的 CuriosCompat 处理，本模组不再引用其任何类。
