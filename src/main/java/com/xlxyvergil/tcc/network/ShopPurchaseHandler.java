@@ -28,11 +28,11 @@ public final class ShopPurchaseHandler {
         if (!(player.containerMenu instanceof TccShopMenu menu) || !menu.stillValid(player)) {
             return;
         }
-        if (lines == null || lines.isEmpty() || lines.size() > ShopBuyC2SPacket.MAX_LINES) {
+        if (lines == null || lines.isEmpty() || lines.size() > TccShopCatalog.size()) {
             return;
         }
 
-        // 同一下标合并，并夹紧数量；任何越界都整单拒绝
+        // 同一下标合并；数量只要求为正且不超过单行上限
         Map<Integer, Integer> merged = new TreeMap<>();
         for (ShopBuyC2SPacket.Line line : lines) {
             int index = line.index();
@@ -43,10 +43,11 @@ public final class ShopPurchaseHandler {
             if (index < 0 || index >= TccShopCatalog.size()) {
                 return;
             }
-            int sum = merged.merge(index, count, Integer::sum);
+            long sum = (long) merged.getOrDefault(index, 0) + count;
             if (sum > ShopBuyC2SPacket.MAX_COUNT_PER_LINE) {
                 return;
             }
+            merged.put(index, (int) sum);
         }
         if (merged.isEmpty()) {
             return;

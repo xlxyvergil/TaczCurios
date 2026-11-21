@@ -1,5 +1,6 @@
 package com.xlxyvergil.tcc.network;
 
+import com.xlxyvergil.tcc.shop.TccShopCatalog;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
@@ -15,10 +16,11 @@ import java.util.function.Supplier;
  */
 public record ShopBuyC2SPacket(List<Line> lines) {
 
-    /** 一次最多 64 行（目录只有 37 条，够用）。 */
-    public static final int MAX_LINES = 64;
-    /** 单行最多 64 个。 */
-    public static final int MAX_COUNT_PER_LINE = 64;
+    /**
+     * 单行数量上限：纯粹是玩法层面的夹紧（正常交易到不了这个数），
+     * 和包体积无关——每行只有 index(1B) + count(2B)，37 行一共一百多字节。
+     */
+    public static final int MAX_COUNT_PER_LINE = 9999;
 
     public record Line(int index, int count) {
 
@@ -41,8 +43,10 @@ public record ShopBuyC2SPacket(List<Line> lines) {
 
     public static ShopBuyC2SPacket decode(FriendlyByteBuf buf) {
         int size = buf.readVarInt();
-        if (size < 0 || size > MAX_LINES) {
-            throw new IllegalArgumentException("shop buy packet has " + size + " lines, max " + MAX_LINES);
+        // 目录里一共只有 size() 件商品，行数不可能更多：按目录长度做结构校验，不设人为上限
+        if (size < 0 || size > TccShopCatalog.size()) {
+            throw new IllegalArgumentException(
+                    "shop buy packet has " + size + " lines, catalog has " + TccShopCatalog.size());
         }
         List<Line> decoded = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
