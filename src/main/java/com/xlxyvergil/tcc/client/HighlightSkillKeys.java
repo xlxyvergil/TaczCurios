@@ -11,7 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 /**
  * 高亮技能的按键注册（mod 总线，仅客户端）。
  *
- * 默认键位 V，玩家可在"控制 → 按键绑定"里改；按键定义同时提供了语言键，
+ * 默认键位 V，玩家可在"控制 → 按键绑定"里单独改；
  * 名称与分类分别见 lang 中的 key.tcc.activate_highlight / key.categories.tcc。
  */
 @EventBusSubscriber(value = Dist.CLIENT, modid = TaczCurios.MODID, bus = EventBusSubscriber.Bus.MOD)

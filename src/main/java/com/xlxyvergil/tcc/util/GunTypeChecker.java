@@ -46,6 +46,22 @@ public class GunTypeChecker {
         "mg", "gun_type.tcc.mg",
         "rpg", "gun_type.tcc.rpg"
     );
+
+    /**
+     * TACZ 新版本新增的枪械类型别名：判定时 DMR 一律按 rifle 处理。
+     * 新增类型只要在这里登记，所有基于类型的限制、成就条件、伤害读取都会自动跟随。
+     */
+    private static final Map<String, String> GUN_TYPE_ALIASES = Map.of(
+        "dmr", "rifle"
+    );
+
+    /** 把 TACZ 的枪械类型归一到本模组使用的类型字符串（dmr → rifle）。 */
+    public static String normalizeGunType(String type) {
+        if (type == null) {
+            return null;
+        }
+        return GUN_TYPE_ALIASES.getOrDefault(type, type);
+    }
     
     public static boolean isHoldingRifle(LivingEntity livingEntity) {
         return isHoldingValidGunType(livingEntity, RIFLE_GUN_TYPES);
@@ -79,6 +95,7 @@ public class GunTypeChecker {
             ResourceLocation gunId = iGun.getGunId(heldItem);
             return TimelessAPI.getCommonGunIndex(gunId)
                 .map(CommonGunIndex::getType)
+                .map(GunTypeChecker::normalizeGunType)
                 .map(validTypes::contains)
                 .orElse(false);
         }
@@ -145,7 +162,7 @@ public class GunTypeChecker {
         }
         ResourceLocation gunId = iGun.getGunId(gunStack);
         boolean typeMatched = TimelessAPI.getCommonGunIndex(gunId)
-                .filter(index -> gunTypes.contains(index.getType()))
+                .filter(index -> gunTypes.contains(normalizeGunType(index.getType())))
                 .isPresent();
         if (!typeMatched) {
             return 0;
@@ -252,6 +269,7 @@ public class GunTypeChecker {
         Set<String> validTypes = new HashSet<>(gunTypes);
         return TimelessAPI.getCommonGunIndex(gunId)
             .map(CommonGunIndex::getType)
+            .map(GunTypeChecker::normalizeGunType)
             .map(validTypes::contains)
             .orElse(false);
     }
@@ -262,7 +280,7 @@ public class GunTypeChecker {
         for (String type : gunTypes) {
             switch (type) {
                 case "pistol" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_PISTOL);
-                case "rifle" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_RIFLE);
+                case "rifle", "dmr" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_RIFLE);
                 case "shotgun" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SHOTGUN);
                 case "sniper" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SNIPER);
                 case "smg" -> attributes.add(AttributeHelper.BULLET_GUNDAMAGE_SMG);

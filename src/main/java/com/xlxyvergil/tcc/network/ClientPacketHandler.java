@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.client.RavenKeyChargeHud;
 import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.client.ZhenWoBarrierClientData;
+import com.xlxyvergil.tcc.client.shop.TeshinShopScreen;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
@@ -55,6 +56,14 @@ final class ClientPacketHandler {
         TccPlayerDataCapability.setPlayTimeHuishiZhijuan(player, packet.huishiZhijuan());
         TccPlayerDataCapability.setPlayTimeFanxing(player, packet.fanxing());
         TccPlayerDataCapability.setPlayTimeQishiZhijian(player, packet.qishiZhijian());
+    }
+
+    /** 服务端确认购买成功：清空当前商店界面的购物车。 */
+    static void handleShopResult(ShopResultS2CPacket packet) {
+        if (!packet.success()) return;
+        if (Minecraft.getInstance().screen instanceof TeshinShopScreen screen) {
+            screen.onPurchaseSuccess();
+        }
     }
 
     static void handleLootrHighlights(SyncLootrHighlightsS2CPacket packet) {

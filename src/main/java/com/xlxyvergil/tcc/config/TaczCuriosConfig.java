@@ -654,6 +654,8 @@ public class TaczCuriosConfig {
         public final ModConfigSpec.DoubleValue fusionVesselNetherChance;
         public final ModConfigSpec.DoubleValue fusionVesselEndChance;
 
+        public final ModConfigSpec.ConfigValue<String> shopCurrencyItem;
+
         
         public Common(ModConfigSpec.Builder builder) {
             builder.comment("TACZ Curios 饰品配置").push("tcc_curios");
@@ -2024,8 +2026,8 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             edenIntervalSeconds = builder
-                    .comment("攻击触发光环的冷却（秒） (默认: 20)")
-                    .defineInRange("intervalSeconds", 20, 1, 3600);
+                    .comment("技能冷却（秒），按键发动后进入冷却 (默认: 15)")
+                    .defineInRange("intervalSeconds", 15, 1, 3600);
             edenBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
                     .defineInRange("buffDurationSeconds", 30, 1, 3600);
@@ -2042,8 +2044,8 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             cuiyaoZhiGeIntervalSeconds = builder
-                    .comment("攻击触发光环的冷却（秒） (默认: 20)")
-                    .defineInRange("intervalSeconds", 20, 1, 3600);
+                    .comment("技能冷却（秒），按键发动后进入冷却 (默认: 15)")
+                    .defineInRange("intervalSeconds", 15, 1, 3600);
             cuiyaoZhiGeBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
                     .defineInRange("buffDurationSeconds", 30, 1, 3600);
@@ -2060,8 +2062,8 @@ public class TaczCuriosConfig {
                     .comment("光环范围（格） (默认: 36)")
                     .defineInRange("auraRange", 36.0, 1.0, 512.0);
             huangjinIntervalSeconds = builder
-                    .comment("攻击触发光环的冷却（秒） (默认: 20)")
-                    .defineInRange("intervalSeconds", 20, 1, 3600);
+                    .comment("技能冷却（秒），按键发动后进入冷却 (默认: 15)")
+                    .defineInRange("intervalSeconds", 15, 1, 3600);
             huangjinBuffDurationSeconds = builder
                     .comment("buff 持续时长（秒） (默认: 30)")
                     .defineInRange("buffDurationSeconds", 30, 1, 3600);
@@ -2396,6 +2398,14 @@ public class TaczCuriosConfig {
             fusionVesselEndChance = builder
                     .comment("末地城战利品箱中出现融合容器的几率（0~1，默认: 0.05 = 5%）")
                     .defineInRange("endChance", 0.05, 0.0, 1.0);
+            builder.pop();
+
+            builder.comment("泰辛工作台商店配置").push("teshin_shop");
+            shopCurrencyItem = builder
+                    .comment("商店货币物品的注册名（默认: minecraft:netherite_scrap = 下界合金碎片）。",
+                            "改成别的物品后，商品价格数字不变，只是扣取的物品换成它；显示名同样取该物品自身的译名。",
+                            "写不存在或未注册的物品名时按默认的下界合金碎片处理。")
+                    .define("currencyItem", "minecraft:netherite_scrap");
             builder.pop();
         }
     }

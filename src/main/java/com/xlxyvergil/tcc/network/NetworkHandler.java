@@ -34,8 +34,11 @@ public final class NetworkHandler {
         registrar.playToClient(ResetRavenChargeS2CPacket.TYPE, ResetRavenChargeS2CPacket.STREAM_CODEC, ResetRavenChargeS2CPacket::handle);
         registrar.playToClient(SyncAttributeLinksS2CPacket.TYPE, SyncAttributeLinksS2CPacket.STREAM_CODEC, SyncAttributeLinksS2CPacket::handle);
         registrar.playToClient(SyncZhenWoBarrierS2CPacket.TYPE, SyncZhenWoBarrierS2CPacket.STREAM_CODEC, SyncZhenWoBarrierS2CPacket::handle);
+        registrar.playToClient(ShopResultS2CPacket.TYPE, ShopResultS2CPacket.STREAM_CODEC, ShopResultS2CPacket::handle);
         registrar.playToServer(ActivateHighlightC2SPacket.TYPE, ActivateHighlightC2SPacket.STREAM_CODEC, ActivateHighlightC2SPacket::handle);
         registrar.playToServer(ActivateZhenWoBarrierC2SPacket.TYPE, ActivateZhenWoBarrierC2SPacket.STREAM_CODEC, ActivateZhenWoBarrierC2SPacket::handle);
+        registrar.playToServer(EdenSeriesSkillC2SPacket.TYPE, EdenSeriesSkillC2SPacket.STREAM_CODEC, EdenSeriesSkillC2SPacket::handle);
+        registrar.playToServer(ShopBuyC2SPacket.TYPE, ShopBuyC2SPacket.STREAM_CODEC, ShopBuyC2SPacket::handle);
     }
 
     private static void sendToPlayer(ServerPlayer player, CustomPacketPayload packet) {
@@ -73,6 +76,16 @@ public final class NetworkHandler {
     /** 客户端按下真我结界技能键后请求服务端校验并展开结界（只应在客户端调用）。 */
     public static void sendActivateZhenWoBarrier() {
         PacketDistributor.sendToServer(new ActivateZhenWoBarrierC2SPacket());
+    }
+
+    /** 客户端按下伊甸系列技能键后请求服务端结算一次光环（只应在客户端调用）。 */
+    public static void sendActivateEdenSeriesSkill() {
+        PacketDistributor.sendToServer(new EdenSeriesSkillC2SPacket());
+    }
+
+    /** 客户端点击「购买所选商品」后把购物车内容发给服务端（只应在客户端调用）。 */
+    public static void sendShopBuy(List<ShopBuyC2SPacket.Line> lines) {
+        PacketDistributor.sendToServer(new ShopBuyC2SPacket(lines));
     }
 
     /**

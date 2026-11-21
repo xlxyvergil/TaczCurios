@@ -5,6 +5,7 @@ import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.util.CurioEffectRefresher;
+import com.xlxyvergil.tcc.util.GunTypeChecker;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -56,6 +57,7 @@ public class GunSwitchEventHandler {
         }
         return TimelessAPI.getCommonGunIndex(gun.getGunId(stack))
                 .map(CommonGunIndex::getType)
+                .map(GunTypeChecker::normalizeGunType)
                 .orElse(NO_GUN_TYPE);
     }
 }

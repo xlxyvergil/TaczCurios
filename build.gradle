@@ -86,16 +86,14 @@ neoForge {
             gameDirectory = file('run-client')
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            // 直接连本机开发服务端，省去手动点多人游戏。
-            programArguments.addAll '--quickPlayMultiplayer', '127.0.0.1:25566'
         }
 
         server {
             server()
             gameDirectory = file('run-server')
             programArgument '--nogui'
-            // 25566 是本机开发服务端端口，客户端 quickPlay 连的就是它。
-            programArguments.addAll '--port', '25566'
+            // 25567：本机开发服务端端口（25566 被 1.20.1 开发端占用）。
+            programArguments.addAll '--port', '25567'
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
