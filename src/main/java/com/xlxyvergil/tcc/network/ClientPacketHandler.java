@@ -6,6 +6,7 @@ import com.xlxyvergil.tcc.client.RavenKeyChargeHud;
 import com.xlxyvergil.tcc.client.SpawnerHighlightClientData;
 import com.xlxyvergil.tcc.client.TaczCuriosClientTooltip;
 import com.xlxyvergil.tcc.client.ZhenWoBarrierClientData;
+import com.xlxyvergil.tcc.client.shop.TeshinShopScreen;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
 import com.xlxyvergil.tcc.evolution.EvolutionRegistry;
@@ -97,5 +98,15 @@ final class ClientPacketHandler {
     /** 用服务端下发的规则覆盖本地联动规则表。 */
     static void handleSyncAttributeLinks(SyncAttributeLinksS2CPacket packet) {
         AttributeLinkRegistry.applySyncedJson(packet.json());
+    }
+
+    /** 服务端确认购买成功：清空购物车，避免重复下单。 */
+    static void handleShopResult(ShopResultS2CPacket packet) {
+        if (!packet.success()) {
+            return;
+        }
+        if (Minecraft.getInstance().screen instanceof TeshinShopScreen screen) {
+            screen.onPurchaseSuccess();
+        }
     }
 }

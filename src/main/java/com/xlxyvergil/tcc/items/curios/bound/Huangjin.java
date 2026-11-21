@@ -1,7 +1,5 @@
 package com.xlxyvergil.tcc.items.curios.bound;
 
-import com.tacz.guns.api.event.common.GunShootEvent;
-import com.xlxyvergil.tcc.TaczCurios;
 import com.xlxyvergil.tcc.compat.maid.MaidCompat;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.config.TaczCuriosConfig;
@@ -23,29 +21,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = TaczCurios.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Huangjin extends BoundCurioItem {
     private static final UUID IMAGINARY_RESISTANCE_UUID = UUID.fromString("4a8c1e6f-2b9d-4f7e-9c3a-5d1b8e2f6c47");
     private static final UUID BASE_GUN_DAMAGE_UUID = UUID.fromString("8b2e4f1a-3c6d-4b5e-9a7f-2d8c1e4b6a39");
-
-    /** 攻击触发冷却存储键：记录该佩戴者下次可触发的游戏刻。 */
-    private static final String COOLDOWN_KEY = "tcc_huangjin_aura_next";
 
     private static double auraRange() {
         return TaczCuriosConfig.COMMON.huangjinAuraRange.get();
     }
 
-    private static long interval() {
-        return (long) TaczCuriosConfig.COMMON.huangjinIntervalSeconds.get() * 20L;
+    /** 技能冷却（秒）：由按键触发，冷却期内再次按键只提示剩余时间。 */
+    public static int skillCooldownSeconds() {
+        return TaczCuriosConfig.COMMON.huangjinIntervalSeconds.get();
     }
 
     private static int buffDuration() {
@@ -97,34 +88,12 @@ public class Huangjin extends BoundCurioItem {
                 stack -> stack.getItem() instanceof Huangjin).isEmpty();
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onGunShoot(GunShootEvent event) {
-        // 开枪事件在客户端与服务端都会触发，只在服务端处理
-        if (event.getLogicalSide() != LogicalSide.SERVER) {
-            return;
-        }
-        LivingEntity shooter = event.getShooter();
-        if (!(shooter.level() instanceof ServerLevel level)) {
-            return;
-        }
-        // 冷却检查提前：冷却未结束时直接跳过，省去后续饰品查询与限制判定
-        long gameTime = level.getGameTime();
-        if (shooter.getPersistentData().getLong(COOLDOWN_KEY) > gameTime) {
-            return;
-        }
-        ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(shooter,
-                stack -> stack.getItem() instanceof Huangjin);
-        if (equipped.isEmpty()) {
-            return;
-        }
-        if (!((Huangjin) equipped.getItem()).matchesRestriction(shooter)) {
-            return;
-        }
-        shooter.getPersistentData().putLong(COOLDOWN_KEY, gameTime + interval());
-        applyAura(level, shooter);
-    }
-
-    private static void applyAura(ServerLevel level, LivingEntity wearer) {
+    /**
+     * 结算一次光环：以佩戴者为中心，为范围内的玩家/女仆随机施加一个正面 buff。
+     *
+     * 触发完全由玩家按键决定（见 EdenSeriesSkillHandler），这里不再自己判定冷却。
+     */
+    public static void applyAura(ServerLevel level, LivingEntity wearer) {
         ItemStack equipped = CurioSearchHelper.findFirstEquippedStack(wearer,
                 stack -> stack.getItem() instanceof Huangjin);
         if (equipped.isEmpty()) {
@@ -154,15 +123,17 @@ public class Huangjin extends BoundCurioItem {
         tooltip.add(formatModifierTooltip(TaczCuriosConfig.COMMON.huangjinGunDamageReduction.get() * 100,
                 "%.0f%%", Component.translatable(AttributeHelper.BULLET_GUNDAMAGE.getDescriptionId()))
                 .withStyle(ChatFormatting.GOLD));
-                                                                tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line1",
+        tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line1")
+                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line2",
                 (int) auraRange(), buffAmplifier() + 1)
                 .withStyle(ChatFormatting.GOLD));
-                                tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line2",
+        tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line3",
                 (int) auraRange(), buffAmplifier() + 1)
                 .withStyle(ChatFormatting.GOLD));
-                                tooltip.add(Component.translatable("item.tcc.golden.curio_effect.line3",
-                (int) auraRange(), buffAmplifier() + 1)
-                .withStyle(ChatFormatting.GOLD));
+        tooltip.add(Component.translatable("item.tcc.golden.curio_effect.cooldown",
+                skillCooldownSeconds())
+                .withStyle(ChatFormatting.DARK_GRAY));
         tooltip.add(Component.translatable("tcc.tooltip.suffocation_drowning_cramming_immunity")
                 .withStyle(ChatFormatting.GOLD));
         appendBoundPlayer(stack, tooltip);

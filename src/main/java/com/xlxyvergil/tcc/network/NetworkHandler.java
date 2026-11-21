@@ -87,10 +87,40 @@ public final class NetworkHandler {
                 SyncZhenWoBarrierS2CPacket::decode,
                 SyncZhenWoBarrierS2CPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(packetId++, EdenSeriesSkillC2SPacket.class,
+                EdenSeriesSkillC2SPacket::encode,
+                EdenSeriesSkillC2SPacket::decode,
+                EdenSeriesSkillC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        CHANNEL.registerMessage(packetId++, ShopBuyC2SPacket.class,
+                ShopBuyC2SPacket::encode,
+                ShopBuyC2SPacket::decode,
+                ShopBuyC2SPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        CHANNEL.registerMessage(packetId++, ShopResultS2CPacket.class,
+                ShopResultS2CPacket::encode,
+                ShopResultS2CPacket::decode,
+                ShopResultS2CPacket::handle,
+                Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
     public static void sendToPlayer(ServerPlayer player, Object packet) {
         CHANNEL.sendTo(packet, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+    /** 客户端按下伊甸系列技能键后请求服务端结算一次光环（只应在客户端调用）。 */
+    public static void sendActivateEdenSeriesSkill() {
+        CHANNEL.sendToServer(new EdenSeriesSkillC2SPacket());
+    }
+
+    /** 客户端下单：把购物车里的「目录下标 + 数量」发给服务端（只应在客户端调用）。 */
+    public static void sendShopBuy(List<ShopBuyC2SPacket.Line> lines) {
+        CHANNEL.sendToServer(new ShopBuyC2SPacket(List.copyOf(lines)));
+    }
+
+    /** 服务端确认购买成功，令客户端清空购物车。 */
+    public static void sendShopResult(ServerPlayer player) {
+        sendToPlayer(player, new ShopResultS2CPacket(true));
     }
 
     /** 把服务端当前的 COMMON 配置下发给玩家，使客户端读取到的配置值与服务端一致。 */

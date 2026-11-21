@@ -7,7 +7,6 @@ import com.xlxyvergil.tcc.event.HeavenFireSettlementHandler;
 import com.xlxyvergil.tcc.loot.LootTableEventHandler;
 import com.xlxyvergil.tcc.network.NetworkHandler;
 import com.xlxyvergil.tcc.registries.*;
-import com.xlxyvergil.tcc.villagers.TccVillagers;
 import com.xlxyvergil.tcc.creativetab.TccCreativeTab;
 import com.xlxyvergil.tcc.attribute.TccAttributes;
 import com.xlxyvergil.tcc.evolution.AchievementDefinitions;
@@ -57,10 +56,9 @@ public class TaczCurios
             }
             TccBlocks.init(ForgeRegistries.BLOCKS);
             TccItems.init(ForgeRegistries.ITEMS);
-            TccPoiTypes.init();
-            TccVillagers.init();
         });
 
+        TccMenus.MENU_TYPES.register(modEventBus);
         TccCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         TccMobEffects.MOB_EFFECTS.register(modEventBus);
         TccAttributes.register(modEventBus);
@@ -153,12 +151,12 @@ public class TaczCurios
             Class.forName("com.xlxyvergil.tcc.client.renderer.ZhenWoBarrierRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.LootrHighlightsRenderer");
             Class.forName("com.xlxyvergil.tcc.client.renderer.SpawnerHighlightsRenderer");
-            // 高亮技能的按键注册与输入处理
+            // 饰品技能的按键注册（高亮 / 真我结界 / 伊甸系列，三个独立键位，默认都是 V）
             Class.forName("com.xlxyvergil.tcc.client.HighlightSkillKeys");
-            Class.forName("com.xlxyvergil.tcc.client.HighlightSkillInput");
-            // 真我结界的按键注册与输入处理
             Class.forName("com.xlxyvergil.tcc.client.ZhenWoBarrierKeys");
-            Class.forName("com.xlxyvergil.tcc.client.ZhenWoBarrierInput");
+            Class.forName("com.xlxyvergil.tcc.client.EdenSeriesSkillKeys");
+            // 三个键位的统一输入处理
+            Class.forName("com.xlxyvergil.tcc.client.SkillInput");
         }
     }
 

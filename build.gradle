@@ -168,6 +168,16 @@ repositories {
     flatDir {
         dir 'libs'
     }
+
+    // 本地 TAA（TaczAttributeAdd）1.20.1 开发版：由 TAA 工程 build 出的生产 jar 经 maven 布局
+    // 放进 ./local-maven，再用 fg.deobf 依赖，dev 运行时与编译期都能拿到最新本地 TAA。
+    maven {
+        name = "TAA Local"
+        url = uri("${projectDir}/local-maven")
+        content {
+            includeGroup "com.xlxyvergil"
+        }
+    }
 }
 
 dependencies {
@@ -180,7 +190,9 @@ dependencies {
 
     // Curios API dependency from Modrinth (1.20.1 compatible)
     implementation fg.deobf("maven.modrinth:curios:5.14.1+1.20.1")
-    // TaczAttributeAdd dependency from CurseForge (1.4.2)
+    // TaczAttributeAdd dependency: 发布版 TAA 1.4.2。
+    // 本地联调 TAA 新版时改成下面这行（前提是把 TAA 工程 build 出的 jar 按 maven 布局放进 ./local-maven）：
+    //   implementation fg.deobf("com.xlxyvergil:taa:1.4.6-1.20.1")
     implementation fg.deobf("curse.maven:taczattributeadd-1393583:8996993")
     // TACZ dependency from CurseForge (1.2.0)
     implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:9454481")

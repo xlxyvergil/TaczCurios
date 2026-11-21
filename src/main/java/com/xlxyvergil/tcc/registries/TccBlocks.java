@@ -11,7 +11,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public final class TccBlocks {
 
-    public static final Block TESHIN_WORKBENCH = new Block(
+    public static final Block TESHIN_WORKBENCH = new TeshinWorkbenchBlock(
         BlockBehaviour.Properties.of().strength(3.0F, 6.0F).lightLevel(state -> 8).noOcclusion());
     public static final Item TESHIN_WORKBENCH_ITEM = new BlockItem(TESHIN_WORKBENCH, new Item.Properties());
 
