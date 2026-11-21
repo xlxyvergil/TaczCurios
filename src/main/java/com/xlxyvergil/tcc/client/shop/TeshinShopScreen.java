@@ -38,18 +38,30 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
 
     private static final int PAD = 8;
     private static final int HEADER_H = 22;
-    // 顶部货币图标 + 数字占用的宽度
-    private static final int HEADER_CURRENCY_W = 40;
+    // 顶部只放搜索框与购买按钮，货币信息挪到面板左下角
     private static final int BASE_ROW_H = 24;
     private static final int MIN_ROW_H = 20;
     private static final int BASE_CART_ROW_H = 20;
     // 购物车一行至少要放得下 16px 物品图标 + 上下留白，否则图标和文字会挤在一起
     private static final int MIN_CART_ROW_H = 18;
     private static final int CART_TITLE_H = 14;
-    private static final int CART_FOOTER_H = 14;
+    /** 表头（名称 / 单价 / 数量 / 总计）占的高度；比字体高 5px，让表头文字和下面的行之间留出空隙。 */
+    private static final int CART_HEADER_H = 13;
+    /** 商品列表表头（名称 / 单价 / 数量 / 总计）占的高度，和购物车表头等高。 */
+    private static final int LIST_HEADER_H = CART_HEADER_H;
+    /** 面板底部条：左下角放货币图标与持有量，右下角放「需要支付」。 */
+    private static final int CART_FOOTER_H = 18;
     private static final int GAP = 6;
-    // 行内三段：名称列、−/数量/＋ 控件、价格区。剩余宽度都归价格区，价格在区内居中。
-    private static final int NAME_COL_W = 118;
+    // 行内四段：图标+名称列、单价列、−/数量/＋ 控件、价格区。剩余宽度都归价格区，价格在区内居中。
+    private static final int NAME_COL_W = 130;
+    // 行左侧图标占的宽度（16px 物品图标 + 与名称之间的 6px 空隙）
+    private static final int NAME_LEAD_W = 20;
+    // 单价列（窄列，只放 1~3 位数字）
+    private static final int UNIT_COL_W = 28;
+    private static final int UNIT_GAP = 6;
+    // 列中心按行宽百分比定位：单价 42%、数量 63%，窗口缩放时四列位置等比移动
+    private static final int UNIT_CENTER_PCT = 42;
+    private static final int QTY_CENTER_PCT = 63;
     // 「− 数量 ＋」控件块：12px 按钮 + 2 间距 + 数量格 + 2 间距 + 12px 按钮
     private static final int STEP_BTN_W = 12;
     private static final int QTY_W = 34;
@@ -58,19 +70,15 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     // 价格区最小宽度：999 × 64 = 63936 这类 5 位数也能完整居中
     private static final int PRICE_MIN_W = 34;
     // 行内容与行左右边的最小留白，窗口再小价格也不会贴边
-    private static final int ROW_SIDE_PAD = 12;
+    private static final int ROW_SIDE_PAD = 8;
     private static final int MIN_BODY_H = 96;
 
     private static final int COLOR_FRAME = 0xFF3A3A3A;
     private static final int COLOR_PANEL = 0xF0181818;
-    private static final int COLOR_LIST_BG = 0xF0222222;
     private static final int COLOR_ROW = 0xFF2A2A2A;
     private static final int COLOR_ROW_HOVER = 0xFF343434;
     private static final int COLOR_ROW_SELECTED = 0xFF2E4A78;
     private static final int COLOR_ROW_LINE = 0xFF1A1A1A;
-    private static final int COLOR_CHECKBOX_BORDER = 0xFF555555;
-    private static final int COLOR_CHECKBOX_EMPTY = 0xFF2A2A2A;
-    private static final int COLOR_CHECKBOX_CHECK = 0xFF4FA85A;
     private static final int COLOR_TEXT = 0xFFFFFFFF;
     private static final int COLOR_TEXT_DIM = 0xFF9A9A9A;
     private static final int COLOR_PRICE = 0xFFFFC84A;
@@ -79,7 +87,13 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     private static final int COLOR_QTY_BG = 0xFF202020;
     private static final int COLOR_SCROLL_TRACK = 0xFF2A2A2A;
     private static final int COLOR_SCROLL_THUMB = 0xFF6A6A6A;
-    private static final int COLOR_CART_BG = 0xF01C1C1C;
+
+    /** 拖拽滚动条的三种状态。 */
+    private static final int DRAG_NONE = 0;
+    private static final int DRAG_LIST = 1;
+    private static final int DRAG_CART = 2;
+    /** 滚动条的可点宽度：画出来 4px，实际给光标留 12px 的容错。 */
+    private static final int SCROLL_HIT_W = 12;
 
     private final Map<Integer, Integer> cart = new LinkedHashMap<>();
     /** 每行记住的数量（与是否勾选无关），只有重新打开界面时才回到 1。 */
@@ -87,6 +101,10 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     private final List<Integer> filtered = new ArrayList<>();
     private int scroll;
     private int cartScroll;
+    /** 正在拖拽哪一根滚动条（0 没有 / 1 商品列表 / 2 购物车）。 */
+    private int draggingScrollbar = DRAG_NONE;
+    /** 按下时光标相对拇指顶部的偏移，拖动时保持这个偏移，拇指不会跳。 */
+    private double dragGrabOffset;
     private int hoveredRow = -1;
     private String queryText = "";
     private String loadedQuery = "";
@@ -133,7 +151,7 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
 
     private void createWidgets() {
         // 顶部一行：货币图标 + 搜索框 + 购买按钮，宽度不够时按钮和搜索框一起收
-        int searchX = this.leftPos + PAD + HEADER_CURRENCY_W;
+        int searchX = this.leftPos + PAD;
         int buyW = Mth.clamp(this.panelW / 4, 60, 96);
         int buyX = this.leftPos + this.panelW - PAD - buyW;
         int searchW = Math.max(60, buyX - 6 - searchX);
@@ -162,45 +180,50 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     }
 
     /**
-     * 面板居中，高度占屏幕 3/4，宽度再按 4:3 收窄（不超过 3/4 宽）。
+     * 面板居中，高度占屏幕 3/4，宽度取 3:2 上限（比 4:3 更宽，行内横排放得下四列），
+     * 但不越过屏幕宽的 3/4。
      * 行高随可用高度拉伸但不超过基准行高，多出来的像素全部给购物车，
      * 这样一行里的名称和控件不会离得太远，行与行之间也不会松散。
      */
     private void layout() {
         int panelH = Math.max(1, this.height * 3 / 4);
-        this.panelW = Math.max(1, Math.min(this.width * 3 / 4, panelH * 4 / 3));
+        this.panelW = Math.max(1, Math.min(this.width * 3 / 4, panelH * 3 / 2));
 
         this.listX = PAD;
         this.rowW = this.panelW - PAD * 2;
         this.listW = this.rowW;
         this.listY = HEADER_H + 4;
 
-        // 列表 + 购物车一共能用的高度
-        int bodyH = Math.max(MIN_BODY_H, panelH - this.listY - GAP - PAD);
+        // 列表 + 购物车一共能用的高度（底部还要给货币 / 需要支付那条留位置）
+        int bodyH = Math.max(MIN_BODY_H, panelH - this.listY - GAP - CART_FOOTER_H - PAD);
 
         int maxRows = Math.max(1, TccShopCatalog.size());
-        int cartMin = CART_TITLE_H + CART_FOOTER_H + MIN_CART_ROW_H;
+        // 购物车至少保证能看见两条明细，否则表头加一行字就没什么可看的了
+        int cartMin = CART_TITLE_H + CART_HEADER_H + 2 * MIN_CART_ROW_H;
         // 购物车最多占三分之一高度，剩下的全给列表；列表按最小行高尽量多放行
-        int cartBlockH = Mth.clamp(bodyH / 3, cartMin, CART_TITLE_H + CART_FOOTER_H + 6 * MIN_CART_ROW_H);
-        int listSpace = Math.max(MIN_ROW_H, bodyH - cartBlockH);
-        int listRows = Mth.clamp(listSpace / MIN_ROW_H, 1, maxRows);
+        int cartBlockH = Mth.clamp(bodyH / 3, cartMin,
+                CART_TITLE_H + CART_HEADER_H + 6 * MIN_CART_ROW_H);
+        int listSpace = Math.max(MIN_ROW_H + LIST_HEADER_H, bodyH - cartBlockH);
+        // 表头先从列表区里切走一块，剩下的才是行区
+        int rowsSpace = Math.max(MIN_ROW_H, listSpace - LIST_HEADER_H);
+        int listRows = Mth.clamp(rowsSpace / MIN_ROW_H, 1, maxRows);
         // 行高封顶在基准值：再高就会把名称和控件拉散、一屏也放不下几行
-        this.rowH = Mth.clamp(listSpace / listRows, MIN_ROW_H, BASE_ROW_H);
+        this.rowH = Mth.clamp(rowsSpace / listRows, MIN_ROW_H, BASE_ROW_H);
         this.visibleRows = listRows;
-        this.listH = listRows * this.rowH;
+        this.listH = LIST_HEADER_H + listRows * this.rowH;
 
         int cartBlock = Math.max(cartMin, bodyH - this.listH);
-        this.cartVisible = Mth.clamp((cartBlock - CART_TITLE_H - CART_FOOTER_H) / MIN_CART_ROW_H, 1, 8);
+        this.cartVisible = Mth.clamp((cartBlock - CART_TITLE_H - CART_HEADER_H) / MIN_CART_ROW_H, 1, 8);
         this.cartRowH = Math.max(MIN_CART_ROW_H,
-                (cartBlock - CART_TITLE_H - CART_FOOTER_H) / this.cartVisible);
+                (cartBlock - CART_TITLE_H - CART_HEADER_H) / this.cartVisible);
         this.cartH = cartBlock;
 
         this.cartX = PAD;
         this.cartW = this.rowW;
         this.cartY = this.listY + this.listH + GAP;
 
-        // 内容放不下时把面板收一点，正常情况下就是整屏
-        this.panelH = Math.min(panelH, this.cartY + this.cartH + PAD);
+        // 内容放不下时把面板收一点，正常情况下就是整屏；底部条始终留在面板最下面
+        this.panelH = Math.min(panelH, this.cartY + this.cartH + CART_FOOTER_H + PAD);
         this.imageWidth = this.panelW;
         this.imageHeight = this.panelH;
 
@@ -210,39 +233,69 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     }
 
     /**
-     * 行内布局：左右各留 {@link #ROW_SIDE_PAD}，中间依次是「勾选框+图标 + 名称列 + −/数量/＋ + 价格区」。
-     * 名称列吃到最多 {@link #NAME_COL_W}，剩下的像素全给价格区，价格文字在价格区里居中，
-     * 所以窗口怎么缩放，价格都是「在右侧那块空地里居中」的。
+     * 行内布局：左右各留 {@link #ROW_SIDE_PAD}，依次是「图标 + 名称列 … 单价列 … −/数量/＋ + 总计」。
+     * 单价列与数量列的中心按行宽的百分比定位（{@link #UNIT_CENTER_PCT} / {@link #QTY_CENTER_PCT}），
+     * 名称列只吃「名称起点到单价列左缘」这段，总计列居中在剩下那块价格区里，
+     * 所以四列的位置只跟面板宽度有关，不随商品名长短或数量位数变化。
      */
     private int contentLeft() {
         return ROW_SIDE_PAD;
     }
 
-    /** 名称列可用宽度：先按 3/4 分，但一定要给价格区留下 PRICE_MIN_W，最后再夹到 NAME_COL_W。 */
+    /** 名称列宽度：名称起点到单价列左缘，夹在 40..{@link #NAME_COL_W}。 */
     private int nameColW() {
-        int rest = this.rowW - ROW_SIDE_PAD * 2 - 40 - 8 - STEP_W - PRICE_GAP;
-        int cap = Math.max(40, rest - PRICE_MIN_W);
-        return Math.min(Mth.clamp(rest * 3 / 4, 40, cap), NAME_COL_W);
+        return Mth.clamp(this.unitCenterX() - UNIT_COL_W / 2 - UNIT_GAP - this.nameX(), 40, NAME_COL_W);
+    }
+
+    /** 商品列表行区（相对面板）的顶部 Y：列表区顶部 + 表头占的高度。 */
+    private int listRowsTop() {
+        return this.listY + LIST_HEADER_H;
     }
 
     /** 名称文字左边界（相对行）。 */
     private int nameX() {
-        return this.contentLeft() + 40;
+        return this.contentLeft() + NAME_LEAD_W;
     }
 
-    /** 「− 数量 ＋」控件块的左边界，紧跟名称列。 */
+    /** 两张表共用的名称列宽度。 */
+    private int tableNameW() {
+        return this.nameColW();
+    }
+
+    /** 单价列的竖直轴：按行宽百分比定位，并夹在「名称最小宽度之后」与「步进器左侧」之间。 */
+    private int unitCenterX() {
+        int wanted = this.rowW * UNIT_CENTER_PCT / 100;
+        int min = this.nameX() + 40 + UNIT_COL_W / 2 + UNIT_GAP;
+        int max = this.clusterLeft() - 8 - UNIT_COL_W / 2;
+        return Mth.clamp(wanted, min, Math.max(min, max));
+    }
+
+    /** 数量列的竖直轴：就是步进器里数量格的中心。 */
+    private int qtyCenterX() {
+        return this.qtyX() + QTY_W / 2;
+    }
+
+    /** 总计列的竖直轴：价格区的中心。 */
+    private int totalCenterX() {
+        return this.priceLeft() + this.priceWidth() / 2;
+    }
+
+    /** 价格区宽度（行右缘到价格区左边界）。 */
+    private int priceWidth() {
+        return Math.max(12, this.rowW - ROW_SIDE_PAD - this.priceLeft());
+    }
+
+    /** 「− 数量 ＋」控件块的左边界：数量格中心按行宽百分比定位，整块跟着它走。 */
     private int clusterLeft() {
-        return this.contentLeft() + 40 + nameColW() + 8;
+        int wanted = this.rowW * QTY_CENTER_PCT / 100 - STEP_W / 2;
+        int min = this.nameX() + 40 + UNIT_COL_W + UNIT_GAP + 8;
+        int max = this.rowW - ROW_SIDE_PAD - PRICE_MIN_W - PRICE_GAP - STEP_W;
+        return Mth.clamp(wanted, min, Math.max(min, max));
     }
 
     /** 价格区左边界。 */
     private int priceLeft() {
         return this.clusterLeft() + STEP_W + PRICE_GAP;
-    }
-
-    /** 价格区可用宽度（行右边界减去左边所有内容）。 */
-    private int priceWidth() {
-        return Math.max(12, this.rowW - ROW_SIDE_PAD - this.priceLeft());
     }
 
     private int minusX() {
@@ -273,11 +326,11 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(0.0D, 0.0D, CONTENT_Z);
         this.renderPanel(guiGraphics);
-        this.renderHeader(guiGraphics);
         this.renderRows(guiGraphics);
         this.renderScrollbar(guiGraphics);
         this.renderCart(guiGraphics);
         this.renderCartScrollbar(guiGraphics);
+        this.renderFooter(guiGraphics);
         guiGraphics.flush();
         guiGraphics.pose().popPose();
 
@@ -296,8 +349,6 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
         int y = this.topPos;
         guiGraphics.fill(x - 1, y - 1, x + this.panelW + 1, y + this.panelH + 1, COLOR_FRAME);
         guiGraphics.fill(x, y, x + this.panelW, y + this.panelH, COLOR_PANEL);
-        guiGraphics.fill(x + this.listX, y + this.listY, x + this.listX + this.listW,
-                y + this.listY + this.listH, COLOR_LIST_BG);
     }
 
     /** 不画原版的「玩家背包」标签。 */
@@ -315,18 +366,43 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
     }
 
-    private void renderHeader(GuiGraphics guiGraphics) {
-        int x = this.leftPos + 8;
-        int y = this.topPos + 6;
-        guiGraphics.renderItem(new ItemStack(ShopCurrency.item()), x, y);
-        guiGraphics.drawString(this.font, Integer.toString(this.scrapCount()), x + 20, y + 4, COLOR_TEXT, true);
+    /**
+     * 面板底部条：左下角是货币图标与持有量，右下角是这单需要支付的总价。
+     * 没有独立底色，直接露出面板本身的颜色。
+     */
+    private void renderFooter(GuiGraphics guiGraphics) {
+        int bandTop = this.topPos + this.panelH - CART_FOOTER_H;
+        guiGraphics.fill(this.leftPos, bandTop, this.leftPos + this.panelW, bandTop + 1, COLOR_ROW_LINE);
+
+        int iconY = bandTop + (CART_FOOTER_H - 16) / 2;
+        guiGraphics.renderItem(new ItemStack(ShopCurrency.item()), this.leftPos + 8, iconY);
+        guiGraphics.drawString(this.font, Integer.toString(this.scrapCount()), this.leftPos + 28,
+                iconY + 4, COLOR_TEXT, true);
+
+        int totalCost = this.totalCost();
+        Component pay = Component.translatable("tcc.shop.pay", totalCost, ShopCurrency.name());
+        boolean enough = this.scrapCount() >= totalCost;
+        guiGraphics.drawString(this.font, pay, this.leftPos + this.panelW - 8 - this.font.width(pay),
+                iconY + 4, enough ? COLOR_PRICE : COLOR_BAD, true);
     }
 
     private void renderRows(GuiGraphics guiGraphics) {
         int x0 = this.leftPos + this.listX;
-        int y0 = this.topPos + this.listY;
+        int y0 = this.topPos + this.listRowsTop();
         int content = this.contentLeft();
         int nameWidth = this.nameColW();
+
+        // 商品区自己的表头，列轴与购物车完全一致
+        int headerY = this.topPos + this.listY + 1;
+        guiGraphics.drawString(this.font, Component.translatable("tcc.shop.col_name"), x0 + this.nameX(), headerY,
+                COLOR_TEXT_DIM, false);
+        this.drawCentered(guiGraphics, Component.translatable("tcc.shop.col_price"), x0 + this.unitCenterX(),
+                headerY, COLOR_TEXT_DIM, false);
+        this.drawCentered(guiGraphics, Component.translatable("tcc.shop.col_qty"), x0 + this.qtyCenterX(),
+                headerY, COLOR_TEXT_DIM, false);
+        this.drawCentered(guiGraphics, Component.translatable("tcc.shop.col_total"), x0 + this.totalCenterX(),
+                headerY, COLOR_TEXT_DIM, false);
+        guiGraphics.fill(x0, y0 - 1, x0 + this.rowW, y0, COLOR_ROW_LINE);
         for (int i = 0; i < this.visibleRows; i++) {
             int row = this.scroll + i;
             if (row >= this.filtered.size()) {
@@ -341,27 +417,24 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
             guiGraphics.fill(x0, rowY, x0 + this.rowW, rowY + this.rowH - 1, background);
             guiGraphics.fill(x0, rowY + this.rowH - 1, x0 + this.rowW, rowY + this.rowH, COLOR_ROW_LINE);
 
-            int boxX = x0 + content + 5;
-            int boxY = rowY + (this.rowH - 10) / 2;
-            guiGraphics.fill(boxX, boxY, boxX + 10, boxY + 10, COLOR_CHECKBOX_BORDER);
-            guiGraphics.fill(boxX + 1, boxY + 1, boxX + 9, boxY + 9,
-                    selected ? COLOR_CHECKBOX_CHECK : COLOR_CHECKBOX_EMPTY);
-
+            // 勾选状态由整行底色表示（选中整行变蓝），不再额外画勾选框，把宽度让给名称
             int iconY = rowY + (this.rowH - 16) / 2;
-            guiGraphics.renderItem(entry.stack(), x0 + content + 20, iconY);
-            int nameY = iconY;
+            guiGraphics.renderItem(entry.stack(), x0 + content + 2, iconY);
+            // 名称在行内垂直居中，并按名称列宽度截断，绝不会压到单价列
             guiGraphics.drawString(this.font, this.trim(entry.stack().getHoverName().getString(), nameWidth),
-                    x0 + this.nameX(), nameY, COLOR_TEXT, true);
-            guiGraphics.drawString(this.font, Component.translatable("tcc.shop.owned", this.owned(entry)),
-                    x0 + this.nameX(), nameY + 9, COLOR_TEXT_DIM, false);
+                    x0 + this.nameX(), rowY + (this.rowH - 8) / 2, COLOR_TEXT, true);
 
             int count = this.quantityOf(index);
             this.renderStepper(guiGraphics, x0, rowY, count, selected);
 
-            // 价格显示「当前数量 × 单价」的总价：数量是记住的，勾选与否都不变
+            // 单价列：这个商品本身的单价，与数量无关
+            this.drawCentered(guiGraphics, Component.literal(Integer.toString(entry.cost())),
+                    x0 + this.unitCenterX(), rowY + (this.rowH - 8) / 2,
+                    selected ? COLOR_PRICE : COLOR_TEXT_DIM, true);
+
+            // 总计列：当前数量 × 单价（数量是记住的，勾选与否都不变）
             String subtotal = Integer.toString(count * entry.cost());
-            int priceX = x0 + this.priceLeft() + (this.priceWidth() - this.font.width(subtotal)) / 2;
-            guiGraphics.drawString(this.font, subtotal, priceX,
+            this.drawCentered(guiGraphics, Component.literal(subtotal), x0 + this.totalCenterX(),
                     rowY + (this.rowH - 8) / 2, selected ? COLOR_PRICE : COLOR_TEXT_DIM, true);
         }
     }
@@ -388,85 +461,250 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
 
     private void renderScrollbar(GuiGraphics guiGraphics) {
         int trackX = this.leftPos + this.panelW - 6;
-        int trackY = this.topPos + this.listY;
-        guiGraphics.fill(trackX, trackY, trackX + 4, trackY + this.listH, COLOR_SCROLL_TRACK);
+        int trackY = this.topPos + this.listRowsTop();
+        int trackH = this.listTrackH();
+        guiGraphics.fill(trackX, trackY, trackX + 4, trackY + trackH, COLOR_SCROLL_TRACK);
+        int[] thumb = this.listThumb();
+        if (thumb != null) {
+            guiGraphics.fill(trackX, thumb[0], trackX + 4, thumb[0] + thumb[1], COLOR_SCROLL_THUMB);
+        }
+    }
 
-        int total = this.filtered.size();
-        int thumbHeight = Math.max(12,
-                (int) ((long) this.listH * this.visibleRows / Math.max(this.visibleRows, total)));
-        int maxScroll = Math.max(0, total - this.visibleRows);
-        int thumbY = maxScroll == 0
-                ? trackY
-                : trackY + (int) ((long) (this.listH - thumbHeight) * this.scroll / maxScroll);
-        guiGraphics.fill(trackX, thumbY, trackX + 4, thumbY + thumbHeight, COLOR_SCROLL_THUMB);
+    /** 商品列表里实际画出来的行数（数据不足时少于可见行数）。 */
+    private int listRowsDrawn() {
+        return Math.max(1, Math.min(this.visibleRows, Math.max(1, this.filtered.size())));
+    }
+
+    /** 购物车里实际画出来的行数。 */
+    private int cartRowsDrawn() {
+        return Math.max(1, Math.min(this.cartVisible, Math.max(1, this.cart.size())));
+    }
+
+    /**
+     * 商品列表滚动条的轨道高度：首行顶边到末行填充的底边。
+     * 末行最后 1px 是与下一行之间的分隔线，不算行本身，所以再减掉 1px，
+     * 否则轨道会比最后一格多出那一像素，看着「长了一点」。
+     */
+    private int listTrackH() {
+        return Math.max(1, this.listRowsDrawn() * this.rowH - 1);
+    }
+
+    /** 购物车滚动条的轨道高度：同理，减掉末行分隔线那 1px。 */
+    private int cartTrackH() {
+        return Math.max(1, this.cartRowsDrawn() * this.cartRowH - 1);
+    }
+
+    /** 购物车明细区（屏幕坐标）的顶部 Y，和商品列表一样从区域起点开始画轨道。 */
+    private int cartRowsTopY() {
+        return this.topPos + this.topOfCartRows();
     }
 
     private void renderCartScrollbar(GuiGraphics guiGraphics) {
-        int lines = this.cart.size();
-        if (lines <= this.cartVisible) {
+        if (this.cart.size() <= this.cartVisible) {
             return;
         }
-        int trackX = this.leftPos + this.cartX + this.cartW - 6;
-        int trackY = this.topPos + this.cartY + CART_TITLE_H;
-        int trackH = this.cartVisible * this.cartRowH;
+        // 轨道 X 与商品列表滚动条使用同一条竖线（面板右边缘内缩 6px），
+        // 否则购物车轨道会因 cartX 的留白而整体左移，两根条看起来不在一条线上
+        int trackX = this.leftPos + this.panelW - 6;
+        int trackY = this.cartRowsTopY();
+        int trackH = this.cartTrackH();
         guiGraphics.fill(trackX, trackY, trackX + 4, trackY + trackH, COLOR_SCROLL_TRACK);
-
-        int maxScroll = lines - this.cartVisible;
-        int thumbHeight = Math.max(12, (int) ((long) trackH * this.cartVisible / lines));
-        int thumbY = maxScroll == 0
-                ? trackY
-                : trackY + (int) ((long) (trackH - thumbHeight) * this.cartScroll / maxScroll);
-        guiGraphics.fill(trackX, thumbY, trackX + 4, thumbY + thumbHeight, COLOR_SCROLL_THUMB);
+        int[] thumb = this.cartThumb();
+        if (thumb != null) {
+            guiGraphics.fill(trackX, thumb[0], trackX + 4, thumb[0] + thumb[1], COLOR_SCROLL_THUMB);
+        }
     }
+
+    /** 商品列表滚动条拇指的 {顶部 Y, 高度}（屏幕坐标）；不需要滚动时返回 null。 */
+    private int[] listThumb() {
+        int total = this.filtered.size();
+        int maxScroll = Math.max(0, total - this.visibleRows);
+        if (maxScroll <= 0) {
+            return null;
+        }
+        int trackY = this.topPos + this.listRowsTop();
+        int trackH = this.listTrackH();
+        int height = Math.max(12,
+                (int) ((long) trackH * this.visibleRows / Math.max(this.visibleRows, total)));
+        int y = trackY + (int) ((long) (trackH - height) * this.scroll / maxScroll);
+        return new int[]{y, height};
+    }
+
+    /** 购物车滚动条拇指的 {顶部 Y, 高度}（屏幕坐标）；不需要滚动时返回 null。 */
+    private int[] cartThumb() {
+        int lines = this.cart.size();
+        int maxScroll = lines - this.cartVisible;
+        if (maxScroll <= 0) {
+            return null;
+        }
+        int trackY = this.cartRowsTopY();
+        int trackH = this.cartTrackH();
+        int height = Math.max(8, (int) ((long) trackH * this.cartVisible / lines));
+        int y = trackY + (int) ((long) (trackH - height) * this.cartScroll / maxScroll);
+        return new int[]{y, height};
+    }
+
+    /**
+     * 按下滚动条就进入拖拽：按在拇指上保留抓取偏移，按在空白轨道上直接跳到该位置。
+     *
+     * @return 命中滚动条返回 true
+     */
+    private boolean beginScrollbarDrag(double mouseX, double mouseY) {
+        int listTrackX = this.leftPos + this.panelW - 4;
+        int[] listThumb = this.listThumb();
+        if (listThumb != null
+                && mouseX >= listTrackX - SCROLL_HIT_W / 2
+                && mouseX < listTrackX + 4 + SCROLL_HIT_W / 2
+                && mouseY >= this.topPos + this.listRowsTop()
+                && mouseY < this.topPos + this.listRowsTop() + this.listTrackH()) {
+            boolean onThumb = mouseY >= listThumb[0] && mouseY < listThumb[0] + listThumb[1];
+            this.dragGrabOffset = onThumb ? mouseY - listThumb[0] : listThumb[1] / 2.0D;
+            this.draggingScrollbar = DRAG_LIST;
+            this.dragScrollTo(mouseY);
+            return true;
+        }
+
+        // 与列表条同一条竖线，命中热区也照它算
+        int cartTrackX = this.leftPos + this.panelW - 4;
+        int[] cartThumb = this.cartThumb();
+        int cartTrackY = this.cartRowsTopY();
+        int cartTrackH = this.cartTrackH();
+        if (cartThumb != null
+                && mouseX >= cartTrackX - SCROLL_HIT_W / 2
+                && mouseX < cartTrackX + 4 + SCROLL_HIT_W / 2
+                && mouseY >= cartTrackY
+                && mouseY < cartTrackY + cartTrackH) {
+            boolean onThumb = mouseY >= cartThumb[0] && mouseY < cartThumb[0] + cartThumb[1];
+            this.dragGrabOffset = onThumb ? mouseY - cartThumb[0] : cartThumb[1] / 2.0D;
+            this.draggingScrollbar = DRAG_CART;
+            this.dragScrollTo(mouseY);
+            return true;
+        }
+        return false;
+    }
+
+    /** 拖拽中：把光标位置换算成滚动位置。 */
+    private void dragScrollTo(double mouseY) {
+        if (this.draggingScrollbar == DRAG_LIST) {
+            int[] thumb = this.listThumb();
+            if (thumb == null) {
+                return;
+            }
+            int trackY = this.topPos + this.listRowsTop();
+            int travel = this.listTrackH() - thumb[1];
+            double ratio = travel <= 0 ? 0.0D
+                    : (mouseY - this.dragGrabOffset - trackY) / travel;
+            int maxScroll = Math.max(0, this.filtered.size() - this.visibleRows);
+            this.scroll = Mth.clamp((int) Math.round(ratio * maxScroll), 0, maxScroll);
+        } else if (this.draggingScrollbar == DRAG_CART) {
+            int[] thumb = this.cartThumb();
+            if (thumb == null) {
+                return;
+            }
+            int trackY = this.cartRowsTopY();
+            int travel = this.cartTrackH() - thumb[1];
+            double ratio = travel <= 0 ? 0.0D
+                    : (mouseY - this.dragGrabOffset - trackY) / travel;
+            int maxScroll = Math.max(0, this.cart.size() - this.cartVisible);
+            this.cartScroll = Mth.clamp((int) Math.round(ratio * maxScroll), 0, maxScroll);
+        }
+    }
+
+    /** 购物车明细区的顶部（相对 cartY）：标题下面那条表头之后。 */
+    private int topOfCartRows() {
+        return this.cartY + CART_TITLE_H + CART_HEADER_H;
+    }
+
+    /** 购物车数量列 / 总计列的宽度（表头文字比数字宽，按表头给）。 */
+    private static final int CART_QTY_COL_W = 26;
+    private static final int CART_TOTAL_COL_W = 34;
+    /** 名称列与数量列之间的固定间隔。 */
+    private static final int CART_COL_GAP = 8;
 
     private void renderCart(GuiGraphics guiGraphics) {
         int x0 = this.leftPos + this.cartX;
         int y0 = this.topPos + this.cartY;
-        guiGraphics.fill(x0, y0, x0 + this.cartW, y0 + this.cartH, COLOR_CART_BG);
+        int rowsTop = this.topPos + this.topOfCartRows();
+        int rowsBottom = y0 + this.cartH - CART_FOOTER_H;
+
+        // 标题行与表头行不铺自己的底色，直接露面板底色
         guiGraphics.fill(x0, y0, x0 + this.cartW, y0 + 1, COLOR_ROW_LINE);
+        guiGraphics.fill(x0, rowsTop - 1, x0 + this.cartW, rowsTop, COLOR_ROW_LINE);
+        guiGraphics.fill(x0, rowsBottom, x0 + this.cartW, rowsBottom + 1, COLOR_ROW_LINE);
+
         guiGraphics.drawString(this.font, Component.translatable("tcc.shop.preview"), x0 + 4, y0 + 4,
                 COLOR_PRICE, true);
 
         List<Map.Entry<Integer, Integer>> lines = new ArrayList<>(this.cart.entrySet());
         this.cartScroll = Mth.clamp(this.cartScroll, 0, Math.max(0, lines.size() - this.cartVisible));
+
+        // 四列，横向基准直接沿用商品列表那一套：名称列同一个起点同一个宽度，
+        // 单价 / 数量 / 总计各自对准列表对应列的中心轴
+        int nameLeft = this.nameX();
+        int nameW = this.tableNameW();
+        int unitCenter = this.unitCenterX();
+        int qtyCenter = this.qtyCenterX();
+        int totalCenter = this.totalCenterX();
+
+        int headerY = y0 + CART_TITLE_H + 1;
+        guiGraphics.drawString(this.font, Component.translatable("tcc.shop.col_name"), x0 + nameLeft, headerY,
+                COLOR_TEXT_DIM, false);
+        this.drawCentered(guiGraphics, Component.translatable("tcc.shop.col_price"), x0 + unitCenter, headerY,
+                COLOR_TEXT_DIM, false);
+        this.drawCentered(guiGraphics, Component.translatable("tcc.shop.col_qty"), x0 + qtyCenter, headerY,
+                COLOR_TEXT_DIM, false);
+        this.drawCentered(guiGraphics, Component.translatable("tcc.shop.col_total"), x0 + totalCenter, headerY,
+                COLOR_TEXT_DIM, false);
+
         for (int i = 0; i < this.cartVisible && this.cartScroll + i < lines.size(); i++) {
             Map.Entry<Integer, Integer> line = lines.get(this.cartScroll + i);
             TccShopEntry entry = TccShopCatalog.entries().get(line.getKey());
-            int y = y0 + CART_TITLE_H + i * this.cartRowH;
+            int y = rowsTop + i * this.cartRowH;
+            // 每条明细自己一块行底色，行与行之间留 1px 露出面板底色；
+            // 行宽与商品列表的行完全一致（同一个 x0、同一个 rowW）
+            guiGraphics.fill(x0, y, x0 + this.cartW, y + this.cartRowH - 1, COLOR_ROW);
+            guiGraphics.fill(x0, y + this.cartRowH - 1, x0 + this.cartW, y + this.cartRowH, COLOR_ROW_LINE);
+
             int subtotal = entry.cost() * line.getValue();
             int iconY = y + (this.cartRowH - 16) / 2;
             int textY = y + (this.cartRowH - 8) / 2;
-            guiGraphics.renderItem(entry.stack(), x0 + 4, iconY);
-            guiGraphics.drawString(this.font, this.trim(entry.stack().getHoverName().getString(),
-                    Math.max(48, this.cartW - 96 - this.font.width("0000 x 00 = 000000"))), x0 + 24, textY,
-                    COLOR_TEXT, false);
-            Component detail = Component.translatable("tcc.shop.line", line.getValue(), entry.cost(), subtotal,
-                    ShopCurrency.name());
-            guiGraphics.drawString(this.font, detail, x0 + this.cartW - 10 - this.font.width(detail), textY,
-                    COLOR_PRICE, false);
+            guiGraphics.renderItem(entry.stack(), x0 + nameLeft - 20, iconY);
+            guiGraphics.drawString(this.font,
+                    this.trim(entry.stack().getHoverName().getString(), nameW), x0 + nameLeft, textY,
+                    COLOR_TEXT, true);
+            this.drawCentered(guiGraphics, Component.literal(Integer.toString(entry.cost())),
+                    x0 + unitCenter, textY, COLOR_TEXT, true);
+            this.drawCentered(guiGraphics, Component.literal(Integer.toString(line.getValue())),
+                    x0 + qtyCenter, textY, COLOR_TEXT, true);
+            this.drawCentered(guiGraphics, Component.literal(Integer.toString(subtotal)),
+                    x0 + totalCenter, textY, COLOR_PRICE, true);
         }
+    }
 
-        int totalCost = this.totalCost();
-        boolean enough = this.scrapCount() >= totalCost;
-        guiGraphics.drawString(this.font, Component.translatable("tcc.shop.pay", totalCost, ShopCurrency.name()),
-                x0 + 4, y0 + this.cartH - 12, enough ? COLOR_PRICE : COLOR_BAD, true);
+    /** 以 centerX 为竖轴居中画一段文字。 */
+    private void drawCentered(GuiGraphics guiGraphics, Component text, int centerX, int y, int color,
+                              boolean shadow) {
+        guiGraphics.drawString(this.font, text, centerX - this.font.width(text) / 2, y, color, shadow);
     }
 
     private void renderHoverTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         if (this.hoveredRow < 0 || this.hoveredRow >= this.filtered.size()) {
             return;
         }
+        // 只有鼠标落在左侧「图标 + 名称」这一块时才弹提示；
+        // 单价列、步进器、价格区都不弹，避免整行都能弹出提示遮挡视线
+        double rx = mouseX - (this.leftPos + this.listX);
+        if (rx < 0.0D || rx >= this.nameX() + this.nameColW()) {
+            return;
+        }
         TccShopEntry entry = TccShopCatalog.entries().get(this.filtered.get(this.hoveredRow));
         // 用原版容器界面同一条取 tooltip 的路径（会触发 Forge 的物品 tooltip 事件，
-        // 饰品栏位/等级/效果这些由前置模组补的行才会有），末尾再补一行单价
-        List<Component> tooltip = new ArrayList<>(getTooltipFromItem(this.minecraft, entry.stack()));
-        tooltip.add(Component.empty());
-        tooltip.add(Component.translatable("tcc.shop.price", entry.cost(), ShopCurrency.name())
-                .withStyle(ChatFormatting.GRAY));
+        // 饰品栏位/等级/效果这些由前置模组补的行才会有）
         guiGraphics.flush();
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(0.0D, 0.0D, TOOLTIP_Z);
-        guiGraphics.renderTooltip(this.font, tooltip, Optional.empty(), mouseX, mouseY);
+        guiGraphics.renderTooltip(this.font, getTooltipFromItem(this.minecraft, entry.stack()),
+                Optional.empty(), mouseX, mouseY);
         guiGraphics.flush();
         guiGraphics.pose().popPose();
     }
@@ -478,17 +716,38 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
         if (this.editingRow >= 0 && !this.insideQtyBox(mouseX, mouseY)) {
             this.commitQtyEdit();
         }
+        if (button == 0 && this.beginScrollbarDrag(mouseX, mouseY)) {
+            return true;
+        }
         if (button == 0 && this.handleListClick(mouseX, mouseY)) {
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+    @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if (this.draggingScrollbar != DRAG_NONE) {
+            this.dragScrollTo(mouseY);
+            return true;
+        }
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (this.draggingScrollbar != DRAG_NONE) {
+            this.draggingScrollbar = DRAG_NONE;
+            return true;
+        }
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
     private boolean insideQtyBox(double mouseX, double mouseY) {
         if (this.editingRow < 0 || this.editingRow >= this.filtered.size()) {
             return false;
         }
-        int y = this.listY + (this.editingRow - this.scroll) * this.rowH + (this.rowH - 12) / 2;
+        int y = this.listRowsTop() + (this.editingRow - this.scroll) * this.rowH + (this.rowH - 12) / 2;
         return this.inside(mouseX, mouseY, this.listX + this.qtyX(), y, QTY_W, 12);
     }
 
@@ -496,7 +755,7 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
     private void beginQtyEdit(int row) {
         this.commitQtyEdit();
         int index = this.filtered.get(row);
-        int y = this.listY + (row - this.scroll) * this.rowH + (this.rowH - 12) / 2;
+        int y = this.listRowsTop() + (row - this.scroll) * this.rowH + (this.rowH - 12) / 2;
         this.editingRow = row;
         this.qtyEdit.setX(this.leftPos + this.listX + this.qtyX());
         this.qtyEdit.setY(this.topPos + y);
@@ -547,7 +806,7 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
         }
         int index = this.filtered.get(row);
         double rx = mouseX - (this.leftPos + this.listX);
-        double ry = mouseY - (this.topPos + this.listY + (row - this.scroll) * this.rowH);
+        double ry = mouseY - (this.topPos + this.listRowsTop() + (row - this.scroll) * this.rowH);
         // 整块「− 数量 ＋」都是交互区：点在这块里的空隙上什么也不做，但绝不切换勾选
         int stepLeft = this.minusX();
         int stepRight = this.plusX() + STEP_BTN_W;
@@ -675,8 +934,9 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
 
     private int rowAt(double mouseX, double mouseY) {
         double rx = mouseX - (this.leftPos + this.listX);
-        double ry = mouseY - (this.topPos + this.listY);
-        if (rx < 0 || rx >= this.listW || ry < 0 || ry >= this.listH) {
+        // 行区从表头下面开始算，点表头不该选中第一行
+        double ry = mouseY - (this.topPos + this.listRowsTop());
+        if (rx < 0 || rx >= this.listW || ry < 0 || ry >= this.visibleRows * this.rowH) {
             return -1;
         }
         int row = this.scroll + (int) (ry / this.rowH);
@@ -726,10 +986,6 @@ public class TeshinShopScreen extends AbstractContainerScreen<TccShopMenu> {
             return 0;
         }
         return this.countItems(ShopCurrency.item());
-    }
-
-    private int owned(TccShopEntry entry) {
-        return this.countItems(entry.item());
     }
 
     private int countItems(net.minecraft.world.item.Item item) {
